@@ -191,7 +191,8 @@
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
     document.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("squareCraft-admin-icon")) {
+        console.log("Clicked to icons")
+        if (event.target.closest(".squareCraft-admin-icon")) { 
             console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
             if (!widgetLoaded) {
                 await createWidget();
@@ -202,6 +203,7 @@
             }
         }
     });
+    
     
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
