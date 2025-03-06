@@ -166,7 +166,7 @@
             });
         
             setTimeout(injectIconIntoTargetElements, 500);
-        }        
+        }               
 
 
         injectIconIntoTargetElements();
