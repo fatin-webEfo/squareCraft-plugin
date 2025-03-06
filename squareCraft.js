@@ -168,13 +168,14 @@
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
                     clonedIcon.style.width = "22px";
+                    clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "22px";
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
-        
+                    clonedIcon.style.backgroundColor = "white";
                     clonedIcon.style.position = "absolute";
                     clonedIcon.style.top = "50%";
                     clonedIcon.style.left = "calc(100% + 5px)"; 
