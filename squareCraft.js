@@ -148,9 +148,13 @@
         console.log("✅ SquareCraft icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
+            console.log("🔄 Running injectIconIntoTargetElements...");
+            
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
         
-            targets.forEach((element) => {
+            targets.forEach((element, index) => {
+                console.log(`📌 Processing element #${index}:`, element);
+        
                 element.classList.add("squareCraft-processed");
         
                 const wrapper = document.createElement("div");
@@ -159,27 +163,37 @@
                 wrapper.style.alignItems = "center";
         
                 const clonedIcon = createIcon();
+                console.log("🎨 Created clonedIcon:", clonedIcon);
+        
                 clonedIcon.addEventListener("click", async () => {
-                    console.log("cloineIo: " + clonedIcon)
+                    console.log("🖱️ Clicked on clonedIcon:", clonedIcon);
+        
                     if (!widgetLoaded) {
+                        console.log("📥 Widget not loaded. Creating...");
                         await createWidget();
                         widgetContainer = document.getElementById("squarecraft-widget-container");
+        
                         if (widgetContainer) {
+                            console.log("✅ Widget container found. Displaying...");
                             widgetContainer.style.display = "block";
                         }
                     } else {
+                        console.log("🔄 Toggling widget visibility...");
                         toggleWidgetVisibility();
                     }
                 });
-                
         
+                console.log("➕ Replacing element with wrapper and injecting icon...");
                 element.replaceWith(wrapper);
                 wrapper.appendChild(element);
                 wrapper.appendChild(clonedIcon);
+        
+                console.log("✅ SquareCraft icon injected at:", element);
             });
         
             setTimeout(injectIconIntoTargetElements, 500);
         }
+        
                       
 
 
