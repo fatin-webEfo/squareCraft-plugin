@@ -153,8 +153,8 @@
     
         injectIconIntoTargetElements();
     
+        let icon = document.createElement("img");
         function createIcon() {
-            const icon = document.createElement("img");
             icon.src = iconSrc;
             icon.alt = "SquareCraft";
             icon.style.width = "22px";
