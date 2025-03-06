@@ -124,7 +124,7 @@
             return;
         }
 
-        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
         function createIcon() {
             const icon = document.createElement("img");
@@ -132,9 +132,7 @@
             icon.alt = "SquareCraft";
             icon.style.width = "22px";
             icon.style.height = "22px";
-            icon.style.border = "1px solid #dddbdb";
             icon.style.borderRadius = "20%";
-            icon.style.padding = "4px";
             icon.style.marginRight = "6px";
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
@@ -164,15 +162,13 @@
         
                 if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
-                    clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+                    clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
                     clonedIcon.style.width = "22px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "22px";
-                    clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
-                    clonedIcon.style.padding = "4px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
                     clonedIcon.style.backgroundColor = "white";
