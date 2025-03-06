@@ -140,7 +140,7 @@
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
+            // icon.addEventListener("click", toggleWidgetVisibility);
             return icon;
         }
 
@@ -158,18 +158,20 @@
                 wrapper.classList.add("squareCraft-injected-wrapper");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
+        
                 const clonedIcon = createIcon();
+                clonedIcon.addEventListener("click", toggleWidgetVisibility);
+        
                 element.replaceWith(wrapper);
                 wrapper.appendChild(element);
                 wrapper.appendChild(clonedIcon);
-                clonedIcon.addEventListener("click", toggleWidgetVisibility);
-                return clonedIcon;
         
                 console.log("✅ SquareCraft icon injected at:", element);
             });
         
             setTimeout(injectIconIntoTargetElements, 500);
         }
+        
         
 
 
