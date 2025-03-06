@@ -130,8 +130,8 @@
             const icon = document.createElement("img");
             icon.src = iconSrc;
             icon.alt = "SquareCraft";
-            icon.style.width = "28px";
-            icon.style.height = "28px";
+            icon.style.width = "30px";
+            icon.style.height = "30px";
             icon.style.borderRadius = "20%";
             icon.style.marginRight = "6px";
             icon.style.cursor = "pointer";
@@ -165,9 +165,9 @@
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
-                    clonedIcon.style.width = "28px";
+                    clonedIcon.style.width = "36px";
                     clonedIcon.style.cursor = "pointer";
-                    clonedIcon.style.height = "28px";
+                    clonedIcon.style.height = "36px";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
