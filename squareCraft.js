@@ -184,8 +184,6 @@
         }
         
        
-        
-        
         injectIconIntoTargetElements();
         
         const observer = new MutationObserver(() => {
