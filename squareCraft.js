@@ -195,9 +195,9 @@
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
     document.addEventListener("click", async (event) => {
+        console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
         if (event.target.classList.contains("squareCraft-admin-icon")) {
             event.stopPropagation(); 
-            console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
     
             setTimeout(async () => { 
                 if (!widgetLoaded) {
