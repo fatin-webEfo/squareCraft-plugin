@@ -178,9 +178,7 @@
                     wrapper.appendChild(element);
                     wrapper.appendChild(clonedIcon); 
                 }
-                clonedIcon.addEventListener("click", function(){
-                    toggleWidgetVisibility();
-                })
+                
         
                 console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
