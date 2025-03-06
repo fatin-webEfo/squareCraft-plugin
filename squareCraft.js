@@ -169,7 +169,7 @@
                     clonedIcon.classList.add("squareCraft-admin-icon");
                     clonedIcon.style.width = "22px";
                     clonedIcon.style.height = "22px";
-                    icon.style.marginRight = "6px";
+                    clonedIcon.style.marginRight = "6px";
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
