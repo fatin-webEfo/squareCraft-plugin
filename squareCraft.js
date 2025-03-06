@@ -171,24 +171,35 @@
         }
     
         function injectIconIntoTargetElements() {
-            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
-    
-            targets.forEach((element) => {
-                element.classList.add("squareCraft-processed");
-    
-                const wrapper = document.createElement("div");
+            const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
+        
+            if (targetElements.length === 0) {
+                console.warn("❌ Target elements not found. Retrying in 1 second...");
+                setTimeout(injectIconIntoTargetElements, 1000);
+                return;
+            }
+        
+            targetElements.forEach((element) => {
+                if (!element.parentNode || element.parentNode.querySelector(".squareCraft-injected-wrapper")) return;
+        
+                let wrapper = document.createElement("div");
                 wrapper.classList.add("squareCraft-injected-wrapper");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-    
-                const clonedIcon = createIcon();
-                wrapper.append(element, clonedIcon);
-                element.parentNode.insertBefore(wrapper, element);
-    
-                console.log("✅ SquareCraft icon injected at:", element);
+        
+                let clonedIcon = icon.cloneNode(true);
+                clonedIcon.classList.add("squareCraft-injected-icon");
+        
+                if (!element.parentNode.classList.contains("squareCraft-injected-wrapper")) {
+                    element.parentNode.insertBefore(wrapper, element);
+                    wrapper.appendChild(element);
+                    wrapper.appendChild(clonedIcon); 
+                }
+        
+                console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
-    
-            setTimeout(injectIconIntoTargetElements, 500);
+        
+            setTimeout(injectIconIntoTargetElements, 500); 
         }
     
         injectIconIntoTargetElements();
