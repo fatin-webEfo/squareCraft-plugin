@@ -117,6 +117,8 @@
         }
     }
 
+    let icon = null; 
+
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
     
@@ -127,24 +129,21 @@
     
         const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
     
-        function createIcon() {
-            const icon = document.createElement("img");
-            icon.src = iconSrc;
-            icon.alt = "SquareCraft";
-            icon.style.width = "22px";
-            icon.style.height = "22px";
-            icon.style.border = "1px solid #dddbdb";
-            icon.style.borderRadius = "20%";
-            icon.style.padding = "4px";
-            icon.style.marginRight = "6px";
-            icon.style.cursor = "pointer";
-            icon.style.display = "inline-block";
-            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
-            return icon;
-        }
+        icon = document.createElement("img");
+        icon.src = iconSrc;
+        icon.alt = "SquareCraft";
+        icon.style.width = "22px";
+        icon.style.height = "22px";
+        icon.style.border = "1px solid #dddbdb";
+        icon.style.borderRadius = "20%";
+        icon.style.padding = "4px";
+        icon.style.marginRight = "6px";
+        icon.style.cursor = "pointer";
+        icon.style.display = "inline-block";
+        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+        icon.addEventListener("click", toggleWidgetVisibility);
     
-        navContainer.parentNode.insertBefore(createIcon(), navContainer);
+        navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
     
         function injectIconIntoTargetElements() {
@@ -158,7 +157,7 @@
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
     
-                const clonedIcon = createIcon();
+                const clonedIcon = icon.cloneNode(true);
                 wrapper.append(element, clonedIcon);
                 element.parentNode.insertBefore(wrapper, element);
     
@@ -170,6 +169,7 @@
     
         injectIconIntoTargetElements();
     }
+    
     
     
     function waitForNavBar(attempts = 0) {
