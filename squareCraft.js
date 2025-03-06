@@ -153,22 +153,60 @@
     
         injectIconIntoTargetElements();
     
-        let icon = document.createElement("img");
-        function createIcon() {
-            icon.src = iconSrc;
-            icon.alt = "SquareCraft";
-            icon.style.width = "22px";
-            icon.style.height = "22px";
-            icon.style.border = "1px solid #dddbdb";
-            icon.style.borderRadius = "20%";
-            icon.style.padding = "4px";
-            icon.style.marginRight = "6px";
-            icon.style.cursor = "pointer";
-            icon.style.display = "inline-block";
-            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
-            return icon;
+        function injectIcon() {
+            const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+        
+            if (!navContainer) {
+                console.warn("❌ Squarespace admin nav container not found.");
+                return;
+            }
+        
+            const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+        
+            function createIcon() {
+                const icon = document.createElement("img");
+                icon.src = iconSrc;
+                icon.alt = "SquareCraft";
+                icon.style.width = "22px";
+                icon.style.height = "22px";
+                icon.style.border = "1px solid #dddbdb";
+                icon.style.borderRadius = "20%";
+                icon.style.padding = "4px";
+                icon.style.marginRight = "6px";
+                icon.style.cursor = "pointer";
+                icon.style.display = "inline-block";
+                icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+                icon.addEventListener("click", toggleWidgetVisibility);
+                return icon;
+            }
+        
+            navContainer.parentNode.insertBefore(createIcon(), navContainer);
+            console.log("✅ SquareCraft icon injected into nav bar!");
+        
+            function injectIconIntoTargetElements() {
+                const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
+        
+                targets.forEach((element) => {
+                    if (element.parentNode.querySelector(".squareCraft-injected-wrapper")) return;
+        
+                    const wrapper = document.createElement("div");
+                    wrapper.classList.add("squareCraft-injected-wrapper");
+                    wrapper.style.display = "flex";
+                    wrapper.style.alignItems = "center";
+        
+                    const clonedIcon = createIcon();
+                    wrapper.append(element, clonedIcon);
+                    element.parentNode.insertBefore(wrapper, element);
+        
+                    console.log("✅ SquareCraft icon injected at:", element);
+                });
+        
+                setTimeout(injectIconIntoTargetElements, 500);
+            }
+        
+            injectIconIntoTargetElements();
         }
+        
     
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
