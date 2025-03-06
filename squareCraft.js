@@ -147,7 +147,7 @@
         console.log("✅ SquareCraft icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
-            const targets = parent.document.querySelectorAll(".QJtc3Joz6C0eyIVn:not(.squareCraft-processed)");
+            const targets = parent.document.querySelectorAll(".QJtc3Joz6C0eyIVn");
         
             targets.forEach((element) => {
                 element.classList.add("squareCraft-processed");
