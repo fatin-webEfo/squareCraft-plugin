@@ -144,29 +144,32 @@
             return icon;
         }
     
-        navContainer.parentNode.insertBefore(createIcon(), navContainer);
+        element.parentNode.insertBefore(wrapper, element.nextSibling);
         console.log("✅ SquareCraft icon injected into nav bar!");
     
         function injectIconIntoTargetElements() {
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
-    
+        
             targets.forEach((element) => {
                 if (element.parentNode.querySelector(".squareCraft-injected-wrapper")) return;
-    
+        
                 const wrapper = document.createElement("div");
                 wrapper.classList.add("squareCraft-injected-wrapper");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-    
+        
                 const clonedIcon = createIcon();
-                wrapper.append(element, clonedIcon);
+                
                 element.parentNode.insertBefore(wrapper, element);
-    
+                wrapper.appendChild(element);
+                wrapper.appendChild(clonedIcon);
+        
                 console.log("✅ SquareCraft icon injected at:", element);
             });
-    
+        
             setTimeout(injectIconIntoTargetElements, 500);
         }
+        
     
         injectIconIntoTargetElements();
     }
