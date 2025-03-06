@@ -143,7 +143,6 @@
             return icon;
         }
 
-
         navContainer.parentNode.insertBefore(createIcon(), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
 
