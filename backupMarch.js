@@ -75,8 +75,7 @@
             }
         }
     }
-
-
+    
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
@@ -140,43 +139,70 @@
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
             return icon;
         }
-
 
         navContainer.parentNode.insertBefore(createIcon(), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
+            console.log("🔄 Running injectIconIntoTargetElements...");
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
         
             targets.forEach((element) => {
                 element.classList.add("squareCraft-processed");
         
-                const wrapper = document.createElement("div");
-                wrapper.classList.add("squareCraft-injected-wrapper");
-                wrapper.style.display = "flex";
-                wrapper.style.alignItems = "center";
-                const clonedIcon = createIcon();
-                element.replaceWith(wrapper);
-                wrapper.appendChild(element);
-                wrapper.appendChild(clonedIcon);
-                clonedIcon.addEventListener("click", toggleWidgetVisibility);
-                return clonedIcon;
+                const parentContainer = element.closest(".css-rxv52q");
+                if (!parentContainer) {
+                    console.warn("❌ Parent container not found, skipping:", element);
+                    return;
+                }
         
-                console.log("✅ SquareCraft icon injected at:", element);
+                parentContainer.style.display = "flex";
+                parentContainer.style.alignItems = "center";
+                parentContainer.style.justifyContent = "space-between";
+        
+                if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
+                    const clonedIcon = document.createElement("img");
+                    clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+                    clonedIcon.alt = "SquareCraft";
+                    clonedIcon.classList.add("squareCraft-admin-icon");
+                    clonedIcon.style.width = "22px";
+                    clonedIcon.style.height = "22px";
+                    clonedIcon.style.border = "1px solid #dddbdb";
+                    clonedIcon.style.borderRadius = "20%";
+                    clonedIcon.style.padding = "4px";
+                    clonedIcon.style.marginRight = "4px";
+                    clonedIcon.style.cursor = "pointer";
+                    clonedIcon.style.display = "inline-block";
+                    parentContainer.appendChild(clonedIcon);
+                }
             });
-        
-            setTimeout(injectIconIntoTargetElements, 500);
         }
         
-
-
+       
         injectIconIntoTargetElements();
+        
+        const observer = new MutationObserver(() => {
+            injectIconIntoTargetElements();
+        });
+        observer.observe(parent.document.body, { childList: true, subtree: true });
     }
-
-
+    document.addEventListener("click", async (event) => {
+        console.log("Clicked to icons")
+        if (event.target.closest(".squareCraft-admin-icon")) { 
+            console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
+            if (!widgetLoaded) {
+                await createWidget();
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                widgetContainer.style.display = "block";
+            } else {
+                toggleWidgetVisibility();
+            }
+        }
+    });
+    
+    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");

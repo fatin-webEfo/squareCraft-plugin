@@ -161,21 +161,27 @@
                 parentContainer.style.display = "flex";
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.justifyContent = "space-between";
-        
-                if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
+                parentContainer.style.position = "relative"; 
+                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
                     clonedIcon.style.width = "22px";
                     clonedIcon.style.height = "22px";
+                    icon.style.marginRight = "6px";
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
-                    clonedIcon.style.marginRight = "4px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
-                    parentContainer.appendChild(clonedIcon);
+                    clonedIcon.style.position = "absolute"; 
+                    clonedIcon.style.right = "-30px"; 
+                    clonedIcon.style.top = "50%";
+                    clonedIcon.style.transform = "translateY(-50%)";
+                    clonedIcon.style.zIndex = "99999";
+        
+                    parentContainer.parentElement.appendChild(clonedIcon); 
                 }
             });
         }
@@ -189,16 +195,19 @@
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
     document.addEventListener("click", async (event) => {
-        console.log("Clicked to icons")
-        if (event.target.closest(".squareCraft-admin-icon")) { 
+        if (event.target.classList.contains("squareCraft-admin-icon")) {
+            event.stopPropagation(); 
             console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
-            if (!widgetLoaded) {
-                await createWidget();
-                widgetContainer = document.getElementById("squarecraft-widget-container");
-                widgetContainer.style.display = "block";
-            } else {
-                toggleWidgetVisibility();
-            }
+    
+            setTimeout(async () => { 
+                if (!widgetLoaded) {
+                    await createWidget();
+                    widgetContainer = document.getElementById("squarecraft-widget-container");
+                    widgetContainer.style.display = "block";
+                } else {
+                    toggleWidgetVisibility();
+                }
+            }, 100);
         }
     });
     
