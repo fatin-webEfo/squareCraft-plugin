@@ -77,8 +77,6 @@
     }
     
 
-
-
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
 
@@ -192,7 +190,6 @@
     }
     document.addEventListener("click", async (event) => {
         console.log("Clicked to icons")
-        toggleWidgetVisibility();
         if (event.target.closest(".squareCraft-admin-icon")) { 
             console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
             if (!widgetLoaded) {
