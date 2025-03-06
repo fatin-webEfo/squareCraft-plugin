@@ -152,7 +152,7 @@
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
         
-        
+
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
         
@@ -178,6 +178,9 @@
                     wrapper.appendChild(element);
                     wrapper.appendChild(clonedIcon); 
                 }
+                clonedIcon.addEventListener("click", function(){
+                    toggleWidgetVisibility();
+                })
         
                 console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
