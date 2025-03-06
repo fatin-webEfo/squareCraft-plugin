@@ -146,7 +146,7 @@
             
         
             icon.addEventListener("click", function(){
-                toggleWidgetVisibility();
+                createWidget();
             })
         
             navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);

@@ -63,16 +63,23 @@
     function toggleWidgetVisibility() {
         if (!widgetLoaded) {
             createWidget().then(() => {
-                widgetContainer.style.display = "block";
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (widgetContainer) {
+                    widgetContainer.style.display = "fixed"; 
+                }
             });
         } else {
-            if (widgetContainer.style.display === "none") {
-                widgetContainer.style.display = "block";
-            } else {
-                widgetContainer.style.display = "none";
+            widgetContainer = document.getElementById("squarecraft-widget-container"); 
+            if (widgetContainer) {
+                if (widgetContainer.style.display === "none") {
+                    widgetContainer.style.display = "fixed"; 
+                } else {
+                    widgetContainer.style.display = "none"; 
+                }
             }
         }
     }
+    
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
@@ -122,44 +129,23 @@
         }
     
         let iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
-        let toolbarIconSrc = localStorage.getItem("squareCraft_toolbar_icon") || "https://i.ibb.co/LXKK6swV/Group-29.jpg";
     
         localStorage.setItem("squareCraft_icon", iconSrc);
-        localStorage.setItem("squareCraft_toolbar_icon", toolbarIconSrc);
-    
         let icon = document.createElement("img");
-      
         icon.src = iconSrc;
         icon.alt = "SquareCraft";
-        icon.style.width = "25px";
-        icon.style.height = "24px";
+        icon.style.width = "22px";
+        icon.style.height = "22px";
         icon.style.border = "1px solid #dddbdb";
-        icon.style.background = "#fcf4ee";
         icon.style.borderRadius = "20%";
         icon.style.padding = "4px";
-        icon.style.margin = "0px 6px";
+        icon.style.marginRight = "6px";
         icon.style.cursor = "pointer";
         icon.style.display = "inline-block";
         icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
         
-        
     
-        let toolbaricon = document.createElement("img");
-        toolbaricon.src = toolbarIconSrc;
-        toolbaricon.alt = "SquareCraft";
-        toolbaricon.style.width = "25px";
-        toolbaricon.style.height = "24px";
-        toolbaricon.style.border = "1px solid #dddbdb";
-        toolbaricon.style.borderRadius = "20%";
-        toolbaricon.style.background = "#fcf4ee";
-        toolbaricon.style.padding = "4px";
-        toolbaricon.style.marginRight = "6px";
-        toolbaricon.style.cursor = "pointer";
-        toolbaricon.style.display = "inline-block";
-        toolbaricon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-    
-       
-        toolbaricon.addEventListener("click", function(){
+        icon.addEventListener("click", function(){
             toggleWidgetVisibility();
         })
     
@@ -183,7 +169,7 @@
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
         
-                let clonedIcon = toolbaricon.cloneNode(true);
+                let clonedIcon = icon.cloneNode(true);
                 clonedIcon.classList.add("squareCraft-injected-icon");
         
                 if (!element.parentNode.classList.contains("squareCraft-injected-wrapper")) {
@@ -195,7 +181,7 @@
                 console.log("✅ SquareCraft icon injected at the last inside wrapper:", element);
             });
         
-            setTimeout(injectIconIntoTargetElements, 1000); 
+            setTimeout(injectIconIntoTargetElements, 500); 
         }
         
         
