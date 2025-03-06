@@ -75,6 +75,7 @@
             }
         }
     }
+    
 
 
 
@@ -148,7 +149,6 @@
 
         function injectIconIntoTargetElements() {
             console.log("🔄 Running injectIconIntoTargetElements...");
-        
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
         
             targets.forEach((element) => {
@@ -164,48 +164,48 @@
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.justifyContent = "space-between";
         
-                const clonedIcon = document.createElement("img");
-                clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
-                clonedIcon.alt = "SquareCraft";
-                clonedIcon.classList.add("squareCraft-admin-icon");
-                clonedIcon.style.width = "22px";
-                clonedIcon.style.height = "22px";
-                clonedIcon.style.border = "1px solid #dddbdb";
-                clonedIcon.style.borderRadius = "20%";
-                clonedIcon.style.padding = "4px";
-                clonedIcon.style.marginLeft = "auto";
-                clonedIcon.style.cursor = "pointer";
-                clonedIcon.style.display = "inline-block";
-        
-                parentContainer.appendChild(clonedIcon);
+                // Ensure only one icon exists
+                if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
+                    const clonedIcon = document.createElement("img");
+                    clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+                    clonedIcon.alt = "SquareCraft";
+                    clonedIcon.classList.add("squareCraft-admin-icon");
+                    clonedIcon.style.width = "22px";
+                    clonedIcon.style.height = "22px";
+                    clonedIcon.style.border = "1px solid #dddbdb";
+                    clonedIcon.style.borderRadius = "20%";
+                    clonedIcon.style.padding = "4px";
+                    clonedIcon.style.marginLeft = "auto";
+                    clonedIcon.style.cursor = "pointer";
+                    clonedIcon.style.display = "inline-block";
+                    parentContainer.appendChild(clonedIcon);
+                }
             });
-        
-            setTimeout(injectIconIntoTargetElements, 500);
         }
         
-        document.addEventListener("click", async (event) => {
-            if (event.target.classList.contains("squareCraft-admin-icon")) {
-                console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
-                if (!widgetLoaded) {
-                    await createWidget();
-                    widgetContainer = document.getElementById("squarecraft-widget-container");
-                    widgetContainer.style.display = "block";
-                } else {
-                    toggleWidgetVisibility();
-                }
-            }
-        });
+       
         
-        const observer = new MutationObserver(() => {
-            injectIconIntoTargetElements();
-        });
-        observer.observe(parent.document.body, { childList: true, subtree: true });
         
         injectIconIntoTargetElements();
         
     }
-
-
+    const observer = new MutationObserver(() => {
+        injectIconIntoTargetElements();
+    });
+    observer.observe(parent.document.body, { childList: true, subtree: true });
+    document.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("squareCraft-admin-icon")) {
+            console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
+            if (!widgetLoaded) {
+                await createWidget();
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                widgetContainer.style.display = "block";
+            } else {
+                toggleWidgetVisibility();
+            }
+        }
+    });
+    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
