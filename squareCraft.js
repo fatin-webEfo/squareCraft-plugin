@@ -149,27 +149,28 @@
         console.log("✅ SquareCraft icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
-            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
-
+            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
+        
             targets.forEach((element) => {
-                if (element.parentNode.querySelector(".squareCraft-injected-wrapper")) return;
-
+                element.classList.add("squareCraft-processed");
+        
                 const wrapper = document.createElement("div");
                 wrapper.classList.add("squareCraft-injected-wrapper");
                 wrapper.style.display = "flex";
                 wrapper.style.alignItems = "center";
-
+        
                 const clonedIcon = createIcon();
-
+        
                 element.replaceWith(wrapper);
                 wrapper.appendChild(element);
                 wrapper.appendChild(clonedIcon);
-
+        
                 console.log("✅ SquareCraft icon injected at:", element);
             });
-
+        
             setTimeout(injectIconIntoTargetElements, 500);
         }
+        
 
 
         injectIconIntoTargetElements();
