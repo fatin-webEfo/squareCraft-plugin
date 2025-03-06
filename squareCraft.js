@@ -160,9 +160,9 @@
         
                 parentContainer.style.display = "flex";
                 parentContainer.style.alignItems = "center";
-                parentContainer.style.justifyContent = "space-between";
+                parentContainer.style.position = "relative"; 
         
-                if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
+                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
                     clonedIcon.alt = "SquareCraft";
@@ -172,13 +172,18 @@
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
-                    clonedIcon.style.marginRight = "6px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
-                    parentContainer.appendChild(clonedIcon);
+        
+                    clonedIcon.style.position = "absolute";
+                    clonedIcon.style.top = "50%";
+                    clonedIcon.style.left = "calc(100% + 5px)"; 
+                    clonedIcon.style.transform = "translateY(-50%)";
+                    parentContainer.parentElement.appendChild(clonedIcon);
                 }
             });
         }
+        
         
        
         injectIconIntoTargetElements();
@@ -190,10 +195,10 @@
     }
     document.addEventListener("click", async (event) => {
         if (event.target.classList.contains("squareCraft-admin-icon")) {
-            event.stopPropagation(); // Prevent Squarespace from blocking it
+            event.stopPropagation(); 
             console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
     
-            setTimeout(async () => { // Delayed execution
+            setTimeout(async () => { 
                 if (!widgetLoaded) {
                     await createWidget();
                     widgetContainer = document.getElementById("squarecraft-widget-container");
