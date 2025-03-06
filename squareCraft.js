@@ -159,6 +159,18 @@
                 wrapper.style.alignItems = "center";
         
                 const clonedIcon = createIcon();
+                clonedIcon.addEventListener("click", () => {
+                    if (!widgetLoaded) {
+                        createWidget().then(() => {
+                            widgetContainer = document.getElementById("squarecraft-widget-container");
+                            if (widgetContainer) {
+                                widgetContainer.style.display = "block";
+                            }
+                        });
+                    } else {
+                        toggleWidgetVisibility();
+                    }
+                });
         
                 element.replaceWith(wrapper);
                 wrapper.appendChild(element);
@@ -166,7 +178,8 @@
             });
         
             setTimeout(injectIconIntoTargetElements, 500);
-        }               
+        }
+                      
 
 
         injectIconIntoTargetElements();
