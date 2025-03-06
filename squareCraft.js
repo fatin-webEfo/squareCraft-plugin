@@ -65,17 +65,20 @@
                 createWidget().then(() => {
                     widgetContainer = document.getElementById("squarecraft-widget-container");
                     if (widgetContainer) {
-                        widgetContainer.style.display = "block"; 
+                        widgetContainer.style.display = "fixed"; 
                     }
                 });
             } else {
                 widgetContainer = document.getElementById("squarecraft-widget-container"); 
                 if (widgetContainer) {
-                    widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
+                    if (widgetContainer.style.display === "none") {
+                        widgetContainer.style.display = "fixed"; 
+                    } else {
+                        widgetContainer.style.display = "none"; 
+                    }
                 }
             }
         }
-        
         
 
         function makeWidgetDraggable() {
@@ -146,6 +149,7 @@
                 toggleWidgetVisibility();
             })
         
+            navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
             console.log("✅ SquareCraft icon injected into nav bar!");
             
             function injectIconIntoTargetElements() {
