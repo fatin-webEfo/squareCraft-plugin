@@ -161,27 +161,21 @@
                 parentContainer.style.display = "flex";
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.justifyContent = "space-between";
-                parentContainer.style.position = "relative"; 
-                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
+        
+                if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
                     clonedIcon.style.width = "22px";
                     clonedIcon.style.height = "22px";
-                    clonedIcon.style.margin = "0 10px";
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
+                    clonedIcon.style.marginRight = "6px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
-                    clonedIcon.style.position = "absolute"; 
-                    clonedIcon.style.right = "-30px"; 
-                    clonedIcon.style.top = "50%";
-                    clonedIcon.style.transform = "translateY(-50%)";
-                    clonedIcon.style.zIndex = "99999";
-        
-                    parentContainer.parentElement.appendChild(clonedIcon); 
+                    parentContainer.appendChild(clonedIcon);
                 }
             });
         }
@@ -195,11 +189,11 @@
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
     document.addEventListener("click", async (event) => {
-        console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
         if (event.target.classList.contains("squareCraft-admin-icon")) {
-            event.stopPropagation(); 
+            event.stopPropagation(); // Prevent Squarespace from blocking it
+            console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
     
-            setTimeout(async () => { 
+            setTimeout(async () => { // Delayed execution
                 if (!widgetLoaded) {
                     await createWidget();
                     widgetContainer = document.getElementById("squarecraft-widget-container");
