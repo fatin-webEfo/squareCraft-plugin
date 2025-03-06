@@ -151,30 +151,48 @@
             console.log("🔄 Running injectIconIntoTargetElements...");
         
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
+            
+            targets.forEach((element) => {
+                element.classList.add("squareCraft-processed");
         
-            targets.forEach((element, index) => {
-                console.log(`📌 Processing element #${index}:`, element);
-                
-                element.classList.add("squareCraft-processed"); 
-                const parentContainer = element.closest(".css-rxv52q");
-                
-                if (!parentContainer) {
-                    console.warn("❌ Parent container not found, skipping:", element);
+                // Find the closest white toolbar container
+                const toolbarContainer = element.closest(".css-rxv52q");
+                if (!toolbarContainer) {
+                    console.warn("❌ Toolbar container not found for:", element);
                     return;
                 }
-    
-                parentContainer.style.display = "flex";
-                parentContainer.style.alignItems = "center";
-                parentContainer.style.justifyContent = "space-between"; 
         
-                const clonedIcon = createIcon();
-                clonedIcon.classList.add("squareCraft-admin-icon"); 
-                clonedIcon.style.marginLeft = "auto"; 
-                clonedIcon.style.cursor = "pointer";
-                parentContainer.appendChild(clonedIcon);
+                // Find the parent that holds the toolbar (so we can insert the icon OUTSIDE)
+                const parentContainer = toolbarContainer.parentElement;
+                if (!parentContainer || parentContainer.querySelector(".squareCraft-admin-icon")) {
+                    return; // Prevent duplicate icons
+                }
         
-                clonedIcon.addEventListener("click", async () => {
-                    console.log("🖱️ Clicked on SquareCraft Icon:", clonedIcon);
+                // Create the SquareCraft icon
+                const icon = document.createElement("img");
+                icon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
+                icon.alt = "SquareCraft";
+                icon.style.width = "22px";
+                icon.style.height = "22px";
+                icon.style.border = "1px solid #dddbdb";
+                icon.style.borderRadius = "20%";
+                icon.style.padding = "4px";
+                icon.style.marginLeft = "5px"; // Adjust spacing from toolbar
+                icon.style.cursor = "pointer";
+                icon.style.display = "inline-block";
+                icon.style.position = "absolute"; // Ensure it's positioned outside
+                icon.style.right = "-35px"; // Move outside the white toolbar box
+                icon.style.top = "50%";
+                icon.style.transform = "translateY(-50%)"; // Center it vertically
+                icon.classList.add("squareCraft-admin-icon");
+        
+                // Append icon outside the white box
+                parentContainer.style.position = "relative"; // Ensure parent is positioned
+                parentContainer.appendChild(icon);
+        
+                // Add click functionality
+                icon.addEventListener("click", async () => {
+                    console.log("🖱️ Clicked on SquareCraft Icon:", icon);
         
                     if (!widgetLoaded) {
                         console.log("📥 Widget not loaded. Creating...");
@@ -191,18 +209,17 @@
                     }
                 });
         
-                console.log("✅ SquareCraft icon injected outside wrapper in:", parentContainer);
+                console.log("✅ SquareCraft icon injected OUTSIDE toolbar:", parentContainer);
             });
         }
         
+        // Run the function initially and observe changes dynamically
         injectIconIntoTargetElements();
-        
         const observer = new MutationObserver(() => {
             injectIconIntoTargetElements();
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
         
-        injectIconIntoTargetElements();
     }
 
 
