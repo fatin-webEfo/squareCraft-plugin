@@ -159,19 +159,14 @@
                 wrapper.style.alignItems = "center";
         
                 const clonedIcon = createIcon();
-                clonedIcon.addEventListener("click", toggleWidgetVisibility);
         
                 element.replaceWith(wrapper);
                 wrapper.appendChild(element);
                 wrapper.appendChild(clonedIcon);
-        
-                console.log("✅ SquareCraft icon injected at:", element);
             });
         
             setTimeout(injectIconIntoTargetElements, 500);
-        }
-        
-        
+        }        
 
 
         injectIconIntoTargetElements();
