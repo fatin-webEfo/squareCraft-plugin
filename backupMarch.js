@@ -152,6 +152,7 @@
         navContainer.parentNode.insertBefore(icon.cloneNode(true), navContainer);
         console.log("✅ SquareCraft icon injected into nav bar!");
         
+        
         function injectIconIntoTargetElements() {
             const targetElements = parent.document.querySelectorAll(".tidILMJ7AVANuKwS");
         
