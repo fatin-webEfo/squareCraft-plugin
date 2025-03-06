@@ -164,7 +164,6 @@
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.justifyContent = "space-between";
         
-                // Ensure only one icon exists
                 if (!parentContainer.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co/LXKK6swV/Group-29.jpg";
@@ -175,7 +174,7 @@
                     clonedIcon.style.border = "1px solid #dddbdb";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.padding = "4px";
-                    clonedIcon.style.marginLeft = "auto";
+                    clonedIcon.style.marginRight = "4px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
                     parentContainer.appendChild(clonedIcon);
