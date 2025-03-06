@@ -160,6 +160,7 @@
         
                 const clonedIcon = createIcon();
                 clonedIcon.addEventListener("click", async () => {
+                    console.log("cloineIo: " + clonedIcon)
                     if (!widgetLoaded) {
                         await createWidget();
                         widgetContainer = document.getElementById("squarecraft-widget-container");
