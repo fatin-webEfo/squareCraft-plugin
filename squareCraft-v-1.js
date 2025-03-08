@@ -60,21 +60,25 @@
         }
     }
 
-    function toggleWidgetVisibility() {
+    async function toggleWidgetVisibility(event) {
+        event.stopPropagation(); 
+    
         if (!widgetLoaded) {
-            createWidget().then(() => {
-                widgetContainer = document.getElementById("squarecraft-widget-container");
-                if (widgetContainer) {
-                    widgetContainer.style.display = "block";
-                }
-            });
-        } else {
-            widgetContainer = document.getElementById("squarecraft-widget-container");
-            if (widgetContainer) {
-                widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
-            }
+            console.log("📥 Creating and displaying widget...");
+            await createWidget();
+        }
+    
+        if (widgetContainer) {
+            widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
         }
     }
+    
+    document.addEventListener("click", (event) => {
+        if (widgetContainer && widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
+            widgetContainer.style.display = "none";
+        }
+    });
+    
     
 
     function makeWidgetDraggable() {
