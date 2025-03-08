@@ -165,16 +165,16 @@
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon");
-                    clonedIcon.style.width = "40px";
+                    clonedIcon.style.width = "36px";
                     clonedIcon.style.cursor = "pointer";
-                    clonedIcon.style.height = "40px";
+                    clonedIcon.style.height = "36px";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
                     clonedIcon.style.backgroundColor = "white";
                     clonedIcon.style.position = "absolute";
                     clonedIcon.style.top = "50%";
-                    clonedIcon.style.left = "calc(100% + 10px)"; 
+                    clonedIcon.style.left = "calc(100% + 5px)"; 
                     clonedIcon.style.transform = "translateY(-50%)";
                     parentContainer.parentElement.appendChild(clonedIcon);
                 }
