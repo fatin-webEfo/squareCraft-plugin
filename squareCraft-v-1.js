@@ -190,11 +190,6 @@
                         toggleWidgetVisibility(event);
                     });
         
-                    parentContainer.addEventListener("click", function(event) {
-                        console.log("🖱️ Parent container clicked - Triggering Widget...");
-                        event.stopPropagation();
-                        toggleWidgetVisibility(event);
-                    });
                 }
             });
         }
