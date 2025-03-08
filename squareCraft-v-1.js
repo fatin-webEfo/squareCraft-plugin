@@ -77,18 +77,6 @@
     }
     
 
-    
-    
-    function hideWidgetOnOutsideClick(event) {
-        if (!widgetContainer) return;
-        
-        if (widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
-            widgetContainer.style.display = "none";
-        }
-    }
-    document.addEventListener("click", hideWidgetOnOutsideClick);
-
-    
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
 
@@ -127,7 +115,7 @@
             document.removeEventListener("mouseup", stopDragging);
         }
     }
-    
+
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
 
