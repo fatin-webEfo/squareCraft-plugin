@@ -51,6 +51,13 @@
                     console.log("✅ Widget container added:", widgetContainer);
                     makeWidgetDraggable();
                     widgetLoaded = true;
+
+                    setTimeout(() => {
+                        widgetContainer = document.getElementById("squarecraft-widget-container");
+                        if (!widgetContainer) {
+                            console.error("❌ Widget container failed to load.");
+                        }
+                    }, 500);
                 }
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
@@ -59,6 +66,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+
 
     async function toggleWidgetVisibility(event) {
         event.stopPropagation();
@@ -184,27 +192,27 @@
                     parentContainer.parentElement.appendChild(clonedIcon);
 
 
-                    setTimeout(() => {
-                        console.log("🔄 Ensuring click listener on cloned icon...");
-                        if (clonedIcon) {
-                            clonedIcon.removeEventListener("click", toggleWidgetVisibility);
-                            clonedIcon.addEventListener("click", async function (event) {
-                                console.log("🖱️ Cloned icon clicked - Opening Widget...");
-                                event.stopPropagation();
-                                event.preventDefault();
+                    clonedIcon.addEventListener("click", async function (event) {
+                        console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
+                        event.stopPropagation();
+                        event.preventDefault(); // Prevent Squarespace from blocking it
 
-                                if (!widgetLoaded) {
-                                    await createWidget();
-                                }
-
-                                if (widgetContainer) {
-                                    widgetContainer.style.display = "block";
-                                }
-                            });
-                        } else {
-                            console.error("❌ Cloned icon not found for click event.");
+                        if (!widgetLoaded) {
+                            console.log("📥 Widget not loaded - Creating now...");
+                            await createWidget(); // Ensure widget is created
                         }
-                    }, 2000);
+
+                        setTimeout(() => {
+                            widgetContainer = document.getElementById("squarecraft-widget-container");
+                            if (widgetContainer) {
+                                console.log("✅ Widget container found - Toggling visibility.");
+                                widgetContainer.style.display = "block";
+                            } else {
+                                console.error("❌ Widget container not found after creation.");
+                            }
+                        }, 500); // Wait for DOM update
+                    });
+
 
 
                 }
@@ -224,7 +232,9 @@
         }
 
 
-        setInterval(injectIconIntoTargetElements, 1000);
+        setTimeout(() => {
+            injectIconIntoTargetElements();
+        }, 1000);
         injectIconIntoTargetElements();
 
         const observer = new MutationObserver(() => {
