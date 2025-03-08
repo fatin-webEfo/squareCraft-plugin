@@ -137,6 +137,7 @@
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+            icon.addEventListener("click", toggleWidgetVisibility);
             return icon;
         }
 
@@ -190,26 +191,6 @@
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
-
-    document.addEventListener("click", async (event) => {
-        if (event.target.classList.contains("squareCraft-admin-icon")) {
-            event.stopPropagation(); 
-            console.log("🖱️ Clicked on SquareCraft Icon:", event.target);
-    
-            setTimeout(async () => { 
-                if (!widgetLoaded) {
-                    await createWidget();
-                    widgetContainer = document.getElementById("squarecraft-widget-container");
-                    widgetContainer.style.display = "block";
-    
-                    // ✅ Ensure the widget is draggable when first loaded
-                    makeWidgetDraggable();
-                } else {
-                    toggleWidgetVisibility();
-                }
-            }, 100);
-        }
-    });
     
     
     
