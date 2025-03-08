@@ -115,7 +115,15 @@
             document.removeEventListener("mouseup", stopDragging);
         }
     }
-
+    function hideWidgetOnOutsideClick(event) {
+        if (!widgetContainer) return;
+        
+        if (widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
+            widgetContainer.style.display = "none";
+        }
+    }
+    document.addEventListener("click", hideWidgetOnOutsideClick);
+    
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
 
@@ -137,7 +145,7 @@
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
+            icon.addEventListener("click", toggleWidgetVisibility());
             return icon;
         }
 
