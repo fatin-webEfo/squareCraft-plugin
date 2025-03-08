@@ -36,29 +36,28 @@
     async function createWidget() {
         console.log("📥 Fetching widget module...");
         try {
+            // Check if widget already exists
+            if (document.getElementById("squarecraft-widget-container")) {
+                console.log("✅ Widget already exists. No need to recreate.");
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                widgetLoaded = true;
+                return;
+            }
+    
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
             if (module && module.html) {
                 console.log("✅ HTML module loaded successfully!");
-
-                if (!widgetContainer) {
-                    widgetContainer = document.createElement("div");
-                    widgetContainer.id = "squarecraft-widget-container";
-                    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-                    widgetContainer.innerHTML = module.html();
-                    widgetContainer.style.display = "none";
-                    document.body.appendChild(widgetContainer);
-
-                    console.log("✅ Widget container added:", widgetContainer);
-                    makeWidgetDraggable();
-                    widgetLoaded = true;
-
-                    setTimeout(() => {
-                        widgetContainer = document.getElementById("squarecraft-widget-container");
-                        if (!widgetContainer) {
-                            console.error("❌ Widget container failed to load.");
-                        }
-                    }, 500);
-                }
+    
+                widgetContainer = document.createElement("div");
+                widgetContainer.id = "squarecraft-widget-container";
+                widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
+                widgetContainer.innerHTML = module.html();
+                widgetContainer.style.display = "none";
+                document.body.appendChild(widgetContainer);
+    
+                console.log("✅ Widget container added:", widgetContainer);
+                makeWidgetDraggable();
+                widgetLoaded = true;
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
             }
@@ -66,6 +65,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
 
 
     async function toggleWidgetVisibility(event) {
