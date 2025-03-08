@@ -45,7 +45,7 @@
                     widgetContainer.id = "squarecraft-widget-container";
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
                     widgetContainer.innerHTML = module.html();
-                    widgetContainer.style.display = "none"; // Initially hidden
+                    widgetContainer.style.display = "none"; 
                     document.body.appendChild(widgetContainer);
 
                     console.log("✅ Widget container added:", widgetContainer);
