@@ -190,6 +190,7 @@
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
+
     document.addEventListener("click", async (event) => {
         if (event.target.classList.contains("squareCraft-admin-icon")) {
             event.stopPropagation(); 
@@ -200,12 +201,16 @@
                     await createWidget();
                     widgetContainer = document.getElementById("squarecraft-widget-container");
                     widgetContainer.style.display = "block";
+    
+                    // ✅ Ensure the widget is draggable when first loaded
+                    makeWidgetDraggable();
                 } else {
                     toggleWidgetVisibility();
                 }
             }, 100);
         }
     });
+    
     
     
     function waitForNavBar(attempts = 0) {
