@@ -36,27 +36,29 @@
     async function createWidget() {
         console.log("📥 Fetching widget module...");
         try {
-            if (document.getElementById("squarecraft-widget-container")) {
-                console.log("✅ Widget already exists. No need to recreate.");
-                widgetContainer = document.getElementById("squarecraft-widget-container");
-                widgetLoaded = true;
-                return;
-            }
-    
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
             if (module && module.html) {
                 console.log("✅ HTML module loaded successfully!");
-    
-                widgetContainer = document.createElement("div");
-                widgetContainer.id = "squarecraft-widget-container";
-                widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-                widgetContainer.innerHTML = module.html();
-                widgetContainer.style.display = "none";
-                document.body.appendChild(widgetContainer);
-    
-                console.log("✅ Widget container added:", widgetContainer);
-                makeWidgetDraggable();
-                widgetLoaded = true;
+
+                if (!widgetContainer) {
+                    widgetContainer = document.createElement("div");
+                    widgetContainer.id = "squarecraft-widget-container";
+                    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
+                    widgetContainer.innerHTML = module.html();
+                    widgetContainer.style.display = "none";
+                    document.body.appendChild(widgetContainer);
+
+                    console.log("✅ Widget container added:", widgetContainer);
+                    makeWidgetDraggable();
+                    widgetLoaded = true;
+
+                    setTimeout(() => {
+                        widgetContainer = document.getElementById("squarecraft-widget-container");
+                        if (!widgetContainer) {
+                            console.error("❌ Widget container failed to load.");
+                        }
+                    }, 500);
+                }
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
             }
@@ -64,7 +66,6 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
-    
 
 
     async function toggleWidgetVisibility(event) {
@@ -184,32 +185,48 @@
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
                     clonedIcon.style.backgroundColor = "white";
+                    clonedIcon.style.position = "absolute";
+                    clonedIcon.style.top = "50%";
+                    clonedIcon.style.left = "calc(100% + 10px)";
+                    clonedIcon.style.transform = "translateY(-50%)";
                     parentContainer.parentElement.appendChild(clonedIcon);
+
 
                     clonedIcon.addEventListener("click", async function (event) {
                         console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
                         event.stopPropagation();
-                        event.preventDefault();
-                    
+                        event.preventDefault(); 
+
                         if (!widgetLoaded) {
                             console.log("📥 Widget not loaded - Creating now...");
-                            await createWidget();
+                            await createWidget(); 
                         }
-                    
+
                         setTimeout(() => {
                             widgetContainer = document.getElementById("squarecraft-widget-container");
                             if (widgetContainer) {
-                                widgetContainer.style.display = (widgetContainer.style.display === "none" || !widgetContainer.style.display) ? "block" : "none";
-                                console.log(`✅ Widget ${widgetContainer.style.display === "block" ? "opened" : "closed"}`);
+                                console.log("✅ Widget container found - Toggling visibility.");
+                                widgetContainer.style.display = "block";
                             } else {
                                 console.error("❌ Widget container not found after creation.");
                             }
                         }, 500); 
                     });
-                    
 
 
 
+                }
+            });
+        }
+        const iframe = document.querySelector("iframe");
+        if (iframe) {
+            console.log("📌 Toolbar is inside an iframe!");
+            iframe.contentWindow.document.addEventListener("click", function (event) {
+                console.log("🖱️ Click detected inside iframe.");
+                if (event.target.classList.contains("squareCraft-admin-icon")) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    toggleWidgetVisibility(event);
                 }
             });
         }
