@@ -177,7 +177,7 @@
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
-                    clonedIcon.classList.add("squareCraft-admin-icon");
+                    clonedIcon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
                     clonedIcon.style.width = "40px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "40px";
@@ -195,11 +195,11 @@
                     clonedIcon.addEventListener("click", async function (event) {
                         console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
                         event.stopPropagation();
-                        event.preventDefault(); // Prevent Squarespace from blocking it
+                        event.preventDefault(); 
 
                         if (!widgetLoaded) {
                             console.log("📥 Widget not loaded - Creating now...");
-                            await createWidget(); // Ensure widget is created
+                            await createWidget(); 
                         }
 
                         setTimeout(() => {
@@ -210,7 +210,7 @@
                             } else {
                                 console.error("❌ Widget container not found after creation.");
                             }
-                        }, 500); // Wait for DOM update
+                        }, 500); 
                     });
 
 
