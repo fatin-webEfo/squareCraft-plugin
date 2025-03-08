@@ -184,10 +184,6 @@
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.display = "inline-block";
                     clonedIcon.style.backgroundColor = "white";
-                    clonedIcon.style.position = "absolute";
-                    clonedIcon.style.top = "50%";
-                    clonedIcon.style.left = "calc(100% + 10px)";
-                    clonedIcon.style.transform = "translateY(-50%)";
                     parentContainer.parentElement.appendChild(clonedIcon);
 
                     clonedIcon.addEventListener("click", async function (event) {
