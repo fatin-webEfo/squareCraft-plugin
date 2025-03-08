@@ -158,48 +158,46 @@
         function injectIconIntoTargetElements() {
             console.log("🔄 Running injectIconIntoTargetElements...");
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
-
+        
             targets.forEach((element) => {
                 element.classList.add("squareCraft-processed");
-
+        
                 const parentContainer = element.closest(".css-rxv52q");
                 if (!parentContainer) {
                     console.warn("❌ Parent container not found, skipping:", element);
                     return;
                 }
-
-                parentContainer.style.display = "flex";
-                parentContainer.style.alignItems = "center";
-                parentContainer.style.position = "relative";
-
-                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
+        
+                const wrapper = parentContainer.parentElement; 
+        
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center"; 
+        
+                if (!wrapper.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
                     clonedIcon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
                     clonedIcon.style.width = "40px";
-                    clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "40px";
                     clonedIcon.style.borderRadius = "20%";
                     clonedIcon.style.cursor = "pointer";
-                    clonedIcon.style.display = "inline-block";
                     clonedIcon.style.backgroundColor = "white";
-                    clonedIcon.style.position = "absolute";
-                    clonedIcon.style.top = "50%";
-                    clonedIcon.style.left = "calc(100% + 10px)";
-                    clonedIcon.style.transform = "translateY(-50%)";
-                    parentContainer.parentElement.appendChild(clonedIcon);
-
+        
+                    clonedIcon.style.marginLeft = "auto"; 
+        
+                    wrapper.appendChild(clonedIcon); // Append icon to the flex wrapper
+        
                     clonedIcon.addEventListener("click", async function (event) {
                         console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
                         event.stopPropagation();
                         event.preventDefault();
-                    
+        
                         if (!widgetLoaded) {
                             console.log("📥 Widget not loaded - Creating now...");
                             await createWidget();
                         }
-                    
+        
                         setTimeout(() => {
                             widgetContainer = document.getElementById("squarecraft-widget-container");
                             if (widgetContainer) {
@@ -208,27 +206,12 @@
                             } else {
                                 console.error("❌ Widget container not found after creation.");
                             }
-                        }, 500); 
+                        }, 500);
                     });
-                    
-
-
-
                 }
             });
         }
-        const iframe = document.querySelector("iframe");
-        if (iframe) {
-            console.log("📌 Toolbar is inside an iframe!");
-            iframe.contentWindow.document.addEventListener("click", function (event) {
-                console.log("🖱️ Click detected inside iframe.");
-                if (event.target.classList.contains("squareCraft-admin-icon")) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    toggleWidgetVisibility(event);
-                }
-            });
-        }
+        
 
 
         setTimeout(() => {
