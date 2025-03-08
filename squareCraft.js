@@ -95,62 +95,40 @@
 
  
 
-async function fetchModifications(retries = 3) {
-    if (!pageId) return;
-
-    try {
-        const response = await fetch(
-            `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
-            {
+    async function fetchModifications() {
+        const userId = localStorage.getItem("squareCraft_u_id");
+        if (!userId) return;
+    
+        try {
+            const response = await fetch(`https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                    "Authorization": `Bearer ${localStorage.getItem("squareCraft_auth_token")}`,
                 },
-            }
-        );
-
-        const data = await response.json();
-
-        console.log("📥 Retrieved Data from Database:", data);
-
-        if (!data.modifications || data.modifications.length === 0) {
-            console.warn("⚠️ No saved styles found for this page.");
-            return;
-        }
-
-        // Loop through retrieved styles and apply them
-        data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-            if (storedPageId === pageId) {
-                elements.forEach(({ elementId, css }) => {
-                    let element = document.getElementById(elementId);
-
-                    if (element) {
-                        console.log(`🎨 Applying styles to ${elementId}:`, css);
-                        applyStylesToElement(elementId, css); // Apply retrieved styles
-
-                        // Check if font-size exists and update the UI
-                        if (css["font-size"]) {
-                            let fontSizeInput = document.getElementById("squareCraftFontSize");
-                            if (fontSizeInput) {
-                                fontSizeInput.value = parseInt(css["font-size"], 10); // Update input value
-                            }
-                        }
-                    } else {
-                        console.warn(`⚠️ Element ${elementId} not found in DOM.`);
-                    }
-                });
-            }
-        });
-
-    } catch (error) {
-        console.error("❌ Error Fetching Modifications:", error);
-        if (retries > 0) {
-            console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
-            setTimeout(() => fetchModifications(retries - 1), 2000);
+            });
+    
+            const data = await response.json();
+            console.log("📥 Retrieved Data from Backend:", data);
+    
+            if (!data.modifications || data.modifications.length === 0) return;
+    
+            data.modifications.forEach(({ elementId, updatedHTML }) => {
+                let element = document.getElementById(elementId);
+                if (element) {
+                    element.innerHTML = updatedHTML; // Restore modified content
+                    console.log(`🎨 Applied saved modification to ${elementId}`);
+                }
+            });
+    
+        } catch (error) {
+            console.error("❌ Error Fetching Modifications:", error);
         }
     }
-}
+    
+    // ✅ Run this on page load
+    window.addEventListener("load", fetchModifications);
+    
 
 
   window.addEventListener("load", async () => {
@@ -948,14 +926,56 @@ fontfamilies();
    
 
     let selectedTextRange = null; // Store selected range
+    
+
+    async function saveTextModification(elementId, updatedHTML) {
+        if (!elementId || !updatedHTML) return;
+    
+        console.log("📤 Saving modification:", { elementId, updatedHTML });
+    
+        const modificationData = {
+            userId: localStorage.getItem("squareCraft_u_id"),
+            token: localStorage.getItem("squareCraft_auth_token"),
+            widgetId: localStorage.getItem("squareCraft_w_id"),
+            modifications: [{ elementId, updatedHTML }],
+        };
+    
+        try {
+            const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${modificationData.token}`,
+                },
+                body: JSON.stringify(modificationData),
+            });
+    
+            console.log("✅ Changes saved successfully!", await response.json());
+        } catch (error) {
+            console.error("❌ Error saving modifications:", error);
+        }
+    }
+    
 
     document.addEventListener("mouseup", function () {
         let selection = window.getSelection();
         if (selection.rangeCount > 0 && selection.toString().trim().length > 0) {
-            selectedElement = selection.getRangeAt(0); // Store selection range
-            console.log("✅ Text Selected:", selection.toString());
+            let range = selection.getRangeAt(0);
+            let span = document.createElement("span");
+    
+            span.style.color = "red"; // Example style, modify as needed
+            span.classList.add("squareCraft-modified"); // Add class for easy targeting
+            span.innerHTML = selection.toString(); 
+    
+            range.deleteContents(); // Remove original text
+            range.insertNode(span); // Insert wrapped text with styles
+    
+            console.log("✅ Wrapped selected text:", span.outerHTML);
+    
+            saveTextModification(span.parentElement.id, span.parentElement.innerHTML);
         }
     });
+    
 
 
 
