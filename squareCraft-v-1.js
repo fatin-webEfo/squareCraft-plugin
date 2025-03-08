@@ -190,23 +190,7 @@
         
                     clonedIcon.addEventListener("click", async function (event) {
                         console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
-                        event.stopPropagation();
-                        event.preventDefault();
-        
-                        if (!widgetLoaded) {
-                            console.log("📥 Widget not loaded - Creating now...");
-                            await createWidget();
-                        }
-        
-                        setTimeout(() => {
-                            widgetContainer = document.getElementById("squarecraft-widget-container");
-                            if (widgetContainer) {
-                                widgetContainer.style.display = (widgetContainer.style.display === "none" || !widgetContainer.style.display) ? "block" : "none";
-                                console.log(`✅ Widget ${widgetContainer.style.display === "block" ? "opened" : "closed"}`);
-                            } else {
-                                console.error("❌ Widget container not found after creation.");
-                            }
-                        }, 500);
+                        toggleWidgetVisibility();
                     });
                 }
             });
