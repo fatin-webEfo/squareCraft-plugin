@@ -182,6 +182,8 @@
                     clonedIcon.style.left = "calc(100% + 10px)"; 
                     clonedIcon.style.transform = "translateY(-50%)";
                     parentContainer.parentElement.appendChild(clonedIcon);
+                    parentContainer.addEventListener("click", toggleWidgetVisibility);
+
                 }
             });
         }
