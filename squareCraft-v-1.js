@@ -36,7 +36,6 @@
     async function createWidget() {
         console.log("📥 Fetching widget module...");
         try {
-            // Check if widget already exists
             if (document.getElementById("squarecraft-widget-container")) {
                 console.log("✅ Widget already exists. No need to recreate.");
                 widgetContainer = document.getElementById("squarecraft-widget-container");
