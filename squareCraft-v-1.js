@@ -163,7 +163,7 @@
         
                 parentContainer.style.display = "flex";
                 parentContainer.style.alignItems = "center";
-                parentContainer.style.position = "relative"; 
+                parentContainer.style.position = "relative";
         
                 if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
                     const clonedIcon = document.createElement("img");
@@ -179,17 +179,29 @@
                     clonedIcon.style.backgroundColor = "white";
                     clonedIcon.style.position = "absolute";
                     clonedIcon.style.top = "50%";
-                    clonedIcon.style.left = "calc(100% + 10px)"; 
+                    clonedIcon.style.left = "calc(100% + 10px)";
                     clonedIcon.style.transform = "translateY(-50%)";
+        
                     parentContainer.parentElement.appendChild(clonedIcon);
-                    parentContainer.addEventListener("click", toggleWidgetVisibility);
-
+        
+                    clonedIcon.addEventListener("click", function(event) {
+                        console.log("🖱️ Icon clicked - Triggering Widget...");
+                        event.stopPropagation();
+                        toggleWidgetVisibility(event);
+                    });
+        
+                    parentContainer.addEventListener("click", function(event) {
+                        console.log("🖱️ Parent container clicked - Triggering Widget...");
+                        event.stopPropagation();
+                        toggleWidgetVisibility(event);
+                    });
                 }
             });
         }
         
+        setInterval(injectIconIntoTargetElements, 1000);
         
-       
+        
         injectIconIntoTargetElements();
         
         const observer = new MutationObserver(() => {
