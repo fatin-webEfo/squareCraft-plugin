@@ -157,62 +157,56 @@
 
         function injectIconIntoTargetElements() {
             console.log("🔄 Running injectIconIntoTargetElements...");
+            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
         
-            const toolbarContainers = parent.document.querySelectorAll(
-                ".escmanager-ignore.QJtc3Joz6C0eyIVn.css-1xet1f1"
-            );
+            targets.forEach((element) => {
+                element.classList.add("squareCraft-processed");
         
-            toolbarContainers.forEach((toolbarContainer) => {
-                if (toolbarContainer.querySelector(".squareCraft-admin-icon")) return;
+                const parentContainer = element.closest(".css-rxv52q");
+                if (!parentContainer) {
+                    console.warn("❌ Parent container not found, skipping:", element);
+                    return;
+                }
         
-                const squareCraftIcon = document.createElement("img");
-                squareCraftIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                squareCraftIcon.alt = "SquareCraft";
-                squareCraftIcon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+                const wrapper = parentContainer.parentElement; 
         
-                squareCraftIcon.style.width = "40px";
-                squareCraftIcon.style.height = "40px";
-                squareCraftIcon.style.borderRadius = "20%";
-                squareCraftIcon.style.cursor = "pointer";
-                squareCraftIcon.style.backgroundColor = "white";
-                squareCraftIcon.style.marginLeft = "auto";         
-                toolbarContainer.appendChild(squareCraftIcon);
+                wrapper.style.display = "flex";
+                wrapper.style.alignItems = "center"; 
         
-                squareCraftIcon.addEventListener("click", async function (event) {
-                    console.log("🖱️ SquareCraft Icon Clicked - Opening Widget...");
-                    event.stopPropagation();
-                    event.preventDefault();
+                if (!wrapper.querySelector(".squareCraft-admin-icon")) {
+                    const clonedIcon = document.createElement("img");
+                    clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                    clonedIcon.alt = "SquareCraft";
+                    clonedIcon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+                    clonedIcon.style.width = "40px";
+                    clonedIcon.style.height = "40px";
+                    clonedIcon.style.borderRadius = "20%";
+                    clonedIcon.style.cursor = "pointer";
+                    clonedIcon.style.backgroundColor = "white";
         
-                    if (!widgetLoaded) {
-                        console.log("📥 Widget not loaded - Creating now...");
-                        await createWidget();
-                    }
+                    clonedIcon.style.marginLeft = "auto"; 
         
-                    setTimeout(() => {
-                        widgetContainer = document.getElementById("squarecraft-widget-container");
-                        if (widgetContainer) {
-                            widgetContainer.style.display = (widgetContainer.style.display === "none" || !widgetContainer.style.display)
-                                ? "block"
-                                : "none";
-                            console.log(`✅ Widget ${widgetContainer.style.display === "block" ? "opened" : "closed"}`);
-                        } else {
-                            console.error("❌ Widget container not found after creation.");
-                        }
-                    }, 500);
-                });
+                    wrapper.appendChild(clonedIcon); // Append icon to the flex wrapper
+        
+                    clonedIcon.addEventListener("click", async function (event) {
+                        console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
+                        toggleWidgetVisibility();
+                    });
+                }
             });
         }
         
+
+
         setTimeout(() => {
             injectIconIntoTargetElements();
         }, 1000);
         injectIconIntoTargetElements();
-        
+
         const observer = new MutationObserver(() => {
             injectIconIntoTargetElements();
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
-        
     }
 
 
