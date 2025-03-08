@@ -60,22 +60,29 @@
         }
     }
 
-    function toggleWidgetVisibility() {
-        if (!widgetLoaded) {
-            createWidget().then(() => {
-                widgetContainer = document.getElementById("squarecraft-widget-container");
-                if (widgetContainer) {
-                    widgetContainer.style.display = "block";
-                }
-            });
-        } else {
-            widgetContainer = document.getElementById("squarecraft-widget-container");
-            if (widgetContainer) {
-                widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
-            }
+    function toggleWidgetVisibility(event) {
+        if (!widgetContainer) return;
+        event.stopPropagation();
+        widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
+    }
+    
+    function hideWidgetOnOutsideClick(event) {
+        if (!widgetContainer) return;
+    
+        if (widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
+            widgetContainer.style.display = "none";
         }
     }
     
+    document.addEventListener("DOMContentLoaded", () => {
+        if (widgetContainer) {
+            widgetContainer.style.display = "none";
+        }
+    });
+    
+    document.addEventListener("click", hideWidgetOnOutsideClick);
+    
+
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
@@ -115,14 +122,6 @@
             document.removeEventListener("mouseup", stopDragging);
         }
     }
-    function hideWidgetOnOutsideClick(event) {
-        if (!widgetContainer) return;
-        
-        if (widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
-            widgetContainer.style.display = "none";
-        }
-    }
-    document.addEventListener("click", hideWidgetOnOutsideClick);
     
     function injectIcon() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
