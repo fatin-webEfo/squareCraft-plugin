@@ -167,33 +167,54 @@
                 targets.forEach((element) => {
                     element.classList.add("squareCraft-processed");
             
-                    const parentContainer = element.closest(".css-rxv52q");
+                    const parentContainer = element;
                     if (!parentContainer) {
                         console.warn("❌ Parent container not found, skipping:", element);
                         return;
                     }
             
-                    parentContainer.style.display = "flex";
-                    parentContainer.style.alignItems = "center";
-                    parentContainer.style.position = "relative";
-            
-                    if (!parentContainer.parentElement.querySelector(".squareCraft-toolbar-icon")) {
-                        const clonedIcon = document.createElement("img");
-                        clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                        clonedIcon.alt = "SquareCraft";
-                        clonedIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
-                        clonedIcon.style.width = "35px";
-                        clonedIcon.style.cursor = "pointer";
-                        clonedIcon.style.height = "35px";
-                        clonedIcon.style.borderRadius = "20%";
-                        clonedIcon.style.cursor = "pointer";
-                        clonedIcon.style.backgroundColor = "white";
-                        clonedIcon.style.marginRight = "6px";
-            
-                        parentContainer.appendChild(clonedIcon);
+                    const existingIcon = parentContainer.querySelector(".squareCraft-toolbar-icon");
+                    if (existingIcon) {
+                        existingIcon.remove();
                     }
+            
+                    const clonedIcon = document.createElement("img");
+                    clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                    clonedIcon.alt = "SquareCraft";
+                    clonedIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
+                    clonedIcon.style.width = "35px";
+                    clonedIcon.style.height = "35px";
+                    clonedIcon.style.borderRadius = "20%";
+                    clonedIcon.style.cursor = "pointer";
+                    clonedIcon.style.backgroundColor = "white";
+                    clonedIcon.style.position = "absolute"; 
+                    clonedIcon.style.right = "6px"; 
+                    clonedIcon.style.top = "50%"; 
+                    clonedIcon.style.transform = "translateY(-50%)"; 
+                    parentContainer.appendChild(clonedIcon);
+            
+                    clonedIcon.addEventListener("click", function (event) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
+            
+                        if (!widgetLoaded) {
+                            console.log("📥 Widget not loaded - Creating now...");
+                            createWidget().then(() => {
+                                widgetContainer = document.getElementById("squarecraft-widget-container");
+                                if (widgetContainer) {
+                                    widgetContainer.style.display = "block";
+                                } else {
+                                    console.error("❌ Widget container not found after creation.");
+                                }
+                            });
+                        } else {
+                            widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
+                        }
+                    });
                 });
             }
+            
             
             
             const iframe = document.querySelector("iframe");
