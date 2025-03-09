@@ -5,16 +5,36 @@
             return;
         }
 
-        const script = document.createElement("script");
-        script.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js";
-        script.type = "text/javascript";
-        script.async = true;
-    
-        script.onload = async function () {
+        const tokenScript = document.createElement("script");
+        tokenScript.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js";
+        tokenScript.type = "text/javascript";
+        tokenScript.async = true;
+        
+        tokenScript.onload = function () {
             console.log("✅ setToken.js loaded");
-                const { token, squareCraft_u_id, squareCraft_w_id } = setToekn();
-                console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });   
+        
+            setTimeout(() => {
+                if (typeof window.setToken === "function") {
+                    const { token, squareCraft_u_id, squareCraft_w_id } = window.setToken();
+        
+                    if (token || squareCraft_u_id || squareCraft_w_id) {
+                        console.warn("🔒 Tokens & IDs exist. Stopping execution.");
+                        return;
+                    }
+        
+                    console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
+                } else {
+                    console.error("❌ setToken function not found! Ensure it's properly exported in setToken.js.");
+                }
+            }, 1000);
         };
+        
+        tokenScript.onerror = function () {
+            console.error("❌ Failed to load setToken.js");
+        };
+        
+        document.head.appendChild(tokenScript);
+        
 
         const link = document.createElement("link");
         link.rel = "stylesheet";
