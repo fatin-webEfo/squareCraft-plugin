@@ -13,9 +13,7 @@
         script.onload = async function () {
             console.log("✅ setToken.js loaded");
                 const { token, squareCraft_u_id, squareCraft_w_id } = setToekn();
-                console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
-    
-           
+                console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });   
         };
 
         const link = document.createElement("link");
