@@ -177,11 +177,11 @@
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.position = "relative";
 
-                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
+                if (!parentContainer.parentElement.querySelector(".squareCraft-toolbar-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                     clonedIcon.alt = "SquareCraft";
-                    clonedIcon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+                    clonedIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
                     clonedIcon.style.width = "40px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "40px";
