@@ -11,8 +11,6 @@ window.setToken = async function () {
         const squareCraft_u_id = widgetScript.dataset?.uId;
         const squareCraft_w_id = widgetScript.dataset?.wId;
 
-        console.log("🔑 Tokens & IDs from setToken.js:", { token, squareCraft_u_id, squareCraft_w_id });
-
         if (token) {
             localStorage.setItem("squareCraft_auth_token", token);
             document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
