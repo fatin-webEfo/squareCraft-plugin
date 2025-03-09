@@ -214,9 +214,7 @@
                     });
                 });
             }
-            
-            
-            
+                
             const iframe = document.querySelector("iframe");
             if (iframe) {
                 console.log("📌 Toolbar is inside an iframe!");
