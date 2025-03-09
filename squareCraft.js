@@ -8,18 +8,34 @@
         tokenScript.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js";
         tokenScript.type = "text/javascript";
         tokenScript.async = true;
+        
+        tokenScript.onload = async function () {
+            console.log("✅ setToken.js loaded");
+        
+            if (typeof window.setToken === "function") {
+                try {
+                    const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken(); 
+        
+                    if (token || squareCraft_u_id || squareCraft_w_id) {
+                        console.warn("🔒 Tokens & IDs exist. Stopping execution.");
+                        return;
+                    }
+        
+                    console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
+                } catch (error) {
+                    console.error("🚨 Error retrieving tokens:", error);
+                }
+            } else {
+                console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
+            }
+        };
+        
+        tokenScript.onerror = function () {
+            console.error("❌ Failed to load setToken.js");
+        };
+        
         document.head.appendChild(tokenScript);
-
-        const token = localStorage.getItem("squareCraft_auth_token");
-        const squareCraft_u_id = localStorage.getItem("squareCraft_u_id");
-        const squareCraft_w_id = localStorage.getItem("squareCraft_w_id");
-
-const tokensAndIds = {
-        token: token,
-        squareCraft_u_id: squareCraft_u_id,
-        squareCraft_w_id: squareCraft_w_id
-    
-} ; console.log(tokensAndIds);
+        
         
 
         const link = document.createElement("link");
