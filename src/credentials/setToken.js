@@ -1,4 +1,4 @@
-async function setToekn() {
+async function setToken() {
     const widgetScript = document.getElementById("squarecraft-script");
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
