@@ -7,9 +7,9 @@ window.setToken = async function () {
             return;
         }
 
-        const token = widgetScript.dataset?.token;
-        const squareCraft_u_id = widgetScript.dataset?.uId;
-        const squareCraft_w_id = widgetScript.dataset?.wId;
+        let token = widgetScript.dataset?.token;
+        let squareCraft_u_id = widgetScript.dataset?.uId;
+        let squareCraft_w_id = widgetScript.dataset?.wId;
 
         if (token) {
             localStorage.setItem("squareCraft_auth_token", token);
