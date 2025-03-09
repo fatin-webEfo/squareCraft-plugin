@@ -12,14 +12,10 @@
     
         script.onload = async function () {
             console.log("✅ setToken.js loaded");
-    
-            if (typeof setToekn === "function") {
                 const { token, squareCraft_u_id, squareCraft_w_id } = setToekn();
                 console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
     
-            } else {
-                console.error("❌ setToekn function not found!");
-            }
+           
         };
 
         const link = document.createElement("link");
