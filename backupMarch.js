@@ -153,7 +153,6 @@
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
             icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            icon.addEventListener("click", toggleWidgetVisibility);
             return icon;
         }
     
@@ -167,16 +166,13 @@
             targets.forEach((element) => {
                 element.classList.add("squareCraft-processed");
         
-                const parentContainer = element;
-                if (!parentContainer) {
-                    console.warn("❌ Parent container not found, skipping:", element);
+                const deleteButton = element.querySelector('[aria-label="Remove"]');
+                if (!deleteButton) {
+                    console.warn("❌ Delete button not found, skipping:", element);
                     return;
                 }
         
-                const existingIcon = parentContainer.querySelector(".squareCraft-toolbar-icon");
-                if (existingIcon) {
-                    existingIcon.remove();
-                }
+                if (element.querySelector(".squareCraft-toolbar-icon")) return;
         
                 const clonedIcon = document.createElement("img");
                 clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
@@ -187,11 +183,8 @@
                 clonedIcon.style.borderRadius = "20%";
                 clonedIcon.style.cursor = "pointer";
                 clonedIcon.style.backgroundColor = "white";
-                clonedIcon.style.position = "absolute"; 
-                clonedIcon.style.right = "6px"; 
-                clonedIcon.style.top = "50%"; 
-                clonedIcon.style.transform = "translateY(-50%)"; 
-                parentContainer.appendChild(clonedIcon);
+                clonedIcon.style.marginLeft = "6px"; 
+                deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
         
                 clonedIcon.addEventListener("click", function (event) {
                     event.stopPropagation();
@@ -214,6 +207,7 @@
                 });
             });
         }
+        
             
         const iframe = document.querySelector("iframe");
         if (iframe) {
