@@ -5,24 +5,22 @@
             return;
         }
 
-        const token = widgetScript.dataset?.token;
-        const squareCraft_u_id = widgetScript.dataset?.uId;
-        const squareCraft_w_id = widgetScript.dataset?.wId;
-
-        if (token) {
-            localStorage.setItem("squareCraft_auth_token", token);
-            document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
-        }
-
-        if (squareCraft_u_id) {
-            localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
-            document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
-        }
-
-        if (squareCraft_w_id) {
-            localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
-            document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
-        }
+        const script = document.createElement("script");
+        script.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js";
+        script.type = "text/javascript";
+        script.async = true;
+    
+        script.onload = async function () {
+            console.log("✅ setToken.js loaded");
+    
+            if (typeof setToekn === "function") {
+                const { token, squareCraft_u_id, squareCraft_w_id } = setToekn();
+                console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
+    
+            } else {
+                console.error("❌ setToekn function not found!");
+            }
+        };
 
         const link = document.createElement("link");
         link.rel = "stylesheet";
