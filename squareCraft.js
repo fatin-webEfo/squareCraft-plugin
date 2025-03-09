@@ -203,7 +203,7 @@
 
                         if (!widgetLoaded) {
                             console.log("📥 Widget not loaded - Creating now...");
-                            await createWidget(); 
+                            await toggleWidgetVisibility(); 
                         }
 
                         setTimeout(() => {
