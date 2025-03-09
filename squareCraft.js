@@ -12,23 +12,39 @@
         tokenScript.onload = async function () {
             console.log("✅ setToken.js loaded");
         
-            // if (typeof window.setToken === "function") {
-            //     try {
-            //         const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken(); 
+            if (typeof window.setToken === "function") {
+                try {
+                    console.log("🔍 Searching for Tokens & IDs...");
+                    
+                    let attempts = 0;
+                    const maxAttempts = 10; 
+                    const delay = 500; 
         
-            //         if (token || squareCraft_u_id || squareCraft_w_id) {
-            //             console.warn("🔒 Tokens & IDs exist. Stopping execution.");
-            //             return;
-            //         }
+                    const checkToken = async () => {
+                        const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken();
         
-            //         console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
-            //     } catch (error) {
-            //         console.error("🚨 Error retrieving tokens:", error);
-            //     }
-            // } else {
-            //     console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
-            // }
+                        if (token || squareCraft_u_id || squareCraft_w_id) {
+                            console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
+                            return; 
+                        }
+        
+                        attempts++;
+                        if (attempts < maxAttempts) {
+                            setTimeout(checkToken, delay); 
+                        } else {
+                            console.warn("🚨 Max attempts reached! Tokens & IDs not found.");
+                        }
+                    };
+        
+                    checkToken(); 
+                } catch (error) {
+                    console.error("🚨 Error retrieving tokens:", error);
+                }
+            } else {
+                console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
+            }
         };
+        
         
         tokenScript.onerror = function () {
             console.error("❌ Failed to load setToken.js");
