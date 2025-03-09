@@ -12,22 +12,22 @@
         tokenScript.onload = async function () {
             console.log("✅ setToken.js loaded");
         
-            if (typeof window.setToken === "function") {
-                try {
-                    const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken(); 
+            // if (typeof window.setToken === "function") {
+            //     try {
+            //         const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken(); 
         
-                    if (token || squareCraft_u_id || squareCraft_w_id) {
-                        console.warn("🔒 Tokens & IDs exist. Stopping execution.");
-                        return;
-                    }
+            //         if (token || squareCraft_u_id || squareCraft_w_id) {
+            //             console.warn("🔒 Tokens & IDs exist. Stopping execution.");
+            //             return;
+            //         }
         
-                    console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
-                } catch (error) {
-                    console.error("🚨 Error retrieving tokens:", error);
-                }
-            } else {
-                console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
-            }
+            //         console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
+            //     } catch (error) {
+            //         console.error("🚨 Error retrieving tokens:", error);
+            //     }
+            // } else {
+            //     console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
+            // }
         };
         
         tokenScript.onerror = function () {
