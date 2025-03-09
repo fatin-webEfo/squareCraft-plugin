@@ -1,4 +1,4 @@
-export function setToekn() {
+async function setToekn() {
     const widgetScript = document.getElementById("squarecraft-script");
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
