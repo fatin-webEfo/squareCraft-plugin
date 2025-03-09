@@ -182,7 +182,7 @@
                         clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                         clonedIcon.alt = "SquareCraft";
                         clonedIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
-                        clonedIcon.style.width = "32px";
+                        clonedIcon.style.width = "35px";
                         clonedIcon.style.cursor = "pointer";
                         clonedIcon.style.height = "35px";
                         clonedIcon.style.borderRadius = "20%";
@@ -191,14 +191,10 @@
                         clonedIcon.style.marginRight = "6px";
             
                         parentContainer.appendChild(clonedIcon);
-            
-                        clonedIcon.addEventListener("click", async function (event) {
-                            console.log("🖱️ Cloned icon clicked - Attempting to open widget..." ,event.altKey || event.ctrlKey);
-                            toggleWidgetVisibility();
-                        });
                     }
                 });
             }
+            
             
             const iframe = document.querySelector("iframe");
             if (iframe) {

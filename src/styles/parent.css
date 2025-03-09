@@ -928,6 +928,11 @@ font-size: 12px !important;
   left: 100px !important;
 }
 
+.squareCraft-toolbar-icon {
+  pointer-events: all !important;
+}
+  
+
 .squareCraft-universal{
   box-sizing: border-box !important;
   margin: 0 !important;
