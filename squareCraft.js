@@ -13,7 +13,7 @@
         tokenScript.onload = function () {
             console.log("✅ setToken.js loaded");
         
-            setTimeout(() => {
+            setTimeout(() => {  
                 if (typeof window.setToken === "function") {
                     const { token, squareCraft_u_id, squareCraft_w_id } = window.setToken();
         
