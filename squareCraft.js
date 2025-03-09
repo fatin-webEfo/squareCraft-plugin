@@ -153,7 +153,6 @@
                 icon.style.cursor = "pointer";
                 icon.style.display = "inline-block";
                 icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-                icon.addEventListener("click", toggleWidgetVisibility);
                 return icon;
             }
         
