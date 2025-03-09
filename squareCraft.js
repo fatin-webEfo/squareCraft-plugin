@@ -9,7 +9,7 @@
     tokenScript.type = "text/javascript";
     tokenScript.async = true;
 
-    let squareCraft_auth_token = null;
+    let token = null;
     let squareCraft_u_id = null;
     let squareCraft_w_id = null;
 
@@ -28,11 +28,9 @@
                     const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken();
 
                     if (token || squareCraft_u_id || squareCraft_w_id) {
-                        squareCraft_auth_token = token;
+                        token = token;
                         squareCraft_u_id = squareCraft_u_id;
                         squareCraft_w_id = squareCraft_w_id;
-
-                      
                         return;
                     }
 
@@ -53,7 +51,7 @@
         }
     };
 
-    console.log("🔑 Retrieved Tokens & IDs:", { squareCraft_auth_token, squareCraft_u_id, squareCraft_w_id });
+    console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
     tokenScript.onerror = function () {
         console.error("❌ Failed to load setToken.js");
     };
