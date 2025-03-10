@@ -4,53 +4,24 @@
             console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
             return;
         }
-        const tokenScript = document.createElement("script");
-        tokenScript.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js";
-        tokenScript.type = "text/javascript";
-        tokenScript.async = true;
-        
-        tokenScript.onload = async function () {
-            console.log("✅ setToken.js loaded");
-        
-            if (typeof window.setToken === "function") {
-                try {
-                    console.log("🔍 Searching for Tokens & IDs...");
-                    
-                    let attempts = 0;
-                    const maxAttempts = 10; 
-                    const delay = 500; 
-        
-                    const checkToken = async () => {
-                        const { token, squareCraft_u_id, squareCraft_w_id } = await window.setToken();
-        
-                        if (token || squareCraft_u_id || squareCraft_w_id) {
-                            console.log("🔑 Retrieved Tokens & IDs:", { token, squareCraft_u_id, squareCraft_w_id });
-                            return; 
-                        }
-        
-                        attempts++;
-                        if (attempts < maxAttempts) {
-                            setTimeout(checkToken, delay); 
-                        } else {
-                            console.warn("🚨 Max attempts reached! Tokens & IDs not found.");
-                        }
-                    };
-        
-                    checkToken(); 
-                } catch (error) {
-                    console.error("🚨 Error retrieving tokens:", error);
-                }
-            } else {
-                console.error("❌ setToken function not found! Ensure it's properly assigned in setToken.js.");
-            }
-        };
-        
-        
-        tokenScript.onerror = function () {
-            console.error("❌ Failed to load setToken.js");
-        };
-        
-        document.head.appendChild(tokenScript);
+        let token = widgetScript.dataset?.token;
+        let squareCraft_u_id = widgetScript.dataset?.uId;
+        let squareCraft_w_id = widgetScript.dataset?.wId;
+
+        if (token) {
+            localStorage.setItem("squareCraft_auth_token", token);
+            document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
+        }
+
+        if (squareCraft_u_id) {
+            localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
+            document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+        }
+
+        if (squareCraft_w_id) {
+            localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
+            document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+        }
         
         
 
