@@ -1150,10 +1150,7 @@ document.getElementById("squareCraftFontSize").addEventListener("input", async f
     const currentURL = window.location.href;
     let widgetContainer = document.getElementById("squarecraft-widget-container");
 
-    console.log("Current URL:", currentURL);
-
     if (currentURL.includes("/#")) {
-        console.log("✅ Widget is VISIBLE on the Code Injection page.");
         
         if (!widgetContainer) {
             createWidget(); 
