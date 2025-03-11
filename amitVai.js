@@ -658,7 +658,7 @@
         makeWidgetDraggable();
         setInterval(makeWidgetDraggable, 1000);
         }
-    
+        createWidget()
         function createWidgetIcon() {
         if (document.getElementById("squarecraft-widget-icon")) return;
     
