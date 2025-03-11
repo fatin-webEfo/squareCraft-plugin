@@ -34,6 +34,15 @@
         let widgetContainer = null;
         let widgetLoaded = false;
 
+        async function fontfamilies() {
+            const response = await fetch(
+                "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
+            );
+            const data = await response.json();
+        
+            console.log("font families" , response)
+            }
+            fontfamilies();
         async function createWidget() {
             console.log("📥 Fetching widget module...");
             try {
