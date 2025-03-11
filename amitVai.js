@@ -92,94 +92,97 @@
     
     
         async function fetchModifications(retries = 3) {
-        if (!pageId) return;
-    
-        try {
-            const response = await fetch(
-                `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                    },
+            if (!pageId) return;
+        
+            try {
+                const response = await fetch(
+                    `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                        },
+                    }
+                );
+        
+                const data = await response.json();
+                console.log("📥 Retrieved Data from Database:", data);
+        
+                if (!data.modifications || data.modifications.length === 0) {
+                    console.warn("⚠️ No saved styles found for this page.");
+                    return;
                 }
-            );
-    
-            const data = await response.json();
-            console.log("📥 Retrieved Data from Database:", data);
-    
-            if (!data.modifications || data.modifications.length === 0) {
-                console.warn("⚠️ No saved styles found for this page.");
-                return;
-            }
-    
-            // Loop through retrieved styles and apply them
-            data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-                if (storedPageId === pageId) {
-                    elements.forEach(({ elementId, css, elementStructure }) => {
-                        // Check if we have span-specific CSS
-                        if (css && css.span) {
-                            let existingSpan = document.getElementById(css.span.id);
-                            
-                            if (!existingSpan && elementStructure) {
-                                // Find text nodes containing our content
-                                const walker = document.createTreeWalker(
-                                    document.body,
-                                    NodeFilter.SHOW_TEXT,
-                                    {
-                                        acceptNode: function(node) {
-                                            return node.textContent.includes(elementStructure.content)
-                                                ? NodeFilter.FILTER_ACCEPT
-                                                : NodeFilter.FILTER_REJECT;
+        
+                // Loop through retrieved styles and apply them
+                data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+                    if (storedPageId === pageId) {
+                        elements.forEach(({ elementId, css, elementStructure }) => {
+                            if (elementStructure && elementStructure.fullContent) {
+                                const parentElement = document.getElementById(elementStructure.parentId);
+                                if (parentElement) {
+                                    parentElement.innerHTML = elementStructure.fullContent; // Restore full content
+                                }
+                            }
+        
+                            // Apply saved modifications
+                            if (css && css.span) {
+                                let existingSpan = document.getElementById(css.span.id);
+        
+                                if (!existingSpan && elementStructure) {
+                                    const walker = document.createTreeWalker(
+                                        document.body,
+                                        NodeFilter.SHOW_TEXT,
+                                        {
+                                            acceptNode: function(node) {
+                                                return node.textContent.includes(elementStructure.content)
+                                                    ? NodeFilter.FILTER_ACCEPT
+                                                    : NodeFilter.FILTER_REJECT;
+                                            }
+                                        }
+                                    );
+        
+                                    let textNode;
+                                    while (textNode = walker.nextNode()) {
+                                        if (textNode.textContent.includes(elementStructure.content)) {
+                                            const span = document.createElement('span');
+                                            span.id = css.span.id;
+                                            span.className = elementStructure.className || 'squareCraft-font-modified';
+                                            span.textContent = elementStructure.content;
+        
+                                            Object.entries(css.span).forEach(([prop, value]) => {
+                                                if (prop !== 'id') {
+                                                    span.style[prop] = value;
+                                                }
+                                            });
+        
+                                            textNode.parentNode.replaceChild(span, textNode);
+                                            console.log(`✅ Recreated span with ID ${span.id} and applied styles`);
+                                            break;
                                         }
                                     }
-                                );
-    
-                                let textNode;
-                                while (textNode = walker.nextNode()) {
-                                    if (textNode.textContent.includes(elementStructure.content)) {
-                                        // Create new span
-                                        const span = document.createElement('span');
-                                        span.id = css.span.id;
-                                        span.className = elementStructure.className || 'squareCraft-font-modified';
-                                        span.textContent = elementStructure.content;
-    
-                                        // Apply stored CSS properties
-                                        Object.entries(css.span).forEach(([prop, value]) => {
-                                            if (prop !== 'id') {
-                                                span.style[prop] = value;
-                                            }
-                                        });
-    
-                                        // Replace text node with our span
-                                        textNode.parentNode.replaceChild(span, textNode);
-                                        console.log(`✅ Recreated span with ID ${span.id} and applied styles`);
-                                        break;
-                                    }
+                                } else if (existingSpan) {
+                                    Object.entries(css.span).forEach(([prop, value]) => {
+                                        if (prop !== 'id') {
+                                            existingSpan.style[prop] = value;
+                                        }
+                                    });
+                                    console.log(`✅ Applied styles to existing span ${existingSpan.id}`);
                                 }
-                            } else if (existingSpan) {
-                                // Apply styles to existing span
-                                Object.entries(css.span).forEach(([prop, value]) => {
-                                    if (prop !== 'id') {
-                                        existingSpan.style[prop] = value;
-                                    }
-                                });
-                                console.log(`✅ Applied styles to existing span ${existingSpan.id}`);
                             }
-                        }
-                    });
+                        });
+                    }
+                });
+        
+            } catch (error) {
+                console.error("❌ Error Fetching Modifications:", error);
+                if (retries > 0) {
+                    console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+                    setTimeout(() => fetchModifications(retries - 1), 2000);
                 }
-            });
-    
-        } catch (error) {
-            console.error("❌ Error Fetching Modifications:", error);
-            if (retries > 0) {
-                console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
-                setTimeout(() => fetchModifications(retries - 1), 2000);
             }
         }
-    }
+        
     
     // async function fetchModifications(retries = 3) {
     //   if (!pageId) return;
@@ -305,55 +308,60 @@
     
     
         async function saveModifications(elementId, css, elementStructure = null) {
-        if (!pageId || !elementId || !css) {
-            console.warn("⚠️ Missing required data to save modifications.");
-            return;
-        }
-    
-        const modificationData = {
-            userId,
-            token,
-            widgetId,
-            modifications: [{
-                pageId,
-                elements: [{
-                    elementId,
-                    css: {
-                        span: {
-                            id: elementId,
-                            ...css
+            if (!pageId || !elementId || !css) {
+                console.warn("⚠️ Missing required data to save modifications.");
+                return;
+            }
+        
+            const parentElement = document.getElementById(elementId)?.parentElement;
+            const fullContent = parentElement ? parentElement.innerHTML : "";
+        
+            const modificationData = {
+                userId,
+                token,
+                widgetId,
+                modifications: [{
+                    pageId,
+                    elements: [{
+                        elementId,
+                        css: {
+                            span: {
+                                id: elementId,
+                                ...css
+                            }
+                        },
+                        elementStructure: elementStructure || {
+                            type: 'span',
+                            className: 'squareCraft-font-modified',
+                            content: document.getElementById(elementId)?.textContent || '',
+                            parentId: parentElement?.id || null,
+                            fullContent: fullContent // Store the full sentence
                         }
-                    },
-                    elementStructure: elementStructure || {
-                        type: 'span',
-                        className: 'squareCraft-font-modified',
-                        content: document.getElementById(elementId)?.textContent || '',
-                        parentId: document.getElementById(elementId)?.parentElement?.id || null
-                    }
+                    }]
                 }]
-            }]
-        };
-    
-        try {
-            const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                    "userId": userId,
-                    "pageId": pageId,
-                    "widget-id": widgetId,
-                },
-                body: JSON.stringify(modificationData),
-            });
-    
-            const result = await response.json();
-            console.log("✅ Changes Saved Successfully!", result);
-            return result;
-        } catch (error) {
-            console.error("❌ Error saving modifications:", error);
+            };
+        
+            try {
+                const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                        "userId": userId,
+                        "pageId": pageId,
+                        "widget-id": widgetId,
+                    },
+                    body: JSON.stringify(modificationData),
+                });
+        
+                const result = await response.json();
+                console.log("✅ Changes Saved Successfully!", result);
+                return result;
+            } catch (error) {
+                console.error("❌ Error saving modifications:", error);
+            }
         }
-    }
+        
     
     
         async function resetModifications() {
