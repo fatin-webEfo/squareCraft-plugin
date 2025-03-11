@@ -674,7 +674,7 @@
         fontDropdown.style.justifyContent = "space-between";
         fontDropdown.style.cursor = "pointer";
 
-        let selectedFontText = document.getElementById("squareCraft-font-family").querySelector("p");
+        let selectedFontText = document.querySelector("#squareCraft-font-family");
         selectedFontText.textContent = "Select a Font";
         selectedFontText.style.flexGrow = "1";
         selectedFontText.style.fontSize = "14px";
