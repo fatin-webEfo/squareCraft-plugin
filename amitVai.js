@@ -765,10 +765,7 @@
             });
     
             option.addEventListener("click", async () => {
-                if (!selectedElement) {
-                    console.warn("⚠️ No element selected.");
-                    return;
-                }
+                if (!selectedElement) return;
             
                 let selectedFont = font.family;
                 selectedFontText.textContent = selectedFont;
@@ -776,13 +773,12 @@
                 fontList.style.display = "none";
             
                 selectedElement.style.fontFamily = selectedFont;
-        
+            
                 let css = { "font-family": selectedFont };
                 applyStylesToElement(selectedElement.id, css);
                 await saveModifications(selectedElement.id, css);
-            
-                console.log("🎨 Applied font:", selectedFont, "to", selectedElement.id);
             });
+            
             
     
             fontList.appendChild(option);
@@ -1161,10 +1157,8 @@
             "squarecraft-widget-container"
             );
     
-            console.log("Current URL:", currentURL);
     
             if (currentURL.includes("/#")) {
-            console.log("✅ Widget is VISIBLE on the Code Injection page.");
     
             if (!widgetContainer) {
                 createWidget();
