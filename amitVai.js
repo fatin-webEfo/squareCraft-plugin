@@ -765,20 +765,28 @@
             });
     
             option.addEventListener("click", async () => {
-                if (!selectedElement) return;
+                if (!selectedElement) {
+                    console.warn("⚠️ No element selected.");
+                    return;
+                }
             
                 let selectedFont = font.family;
                 selectedFontText.textContent = selectedFont;
                 selectedFontText.style.fontFamily = selectedFont;
                 fontList.style.display = "none";
-                selectedElement.style.fontFamily = selectedFont;
-                selectedElement.setAttribute("data-font-family", selectedFont);
+            
+                selectedElement.style.fontFamily = selectedFont;  
+                selectedElement.setAttribute("data-font-family", selectedFont); 
                 let css = { "font-family": selectedFont };
+            
+                selectedElement.style.setProperty("font-family", selectedFont, "important");
+            
                 applyStylesToElement(selectedElement.id, css);
                 await saveModifications(selectedElement.id, css);
             
-                console.log(`✅ Font changed to: ${selectedFont} for ${selectedElement.id}`);
+                console.log(`✅ Real-time font change: ${selectedFont} for ${selectedElement.id}`);
             });
+            
             
             
             
