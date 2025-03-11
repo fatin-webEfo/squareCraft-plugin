@@ -773,22 +773,25 @@
                 selectedFontText.style.fontFamily = selectedFont;
                 fontList.style.display = "none";
             
-                selectedElement.style.fontFamily = selectedFont;  
-                selectedElement.setAttribute("data-font-family", selectedFont); 
+                selectedElement.style.setProperty("font-family", selectedFont, "important");
+                selectedElement.setAttribute("data-font-family", selectedFont);
             
                 let css = { "font-family": selectedFont };
-                selectedElement.style.setProperty("font-family", selectedFont, "important");
                 applyStylesToElement(selectedElement.id, css);
-                await saveModifications(selectedElement.id, css);
             
-                console.log(`✅ Real-time font change: ${selectedFont} for ${selectedElement.id}`);
+                try {
+                    await saveModifications(selectedElement.id, css);
+                    console.log(`✅ Real-time font change applied: ${selectedFont} for ${selectedElement.id}`);
+                } catch (error) {
+                    console.error("❌ Error saving font change:", error);
+                }
+            
+                let appliedFont = window.getComputedStyle(selectedElement).fontFamily;
+                console.log(`🔍 Verified Applied Font: ${appliedFont}`);
+                await changeFont(selectedFont);
             });
-            ;
             
-            
-            
-            
-            
+        
     
             fontList.appendChild(option);
         });
@@ -826,6 +829,27 @@
         }
     
         fontfamilies();
+        async function changeFont(selectedFont) {
+            if (!selectedElement) {
+                console.warn("⚠️ No element selected.");
+                return;
+            }
+        
+            selectedElement.style.setProperty("font-family", selectedFont, "important");
+            selectedElement.setAttribute("data-font-family", selectedFont);
+        
+            let css = { "font-family": selectedFont };
+            applyStylesToElement(selectedElement.id, css);
+            await saveModifications(selectedElement.id, css);
+        
+            console.log(`✅ Font changed to: ${selectedFont} for ${selectedElement.id}`);
+        
+            let appliedFont = window.getComputedStyle(selectedElement).fontFamily;
+            console.log(`🔍 Verified Applied Font: ${appliedFont}`);
+        }
+
+        
+        
     
         function attachEventListeners() {
             document.body.addEventListener("click", (event) => {
