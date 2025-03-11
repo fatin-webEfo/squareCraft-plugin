@@ -251,14 +251,29 @@
             const block = event.target.closest('[id^="block-"]');
             if (block) {
                 console.log('Block clicked:', block.id);
-                return;
+            } else {
+                const section = event.target.closest('section[data-section-id]');
+                if (section) {
+                    console.log('Data-section-id:', section.getAttribute('data-section-id'));
+                }
             }
         
-            const section = event.target.closest('section[data-section-id]');
-            if (section) {
-                console.log('Data-section-id:', section.getAttribute('data-section-id'));
+            const clickedElement = event.target;
+            let elementType = 'unknown';
+        
+            if (clickedElement.tagName === 'IMG') {
+                elementType = 'image';
+            } else if (clickedElement.tagName === 'BUTTON' || (clickedElement.tagName === 'A' && clickedElement.classList.contains('sqs-block-button-element'))) {
+                elementType = 'button';
+            } else if (clickedElement.tagName === 'DIV' && clickedElement.classList.contains('sqs-block-content')) {
+                elementType = 'text';
             }
+        
+            console.log(`Clicked element is a: ${elementType}`);
         }
+        
+        document.addEventListener('click', sectionAndId);
+        
         
         function logAllCollections() {
             document.querySelectorAll('[id^="collection-"]').forEach(element => {
