@@ -92,12 +92,6 @@
             }
         }
 
-        document.addEventListener("click", (event) => {
-            if (widgetContainer && widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
-                widgetContainer.style.display = "none";
-            }
-        });
-
 
 
         function makeWidgetDraggable() {
