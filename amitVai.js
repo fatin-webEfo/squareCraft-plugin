@@ -648,7 +648,7 @@
             return [];
         }
     }
-
+    let selectedFontText = document.querySelector("#squareCraft-font-family");
     async function fontfamilies() {
         const response = await fetch(
             "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
@@ -674,7 +674,7 @@
         fontDropdown.style.justifyContent = "space-between";
         fontDropdown.style.cursor = "pointer";
 
-        let selectedFontText = document.querySelector("#squareCraft-font-family");
+      
         selectedFontText.textContent = "Select a Font";
         selectedFontText.style.flexGrow = "1";
         selectedFontText.style.fontSize = "14px";
