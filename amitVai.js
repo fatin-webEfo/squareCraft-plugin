@@ -304,74 +304,57 @@
         });
     
     
-        let pendingModifications = {}; // Temporary storage for modifications
-
-        function saveModifications(elementId, css, elementStructure = null) {
-            if (!pageId || !elementId || !css) {
-                console.warn("⚠️ Missing required data to save modifications.");
-                return;
-            }
-        
-            if (!pendingModifications[elementId]) {
-                pendingModifications[elementId] = {
+        async function saveModifications(elementId, css, elementStructure = null) {
+        if (!pageId || !elementId || !css) {
+            console.warn("⚠️ Missing required data to save modifications.");
+            return;
+        }
+    
+        const modificationData = {
+            userId,
+            token,
+            widgetId,
+            modifications: [{
+                pageId,
+                elements: [{
                     elementId,
-                    css: { ...css },
+                    css: {
+                        span: {
+                            id: elementId,
+                            ...css
+                        }
+                    },
                     elementStructure: elementStructure || {
                         type: 'span',
                         className: 'squareCraft-font-modified',
                         content: document.getElementById(elementId)?.textContent || '',
                         parentId: document.getElementById(elementId)?.parentElement?.id || null
                     }
-                };
-            } else {
-                Object.assign(pendingModifications[elementId].css, css);
-            }
-        
-            console.log("📝 Changes stored temporarily:", pendingModifications);
-        }
-        
-        async function postModifications() {
-            if (Object.keys(pendingModifications).length === 0) {
-                console.warn("⚠️ No changes to publish.");
-                return;
-            }
-        
-            const requestData = {
-                userId,
-                token,
-                widgetId,
-                modifications: [{
-                    pageId,
-                    elements: Object.values(pendingModifications) // Send all stored modifications
                 }]
-            };
-        
-            try {
-                const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                        "userId": userId,
-                        "pageId": pageId,
-                        "widget-id": widgetId,
-                    },
-                    body: JSON.stringify(requestData),
-                });
-        
-                const result = await response.json();
-                console.log("✅ Changes Published Successfully!", result);
-        
-                // Clear stored modifications after publishing
-                pendingModifications = {};
-            } catch (error) {
-                console.error("❌ Error publishing modifications:", error);
-            }
+            }]
+        };
+    
+        try {
+            const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                    "userId": userId,
+                    "pageId": pageId,
+                    "widget-id": widgetId,
+                },
+                body: JSON.stringify(modificationData),
+            });
+    
+            const result = await response.json();
+            console.log("✅ Changes Saved Successfully!", result);
+            return result;
+        } catch (error) {
+            console.error("❌ Error saving modifications:", error);
         }
-        document.getElementById("squareCraftPublish").addEventListener("click", async () => {
-            await postModifications(); // Send modifications to the backend
-        });
-                
+    }
+    
     
         async function resetModifications() {
         const userId = localStorage.getItem("squareCraft_u_id");
@@ -658,7 +641,7 @@
         makeWidgetDraggable();
         setInterval(makeWidgetDraggable, 1000);
         }
-        createWidget()
+    
         function createWidgetIcon() {
         if (document.getElementById("squarecraft-widget-icon")) return;
     
