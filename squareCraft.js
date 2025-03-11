@@ -236,13 +236,35 @@
         }
 
 
-        document.addEventListener('click', function(event) {
-            if (event.target.id && /^collection-\w{24}$/.test(event.target.id)) {
-                console.log('Collection clicked:', event.target.id);
-            } else if (event.target.id && /^block-\w{20}$/.test(event.target.id)) {
-                console.log('Block clicked:', event.target.id);
+        function logAllCollections() {
+            const collectionElements = document.querySelectorAll('[id^="collection-"]');
+            if (collectionElements.length > 0) {
+                collectionElements.forEach(element => {
+                    console.log('Collection element found:', element);
+                });
+            } else {
+                console.warn('No collection elements found.');
             }
-        });
+        }
+    
+        function sectionAndId(event) {
+            const section = event.target.closest('section[data-section-id]');
+            if (section) {
+                const sectionId = section.getAttribute('data-section-id');
+                console.log('Section clicked:', section, 'Data-section-id:', sectionId);
+                return;
+            }
+    
+            const block = event.target.closest('[id^="block-"]');
+            if (block) {
+                console.log('Block clicked:', block);
+            }
+        }
+        function initializeLogging() {
+            logAllCollections();
+            document.addEventListener('click', sectionAndId);
+        }
+        initializeLogging();
         
         function waitForNavBar(attempts = 0) {
             if (attempts > 10) {
