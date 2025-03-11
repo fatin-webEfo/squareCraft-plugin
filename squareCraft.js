@@ -39,7 +39,6 @@
                 "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
             );
             const data = await response.json();
-        
             console.log("font families" , data)
             }
             fontfamilies();
@@ -314,4 +313,14 @@
         }
 
         waitForNavBar();
+        document.body.addEventListener("click", (event) => {
+            let block = event.target.closest('[id^="block-"]');
+            if (!block) return;
+    
+            if (selectedElement) selectedElement.style.outline = "";
+            selectedElement = block;
+            selectedElement.style.outline = "2px dashed #EF7C2F";
+    
+            console.log(`✅ Selected Element: ${selectedElement.id}`);
+        });
     })();
