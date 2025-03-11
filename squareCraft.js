@@ -1,5 +1,6 @@
     (async function squareCraft() {
         const widgetScript = document.getElementById("squarecraft-script");
+        let selectedElement = null;
         if (!widgetScript) {
             console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
             return;
