@@ -35,14 +35,48 @@
         let widgetContainer = null;
         let widgetLoaded = false;
 
-        async function fontfamilies() {
+        async function fetchFonts() {
             const response = await fetch(
                 "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
             );
             const data = await response.json();
-            console.log("font families" , data.items)
+            return data.items.slice(0, 40); // Get only 40 fonts
+        }
+    
+        async function populateFontDropdown() {
+            if (fontsLoaded) return; // Prevent duplicate fetching
+    
+            const fontList = await fetchFonts();
+            console.log("Font families:", fontList);
+    
+            const fontDropdown = document.getElementById("squareCraft-font-family");
+            if (!fontDropdown) {
+                console.warn("❌ Font dropdown element not found!");
+                return;
             }
-            fontfamilies();
+    
+            fontDropdown.innerHTML = `<option value="">Select Font</option>`; // Reset and add default option
+            fontList.forEach((font) => {
+                const option = document.createElement("option");
+                option.value = font.family;
+                option.textContent = font.family;
+                fontDropdown.appendChild(option);
+            });
+    
+            fontsLoaded = true;
+        }
+    
+        document.addEventListener("click", async (event) => {
+            const fontDropdown = document.getElementById("squareCraft-font-family");
+            if (event.target.id === "squareCraft-font-family") {
+                if (!fontsLoaded) {
+                    await populateFontDropdown();
+                }
+                fontDropdown.size = 10; // Expand dropdown on click
+            } else {
+                if (fontDropdown) fontDropdown.size = 1; // Collapse dropdown when clicking outside
+            }
+        });
 
         async function createWidget() {
             console.log("📥 Fetching widget module...");
