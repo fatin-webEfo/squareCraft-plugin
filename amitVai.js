@@ -94,7 +94,7 @@ async function fetchModifications(retries = 3) {
 
   try {
       const response = await fetch(
-          `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
+          `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
           {
               method: "GET",
               headers: {
@@ -251,7 +251,7 @@ window.addEventListener("load", async () => {
       };
   
       try {
-          const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications", {
+          const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -293,7 +293,7 @@ async function resetModifications() {
           pageId: pageId
       };
 
-      const response = await fetch("https://webefo-backend.vercel.app/api/v1/modifications/elements", {
+      const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications/elements", {
           method: "DELETE",
           headers: {
               "Content-Type": "application/json",
