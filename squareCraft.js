@@ -261,16 +261,17 @@
             const clickedElement = event.target;
             let elementType = 'unknown';
         
-            if (clickedElement.tagName === 'IMG') {
+            if (clickedElement.tagName === 'IMG' || clickedElement.closest('.sqs-block-image')) {
                 elementType = 'image';
-            } else if (clickedElement.tagName === 'BUTTON' || (clickedElement.tagName === 'A' && clickedElement.classList.contains('sqs-block-button-element'))) {
+            } else if (clickedElement.tagName === 'BUTTON' || clickedElement.closest('.sqs-block-button-element, .sqs-button-element--primary, .sqs-block-button')) {
                 elementType = 'button';
-            } else if (clickedElement.tagName === 'DIV' && clickedElement.classList.contains('sqs-block-content')) {
+            } else if (clickedElement.closest('.sqs-block-html, .sqs-html-content, .sqs-block-content')) {
                 elementType = 'text';
             }
         
             console.log(`Clicked element is a: ${elementType}`);
         }
+        
         
         document.addEventListener('click', sectionAndId);
         
