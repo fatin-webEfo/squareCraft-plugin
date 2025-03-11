@@ -311,7 +311,7 @@
         // }
         
         
-        document.addEventListener('click', sectionAndId);
+        // document.addEventListener('click', sectionAndId);
         
         
         function logAllCollections() {
