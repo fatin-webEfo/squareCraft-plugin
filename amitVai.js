@@ -184,101 +184,6 @@
         }
         
     
-    // async function fetchModifications(retries = 3) {
-    //   if (!pageId) return;
-    
-    //   try {
-    //       const response = await fetch(
-    //           `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
-    //           {
-    //               method: "GET",
-    //               headers: {
-    //                   "Content-Type": "application/json",
-    //                   "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-    //               },
-    //           }
-    //       );
-    
-    //       const data = await response.json();
-    //       console.log("📥 Retrieved Data from Database:", data);
-    
-    //       if (!data.modifications || data.modifications.length === 0) {
-    //           console.warn("⚠️ No saved styles found for this page.");
-    //           return;
-    //       }
-    
-    //       // Loop through retrieved styles and apply them
-    //       data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-    //           if (storedPageId === pageId) {
-    //               elements.forEach(({ elementId, css, elementStructure }) => {
-    //                   if (css && css.span) {
-    //                       // Find the parent container
-    //                       const parentElement = elementStructure.parentId ? 
-    //                           document.getElementById(elementStructure.parentId) : 
-    //                           document.body;
-    
-    //                       if (parentElement) {
-    //                           // If we have the full content, restore it first
-    //                           if (elementStructure.fullContent) {
-    //                               parentElement.innerHTML = elementStructure.fullContent;
-    //                           }
-    
-    //                           // Find the text to modify
-    //                           const walker = document.createTreeWalker(
-    //                               parentElement,
-    //                               NodeFilter.SHOW_TEXT,
-    //                               {
-    //                                   acceptNode: function(node) {
-    //                                       return node.textContent.includes(elementStructure.content)
-    //                                           ? NodeFilter.FILTER_ACCEPT
-    //                                           : NodeFilter.FILTER_REJECT;
-    //                                   }
-    //                               }
-    //                           );
-    
-    //                           let textNode;
-    //                           while (textNode = walker.nextNode()) {
-    //                               if (textNode.textContent.includes(elementStructure.content)) {
-    //                                   // Create span with the stored styles
-    //                                   const span = document.createElement('span');
-    //                                   span.id = css.span.id;
-    //                                   span.className = elementStructure.className;
-    //                                   span.textContent = elementStructure.content;
-    
-    //                                   // Apply stored CSS properties
-    //                                   Object.entries(css.span).forEach(([prop, value]) => {
-    //                                       if (prop !== 'id') {
-    //                                           span.style[prop] = value;
-    //                                       }
-    //                                   });
-    
-    //                                   // Replace only the specific text while preserving surrounding content
-    //                                   const range = document.createRange();
-    //                                   const startIndex = textNode.textContent.indexOf(elementStructure.content);
-    //                                   range.setStart(textNode, startIndex);
-    //                                   range.setEnd(textNode, startIndex + elementStructure.content.length);
-    //                                   range.deleteContents();
-    //                                   range.insertNode(span);
-    //                                   break;
-    //                               }
-    //                           }
-    //                       }
-    //                   }
-    //               });
-    //           }
-    //       });
-    
-    //   } catch (error) {
-    //       console.error("❌ Error Fetching Modifications:", error);
-    //       if (retries > 0) {
-    //           setTimeout(() => fetchModifications(retries - 1), 2000);
-    //       }
-    //   }
-    // }
-    
-    
-    
-        // Listen for changes in edit mode
         const observer = new MutationObserver(() => {
         console.log("🔄 Edit Mode Detected. Reapplying modifications...");
         fetchModifications();
@@ -1218,15 +1123,7 @@
                 await resetModifications();
             }
             });
-    
-        //   document.getElementById("squareCraftFontSizeInput").addEventListener("input", function () {
-        //     if (selectedElement) {
-        //         let fontSize = this.value + "px";
-        //         let css = { "font-size": fontSize };
-        //         applyStylesToElement(selectedElement.id, css);
-        //         saveModifications(selectedElement.id, css);
-        //     }
-        // });
+
         }
     
         document.addEventListener("DOMContentLoaded", function () {
@@ -1299,10 +1196,6 @@
         attachEventListeners();
         fetchModifications();
         makeWidgetDraggable();
-    
-        // const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
-        // const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
-        // const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
     
         const fontSize = document.getElementById("squareCraftFontSize");
         const dropdownArrow = document.getElementById(
