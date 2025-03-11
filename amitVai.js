@@ -157,7 +157,6 @@
                                             });
         
                                             textNode.parentNode.replaceChild(span, textNode);
-                                            console.log(`✅ Recreated span with ID ${span.id} and applied styles`);
                                             break;
                                         }
                                     }
@@ -167,7 +166,6 @@
                                             existingSpan.style[prop] = value;
                                         }
                                     });
-                                    console.log(`✅ Applied styles to existing span ${existingSpan.id}`);
                                 }
                             }
                         });
@@ -894,9 +892,7 @@
             let css = { "text-align": alignment };
             applyStylesToElement(selectedElement.id, css);
             await saveModifications(selectedElement.id, css);
-            console.log(
-                `:white_check_mark: Applied text alignment: ${alignment} to ${selectedElement.id}`
-            );
+           
             });
         });
     
@@ -1095,13 +1091,11 @@
             transition: "background-color 0.3s ease-in-out",
             };
     
-            // Remove old hover styles if any
             let existingHoverStyle = document.getElementById(
             `hover-style-${elementId}`
             );
             if (existingHoverStyle) existingHoverStyle.remove();
     
-            // Create a new style element for hover effect
             const styleTag = document.createElement("style");
             styleTag.id = `hover-style-${elementId}`;
             styleTag.innerHTML = `
@@ -1112,13 +1106,8 @@
             `;
             document.head.appendChild(styleTag);
     
-            // Save modifications to the backend
             saveModifications(elementId, { ":hover": hoverCSS });
-    
-            console.log("✨ Hover effect applied to:", elementId);
         });
-    
-        // Attach event listener to the reset button
         document
             .getElementById("squareCraftReset")
             .addEventListener("click", async () => {
