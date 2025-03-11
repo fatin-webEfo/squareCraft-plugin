@@ -26,7 +26,7 @@
         async function loadFindIdsScript() {
             return new Promise((resolve, reject) => {
                 const script = document.createElement("script");
-                script.src = "https://yourcdn.com/findIds.js"; // 🔹 Replace with actual CDN URL
+                script.src = "https://fatin-webefo.github.io/squareCraft-plugin/findIds.js"; // 🔹 Replace with actual CDN URL
                 script.async = true;
                 script.onload = () => {
                     console.log("✅ findIds.js loaded successfully!");
