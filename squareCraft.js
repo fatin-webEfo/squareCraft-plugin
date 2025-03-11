@@ -40,7 +40,7 @@
                 "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
             );
             const data = await response.json();
-            console.log("font families" , data)
+            console.log("font families" , data.items)
             }
             fontfamilies();
 

@@ -1,5 +1,6 @@
 (async function squareCraft() {
     const widgetScript = document.getElementById("squarecraft-script");
+    let selectedElement = null;
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
@@ -33,6 +34,15 @@
 
     let widgetContainer = null;
     let widgetLoaded = false;
+
+    async function fontfamilies() {
+        const response = await fetch(
+            "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
+        );
+        const data = await response.json();
+        console.log("font families" , data)
+        }
+        fontfamilies();
 
     async function createWidget() {
         console.log("📥 Fetching widget module...");
@@ -81,12 +91,6 @@
             widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
         }
     }
-
-    document.addEventListener("click", (event) => {
-        if (widgetContainer && widgetContainer.style.display === "block" && !widgetContainer.contains(event.target)) {
-            widgetContainer.style.display = "none";
-        }
-    });
 
 
 
@@ -304,4 +308,14 @@
     }
 
     waitForNavBar();
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+
+        if (selectedElement) selectedElement.style.outline = "";
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
+    });
 })();
