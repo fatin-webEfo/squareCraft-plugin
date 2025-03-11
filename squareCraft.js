@@ -40,9 +40,10 @@
             );
             const data = await response.json();
         
-            console.log("font families" , response)
+            console.log("font families" , data)
             }
             fontfamilies();
+
         async function createWidget() {
             console.log("📥 Fetching widget module...");
             try {
