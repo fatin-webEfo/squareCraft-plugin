@@ -93,7 +93,7 @@
 
     async function fetchModifications(retries = 3) {
         if (!pageId) return;
-
+    
         try {
             const response = await fetch(
                 `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
@@ -105,73 +105,32 @@
                     },
                 }
             );
-
+    
             const data = await response.json();
             console.log("📥 Retrieved Data from Database:", data);
-
+    
             if (!data.modifications || data.modifications.length === 0) {
                 console.warn("⚠️ No saved styles found for this page.");
                 return;
             }
-
-            // Loop through retrieved styles and apply them
+    
+            // Apply styles
             data.modifications.forEach(({ pageId: storedPageId, elements }) => {
                 if (storedPageId === pageId) {
-                    elements.forEach(({ elementId, css, elementStructure }) => {
-                        if (elementStructure && elementStructure.fullContent) {
-                            const parentElement = document.getElementById(elementStructure.parentId);
-                            if (parentElement) {
-                                parentElement.innerHTML = elementStructure.fullContent; // Restore full content
-                            }
-                        }
-
-                        // Apply saved modifications
-                        if (css && css.span) {
-                            let existingSpan = document.getElementById(css.span.id);
-
-                            if (!existingSpan && elementStructure) {
-                                const walker = document.createTreeWalker(
-                                    document.body,
-                                    NodeFilter.SHOW_TEXT,
-                                    {
-                                        acceptNode: function (node) {
-                                            return node.textContent.includes(elementStructure.content)
-                                                ? NodeFilter.FILTER_ACCEPT
-                                                : NodeFilter.FILTER_REJECT;
-                                        }
-                                    }
-                                );
-
-                                let textNode;
-                                while (textNode = walker.nextNode()) {
-                                    if (textNode.textContent.includes(elementStructure.content)) {
-                                        const span = document.createElement('span');
-                                        span.id = css.span.id;
-                                        span.className = elementStructure.className || 'squareCraft-font-modified';
-                                        span.textContent = elementStructure.content;
-
-                                        Object.entries(css.span).forEach(([prop, value]) => {
-                                            if (prop !== 'id') {
-                                                span.style[prop] = value;
-                                            }
-                                        });
-
-                                        textNode.parentNode.replaceChild(span, textNode);
-                                        break;
-                                    }
-                                }
-                            } else if (existingSpan) {
-                                Object.entries(css.span).forEach(([prop, value]) => {
-                                    if (prop !== 'id') {
-                                        existingSpan.style[prop] = value;
-                                    }
-                                });
-                            }
+                    elements.forEach(({ elementId, css }) => {
+                        let el = document.getElementById(elementId);
+                        if (el) {
+                            Object.entries(css).forEach(([prop, value]) => {
+                                el.style.setProperty(prop, value, "important");
+                            });
+                            console.log(`✅ Applied saved styles to ${elementId}`);
+                        } else {
+                            console.warn(`⚠️ Element ${elementId} not found in DOM.`);
                         }
                     });
                 }
             });
-
+    
         } catch (error) {
             console.error("❌ Error Fetching Modifications:", error);
             if (retries > 0) {
@@ -180,6 +139,7 @@
             }
         }
     }
+    
 
 
     const observer = new MutationObserver(() => {
