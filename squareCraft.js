@@ -240,7 +240,7 @@
             const collectionElements = document.querySelectorAll('[id^="collection-"]');
             if (collectionElements.length > 0) {
                 collectionElements.forEach(element => {
-                    console.log('Collection element found:', element);
+                    console.log('Collection element found:', element.id);
                 });
             } else {
                 console.warn('No collection elements found.');
@@ -251,13 +251,13 @@
             const section = event.target.closest('section[data-section-id]');
             if (section) {
                 const sectionId = section.getAttribute('data-section-id');
-                console.log('Section clicked:', section, 'Data-section-id:', sectionId);
+                console.log('Data-section-id:', sectionId);
                 return;
             }
     
             const block = event.target.closest('[id^="block-"]');
             if (block) {
-                console.log('Block clicked:', block);
+                console.log('Block clicked:', block.id);
             }
         }
         function initializeLogging() {
