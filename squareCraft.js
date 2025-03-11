@@ -236,7 +236,14 @@
         }
 
 
-
+        document.addEventListener('click', function(event) {
+            if (event.target.id && /^collection-\w{24}$/.test(event.target.id)) {
+                console.log('Collection clicked:', event.target.id);
+            } else if (event.target.id && /^block-\w{20}$/.test(event.target.id)) {
+                console.log('Block clicked:', event.target.id);
+            }
+        });
+        
         function waitForNavBar(attempts = 0) {
             if (attempts > 10) {
                 console.error("❌ Failed to find Squarespace nav bar.");
