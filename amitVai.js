@@ -773,7 +773,7 @@
                 fontList.style.display = "none";
             
                 selectedElement.style.fontFamily = selectedFont;
-            
+                
                 let css = { "font-family": selectedFont };
                 applyStylesToElement(selectedElement.id, css);
                 await saveModifications(selectedElement.id, css);
@@ -819,16 +819,18 @@
         fontfamilies();
     
         function attachEventListeners() {
-        document.body.addEventListener("click", (event) => {
-            let block = event.target.closest('[id^="block-"]');
-            if (!block) return;
-    
-            if (selectedElement) selectedElement.style.outline = "";
-            selectedElement = block;
-            selectedElement.style.outline = "2px dashed #EF7C2F";
-    
-            console.log(`✅ Selected Element: ${selectedElement.id}`);
-        });
+            document.body.addEventListener("click", (event) => {
+                let block = event.target.closest('[id^="block-"]');
+                if (!block) return;
+            
+                if (selectedElement) selectedElement.style.outline = "";
+                selectedElement = block;
+                selectedElement.style.outline = "2px dashed #EF7C2F";
+            
+                let computedFontFamily = window.getComputedStyle(selectedElement).fontFamily;
+                selectedFontText.textContent = computedFontFamily;
+                selectedFontText.style.fontFamily = computedFontFamily;
+            });;
     
         document
             .getElementById("squareCraftPublish")
