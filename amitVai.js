@@ -771,13 +771,16 @@
                 selectedFontText.textContent = selectedFont;
                 selectedFontText.style.fontFamily = selectedFont;
                 fontList.style.display = "none";
-            
                 selectedElement.style.fontFamily = selectedFont;
-                
+                selectedElement.setAttribute("data-font-family", selectedFont);
                 let css = { "font-family": selectedFont };
                 applyStylesToElement(selectedElement.id, css);
                 await saveModifications(selectedElement.id, css);
+            
+                console.log(`✅ Font changed to: ${selectedFont} for ${selectedElement.id}`);
             });
+            
+            
             
             
     
