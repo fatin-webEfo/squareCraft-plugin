@@ -248,23 +248,31 @@
         }
     
         function sectionAndId(event) {
-            const section = event.target.closest('section[data-section-id]');
-            if (section) {
-                const sectionId = section.getAttribute('data-section-id');
-                console.log('Data-section-id:', sectionId);
-                return;
-            }
-    
             const block = event.target.closest('[id^="block-"]');
             if (block) {
                 console.log('Block clicked:', block.id);
+                return;
+            }
+        
+            const section = event.target.closest('section[data-section-id]');
+            if (section) {
+                console.log('Data-section-id:', section.getAttribute('data-section-id'));
             }
         }
+        
+        function logAllCollections() {
+            document.querySelectorAll('[id^="collection-"]').forEach(element => {
+                console.log('Collection element found:', element.id);
+            });
+        }
+        
         function initializeLogging() {
             logAllCollections();
             document.addEventListener('click', sectionAndId);
         }
+        
         initializeLogging();
+        
         
         function waitForNavBar(attempts = 0) {
             if (attempts > 10) {
