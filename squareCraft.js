@@ -285,33 +285,33 @@
             }
         }
     
-        // function sectionAndId(event) {
-        //     const block = event.target.closest('[id^="block-"]');
-        //     if (block) {
-        //         console.log('Block clicked:', block.id);
-        //     } else {
-        //         const section = event.target.closest('section[data-section-id]');
-        //         if (section) {
-        //             console.log('Data-section-id:', section.getAttribute('data-section-id'));
-        //         }
-        //     }
+        function sectionAndId(event) {
+            const block = event.target.closest('[id^="block-"]');
+            if (block) {
+                console.log('Block clicked:', block.id);
+            } else {
+                const section = event.target.closest('section[data-section-id]');
+                if (section) {
+                    console.log('Data-section-id:', section.getAttribute('data-section-id'));
+                }
+            }
         
-        //     const clickedElement = event.target;
-        //     let elementType = 'unknown';
+            const clickedElement = event.target;
+            let elementType = 'unknown';
         
-        //     if (clickedElement.tagName === 'IMG' || clickedElement.closest('.sqs-block-image')) {
-        //         elementType = 'image';
-        //     } else if (clickedElement.tagName === 'BUTTON' || clickedElement.closest('.sqs-block-button-element, .sqs-button-element--primary, .sqs-block-button')) {
-        //         elementType = 'button';
-        //     } else if (clickedElement.closest('.sqs-block-html, .sqs-html-content, .sqs-block-content')) {
-        //         elementType = 'text';
-        //     }
+            if (clickedElement.tagName === 'IMG' || clickedElement.closest('.sqs-block-image')) {
+                elementType = 'image';
+            } else if (clickedElement.tagName === 'BUTTON' || clickedElement.closest('.sqs-block-button-element, .sqs-button-element--primary, .sqs-block-button')) {
+                elementType = 'button';
+            } else if (clickedElement.closest('.sqs-block-html, .sqs-html-content, .sqs-block-content')) {
+                elementType = 'text';
+            }
         
-        //     console.log(`Clicked element is a: ${elementType}`);
-        // }
+            console.log(`Clicked element is a: ${elementType}`);
+        }
         
         
-        // document.addEventListener('click', sectionAndId);
+        document.addEventListener('click', sectionAndId);
         
         
         function logAllCollections() {
