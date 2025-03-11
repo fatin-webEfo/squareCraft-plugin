@@ -775,15 +775,15 @@
             
                 selectedElement.style.fontFamily = selectedFont;  
                 selectedElement.setAttribute("data-font-family", selectedFont); 
+            
                 let css = { "font-family": selectedFont };
-            
                 selectedElement.style.setProperty("font-family", selectedFont, "important");
-            
                 applyStylesToElement(selectedElement.id, css);
                 await saveModifications(selectedElement.id, css);
             
                 console.log(`✅ Real-time font change: ${selectedFont} for ${selectedElement.id}`);
             });
+            ;
             
             
             
