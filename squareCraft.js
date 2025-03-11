@@ -23,25 +23,7 @@
             document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
         }
         
-        async function loadFindIdsScript() {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement("script");
-                script.src = "https://fatin-webefo.github.io/squareCraft-plugin/findIds.js"; // 🔹 Replace with actual CDN URL
-                script.async = true;
-                script.onload = () => {
-                    console.log("✅ findIds.js loaded successfully!");
-                    resolve();
-                };
-                script.onerror = () => reject(new Error("❌ Failed to load findIds.js"));
-                document.head.appendChild(script);
-            });
-        }
-    
-        try {
-            await loadFindIdsScript();
-        } catch (error) {
-            console.error(error);
-        }
+        
 
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -252,7 +234,46 @@
             });
             observer.observe(parent.document.body, { childList: true, subtree: true });
         }
-              
+
+
+        function logAllCollections() {
+            const collectionElements = document.querySelectorAll('[id^="collection-"]');
+            if (collectionElements.length > 0) {
+                collectionElements.forEach(element => {
+                    console.log('Collection element found:', element.id);
+                });
+            } else {
+                console.warn('No collection elements found.');
+            }
+        }
+    
+        function sectionAndId(event) {
+            const block = event.target.closest('[id^="block-"]');
+            if (block) {
+                console.log('Block clicked:', block.id);
+                return;
+            }
+        
+            const section = event.target.closest('section[data-section-id]');
+            if (section) {
+                console.log('Data-section-id:', section.getAttribute('data-section-id'));
+            }
+        }
+        
+        function logAllCollections() {
+            document.querySelectorAll('[id^="collection-"]').forEach(element => {
+                console.log('Collection element found:', element.id);
+            });
+        }
+        
+        function initializeLogging() {
+            logAllCollections();
+            document.addEventListener('click', sectionAndId);
+        }
+        
+        initializeLogging();
+        
+        
         function waitForNavBar(attempts = 0) {
             if (attempts > 10) {
                 console.error("❌ Failed to find Squarespace nav bar.");
