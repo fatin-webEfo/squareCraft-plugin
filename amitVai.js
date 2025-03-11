@@ -1,294 +1,336 @@
-(async function amitVai() {
-    const widgetScript = document.getElementById("squarecraft-script");
-    if (!widgetScript) {
+    (async function amitVai() {
+        const widgetScript = document.getElementById("squarecraft-script");
+        if (!widgetScript) {
         console.error(
             ":x: Widget script not found! Ensure the script tag exists with id 'squarecraft-script'."
         );
         return;
-    }
-
-    const token = widgetScript.dataset?.token;
-    const squareCraft_u_id = widgetScript.dataset?.uId;
-    const squareCraft_w_id = widgetScript.dataset?.wId;
-    const userId = localStorage.getItem("squareCraft_u_id");
-    const widgetId = localStorage.getItem("squareCraft_w_id");
-
-    if (token) {
+        }
+    
+        const token = widgetScript.dataset?.token;
+        const squareCraft_u_id = widgetScript.dataset?.uId;
+        const squareCraft_w_id = widgetScript.dataset?.wId;
+        const userId = localStorage.getItem("squareCraft_u_id");
+        const widgetId = localStorage.getItem("squareCraft_w_id");
+    
+        if (token) {
         console.log("🔑 Token received:", token);
         localStorage.setItem("squareCraft_auth_token", token);
         document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
-    }
-
-    if (squareCraft_u_id) {
+        }
+    
+        if (squareCraft_u_id) {
         console.log("👤 User ID received:", squareCraft_u_id);
         localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
         document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
-    }
-
-    if (squareCraft_w_id) {
+        }
+    
+        if (squareCraft_w_id) {
         console.log("🛠️ Widget ID received:", squareCraft_w_id);
         localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
         document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
-    }
-
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href =
+        }
+    
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href =
         "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-    document.head.appendChild(link);
-
-    const fontSizes = [
+        document.head.appendChild(link);
+    
+        const fontSizes = [
         8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
         27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
         46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-    ];
-    const LetterSpacing = [
+        ];
+        const LetterSpacing = [
         2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
         23, 24, 25,
-    ];
-    let fontSizeOptions = "";
-    for (let size of fontSizes) {
+        ];
+        let fontSizeOptions = "";
+        for (let size of fontSizes) {
         fontSizeOptions += `<option value="${size}">${size}px</option>`;
-    }
-
-    if (token) localStorage.setItem("squareCraft_auth_token", token);
-    if (userId) localStorage.setItem("squareCraft_u_id", userId);
-    if (widgetId) localStorage.setItem("squareCraft_w_id", widgetId);
-
-    let selectedElement = null;
-    let span = null;
-    let appliedStyles = new Set();
-
-    function getPageId() {
+        }
+    
+        if (token) localStorage.setItem("squareCraft_auth_token", token);
+        if (userId) localStorage.setItem("squareCraft_u_id", userId);
+        if (widgetId) localStorage.setItem("squareCraft_w_id", widgetId);
+    
+        let selectedElement = null;
+        let span = null;
+        let appliedStyles = new Set();
+    
+        function getPageId() {
         let pageElement = document.querySelector("article[data-page-sections]");
         return pageElement ? pageElement.getAttribute("data-page-sections") : null;
-    }
-
-    let pageId = getPageId();
-    if (!pageId)
+        }
+    
+        let pageId = getPageId();
+        if (!pageId)
         console.warn(":warning: No page ID found. Plugin may not work correctly.");
-
-
-    function applyStylesToElement(elementId, css) {
+    
+    
+        function applyStylesToElement(elementId, css) {
         if (!elementId || !css) return;
-
+    
         let styleTag = document.getElementById(`style-${elementId}`);
         if (!styleTag) {
             styleTag = document.createElement("style");
             styleTag.id = `style-${elementId}`;
             document.head.appendChild(styleTag);
         }
-
+    
         let cssText = `#${elementId} { `;
         Object.keys(css).forEach((prop) => {
             cssText += `${prop}: ${css[prop]} !important; `;
         });
         cssText += "}";
-
+    
         styleTag.innerHTML = cssText;
         console.log(`✅ Styles Persisted for ${elementId}`);
-    }
-
-
-    async function fetchModifications(retries = 3) {
-        if (!pageId) return;
+        }
     
-        try {
-            const response = await fetch(
-                `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                    },
+    
+        async function fetchModifications(retries = 3) {
+            if (!pageId) return;
+        
+            try {
+                const response = await fetch(
+                    `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                        },
+                    }
+                );
+        
+                const data = await response.json();
+                console.log("📥 Retrieved Data from Database:", data);
+        
+                if (!data.modifications || data.modifications.length === 0) {
+                    console.warn("⚠️ No saved styles found for this page.");
+                    return;
                 }
-            );
-    
-            const data = await response.json();
-            console.log("📥 Retrieved Data from Database:", data);
-    
-            if (!data.modifications || data.modifications.length === 0) {
-                console.warn("⚠️ No saved styles found for this page.");
-                return;
-            }
-    
-            // Apply styles
-            data.modifications.forEach(({ pageId: storedPageId, elements }) => {
-                if (storedPageId === pageId) {
-                    elements.forEach(({ elementId, css }) => {
-                        let el = document.getElementById(elementId);
-                        if (el) {
-                            Object.entries(css).forEach(([prop, value]) => {
-                                el.style.setProperty(prop, value, "important");
-                            });
-                            console.log(`✅ Applied saved styles to ${elementId}`);
-                        } else {
-                            console.warn(`⚠️ Element ${elementId} not found in DOM.`);
-                        }
-                    });
+        
+                // Loop through retrieved styles and apply them
+                data.modifications.forEach(({ pageId: storedPageId, elements }) => {
+                    if (storedPageId === pageId) {
+                        elements.forEach(({ elementId, css, elementStructure }) => {
+                            if (elementStructure && elementStructure.fullContent) {
+                                const parentElement = document.getElementById(elementStructure.parentId);
+                                if (parentElement) {
+                                    parentElement.innerHTML = elementStructure.fullContent; // Restore full content
+                                }
+                            }
+        
+                            // Apply saved modifications
+                            if (css && css.span) {
+                                let existingSpan = document.getElementById(css.span.id);
+        
+                                if (!existingSpan && elementStructure) {
+                                    const walker = document.createTreeWalker(
+                                        document.body,
+                                        NodeFilter.SHOW_TEXT,
+                                        {
+                                            acceptNode: function(node) {
+                                                return node.textContent.includes(elementStructure.content)
+                                                    ? NodeFilter.FILTER_ACCEPT
+                                                    : NodeFilter.FILTER_REJECT;
+                                            }
+                                        }
+                                    );
+        
+                                    let textNode;
+                                    while (textNode = walker.nextNode()) {
+                                        if (textNode.textContent.includes(elementStructure.content)) {
+                                            const span = document.createElement('span');
+                                            span.id = css.span.id;
+                                            span.className = elementStructure.className || 'squareCraft-font-modified';
+                                            span.textContent = elementStructure.content;
+        
+                                            Object.entries(css.span).forEach(([prop, value]) => {
+                                                if (prop !== 'id') {
+                                                    span.style[prop] = value;
+                                                }
+                                            });
+        
+                                            textNode.parentNode.replaceChild(span, textNode);
+                                            console.log(`✅ Recreated span with ID ${span.id} and applied styles`);
+                                            break;
+                                        }
+                                    }
+                                } else if (existingSpan) {
+                                    Object.entries(css.span).forEach(([prop, value]) => {
+                                        if (prop !== 'id') {
+                                            existingSpan.style[prop] = value;
+                                        }
+                                    });
+                                    console.log(`✅ Applied styles to existing span ${existingSpan.id}`);
+                                }
+                            }
+                        });
+                    }
+                });
+        
+            } catch (error) {
+                console.error("❌ Error Fetching Modifications:", error);
+                if (retries > 0) {
+                    console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+                    setTimeout(() => fetchModifications(retries - 1), 2000);
                 }
-            });
-    
-        } catch (error) {
-            console.error("❌ Error Fetching Modifications:", error);
-            if (retries > 0) {
-                console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
-                setTimeout(() => fetchModifications(retries - 1), 2000);
             }
         }
-    }
+        
     
-
-
-    const observer = new MutationObserver(() => {
+        const observer = new MutationObserver(() => {
         console.log("🔄 Edit Mode Detected. Reapplying modifications...");
         fetchModifications();
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    function findTextNodeByContent(element, searchText) {
+        });
+    
+        observer.observe(document.body, { childList: true, subtree: true });
+    
+        function findTextNodeByContent(element, searchText) {
         const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, {
             acceptNode: function (node) {
-                return node.textContent.includes(searchText)
-                    ? NodeFilter.FILTER_ACCEPT
-                    : NodeFilter.FILTER_REJECT;
+            return node.textContent.includes(searchText)
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_REJECT;
             },
         });
-
+    
         return walker.nextNode();
-    }
-
-    window.addEventListener("load", async () => {
+        }
+    
+        window.addEventListener("load", async () => {
         createWidget(); // Ensure the widget is created
         setTimeout(makeWidgetDraggable, 500);
         setTimeout(attachEventListeners, 1500);
-
+    
         await fetchModifications(); // ✅ Fetch and apply modifications
-    });
-
-
-    async function saveModifications(elementId, css, elementStructure = null) {
-        if (!pageId || !elementId || !css) {
-            console.warn("⚠️ Missing required data to save modifications.");
-            return;
-        }
-
-        const parentElement = document.getElementById(elementId)?.parentElement;
-        const fullContent = parentElement ? parentElement.innerHTML : "";
-
-        const modificationData = {
-            userId,
-            token,
-            widgetId,
-            modifications: [{
-                pageId,
-                elements: [{
-                    elementId,
-                    css: {
-                        span: {
-                            id: elementId,
-                            ...css
+        });
+    
+    
+        async function saveModifications(elementId, css, elementStructure = null) {
+            if (!pageId || !elementId || !css) {
+                console.warn("⚠️ Missing required data to save modifications.");
+                return;
+            }
+        
+            const parentElement = document.getElementById(elementId)?.parentElement;
+            const fullContent = parentElement ? parentElement.innerHTML : "";
+        
+            const modificationData = {
+                userId,
+                token,
+                widgetId,
+                modifications: [{
+                    pageId,
+                    elements: [{
+                        elementId,
+                        css: {
+                            span: {
+                                id: elementId,
+                                ...css
+                            }
+                        },
+                        elementStructure: elementStructure || {
+                            type: 'span',
+                            className: 'squareCraft-font-modified',
+                            content: document.getElementById(elementId)?.textContent || '',
+                            parentId: parentElement?.id || null,
+                            fullContent: fullContent // Store the full sentence
                         }
-                    },
-                    elementStructure: elementStructure || {
-                        type: 'span',
-                        className: 'squareCraft-font-modified',
-                        content: document.getElementById(elementId)?.textContent || '',
-                        parentId: parentElement?.id || null,
-                        fullContent: fullContent // Store the full sentence
-                    }
+                    }]
                 }]
-            }]
-        };
-
-        try {
-            const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                    "userId": userId,
-                    "pageId": pageId,
-                    "widget-id": widgetId,
-                },
-                body: JSON.stringify(modificationData),
-            });
-
-            const result = await response.json();
-            console.log("✅ Changes Saved Successfully!", result);
-            return result;
-        } catch (error) {
-            console.error("❌ Error saving modifications:", error);
+            };
+        
+            try {
+                const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                        "userId": userId,
+                        "pageId": pageId,
+                        "widget-id": widgetId,
+                    },
+                    body: JSON.stringify(modificationData),
+                });
+        
+                const result = await response.json();
+                console.log("✅ Changes Saved Successfully!", result);
+                return result;
+            } catch (error) {
+                console.error("❌ Error saving modifications:", error);
+            }
         }
-    }
-
-
-
-    async function resetModifications() {
+        
+    
+    
+        async function resetModifications() {
         const userId = localStorage.getItem("squareCraft_u_id");
         const token = localStorage.getItem("squareCraft_auth_token");
         const widgetId = localStorage.getItem("squareCraft_w_id");
         const pageId = getPageId(); // Ensure pageId is retrieved
-
+    
         if (!userId || !token || !widgetId || !pageId) {
             console.warn(
-                "⚠️ Missing required parameters: userId, token, widgetId, or pageId."
+            "⚠️ Missing required parameters: userId, token, widgetId, or pageId."
             );
             return;
         }
-
+    
         try {
             const requestData = {
-                userId: userId,
-                token: token,
-                widgetId: widgetId,
-                pageId: pageId,
+            userId: userId,
+            token: token,
+            widgetId: widgetId,
+            pageId: pageId,
             };
-
+    
             const response = await fetch(
-                "https://webefo-backend.vercel.app/api/v1/modifications/elements",
-                {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(requestData), // ✅ Send required data in the request body
-                }
-            );
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("❌ Error resetting modifications:", errorData);
-                return;
+            "https://webefo-backend.vercel.app/api/v1/modifications/elements",
+            {
+                method: "DELETE",
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(requestData), // ✅ Send required data in the request body
             }
-
+            );
+    
+            if (!response.ok) {
+            const errorData = await response.json();
+            console.error("❌ Error resetting modifications:", errorData);
+            return;
+            }
+    
             console.log("✅ Modifications reset successfully!");
-
+    
             // Step 2: Remove all injected styles
             document
-                .querySelectorAll("style[id^='style-']")
-                .forEach((styleTag) => styleTag.remove());
-
+            .querySelectorAll("style[id^='style-']")
+            .forEach((styleTag) => styleTag.remove());
+    
             // Step 3: Clear stored data in localStorage (only UI-related, not user credentials)
             localStorage.removeItem("squareCraft_auth_token");
             localStorage.removeItem("squareCraft_u_id");
             localStorage.removeItem("squareCraft_w_id");
-
+    
             // Step 4: Reset UI elements to default values
             document.getElementById("squareCraftFontSize").value = "16";
             document.getElementById("squareCraftFontWeight").value = "400";
-
+    
             console.log("🎯 Reset complete. All styles and elements removed.");
         } catch (error) {
             console.error("❌ Error resetting modifications:", error);
         }
-    }
-
-    function createWidget() {
+        }
+    
+        function createWidget() {
         const widgetContainer = document.createElement("div");
         widgetContainer.id = "squarecraft-widget-container";
         widgetContainer.classList.add(
@@ -298,7 +340,7 @@
             "squareCraft-z-99999"
         );
         widgetContainer.style.display = "none"; // Hide the widget by default
-
+    
         widgetContainer.innerHTML = `
             <div
                 class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
@@ -444,11 +486,11 @@
                             squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
                             squareCraft-mt-1">
                             ${LetterSpacing?.map(
-            (gap) => `
+                            (gap) => `
                             <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm"
                                 data-value="${gap}">${gap}</div>
                             `
-        ).join("")}
+                            ).join("")}
                         </div>   
                     </div>
                     </div>
@@ -511,15 +553,15 @@
         document.documentElement.appendChild(widgetContainer);
         makeWidgetDraggable();
         setInterval(makeWidgetDraggable, 1000);
-    }
-
-    function createWidgetIcon() {
+        }
+    
+        function createWidgetIcon() {
         if (document.getElementById("squarecraft-widget-icon")) return;
-
+    
         const widgetIcon = document.createElement("img");
         widgetIcon.id = "squarecraft-widget-icon";
         widgetIcon.src = "https://i.ibb.co.com/pry1mVGD/Group-28-1.png"; // Icon URL
-
+    
         widgetIcon.classList.add(
             "squareCraft-absolute",
             "squareCraft-top-5",
@@ -532,19 +574,19 @@
             "squareCraft-cursor-pointer",
             "squareCraft-z-9999"
         );
-
+    
         widgetIcon.addEventListener("click", function () {
             alert("Click on an element to open the widget.");
         });
-
+    
         document.body.appendChild(widgetIcon);
-    }
-
-    setInterval(makeWidgetDraggable, 1000);
-
-    function makeWidgetDraggable() {
+        }
+    
+        setInterval(makeWidgetDraggable, 1000);
+    
+        function makeWidgetDraggable() {
         const widget = document.getElementById("squarecraft-widget-container");
-
+    
         if (!widget) {
             console.warn(":x: Widget not found.");
             return;
@@ -552,63 +594,63 @@
         widget.style.position = "fixed";
         widget.style.cursor = "grab";
         widget.style.zIndex = "999";
-
+    
         let offsetX = 0,
             offsetY = 0,
             isDragging = false;
-
+    
         widget.addEventListener("mousedown", (event) => {
             if (
-                event.target.tagName === "INPUT" ||
-                event.target.tagName === "SELECT" ||
-                event.target.isContentEditable
+            event.target.tagName === "INPUT" ||
+            event.target.tagName === "SELECT" ||
+            event.target.isContentEditable
             ) {
-                return;
+            return;
             }
-
+    
             event.preventDefault();
             isDragging = true;
-
+    
             offsetX = event.clientX - widget.getBoundingClientRect().left;
             offsetY = event.clientY - widget.getBoundingClientRect().top;
-
+    
             widget.style.transition = "none";
             widget.style.userSelect = "none";
             widget.style.cursor = "grabbing";
-
+    
             document.addEventListener("mousemove", moveAt);
             document.addEventListener("mouseup", stopDragging);
         });
-
+    
         function moveAt(event) {
             if (!isDragging) return;
-
+    
             let newX = event.clientX - offsetX;
             let newY = event.clientY - offsetY;
             newX = Math.max(
-                0,
-                Math.min(window.innerWidth - widget.offsetWidth, newX)
+            0,
+            Math.min(window.innerWidth - widget.offsetWidth, newX)
             );
             newY = Math.max(
-                0,
-                Math.min(window.innerHeight - widget.offsetHeight, newY)
+            0,
+            Math.min(window.innerHeight - widget.offsetHeight, newY)
             );
-
+    
             widget.style.left = `${newX}px`;
             widget.style.top = `${newY}px`;
         }
-
+    
         function stopDragging() {
             isDragging = false;
             widget.style.cursor = "grab";
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
-
+    
             // Save last position in localStorage
             localStorage.setItem("widget_X", widget.style.left);
             localStorage.setItem("widget_Y", widget.style.top);
         }
-
+    
         // Restore last saved position
         let lastX = localStorage.getItem("widget_X");
         let lastY = localStorage.getItem("widget_Y");
@@ -619,27 +661,27 @@
             widget.style.left = "50px"; // Default position
             widget.style.top = "50px";
         }
-    }
-
-    makeWidgetDraggable();
-
-    setTimeout(makeWidgetDraggable, 1000);
-
-    window.addEventListener("load", () => {
+        }
+    
+        makeWidgetDraggable();
+    
+        setTimeout(makeWidgetDraggable, 1000);
+    
+        window.addEventListener("load", () => {
         setTimeout(makeWidgetDraggable, 500); // Wait for the widget to load
         createWidgetIcon();
-    });
-    window.addEventListener("load", async () => {
+        });
+        window.addEventListener("load", async () => {
         await fetchModifications();
         createWidget(); // Ensure widget is created first
         setTimeout(makeWidgetDraggable, 500); // Apply draggability after it's added to DOM
         setTimeout(attachEventListeners, 1500);
-    });
-
-    async function loadFontsWithPagination(page = 1, perPage = 20) {
+        });
+    
+        async function loadFontsWithPagination(page = 1, perPage = 20) {
         try {
             const response = await fetch(
-                "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
+            "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
             );
             const data = await response.json();
             return data.items.slice((page - 1) * perPage, page * perPage); // Paginate fonts
@@ -647,22 +689,22 @@
             console.error("❌ Error fetching Google Fonts:", error);
             return [];
         }
-    }
-    let selectedFontText = document.querySelector("#squareCraft-font-family");
-    async function fontfamilies() {
+        }
+    
+        async function fontfamilies() {
         const response = await fetch(
             "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
         );
         const data = await response.json();
-
+    
         const fontDropdown = document.getElementById("squareCraft-font-family");
         const fontWeightDropdown = document.getElementById("squareCraftFontWeight");
-
+    
         if (!fontDropdown || !fontWeightDropdown) {
             console.error("Dropdown elements not found!");
             return;
         }
-
+    
         fontDropdown.style.position = "relative";
         fontDropdown.style.width = "100%";
         fontDropdown.style.border = "1px solid #585858";
@@ -673,23 +715,23 @@
         fontDropdown.style.alignItems = "center";
         fontDropdown.style.justifyContent = "space-between";
         fontDropdown.style.cursor = "pointer";
-
-      
+    
+        let selectedFontText = document.createElement("p");
         selectedFontText.textContent = "Select a Font";
         selectedFontText.style.flexGrow = "1";
         selectedFontText.style.fontSize = "14px";
         selectedFontText.classList.add("squareCraft-universal");
-
+    
         const dropdownArrow = document.createElement("img");
         dropdownArrow.src =
             "https://fatin-webefo.github.io/squareCraft-Plugin/public/arrow.svg";
         dropdownArrow.style.width = "12px";
         dropdownArrow.style.height = "12px";
         dropdownArrow.style.transform = "rotate(180deg)";
-
+    
         fontDropdown.appendChild(selectedFontText);
         fontDropdown.appendChild(dropdownArrow);
-
+    
         const fontList = document.createElement("div");
         fontList.style.position = "absolute";
         fontList.style.top = "100%";
@@ -702,7 +744,7 @@
         fontList.style.maxHeight = "200px";
         fontList.style.display = "none";
         fontList.style.zIndex = "1000";
-
+    
         // Populate font-family dropdown
         data.items.forEach((font) => {
             const option = document.createElement("div");
@@ -713,278 +755,248 @@
             option.style.transition = "background 0.3s";
             option.style.color = "white";
             option.style.fontSize = "14px";
-
+    
             option.addEventListener("mouseover", () => {
-                option.style.background = "#444";
+            option.style.background = "#444";
             });
-
+    
             option.addEventListener("mouseout", () => {
-                option.style.background = "transparent";
+            option.style.background = "transparent";
             });
-
+    
             option.addEventListener("click", async () => {
-                if (!selectedElement) {
-                    console.warn("⚠️ No element selected.");
-                    return;
-                }
-
-                let selectedFont = font.family;
-                selectedFontText.textContent = selectedFont;
-                selectedFontText.style.fontFamily = selectedFont;
-                fontList.style.display = "none";
-
-                selectedElement.style.setProperty("font-family", selectedFont, "important");
-                selectedElement.style.cssText += `font-family: '${selectedFont}' !important;`;
-
-                selectedElement.setAttribute("data-font-family", selectedFont);
-
-                let css = { "font-family": selectedFont };
-                applyStylesToElement(selectedElement.id, css);
-
-                try {
-                    await saveModifications(selectedElement.id, css);
-                    console.log(`✅ Real-time font change applied: ${selectedFont} for ${selectedElement.id}`);
-                } catch (error) {
-                    console.error("❌ Error saving font change:", error);
-                }
-
-                let appliedFont = window.getComputedStyle(selectedElement).fontFamily;
-                console.log(`🔍 Verified Applied Font: ${appliedFont}`);
-                await changeFont(selectedFont);
+            if (!selectedElement) {
+                console.warn("⚠️ No element selected.");
+                return;
+            }
+    
+            let selectedFont = font.family;
+            selectedFontText.textContent = selectedFont;
+            selectedFontText.style.fontFamily = selectedFont;
+            fontList.style.display = "none";
+    
+            // Apply font-family immediately
+            let css = { "font-family": selectedFont };
+            applyStylesToElement(selectedElement.id, css);
+    
+            // Save modifications immediately without waiting
+            saveModifications(selectedElement.id, css);
+    
+            console.log("🎨 Applied font:", selectedFont, "to", selectedElement.id);
+    
+            // Update font-weight dropdown dynamically
+            updateFontWeightDropdown(font.variants);
             });
-
-
-
+    
             fontList.appendChild(option);
         });
-
+    
         fontDropdown.appendChild(fontList);
-
+    
         fontDropdown.addEventListener("click", (event) => {
             event.stopPropagation();
             fontList.style.display =
-                fontList.style.display === "block" ? "none" : "block";
+            fontList.style.display === "block" ? "none" : "block";
         });
-
+    
         document.addEventListener("click", () => {
             fontList.style.display = "none";
         });
-
+    
         // **Function to Update Font Weight Dropdown**
         function updateFontWeightDropdown(variants) {
             fontWeightDropdown.innerHTML = ""; // Clear existing options
-
+    
             if (!variants || variants.length === 0) {
-                console.warn("No font weights found for the selected font.");
-                fontWeightDropdown.innerHTML = `<option value="400" selected>Regular (400)</option>`;
-                return;
+            console.warn("No font weights found for the selected font.");
+            fontWeightDropdown.innerHTML = `<option value="400" selected>Regular (400)</option>`;
+            return;
             }
-
+    
             variants.forEach((variant) => {
-                let weight = variant === "regular" ? "400" : variant; // Convert "regular" to 400
-                let option = document.createElement("option");
-                option.value = weight;
-                option.textContent = `Weight ${weight}`;
-                fontWeightDropdown.appendChild(option);
+            let weight = variant === "regular" ? "400" : variant; // Convert "regular" to 400
+            let option = document.createElement("option");
+            option.value = weight;
+            option.textContent = `Weight ${weight}`;
+            fontWeightDropdown.appendChild(option);
             });
         }
-    }
-
-    fontfamilies();
-    async function changeFont(selectedFont) {
-        if (!selectedElement) {
-            console.warn("⚠️ No element selected.");
-            return;
         }
-
-        selectedElement.style.setProperty("font-family", selectedFont, "important");
-        selectedElement.setAttribute("data-font-family", selectedFont);
-
-        let css = { "font-family": selectedFont };
-        applyStylesToElement(selectedElement.id, css);
-        await saveModifications(selectedElement.id, css);
-
-        console.log(`✅ Font changed to: ${selectedFont} for ${selectedElement.id}`);
-
-        let appliedFont = window.getComputedStyle(selectedElement).fontFamily;
-        console.log(`🔍 Verified Applied Font: ${appliedFont}`);
-    }
-
-
-
-
-    function attachEventListeners() {
+    
+        fontfamilies();
+    
+        function attachEventListeners() {
         document.body.addEventListener("click", (event) => {
             let block = event.target.closest('[id^="block-"]');
             if (!block) return;
-
+    
             if (selectedElement) selectedElement.style.outline = "";
             selectedElement = block;
             selectedElement.style.outline = "2px dashed #EF7C2F";
-
-            let computedFontFamily = window.getComputedStyle(selectedElement).fontFamily;
-            selectedFontText.textContent = computedFontFamily;
-            selectedFontText.style.fontFamily = computedFontFamily;
-        });;
-
+    
+            console.log(`✅ Selected Element: ${selectedElement.id}`);
+        });
+    
         document
             .getElementById("squareCraftPublish")
             .addEventListener("click", async () => {
-                if (!selectedElement) {
-                    console.warn("⚠️ No element selected.");
-                    return;
-                }
-
-                let css = {
-                    "font-family": document
-                        .getElementById("squareCraft-font-family")
-                        .querySelector("p").textContent,
-                    "font-weight": document.getElementById("squareCraftFontWeight").value, // Use selected font weight
-                    "font-aligment-icon":
-                        document.document.querySelectorAll(".alignment-icon").value,
-                    "font-size":
-                        document.getElementById("squareCraftFontSize").value + "px",
-                    "line-height":
-                        document.getElementById("squareCraftLineHeight").value + "px",
-                    // "font-sizeText": document.getElementById("squareCraftFontSizeInput").value + "px",
-                    // "text-decoration": document.document.querySelectorAll(".elements-font-style").value,
-                    "text-decoration": textDecorationValue,
-                    "text-transform": document.querySelectorAll(
-                        ".squsareCraft-text-transform"
-                    ).value,
-                };
-
-                await saveModifications(selectedElement.id, css);
+            if (!selectedElement) {
+                console.warn("⚠️ No element selected.");
+                return;
+            }
+    
+            let css = {
+                "font-family": document
+                .getElementById("squareCraft-font-family")
+                .querySelector("p").textContent,
+                "font-weight": document.getElementById("squareCraftFontWeight").value, // Use selected font weight
+                "font-aligment-icon":
+                document.document.querySelectorAll(".alignment-icon").value,
+                "font-size":
+                document.getElementById("squareCraftFontSize").value + "px",
+                "line-height":
+                document.getElementById("squareCraftLineHeight").value + "px",
+                // "font-sizeText": document.getElementById("squareCraftFontSizeInput").value + "px",
+                // "text-decoration": document.document.querySelectorAll(".elements-font-style").value,
+                "text-decoration": textDecorationValue,
+                "text-transform": document.querySelectorAll(
+                ".squsareCraft-text-transform"
+                ).value,
+            };
+    
+            await saveModifications(selectedElement.id, css);
             });
-
+    
         // Add this event listener for font-weight dropdown
         document
             .getElementById("squareCraftFontWeight")
             .addEventListener("change", () => {
-                if (selectedElement) {
-                    let css = {
-                        "font-weight": document.getElementById("squareCraftFontWeight")
-                            .value,
-                    };
-                    applyStylesToElement(selectedElement.id, css);
-                    saveModifications(selectedElement.id, css);
-                }
+            if (selectedElement) {
+                let css = {
+                "font-weight": document.getElementById("squareCraftFontWeight")
+                    .value,
+                };
+                applyStylesToElement(selectedElement.id, css);
+                saveModifications(selectedElement.id, css);
+            }
             });
-
+    
         document.querySelectorAll(".alignment-icon").forEach((icon) => {
             icon.addEventListener("click", async function () {
-                if (!selectedElement) return;
-                const alignment = this.getAttribute("data-align");
-                let css = { "text-align": alignment };
-                applyStylesToElement(selectedElement.id, css);
-                await saveModifications(selectedElement.id, css);
-
+            if (!selectedElement) return;
+            const alignment = this.getAttribute("data-align");
+            let css = { "text-align": alignment };
+            applyStylesToElement(selectedElement.id, css);
+            await saveModifications(selectedElement.id, css);
+            console.log(
+                `:white_check_mark: Applied text alignment: ${alignment} to ${selectedElement.id}`
+            );
             });
         });
-
+    
         // Font style (Bold, Italic, Underline, etc.)
         document.querySelectorAll(".elements-font-style").forEach((btn) => {
             btn.addEventListener("click", function () {
-                if (!selectedElement) {
-                    console.warn("⚠️ No element selected to apply text decoration.fsdsd");
-                    return;
+            if (!selectedElement) {
+                console.warn("⚠️ No element selected to apply text decoration.fsdsd");
+                return;
+            }
+    
+            let styleType = this.dataset.style;
+            let css = {};
+    
+            if (styleType === "bold") {
+                let currentWeight = parseInt(
+                window.getComputedStyle(selectedElement).fontWeight,
+                10
+                );
+                css["font-weight"] = currentWeight >= 700 ? "900" : "700";
+            } else if (styleType === "italic") {
+                let currentStyle = window.getComputedStyle(selectedElement).fontStyle;
+                css["font-style"] = currentStyle === "italic" ? "italic" : "italic";
+            } else {
+                let currentDecoration =
+                window.getComputedStyle(selectedElement).textDecorationLine;
+                if (styleType === "underline") {
+                css["text-decoration"] = currentDecoration.includes("underline")
+                    ? "none"
+                    : "underline";
+                } else if (styleType === "dotted") {
+                css["text-decoration"] = currentDecoration.includes("dotted")
+                    ? "none"
+                    : "underline dotted";
+                } else if (styleType === "line-through") {
+                css["text-decoration"] = currentDecoration.includes("line-through")
+                    ? "none"
+                    : "line-through";
                 }
-
-                let styleType = this.dataset.style;
-                let css = {};
-
-                if (styleType === "bold") {
-                    let currentWeight = parseInt(
-                        window.getComputedStyle(selectedElement).fontWeight,
-                        10
-                    );
-                    css["font-weight"] = currentWeight >= 700 ? "900" : "700";
-                } else if (styleType === "italic") {
-                    let currentStyle = window.getComputedStyle(selectedElement).fontStyle;
-                    css["font-style"] = currentStyle === "italic" ? "italic" : "italic";
-                } else {
-                    let currentDecoration =
-                        window.getComputedStyle(selectedElement).textDecorationLine;
-                    if (styleType === "underline") {
-                        css["text-decoration"] = currentDecoration.includes("underline")
-                            ? "none"
-                            : "underline";
-                    } else if (styleType === "dotted") {
-                        css["text-decoration"] = currentDecoration.includes("dotted")
-                            ? "none"
-                            : "underline dotted";
-                    } else if (styleType === "line-through") {
-                        css["text-decoration"] = currentDecoration.includes("line-through")
-                            ? "none"
-                            : "line-through";
-                    }
-                }
-
-                applyStylesToElement(selectedElement.id, css);
-                saveModifications(selectedElement.id, css);
+            }
+    
+            applyStylesToElement(selectedElement.id, css);
+            saveModifications(selectedElement.id, css);
             });
         });
-
+    
         const fontStyleUndoButton = document.querySelector(
             ".squareCraft-rounded-6px.squareCraft-rotate-180.squareCraft-px-1_5.squsareCraft-font-style.squareCraft-cursor-pointer"
         );
-
+    
         fontStyleUndoButton.addEventListener("click", async function () {
             if (!selectedElement) return;
-
+    
             // Reset font styles
             let css = {
-                "font-weight": "400", // Reset to Regular (default)
-                "font-style": "normal", // Reset to normal (default)
-                "text-decoration": "none", // Remove underline, dotted, or line-through
+            "font-weight": "400", // Reset to Regular (default)
+            "font-style": "normal", // Reset to normal (default)
+            "text-decoration": "none", // Remove underline, dotted, or line-through
             };
-
+    
             // Apply styles to the selected element
             applyStylesToElement(selectedElement.id, css);
-
+    
             // Save the reset modifications
             await saveModifications(selectedElement.id, css);
-
+    
             console.log("🛑 Font styles reset for:", selectedElement.id);
         });
-
-
+    
+        
         // Add this at the top level of your script with other variables
         let lastSelectedText = null;
         let lastSelectedRange = null;
-
+    
         // Update the mouseup event listener
         document.addEventListener("mouseup", function () {
             const selection = window.getSelection();
             if (selection.rangeCount > 0 && selection.toString().trim().length > 0) {
-                lastSelectedText = selection.toString();
-                lastSelectedRange = selection.getRangeAt(0);
-                console.log("✅ Text Selected:", lastSelectedText);
+            lastSelectedText = selection.toString();
+            lastSelectedRange = selection.getRangeAt(0);
+            console.log("✅ Text Selected:", lastSelectedText);
             }
         });
-
-        document.getElementById("squareCraftFontSize").addEventListener("input", async function () {
+    
+        document.getElementById("squareCraftFontSize").addEventListener("input", async function() {
             if (!lastSelectedRange || !lastSelectedText) {
                 console.warn("⚠️ No text selected");
                 return;
             }
-
+        
             const fontSize = this.value + "px";
-
+            
             try {
                 // Get the parent paragraph or containing element
                 const container = lastSelectedRange.commonAncestorContainer.parentElement;
-
+                
                 // Store the full content before modification
                 const fullContent = container.innerHTML;
-
+                
                 // Create span element
                 const span = document.createElement("span");
                 span.id = `squareCraft-mod-${Date.now()}`;
                 span.className = "squareCraft-font-modified";
                 span.style.fontSize = fontSize;
                 span.textContent = lastSelectedText;
-
+        
                 // Create element structure with context
                 const elementStructure = {
                     type: 'span',
@@ -995,93 +1007,95 @@
                     startOffset: lastSelectedRange.startOffset,
                     endOffset: lastSelectedRange.endOffset
                 };
-
+        
                 // Replace selected text with span
                 lastSelectedRange.deleteContents();
                 lastSelectedRange.insertNode(span);
-
+        
                 // Save to database with proper structure
                 await saveModifications(
                     span.id,
                     { "font-size": fontSize },
                     elementStructure
                 );
-
+        
                 console.log("✅ Font size modified and saved:", fontSize);
             } catch (error) {
                 console.error("❌ Error applying font size:", error);
             }
         });
-
-
+        
+    
         document
             .getElementById("squareCraftLineHeight")
             .addEventListener("input", function () {
-                if (selectedElement) {
-                    let lineHeight = this.value + "px";
-                    let css = { "line-height": lineHeight };
-                    applyStylesToElement(selectedElement.id, css);
-                    saveModifications(selectedElement.id, css);
-                }
+            if (selectedElement) {
+                let lineHeight = this.value + "px";
+                let css = { "line-height": lineHeight };
+                applyStylesToElement(selectedElement.id, css);
+                saveModifications(selectedElement.id, css);
+            }
             });
-
+    
         document
             .querySelectorAll(".squsareCraft-text-transform")
             .forEach((textTransform) => {
-                textTransform.addEventListener("click", async function () {
-                    if (!selectedElement) return;
-                    const transform = this.getAttribute("data-transform");
-                    let css = { "text-transform": transform };
-                    applyStylesToElement(selectedElement.id, css);
-                    await saveModifications(selectedElement.id, css);
-                });
+            textTransform.addEventListener("click", async function () {
+                if (!selectedElement) return;
+                const transform = this.getAttribute("data-transform");
+                let css = { "text-transform": transform };
+                applyStylesToElement(selectedElement.id, css);
+                await saveModifications(selectedElement.id, css);
             });
-
+            });
+    
         const undoButton = document.querySelector(
             ".squareCraft-rounded-6px.squareCraft-rotate-180.squareCraft-px-1_5.squsareCraft-text-transform.squareCraft-cursor-pointer"
         );
-
+    
         undoButton.addEventListener("click", async function () {
             if (!selectedElement) return;
-
+    
             // Remove text-transform property by setting it to 'none'
             let css = { "text-transform": "none" };
-
+    
             // Apply styles to the element
             applyStylesToElement(selectedElement.id, css);
-
+    
             // Remove saved modifications for text-transform
             await saveModifications(selectedElement.id, css);
-
+    
             console.log("🛑 Text transform removed for:", selectedElement.id);
         });
-
+    
         //   hover code start here
         const hoverButton = document.querySelector(
             ".squareCraft-cursor-pointer.squareCraft-bg-3f3f3f.squareCraft-hover"
         );
         hoverButton.addEventListener("click", function () {
             if (!selectedElement) {
-                console.warn("⚠️ No element selected to apply hover effect.");
-                return;
+            console.warn("⚠️ No element selected to apply hover effect.");
+            return;
             }
-
+    
             const elementId = selectedElement.id;
             if (!elementId) return;
-
+    
             console.log("🎨 Hover mode activated for:", elementId);
-
+    
             // Define the hover effect styles
             const hoverCSS = {
-                "background-color": "#ff5733", // Change background color on hover
-                transition: "background-color 0.3s ease-in-out",
+            "background-color": "#ff5733", // Change background color on hover
+            transition: "background-color 0.3s ease-in-out",
             };
-
+    
+            // Remove old hover styles if any
             let existingHoverStyle = document.getElementById(
-                `hover-style-${elementId}`
+            `hover-style-${elementId}`
             );
             if (existingHoverStyle) existingHoverStyle.remove();
-
+    
+            // Create a new style element for hover effect
             const styleTag = document.createElement("style");
             styleTag.id = `hover-style-${elementId}`;
             styleTag.innerHTML = `
@@ -1091,37 +1105,50 @@
                 }
             `;
             document.head.appendChild(styleTag);
-
+    
+            // Save modifications to the backend
             saveModifications(elementId, { ":hover": hoverCSS });
+    
+            console.log("✨ Hover effect applied to:", elementId);
         });
+    
+        // Attach event listener to the reset button
         document
             .getElementById("squareCraftReset")
             .addEventListener("click", async () => {
-                const confirmReset = confirm(
-                    "Are you sure you want to reset all modifications?"
-                );
-                if (confirmReset) {
-                    await resetModifications();
-                }
+            const confirmReset = confirm(
+                "Are you sure you want to reset all modifications?"
+            );
+            if (confirmReset) {
+                await resetModifications();
+            }
             });
-
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
+    
+        //   document.getElementById("squareCraftFontSizeInput").addEventListener("input", function () {
+        //     if (selectedElement) {
+        //         let fontSize = this.value + "px";
+        //         let css = { "font-size": fontSize };
+        //         applyStylesToElement(selectedElement.id, css);
+        //         saveModifications(selectedElement.id, css);
+        //     }
+        // });
+        }
+    
+        document.addEventListener("DOMContentLoaded", function () {
         createWidgetIcon();
-
+    
         makeWidgetDraggable();
         function insertCustomAdminIcon() {
             const adminNavbar = document.querySelector("[data-test='editor-header']"); // Target the Squarespace admin navbar
-
+    
             if (!adminNavbar) {
-                console.warn("Admin navbar not found. Retrying...");
-                setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
-                return;
+            console.warn("Admin navbar not found. Retrying...");
+            setTimeout(insertCustomAdminIcon, 1000); // Retry in case the page hasn't fully loaded
+            return;
             }
-
+    
             if (document.getElementById("customAdminIcon")) return;
-
+    
             const customIcon = document.createElement("img");
             customIcon.src = "https://i.ibb.co.com/VpxFTKBz/Group-29.jpg"; // Your icon URL
             customIcon.id = "customAdminIcon";
@@ -1129,53 +1156,59 @@
             customIcon.style.marginLeft = "15px"; // Adjust spacing
             customIcon.style.width = "32px"; // Icon size
             customIcon.style.height = "32px";
-
+    
             customIcon.addEventListener("click", function () {
-                alert("Custom Plugin Clicked!");
+            alert("Custom Plugin Clicked!");
             });
-
+    
             adminNavbar.appendChild(customIcon);
             console.log("✅ Custom admin icon added!");
         }
-
+    
         insertCustomAdminIcon();
         function checkURL() {
             const currentURL = window.location.href;
             let widgetContainer = document.getElementById(
-                "squarecraft-widget-container"
+            "squarecraft-widget-container"
             );
-
-
+    
+            console.log("Current URL:", currentURL);
+    
             if (currentURL.includes("/#")) {
-
-                if (!widgetContainer) {
-                    createWidget();
-                    setTimeout(() => {
-                        widgetContainer = document.getElementById(
-                            "squarecraft-widget-container"
-                        );
-                        if (widgetContainer) makeWidgetDraggable();
-                    }, 500);
-                } else {
-                    widgetContainer.style.display = "block";
-                    makeWidgetDraggable();
-                }
+            console.log("✅ Widget is VISIBLE on the Code Injection page.");
+    
+            if (!widgetContainer) {
+                createWidget();
+                setTimeout(() => {
+                widgetContainer = document.getElementById(
+                    "squarecraft-widget-container"
+                );
+                if (widgetContainer) makeWidgetDraggable();
+                }, 500);
             } else {
-                console.log("❌ Widget is HIDDEN on other pages.");
-                if (widgetContainer) widgetContainer.style.display = "none";
+                widgetContainer.style.display = "block";
+                makeWidgetDraggable();
+            }
+            } else {
+            console.log("❌ Widget is HIDDEN on other pages.");
+            if (widgetContainer) widgetContainer.style.display = "none";
             }
         }
-
+    
         checkURL();
         setInterval(checkURL, 1000);
         setInterval(makeWidgetDraggable, 1000);
-
+    
         createWidget();
         makeWidgetDraggable();
         attachEventListeners();
         fetchModifications();
         makeWidgetDraggable();
-
+    
+        // const fontSizeInput = document.getElementById("squareCraftFontSizeInput");
+        // const dropdownArrow = document.getElementById("squareCraftFontSizeDropdown");
+        // const dropdownOptions = document.getElementById("squareCraftFontSizeOptions");
+    
         const fontSize = document.getElementById("squareCraftFontSize");
         const dropdownArrow = document.getElementById(
             "squareCraftFontSizeDropdown"
@@ -1183,55 +1216,56 @@
         const dropdownOptions = document.getElementById(
             "squareCraftFontSizeOptions"
         );
-
+    
         document.body.addEventListener("click", (event) => {
             let block = event.target.closest('[id^="block-"]');
             if (!block) return;
-
+    
             if (selectedElement) {
-                selectedElement.style.fontSize = fontSizes + "px";
+            selectedElement.style.fontSize = fontSizes + "px";
             }
-
+    
             selectedElement = block;
             selectedElement.style.outline = "2px dashed #EF7C2F";
-
+    
             let computedFontSize = window.getComputedStyle(selectedElement).fontSize;
             fontSizeInput.value = parseInt(computedFontSize, 10);
         });
-
+    
         dropdownArrow.addEventListener("click", function (event) {
             event.stopPropagation();
             dropdownOptions.classList.toggle("squareCraft-hidden");
         });
-
+    
         dropdownOptions.addEventListener("click", function (event) {
             if (event.target.classList.contains("squareCraft-dropdown-item")) {
-                fontSizeInput.value = event.target.dataset.value;
-                dropdownOptions.classList.add("squareCraft-hidden");
-
-                if (selectedElement) {
-                    let css = { "font-size": `${event.target.dataset.value}px` };
-                    applyStylesToElement(selectedElement.id, css);
-                    saveModifications(selectedElement.id, css);
-                }
-            }
-        });
-
-        document.addEventListener("click", function (event) {
-            if (
-                !dropdownArrow.contains(event.target) &&
-                !dropdownOptions.contains(event.target)
-            ) {
-                dropdownOptions.classList.add("squareCraft-hidden");
-            }
-        });
-
-        fontSizeInput.addEventListener("input", function () {
+            fontSizeInput.value = event.target.dataset.value;
+            dropdownOptions.classList.add("squareCraft-hidden");
+    
             if (selectedElement) {
-                let css = { "font-size": `${fontSizeInput.value}px` };
+                let css = { "font-size": `${event.target.dataset.value}px` };
                 applyStylesToElement(selectedElement.id, css);
                 saveModifications(selectedElement.id, css);
             }
+            }
         });
-    });
-})();
+    
+        document.addEventListener("click", function (event) {
+            if (
+            !dropdownArrow.contains(event.target) &&
+            !dropdownOptions.contains(event.target)
+            ) {
+            dropdownOptions.classList.add("squareCraft-hidden");
+            }
+        });
+    
+        fontSizeInput.addEventListener("input", function () {
+            if (selectedElement) {
+            let css = { "font-size": `${fontSizeInput.value}px` };
+            applyStylesToElement(selectedElement.id, css);
+            saveModifications(selectedElement.id, css);
+            }
+        });
+        });
+    })();
+    
