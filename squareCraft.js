@@ -133,8 +133,8 @@
                 event.target.tagName === "INPUT" || 
                 event.target.tagName === "SELECT" || 
                 event.target.isContentEditable || 
-                event.target.closest("#squareCraftFontDropdown") || // Exclude font dropdown clicks
-                isOverFontFamily // Disable dragging if cursor is over the font family dropdown
+                event.target.closest("#squareCraftFontDropdown") || 
+                isOverFontFamily 
             ) return;
     
             event.preventDefault();
@@ -162,9 +162,6 @@
         }
     }
     
-    
-
-
 
     function injectIcon() {
 
