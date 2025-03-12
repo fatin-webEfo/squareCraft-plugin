@@ -64,12 +64,12 @@ export function html() {
              event.stopPropagation();
              console.log("🖱️ Clicked on #font-family-arrow");
      
-             if (fontDropdown.style.display === "block") {
+             if (fontDropdown.style.display === "absolute") {
                  fontDropdown.style.display = "none";
                  fontDropdown.style.opacity = "0";
                  console.log("📌 Font dropdown closed.");
              } else {
-                 fontDropdown.style.display = "block";
+                 fontDropdown.style.display = "absolute";
                  fontDropdown.style.opacity = "1";
                  fontDropdown.style.position = "absolute";
                  fontDropdown.style.top = `${fontFamilyContainer.offsetHeight + 4}px`; // Position below the input
@@ -175,7 +175,7 @@ export function html() {
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-         <div id="squareCraft-font-family"
+         <div class="squareCraft-relative"><div id="squareCraft-font-family"
             class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-cursor-pointer squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
             <div class="squareCraft-w-full squareCraft-px-2">
                <p id="selected-font-family" class="squareCraft-text-sm squareCraft-poppins squareCraft-font-light">Select Font</p>
@@ -188,7 +188,7 @@ export function html() {
          <!-- Custom Dropdown -->
          <div id="squareCraft-font-dropdown" class="squareCraft-dropdown-content ">
             <ul id="squareCraftFontDropdownList" class="squareCraft-scroll"></ul>
-         </div>
+         </div></div>
 
             <div class="squareCraft-flex squareCraft-bg-transparent squareCraft-h-9 squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4   squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
                <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center ">
