@@ -76,7 +76,7 @@ export function html(){
                   <p class="squareCraft-text-sm  squareCraft-poppins  squareCraft-font-light">Sf Pro sans</p>
                </div>
                <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                  <img class=" squareCraft-rotate-180" width="12px"
+                  <img id="font-family-arrow" class=" squareCraft-rotate-180" width="12px"
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                </div>
                <div id="squareCraftFontDropdown" class="squareCraft-hidden squareCraft-h-44 squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-44 squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute squareCraft-mt-1">
