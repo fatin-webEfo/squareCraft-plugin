@@ -81,7 +81,6 @@ export function html() {
             selectedFontText.style.fontFamily = fontName;
             console.log(`🎯 Selected Font: ${fontName}`);
 
-            fontDropdown.style.display = "none"; // Close dropdown after selection
          });
 
          document.addEventListener("click", function (event) {
