@@ -38,6 +38,8 @@ export function injectNavbarIcon() {
             squareCraftDiv.classList.add("squareCraft-toolbar");
             squareCraftDiv.style.display = "flex";
             squareCraftDiv.style.alignItems = "center";
+            squareCraftDiv.style.border = "1px solid #E5E4E2";
+            squareCraftDiv.style.padding = "6px";
             squareCraftDiv.style.gap = "6px";
 
             const icon = document.createElement("img");
