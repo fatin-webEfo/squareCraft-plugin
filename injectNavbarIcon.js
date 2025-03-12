@@ -1,30 +1,54 @@
 export function injectNavbarIcon() {
-    if (parent.document.querySelector(".squareCraft-admin-icon")) {
-        console.log("ℹ️ SquareCraft icon already exists. Skipping reinjection.");
-        return;
+    if (!parent.document.querySelector(".squareCraft-admin-icon")) {
+        const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+        if (navContainer) {
+            const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+            const icon = document.createElement("img");
+            icon.src = iconSrc;
+            icon.alt = "SquareCraft";
+            icon.style.width = "30px";
+            icon.style.height = "30px";
+            icon.style.borderRadius = "20%";
+            icon.style.marginRight = "6px";
+            icon.style.cursor = "pointer";
+            icon.style.display = "inline-block";
+            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+
+            navContainer.parentNode.insertBefore(icon, navContainer);
+        }
     }
 
-    const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-    if (!navContainer) {
-        console.warn("❌ Squarespace admin nav container not found.");
-        return;
+    if (!parent.document.querySelector(".squareCraft-toolbar")) {
+        const toolbarContainer = parent.document.querySelector('.css-1utwuyz');
+        if (toolbarContainer) {
+            const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+            
+            const squareCraftDiv = document.createElement("div");
+            squareCraftDiv.classList.add("squareCraft-toolbar");
+            squareCraftDiv.style.display = "flex";
+            squareCraftDiv.style.alignItems = "center";
+            squareCraftDiv.style.gap = "6px";
+            squareCraftDiv.style.marginLeft = "auto";
+
+            const icon = document.createElement("img");
+            icon.src = iconSrc;
+            icon.alt = "SquareCraft";
+            icon.style.width = "30px";
+            icon.style.height = "30px";
+            icon.style.borderRadius = "20%";
+            icon.style.cursor = "pointer";
+
+            const text = document.createElement("span");
+            text.innerText = "SquareCraft";
+            text.style.fontSize = "14px";
+            text.style.color = "white";
+            text.style.fontWeight = "bold";
+            text.style.cursor = "pointer";
+
+            squareCraftDiv.appendChild(icon);
+            squareCraftDiv.appendChild(text);
+
+            toolbarContainer.appendChild(squareCraftDiv);
+        }
     }
-
-    const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-
-    function createIcon() {
-        const icon = document.createElement("img");
-        icon.src = iconSrc;
-        icon.alt = "SquareCraft";
-        icon.style.width = "30px";
-        icon.style.height = "30px";
-        icon.style.borderRadius = "20%";
-        icon.style.marginRight = "6px";
-        icon.style.cursor = "pointer";
-        icon.style.display = "inline-block";
-        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-        return icon;
-    }
-
-    navContainer.parentNode.insertBefore(createIcon(), navContainer);
 }
