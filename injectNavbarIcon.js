@@ -27,5 +27,4 @@ export function injectNavbarIcon() {
     }
 
     navContainer.parentNode.insertBefore(createIcon(), navContainer);
-    console.log("✅ SquareCraft icon injected into nav bar!");
 }

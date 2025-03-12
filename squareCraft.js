@@ -5,6 +5,9 @@
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
     }
+    
+    // No changes
+    // Token and Ids
     let token = widgetScript.dataset?.token;
     let squareCraft_u_id = widgetScript.dataset?.uId;
     let squareCraft_w_id = widgetScript.dataset?.wId;
@@ -23,6 +26,20 @@
         localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
         document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
     }
+    // Token and Ids
+
+    // Clicked outline
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+
+        if (selectedElement) selectedElement.style.outline = "";
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
+    });
+    // Clicked outline
     // navbar icon
 
     try {
@@ -34,11 +51,14 @@
     }
     // navbar Icon
 
+    // Css cdn
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.type = "text/css";
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
+    // Css cdn
+    // No changes
 
     let widgetContainer = null;
     let widgetLoaded = false;
@@ -63,7 +83,7 @@
             return;
         }
 
-        fontDropdown.innerHTML = `<option value="">Select Font</option>`; // Reset and add default option
+        fontDropdown.innerHTML = `<option value="">Select Font</option>`; 
         fontList.forEach((font) => {
             const option = document.createElement("option");
             option.value = font.family;
@@ -80,9 +100,9 @@
             if (!fontsLoaded) {
                 await populateFontDropdown();
             }
-            fontDropdown.size = 10; // Expand dropdown on click
+            fontDropdown.size = 10; 
         } else {
-            if (fontDropdown) fontDropdown.size = 1; // Collapse dropdown when clicking outside
+            if (fontDropdown) fontDropdown.size = 1;
         }
     });
 
@@ -135,8 +155,7 @@
     }
 
 
-
-    function makeWidgetDraggable() {
+        function makeWidgetDraggable() {
         if (!widgetContainer) return;
 
         widgetContainer.style.position = "fixed";
@@ -321,14 +340,6 @@
     }
 
     waitForNavBar();
-    document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
 
-        if (selectedElement) selectedElement.style.outline = "";
-        selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-
-        console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
+  
 })();
