@@ -39,7 +39,6 @@ export function injectNavbarIcon() {
             squareCraftDiv.style.display = "flex";
             squareCraftDiv.style.alignItems = "center";
             squareCraftDiv.style.gap = "6px";
-            squareCraftDiv.style.marginLeft = "auto";
 
             const icon = document.createElement("img");
             icon.src = iconSrc;
@@ -52,7 +51,6 @@ export function injectNavbarIcon() {
             const text = document.createElement("span");
             text.innerText = "SquareCraft";
             text.style.fontSize = "14px";
-            text.style.color = "white";
             text.style.fontWeight = "bold";
             text.style.cursor = "pointer";
 
