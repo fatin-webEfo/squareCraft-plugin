@@ -82,7 +82,7 @@
                     document.body.appendChild(widgetContainer);
 
                     console.log("✅ Widget container added:", widgetContainer);
-                    // makeWidgetDraggable();
+                    makeWidgetDraggable();
                     widgetLoaded = true;
 
                     setTimeout(() => {
@@ -127,11 +127,14 @@
         let offsetX = 0, offsetY = 0, isDragging = false;
     
         widgetContainer.addEventListener("mousedown", (event) => {
+            const isOverFontFamily = event.target.closest("#squareCraft-font-family");
+    
             if (
                 event.target.tagName === "INPUT" || 
                 event.target.tagName === "SELECT" || 
                 event.target.isContentEditable || 
-                event.target.closest("#squareCraftFontDropdown") // Exclude font dropdown clicks
+                event.target.closest("#squareCraftFontDropdown") || // Exclude font dropdown clicks
+                isOverFontFamily // Disable dragging if cursor is over the font family dropdown
             ) return;
     
             event.preventDefault();
@@ -158,6 +161,7 @@
             document.removeEventListener("mouseup", stopDragging);
         }
     }
+    
     
 
 
