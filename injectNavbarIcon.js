@@ -19,7 +19,7 @@ export function injectNavbarIcon() {
     }
 
     if (!parent.document.querySelector(".squareCraft-toolbar")) {
-        const toolbarContainer = parent.document.querySelector('.css-1utwuyz');
+        const toolbarContainer = parent.document.querySelector('div.css-1utwuyz');
         if (toolbarContainer) {
             const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
             
