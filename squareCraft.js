@@ -23,6 +23,7 @@
         localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
         document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
     }
+    // navbar icon
 
     try {
         const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
@@ -31,6 +32,7 @@
     } catch (error) {
         console.error("🚨 Failed to load navbar icon script", error);
     }
+    // navbar Icon
 
     const link = document.createElement("link");
     link.rel = "stylesheet";
