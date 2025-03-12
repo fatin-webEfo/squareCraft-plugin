@@ -16,9 +16,6 @@ export function injectNavbarIcon() {
                 icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
 
                 navContainer.parentNode.insertBefore(icon, navContainer);
-                console.log("✅ SquareCraft admin icon inserted.");
-            } else {
-                console.warn("⚠️ Squarespace admin nav container not found.");
             }
         }
     }
@@ -26,14 +23,10 @@ export function injectNavbarIcon() {
     function insertToolbarIcon() {
         if (!parent.document.querySelector(".squareCraft-toolbar")) {
             const toolbarContainer = parent.document.querySelector('div.css-1utwuyz');
-            
-            if (!toolbarContainer) {
-                console.warn("⚠️ Squarespace toolbar container not found.");
-                return;
-            }
+            if (!toolbarContainer) return;
 
             const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-            
+
             const squareCraftDiv = document.createElement("div");
             squareCraftDiv.classList.add("squareCraft-toolbar");
             squareCraftDiv.style.display = "flex";
@@ -60,7 +53,6 @@ export function injectNavbarIcon() {
             squareCraftDiv.appendChild(text);
 
             toolbarContainer.appendChild(squareCraftDiv);
-            console.log("✅ SquareCraft toolbar inserted.");
         }
     }
 
@@ -68,11 +60,13 @@ export function injectNavbarIcon() {
     insertToolbarIcon();
 
     const observer = new MutationObserver(() => {
-        insertAdminIcon();
-        insertToolbarIcon();
+        if (!parent.document.querySelector(".squareCraft-admin-icon")) {
+            insertAdminIcon();
+        }
+        if (!parent.document.querySelector(".squareCraft-toolbar")) {
+            insertToolbarIcon();
+        }
     });
 
     observer.observe(parent.document.body, { childList: true, subtree: true });
-
-    console.log("📡 Watching for DOM changes...");
 }
