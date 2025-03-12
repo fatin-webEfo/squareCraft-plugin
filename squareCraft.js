@@ -210,7 +210,6 @@
         let offsetX = 0, offsetY = 0, isDragging = false;
     
         widgetContainer.addEventListener("mousedown", (event) => {
-            // Prevent dragging if the click is inside a dropdown or input field
             if (
                 event.target.tagName === "INPUT" || 
                 event.target.tagName === "SELECT" || 
