@@ -65,9 +65,6 @@
     // Css cdn
     // No changes
 
-
-    let fontList = []; 
-
     async function fetchFonts() {
         console.log("📡 Fetching fonts from Google Fonts API...");
         
@@ -94,7 +91,6 @@
                 return;
             }
     
-            // Populate dropdown
             dropdown.innerHTML = fontList.map(font => `
                 <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center squareCraft-text-sm" 
                      data-value="${font.family}">${font.family}</div>
@@ -102,7 +98,6 @@
     
             console.log("📌 Font dropdown populated.");
     
-            // Add event listener for font selection
             const fontSelected = document.getElementById("squareCraftFontSelected");
             if (!fontSelected) {
                 console.warn("⚠️ Font selection display element not found.");
@@ -126,28 +121,32 @@
     // Call the function
     fetchFonts();
     
-    setTimeout(() => {
+    document.addEventListener("DOMContentLoaded", function () {
         const fontDropdown = document.getElementById("squareCraftFontDropdown");
         const fontArrow = document.getElementById("font-family-arrow");
-        
-        if (fontArrow && fontDropdown) {
-            fontArrow.addEventListener("click", function (event) {
-                event.stopPropagation();
-                fontDropdown.classList.toggle("squareCraft-hidden");
-                console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
-            });
-        
-            document.addEventListener("click", function (event) {
-                if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
-                    fontDropdown.classList.add("squareCraft-hidden");
-                    console.log("📌 Clicked outside, closing font dropdown.");
-                }
-            });
-        } else {
+    
+        if (!fontDropdown || !fontArrow) {
             console.warn("⚠️ Font dropdown or arrow element not found.");
+            return;
         }
-        
-    }, 500);
+    
+        console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
+    
+        fontArrow.addEventListener("click", function (event) {
+            event.stopPropagation();
+            fontDropdown.classList.toggle("squareCraft-hidden");
+    
+            console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
+        });
+    
+        document.addEventListener("click", function (event) {
+            if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
+                fontDropdown.classList.add("squareCraft-hidden");
+                console.log("📌 Clicked outside, closing font dropdown.");
+            }
+        });
+    });
+    
     
     
     async function createWidget() {

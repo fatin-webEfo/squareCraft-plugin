@@ -911,6 +911,14 @@ font-size: 12px !important;
   z-index: 999999;
 }
 
+#squareCraftFontDropdown {
+  position: absolute;
+  z-index: 99999;
+  background-color: #3f3f3f;
+  display: none; /* Ensures it is hidden initially */
+}
+
+
 .squareCraft-cursor-pointer {
   cursor: pointer !important;
 }
