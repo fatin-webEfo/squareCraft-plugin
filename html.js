@@ -7,102 +7,96 @@ export function html() {
 
    async function initializeFontDropdown() {
       console.log("📡 Initializing font dropdown...");
-  
+
       async function fetchFonts() {
-          console.log("📡 Fetching fonts from Google Fonts API...");
-  
-          try {
-              const response = await fetch(
-                  "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
-              );
-  
-              if (!response.ok) {
-                  throw new Error(`❌ HTTP error! Status: ${response.status}`);
-              }
-  
-              const data = await response.json();
-              if (!data.items || data.items.length === 0) {
-                  throw new Error("❌ No fonts found in API response.");
-              }
-  
-              const fontList = data.items.slice(0, 40);
-              console.log(`✅ Loaded ${fontList.length} fonts.`, fontList);
-  
-              const dropdownList = document.getElementById("squareCraftFontDropdownList");
-  
-              if (!dropdownList) {
-                  console.warn("⚠️ Font dropdown list not found in the DOM.");
-                  return;
-              }
-  
-              dropdownList.innerHTML = fontList.map(font => `
+         console.log("📡 Fetching fonts from Google Fonts API...");
+         try {
+            const response = await fetch(
+               "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
+            );
+
+            if (!response.ok) throw new Error(`❌ HTTP error! Status: ${response.status}`);
+
+            const data = await response.json();
+            if (!data.items || data.items.length === 0) throw new Error("❌ No fonts found in API response.");
+
+            const fontList = data.items.slice(0, 40);
+            console.log(`✅ Loaded ${fontList.length} fonts.`, fontList);
+
+            const dropdownList = document.getElementById("squareCraftFontDropdownList");
+            if (!dropdownList) {
+               console.warn("⚠️ Font dropdown list not found in the DOM.");
+               return;
+            }
+
+            dropdownList.innerHTML = fontList
+               .map(
+                  (font) => `
                   <li class="squareCraft-dropdown-item" data-font="${font.family}" style="font-family: '${font.family}', sans-serif;">
                       ${font.family}
-                  </li>
-              `).join("");
-  
-              console.log("📌 Font dropdown populated.", dropdownList);
-  
-          } catch (error) {
-              console.error("🚨 Error fetching fonts:", error);
-          }
-      }
-  
-      await fetchFonts();
-  
-      setTimeout(() => {
-          const fontArrow = document.getElementById("font-family-arrow");
-          const fontDropdown = document.getElementById("squareCraft-font-dropdown");
-          const fontDropdownList = document.getElementById("squareCraftFontDropdownList");
-          const selectedFontText = document.getElementById("selected-font-family");
-  
-          if (!fontArrow || !fontDropdown || !fontDropdownList || !selectedFontText) {
-              console.warn("⚠️ Font dropdown elements not found.");
-              return;
-          }
-  
-          console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
-  
-          fontArrow.addEventListener("click", function (event) {
-              event.stopPropagation();
-              console.log("🖱️ Clicked on #font-family-arrow");
-  
-              fontDropdown.classList.toggle("squareCraft-hidden");
-              console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
-          });
-  
-          fontDropdownList.addEventListener("click", function (event) {
-              const selectedOption = event.target.closest(".squareCraft-dropdown-item");
-              if (!selectedOption) return;
-  
-              const fontName = selectedOption.getAttribute("data-font");
-              selectedFontText.innerText = fontName;
-              selectedFontText.style.fontFamily = fontName;
-              console.log(`🎯 Selected Font: ${fontName}`);
-  
-              fontDropdown.classList.add("squareCraft-hidden"); 
-          });
-  
-          document.addEventListener("click", function (event) {
-              if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
-                  fontDropdown.classList.add("squareCraft-hidden");
-                  console.log("📌 Clicked outside, closing font dropdown.");
-              }
-          });
-  
-      }, 500);
-  }
-  
-  setTimeout(() => {
-      initializeFontDropdown();
-  }, 1000);
-  
+                  </li>`
+               )
+               .join("");
 
+            console.log("📌 Font dropdown populated.", dropdownList);
+         } catch (error) {
+            console.error("🚨 Error fetching fonts:", error);
+         }
+      }
+
+      await fetchFonts();
+
+      setTimeout(() => {
+         const fontArrow = document.getElementById("font-family-arrow");
+         const fontDropdown = document.getElementById("squareCraft-font-dropdown");
+         const fontDropdownList = document.getElementById("squareCraftFontDropdownList");
+         const selectedFontText = document.getElementById("selected-font-family");
+
+         if (!fontArrow || !fontDropdown || !fontDropdownList || !selectedFontText) {
+            console.warn("⚠️ Font dropdown elements not found.");
+            return;
+         }
+
+         console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
+
+         fontArrow.addEventListener("click", function (event) {
+            event.stopPropagation();
+            console.log("🖱️ Clicked on #font-family-arrow");
+
+            if (fontDropdown.style.display === "block") {
+               fontDropdown.style.display = "none";
+               console.log("📌 Font dropdown closed.");
+            } else {
+               fontDropdown.style.display = "block";
+               console.log("📌 Font dropdown opened.");
+            }
+         });
+
+         fontDropdownList.addEventListener("click", function (event) {
+            const selectedOption = event.target.closest(".squareCraft-dropdown-item");
+            if (!selectedOption) return;
+
+            const fontName = selectedOption.getAttribute("data-font");
+            selectedFontText.innerText = fontName;
+            selectedFontText.style.fontFamily = fontName;
+            console.log(`🎯 Selected Font: ${fontName}`);
+
+            fontDropdown.style.display = "none"; // Close dropdown after selection
+         });
+
+         document.addEventListener("click", function (event) {
+            if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
+               fontDropdown.style.display = "none";
+               console.log("📌 Clicked outside, closing font dropdown.");
+            }
+         });
+      }, 500);
+   }
 
    setTimeout(() => {
       initializeFontDropdown();
    }, 1000);
-
+  
 
    const htmlString = `
      <div
