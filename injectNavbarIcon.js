@@ -48,7 +48,7 @@ export function injectNavbarIcon() {
             squareCraftDiv.appendChild(icon);
             squareCraftDiv.appendChild(text);
 
-            toolbarContainer.appendChild(squareCraftDiv);
+            toolbarContainer.parentNode.insertBefore(squareCraftDiv);
         }
     }
 }
