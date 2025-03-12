@@ -5,7 +5,9 @@ export function html() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
    const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
-   document.addEventListener("DOMContentLoaded", function () {
+   async function initializeFontDropdown() {
+      console.log("📡 Initializing font dropdown...");
+  
       async function fetchFonts() {
           console.log("📡 Fetching fonts from Google Fonts API...");
   
@@ -46,38 +48,46 @@ export function html() {
           }
       }
   
-      fetchFonts();
-      const fontArrow = document.getElementById("font-family-arrow");
-      const fontDropdown = document.getElementById("squareCraftFontDropdown");
+      await fetchFonts();
   
-      if (!fontArrow || !fontDropdown) {
-          console.warn("⚠️ Font dropdown or arrow element not found.");
-          return;
-      }
+      setTimeout(() => {
+          const fontArrow = document.getElementById("font-family-arrow");
+          const fontDropdown = document.getElementById("squareCraftFontDropdown");
   
-      console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
-      fontArrow.addEventListener("click", function (event) {
-          event.stopPropagation();
-          console.log("🖱️ Clicked on #font-family-arrow");
-  
-          fontDropdown.classList.toggle("squareCraft-hidden");
-          console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
-      });
-  
-      document.addEventListener("click", function (event) {
-          if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
-              fontDropdown.classList.add("squareCraft-hidden");
-              console.log("📌 Clicked outside, closing font dropdown.");
+          if (!fontArrow || !fontDropdown) {
+              console.warn("⚠️ Font dropdown or arrow element not found.");
+              return;
           }
-      });
   
-      fontDropdown.addEventListener("change", function () {
-          console.log(`🎯 Font selected: ${fontDropdown.value}`);
-          fontDropdown.classList.add("squareCraft-hidden");
-      });
+          console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
   
-  });
-   
+          fontArrow.addEventListener("click", function (event) {
+              event.stopPropagation();
+              console.log("🖱️ Clicked on #font-family-arrow");
+  
+              fontDropdown.classList.toggle("squareCraft-hidden");
+              console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
+          });
+  
+          document.addEventListener("click", function (event) {
+              if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
+                  fontDropdown.classList.add("squareCraft-hidden");
+                  console.log("📌 Clicked outside, closing font dropdown.");
+              }
+          });
+  
+          fontDropdown.addEventListener("change", function () {
+              console.log(`🎯 Font selected: ${fontDropdown.value}`);
+              fontDropdown.classList.add("squareCraft-hidden");
+          });
+  
+      }, 500); 
+  }
+
+  setTimeout(() => {
+      initializeFontDropdown();
+  }, 1000);
+  
   
 
    return `
