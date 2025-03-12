@@ -82,7 +82,7 @@
                     document.body.appendChild(widgetContainer);
 
                     console.log("✅ Widget container added:", widgetContainer);
-                    makeWidgetDraggable();
+                    // makeWidgetDraggable();
                     widgetLoaded = true;
 
                     setTimeout(() => {
