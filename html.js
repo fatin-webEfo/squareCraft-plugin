@@ -175,7 +175,7 @@ export function html() {
          </div>
 
          <!-- Custom Dropdown -->
-         <div id="squareCraft-font-dropdown" class="squareCraft-dropdown-content squareCraft-hidden">
+         <div id="squareCraft-font-dropdown" class="squareCraft-dropdown-content ">
             <ul id="squareCraftFontDropdownList" class="squareCraft-scroll"></ul>
          </div>
 
