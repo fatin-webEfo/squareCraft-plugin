@@ -24,13 +24,13 @@
         document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
     }
 
-    const navbarIconScript = document.createElement("script");
-    navbarIconScript.src = "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js";
-    navbarIconScript.type = "module";
-    document.head.appendChild(navbarIconScript);
-
-    navbarIconScript.onload = () => console.log("✅ Navbar icon script loaded"), injectNavbarIcon?.();
-    navbarIconScript.onerror = () => console.error("🚨 Failed to load navbar icon script");
+    try {
+        const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
+        console.log("✅ Navbar icon script loaded");
+        injectNavbarIcon();
+    } catch (error) {
+        console.error("🚨 Failed to load navbar icon script", error);
+    }
 
     const link = document.createElement("link");
     link.rel = "stylesheet";
