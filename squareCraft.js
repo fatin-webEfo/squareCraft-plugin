@@ -1,12 +1,18 @@
 (async function squareCraft() {
+    // No changes
+    // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
-    let selectedElement = null;
+    
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
     }
-    
-    // No changes
+    // parent script call
+    // vars
+    let selectedElement = null;
+    let widgetContainer = null;
+    let widgetLoaded = false;
+    // vars
     // Token and Ids
     let token = widgetScript.dataset?.token;
     let squareCraft_u_id = widgetScript.dataset?.uId;
@@ -44,7 +50,6 @@
 
     try {
         const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
-        console.log("✅ Navbar icon script loaded");
         injectNavbarIcon();
     } catch (error) {
         console.error("🚨 Failed to load navbar icon script", error);
@@ -60,14 +65,13 @@
     // Css cdn
     // No changes
 
-    let widgetContainer = null;
-    let widgetLoaded = false;
 
     async function fetchFonts() {
         const response = await fetch(
             "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
         );
         const data = await response.json();
+        console.log(data);
         return data.items.slice(0, 40); // Get only 40 fonts
     }
 
