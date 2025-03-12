@@ -20,6 +20,9 @@ export function injectNavbarIcon() {
 
     if (!parent.document.querySelector(".squareCraft-toolbar")) {
         const toolbarContainer = parent.document.querySelector('div.css-1utwuyz');
+        if(!toolbarContainer){
+            console.warn("�� Squarespace toolbar container not found.");
+        }
         if (toolbarContainer) {
             const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
             
@@ -37,6 +40,7 @@ export function injectNavbarIcon() {
             icon.style.height = "30px";
             icon.style.borderRadius = "20%";
             icon.style.cursor = "pointer";
+            
 
             const text = document.createElement("span");
             text.innerText = "SquareCraft";
