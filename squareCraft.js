@@ -2,7 +2,7 @@
     // No changes
     // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
-    
+
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
@@ -71,9 +71,11 @@
             "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
         );
         const data = await response.json();
-        console.log(data);
+        const first40Items = data.items.slice(0, 40);
+        console.log(first40Items);
+
     }
-fetchFonts(); 
+    fetchFonts();
 
     async function createWidget() {
         console.log("📥 Fetching widget module...");
@@ -124,7 +126,7 @@ fetchFonts();
     }
 
 
-        function makeWidgetDraggable() {
+    function makeWidgetDraggable() {
         if (!widgetContainer) return;
 
         widgetContainer.style.position = "fixed";
@@ -310,5 +312,5 @@ fetchFonts();
 
     waitForNavBar();
 
-  
+
 })();
