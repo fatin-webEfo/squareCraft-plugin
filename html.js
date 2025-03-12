@@ -51,46 +51,57 @@ export function html() {
          const fontDropdown = document.getElementById("squareCraft-font-dropdown");
          const fontDropdownList = document.getElementById("squareCraftFontDropdownList");
          const selectedFontText = document.getElementById("selected-font-family");
-
-         if (!fontArrow || !fontDropdown || !fontDropdownList || !selectedFontText) {
-            console.warn("⚠️ Font dropdown elements not found.");
-            return;
+         const fontFamilyContainer = document.getElementById("squareCraft-font-family");
+     
+         if (!fontArrow || !fontDropdown || !fontDropdownList || !selectedFontText || !fontFamilyContainer) {
+             console.warn("⚠️ Font dropdown elements not found.");
+             return;
          }
-
+     
          console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
-
+     
          fontArrow.addEventListener("click", function (event) {
-            event.stopPropagation();
-            console.log("🖱️ Clicked on #font-family-arrow");
-
-            if (fontDropdown.style.display === "block") {
-               fontDropdown.style.display = "none";
-               console.log("📌 Font dropdown closed.");
-            } else {
-               fontDropdown.style.display = "block";
-               console.log("📌 Font dropdown opened.");
-            }
+             event.stopPropagation();
+             console.log("🖱️ Clicked on #font-family-arrow");
+     
+             if (fontDropdown.style.display === "block") {
+                 fontDropdown.style.display = "none";
+                 fontDropdown.style.opacity = "0";
+                 console.log("📌 Font dropdown closed.");
+             } else {
+                 fontDropdown.style.display = "block";
+                 fontDropdown.style.opacity = "1";
+                 fontDropdown.style.position = "absolute";
+                 fontDropdown.style.top = `${fontFamilyContainer.offsetHeight + 4}px`; // Position below the input
+                 fontDropdown.style.left = "0px"; // Align with input box
+                 fontDropdown.style.zIndex = "1000"; // Ensure it's above other elements
+                 console.log("📌 Font dropdown opened.");
+             }
          });
-
+     
          fontDropdownList.addEventListener("click", function (event) {
-            const selectedOption = event.target.closest(".squareCraft-dropdown-item");
-            if (!selectedOption) return;
-
-            const fontName = selectedOption.getAttribute("data-font");
-            selectedFontText.innerText = fontName;
-            selectedFontText.style.fontFamily = fontName;
-            console.log(`🎯 Selected Font: ${fontName}`);
-
+             const selectedOption = event.target.closest(".squareCraft-dropdown-item");
+             if (!selectedOption) return;
+     
+             const fontName = selectedOption.getAttribute("data-font");
+             selectedFontText.innerText = fontName;
+             selectedFontText.style.fontFamily = fontName;
+             console.log(`🎯 Selected Font: ${fontName}`);
+     
+             // Close dropdown after selection
+             fontDropdown.style.display = "none";
+             fontDropdown.style.opacity = "0";
          });
-
+     
          document.addEventListener("click", function (event) {
-            if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
-               fontDropdown.style.display = "none";
-               console.log("📌 Clicked outside, closing font dropdown.");
-            }
+             if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
+                 fontDropdown.style.display = "none";
+                 fontDropdown.style.opacity = "0";
+                 console.log("📌 Clicked outside, closing font dropdown.");
+             }
          });
-      }, 500);
-   }
+     }, 500);
+     
 
    setTimeout(() => {
       initializeFontDropdown();

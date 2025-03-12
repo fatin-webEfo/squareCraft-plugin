@@ -966,6 +966,31 @@ font-size: 12px !important;
 .squareCraft-visible {
   display: block !important;
 }
+#squareCraft-font-dropdown {
+  position: absolute;
+  background-color: #3f3f3f; /* Match the theme */
+  border: 1px solid #585858;
+  border-radius: 6px;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;  /* Initially hidden */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.squareCraft-dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.squareCraft-dropdown-item:hover {
+  background-color: #EF7C2F;
+  color: white;
+}
 
 #squareCraft-font-dropdown {
   position: absolute;
