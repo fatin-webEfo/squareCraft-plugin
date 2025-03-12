@@ -907,6 +907,9 @@ font-size: 12px !important;
 .squareCraft-px-3 {
   padding: 20px !important;
 }
+#squareCraft-font-family{
+  z-index: 999999;
+}
 
 .squareCraft-cursor-pointer {
   cursor: pointer !important;

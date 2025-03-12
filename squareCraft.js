@@ -66,16 +66,55 @@
     // No changes
 
 
-    async function fetchFonts() {
-        const response = await fetch(
-            "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
-        );
-        const data = await response.json();
-        const first40Items = data.items.slice(0, 40);
-        console.log(first40Items);
+    let fontList = []; 
 
+    async function fetchFonts() {
+        try {
+            const response = await fetch(
+                "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
+            );
+            const data = await response.json();
+            fontList = data.items.slice(0, 40); 
+            console.log("✅ Fonts loaded:", fontList);
+    
+            const dropdown = document.getElementById("squareCraftFontDropdown");
+            if (dropdown) {
+                dropdown.innerHTML = fontList.map(font => `
+                    <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm" 
+                         data-value="${font.family}">${font.family}</div>
+                `).join("");
+    
+                dropdown.querySelectorAll(".squareCraft-dropdown-item").forEach(item => {
+                    item.addEventListener("click", function () {
+                        document.getElementById("squareCraftFontSelected").innerText = this.dataset.value;
+                        dropdown.classList.add("squareCraft-hidden"); 
+                    });
+                });
+            }
+        } catch (error) {
+            console.error("🚨 Error fetching fonts:", error);
+        }
     }
     fetchFonts();
+    setTimeout(() => {
+        const fontSelector = document.getElementById("squareCraft-font-family");
+        const dropdown = document.getElementById("squareCraftFontDropdown");
+    
+        if (fontSelector && dropdown) {
+            fontSelector.addEventListener("click", function () {
+                dropdown.classList.toggle("squareCraft-hidden");
+            });
+    
+            document.addEventListener("click", function (event) {
+                if (!fontSelector.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add("squareCraft-hidden");
+                }
+            });
+        }
+    }, 500);
+    
+    
+    
 
     async function createWidget() {
         console.log("📥 Fetching widget module...");
