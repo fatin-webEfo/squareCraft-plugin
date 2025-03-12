@@ -1,4 +1,4 @@
-async function findIds(){
+export function findIds(){
     function logAllCollections() {
         document.querySelectorAll('[id^="collection-"]').forEach(element => {
             console.log('📌 Collection Found:', element.id);

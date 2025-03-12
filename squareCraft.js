@@ -69,53 +69,66 @@
     let fontList = []; 
 
     async function fetchFonts() {
+        console.log("📡 Fetching fonts from Google Fonts API...");
+    
         try {
             const response = await fetch(
                 "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
             );
+    
+            if (!response.ok) {
+                throw new Error(`❌ HTTP error! Status: ${response.status}`);
+            }
+    
+            console.log("📥 Response received from Google Fonts API.");
+    
             const data = await response.json();
-            fontList = data.items.slice(0, 40); 
-            console.log("✅ Fonts loaded:", fontList);
+    
+            if (!data.items || data.items.length === 0) {
+                throw new Error("❌ No fonts found in API response.");
+            }
+    
+            fontList = data.items.slice(0, 40);
+            console.log(`✅ Successfully fetched ${fontList.length} fonts:`, fontList.map(f => f.family));
     
             const dropdown = document.getElementById("squareCraftFontDropdown");
-            if (dropdown) {
-                dropdown.innerHTML = fontList.map(font => `
-                    <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm" 
-                         data-value="${font.family}">${font.family}</div>
-                `).join("");
-    
-                dropdown.querySelectorAll(".squareCraft-dropdown-item").forEach(item => {
-                    item.addEventListener("click", function () {
-                        document.getElementById("squareCraftFontSelected").innerText = this.dataset.value;
-                        dropdown.classList.add("squareCraft-hidden"); 
-                    });
-                });
+            if (!dropdown) {
+                console.warn("⚠️ Font dropdown not found in the DOM.");
+                return;
             }
+    
+            console.log("📌 Populating font dropdown...");
+            dropdown.innerHTML = fontList.map(font => `
+                <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center squareCraft-text-sm" 
+                     data-value="${font.family}">${font.family}</div>
+            `).join("");
+    
+            const fontSelected = document.getElementById("squareCraftFontSelected");
+            if (!fontSelected) {
+                console.warn("⚠️ Font selection display element not found.");
+            }
+    
+            dropdown.querySelectorAll(".squareCraft-dropdown-item").forEach(item => {
+                item.addEventListener("click", function () {
+                    if (fontSelected) {
+                        fontSelected.innerText = this.dataset.value;
+                        console.log(`🎯 Font selected: ${this.dataset.value}`);
+                    }
+                    dropdown.classList.add("squareCraft-hidden");
+                });
+            });
+    
+            console.log("✅ Font dropdown populated and event listeners added.");
         } catch (error) {
             console.error("🚨 Error fetching fonts:", error);
         }
     }
+    
+    // Call the function
     fetchFonts();
-    setTimeout(() => {
-        const fontSelector = document.getElementById("squareCraft-font-family");
-        const dropdown = document.getElementById("squareCraftFontDropdown");
-    
-        if (fontSelector && dropdown) {
-            fontSelector.addEventListener("click", function () {
-                dropdown.classList.toggle("squareCraft-hidden");
-            });
-    
-            document.addEventListener("click", function (event) {
-                if (!fontSelector.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.classList.add("squareCraft-hidden");
-                }
-            });
-        }
-    }, 500);
     
     
     
-
     async function createWidget() {
         console.log("📥 Fetching widget module...");
         try {
@@ -207,7 +220,6 @@
     function injectIcon() {
 
         function injectIconIntoTargetElements() {
-            console.log("🔄 Running injectIconIntoTargetElements...");
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
 
             targets.forEach((element) => {
@@ -220,7 +232,6 @@
                 }
 
                 if (element.querySelector(".squareCraft-toolbar-icon")) return;
-
                 const clonedIcon = document.createElement("img");
                 clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 clonedIcon.alt = "SquareCraft";
@@ -280,61 +291,7 @@
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
-
-
-    function logAllCollections() {
-        const collectionElements = document.querySelectorAll('[id^="collection-"]');
-        if (collectionElements.length > 0) {
-            collectionElements.forEach(element => {
-                console.log('Collection element found:', element.id);
-            });
-        } else {
-            console.warn('No collection elements found.');
-        }
-    }
-
-    // function sectionAndId(event) {
-    //     const block = event.target.closest('[id^="block-"]');
-    //     if (block) {
-    //         console.log('Block clicked:', block.id);
-    //     } else {
-    //         const section = event.target.closest('section[data-section-id]');
-    //         if (section) {
-    //             console.log('Data-section-id:', section.getAttribute('data-section-id'));
-    //         }
-    //     }
-
-    //     const clickedElement = event.target;
-    //     let elementType = 'unknown';
-
-    //     if (clickedElement.tagName === 'IMG' || clickedElement.closest('.sqs-block-image')) {
-    //         elementType = 'image';
-    //     } else if (clickedElement.tagName === 'BUTTON' || clickedElement.closest('.sqs-block-button-element, .sqs-button-element--primary, .sqs-block-button')) {
-    //         elementType = 'button';
-    //     } else if (clickedElement.closest('.sqs-block-html, .sqs-html-content, .sqs-block-content')) {
-    //         elementType = 'text';
-    //     }
-
-    //     console.log(`Clicked element is a: ${elementType}`);
-    // }
-
-
-    // document.addEventListener('click', sectionAndId);
-
-
-    // function logAllCollections() {
-    //     document.querySelectorAll('[id^="collection-"]').forEach(element => {
-    //         console.log('Collection element found:', element.id);
-    //     });
-    // }
-
-    // function initializeLogging() {
-    //     logAllCollections();
-    //     document.addEventListener('click', sectionAndId);
-    // }
-
-    // initializeLogging();
-
+   
 
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
