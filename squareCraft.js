@@ -200,28 +200,34 @@
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
-
+    
         widgetContainer.style.position = "fixed";
         widgetContainer.style.cursor = "grab";
         widgetContainer.style.zIndex = "999";
         widgetContainer.style.left = "calc(100% - 250px)";
         widgetContainer.style.top = "100px";
-
+    
         let offsetX = 0, offsetY = 0, isDragging = false;
-
+    
         widgetContainer.addEventListener("mousedown", (event) => {
-            if (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.isContentEditable) return;
-
+            // Prevent dragging if the click is inside a dropdown or input field
+            if (
+                event.target.tagName === "INPUT" || 
+                event.target.tagName === "SELECT" || 
+                event.target.isContentEditable || 
+                event.target.closest("#squareCraftFontDropdown") // Exclude font dropdown clicks
+            ) return;
+    
             event.preventDefault();
             isDragging = true;
-
+    
             offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
             offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
-
+    
             document.addEventListener("mousemove", moveAt);
             document.addEventListener("mouseup", stopDragging);
         });
-
+    
         function moveAt(event) {
             if (!isDragging) return;
             let newX = Math.max(0, Math.min(window.innerWidth - widgetContainer.offsetWidth, event.clientX - offsetX));
@@ -229,13 +235,14 @@
             widgetContainer.style.left = `${newX}px`;
             widgetContainer.style.top = `${newY}px`;
         }
-
+    
         function stopDragging() {
             isDragging = false;
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
         }
     }
+    
 
     function injectIcon() {
 
