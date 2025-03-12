@@ -963,6 +963,18 @@ font-size: 12px !important;
   cursor: pointer !important;
   transition: background 0.3s ease-in-out !important;
 }
+.squareCraft-visible {
+  display: block !important;
+}
+
+#squareCraft-font-dropdown {
+  position: absolute;
+  top: 100%; /* Opens below */
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  background: #3d3d3d; /* Ensure visibility */
+}
 
 .squareCraft-dropdown-content .squareCraft-dropdown-item:hover {
   background-color: #EF7C2F !important;
