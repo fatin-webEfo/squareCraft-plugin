@@ -51,7 +51,7 @@ export function html() {
       await fetchFonts();
   
       setTimeout(() => {
-          const fontArrow = document.getElementById("font-family-arrow");
+          const fontArrow = document.getElementById("font-family-arrow"); 
           const fontDropdown = document.getElementById("squareCraftFontDropdown");
   
           if (!fontArrow || !fontDropdown) {
@@ -88,9 +88,8 @@ export function html() {
       initializeFontDropdown();
   }, 1000);
   
-  
 
-   return `
+  const htmlString = `
      <div
       class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
       <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
@@ -341,4 +340,14 @@ export function html() {
       </div>
    </div>
     `
+
+    const parser = new DOMParser();
+   const doc = parser.parseFromString(htmlString, "text/html");
+
+   const isValidHTML = doc.body.children.length > 0;
+
+   console.log("🔍 Checking HTML validity:", isValidHTML ? "✅ Valid HTML" : "❌ Invalid HTML");
+   console.log("🖼 Parsed HTML Elements:", doc.body.children);
+
+   return isValidHTML ? htmlString : "❌ Error: Invalid HTML structure!";
 }

@@ -70,21 +70,31 @@
         console.log("📥 Fetching widget module...");
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+            
             if (module && module.html) {
-                console.log("✅ HTML module loaded successfully!");
-
+                
+                const htmlString = module.html();
+                console.log("📝 Retrieved HTML string:", htmlString);
+    
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
                     widgetContainer.id = "squarecraft-widget-container";
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-                    widgetContainer.innerHTML = module.html();
+    
+                    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                        widgetContainer.innerHTML = htmlString;
+                        console.log("✅ HTML string successfully added to widget container.");
+                    } else {
+                        console.error("❌ Retrieved HTML string is invalid or empty!");
+                    }
+    
                     widgetContainer.style.display = "none";
                     document.body.appendChild(widgetContainer);
-
+    
                     console.log("✅ Widget container added:", widgetContainer);
                     makeWidgetDraggable();
                     widgetLoaded = true;
-
+    
                     setTimeout(() => {
                         widgetContainer = document.getElementById("squarecraft-widget-container");
                         if (!widgetContainer) {
@@ -99,6 +109,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
 
 
     async function toggleWidgetVisibility(event) {
