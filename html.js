@@ -152,8 +152,8 @@ export function html() {
                <div class=" squareCraft-w-full   squareCraft-px-2  ">
                   <p class="squareCraft-text-sm  squareCraft-poppins  squareCraft-font-light">Sf Pro sans</p>
                </div>
-               <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                  <img id="font-family-arrow" class=" squareCraft-rotate-180" width="12px"
+               <div id="font-family-arrow" class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
+                  <img  class=" squareCraft-rotate-180" width="12px"
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                </div>
                <select id="squareCraftFontDropdown" class="squareCraft-text-sm squareCraft-bg-3f3f3f squareCraft-text-color-white squareCraft-border squareCraft-border-585858 squareCraft-rounded-6px squareCraft-px-2">
