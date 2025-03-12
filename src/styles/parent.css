@@ -915,6 +915,7 @@ font-size: 12px !important;
   position: absolute;
   z-index: 99999;
   background-color: #3f3f3f;
+  top: 18px !important;
 }
 
 
