@@ -907,10 +907,10 @@ font-size: 12px !important;
 .squareCraft-px-3 {
   padding: 20px !important;
 }
-#squareCraft-font-family{
+
+#font-family-arrow{
   z-index: 999999;
 }
-
 #squareCraftFontDropdown {
   position: absolute;
   z-index: 99999;
