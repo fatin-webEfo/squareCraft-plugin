@@ -5,111 +5,46 @@ export function html() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
    const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
-   async function initializeFontDropdown() {
-      console.log("📡 Initializing font dropdown...");
-
+   document.addEventListener("DOMContentLoaded", async function () {
+      const fontSelect = document.getElementById("squareCraftFontSelect");
+  
+      fontSelect.addEventListener("mousedown", function (event) {
+          event.preventDefault();
+          this.size = 6; 
+      });
+  
+      fontSelect.addEventListener("change", function () {
+          this.size = 1; 
+      });
+  
+      fontSelect.addEventListener("blur", function () {
+          this.size = 1; 
+      });
+  
       async function fetchFonts() {
-         console.log("📡 Fetching fonts from Google Fonts API...");
-         try {
-            const response = await fetch(
-               "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
-            );
-
-            if (!response.ok) throw new Error(`❌ HTTP error! Status: ${response.status}`);
-
-            const data = await response.json();
-            if (!data.items || data.items.length === 0) throw new Error("❌ No fonts found in API response.");
-
-            const fontList = data.items.slice(0, 40);
-            console.log(`✅ Loaded ${fontList.length} fonts.`, fontList);
-
-            const dropdownList = document.getElementById("squareCraftFontDropdownList");
-            if (!dropdownList) {
-               console.warn("⚠️ Font dropdown list not found in the DOM.");
-               return;
-            }
-
-            dropdownList.innerHTML = fontList
-               .map(
-                  (font) => `
-                  <li class="squareCraft-dropdown-item" data-font="${font.family}" style="font-family: '${font.family}', sans-serif;">
-                      ${font.family}
-                  </li>`
-               )
-               .join("");
-
-            console.log("📌 Font dropdown populated.", dropdownList);
-         } catch (error) {
-            console.error("🚨 Error fetching fonts:", error);
-         }
+          try {
+              const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+              if (!response.ok) throw new Error(`❌ HTTP error! Status: ${response.status}`);
+              const data = await response.json();
+  
+              const fontList = data.items.slice(0, 40);
+              console.log(`✅ Loaded ${fontList.length} fonts.`, fontList);
+  
+              fontList.forEach(font => {
+                  const option = document.createElement("option");
+                  option.value = font.family;
+                  option.innerText = font.family;
+                  option.style.fontFamily = `'${font.family}', sans-serif`;
+                  fontSelect.appendChild(option);
+              });
+          } catch (error) {
+              console.error("🚨 Error fetching fonts:", error);
+          }
       }
-
+  
       await fetchFonts();
-
-      setTimeout(() => {
-         const fontArrow = document.getElementById("font-family-arrow");
-         const fontDropdown = document.getElementById("squareCraft-font-dropdown");
-         const fontDropdownList = document.getElementById("squareCraftFontDropdownList");
-         const selectedFontText = document.getElementById("selected-font-family");
-         const fontFamilyContainer = document.getElementById("squareCraft-font-family");
-     
-         if (!fontArrow || !fontDropdown || !fontDropdownList || !selectedFontText || !fontFamilyContainer) {
-             console.warn("⚠️ Font dropdown elements not found.");
-             return;
-         }
-     
-         console.log("✅ Font dropdown and arrow found.", fontDropdown, fontArrow);
-     
-         fontArrow.addEventListener("click", function (event) {
-             event.stopPropagation();
-             console.log("🖱️ Clicked on #font-family-arrow");
-     
-             if (fontDropdown.style.display === "block") {
-               fontDropdown.style.display = "none";
-               fontDropdown.style.opacity = "0";
-               console.log("📌 Font dropdown closed.");
-           } else {
-               fontDropdown.style.display = "block";
-               fontDropdown.style.opacity = "1";
-               fontDropdown.style.position = "absolute";
-               fontDropdown.style.top = `${fontFamilyContainer.offsetHeight + 4}px`; // Position below input
-               fontDropdown.style.left = "0px";
-               fontDropdown.style.zIndex = "1000"; // Ensure it's above other elements
-               console.log("📌 Font dropdown opened.");
-           }
-           
-         });
-     
-         fontDropdownList.addEventListener("click", function (event) {
-            const selectedOption = event.target.closest(".squareCraft-dropdown-item");
-            if (!selectedOption) return;
-        
-            const fontName = selectedOption.getAttribute("data-font");
-            selectedFontText.innerText = fontName;
-            selectedFontText.style.fontFamily = fontName;
-            
-            console.log(`🎯 Selected Font: ${fontName}`); // Log the selected font
-        
-            // Close dropdown after selection
-            fontDropdown.style.display = "none";
-            fontDropdown.style.opacity = "0";
-        });
-        
-     
-         document.addEventListener("click", function (event) {
-             if (!fontArrow.contains(event.target) && !fontDropdown.contains(event.target)) {
-                 fontDropdown.style.display = "none";
-                 fontDropdown.style.opacity = "0";
-                 console.log("📌 Clicked outside, closing font dropdown.");
-             }
-         });
-     }, 500);
-     
-   }
-
-   setTimeout(() => {
-      initializeFontDropdown();
-   }, 1000);
+  });
+  
   
 
    const htmlString = `
@@ -178,20 +113,15 @@ export function html() {
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-         <div id="squareCraft-font-family"
-            class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-cursor-pointer squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
-            <div class="squareCraft-w-full squareCraft-px-2">
-               <p id="selected-font-family" class="squareCraft-text-sm squareCraft-poppins squareCraft-font-light">Select Font</p>
-            </div>
-            <div id="font-family-arrow" class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-               <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-            </div>
-         </div>
+        <div class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
+    <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
+        <option value="" selected disabled hidden>Select Font</option>
+    </select>
+    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
+        <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+    </div>
+</div>
 
-         <!-- Custom Dropdown -->
-         <div id="squareCraft-font-dropdown" class="squareCraft-dropdown-content ">
-            <ul id="squareCraftFontDropdownList" class="squareCraft-scroll"></ul>
-         </div>
 
             <div class="squareCraft-flex squareCraft-bg-transparent squareCraft-h-9 squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4   squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
                <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center ">
