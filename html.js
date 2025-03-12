@@ -51,7 +51,7 @@ export function html() {
       await fetchFonts();
   
       setTimeout(() => {
-          const fontArrow = document.getElementById("font-family-arrow"); 
+          const fontArrow = document.getElementById("squareCraft-font-family"); 
           const fontDropdown = document.getElementById("squareCraftFontDropdown");
   
           if (!fontArrow || !fontDropdown) {
@@ -63,7 +63,7 @@ export function html() {
   
           fontArrow.addEventListener("click", function (event) {
               event.stopPropagation();
-              console.log("🖱️ Clicked on #font-family-arrow");
+              console.log("🖱️ Clicked on #squareCraft-font-family");
   
               fontDropdown.classList.toggle("squareCraft-hidden");
               console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
@@ -343,11 +343,6 @@ export function html() {
 
     const parser = new DOMParser();
    const doc = parser.parseFromString(htmlString, "text/html");
-
    const isValidHTML = doc.body.children.length > 0;
-
-   console.log("🔍 Checking HTML validity:", isValidHTML ? "✅ Valid HTML" : "❌ Invalid HTML");
-   console.log("🖼 Parsed HTML Elements:", doc.body.children);
-
    return isValidHTML ? htmlString : "❌ Error: Invalid HTML structure!";
 }
