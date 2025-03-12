@@ -34,3 +34,5 @@ export function findIds(){
     initializeLogging();
     
 }
+
+// I want to export block,section,pageElement
