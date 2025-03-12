@@ -51,7 +51,7 @@ export function html() {
       await fetchFonts();
   
       setTimeout(() => {
-          const fontArrow = document.getElementById("squareCraft-font-family"); 
+          const fontArrow = document.getElementById("font-family-arrow"); 
           const fontDropdown = document.getElementById("squareCraftFontDropdown");
   
           if (!fontArrow || !fontDropdown) {
@@ -63,7 +63,7 @@ export function html() {
   
           fontArrow.addEventListener("click", function (event) {
               event.stopPropagation();
-              console.log("🖱️ Clicked on #squareCraft-font-family");
+              console.log("🖱️ Clicked on #font-family-arrow");
   
               fontDropdown.classList.toggle("squareCraft-hidden");
               console.log(`📌 Font dropdown ${fontDropdown.classList.contains("squareCraft-hidden") ? "closed" : "opened"}.`);
