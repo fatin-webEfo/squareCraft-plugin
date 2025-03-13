@@ -21,26 +21,64 @@ export function html() {
           this.size = 1; 
       });
   
-      async function fetchFonts() {
-          try {
-              const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
-              if (!response.ok) throw new Error(`❌ HTTP error! Status: ${response.status}`);
-              const data = await response.json();
-  
-              const fontList = data.items.slice(0, 40);
-              console.log(`✅ Loaded ${fontList.length} fonts.`, fontList);
-  
-              fontList.forEach(font => {
-                  const option = document.createElement("option");
-                  option.value = font.family;
-                  option.innerText = font.family;
-                  option.style.fontFamily = `'${font.family}', sans-serif`;
-                  fontSelect.appendChild(option);
-              });
-          } catch (error) {
-              console.error("🚨 Error fetching fonts:", error);
-          }
-      }
+      async function fetchFonts(startIndex = 0, batchSize = 10) {
+         try {
+             let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+     
+             if (cachedFonts.length > startIndex) {
+                 return cachedFonts.slice(startIndex, startIndex + batchSize);
+             }
+     
+             const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=YOUR_API_KEY");
+             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+     
+             const data = await response.json();
+             const fontList = data.items;
+     
+             if (!cachedFonts.length) {
+                 localStorage.setItem("squareCraft_fonts", JSON.stringify(fontList));
+             }
+     
+             return fontList.slice(startIndex, startIndex + batchSize);
+         } catch {
+             return [];
+         }
+     }
+     
+     document.addEventListener("DOMContentLoaded", async function () {
+         const fontSelect = document.getElementById("squareCraftFontSelect");
+         let currentIndex = 0, batchSize = 10, loading = false;
+     
+         async function loadMoreFonts() {
+             if (loading) return;
+             loading = true;
+     
+             const fonts = await fetchFonts(currentIndex, batchSize);
+             if (!fonts.length) return;
+     
+             const fragment = document.createDocumentFragment();
+             fonts.forEach(font => {
+                 const option = document.createElement("option");
+                 option.value = font.family;
+                 option.innerText = font.family;
+                 option.style.fontFamily = `'${font.family}', sans-serif`;
+                 fragment.appendChild(option);
+             });
+     
+             fontSelect.appendChild(fragment);
+             currentIndex += batchSize;
+             loading = false;
+         }
+     
+         await loadMoreFonts();
+     
+         fontSelect.addEventListener("scroll", async function () {
+             if (fontSelect.scrollTop + fontSelect.clientHeight >= fontSelect.scrollHeight - 10) {
+                 await loadMoreFonts();
+             }
+         });
+     });
+     
   
       await fetchFonts();
   });
