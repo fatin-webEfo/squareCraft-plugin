@@ -5,50 +5,105 @@ export function html() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
    const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
+   document.addEventListener("DOMContentLoaded", async function () {
+      console.log("✅ JavaScript Loaded and Executed!");
 
-   async function fetchGoogleFonts() {
-      try {
-          let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+      const fontSelect = document.getElementById("squareCraftFontSelect");
+      const toggleSwitch = document.getElementById("toggleSwitch");
+      const toggleText = document.getElementById("toggleText");
 
-          if (cachedFonts.length > 0) {
-              console.log("📌 Using cached fonts...");
-              updateFontDropdown(cachedFonts);
+      if (!fontSelect) {
+          console.error("❌ ERROR: Font select element not found!");
+          return;
+      } else {
+          console.log("🎯 Font select element found:", fontSelect);
+      }
+
+      if (!toggleSwitch || !toggleText) {
+          console.error("❌ ERROR: Toggle switch or text not found!");
+          return;
+      }
+
+      let currentIndex = 0, batchSize = 10, loading = false;
+
+      function toggleEnableDisable() {
+          const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
+          localStorage.setItem("squareCraft_enabled", !isEnabled);
+          toggleText.innerText = !isEnabled ? "Disable" : "Enable";
+          console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
+      }
+
+      toggleSwitch.addEventListener("click", toggleEnableDisable);
+
+      if (localStorage.getItem("squareCraft_enabled") === "true") {
+          toggleText.innerText = "Disable";
+      }
+
+      async function fetchFonts(startIndex = 0, limit = 10) {
+          try {
+              let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+              if (cachedFonts.length > startIndex) {
+                  return cachedFonts.slice(startIndex, startIndex + limit);
+              }
+
+              const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+              if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+              const data = await response.json();
+              const fonts = data.items.map(font => font.family);
+              localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
+
+              console.log(`✅ Loaded ${fonts.length} fonts from API.`);
+
+              return fonts.slice(startIndex, startIndex + limit);
+          } catch (error) {
+              console.error("🚨 Error fetching fonts:", error);
+              return [];
+          }
+      }
+
+      async function loadFonts() {
+          if (loading) return;
+          loading = true;
+
+          const fonts = await fetchFonts(currentIndex, batchSize);
+          if (!fonts.length) {
+              console.warn("⚠️ No new fonts loaded.");
               return;
           }
 
-          console.log("⏳ Fetching fonts from Google API...");
-          const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+          console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
 
-          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          fonts.forEach(font => {
+              const option = document.createElement("option");
+              option.value = font;
+              option.innerText = font;
+              option.style.fontFamily = `'${font}', sans-serif`;
+              fontSelect.appendChild(option);
+          });
 
-          const data = await response.json();
-          const googleFonts = data.items.map(font => font.family);
+          console.log(`📌 Total font options in dropdown:`, fontSelect.options.length);
 
-          localStorage.setItem("squareCraft_fonts", JSON.stringify(googleFonts));
-
-          console.log("✅ Google Fonts loaded successfully!");
-          updateFontDropdown(googleFonts);
-      } catch (error) {
-          console.error("🚨 Error fetching Google Fonts:", error);
+          currentIndex += batchSize;
+          loading = false;
       }
-  }
 
-  function updateFontDropdown(fonts) {
-      const fontDropdown = document.getElementById("squareCraftFontDropdown");
-      if (!fontDropdown) return;
+      await loadFonts();
 
-      fonts.forEach(font => {
-          const option = document.createElement("option");
-          option.value = font;
-          option.innerText = font;
-          option.style.fontFamily = `'${font}', sans-serif`;
-          fontDropdown.appendChild(option);
+      fontSelect.addEventListener("scroll", async function () {
+          if (fontSelect.scrollTop + fontSelect.clientHeight >= fontSelect.scrollHeight - 10) {
+              await loadFonts();
+          }
       });
 
-      console.log("🎯 Font dropdown updated successfully!");
-  }
-
-  fetchGoogleFonts();
+      fontSelect.addEventListener("change", function () {
+          const selectedFont = fontSelect.value;
+          fontSelect.style.fontFamily = `'${selectedFont}', sans-serif`;
+          console.log(`✅ Font changed to: ${selectedFont}`);
+      });
+  });
+  
+  
 
    const htmlString = `
      <div
@@ -116,18 +171,15 @@ export function html() {
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-
-
-
 <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
-                <select id="squareCraftFontDropdown" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
-                    style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px; max-height: 250px; overflow-y: auto;">
-                    <option value="" selected disabled hidden>Loading Fonts...</option>
-                </select>
-                <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px; pointer-events: none;">
-                    <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-                </div>
-            </div>
+    <select  class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
+        style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
+        <option value="" selected disabled hidden>Select Font</option>
+    </select>
+    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px; pointer-events: none;">
+        <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+    </div>
+</div>
 
 
 
