@@ -284,27 +284,47 @@
 
     function checkView() {
         const isMobile = window.innerWidth <= 768; 
-    
+        
         if (isMobile) {
-            console.log("Running mobile view function...");
+            console.log("📱 Mobile view detected. Moving widget outside the main window...");
             runMobileFunction();
         } else {
-            console.log("Running desktop view function...");
+            console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
             runDesktopFunction();
         }
     }
     
     function runMobileFunction() {
-        console.log("Mobile function executed.");
+        if (!widgetContainer) return;
+        
+        const mobileContainer = parent.document.querySelector(
+            'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
+        );
+    
+        if (mobileContainer) {
+            mobileContainer.appendChild(widgetContainer);
+            widgetContainer.style.width = "90vw"; 
+            widgetContainer.style.left = "5vw"; 
+            widgetContainer.style.position = "absolute"; 
+            console.log("✅ Widget successfully moved to mobile container.");
+        } else {
+            console.warn("❌ Mobile container not found. Widget remains in default location.");
+        }
     }
     
     function runDesktopFunction() {
-        console.log("Desktop function executed.");
+        if (!widgetContainer) return;
+        
+        document.body.appendChild(widgetContainer);
+        widgetContainer.style.width = "400px"; 
+        widgetContainer.style.left = "calc(100% - 450px)";
+        widgetContainer.style.position = "fixed";
+        console.log("✅ Widget remains in the desktop position.");
     }
     
     checkView();
-    
     window.addEventListener("resize", checkView);
+    
     
 
 
