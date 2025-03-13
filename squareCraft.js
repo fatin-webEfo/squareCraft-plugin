@@ -281,4 +281,31 @@
     waitForNavBar();
 
 
+
+    function checkView() {
+        const isMobile = window.innerWidth <= 768; 
+    
+        if (isMobile) {
+            console.log("Running mobile view function...");
+            runMobileFunction();
+        } else {
+            console.log("Running desktop view function...");
+            runDesktopFunction();
+        }
+    }
+    
+    function runMobileFunction() {
+        console.log("Mobile function executed.");
+    }
+    
+    function runDesktopFunction() {
+        console.log("Desktop function executed.");
+    }
+    
+    checkView();
+    
+    window.addEventListener("resize", checkView);
+    
+
+
 })();
