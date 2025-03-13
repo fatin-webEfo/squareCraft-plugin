@@ -38,33 +38,33 @@
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
-    
+
         if (selectedElement) {
-            selectedElement.style.outline = ""; 
+            selectedElement.style.outline = "";
             selectedElement.classList.remove("squareCraft-selected");
         }
-    
+
         selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F"; 
+        selectedElement.style.outline = "2px dashed #EF7C2F";
         selectedElement.classList.add("squareCraft-selected");
-    
+
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
-    
+
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block || block.classList.contains("squareCraft-selected")) return;
-    
+
         block.style.outline = "4px solid #EF7C2F";
     });
-    
+
     document.body.addEventListener("mouseout", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block || block.classList.contains("squareCraft-selected")) return;
-    
-        block.style.outline = ""; 
+
+        block.style.outline = "";
     });
-    
+
     // Clicked outline
     // navbar icon
 
@@ -85,31 +85,31 @@
     // Css cdn
     // No changes
 
-    
+
     async function createWidget() {
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
-            
+
             if (module && module.html) {
-                
+
                 const htmlString = module.html();
-    
+
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
                     widgetContainer.id = "squarecraft-widget-container";
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-    
+
                     if (typeof htmlString === "string" && htmlString.trim().length > 0) {
                         widgetContainer.innerHTML = htmlString;
                     } else {
                         console.error("❌ Retrieved HTML string is invalid or empty!");
                     }
-    
+
                     widgetContainer.style.display = "none";
                     document.body.appendChild(widgetContainer);
                     makeWidgetDraggable();
                     widgetLoaded = true;
-    
+
                     setTimeout(() => {
                         widgetContainer = document.getElementById("squarecraft-widget-container");
                         if (!widgetContainer) {
@@ -124,7 +124,7 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
-    
+
 
 
     async function toggleWidgetVisibility(event) {
@@ -140,23 +140,23 @@
     }
 
 
-  
-    
+
+
 
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
-    
+
         widgetContainer.style.position = "fixed";
         widgetContainer.style.zIndex = "999";
         widgetContainer.style.left = "calc(100% - 250px)";
         widgetContainer.style.top = "100px";
-    
+
         let offsetX = 0, offsetY = 0, isDragging = false;
-    
+
         widgetContainer.addEventListener("mousedown", (event) => {
             const draggableElement = event.target.closest("#squareCraft-grabbing");
             const isOverFontFamily = event.target.closest("#squareCraft-font-family");
-    
+
             if (
                 !draggableElement || // Drag only works if clicked on `#squareCraft-grabbing`
                 event.target.tagName === "INPUT" ||
@@ -165,17 +165,17 @@
                 event.target.closest("#squareCraftFontDropdown") ||
                 isOverFontFamily
             ) return;
-    
+
             event.preventDefault();
             isDragging = true;
-    
+
             offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
             offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
-    
+
             document.addEventListener("mousemove", moveAt);
             document.addEventListener("mouseup", stopDragging);
         });
-    
+
         function moveAt(event) {
             if (!isDragging) return;
             let newX = Math.max(0, Math.min(window.innerWidth - widgetContainer.offsetWidth, event.clientX - offsetX));
@@ -183,15 +183,15 @@
             widgetContainer.style.left = `${newX}px`;
             widgetContainer.style.top = `${newY}px`;
         }
-    
+
         function stopDragging() {
             isDragging = false;
             document.removeEventListener("mousemove", moveAt);
             document.removeEventListener("mouseup", stopDragging);
         }
     }
-    
-    
+
+
 
     function injectIcon() {
 
@@ -263,7 +263,7 @@
         });
         observer.observe(parent.document.body, { childList: true, subtree: true });
     }
-   
+
 
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
@@ -280,8 +280,8 @@
 
     waitForNavBar();
     function checkView() {
-        const isMobile = window.innerWidth <= 768; 
-        
+        const isMobile = window.innerWidth <= 768;
+
         if (isMobile) {
             console.log("📱 Mobile view detected. Moving widget outside the main window...");
             moveWidgetToMobileContainer();
@@ -290,31 +290,36 @@
             moveWidgetToDesktop();
         }
     }
-    
+
     function moveWidgetToMobileContainer() {
         if (!widgetContainer) return;
-    
+
         const mobileContainer = parent.document.querySelector(
             'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
         );
-    
+
         if (mobileContainer) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+            document.head.appendChild(link);
             mobileContainer.appendChild(widgetContainer);
             console.log("✅ Widget successfully moved to mobile container.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
     }
-    
+
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
-    
+
         document.body.appendChild(widgetContainer);
         console.log("✅ Widget remains in the desktop position.");
     }
-    
+
     checkView();
     window.addEventListener("resize", checkView);
-    
-    
+
+
 })();
