@@ -187,11 +187,9 @@
     function moveAt(event) {
         if (!isDragging) return;
 
-        // Get parent boundaries
         const parentRect = parentContainer.getBoundingClientRect();
         const widgetRect = widgetContainer.getBoundingClientRect();
 
-        // Constrain within parent
         let newX = event.clientX - offsetX - parentRect.left;
         let newY = event.clientY - offsetY - parentRect.top;
 
