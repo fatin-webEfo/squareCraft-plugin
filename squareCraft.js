@@ -146,7 +146,6 @@
     function makeWidgetDraggable() {
     if (!widgetContainer) return;
 
-    // Get the parent container where the widget should be draggable
     const parentContainer = widgetContainer.parentElement || document.body;
 
     widgetContainer.style.position = "absolute"; // Allows movement inside the parent
