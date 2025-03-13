@@ -293,23 +293,29 @@
 
     function moveWidgetToMobileContainer() {
         if (!widgetContainer) return;
-
+    
         const mobileContainer = parent.document.querySelector(
             'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
         );
-
+    
         if (mobileContainer) {
-            const link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.type = "text/css";
-            link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-            document.head.appendChild(link);
+            const existingLink = parent.document.querySelector('link[href="https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"]');
+            
+            if (!existingLink) { 
+                const link = parent.document.createElement("link");
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+                parent.document.head.appendChild(link);
+            }
+    
             mobileContainer.appendChild(widgetContainer);
-            console.log("✅ Widget successfully moved to mobile container.");
+            console.log("✅ Widget successfully moved to mobile container with proper styles.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
     }
+    
 
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
