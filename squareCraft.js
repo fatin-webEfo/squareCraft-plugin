@@ -155,14 +155,16 @@
         let offsetX = 0, offsetY = 0, isDragging = false;
     
         widgetContainer.addEventListener("mousedown", (event) => {
+            const draggableElement = event.target.closest("#squareCraft-grabbing");
             const isOverFontFamily = event.target.closest("#squareCraft-font-family");
     
             if (
-                event.target.tagName === "INPUT" || 
-                event.target.tagName === "SELECT" || 
-                event.target.isContentEditable || 
-                event.target.closest("#squareCraftFontDropdown") || 
-                isOverFontFamily 
+                !draggableElement || // Drag only works if clicked on `#squareCraft-grabbing`
+                event.target.tagName === "INPUT" ||
+                event.target.tagName === "SELECT" ||
+                event.target.isContentEditable ||
+                event.target.closest("#squareCraftFontDropdown") ||
+                isOverFontFamily
             ) return;
     
             event.preventDefault();
@@ -189,6 +191,7 @@
             document.removeEventListener("mouseup", stopDragging);
         }
     }
+    
     
 
     function injectIcon() {
