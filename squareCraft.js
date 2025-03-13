@@ -331,6 +331,7 @@
                 link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
                 parent.document.head.appendChild(link);
             }
+            mobileContainer.classList.add("squareCraft-relative")
             widgetContainer.style.position = "absolute";
             widgetContainer.style.top = "50%";
             widgetContainer.style.left = "50%";
