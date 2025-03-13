@@ -55,7 +55,7 @@
         let block = event.target.closest('[id^="block-"]');
         if (!block || block.classList.contains("squareCraft-selected")) return;
     
-        block.style.outline = "2px solid #EF7C2F";
+        block.style.outline = "3px solid #EF7C2F";
     });
     
     document.body.addEventListener("mouseout", (event) => {
