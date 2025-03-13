@@ -283,10 +283,8 @@
         const isMobile = window.innerWidth <= 768;
     
         if (isMobile) {
-            console.log("📱 Mobile view detected. Moving widget outside the main window...");
             moveWidgetToMobileContainer();
         } else {
-            console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
             moveWidgetToDesktop();
         }
     }
@@ -309,14 +307,13 @@
                 parent.document.head.appendChild(link);
             }
     
-            widgetContainer.style.position = "fixed";
+            widgetContainer.style.position = "absolute";
             widgetContainer.style.left = "50%";
             widgetContainer.style.top = "50%";
             widgetContainer.style.transform = "translate(-50%, -50%)";
             widgetContainer.style.zIndex = "9999";
-    
+            
             mobileContainer.appendChild(widgetContainer);
-            console.log("✅ Widget successfully moved to mobile container with proper styles.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
@@ -325,14 +322,21 @@
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
         
-        widgetContainer.style.position = "fixed";
-        widgetContainer.style.left = "50%";
-        widgetContainer.style.top = "50%";
-        widgetContainer.style.transform = "translate(-50%, -50%)";
-        widgetContainer.style.zIndex = "9999";
+        const desktopContainer = parent.document.querySelector(
+            'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
+        );
     
-        document.body.appendChild(widgetContainer);
-        console.log("✅ Widget remains in the desktop position.");
+        if (desktopContainer) {
+            widgetContainer.style.position = "absolute";
+            widgetContainer.style.left = "50%";
+            widgetContainer.style.top = "50%";
+            widgetContainer.style.transform = "translate(-50%, -50%)";
+            widgetContainer.style.zIndex = "9999";
+    
+            desktopContainer.appendChild(widgetContainer);
+        } else {
+            console.warn("❌ Desktop container not found. Widget remains in default location.");
+        }
     }
     
     function disableDragging() {
@@ -348,7 +352,7 @@
     }
     
     checkView();
-    disableDragging(); 
+    disableDragging();
     window.addEventListener("resize", checkView);
     
     
