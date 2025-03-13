@@ -147,7 +147,6 @@
         if (!widgetContainer) return;
     
         widgetContainer.style.position = "fixed";
-        widgetContainer.style.cursor = "grab";
         widgetContainer.style.zIndex = "999";
         widgetContainer.style.left = "calc(100% - 250px)";
         widgetContainer.style.top = "100px";
