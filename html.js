@@ -103,7 +103,6 @@ export function html() {
          </div>
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
 
-          <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
             <select id="squareCraftFontDropdown" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
                 style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px; max-height: 250px; overflow-y: auto;">
                 <option value="" selected disabled hidden>Select Font</option>
@@ -111,10 +110,7 @@ export function html() {
                     <option value="${font}" style="font-family: '${font}', sans-serif;">${font}</option>
                 `).join('')}
             </select>
-            <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px; pointer-events: none;">
-                <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-            </div>
-        </div>
+          
 
             <div class="squareCraft-flex squareCraft-bg-transparent squareCraft-h-9 squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4   squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
                <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center ">
