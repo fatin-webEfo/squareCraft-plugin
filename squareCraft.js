@@ -277,18 +277,20 @@
             injectIcon();
         }
     }
-    waitForNavBar();
 
+    waitForNavBar();
     function checkView() {
         const isMobile = window.innerWidth <= 768;
-    
+
         if (isMobile) {
+            console.log("📱 Mobile view detected. Moving widget outside the main window...");
             moveWidgetToMobileContainer();
         } else {
+            console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
             moveWidgetToDesktop();
         }
     }
-    
+
     function moveWidgetToMobileContainer() {
         if (!widgetContainer) return;
     
@@ -307,55 +309,23 @@
                 parent.document.head.appendChild(link);
             }
     
-            widgetContainer.style.position = "absolute";
-            widgetContainer.style.left = "50%";
-            widgetContainer.style.top = "50%";
-            widgetContainer.style.transform = "translate(-50%, -50%)";
-            widgetContainer.style.zIndex = "9999";
-            
             mobileContainer.appendChild(widgetContainer);
+            console.log("✅ Widget successfully moved to mobile container with proper styles.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
     }
     
+
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
-        
-        const desktopContainer = parent.document.querySelector(
-            'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
-        );
-    
-        if (desktopContainer) {
-            widgetContainer.style.position = "absolute";
-            widgetContainer.style.left = "50%";
-            widgetContainer.style.top = "50%";
-            widgetContainer.style.transform = "translate(-50%, -50%)";
-            widgetContainer.style.zIndex = "9999";
-    
-            desktopContainer.appendChild(widgetContainer);
-        } else {
-            console.warn("❌ Desktop container not found. Widget remains in default location.");
-        }
+
+        document.body.appendChild(widgetContainer);
+        console.log("✅ Widget remains in the desktop position.");
     }
-    
-    function disableDragging() {
-        if (!widgetContainer) return;
-    
-        widgetContainer.onmousedown = (event) => {
-            event.preventDefault(); 
-        };
-    
-        widgetContainer.ontouchstart = (event) => {
-            event.preventDefault(); 
-        };
-    }
-    
+
     checkView();
-    disableDragging();
     window.addEventListener("resize", checkView);
-    
-    
 
 
 })();
