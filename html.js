@@ -114,8 +114,8 @@ export function html() {
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-<div class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
-    <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
+<div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
+    <select  class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
         style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
         <option value="" selected disabled hidden>Select Font</option>
     </select>
