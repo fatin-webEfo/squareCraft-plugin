@@ -7,8 +7,23 @@ export function html() {
 
    document.addEventListener("DOMContentLoaded", async function () {
       const fontSelect = document.getElementById("squareCraftFontSelect");
+      const toggleSwitch = document.getElementById("toggleSwitch");
+      const toggleText = document.getElementById("toggleText");
+  
       let currentIndex = 0, batchSize = 10, loading = false;
-      
+  
+      function toggleEnableDisable() {
+          const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
+          localStorage.setItem("squareCraft_enabled", !isEnabled);
+          toggleText.innerText = !isEnabled ? "Disable" : "Enable";
+      }
+  
+      toggleSwitch.addEventListener("click", toggleEnableDisable);
+  
+      if (localStorage.getItem("squareCraft_enabled") === "true") {
+          toggleText.innerText = "Disable";
+      }
+  
       async function fetchFonts(startIndex = 0, limit = 10) {
           try {
               let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
