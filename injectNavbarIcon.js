@@ -23,14 +23,10 @@ export function injectNavbarIcon() {
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
     
-        if (!toolbarContainers.length) {
-            console.warn("⚠️ No section toolbars found.");
-            return;
-        }
-    
         toolbarContainers.forEach(toolbarContainer => {
-            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) { 
+            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {  
                 const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+    
                 const squareCraftDiv = document.createElement("div");
                 squareCraftDiv.classList.add("squareCraft-toolbar");
                 squareCraftDiv.style.display = "flex";
@@ -38,14 +34,14 @@ export function injectNavbarIcon() {
                 squareCraftDiv.style.border = "1px solid #E5E4E2";
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
+    
                 squareCraftDiv.addEventListener("mouseenter", () => {
                     squareCraftDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)"; 
                 });
-                
+    
                 squareCraftDiv.addEventListener("mouseleave", () => {
                     squareCraftDiv.style.backgroundColor = "transparent"; 
                 });
-                
     
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
@@ -65,11 +61,11 @@ export function injectNavbarIcon() {
                 squareCraftDiv.appendChild(text);
     
                 toolbarContainer.appendChild(squareCraftDiv);
-    
                 console.log(`✅ Inserted SquareCraft toolbar in:`, toolbarContainer);
             }
         });
     }
+    
     
     insertToolbarIcon();
     insertAdminIcon();
