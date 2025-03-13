@@ -146,8 +146,7 @@
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
     
-        const parentContainer = widgetContainer.parentElement || document.body;
-        widgetContainer.style.position = "absolute";
+        widgetContainer.style.position = "fixed";
         widgetContainer.style.zIndex = "999";
         widgetContainer.style.left = "10px"; // Default position
         widgetContainer.style.top = "10px";
@@ -197,20 +196,19 @@
             const clientX = isTouch ? event.touches[0].clientX : event.clientX;
             const clientY = isTouch ? event.touches[0].clientY : event.clientY;
     
-            const parentRect = parentContainer.getBoundingClientRect();
-            const widgetRect = widgetContainer.getBoundingClientRect();
+            let newX = clientX - offsetX;
+            let newY = clientY - offsetY;
     
-            let newX = clientX - offsetX - parentRect.left;
-            let newY = clientY - offsetY - parentRect.top;
+            const maxX = window.innerWidth - widgetContainer.offsetWidth;
+            const maxY = window.innerHeight - widgetContainer.offsetHeight;
     
-            // Ensure the widget stays inside the parent container
-            newX = Math.max(0, Math.min(parentRect.width - widgetRect.width, newX));
-            newY = Math.max(0, Math.min(parentRect.height - widgetRect.height, newY));
+            newX = Math.max(0, Math.min(maxX, newX));
+            newY = Math.max(0, Math.min(maxY, newY));
     
             widgetContainer.style.left = `${newX}px`;
             widgetContainer.style.top = `${newY}px`;
     
-            event.preventDefault(); // Prevent scrolling on mobile while dragging
+            event.preventDefault(); 
         }
     
         function stopDragging() {
@@ -224,6 +222,7 @@
         widgetContainer.addEventListener("mousedown", startDragging);
         widgetContainer.addEventListener("touchstart", startDragging, { passive: false });
     }
+    
     
 
     
