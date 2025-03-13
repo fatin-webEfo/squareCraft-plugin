@@ -29,9 +29,8 @@ export function injectNavbarIcon() {
         }
     
         toolbarContainers.forEach(toolbarContainer => {
-            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) { // Prevent duplicate insertion
+            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) { 
                 const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-    
                 const squareCraftDiv = document.createElement("div");
                 squareCraftDiv.classList.add("squareCraft-toolbar");
                 squareCraftDiv.style.display = "flex";
@@ -40,7 +39,7 @@ export function injectNavbarIcon() {
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
                 squareCraftDiv.addEventListener("mouseenter", () => {
-                    squareCraftDiv.style.backgroundColor = "rgba(229, 229, 229, 0.2)"; 
+                    squareCraftDiv.style.backgroundColor = "rgba(240, 240, 240, 0.2)"; 
                 });
                 
                 squareCraftDiv.addEventListener("mouseleave", () => {
