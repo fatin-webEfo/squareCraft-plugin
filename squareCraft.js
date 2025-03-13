@@ -277,8 +277,8 @@
             injectIcon();
         }
     }
-
     waitForNavBar();
+
     function checkView() {
         const isMobile = window.innerWidth <= 768;
     
@@ -324,6 +324,7 @@
     
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
+        
         widgetContainer.style.position = "fixed";
         widgetContainer.style.left = "50%";
         widgetContainer.style.top = "50%";
@@ -334,8 +335,22 @@
         console.log("✅ Widget remains in the desktop position.");
     }
     
+    function disableDragging() {
+        if (!widgetContainer) return;
+    
+        widgetContainer.onmousedown = (event) => {
+            event.preventDefault(); 
+        };
+    
+        widgetContainer.ontouchstart = (event) => {
+            event.preventDefault(); 
+        };
+    }
+    
     checkView();
+    disableDragging(); 
     window.addEventListener("resize", checkView);
+    
     
 
 
