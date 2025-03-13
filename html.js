@@ -7,82 +7,61 @@ export function html() {
 
    document.addEventListener("DOMContentLoaded", async function () {
       const fontSelect = document.getElementById("squareCraftFontSelect");
+      let currentIndex = 0, batchSize = 10, loading = false;
+      
+      async function fetchFonts(startIndex = 0, limit = 10) {
+          try {
+              let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+              if (cachedFonts.length > startIndex) {
+                  return cachedFonts.slice(startIndex, startIndex + limit);
+              }
   
-      fontSelect.addEventListener("mousedown", function (event) {
-          event.preventDefault();
-          this.size = 6; 
+              const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=YOUR_API_KEY");
+              if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  
+              const data = await response.json();
+              const fonts = data.items.map(font => font.family);
+              localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
+  
+              return fonts.slice(startIndex, startIndex + limit);
+          } catch (error) {
+              console.error("🚨 Error fetching fonts:", error);
+              return [];
+          }
+      }
+  
+      async function loadFonts() {
+          if (loading) return;
+          loading = true;
+  
+          const fonts = await fetchFonts(currentIndex, batchSize);
+          if (!fonts.length) return;
+  
+          fonts.forEach(font => {
+              const option = document.createElement("option");
+              option.value = font;
+              option.innerText = font;
+              option.style.fontFamily = `'${font}', sans-serif`;
+              fontSelect.appendChild(option);
+          });
+  
+          currentIndex += batchSize;
+          loading = false;
+      }
+  
+      await loadFonts();
+  
+      fontSelect.addEventListener("scroll", async function () {
+          if (fontSelect.scrollTop + fontSelect.clientHeight >= fontSelect.scrollHeight - 10) {
+              await loadFonts();
+          }
       });
   
       fontSelect.addEventListener("change", function () {
-          this.size = 1; 
+          const selectedFont = fontSelect.value;
+          fontSelect.style.fontFamily = `'${selectedFont}', sans-serif`;
       });
-  
-      fontSelect.addEventListener("blur", function () {
-          this.size = 1; 
-      });
-  
-      async function fetchFonts(startIndex = 0, batchSize = 10) {
-         try {
-             let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
-     
-             if (cachedFonts.length > startIndex) {
-                 return cachedFonts.slice(startIndex, startIndex + batchSize);
-             }
-     
-             const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=YOUR_API_KEY");
-             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-     
-             const data = await response.json();
-             const fontList = data.items;
-     
-             if (!cachedFonts.length) {
-                 localStorage.setItem("squareCraft_fonts", JSON.stringify(fontList));
-             }
-     
-             return fontList.slice(startIndex, startIndex + batchSize);
-         } catch {
-             return [];
-         }
-     }
-     
-     document.addEventListener("DOMContentLoaded", async function () {
-         const fontSelect = document.getElementById("squareCraftFontSelect");
-         let currentIndex = 0, batchSize = 10, loading = false;
-     
-         async function loadMoreFonts() {
-             if (loading) return;
-             loading = true;
-     
-             const fonts = await fetchFonts(currentIndex, batchSize);
-             if (!fonts.length) return;
-     
-             const fragment = document.createDocumentFragment();
-             fonts.forEach(font => {
-                 const option = document.createElement("option");
-                 option.value = font.family;
-                 option.innerText = font.family;
-                 option.style.fontFamily = `'${font.family}', sans-serif`;
-                 fragment.appendChild(option);
-             });
-     
-             fontSelect.appendChild(fragment);
-             currentIndex += batchSize;
-             loading = false;
-         }
-     
-         await loadMoreFonts();
-     
-         fontSelect.addEventListener("scroll", async function () {
-             if (fontSelect.scrollTop + fontSelect.clientHeight >= fontSelect.scrollHeight - 10) {
-                 await loadMoreFonts();
-             }
-         });
-     });
-     
-  
-      await fetchFonts();
   });
-  
   
   
 
