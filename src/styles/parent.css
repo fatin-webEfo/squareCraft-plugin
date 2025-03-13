@@ -963,6 +963,20 @@ font-size: 12px !important;
   cursor: pointer !important;
   transition: background 0.3s ease-in-out !important;
 }
+
+.squareCraft-toolbar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #E5E4E2;
+  padding: 6px;
+  gap: 6px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.squareCraft-toolbar:hover {
+  background-color: rgba(229, 229, 229, 0.2);
+}
+
 .squareCraft-visible {
   display: block !important;
 }

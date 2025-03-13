@@ -39,6 +39,14 @@ export function injectNavbarIcon() {
                 squareCraftDiv.style.border = "1px solid #E5E4E2";
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
+                squareCraftDiv.addEventListener("mouseenter", () => {
+                    squareCraftDiv.style.backgroundColor = "rgba(229, 229, 229, 0.2)"; 
+                });
+                
+                squareCraftDiv.addEventListener("mouseleave", () => {
+                    squareCraftDiv.style.backgroundColor = "transparent"; 
+                });
+                
     
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
