@@ -331,17 +331,22 @@
                 link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
                 parent.document.head.appendChild(link);
             }
-            mobileContainer.classList.add("squareCraft-relative")
+    
+            mobileContainer.classList.add("squareCraft-relative");
+    
             widgetContainer.style.position = "absolute";
+            widgetContainer.style.right = "10px"; 
             widgetContainer.style.top = "50%";
-            widgetContainer.style.left = "50%";
-            widgetContainer.style.transform = "translate(-50%, -50%)";
+            widgetContainer.style.transform = "translateY(-50%)";
+    
             mobileContainer.appendChild(widgetContainer);
-            console.log("✅ Widget successfully moved to mobile container with proper styles.");
+    
+            console.log("✅ Widget successfully moved to mobile container and positioned correctly.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
     }
+    
     
 
     function moveWidgetToDesktop() {
