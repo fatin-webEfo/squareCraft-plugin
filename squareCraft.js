@@ -281,7 +281,7 @@
     waitForNavBar();
     function checkView() {
         const isMobile = window.innerWidth <= 768;
-
+    
         if (isMobile) {
             console.log("📱 Mobile view detected. Moving widget outside the main window...");
             moveWidgetToMobileContainer();
@@ -290,7 +290,7 @@
             moveWidgetToDesktop();
         }
     }
-
+    
     function moveWidgetToMobileContainer() {
         if (!widgetContainer) return;
     
@@ -309,6 +309,12 @@
                 parent.document.head.appendChild(link);
             }
     
+            widgetContainer.style.position = "fixed";
+            widgetContainer.style.left = "50%";
+            widgetContainer.style.top = "50%";
+            widgetContainer.style.transform = "translate(-50%, -50%)";
+            widgetContainer.style.zIndex = "9999";
+    
             mobileContainer.appendChild(widgetContainer);
             console.log("✅ Widget successfully moved to mobile container with proper styles.");
         } else {
@@ -316,16 +322,21 @@
         }
     }
     
-
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
-
+        widgetContainer.style.position = "fixed";
+        widgetContainer.style.left = "50%";
+        widgetContainer.style.top = "50%";
+        widgetContainer.style.transform = "translate(-50%, -50%)";
+        widgetContainer.style.zIndex = "9999";
+    
         document.body.appendChild(widgetContainer);
         console.log("✅ Widget remains in the desktop position.");
     }
-
+    
     checkView();
     window.addEventListener("resize", checkView);
+    
 
 
 })();
