@@ -39,7 +39,7 @@ export function injectNavbarIcon() {
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
                 squareCraftDiv.addEventListener("mouseenter", () => {
-                    squareCraftDiv.style.backgroundColor = "rgba(240, 240, 240, 0.2)"; 
+                    squareCraftDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)"; 
                 });
                 
                 squareCraftDiv.addEventListener("mouseleave", () => {
