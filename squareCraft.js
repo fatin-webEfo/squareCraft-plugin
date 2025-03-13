@@ -279,46 +279,37 @@
     }
 
     waitForNavBar();
-
-
-
     function checkView() {
         const isMobile = window.innerWidth <= 768; 
         
         if (isMobile) {
             console.log("📱 Mobile view detected. Moving widget outside the main window...");
-            runMobileFunction();
+            moveWidgetToMobileContainer();
         } else {
             console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
-            runDesktopFunction();
+            moveWidgetToDesktop();
         }
     }
     
-    function runMobileFunction() {
+    function moveWidgetToMobileContainer() {
         if (!widgetContainer) return;
-        
+    
         const mobileContainer = parent.document.querySelector(
             'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
         );
     
         if (mobileContainer) {
             mobileContainer.appendChild(widgetContainer);
-            widgetContainer.style.width = "90vw"; 
-            widgetContainer.style.left = "5vw"; 
-            widgetContainer.style.position = "absolute"; 
             console.log("✅ Widget successfully moved to mobile container.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
     }
     
-    function runDesktopFunction() {
+    function moveWidgetToDesktop() {
         if (!widgetContainer) return;
-        
+    
         document.body.appendChild(widgetContainer);
-        widgetContainer.style.width = "400px"; 
-        widgetContainer.style.left = "calc(100% - 450px)";
-        widgetContainer.style.position = "fixed";
         console.log("✅ Widget remains in the desktop position.");
     }
     
@@ -326,6 +317,4 @@
     window.addEventListener("resize", checkView);
     
     
-
-
 })();
