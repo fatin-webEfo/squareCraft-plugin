@@ -335,7 +335,7 @@
             mobileContainer.classList.add("squareCraft-relative");
     
             widgetContainer.style.position = "absolute";
-            widgetContainer.style.right = "10px"; 
+            widgetContainer.style.right = "10%"; 
             widgetContainer.style.top = "50%";
             widgetContainer.style.transform = "translateY(-50%)";
     
