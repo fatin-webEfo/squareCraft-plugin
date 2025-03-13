@@ -331,7 +331,10 @@
                 link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
                 parent.document.head.appendChild(link);
             }
-    
+            widgetContainer.style.position = "absolute";
+            widgetContainer.style.top = "50%";
+            widgetContainer.style.left = "50%";
+            widgetContainer.style.transform = "translate(-50%, -50%)";
             mobileContainer.appendChild(widgetContainer);
             console.log("✅ Widget successfully moved to mobile container with proper styles.");
         } else {
