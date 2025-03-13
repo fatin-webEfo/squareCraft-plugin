@@ -144,86 +144,71 @@
 
 
     function makeWidgetDraggable() {
-        if (!widgetContainer) return;
-    
-        widgetContainer.style.position = "fixed";
-        widgetContainer.style.zIndex = "999";
-        widgetContainer.style.left = "10px"; // Default position
-        widgetContainer.style.top = "10px";
-    
-        let offsetX = 0, offsetY = 0, isDragging = false;
-    
-        function isMobileView() {
-            return window.innerWidth <= 768;
-        }
-    
-        function startDragging(event) {
-            if (!widgetContainer) return;
-    
-            const isTouch = event.type === "touchstart";
-            const clientX = isTouch ? event.touches[0].clientX : event.clientX;
-            const clientY = isTouch ? event.touches[0].clientY : event.clientY;
-    
-            const draggableElement = event.target.closest("#squareCraft-grabbing");
-    
-            if (
-                !draggableElement || 
-                event.target.tagName === "INPUT" ||
-                event.target.tagName === "SELECT" ||
-                event.target.isContentEditable ||
-                event.target.closest("#squareCraftFontDropdown")
-            ) return;
-    
-            event.preventDefault();
-            isDragging = true;
-    
-            offsetX = clientX - widgetContainer.getBoundingClientRect().left;
-            offsetY = clientY - widgetContainer.getBoundingClientRect().top;
-    
-            if (isTouch) {
-                document.addEventListener("touchmove", moveAt, { passive: false });
-                document.addEventListener("touchend", stopDragging);
-            } else {
-                document.addEventListener("mousemove", moveAt);
-                document.addEventListener("mouseup", stopDragging);
-            }
-        }
-    
-        function moveAt(event) {
-            if (!isDragging) return;
-    
-            const isTouch = event.type === "touchmove";
-            const clientX = isTouch ? event.touches[0].clientX : event.clientX;
-            const clientY = isTouch ? event.touches[0].clientY : event.clientY;
-    
-            let newX = clientX - offsetX;
-            let newY = clientY - offsetY;
-    
-            const maxX = window.innerWidth - widgetContainer.offsetWidth;
-            const maxY = window.innerHeight - widgetContainer.offsetHeight;
-    
-            newX = Math.max(0, Math.min(maxX, newX));
-            newY = Math.max(0, Math.min(maxY, newY));
-    
-            widgetContainer.style.left = `${newX}px`;
-            widgetContainer.style.top = `${newY}px`;
-    
-            event.preventDefault(); 
-        }
-    
-        function stopDragging() {
-            isDragging = false;
-            document.removeEventListener("mousemove", moveAt);
-            document.removeEventListener("mouseup", stopDragging);
-            document.removeEventListener("touchmove", moveAt);
-            document.removeEventListener("touchend", stopDragging);
-        }
-    
-        widgetContainer.addEventListener("mousedown", startDragging);
-        widgetContainer.addEventListener("touchstart", startDragging, { passive: false });
+    if (!widgetContainer) return;
+
+    // Get the parent container where the widget should be draggable
+    const parentContainer = widgetContainer.parentElement || document.body;
+
+    widgetContainer.style.position = "absolute"; // Allows movement inside the parent
+    widgetContainer.style.zIndex = "999";
+    widgetContainer.style.left = "10px"; // Default position
+    widgetContainer.style.top = "10px";
+
+    let offsetX = 0, offsetY = 0, isDragging = false;
+
+    function isMobileView() {
+        return window.innerWidth <= 768;
     }
-    
-    
+
+    widgetContainer.addEventListener("mousedown", (event) => {
+        if (isMobileView()) {
+            console.log("📱 Mobile view detected. Dragging enabled inside parent container.");
+        }
+
+        const draggableElement = event.target.closest("#squareCraft-grabbing");
+
+        if (
+            !draggableElement || 
+            event.target.tagName === "INPUT" ||
+            event.target.tagName === "SELECT" ||
+            event.target.isContentEditable ||
+            event.target.closest("#squareCraftFontDropdown")
+        ) return;
+
+        event.preventDefault();
+        isDragging = true;
+
+        offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
+        offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+    });
+
+    function moveAt(event) {
+        if (!isDragging) return;
+
+        // Get parent boundaries
+        const parentRect = parentContainer.getBoundingClientRect();
+        const widgetRect = widgetContainer.getBoundingClientRect();
+
+        // Constrain within parent
+        let newX = event.clientX - offsetX - parentRect.left;
+        let newY = event.clientY - offsetY - parentRect.top;
+
+        newX = Math.max(0, Math.min(parentRect.width - widgetRect.width, newX));
+        newY = Math.max(0, Math.min(parentRect.height - widgetRect.height, newY));
+
+        widgetContainer.style.left = `${newX}px`;
+        widgetContainer.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+    }
+}
 
     
     function adjustWidgetPosition() {
