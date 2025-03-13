@@ -973,6 +973,15 @@ font-size: 12px !important;
   transition: background-color 0.2s ease-in-out;
 }
 
+[id^="block-"]:hover {
+  outline: 2px solid #EF7C2F !important;
+}
+
+.squareCraft-selected {
+  outline: 2px dashed #EF7C2F !important;
+}
+
+
 .squareCraft-toolbar:hover {
   background-color: rgba(229, 229, 229, 0.2);
 }

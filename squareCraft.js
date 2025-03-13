@@ -38,13 +38,33 @@
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
-
-        if (selectedElement) selectedElement.style.outline = "";
+    
+        if (selectedElement) {
+            selectedElement.style.outline = ""; 
+            selectedElement.classList.remove("squareCraft-selected");
+        }
+    
         selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-
+        selectedElement.style.outline = "2px dashed #EF7C2F"; 
+        selectedElement.classList.add("squareCraft-selected");
+    
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
+    
+    document.body.addEventListener("mouseover", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block || block.classList.contains("squareCraft-selected")) return;
+    
+        block.style.outline = "2px solid #EF7C2F";
+    });
+    
+    document.body.addEventListener("mouseout", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block || block.classList.contains("squareCraft-selected")) return;
+    
+        block.style.outline = ""; 
+    });
+    
     // Clicked outline
     // navbar icon
 
@@ -67,14 +87,12 @@
 
     
     async function createWidget() {
-        console.log("📥 Fetching widget module...");
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
             
             if (module && module.html) {
                 
                 const htmlString = module.html();
-                console.log("📝 Retrieved HTML string:", htmlString);
     
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
@@ -83,15 +101,12 @@
     
                     if (typeof htmlString === "string" && htmlString.trim().length > 0) {
                         widgetContainer.innerHTML = htmlString;
-                        console.log("✅ HTML string successfully added to widget container.");
                     } else {
                         console.error("❌ Retrieved HTML string is invalid or empty!");
                     }
     
                     widgetContainer.style.display = "none";
                     document.body.appendChild(widgetContainer);
-    
-                    console.log("✅ Widget container added:", widgetContainer);
                     makeWidgetDraggable();
                     widgetLoaded = true;
     
@@ -116,7 +131,6 @@
         event.stopPropagation();
 
         if (!widgetLoaded) {
-            console.log("📥 Creating and displaying widget...");
             await createWidget();
         }
 
@@ -207,10 +221,8 @@
                 clonedIcon.addEventListener("click", function (event) {
                     event.stopPropagation();
                     event.preventDefault();
-                    console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
 
                     if (!widgetLoaded) {
-                        console.log("📥 Widget not loaded - Creating now...");
                         createWidget().then(() => {
                             widgetContainer = document.getElementById("squarecraft-widget-container");
                             if (widgetContainer) {
@@ -229,9 +241,7 @@
 
         const iframe = document.querySelector("iframe");
         if (iframe) {
-            console.log("📌 Toolbar is inside an iframe!");
             iframe.contentWindow.document.addEventListener("click", function (event) {
-                console.log("🖱️ Click detected inside iframe.");
                 if (event.target.classList.contains("squareCraft-admin-icon")) {
                     event.stopPropagation();
                     event.preventDefault();
