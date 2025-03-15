@@ -115,42 +115,12 @@ document.body.addEventListener("mouseout", (event) => {
     // Clicked outline
     // navbar icon
 
-    async function loadInjectNavbarIcon() {
-        const scriptKey = "squareCraft_navbarIcon";
-        const timestampKey = "squareCraft_navbarIcon_timestamp";
-        const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-        const now = Date.now();
-    
-        let cachedScript = localStorage.getItem(scriptKey);
-        let lastFetched = localStorage.getItem(timestampKey);
-    
-        if (cachedScript && lastFetched && now - lastFetched < oneDay) {
-            console.log("📦 Loading injectNavbarIcon from LocalStorage...");
-            const module = eval(cachedScript);
-            module.injectNavbarIcon();
-            return;
-        }
-    
-        console.log("🌍 Fetching injectNavbarIcon script from CDN...");
-        try {
-            let module = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
-    
-            if (module && module.injectNavbarIcon) {
-                localStorage.setItem(scriptKey, `(${module.injectNavbarIcon.toString()})`);
-                localStorage.setItem(timestampKey, now.toString());
-    
-                module.injectNavbarIcon(); // Execute function
-            } else {
-                throw new Error("injectNavbarIcon function not found in module");
-            }
-        } catch (error) {
-            console.error("🚨 Failed to load injectNavbarIcon script", error);
-        }
+    try {
+        const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
+        injectNavbarIcon();
+    } catch (error) {
+        console.error("🚨 Failed to load navbar icon script", error);
     }
-    
-    // **Call Function**
-    loadInjectNavbarIcon();
-    
 
     // navbar Icon
 
@@ -257,6 +227,7 @@ document.body.addEventListener("mouseout", (event) => {
             widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
         }
     }
+
 
 
 
