@@ -51,46 +51,83 @@
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
-    function isEditMode() {
-        return document.body.classList.contains('sqs-edit-mode') || document.body.classList.contains('sqs-layout-editing');
-    }
     
-    function determineTextType(element) {
-        const tagName = element.tagName.toLowerCase();
-        if (["h1", "h2", "h3", "h4", "p"].includes(tagName)) {
-            return `${tagName.toUpperCase()}`;
-        }
-        return "Unknown";
-    }
-    
-    function handleMouseOver(event) {
-        const target = event.target;
-        const textType = determineTextType(target);
-    
-        if (textType !== "Unknown") {
-            target.style.outline = "2px dashed #EF7C2F";
-            console.log(`✅ Hovered Element: ${target.tagName}, Type: ${textType}`);
-        }
-    }
-    
-    function handleMouseOut(event) {
-        const target = event.target;
-        if (determineTextType(target) !== "Unknown") {
-            target.style.outline = "";
+function isEditMode() {
+    return document.body.classList.contains('sqs-edit-mode') || document.body.classList.contains('sqs-layout-editing');
+}
+
+        function determineTextType(element) {
+    const tagName = element.tagName.toLowerCase();
+    const classList = element.classList;
+
+    if (tagName === "h1") {
+        return "Heading 1 (h1)";
+    } else if (tagName === "h2") {
+        return "Heading 2 (h2)";
+    } else if (tagName === "h3") {
+        return "Heading 3 (h3)";
+    } else if (tagName === "h4") {
+        return "Heading 4 (h4)";
+    } else if (tagName === "p") {
+        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+            return "Paragraph 3 (p3)";
+        } else if (classList.contains("sqsrte-large")) {
+            return "Paragraph 1 (p1)";
+        } else {
+            return "Paragraph 2 (p2)";
         }
     }
-    
-    function initializeScript() {
-        document.querySelectorAll("h1, h2, h3, h4, p").forEach(element => {
-            element.addEventListener("mouseover", handleMouseOver);
-            element.addEventListener("mouseout", handleMouseOut);
-        });
+    return "Unknown";
+}
+
+// Function to handle mouse over events
+function handleMouseOver(event) {
+    const target = event.target;
+    const textType = determineTextType(target);
+
+    if (textType !== "Unknown") {
+        target.style.outline = "2px dashed #EF7C2F";
+        target.classList.add("squareCraft-highlighted");
+
+        console.log(`✅ Hovered Element: ${target.id || 'No ID'}, Text Type: ${textType}`);
     }
-    
-    if (!isEditMode()) {
-        initializeScript();
+}
+
+function handleMouseOut(event) {
+    const target = event.target;
+    const textType = determineTextType(target);
+
+    if (textType !== "Unknown") {
+        target.style.outline = "";
+        target.classList.remove("squareCraft-highlighted");
     }
-    
+}
+
+function initializeScript() {
+    document.querySelectorAll('[id^="block-"]').forEach(block => {
+        block.addEventListener("mouseover", handleMouseOver);
+        block.addEventListener("mouseout", handleMouseOut);
+    });
+
+    document.body.addEventListener("mouseover", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block || block.classList.contains("squareCraft-selected")) return;
+
+        block.style.outline = "4px solid #EF7C2F";
+    });
+
+    document.body.addEventListener("mouseout", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block || block.classList.contains("squareCraft-selected")) return;
+
+        block.style.outline = "";
+    });
+}
+
+if (!isEditMode()) {
+    initializeScript();
+}
+
 
     // Clicked outline
     // navbar icon
