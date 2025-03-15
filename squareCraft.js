@@ -115,39 +115,12 @@ document.body.addEventListener("mouseout", (event) => {
     // Clicked outline
     // navbar icon
 
-    async function loadInjectNavbarIcon() {
-        const scriptKey = "squareCraft_navbarIcon";
-        const timestampKey = "squareCraft_navbarIcon_timestamp";
-        const oneDay = 24 * 60 * 60 * 1000; // 1 day in milliseconds
-        const now = Date.now();
-    
-        let cachedScript = localStorage.getItem(scriptKey);
-        let lastFetched = localStorage.getItem(timestampKey);
-    
-        if (cachedScript && lastFetched && now - lastFetched < oneDay) {
-            console.log("📦 Loading injectNavbarIcon from LocalStorage...");
-            eval(cachedScript);
-            return;
-        }
-    
-        console.log("🌍 Fetching injectNavbarIcon script from CDN...");
-        try {
-            let response = await fetch("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    
-            let scriptText = await response.text();
-            localStorage.setItem(scriptKey, scriptText);
-            localStorage.setItem(timestampKey, now.toString());
-    
-            eval(scriptText); // Execute the script
-        } catch (error) {
-            console.error("🚨 Failed to load injectNavbarIcon script", error);
-        }
+    try {
+        const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
+        injectNavbarIcon();
+    } catch (error) {
+        console.error("🚨 Failed to load navbar icon script", error);
     }
-    
-    // Call function
-    loadInjectNavbarIcon();
-    
 
     // navbar Icon
 
