@@ -34,22 +34,45 @@
     }
     // Token and Ids
 
-    // Clicked outline
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
-
+    
         if (selectedElement) {
             selectedElement.style.outline = "";
             selectedElement.classList.remove("squareCraft-selected");
         }
-
+    
         selectedElement = block;
         selectedElement.style.outline = "2px dashed #EF7C2F";
         selectedElement.classList.add("squareCraft-selected");
-
-        console.log(`✅ Selected Element: ${selectedElement.id}`);
+    
+        const tagName = selectedElement.tagName.toLowerCase();
+        const classList = selectedElement.classList;
+    
+        let textType = "Unknown";
+    
+        if (tagName === "h1") {
+            textType = "Heading 1 (h1)";
+        } else if (tagName === "h2") {
+            textType = "Heading 2 (h2)";
+        } else if (tagName === "h3") {
+            textType = "Heading 3 (h3)";
+        } else if (tagName === "h4") {
+            textType = "Heading 4 (h4)";
+        } else if (tagName === "p") {
+            if (classList.contains("sqsrte-large")) {
+                textType = "Paragraph 1 (p1)";
+            } else if (classList.contains("sqsrte-small")) {
+                textType = "Paragraph 3 (p3)";
+            } else {
+                textType = "Paragraph 2 (p2)";
+            }
+        }
+    
+        console.log(`✅ Selected Element: ${selectedElement.id}, Text Type: ${textType}`);
     });
+    
 
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
