@@ -11,8 +11,8 @@ export function html() {
 
    const htmlString = `
        <div class="squareCraft-p-4 squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
-                   <img id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
-                   <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text.</p>
+           <img id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co/pry1mVGD/Group-28-1.png" width="140px" />
+           <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text.</p>
            <div class="squareCraft-mt-2 squareCraft-relative">
                <label class="squareCraft-text-sm">Select Font</label>
                <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-rounded-md squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
@@ -39,7 +39,9 @@ export function html() {
          console.error("❌ Font select element not found!");
          return;
       }
-console.log("font options -" , fontOptions)
+
+      console.log("✅ Font options loaded:", fontOptions);
+
       fontSelect.addEventListener("change", function () {
          const selectedFont = fontSelect.value;
          window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
