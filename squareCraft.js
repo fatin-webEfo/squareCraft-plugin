@@ -52,6 +52,10 @@
     });
 
     
+function isEditMode() {
+    return document.body.classList.contains('sqs-edit-mode') || document.body.classList.contains('sqs-layout-editing');
+}
+
 function determineTextType(element) {
     const tagName = element.tagName.toLowerCase();
     const classList = element.classList;
@@ -76,6 +80,7 @@ function determineTextType(element) {
     return "Unknown";
 }
 
+// Function to handle mouse over events
 function handleMouseOver(event) {
     const target = event.target;
     const textType = determineTextType(target);
@@ -98,24 +103,31 @@ function handleMouseOut(event) {
     }
 }
 
-document.querySelectorAll('[id^="block-"]').forEach(block => {
-    block.addEventListener("mouseover", handleMouseOver);
-    block.addEventListener("mouseout", handleMouseOut);
-});
+function initializeScript() {
+    document.querySelectorAll('[id^="block-"]').forEach(block => {
+        block.addEventListener("mouseover", handleMouseOver);
+        block.addEventListener("mouseout", handleMouseOut);
+    });
 
- document.body.addEventListener("mouseover", (event) => {
+    document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block || block.classList.contains("squareCraft-selected")) return;
 
         block.style.outline = "4px solid #EF7C2F";
     });
 
-document.body.addEventListener("mouseout", (event) => {
+    document.body.addEventListener("mouseout", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block || block.classList.contains("squareCraft-selected")) return;
 
         block.style.outline = "";
     });
+}
+
+if (!isEditMode()) {
+    initializeScript();
+}
+
 
     // Clicked outline
     // navbar icon
