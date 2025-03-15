@@ -70,6 +70,12 @@
             } else {
                 return "Paragraph 2 (p2)";
             }
+        } else if (tagName === "strong") {
+            return "Bold (strong)";
+        } else if (tagName === "em") {
+            return "Italic (em)";
+        } else if (tagName === "a") {
+            return "Link (a)";
         }
         return null;
     }
@@ -78,7 +84,7 @@
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
     
-        let textElements = block.querySelectorAll("h1, h2, h3, h4, p");
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
         let textType = "No text found";
     
         for (let element of textElements) {
@@ -91,6 +97,7 @@
     
         console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
     });
+    
 
     // Clicked outline
     // navbar icon

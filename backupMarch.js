@@ -1,10 +1,19 @@
 (async function squareCraft() {
+    // No changes
+    // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
-    let selectedElement = null;
+
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
     }
+    // parent script call
+    // vars
+    let selectedElement = null;
+    let widgetContainer = null;
+    let widgetLoaded = false;
+    // vars
+    // Token and Ids
     let token = widgetScript.dataset?.token;
     let squareCraft_u_id = widgetScript.dataset?.uId;
     let squareCraft_w_id = widgetScript.dataset?.wId;
@@ -23,43 +32,108 @@
         localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
         document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
     }
-    
-    
+    // Token and Ids
 
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+    
+        if (selectedElement) {
+            selectedElement.style.outline = "";
+            selectedElement.classList.remove("squareCraft-selected");
+        }
+    
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+        selectedElement.classList.add("squareCraft-selected");
+    
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
+    });
+    
+    function getTextType(element) {
+        let tagName = element.tagName.toLowerCase();
+        let classList = element.classList;
+    
+        if (tagName === "h1") {
+            return "Heading 1 (h1)";
+        } else if (tagName === "h2") {
+            return "Heading 2 (h2)";
+        } else if (tagName === "h3") {
+            return "Heading 3 (h3)";
+        } else if (tagName === "h4") {
+            return "Heading 4 (h4)";
+        } else if (tagName === "p") {
+            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+                return "Paragraph 3 (p3)";
+            } else if (classList.contains("sqsrte-large")) {
+                return "Paragraph 1 (p1)";
+            } else {
+                return "Paragraph 2 (p2)";
+            }
+        }
+        return null;
+    }
+    
+    document.body.addEventListener("mouseover", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+    
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p");
+        let textType = "No text found";
+    
+        for (let element of textElements) {
+            let detectedType = getTextType(element);
+            if (detectedType) {
+                textType = detectedType;
+                break;
+            }
+        }
+    
+        console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
+    });
+
+    // Clicked outline
+    // navbar icon
+
+    try {
+        const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
+        injectNavbarIcon();
+    } catch (error) {
+        console.error("🚨 Failed to load navbar icon script", error);
+    }
+    // navbar Icon
+
+    // Css cdn
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.type = "text/css";
     link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
     document.head.appendChild(link);
+    // Css cdn
+    // No changes
 
-    let widgetContainer = null;
-    let widgetLoaded = false;
-
-    async function fontfamilies() {
-        const response = await fetch(
-            "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
-        );
-        const data = await response.json();
-        console.log("font families" , data)
-        }
-        fontfamilies();
 
     async function createWidget() {
-        console.log("📥 Fetching widget module...");
         try {
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+
             if (module && module.html) {
-                console.log("✅ HTML module loaded successfully!");
+
+                const htmlString = module.html();
 
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
                     widgetContainer.id = "squarecraft-widget-container";
                     widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-                    widgetContainer.innerHTML = module.html();
+
+                    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                        widgetContainer.innerHTML = htmlString;
+                    } else {
+                        console.error("❌ Retrieved HTML string is invalid or empty!");
+                    }
+
                     widgetContainer.style.display = "none";
                     document.body.appendChild(widgetContainer);
-
-                    console.log("✅ Widget container added:", widgetContainer);
                     makeWidgetDraggable();
                     widgetLoaded = true;
 
@@ -79,11 +153,11 @@
     }
 
 
+
     async function toggleWidgetVisibility(event) {
         event.stopPropagation();
 
         if (!widgetLoaded) {
-            console.log("📥 Creating and displaying widget...");
             await createWidget();
         }
 
@@ -94,91 +168,104 @@
 
 
 
+
+
     function makeWidgetDraggable() {
-        if (!widgetContainer) return;
+    if (!widgetContainer) return;
 
-        widgetContainer.style.position = "fixed";
-        widgetContainer.style.cursor = "grab";
-        widgetContainer.style.zIndex = "999";
-        widgetContainer.style.left = "calc(100% - 250px)";
-        widgetContainer.style.top = "100px";
+    const parentContainer = widgetContainer.parentElement || document.body;
 
-        let offsetX = 0, offsetY = 0, isDragging = false;
+    widgetContainer.style.position = "absolute"; // Allows movement inside the parent
+    widgetContainer.style.zIndex = "999";
+    widgetContainer.style.left = "10px"; // Default position
+    widgetContainer.style.top = "10px";
 
-        widgetContainer.addEventListener("mousedown", (event) => {
-            if (event.target.tagName === "INPUT" || event.target.tagName === "SELECT" || event.target.isContentEditable) return;
+    let offsetX = 0, offsetY = 0, isDragging = false;
 
-            event.preventDefault();
-            isDragging = true;
+    function isMobileView() {
+        return window.innerWidth <= 768;
+    }
 
-            offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
-            offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
-
-            document.addEventListener("mousemove", moveAt);
-            document.addEventListener("mouseup", stopDragging);
-        });
-
-        function moveAt(event) {
-            if (!isDragging) return;
-            let newX = Math.max(0, Math.min(window.innerWidth - widgetContainer.offsetWidth, event.clientX - offsetX));
-            let newY = Math.max(0, Math.min(window.innerHeight - widgetContainer.offsetHeight, event.clientY - offsetY));
-            widgetContainer.style.left = `${newX}px`;
-            widgetContainer.style.top = `${newY}px`;
+    widgetContainer.addEventListener("mousedown", (event) => {
+        if (isMobileView()) {
+            console.log("📱 Mobile view detected. Dragging enabled inside parent container.");
         }
 
-        function stopDragging() {
-            isDragging = false;
-            document.removeEventListener("mousemove", moveAt);
-            document.removeEventListener("mouseup", stopDragging);
+        const draggableElement = event.target.closest("#squareCraft-grabbing");
+
+        if (
+            !draggableElement || 
+            event.target.tagName === "INPUT" ||
+            event.target.tagName === "SELECT" ||
+            event.target.isContentEditable ||
+            event.target.closest("#squareCraftFontDropdown")
+        ) return;
+
+        event.preventDefault();
+        isDragging = true;
+
+        offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
+        offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+    });
+
+    function moveAt(event) {
+        if (!isDragging) return;
+
+        const parentRect = parentContainer.getBoundingClientRect();
+        const widgetRect = widgetContainer.getBoundingClientRect();
+
+        let newX = event.clientX - offsetX - parentRect.left;
+        let newY = event.clientY - offsetY - parentRect.top;
+
+        newX = Math.max(0, Math.min(parentRect.width - widgetRect.width, newX));
+        newY = Math.max(0, Math.min(parentRect.height - widgetRect.height, newY));
+
+        widgetContainer.style.left = `${newX}px`;
+        widgetContainer.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+    }
+}
+
+    
+    function adjustWidgetPosition() {
+        if (!widgetContainer) return;
+    
+        if (window.innerWidth <= 768) {
+            widgetContainer.style.left = "auto";
+            widgetContainer.style.right = "0px";
+            widgetContainer.style.top = "100px";
         }
     }
 
+    window.addEventListener("resize", adjustWidgetPosition);
+    adjustWidgetPosition();
+    
+
+
+
     function injectIcon() {
-        if (parent.document.querySelector(".squareCraft-admin-icon")) {
-            console.log("ℹ️ SquareCraft icon already exists. Skipping reinjection.");
-            return; 
-        }
-    
-        const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-        if (!navContainer) {
-            console.warn("❌ Squarespace admin nav container not found.");
-            return;
-        }
-    
-        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-    
-        function createIcon() {
-            const icon = document.createElement("img");
-            icon.src = iconSrc;
-            icon.alt = "SquareCraft";
-            icon.style.width = "30px";
-            icon.style.height = "30px";
-            icon.style.borderRadius = "20%";
-            icon.style.marginRight = "6px";
-            icon.style.cursor = "pointer";
-            icon.style.display = "inline-block";
-            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-            return icon;
-        }
-    
-        navContainer.parentNode.insertBefore(createIcon(), navContainer);
-        console.log("✅ SquareCraft icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
-            console.log("🔄 Running injectIconIntoTargetElements...");
             const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
-        
+
             targets.forEach((element) => {
                 element.classList.add("squareCraft-processed");
-        
+
                 const deleteButton = element.querySelector('[aria-label="Remove"]');
                 if (!deleteButton) {
                     console.warn("❌ Delete button not found, skipping:", element);
                     return;
                 }
-        
+
                 if (element.querySelector(".squareCraft-toolbar-icon")) return;
-        
                 const clonedIcon = document.createElement("img");
                 clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 clonedIcon.alt = "SquareCraft";
@@ -188,16 +275,14 @@
                 clonedIcon.style.borderRadius = "20%";
                 clonedIcon.style.cursor = "pointer";
                 clonedIcon.style.backgroundColor = "white";
-                clonedIcon.style.marginLeft = "6px"; 
+                clonedIcon.style.marginLeft = "6px";
                 deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
-        
+
                 clonedIcon.addEventListener("click", function (event) {
                     event.stopPropagation();
                     event.preventDefault();
-                    console.log("🖱️ Cloned icon clicked - Attempting to open widget...");
-        
+
                     if (!widgetLoaded) {
-                        console.log("📥 Widget not loaded - Creating now...");
                         createWidget().then(() => {
                             widgetContainer = document.getElementById("squarecraft-widget-container");
                             if (widgetContainer) {
@@ -212,13 +297,11 @@
                 });
             });
         }
-        
-            
+
+
         const iframe = document.querySelector("iframe");
         if (iframe) {
-            console.log("📌 Toolbar is inside an iframe!");
             iframe.contentWindow.document.addEventListener("click", function (event) {
-                console.log("🖱️ Click detected inside iframe.");
                 if (event.target.classList.contains("squareCraft-admin-icon")) {
                     event.stopPropagation();
                     event.preventDefault();
@@ -240,60 +323,6 @@
     }
 
 
-    function logAllCollections() {
-        const collectionElements = document.querySelectorAll('[id^="collection-"]');
-        if (collectionElements.length > 0) {
-            collectionElements.forEach(element => {
-                console.log('Collection element found:', element.id);
-            });
-        } else {
-            console.warn('No collection elements found.');
-        }
-    }
-
-    function sectionAndId(event) {
-        const block = event.target.closest('[id^="block-"]');
-        if (block) {
-            console.log('Block clicked:', block.id);
-        } else {
-            const section = event.target.closest('section[data-section-id]');
-            if (section) {
-                console.log('Data-section-id:', section.getAttribute('data-section-id'));
-            }
-        }
-    
-        const clickedElement = event.target;
-        let elementType = 'unknown';
-    
-        if (clickedElement.tagName === 'IMG' || clickedElement.closest('.sqs-block-image')) {
-            elementType = 'image';
-        } else if (clickedElement.tagName === 'BUTTON' || clickedElement.closest('.sqs-block-button-element, .sqs-button-element--primary, .sqs-block-button')) {
-            elementType = 'button';
-        } else if (clickedElement.closest('.sqs-block-html, .sqs-html-content, .sqs-block-content')) {
-            elementType = 'text';
-        }
-    
-        console.log(`Clicked element is a: ${elementType}`);
-    }
-    
-    
-    document.addEventListener('click', sectionAndId);
-    
-    
-    function logAllCollections() {
-        document.querySelectorAll('[id^="collection-"]').forEach(element => {
-            console.log('Collection element found:', element.id);
-        });
-    }
-    
-    function initializeLogging() {
-        logAllCollections();
-        document.addEventListener('click', sectionAndId);
-    }
-    
-    initializeLogging();
-    
-    
     function waitForNavBar(attempts = 0) {
         if (attempts > 10) {
             console.error("❌ Failed to find Squarespace nav bar.");
@@ -308,14 +337,62 @@
     }
 
     waitForNavBar();
-    document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
+    function checkView() {
+        const isMobile = window.innerWidth <= 768;
 
-        if (selectedElement) selectedElement.style.outline = "";
-        selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
+        if (isMobile) {
+            console.log("📱 Mobile view detected. Moving widget outside the main window...");
+            moveWidgetToMobileContainer();
+        } else {
+            console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
+            moveWidgetToDesktop();
+        }
+    }
 
-        console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
+    function moveWidgetToMobileContainer() {
+        if (!widgetContainer) return;
+    
+        const mobileContainer = parent.document.querySelector(
+            'div[data-test="mouse-catcher-right-of-frame"].right-scroll-and-hover-catcher.js-space-around-frame'
+        );
+    
+        if (mobileContainer) {
+            const existingLink = parent.document.querySelector('link[href="https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"]');
+            
+            if (!existingLink) { 
+                const link = parent.document.createElement("link");
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+                parent.document.head.appendChild(link);
+            }
+    
+            mobileContainer.classList.add("squareCraft-relative");
+    
+            widgetContainer.style.position = "absolute";
+            widgetContainer.style.right = "11%"; 
+            widgetContainer.style.top = "50%";
+            widgetContainer.style.transform = "translateY(-50%)";
+    
+            mobileContainer.appendChild(widgetContainer);
+    
+            console.log("✅ Widget successfully moved to mobile container and positioned correctly.");
+        } else {
+            console.warn("❌ Mobile container not found. Widget remains in default location.");
+        }
+    }
+    
+    
+
+    function moveWidgetToDesktop() {
+        if (!widgetContainer) return;
+
+        document.body.appendChild(widgetContainer);
+        console.log("✅ Widget remains in the desktop position.");
+    }
+
+    checkView();
+    window.addEventListener("resize", checkView);
+
+
 })();
