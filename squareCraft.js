@@ -1,4 +1,13 @@
 (async function squareCraft() {
+     // vars
+     let selectedElement = null;
+     let widgetContainer = null;
+     let widgetLoaded = false;
+     // vars
+     // Token and Ids
+     let token = widgetScript.dataset?.token;
+     let squareCraft_u_id = widgetScript.dataset?.uId;
+     let squareCraft_w_id = widgetScript.dataset?.wId;
     // No changes
     // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
@@ -8,15 +17,7 @@
         return;
     }
     // parent script call
-    // vars
-    let selectedElement = null;
-    let widgetContainer = null;
-    let widgetLoaded = false;
-    // vars
-    // Token and Ids
-    let token = widgetScript.dataset?.token;
-    let squareCraft_u_id = widgetScript.dataset?.uId;
-    let squareCraft_w_id = widgetScript.dataset?.wId;
+   
 
     if (token) {
         localStorage.setItem("squareCraft_auth_token", token);
@@ -38,20 +39,24 @@
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
     
+        // Remove outline from the previously selected element
         if (selectedElement) {
             selectedElement.style.outline = "";
             selectedElement.classList.remove("squareCraft-selected");
         }
     
+        // Apply selection styles
         selectedElement = block;
         selectedElement.style.outline = "2px dashed #EF7C2F";
         selectedElement.classList.add("squareCraft-selected");
     
+        // Get tag name and class list
         const tagName = selectedElement.tagName.toLowerCase();
         const classList = selectedElement.classList;
     
         let textType = "Unknown";
     
+        // Detecting heading and paragraph tags
         if (tagName === "h1") {
             textType = "Heading 1 (h1)";
         } else if (tagName === "h2") {
@@ -61,10 +66,10 @@
         } else if (tagName === "h4") {
             textType = "Heading 4 (h4)";
         } else if (tagName === "p") {
-            if (classList.contains("sqsrte-large")) {
-                textType = "Paragraph 1 (p1)";
-            } else if (classList.contains("sqsrte-small")) {
+            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
                 textType = "Paragraph 3 (p3)";
+            } else if (classList.contains("sqsrte-large")) {
+                textType = "Paragraph 1 (p1)";
             } else {
                 textType = "Paragraph 2 (p2)";
             }
@@ -72,6 +77,7 @@
     
         console.log(`✅ Selected Element: ${selectedElement.id}, Text Type: ${textType}`);
     });
+    
     
 
     document.body.addEventListener("mouseover", (event) => {
