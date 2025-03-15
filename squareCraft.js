@@ -51,14 +51,30 @@
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
-    // Listen for font change messages from child iframe
-    window.addEventListener("message", (event) => {
-        if (event.data.type === "FONT_CHANGE" && selectedElement) {
-            const newFont = event.data.font;
-            selectedElement.style.fontFamily = `'${newFont}', sans-serif`;
-            console.log(`🎨 Font Changed: ${newFont} applied to ${selectedElement.id}`);
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectedElement = document.querySelector(".squareCraft-selected .sqs-html-content");
+    
+        if (!selectedElement) {
+            console.error("No selected element found.");
+            return;
         }
+    
+        // Assume this dropdown is for font selection
+        const fontSelector = document.getElementById("squareCraftFontSelector");
+    
+        if (!fontSelector) {
+            console.error("Font selector not found.");
+            return;
+        }
+    
+        fontSelector.addEventListener("change", function () {
+            const selectedFont = fontSelector.value;
+            selectedElement.style.fontFamily = selectedFont;
+        });
+    
+        console.log("Font change listener added.");
     });
+    
 
 function getTextType(element) {
     let tagName = element.tagName.toLowerCase();
