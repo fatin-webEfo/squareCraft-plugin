@@ -50,30 +50,6 @@
 
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const selectedElement = document.querySelector(".squareCraft-selected .sqs-html-content");
-    
-        if (!selectedElement) {
-            console.error("No selected element found.");
-            return;
-        }
-    
-        // Assume this dropdown is for font selection
-        const fontSelector = document.getElementById("squareCraftFontSelector");
-    
-        if (!fontSelector) {
-            console.error("Font selector not found.");
-            return;
-        }
-    
-        fontSelector.addEventListener("change", function () {
-            const selectedFont = fontSelector.value;
-            selectedElement.style.fontFamily = selectedFont;
-        });
-    
-        console.log("Font change listener added.");
-    });
     
 
 function getTextType(element) {
