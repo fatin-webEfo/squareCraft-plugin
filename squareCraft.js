@@ -4,13 +4,14 @@
      let widgetContainer = null;
      let widgetLoaded = false;
      // vars
-     // Token and Ids
-     let token = widgetScript.dataset?.token;
-     let squareCraft_u_id = widgetScript.dataset?.uId;
-     let squareCraft_w_id = widgetScript.dataset?.wId;
+   
     // No changes
     // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
+      // Token and Ids
+      let token = widgetScript.dataset?.token;
+      let squareCraft_u_id = widgetScript.dataset?.uId;
+      let squareCraft_w_id = widgetScript.dataset?.wId;
 
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
