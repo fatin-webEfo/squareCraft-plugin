@@ -39,7 +39,7 @@ export function html() {
          console.error("❌ Font select element not found!");
          return;
       }
-
+console.log("font options -" , fontOptions)
       fontSelect.addEventListener("change", function () {
          const selectedFont = fontSelect.value;
          window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
