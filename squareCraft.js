@@ -36,28 +36,24 @@
     }
     // Token and Ids
 
-    document.body.addEventListener("click", (event) => {
+    document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
     
-        // Remove outline from the previously selected element
-        if (selectedElement) {
-            selectedElement.style.outline = "";
-            selectedElement.classList.remove("squareCraft-selected");
+        if (highlightedElement && highlightedElement !== block) {
+            highlightedElement.style.outline = "";
+            highlightedElement.classList.remove("squareCraft-highlighted");
         }
     
-        // Apply selection styles
-        selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-        selectedElement.classList.add("squareCraft-selected");
+        highlightedElement = block;
+        highlightedElement.style.outline = "2px dashed #EF7C2F";
+        highlightedElement.classList.add("squareCraft-highlighted");
     
-        // Get tag name and class list
-        const tagName = selectedElement.tagName.toLowerCase();
-        const classList = selectedElement.classList;
+        const tagName = highlightedElement.tagName.toLowerCase();
+        const classList = highlightedElement.classList;
     
         let textType = "Unknown";
     
-        // Detecting heading and paragraph tags
         if (tagName === "h1") {
             textType = "Heading 1 (h1)";
         } else if (tagName === "h2") {
@@ -76,7 +72,15 @@
             }
         }
     
-        console.log(`✅ Selected Element: ${selectedElement.id}, Text Type: ${textType}`);
+        console.log(`✅ Hovered Element: ${highlightedElement.id}, Text Type: ${textType}`);
+    });
+    
+    document.body.addEventListener("mouseout", (event) => {
+        if (highlightedElement) {
+            highlightedElement.style.outline = "";
+            highlightedElement.classList.remove("squareCraft-highlighted");
+            highlightedElement = null;
+        }
     });
     
     
