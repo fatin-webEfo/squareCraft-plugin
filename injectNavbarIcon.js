@@ -32,6 +32,7 @@ export function injectNavbarIcon() {
                 squareCraftDiv.style.display = "flex";
                 squareCraftDiv.style.alignItems = "center";
                 squareCraftDiv.style.border = "1px solid #E5E4E2";
+                squareCraftDiv.style.borderRadius = "6px";
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
     
