@@ -34,69 +34,83 @@
     }
     // Token and Ids
 
-    document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        if (selectedElement) {
-            selectedElement.style.outline = "";
-            selectedElement.classList.remove("squareCraft-selected");
-        }
-    
-        selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-        selectedElement.classList.add("squareCraft-selected");
-    
-        console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
-    
-    function getTextType(element) {
-        let tagName = element.tagName.toLowerCase();
-        let classList = element.classList;
-    
-        if (tagName === "h1") {
-            return "Heading 1 (h1)";
-        } else if (tagName === "h2") {
-            return "Heading 2 (h2)";
-        } else if (tagName === "h3") {
-            return "Heading 3 (h3)";
-        } else if (tagName === "h4") {
-            return "Heading 4 (h4)";
-        } else if (tagName === "p") {
-            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-                return "Paragraph 3 (p3)";
-            } else if (classList.contains("sqsrte-large")) {
-                return "Paragraph 1 (p1)";
-            } else {
-                return "Paragraph 2 (p2)";
-            }
-        } else if (tagName === "strong") {
-            return "Bold (strong)";
-        } else if (tagName === "em") {
-            return "Italic (em)";
-        } else if (tagName === "a") {
-            return "Link (a)";
-        }
-        return null;
+
+   document.body.addEventListener("click", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    if (selectedElement) {
+        selectedElement.style.outline = "";
+        selectedElement.classList.remove("squareCraft-selected");
     }
-    
-    document.body.addEventListener("mouseover", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-        let textType = "No text found";
-    
-        for (let element of textElements) {
-            let detectedType = getTextType(element);
-            if (detectedType) {
-                textType = detectedType;
-                break;
-            }
+
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F";
+    selectedElement.classList.add("squareCraft-selected");
+
+    console.log(`✅ Selected Element: ${selectedElement.id}`);
+});
+
+function getTextType(element) {
+    let tagName = element.tagName.toLowerCase();
+    let classList = element.classList;
+
+    if (tagName === "h1") {
+        return "Heading 1 (h1)";
+    } else if (tagName === "h2") {
+        return "Heading 2 (h2)";
+    } else if (tagName === "h3") {
+        return "Heading 3 (h3)";
+    } else if (tagName === "h4") {
+        return "Heading 4 (h4)";
+    } else if (tagName === "p") {
+        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+            return "Paragraph 3 (p3)";
+        } else if (classList.contains("sqsrte-large")) {
+            return "Paragraph 1 (p1)";
+        } else {
+            return "Paragraph 2 (p2)";
         }
-    
-        console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
+    } else if (tagName === "strong") {
+        return "Bold (strong)";
+    } else if (tagName === "em") {
+        return "Italic (em)";
+    } else if (tagName === "a") {
+        return "Link (a)";
+    }
+    return null;
+}
+
+document.body.addEventListener("mouseover", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    let textTypes = [];
+
+    textElements.forEach((element) => {
+        let detectedType = getTextType(element);
+        if (detectedType) {
+            textTypes.push(detectedType);
+            element.style.border = "1px solid #EF7C2F";
+        }
     });
+
+    let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
+
+    console.log(`🟠 Hovered Block: ${block.id} | Text Types: ${textTypeOutput}`);
+});
+
+document.body.addEventListener("mouseout", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    textElements.forEach((element) => {
+        element.style.border = "";
+    });
+});
+
     
 
     // Clicked outline
