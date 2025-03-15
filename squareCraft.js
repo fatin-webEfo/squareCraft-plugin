@@ -162,34 +162,29 @@ document.body.addEventListener("mouseout", (event) => {
 
     async function createWidget() {
         try {
+            let cachedWidget = localStorage.getItem("squareCraft_widget");
+            let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
+            let oneDay = 24 * 60 * 60 * 1000;
+            let now = Date.now();
+    
+            if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
+                console.log("✅ Loading widget from localStorage...");
+                loadWidgetFromString(cachedWidget);
+                return;
+            }
+    
+            console.log("🌍 Fetching new widget data...");
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
-
+    
             if (module && module.html) {
-
                 const htmlString = module.html();
-
-                if (!widgetContainer) {
-                    widgetContainer = document.createElement("div");
-                    widgetContainer.id = "squarecraft-widget-container";
-                    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-
-                    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-                        widgetContainer.innerHTML = htmlString;
-                    } else {
-                        console.error("❌ Retrieved HTML string is invalid or empty!");
-                    }
-
-                    widgetContainer.style.display = "none";
-                    document.body.appendChild(widgetContainer);
-                    makeWidgetDraggable();
-                    widgetLoaded = true;
-
-                    setTimeout(() => {
-                        widgetContainer = document.getElementById("squarecraft-widget-container");
-                        if (!widgetContainer) {
-                            console.error("❌ Widget container failed to load.");
-                        }
-                    }, 500);
+    
+                if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                    localStorage.setItem("squareCraft_widget", htmlString);
+                    localStorage.setItem("squareCraft_widget_timestamp", now.toString());
+                    loadWidgetFromString(htmlString);
+                } else {
+                    console.error("❌ Retrieved HTML string is invalid or empty!");
                 }
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
@@ -198,6 +193,27 @@ document.body.addEventListener("mouseout", (event) => {
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
+    function loadWidgetFromString(htmlString) {
+        if (!widgetContainer) {
+            widgetContainer = document.createElement("div");
+            widgetContainer.id = "squarecraft-widget-container";
+            widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
+            widgetContainer.innerHTML = htmlString;
+            widgetContainer.style.display = "none";
+            document.body.appendChild(widgetContainer);
+            makeWidgetDraggable();
+            widgetLoaded = true;
+    
+            setTimeout(() => {
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (!widgetContainer) {
+                    console.error("❌ Widget container failed to load.");
+                }
+            }, 500);
+        }
+    }
+    
 
 
 
