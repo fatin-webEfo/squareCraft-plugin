@@ -63,7 +63,6 @@ export function injectNavbarIcon() {
                 squareCraftDiv.appendChild(text);
     
                 toolbarContainer.appendChild(squareCraftDiv);
-                console.log(`✅ Inserted SquareCraft toolbar in:`, toolbarContainer);
             }
         });
     }
