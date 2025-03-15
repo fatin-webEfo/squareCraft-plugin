@@ -1,24 +1,22 @@
 (async function squareCraft() {
-     // vars
-     let selectedElement = null;
-     let widgetContainer = null;
-     let widgetLoaded = false;
-     // vars
-   
     // No changes
     // parent script call
     const widgetScript = document.getElementById("squarecraft-script");
-      // Token and Ids
-      let token = widgetScript.dataset?.token;
-      let squareCraft_u_id = widgetScript.dataset?.uId;
-      let squareCraft_w_id = widgetScript.dataset?.wId;
 
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
         return;
     }
     // parent script call
-   
+    // vars
+    let selectedElement = null;
+    let widgetContainer = null;
+    let widgetLoaded = false;
+    // vars
+    // Token and Ids
+    let token = widgetScript.dataset?.token;
+    let squareCraft_u_id = widgetScript.dataset?.uId;
+    let squareCraft_w_id = widgetScript.dataset?.wId;
 
     if (token) {
         localStorage.setItem("squareCraft_auth_token", token);
@@ -36,54 +34,74 @@
     }
     // Token and Ids
 
-    document.body.addEventListener("mouseover", (event) => {
+    // Clicked outline
+    document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
-    
-        if (highlightedElement && highlightedElement !== block) {
-            highlightedElement.style.outline = "";
-            highlightedElement.classList.remove("squareCraft-highlighted");
+
+        if (selectedElement) {
+            selectedElement.style.outline = "";
+            selectedElement.classList.remove("squareCraft-selected");
         }
-    
-        highlightedElement = block;
-        highlightedElement.style.outline = "2px dashed #EF7C2F";
-        highlightedElement.classList.add("squareCraft-highlighted");
-    
-        const tagName = highlightedElement.tagName.toLowerCase();
-        const classList = highlightedElement.classList;
-    
-        let textType = "Unknown";
-    
-        if (tagName === "h1") {
-            textType = "Heading 1 (h1)";
-        } else if (tagName === "h2") {
-            textType = "Heading 2 (h2)";
-        } else if (tagName === "h3") {
-            textType = "Heading 3 (h3)";
-        } else if (tagName === "h4") {
-            textType = "Heading 4 (h4)";
-        } else if (tagName === "p") {
-            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-                textType = "Paragraph 3 (p3)";
-            } else if (classList.contains("sqsrte-large")) {
-                textType = "Paragraph 1 (p1)";
-            } else {
-                textType = "Paragraph 2 (p2)";
-            }
-        }
-    
-        console.log(`✅ Hovered Element: ${highlightedElement.id}, Text Type: ${textType}`);
+
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+        selectedElement.classList.add("squareCraft-selected");
+
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
+
     
-    document.body.addEventListener("mouseout", (event) => {
-        if (highlightedElement) {
-            highlightedElement.style.outline = "";
-            highlightedElement.classList.remove("squareCraft-highlighted");
-            highlightedElement = null;
+function determineTextType(element) {
+    const tagName = element.tagName.toLowerCase();
+    const classList = element.classList;
+
+    if (tagName === "h1") {
+        return "Heading 1 (h1)";
+    } else if (tagName === "h2") {
+        return "Heading 2 (h2)";
+    } else if (tagName === "h3") {
+        return "Heading 3 (h3)";
+    } else if (tagName === "h4") {
+        return "Heading 4 (h4)";
+    } else if (tagName === "p") {
+        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+            return "Paragraph 3 (p3)";
+        } else if (classList.contains("sqsrte-large")) {
+            return "Paragraph 1 (p1)";
+        } else {
+            return "Paragraph 2 (p2)";
         }
-    });
-    
-    
+    }
+    return "Unknown";
+}
+
+function handleMouseOver(event) {
+    const target = event.target;
+    const textType = determineTextType(target);
+
+    if (textType !== "Unknown") {
+        target.style.outline = "2px dashed #EF7C2F";
+        target.classList.add("squareCraft-highlighted");
+
+        console.log(`✅ Hovered Element: ${target.id || 'No ID'}, Text Type: ${textType}`);
+    }
+}
+
+function handleMouseOut(event) {
+    const target = event.target;
+    const textType = determineTextType(target);
+
+    if (textType !== "Unknown") {
+        target.style.outline = "";
+        target.classList.remove("squareCraft-highlighted");
+    }
+}
+
+document.querySelectorAll('[id^="block-"]').forEach(block => {
+    block.addEventListener("mouseover", handleMouseOver);
+    block.addEventListener("mouseout", handleMouseOut);
+});
 
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
