@@ -56,27 +56,27 @@ function getTextType(element) {
     let classList = element.classList;
 
     if (tagName === "h1") {
-        return "Heading 1 (h1)";
+        return { type: "Heading 1 (h1)", color: "#FF0000" }; // Red
     } else if (tagName === "h2") {
-        return "Heading 2 (h2)";
+        return { type: "Heading 2 (h2)", color: "#FFA500" }; // Orange
     } else if (tagName === "h3") {
-        return "Heading 3 (h3)";
+        return { type: "Heading 3 (h3)", color: "#FFFF00" }; // Yellow
     } else if (tagName === "h4") {
-        return "Heading 4 (h4)";
+        return { type: "Heading 4 (h4)", color: "#008000" }; // Green
     } else if (tagName === "p") {
         if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-            return "Paragraph 3 (p3)";
+            return { type: "Paragraph 3 (p3)", color: "#0000FF" }; // Blue
         } else if (classList.contains("sqsrte-large")) {
-            return "Paragraph 1 (p1)";
+            return { type: "Paragraph 1 (p1)", color: "#4B0082" }; // Indigo
         } else {
-            return "Paragraph 2 (p2)";
+            return { type: "Paragraph 2 (p2)", color: "#9400D3" }; // Violet
         }
     } else if (tagName === "strong") {
-        return "Bold (strong)";
+        return { type: "Bold (strong)", color: "#8B0000" }; // Dark Red
     } else if (tagName === "em") {
-        return "Italic (em)";
+        return { type: "Italic (em)", color: "#FF69B4" }; // Pink
     } else if (tagName === "a") {
-        return "Link (a)";
+        return { type: "Link (a)", color: "#1E90FF" }; // Light Blue
     }
     return null;
 }
@@ -91,8 +91,8 @@ document.body.addEventListener("mouseover", (event) => {
     textElements.forEach((element) => {
         let detectedType = getTextType(element);
         if (detectedType) {
-            textTypes.push(detectedType);
-            element.style.border = "1px solid #EF7C2F";
+            textTypes.push(detectedType.type);
+            element.style.border = `2px solid ${detectedType.color}`;
         }
     });
 
@@ -110,6 +110,7 @@ document.body.addEventListener("mouseout", (event) => {
         element.style.border = "";
     });
 });
+
 
     
 
