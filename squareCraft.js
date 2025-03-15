@@ -115,12 +115,25 @@ document.body.addEventListener("mouseout", (event) => {
     // Clicked outline
     // navbar icon
 
-    try {
-        const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
-        injectNavbarIcon();
-    } catch (error) {
-        console.error("🚨 Failed to load navbar icon script", error);
+    async function loadInjectNavbarIcon() {
+        let key = "squareCraft_navbarIcon";
+        let cachedFunction = localStorage.getItem(key);
+    
+        if (cachedFunction) {
+            eval(`(${cachedFunction})()`);
+        } else {
+            try {
+                const { injectNavbarIcon } = await import("https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js");
+                localStorage.setItem(key, injectNavbarIcon.toString());
+                injectNavbarIcon();
+            } catch (error) {
+                console.error("🚨 Failed to load navbar icon script", error);
+            }
+        }
     }
+    
+    loadInjectNavbarIcon();
+    
 
     // navbar Icon
 
