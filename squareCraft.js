@@ -38,115 +38,63 @@
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
-
+    
         if (selectedElement) {
             selectedElement.style.outline = "";
             selectedElement.classList.remove("squareCraft-selected");
         }
-
+    
         selectedElement = block;
         selectedElement.style.outline = "2px dashed #EF7C2F";
         selectedElement.classList.add("squareCraft-selected");
-
+    
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
-
     
-// Global variable to store edit mode status
-let editModeActive = false;
-
-// Function to check if it's edit mode
-function isEditMode() {
-    return document.body.classList.contains('sqs-edit-mode') || 
-           document.body.classList.contains('sqs-layout-editing') || 
-           document.querySelector('[data-sqs-edit-mode]');
-}
-
-// Set edit mode globally
-function setGlobalEditMode() {
-    editModeActive = isEditMode();
-    console.log(editModeActive ? "📝 Editing mode detected" : "🚀 Not in editing mode");
-}
-
-// Determine text type
-function determineTextType(element) {
-    const tagName = element.tagName.toLowerCase();
-    const classList = element.classList;
-
-    if (tagName === "h1") return "Heading 1 (h1)";
-    if (tagName === "h2") return "Heading 2 (h2)";
-    if (tagName === "h3") return "Heading 3 (h3)";
-    if (tagName === "h4") return "Heading 4 (h4)";
-    if (tagName === "p") {
-        if (classList.contains("sqsrte-large") && classList.contains("solve")) return "Paragraph 3 (p3)";
-        if (classList.contains("sqsrte-large")) return "Paragraph 1 (p1)";
-        return "Paragraph 2 (p2)";
-    }
-    return "Unknown";
-}
-
-// Handle hover effects
-function handleMouseOver(event) {
-    const target = event.target;
-    const textType = determineTextType(target);
-    if (textType !== "Unknown") {
-        target.style.outline = "2px dashed #EF7C2F";
-        target.classList.add("squareCraft-highlighted");
-        console.log(`✅ Hovered Element: ${target.id || 'No ID'}, Text Type: ${textType}`);
-    }
-}
-
-function handleMouseOut(event) {
-    const target = event.target;
-    const textType = determineTextType(target);
-    if (textType !== "Unknown") {
-        target.style.outline = "";
-        target.classList.remove("squareCraft-highlighted");
-    }
-}
-
-// Initialize script
-function initializeScript() {
-    console.log("🔧 Initializing SquareCraft features...");
+    // Function to determine text type
+    function getTextType(element) {
+        let tagName = element.tagName.toLowerCase();
+        let classList = element.classList;
     
-    document.querySelectorAll('[id^="block-"]').forEach(block => {
-        block.addEventListener("mouseover", handleMouseOver);
-        block.addEventListener("mouseout", handleMouseOut);
-    });
-
+        if (tagName === "h1") {
+            return "Heading 1 (h1)";
+        } else if (tagName === "h2") {
+            return "Heading 2 (h2)";
+        } else if (tagName === "h3") {
+            return "Heading 3 (h3)";
+        } else if (tagName === "h4") {
+            return "Heading 4 (h4)";
+        } else if (tagName === "p") {
+            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+                return "Paragraph 3 (p3)";
+            } else if (classList.contains("sqsrte-large")) {
+                return "Paragraph 1 (p1)";
+            } else {
+                return "Paragraph 2 (p2)";
+            }
+        }
+        return null;
+    }
+    
+    // Hover event to log text type
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
-        if (!block || block.classList.contains("squareCraft-selected")) return;
-        block.style.outline = "4px solid #EF7C2F";
-    });
-
-    document.body.addEventListener("mouseout", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block || block.classList.contains("squareCraft-selected")) return;
-        block.style.outline = "";
-    });
-}
-
-// Ensure script always runs when mode changes
-function monitorEditMode() {
-    setGlobalEditMode();
-    initializeScript();
-
-    // Use MutationObserver to detect DOM changes that might indicate mode switching
-    const observer = new MutationObserver(() => {
-        let newMode = isEditMode();
-        if (newMode !== editModeActive) {
-            editModeActive = newMode;
-            console.log(editModeActive ? "📝 Switched to Editing Mode" : "🚀 Switched to Non-Editing Mode");
-            initializeScript();
+        if (!block) return;
+    
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p");
+        let textType = "No text found";
+    
+        for (let element of textElements) {
+            let detectedType = getTextType(element);
+            if (detectedType) {
+                textType = detectedType;
+                break;
+            }
         }
+    
+        console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
     });
-
-    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-}
-
-// Start monitoring mode
-monitorEditMode();
+    
 
 
 
