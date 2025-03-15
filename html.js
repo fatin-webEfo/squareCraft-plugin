@@ -17,7 +17,7 @@ export function html() {
                <label class="squareCraft-text-sm">Select Font</label>
                <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
                    style="background: black; color: white; border: 1px solid white; padding: 5px;">
-                   <option value="" selected disabled>Select Font</option>
+                   <option class="squareCraft-cursor-pointer" value="" selected disabled>Select Font</option>
                    ${fontOptions}
                </select>
            </div>
