@@ -51,6 +51,9 @@
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
 
+    function isEditMode() {
+        return document.body.classList.contains('sqs-edit-mode') || document.body.classList.contains('sqs-layout-editing');
+    }
     
     function determineTextType(element) {
         const tagName = element.tagName.toLowerCase();
@@ -84,7 +87,9 @@
         });
     }
     
-  
+    if (!isEditMode()) {
+        initializeScript();
+    }
     
 
     // Clicked outline
