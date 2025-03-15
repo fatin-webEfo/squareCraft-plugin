@@ -34,7 +34,6 @@
     }
     // Token and Ids
 
-    // Clicked outline
     document.body.addEventListener("click", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
@@ -51,7 +50,6 @@
         console.log(`✅ Selected Element: ${selectedElement.id}`);
     });
     
-    // Function to determine text type
     function getTextType(element) {
         let tagName = element.tagName.toLowerCase();
         let classList = element.classList;
@@ -76,7 +74,6 @@
         return null;
     }
     
-    // Hover event to log text type
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
         if (!block) return;
@@ -94,9 +91,6 @@
     
         console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
     });
-    
-
-
 
     // Clicked outline
     // navbar icon
