@@ -44,20 +44,32 @@ export function html() {
   
       fontSelect.addEventListener("change", function () {
           const selectedFont = fontSelect.value;
-          const selectedElement = document.querySelector(".squareCraft-selected .sqs-html-content");
+          const selectedBlock = document.querySelector(".squareCraft-selected");
   
-          if (selectedElement) {
-              selectedElement.style.fontFamily = selectedFont;
-              console.log(`🔄 Updated font family to: ${selectedFont}`);
-          } else {
-              console.warn("⚠️ No selected element found to apply font change.");
+          if (!selectedBlock) {
+              console.warn("⚠️ No block selected to apply font change.");
+              return;
           }
   
+          const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+  
+          if (textElements.length === 0) {
+              console.warn("⚠️ No text elements found inside the selected block.");
+              return;
+          }
+  
+          textElements.forEach(element => {
+              element.style.setProperty("font-family", selectedFont, "important");
+          });
+  
+          console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
+  
+          // Send message to parent (if needed)
           window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-          console.log(`📢 Sending font change to parent: ${selectedFont}`);
       });
   
   }, 500);
+  
   
 
    return htmlString;
