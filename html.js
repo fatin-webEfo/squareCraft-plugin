@@ -16,13 +16,25 @@ export function html() {
            <div class="squareCraft-mt-2 squareCraft-relative">
                <label class="squareCraft-text-sm">Select Font</label>
                <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
-                   style="background: transparent; color: white; border: 1px solid white; padding: 5px;">
+                   style="background: black; color: white; border: 1px solid white; padding: 5px;">
                    <option value="" selected disabled>Select Font</option>
                    ${fontOptions}
                </select>
            </div>
        </div>
    `;
+
+   const parser = new DOMParser();
+   const doc = parser.parseFromString(htmlString, "text/html");
+   const isValidHTML = doc.body.children.length > 0;
+
+   console.log("📄 Parsed Document:", doc);
+   console.log(`✅ Is Valid HTML: ${isValidHTML}`);
+
+   if (!isValidHTML) {
+       console.error("❌ Error: Invalid HTML structure!");
+       return "❌ Error: Invalid HTML structure!";
+   }
 
    return htmlString;
 }
