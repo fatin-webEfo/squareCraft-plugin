@@ -5,104 +5,6 @@ export function html() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
    const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
-   document.addEventListener("DOMContentLoaded", async function () {
-      console.log("✅ JavaScript Loaded and Executed!");
-
-      const fontSelect = document.getElementById("squareCraftFontSelect");
-      const toggleSwitch = document.getElementById("toggleSwitch");
-      const toggleText = document.getElementById("toggleText");
-
-      if (!fontSelect) {
-          console.error("❌ ERROR: Font select element not found!");
-          return;
-      } else {
-          console.log("🎯 Font select element found:", fontSelect);
-      }
-
-      if (!toggleSwitch || !toggleText) {
-          console.error("❌ ERROR: Toggle switch or text not found!");
-          return;
-      }
-
-      let currentIndex = 0, batchSize = 10, loading = false;
-
-      function toggleEnableDisable() {
-          const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
-          localStorage.setItem("squareCraft_enabled", !isEnabled);
-          toggleText.innerText = !isEnabled ? "Disable" : "Enable";
-          console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
-      }
-
-      toggleSwitch.addEventListener("click", toggleEnableDisable);
-
-      if (localStorage.getItem("squareCraft_enabled") === "true") {
-          toggleText.innerText = "Disable";
-      }
-
-      async function fetchFonts(startIndex = 0, limit = 10) {
-          try {
-              let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
-              if (cachedFonts.length > startIndex) {
-                  return cachedFonts.slice(startIndex, startIndex + limit);
-              }
-
-              const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
-              if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-              const data = await response.json();
-              const fonts = data.items.map(font => font.family);
-              localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
-
-              console.log(`✅ Loaded ${fonts.length} fonts from API.`);
-
-              return fonts.slice(startIndex, startIndex + limit);
-          } catch (error) {
-              console.error("🚨 Error fetching fonts:", error);
-              return [];
-          }
-      }
-
-      async function loadFonts() {
-          if (loading) return;
-          loading = true;
-
-          const fonts = await fetchFonts(currentIndex, batchSize);
-          if (!fonts.length) {
-              console.warn("⚠️ No new fonts loaded.");
-              return;
-          }
-
-          console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
-
-          fonts.forEach(font => {
-              const option = document.createElement("option");
-              option.value = font;
-              option.innerText = font;
-              option.style.fontFamily = `'${font}', sans-serif`;
-              fontSelect.appendChild(option);
-          });
-
-          console.log(`📌 Total font options in dropdown:`, fontSelect.options.length);
-
-          currentIndex += batchSize;
-          loading = false;
-      }
-
-      await loadFonts();
-
-      fontSelect.addEventListener("scroll", async function () {
-          if (fontSelect.scrollTop + fontSelect.clientHeight >= fontSelect.scrollHeight - 10) {
-              await loadFonts();
-          }
-      });
-
-      fontSelect.addEventListener("change", function () {
-          const selectedFont = fontSelect.value;
-          fontSelect.style.fontFamily = `'${selectedFont}', sans-serif`;
-          console.log(`✅ Font changed to: ${selectedFont}`);
-      });
-  });
-  
   
 
    const htmlString = `
@@ -355,9 +257,94 @@ export function html() {
    </div>
     `
 
-   const parser = new DOMParser();
-   const doc = parser.parseFromString(htmlString, "text/html");
-   console.log("doc" , doc)
-   const isValidHTML = doc.body.children.length > 0;
-   return isValidHTML ? htmlString : "❌ Error: Invalid HTML structure!";
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+    const isValidHTML = doc.body.children.length > 0;
+
+    console.log("📄 Parsed Document:", doc);
+    console.log(`✅ Is Valid HTML: ${isValidHTML}`);
+
+    if (!isValidHTML) {
+        console.error("❌ Error: Invalid HTML structure!");
+        return "❌ Error: Invalid HTML structure!";
+    }
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        console.log("✅ JavaScript Loaded and Executed!");
+
+        const fontSelect = document.getElementById("squareCraftFontSelect");
+        const toggleSwitch = document.getElementById("toggleSwitch");
+        const toggleText = document.getElementById("toggleText");
+
+        if (!fontSelect) {
+            console.error("❌ ERROR: Font select element not found!");
+            return;
+        }
+
+        if (!toggleSwitch || !toggleText) {
+            console.error("❌ ERROR: Toggle switch or text not found!");
+            return;
+        }
+
+        function toggleEnableDisable() {
+            const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
+            localStorage.setItem("squareCraft_enabled", !isEnabled);
+            toggleText.innerText = !isEnabled ? "Disable" : "Enable";
+            console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
+        }
+
+        toggleSwitch.addEventListener("click", toggleEnableDisable);
+
+        if (localStorage.getItem("squareCraft_enabled") === "true") {
+            toggleText.innerText = "Disable";
+        }
+
+        async function fetchFonts(startIndex = 0, limit = 10) {
+            try {
+                let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+                if (cachedFonts.length > startIndex) {
+                    return cachedFonts.slice(startIndex, startIndex + limit);
+                }
+
+                const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const data = await response.json();
+                const fonts = data.items.map(font => font.family);
+                localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
+
+                console.log(`✅ Loaded ${fonts.length} fonts from API.` , fonts);
+
+                return fonts.slice(startIndex, startIndex + limit);
+            } catch (error) {
+                console.error("🚨 Error fetching fonts:", error);
+                return [];
+            }
+        }
+
+        async function loadFonts() {
+            const fonts = await fetchFonts(0, 10);
+            if (!fonts.length) {
+                console.warn("⚠️ No new fonts loaded.");
+                return;
+            }
+
+            console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
+
+            fonts.forEach(font => {
+                const option = document.createElement("option");
+                option.value = font;
+                option.innerText = font;
+                option.style.fontFamily = `'${font}', sans-serif`;
+                fontSelect.appendChild(option);
+            });
+        }
+
+        await loadFonts();
+    });
+
+    return htmlString;
+
+
+   
 }
