@@ -36,19 +36,29 @@ export function html() {
    setTimeout(() => {
       const fontSelect = document.getElementById("squareCraftFontSelect");
       if (!fontSelect) {
-         console.error("❌ Font select element not found!");
-         return;
+          console.error("❌ Font select element not found!");
+          return;
       }
-
+  
       console.log("✅ Font options loaded:", fontOptions);
-
+  
       fontSelect.addEventListener("change", function () {
-         const selectedFont = fontSelect.value;
-         window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-         console.log(`📢 Sending font change to parent: ${selectedFont}`);
+          const selectedFont = fontSelect.value;
+          const selectedElement = document.querySelector(".squareCraft-selected .sqs-html-content");
+  
+          if (selectedElement) {
+              selectedElement.style.fontFamily = selectedFont;
+              console.log(`🔄 Updated font family to: ${selectedFont}`);
+          } else {
+              console.warn("⚠️ No selected element found to apply font change.");
+          }
+  
+          window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
+          console.log(`📢 Sending font change to parent: ${selectedFont}`);
       });
-
-   }, 500);
+  
+  }, 500);
+  
 
    return htmlString;
 }
