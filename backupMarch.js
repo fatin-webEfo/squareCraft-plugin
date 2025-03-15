@@ -34,63 +34,83 @@
     }
     // Token and Ids
 
-    document.body.addEventListener("click", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        if (selectedElement) {
-            selectedElement.style.outline = "";
-            selectedElement.classList.remove("squareCraft-selected");
-        }
-    
-        selectedElement = block;
-        selectedElement.style.outline = "2px dashed #EF7C2F";
-        selectedElement.classList.add("squareCraft-selected");
-    
-        console.log(`✅ Selected Element: ${selectedElement.id}`);
-    });
-    
-    function getTextType(element) {
-        let tagName = element.tagName.toLowerCase();
-        let classList = element.classList;
-    
-        if (tagName === "h1") {
-            return "Heading 1 (h1)";
-        } else if (tagName === "h2") {
-            return "Heading 2 (h2)";
-        } else if (tagName === "h3") {
-            return "Heading 3 (h3)";
-        } else if (tagName === "h4") {
-            return "Heading 4 (h4)";
-        } else if (tagName === "p") {
-            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-                return "Paragraph 3 (p3)";
-            } else if (classList.contains("sqsrte-large")) {
-                return "Paragraph 1 (p1)";
-            } else {
-                return "Paragraph 2 (p2)";
-            }
-        }
-        return null;
+
+   document.body.addEventListener("click", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    if (selectedElement) {
+        selectedElement.style.outline = "";
+        selectedElement.classList.remove("squareCraft-selected");
     }
-    
-    document.body.addEventListener("mouseover", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        let textElements = block.querySelectorAll("h1, h2, h3, h4, p");
-        let textType = "No text found";
-    
-        for (let element of textElements) {
-            let detectedType = getTextType(element);
-            if (detectedType) {
-                textType = detectedType;
-                break;
-            }
+
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F";
+    selectedElement.classList.add("squareCraft-selected");
+
+    console.log(`✅ Selected Element: ${selectedElement.id}`);
+});
+
+function getTextType(element) {
+    let tagName = element.tagName.toLowerCase();
+    let classList = element.classList;
+
+    if (tagName === "h1") {
+        return { type: "Heading 1 (h1)", color: "#FF0000" }; // Red
+    } else if (tagName === "h2") {
+        return { type: "Heading 2 (h2)", color: "#FFA500" }; // Orange
+    } else if (tagName === "h3") {
+        return { type: "Heading 3 (h3)", color: "#FFFF00" }; // Yellow
+    } else if (tagName === "h4") {
+        return { type: "Heading 4 (h4)", color: "#008000" }; // Green
+    } else if (tagName === "p") {
+        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+            return { type: "Paragraph 3 (p3)", color: "#0000FF" }; // Blue
+        } else if (classList.contains("sqsrte-large")) {
+            return { type: "Paragraph 1 (p1)", color: "#4B0082" }; // Indigo
+        } else {
+            return { type: "Paragraph 2 (p2)", color: "#9400D3" }; // Violet
         }
-    
-        console.log(`🟠 Hovered Block: ${block.id} | Text Type: ${textType}`);
+    } else if (tagName === "strong") {
+        return { type: "Bold (strong)", color: "#8B0000" }; // Dark Red
+    } else if (tagName === "em") {
+        return { type: "Italic (em)", color: "#FF69B4" }; // Pink
+    } else if (tagName === "a") {
+        return { type: "Link (a)", color: "#1E90FF" }; // Light Blue
+    }
+    return null;
+}
+
+document.body.addEventListener("mouseover", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    let textTypes = [];
+
+    textElements.forEach((element) => {
+        let detectedType = getTextType(element);
+        if (detectedType) {
+            textTypes.push(detectedType.type);
+            element.style.border = `2px solid ${detectedType.color}`;
+        }
     });
+
+    let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
+
+    console.log(`🟠 Hovered Block: ${block.id} | Text Types: ${textTypeOutput}`);
+});
+
+document.body.addEventListener("mouseout", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    textElements.forEach((element) => {
+        element.style.border = "";
+    });
+});
+
 
     // Clicked outline
     // navbar icon
@@ -101,48 +121,70 @@
     } catch (error) {
         console.error("🚨 Failed to load navbar icon script", error);
     }
+
     // navbar Icon
 
     // Css cdn
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-    document.head.appendChild(link);
+    async function loadCSS(url, key) {
+        let cachedData = localStorage.getItem(key);
+        let lastFetched = localStorage.getItem(`${key}_timestamp`);
+        let oneDay = 24 * 60 * 60 * 1000;
+    
+        if (cachedData && lastFetched && (Date.now() - lastFetched < oneDay)) {
+            console.log(`📦 Loading ${key} from LocalStorage`);
+            const style = document.createElement("style");
+            style.textContent = cachedData;
+            document.head.appendChild(style);
+        } else {
+            console.log(`🌐 Fetching ${key} from CDN`);
+            try {
+                let response = await fetch(url);
+                let text = await response.text();
+                localStorage.setItem(key, text);
+                localStorage.setItem(`${key}_timestamp`, Date.now());
+    
+                const style = document.createElement("style");
+                style.textContent = text;
+                document.head.appendChild(style);
+            } catch (error) {
+                console.error(`🚨 Failed to load ${key} from CDN`, error);
+            }
+        }
+    }
+    
+    // Load CSS
+    loadCSS("https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css", "squareCraft_parentCSS");
+    
+    
     // Css cdn
     // No changes
 
 
     async function createWidget() {
         try {
+            let cachedWidget = localStorage.getItem("squareCraft_widget");
+            let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
+            let oneDay = 24 * 60 * 60 * 1000;
+            let now = Date.now();
+    
+            if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
+                console.log("✅ Loading widget from localStorage...");
+                loadWidgetFromString(cachedWidget);
+                return;
+            }
+    
+            console.log("🌍 Fetching new widget data...");
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
-
+    
             if (module && module.html) {
-
                 const htmlString = module.html();
-
-                if (!widgetContainer) {
-                    widgetContainer = document.createElement("div");
-                    widgetContainer.id = "squarecraft-widget-container";
-                    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
-
-                    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-                        widgetContainer.innerHTML = htmlString;
-                    } else {
-                        console.error("❌ Retrieved HTML string is invalid or empty!");
-                    }
-
-                    widgetContainer.style.display = "none";
-                    document.body.appendChild(widgetContainer);
-                    makeWidgetDraggable();
-                    widgetLoaded = true;
-
-                    setTimeout(() => {
-                        widgetContainer = document.getElementById("squarecraft-widget-container");
-                        if (!widgetContainer) {
-                            console.error("❌ Widget container failed to load.");
-                        }
-                    }, 500);
+    
+                if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                    localStorage.setItem("squareCraft_widget", htmlString);
+                    localStorage.setItem("squareCraft_widget_timestamp", now.toString());
+                    loadWidgetFromString(htmlString);
+                } else {
+                    console.error("❌ Retrieved HTML string is invalid or empty!");
                 }
             } else {
                 console.error("❌ Failed to retrieve the HTML function from module!");
@@ -151,6 +193,27 @@
             console.error("🚨 Error loading HTML module:", error);
         }
     }
+    
+    function loadWidgetFromString(htmlString) {
+        if (!widgetContainer) {
+            widgetContainer = document.createElement("div");
+            widgetContainer.id = "squarecraft-widget-container";
+            widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
+            widgetContainer.innerHTML = htmlString;
+            widgetContainer.style.display = "none";
+            document.body.appendChild(widgetContainer);
+            makeWidgetDraggable();
+            widgetLoaded = true;
+    
+            setTimeout(() => {
+                widgetContainer = document.getElementById("squarecraft-widget-container");
+                if (!widgetContainer) {
+                    console.error("❌ Widget container failed to load.");
+                }
+            }, 500);
+        }
+    }
+    
 
 
 
@@ -167,73 +230,71 @@
     }
 
 
-
-
-
     function makeWidgetDraggable() {
-    if (!widgetContainer) return;
-
-    const parentContainer = widgetContainer.parentElement || document.body;
-
-    widgetContainer.style.position = "absolute"; // Allows movement inside the parent
-    widgetContainer.style.zIndex = "999";
-    widgetContainer.style.left = "10px"; // Default position
-    widgetContainer.style.top = "10px";
-
-    let offsetX = 0, offsetY = 0, isDragging = false;
-
-    function isMobileView() {
-        return window.innerWidth <= 768;
-    }
-
-    widgetContainer.addEventListener("mousedown", (event) => {
-        if (isMobileView()) {
-            console.log("📱 Mobile view detected. Dragging enabled inside parent container.");
+        if (!widgetContainer) return;
+    
+        const parentContainer = widgetContainer.parentElement || document.body;
+        widgetContainer.style.position = "absolute";
+        widgetContainer.style.zIndex = "999";
+        widgetContainer.style.left = "10px";
+        widgetContainer.style.top = "10px";
+    
+        let offsetX = 0, offsetY = 0, isDragging = false;
+    
+        function startDrag(event) {
+            const draggableElement = event.target.closest("#squareCraft-grabbing");
+            if (!draggableElement) return;
+    
+            event.preventDefault();
+            isDragging = true;
+    
+            let clientX = event.clientX || event.touches?.[0]?.clientX;
+            let clientY = event.clientY || event.touches?.[0]?.clientY;
+    
+            offsetX = clientX - widgetContainer.getBoundingClientRect().left;
+            offsetY = clientY - widgetContainer.getBoundingClientRect().top;
+    
+            document.addEventListener("mousemove", moveAt);
+            document.addEventListener("mouseup", stopDragging);
+            document.addEventListener("touchmove", moveAt);
+            document.addEventListener("touchend", stopDragging);
         }
-
-        const draggableElement = event.target.closest("#squareCraft-grabbing");
-
-        if (
-            !draggableElement || 
-            event.target.tagName === "INPUT" ||
-            event.target.tagName === "SELECT" ||
-            event.target.isContentEditable ||
-            event.target.closest("#squareCraftFontDropdown")
-        ) return;
-
-        event.preventDefault();
-        isDragging = true;
-
-        offsetX = event.clientX - widgetContainer.getBoundingClientRect().left;
-        offsetY = event.clientY - widgetContainer.getBoundingClientRect().top;
-
-        document.addEventListener("mousemove", moveAt);
-        document.addEventListener("mouseup", stopDragging);
-    });
-
-    function moveAt(event) {
-        if (!isDragging) return;
-
-        const parentRect = parentContainer.getBoundingClientRect();
-        const widgetRect = widgetContainer.getBoundingClientRect();
-
-        let newX = event.clientX - offsetX - parentRect.left;
-        let newY = event.clientY - offsetY - parentRect.top;
-
-        newX = Math.max(0, Math.min(parentRect.width - widgetRect.width, newX));
-        newY = Math.max(0, Math.min(parentRect.height - widgetRect.height, newY));
-
-        widgetContainer.style.left = `${newX}px`;
-        widgetContainer.style.top = `${newY}px`;
+    
+        function moveAt(event) {
+            if (!isDragging) return;
+    
+            let clientX = event.clientX || event.touches?.[0]?.clientX;
+            let clientY = event.clientY || event.touches?.[0]?.clientY;
+    
+            let newX = clientX - offsetX;
+            let newY = clientY - offsetY;
+    
+            let maxX = window.innerWidth - widgetContainer.offsetWidth;
+            let maxY = window.innerHeight - widgetContainer.offsetHeight;
+    
+            newX = Math.max(0, Math.min(maxX, newX));
+            newY = Math.max(0, Math.min(maxY, newY));
+    
+            widgetContainer.style.left = `${newX}px`;
+            widgetContainer.style.top = `${newY}px`;
+        }
+    
+        function stopDragging() {
+            isDragging = false;
+            document.removeEventListener("mousemove", moveAt);
+            document.removeEventListener("mouseup", stopDragging);
+            document.removeEventListener("touchmove", moveAt);
+            document.removeEventListener("touchend", stopDragging);
+        }
+    
+        // **Make sure previous event listeners are removed before adding new ones**
+        widgetContainer.removeEventListener("mousedown", startDrag);
+        widgetContainer.removeEventListener("touchstart", startDrag);
+    
+        widgetContainer.addEventListener("mousedown", startDrag);
+        widgetContainer.addEventListener("touchstart", startDrag);
     }
-
-    function stopDragging() {
-        isDragging = false;
-        document.removeEventListener("mousemove", moveAt);
-        document.removeEventListener("mouseup", stopDragging);
-    }
-}
-
+    
     
     function adjustWidgetPosition() {
         if (!widgetContainer) return;

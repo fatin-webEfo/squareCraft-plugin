@@ -222,7 +222,7 @@ document.body.addEventListener("mouseout", (event) => {
 
         if (!widgetLoaded) {
             await createWidget();
-        }
+        }   
 
         if (widgetContainer) {
             widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
