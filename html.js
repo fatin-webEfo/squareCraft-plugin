@@ -71,6 +71,5 @@ export function html() {
   }, 500);
   
   
-
    return htmlString;
 }
