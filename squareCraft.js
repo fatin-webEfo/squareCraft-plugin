@@ -52,6 +52,10 @@
     });
 
     
+function isEditMode() {
+    return document.body.classList.contains('sqs-edit-mode') || document.body.classList.contains('sqs-layout-editing');
+}
+
 function determineTextType(element) {
     const tagName = element.tagName.toLowerCase();
     const classList = element.classList;
@@ -76,6 +80,7 @@ function determineTextType(element) {
     return "Unknown";
 }
 
+// Function to handle mouse over events
 function handleMouseOver(event) {
     const target = event.target;
     const textType = determineTextType(target);
@@ -98,10 +103,11 @@ function handleMouseOut(event) {
     }
 }
 
-document.querySelectorAll('[id^="block-"]').forEach(block => {
-    block.addEventListener("mouseover", handleMouseOver);
-    block.addEventListener("mouseout", handleMouseOut);
-});
+function initializeScript() {
+    document.querySelectorAll('[id^="block-"]').forEach(block => {
+        block.addEventListener("mouseover", handleMouseOver);
+        block.addEventListener("mouseout", handleMouseOut);
+    });
 
     document.body.addEventListener("mouseover", (event) => {
         let block = event.target.closest('[id^="block-"]');
@@ -116,6 +122,12 @@ document.querySelectorAll('[id^="block-"]').forEach(block => {
 
         block.style.outline = "";
     });
+}
+
+if (!isEditMode()) {
+    initializeScript();
+}
+
 
     // Clicked outline
     // navbar icon
