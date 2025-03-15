@@ -35,21 +35,22 @@
     // Token and Ids
 
 
-   document.body.addEventListener("click", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
+    document.body.addEventListener("click", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
 
-    if (selectedElement) {
-        selectedElement.style.outline = "";
-        selectedElement.classList.remove("squareCraft-selected");
-    }
+        if (selectedElement) {
+            selectedElement.style.outline = "";
+            selectedElement.classList.remove("squareCraft-selected");
+        }
 
-    selectedElement = block;
-    selectedElement.style.outline = "2px dashed #EF7C2F";
-    selectedElement.classList.add("squareCraft-selected");
+        selectedElement = block;
+        selectedElement.style.outline = "2px dashed #EF7C2F";
+        selectedElement.classList.add("squareCraft-selected");
 
-    console.log(`✅ Selected Element: ${selectedElement.id}`);
-});
+        console.log(`✅ Selected Element: ${selectedElement.id}`);
+    });
+    
 
 function getTextType(element) {
     let tagName = element.tagName.toLowerCase();
@@ -98,7 +99,6 @@ document.body.addEventListener("mouseover", (event) => {
 
     let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
 
-    console.log(`🟠 Hovered Block: ${block.id} | Text Types: ${textTypeOutput}`);
 });
 
 document.body.addEventListener("mouseout", (event) => {
@@ -131,12 +131,10 @@ document.body.addEventListener("mouseout", (event) => {
         let oneDay = 24 * 60 * 60 * 1000;
     
         if (cachedData && lastFetched && (Date.now() - lastFetched < oneDay)) {
-            console.log(`📦 Loading ${key} from LocalStorage`);
             const style = document.createElement("style");
             style.textContent = cachedData;
             document.head.appendChild(style);
         } else {
-            console.log(`🌐 Fetching ${key} from CDN`);
             try {
                 let response = await fetch(url);
                 let text = await response.text();
@@ -168,12 +166,9 @@ document.body.addEventListener("mouseout", (event) => {
             let now = Date.now();
     
             if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
-                console.log("✅ Loading widget from localStorage...");
                 loadWidgetFromString(cachedWidget);
                 return;
             }
-    
-            console.log("🌍 Fetching new widget data...");
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     
             if (module && module.html) {
@@ -222,7 +217,7 @@ document.body.addEventListener("mouseout", (event) => {
 
         if (!widgetLoaded) {
             await createWidget();
-        }
+        }   
 
         if (widgetContainer) {
             widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
@@ -402,10 +397,8 @@ document.body.addEventListener("mouseout", (event) => {
         const isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            console.log("📱 Mobile view detected. Moving widget outside the main window...");
             moveWidgetToMobileContainer();
         } else {
-            console.log("🖥️ Desktop view detected. Keeping widget in the main window...");
             moveWidgetToDesktop();
         }
     }
@@ -437,7 +430,6 @@ document.body.addEventListener("mouseout", (event) => {
     
             mobileContainer.appendChild(widgetContainer);
     
-            console.log("✅ Widget successfully moved to mobile container and positioned correctly.");
         } else {
             console.warn("❌ Mobile container not found. Widget remains in default location.");
         }
@@ -449,11 +441,10 @@ document.body.addEventListener("mouseout", (event) => {
         if (!widgetContainer) return;
 
         document.body.appendChild(widgetContainer);
-        console.log("✅ Widget remains in the desktop position.");
     }
 
     checkView();
     window.addEventListener("resize", checkView);
-
+  
 
 })();

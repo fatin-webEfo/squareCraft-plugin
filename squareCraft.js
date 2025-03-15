@@ -98,6 +98,7 @@ document.body.addEventListener("mouseover", (event) => {
     });
 
     let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
+    console.log(`�� Text types in block: ${textTypeOutput}`);
 
 });
 
