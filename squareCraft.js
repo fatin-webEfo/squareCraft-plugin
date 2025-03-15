@@ -124,7 +124,12 @@ function initializeScript() {
     });
 }
 
-if (!isEditMode()) {
+if (isEditMode()) {
+    console.log("editing mood found")
+    initializeScript();
+}
+else{
+    console.log("not editing mood found")
     initializeScript();
 }
 
