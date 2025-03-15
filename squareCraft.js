@@ -128,10 +128,10 @@ document.body.addEventListener("mouseout", (event) => {
     async function loadCSS(url, key) {
         let cachedData = localStorage.getItem(key);
         let lastFetched = localStorage.getItem(`${key}_timestamp`);
-        let oneDay = 24 * 60 * 60 * 1000; 
+        let oneDay = 24 * 60 * 60 * 1000;
     
         if (cachedData && lastFetched && (Date.now() - lastFetched < oneDay)) {
-            console.log(`📦 Loading ${key} from Local Storage`);
+            console.log(`📦 Loading ${key} from LocalStorage`);
             const style = document.createElement("style");
             style.textContent = cachedData;
             document.head.appendChild(style);
@@ -154,6 +154,7 @@ document.body.addEventListener("mouseout", (event) => {
     
     // Load CSS
     loadCSS("https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css", "squareCraft_parentCSS");
+    
     
     // Css cdn
     // No changes
