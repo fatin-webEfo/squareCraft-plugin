@@ -192,22 +192,34 @@
 
 
     async function createWidget() {
+        console.log('🏁 Starting widget creation');
         try {
             let cachedWidget = localStorage.getItem("squareCraft_widget");
             let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
             let oneDay = 24 * 60 * 60 * 1000;
             let now = Date.now();
     
+            console.log('📦 Cache status:', {
+                hasCachedWidget: !!cachedWidget,
+                lastFetched: new Date(parseInt(lastFetched)),
+                isExpired: now - lastFetched > oneDay
+            });
+
             if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
+                console.log('🔄 Loading widget from cache');
                 loadWidgetFromString(cachedWidget);
                 return;
             }
+
+            console.log('📥 Importing HTML module');
             const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     
             if (module && module.html) {
+                console.log('✨ HTML module loaded successfully');
                 const htmlString = module.html();
     
                 if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                    console.log('💾 Saving widget to cache');
                     localStorage.setItem("squareCraft_widget", htmlString);
                     localStorage.setItem("squareCraft_widget_timestamp", now.toString());
                     loadWidgetFromString(htmlString);
