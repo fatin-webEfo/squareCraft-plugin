@@ -1,7 +1,28 @@
 (async function squareCraft() {
-    // No changes
-    // parent script call
+    const version = "1.0.0";
+    const expiryDate = new Date("2024-12-31");
+    
+    if (new Date() > expiryDate) {
+        console.error("Widget version expired");
+        return;
+    }
+
+    // Add domain verification
+    const allowedDomains = ['squarespace.com'];
+    const currentDomain = window.location.hostname;
+    
+    if (!allowedDomains.some(domain => currentDomain.includes(domain))) {
+        console.error('Unauthorized domain');
+        return;
+    }
+
+    // Verify token
     const widgetScript = document.getElementById("squarecraft-script");
+    const token = widgetScript.dataset?.token;
+    
+ 
+
+    // No changes
 
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
@@ -14,7 +35,6 @@
     let widgetLoaded = false;
     // vars
     // Token and Ids
-    let token = widgetScript.dataset?.token;
     let squareCraft_u_id = widgetScript.dataset?.uId;
     let squareCraft_w_id = widgetScript.dataset?.wId;
 
@@ -363,7 +383,7 @@
                 clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 clonedIcon.alt = "SquareCraft";
                 clonedIcon.classList.add("squareCraft-toolbar-icon", "squareCraft-z-99999");
-                clonedIcon.style.width = "35px";
+                clonedIcon.style.width = "35px";        
                 clonedIcon.style.height = "35px";
                 clonedIcon.style.borderRadius = "20%";
                 clonedIcon.style.cursor = "pointer";
@@ -486,4 +506,34 @@
     window.addEventListener("resize", checkView);
   
 
+    function generateFingerprint() {
+        const fingerprint = {
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            screenResolution: `${screen.width}x${screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            // Add more fingerprinting data
+        };
+        return btoa(JSON.stringify(fingerprint));
+    }
+
+    const clientFingerprint = generateFingerprint();
+    // Verify fingerprint with your server
+    // Rest of your code...
 })();
+
+// Use a tool like javascript-obfuscator
+const obfuscated = JavaScriptObfuscator.obfuscate(code, {
+    compact: true,
+    controlFlowFlattening: true,
+    controlFlowFlatteningThreshold: 0.7,
+    deadCodeInjection: true,
+    deadCodeInjectionThreshold: 0.4,
+    debugProtection: true,
+    debugProtectionInterval: 2000,
+    stringArray: true,
+    rotateStringArray: true,
+    stringArrayEncoding: ['base64'],
+    stringArrayThreshold: 0.75,
+    unicodeEscapeSequence: false
+});
