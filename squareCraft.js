@@ -75,66 +75,74 @@
         console.log("Font change listener added.");
     });
     
-
-function getTextType(element) {
-    let tagName = element.tagName.toLowerCase();
-    let classList = element.classList;
-
-    if (tagName === "h1") {
-        return { type: "Heading 1 (h1)", color: "#FF0000" }; // Red
-    } else if (tagName === "h2") {
-        return { type: "Heading 2 (h2)", color: "#FFA500" }; // Orange
-    } else if (tagName === "h3") {
-        return { type: "Heading 3 (h3)", color: "#FFFF00" }; // Yellow
-    } else if (tagName === "h4") {
-        return { type: "Heading 4 (h4)", color: "#008000" }; // Green
-    } else if (tagName === "p") {
-        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-            return { type: "Paragraph 3 (p3)", color: "#0000FF" }; // Blue
-        } else if (classList.contains("sqsrte-large")) {
-            return { type: "Paragraph 1 (p1)", color: "#4B0082" }; // Indigo
-        } else {
-            return { type: "Paragraph 2 (p2)", color: "#9400D3" }; // Violet
+    function getTextType(element) {
+        let tagName = element.tagName.toLowerCase();
+        let classList = element.classList;
+    
+        if (tagName === "h1") {
+            return { type: "Heading 1 (h1)", color: "#FF0000" }; // Red
+        } else if (tagName === "h2") {
+            return { type: "Heading 2 (h2)", color: "#FFA500" }; // Orange
+        } else if (tagName === "h3") {
+            return { type: "Heading 3 (h3)", color: "#FFFF00" }; // Yellow
+        } else if (tagName === "h4") {
+            return { type: "Heading 4 (h4)", color: "#008000" }; // Green
+        } else if (tagName === "p") {
+            if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+                return { type: "Paragraph 3 (p3)", color: "#0000FF" }; // Blue
+            } else if (classList.contains("sqsrte-large")) {
+                return { type: "Paragraph 1 (p1)", color: "#4B0082" }; // Indigo
+            } else {
+                return { type: "Paragraph 2 (p2)", color: "#9400D3" }; // Violet
+            }
+        } else if (tagName === "strong") {
+            return { type: "Bold (strong)", color: "#8B0000" }; // Dark Red
+        } else if (tagName === "em") {
+            return { type: "Italic (em)", color: "#FF69B4" }; // Pink
+        } else if (tagName === "a") {
+            return { type: "Link (a)", color: "#1E90FF" }; // Light Blue
         }
-    } else if (tagName === "strong") {
-        return { type: "Bold (strong)", color: "#8B0000" }; // Dark Red
-    } else if (tagName === "em") {
-        return { type: "Italic (em)", color: "#FF69B4" }; // Pink
-    } else if (tagName === "a") {
-        return { type: "Link (a)", color: "#1E90FF" }; // Light Blue
+        return null;
     }
-    return null;
-}
-
-document.body.addEventListener("mouseover", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-    let textTypes = [];
-
-    textElements.forEach((element) => {
-        let detectedType = getTextType(element);
-        if (detectedType) {
-            textTypes.push(detectedType.type);
-            element.style.border = `2px solid ${detectedType.color}`;
+    
+    document.body.addEventListener("mouseover", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+    
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    
+        if (textElements.length === 0) {
+            console.log("No text found inside the block.");
+            return;
+        }
+    
+        let formattedText = [];
+    
+        textElements.forEach((element) => {
+            let detectedType = getTextType(element);
+            let textContent = element.textContent.trim(); // Remove extra spaces
+    
+            if (detectedType && textContent) {
+                formattedText.push(`"${textContent}" <${element.tagName.toLowerCase()}>`);
+                element.style.border = `2px solid ${detectedType.color}`;
+            }
+        });
+    
+        if (formattedText.length > 0) {
+            console.log(formattedText.join("\n"));
         }
     });
-
-    let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
-    console.log(textTypeOutput)
-
-});
-
-document.body.addEventListener("mouseout", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-    textElements.forEach((element) => {
-        element.style.border = "";
+    
+    document.body.addEventListener("mouseout", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+    
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+        textElements.forEach((element) => {
+            element.style.border = "";
+        });
     });
-});
+    
 
 
     // Clicked outline
