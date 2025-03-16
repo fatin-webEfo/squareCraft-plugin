@@ -249,11 +249,9 @@ document.body.addEventListener("mouseout", (event) => {
         }
     }
 
-
     function makeWidgetDraggable() {
         if (!widgetContainer) return;
     
-        const parentContainer = widgetContainer.parentElement || document.body;
         widgetContainer.style.position = "absolute";
         widgetContainer.style.zIndex = "999";
         widgetContainer.style.left = "10px";
@@ -263,7 +261,12 @@ document.body.addEventListener("mouseout", (event) => {
     
         function startDrag(event) {
             const draggableElement = event.target.closest("#squareCraft-grabbing");
-            if (!draggableElement) return;
+            
+            // ✅ Ignore dragging if clicking inside dropdown
+            if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
+                console.log("🚫 Dragging prevented due to dropdown click");
+                return;
+            }
     
             event.preventDefault();
             isDragging = true;
@@ -307,13 +310,14 @@ document.body.addEventListener("mouseout", (event) => {
             document.removeEventListener("touchend", stopDragging);
         }
     
-        // **Make sure previous event listeners are removed before adding new ones**
+        // ✅ Ensure previous event listeners are removed before adding new ones
         widgetContainer.removeEventListener("mousedown", startDrag);
         widgetContainer.removeEventListener("touchstart", startDrag);
     
         widgetContainer.addEventListener("mousedown", startDrag);
         widgetContainer.addEventListener("touchstart", startDrag);
     }
+    
     
     
     function adjustWidgetPosition() {
