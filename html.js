@@ -21,7 +21,7 @@ export function html() {
                     ${fontOptions}
                 </select>
             </div>
-        </div>
+        </div>  
     `;
  
     const parser = new DOMParser();
