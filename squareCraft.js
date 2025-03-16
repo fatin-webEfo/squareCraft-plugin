@@ -122,6 +122,7 @@ document.body.addEventListener("mouseover", (event) => {
     });
 
     let textTypeOutput = textTypes.length > 0 ? textTypes.join(", ") : "No text found";
+    console.log(textTypeOutput)
 
 });
 
@@ -221,7 +222,7 @@ document.body.addEventListener("mouseout", (event) => {
             widgetContainer.innerHTML = htmlString;
             widgetContainer.style.display = "none";
             document.body.appendChild(widgetContainer);
-            makeWidgetDraggable();
+            // makeWidgetDraggable();
             widgetLoaded = true;
     
             setTimeout(() => {
