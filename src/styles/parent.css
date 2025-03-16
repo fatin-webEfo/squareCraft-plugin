@@ -831,7 +831,17 @@ font-size: 12px !important;
   margin-right: 0.15rem !important; /* 4px */
 }
 
+.squareCraft-dropdown-item {
+  transition: background-color 0.2s ease;
+}
 
+.squareCraft-dropdown-item:hover {
+  background-color: #494949;
+}
+
+.squareCraft-dropdown-arrow {
+  transition: transform 0.2s ease;
+}
 .squareCraft-px-1_5{
   padding-left: 0.375rem !important; /* 6px */
   padding-right: 0.375rem !important; /* 6px */
