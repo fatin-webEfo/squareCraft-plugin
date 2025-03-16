@@ -21,7 +21,7 @@ export function html() {
                 
                 <!-- Custom Dropdown -->
                 <div class="squareCraft-dropdown" style="position: relative;">
-                    <p id="squareCraftFontSelect" class="squareCraft-selected-font" 
+                    <p id="squareCraftFontSelect" class="squareCraft-selected-font squareCraft-border squareCraft-border-solid squareCraft-rounded-md squareCraft-text-sm " 
                         style="background: black; color: white; border: 1px solid white; padding: 8px; cursor: pointer; text-align: center;">
                         Select Font ▼
                     </p>
