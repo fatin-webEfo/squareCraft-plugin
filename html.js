@@ -25,7 +25,7 @@ export function html() {
                         style="background: black; color: white; border: 1px solid white; padding: 8px; cursor: pointer; text-align: center;">
                         Select Font ▼
                     </p>
-                    <div class="squareCraft-dropdown-content" style="display: none; position: absolute; width: 100%; left: 0; background: #444; border: 1px solid white; padding: 5px; max-height: 150px; overflow-y: auto; z-index: 999;">
+                    <div class="squareCraft-dropdown-content squareCraft-border squareCraft-border-solid squareCraft-cursor-pointer" style="display: none; position: absolute; width: 100%; left: 0; background: #444; border: 1px solid white; padding: 5px; max-height: 150px; overflow-y: auto; z-index: 999;">
                         ${fontOptions}
                     </div>
                 </div>
