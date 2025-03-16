@@ -9,7 +9,7 @@ export function html() {
     console.log('📚 Font families loaded:', fontFamilies);
  
     const fontOptions = fontFamilies
-       .map(font => `<div class="squareCraft-dropdown-item squareCraft-px-3 squareCraft-py-2 squareCraft-cursor-pointer squareCraft-hover:bg-494949" data-value="${font}" style="font-family: '${font}', sans-serif;">${font}</div>`)
+       .map(font => `<div class="squareCraft-dropdown-item" data-value="${font}" style="font-family: '${font}', sans-serif; padding: 8px 12px; cursor: pointer;">${font}</div>`)
        .join("");
     console.log('🎨 Font options HTML generated');
 
@@ -23,7 +23,19 @@ export function html() {
                     <span class="squareCraft-text-sm squareCraft-poppins squareCraft-font-light">Select Font</span>
                     <span class="squareCraft-dropdown-arrow">▼</span>
                 </div>
-                <div id="squareCraft-font-dropdown" style="display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 99999;" class="squareCraft-mt-1 squareCraft-dropdown-content squareCraft-bg-color-2c2c2c squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-rounded-md squareCraft-max-h-40 squareCraft-overflow-y-auto">
+                <div id="squareCraft-font-dropdown" 
+                     style="display: none; 
+                            position: absolute; 
+                            top: 100%; 
+                            left: 0; 
+                            right: 0; 
+                            background: #2c2c2c; 
+                            border: 1px solid #3d3d3d; 
+                            border-radius: 6px; 
+                            margin-top: 4px; 
+                            max-height: 200px; 
+                            overflow-y: auto; 
+                            z-index: 99999;">
                     ${fontOptions}
                 </div>
             </div>
@@ -48,18 +60,43 @@ export function html() {
         });
 
         if (fontSelect && dropdown) {
+            // Add styles to dropdown items
+            dropdownItems.forEach(item => {
+                item.style.padding = '8px 12px';
+                item.style.cursor = 'pointer';
+                item.style.transition = 'background-color 0.2s ease';
+                item.style.color = 'white';
+            });
+
             fontSelect.addEventListener('click', (e) => {
                 console.log('🖱️ Font select clicked');
                 e.stopPropagation();
-                const isHidden = dropdown.style.display === 'none';
+                const isHidden = dropdown.style.display === 'none' || !dropdown.style.display;
                 dropdown.style.display = isHidden ? 'block' : 'none';
                 arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
                 console.log('Dropdown visibility:', dropdown.style.display);
-            });
-        }
 
-        if (dropdownItems) {
+                // Log dropdown position and dimensions
+                if (isHidden) {
+                    const rect = dropdown.getBoundingClientRect();
+                    console.log('Dropdown position:', {
+                        top: rect.top,
+                        left: rect.left,
+                        width: rect.width,
+                        height: rect.height,
+                        visible: rect.top > 0 && rect.top < window.innerHeight
+                    });
+                }
+            });
+
+            // Add hover effect to dropdown items
             dropdownItems.forEach(item => {
+                item.addEventListener('mouseover', () => {
+                    item.style.backgroundColor = '#EF7C2F';
+                });
+                item.addEventListener('mouseout', () => {
+                    item.style.backgroundColor = '';
+                });
                 item.addEventListener('click', (e) => {
                     console.log('📝 Font item clicked:', e.target.dataset.value);
                     const selectedFont = e.target.dataset.value;
@@ -84,7 +121,6 @@ export function html() {
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#squareCraftFontSelect')) {
-                console.log('📍 Click outside dropdown - closing');
                 dropdown.style.display = 'none';
                 arrow.style.transform = '';
             }
