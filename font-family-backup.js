@@ -63,8 +63,6 @@ export function html() {
            });
    
            console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
-   
-           // Send message to parent (if needed)
            window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
        });
    
