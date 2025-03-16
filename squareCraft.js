@@ -1,28 +1,7 @@
 (async function squareCraft() {
-    const version = "1.0.0";
-    const expiryDate = new Date("2024-12-31");
-    
-    if (new Date() > expiryDate) {
-        console.error("Widget version expired");
-        return;
-    }
-
-    // Add domain verification
-    const allowedDomains = ['squarespace.com'];
-    const currentDomain = window.location.hostname;
-    
-    if (!allowedDomains.some(domain => currentDomain.includes(domain))) {
-        console.error('Unauthorized domain');
-        return;
-    }
-
-    // Verify token
-    const widgetScript = document.getElementById("squarecraft-script");
-    const token = widgetScript.dataset?.token;
-    
- 
-
     // No changes
+    // parent script call
+    const widgetScript = document.getElementById("squarecraft-script");
 
     if (!widgetScript) {
         console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
@@ -35,6 +14,7 @@
     let widgetLoaded = false;
     // vars
     // Token and Ids
+    let token = widgetScript.dataset?.token;
     let squareCraft_u_id = widgetScript.dataset?.uId;
     let squareCraft_w_id = widgetScript.dataset?.wId;
 
@@ -506,20 +486,6 @@
     window.addEventListener("resize", checkView);
   
 
-    function generateFingerprint() {
-        const fingerprint = {
-            userAgent: navigator.userAgent,
-            language: navigator.language,
-            screenResolution: `${screen.width}x${screen.height}`,
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            // Add more fingerprinting data
-        };
-        return btoa(JSON.stringify(fingerprint));
-    }
-
-    const clientFingerprint = generateFingerprint();
-    // Verify fingerprint with your server
-    // Rest of your code...
 })();
 
 // Use a tool like javascript-obfuscator
