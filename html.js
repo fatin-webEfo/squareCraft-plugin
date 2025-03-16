@@ -33,98 +33,40 @@ export function html() {
        return "❌ Error: Invalid HTML structure!";
     }
  
-  setTimeout(() => {
-    console.log("🚀 Initializing font dropdown setup...");
-
-    const fontSelect = document.getElementById("squareCraftFontSelect");
-    console.log("🔍 Checking for fontSelect:", fontSelect);
-
-    if (!fontSelect) {
-        console.error("❌ Font select element (#squareCraftFontSelect) not found!");
-        return;
-    }
-
-    const dropdownContainer = fontSelect.closest(".squareCraft-dropdown");
-    console.log("🔍 Checking for dropdownContainer:", dropdownContainer);
-
-    if (!dropdownContainer) {
-        console.error("❌ Dropdown container (.squareCraft-dropdown) not found!");
-        return;
-    }
-
-    const dropdown = dropdownContainer.querySelector(".squareCraft-dropdown-content");
-    console.log("🔍 Checking for dropdown content:", dropdown);
-
-    if (!dropdown) {
-        console.error("❌ Dropdown content (.squareCraft-dropdown-content) not found!");
-        return;
-    }
-
-    console.log("✅ Font options loaded:", fontFamilies);
-
-    // ✅ Prevent dropdown from closing when clicking inside
-    dropdown.addEventListener("click", function (event) {
-        console.log("🖱️ Click inside dropdown detected:", event.target);
-        event.stopPropagation(); // Stops the event from reaching the outside click listener
-    });
-
-    // ✅ Toggle dropdown visibility on click
-    fontSelect.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevents dropdown from being closed by outside click detection
-        const isVisible = dropdown.style.display === "block";
-        dropdown.style.display = isVisible ? "none" : "block";
-        console.log(`📂 Dropdown ${isVisible ? "closed" : "opened"}`);
-    });
-
-    // ✅ Handle font selection
-    dropdown.addEventListener("click", function (event) {
-        const selectedFont = event.target.dataset.font;
-        console.log("🎯 Click event inside dropdown:", event.target, "Selected Font:", selectedFont);
-
-        if (!selectedFont) {
-            console.warn("⚠️ Clicked element has no font data, ignoring...");
-            return;
-        }
-
-        fontSelect.textContent = selectedFont + " ▼";
-        dropdown.style.display = "none";
-        console.log(`✅ Font selected: ${selectedFont}`);
-
-        const selectedBlock = document.querySelector(".squareCraft-selected");
-        console.log("🔍 Checking for selected block:", selectedBlock);
-
-        if (!selectedBlock) {
-            console.warn("⚠️ No block selected to apply font change.");
-            return;
-        }
-
-        const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-        console.log("📝 Found text elements:", textElements.length, textElements);
-
-        if (textElements.length === 0) {
-            console.warn("⚠️ No text elements found inside the selected block.");
-            return;
-        }
-
-        textElements.forEach(element => {
-            console.log(`🎨 Applying font "${selectedFont}" to element:`, element);
-            element.style.setProperty("font-family", selectedFont, "important");
-        });
-
-        console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
-        window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-    });
-
-    // ✅ Hide dropdown when clicking outside (except inside dropdown)
-    document.addEventListener("click", function (event) {
-        if (!dropdownContainer.contains(event.target)) {
-            dropdown.style.display = "none";
-            console.log("📂 Clicked outside, dropdown closed.");
-        }
-    });
-
-}, 500);
-
+    setTimeout(() => {
+       const fontSelect = document.getElementById("squareCraftFontSelect");
+       if (!fontSelect) {
+           console.error("❌ Font select element not found!");
+           return;
+       }
+   
+       console.log("✅ Font options loaded:", fontOptions);
+   
+       fontSelect.addEventListener("change", function () {
+           const selectedFont = fontSelect.value;
+           const selectedBlock = document.querySelector(".squareCraft-selected");
+   
+           if (!selectedBlock) {
+               console.warn("⚠️ No block selected to apply font change.");
+               return;
+           }
+   
+           const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+   
+           if (textElements.length === 0) {
+               console.warn("⚠️ No text elements found inside the selected block.");
+               return;
+           }
+   
+           textElements.forEach(element => {
+               element.style.setProperty("font-family", selectedFont, "important");
+           });
+   
+           console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
+           window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
+       });
+   
+   }, 500);
    
    
     return htmlString;
