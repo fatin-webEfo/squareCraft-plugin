@@ -1,130 +1,131 @@
 export function html() {
-    console.log('🟢 Initializing html() function');
-    
     const fontFamilies = [
        "Arial", "Verdana", "Times New Roman", "Courier New", "Georgia",
        "Palatino", "Garamond", "Comic Sans MS", "Trebuchet MS", "Arial Black",
        "Impact", "Tahoma", "Helvetica"
     ];
-    console.log('📚 Font families loaded:', fontFamilies);
  
     const fontOptions = fontFamilies
-       .map(font => `<div class="squareCraft-dropdown-item" data-value="${font}" style="font-family: '${font}', sans-serif; padding: 8px 12px; cursor: pointer;">${font}</div>`)
+       .map(font => `<option value="${font}" style="font-family: '${font}', sans-serif;">${font}</option>`)
        .join("");
-    console.log('🎨 Font options HTML generated');
-
+ 
     const htmlString = `
         <div class="squareCraft-p-4 squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
             <img id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co/pry1mVGD/Group-28-1.png" width="140px" />
             <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text.</p>
-            
             <div class="squareCraft-mt-2 squareCraft-relative">
-                <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-bg-494949 squareCraft-rounded-md squareCraft-px-3 squareCraft-py-2 squareCraft-universal squareCraft-cursor-pointer">
-                    <span class="squareCraft-text-sm squareCraft-poppins squareCraft-font-light">Select Font</span>
-                    <span class="squareCraft-dropdown-arrow">▼</span>
-                </div>
-                <div id="squareCraft-font-dropdown" 
-                     style="
-                            position: absolute; 
-                            top: 10px; 
-                            left: 0; 
-                            background: #2c2c2c; 
-                            border: 1px solid #3d3d3d; 
-                            border-radius: 6px; 
-                            margin-top: 4px; 
-                            max-height: 200px; 
-                            overflow-y: auto; 
-                            z-index: 99999;">
+                <label class="squareCraft-text-sm">Select Font</label>
+                <select id="squareCraftFontSelect" class="squareCraft-w-full squareCraft-rounded-md squareCraft-text-sm squareCraft-poppins squareCraft-font-light"
+                    style="background: black; color: white; border: 1px solid white; padding: 5px;">
+                    <option class="squareCraft-cursor-pointer" value="" selected disabled>Select Font</option>
                     ${fontOptions}
-                </div>
+                </select>
             </div>
         </div>
     `;
-    console.log('📄 HTML string generated');
+ 
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+    const isValidHTML = doc.body.children.length > 0;
+ 
+    if (!isValidHTML) {
+       console.error("❌ Error: Invalid HTML structure!");
+       return "❌ Error: Invalid HTML structure!";
+    }
+ 
+  setTimeout(() => {
+    console.log("🚀 Initializing font dropdown setup...");
 
-    // Add event listeners after a short delay to ensure DOM is ready
-    setTimeout(() => {
-        console.log('⏰ Setting up event listeners');
-        
-        const fontSelect = document.getElementById('squareCraftFontSelect');
-        const dropdown = document.getElementById('squareCraft-font-dropdown');
-        const dropdownItems = document.querySelectorAll('.squareCraft-dropdown-item');
-        const arrow = document.querySelector('.squareCraft-dropdown-arrow');
-        
-        console.log('🔍 Found elements:', {
-            fontSelect: !!fontSelect,
-            dropdown: !!dropdown,
-            dropdownItems: dropdownItems.length,
-            arrow: !!arrow
-        });
+    const fontSelect = document.getElementById("squareCraftFontSelect");
+    console.log("🔍 Checking for fontSelect:", fontSelect);
 
-        if (fontSelect && dropdown) {
-            // Add styles to dropdown items
-            dropdownItems.forEach(item => {
-                item.style.padding = '8px 12px';
-                item.style.cursor = 'pointer';
-                item.style.transition = 'background-color 0.2s ease';
-                item.style.color = 'white';
-            });
+    if (!fontSelect) {
+        console.error("❌ Font select element (#squareCraftFontSelect) not found!");
+        return;
+    }
 
-            fontSelect.addEventListener('click', (e) => {
-                console.log('🖱️ Font select clicked');
-                e.stopPropagation();
-                const isHidden = dropdown.style.display === 'none' || !dropdown.style.display;
-                dropdown.style.display = isHidden ? 'block' : 'none';
-                arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
-                console.log('Dropdown visibility:', dropdown.style.display);
+    const dropdownContainer = fontSelect.closest(".squareCraft-dropdown");
+    console.log("🔍 Checking for dropdownContainer:", dropdownContainer);
 
-                // Log dropdown position and dimensions
-                if (isHidden) {
-                    const rect = dropdown.getBoundingClientRect();
-                    console.log('Dropdown position:', {
-                        top: rect.top,
-                        left: rect.left,
-                        width: rect.width,
-                        height: rect.height,
-                        visible: rect.top > 0 && rect.top < window.innerHeight
-                    });
-                }
-            });
+    if (!dropdownContainer) {
+        console.error("❌ Dropdown container (.squareCraft-dropdown) not found!");
+        return;
+    }
 
-            // Add hover effect to dropdown items
-            dropdownItems.forEach(item => {
-                item.addEventListener('mouseover', () => {
-                    item.style.backgroundColor = '#EF7C2F';
-                });
-                item.addEventListener('mouseout', () => {
-                    item.style.backgroundColor = '';
-                });
-                item.addEventListener('click', (e) => {
-                    console.log('📝 Font item clicked:', e.target.dataset.value);
-                    const selectedFont = e.target.dataset.value;
-                    const selectedElement = document.querySelector('.squareCraft-selected');
-                    const fontSelectText = fontSelect.querySelector('span');
-                    
-                    if (selectedElement) {
-                        console.log('✅ Applying font to selected element:', selectedFont);
-                        selectedElement.style.fontFamily = selectedFont;
-                        fontSelectText.textContent = selectedFont;
-                        fontSelectText.style.fontFamily = selectedFont;
-                    } else {
-                        console.warn('⚠️ No element selected to apply font');
-                    }
-                    
-                    dropdown.style.display = 'none';
-                    arrow.style.transform = '';
-                });
-            });
+    const dropdown = dropdownContainer.querySelector(".squareCraft-dropdown-content");
+    console.log("🔍 Checking for dropdown content:", dropdown);
+
+    if (!dropdown) {
+        console.error("❌ Dropdown content (.squareCraft-dropdown-content) not found!");
+        return;
+    }
+
+    console.log("✅ Font options loaded:", fontFamilies);
+
+    // ✅ Prevent dropdown from closing when clicking inside
+    dropdown.addEventListener("click", function (event) {
+        console.log("🖱️ Click inside dropdown detected:", event.target);
+        event.stopPropagation(); // Stops the event from reaching the outside click listener
+    });
+
+    // ✅ Toggle dropdown visibility on click
+    fontSelect.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevents dropdown from being closed by outside click detection
+        const isVisible = dropdown.style.display === "block";
+        dropdown.style.display = isVisible ? "none" : "block";
+        console.log(`📂 Dropdown ${isVisible ? "closed" : "opened"}`);
+    });
+
+    // ✅ Handle font selection
+    dropdown.addEventListener("click", function (event) {
+        const selectedFont = event.target.dataset.font;
+        console.log("🎯 Click event inside dropdown:", event.target, "Selected Font:", selectedFont);
+
+        if (!selectedFont) {
+            console.warn("⚠️ Clicked element has no font data, ignoring...");
+            return;
         }
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#squareCraftFontSelect')) {
-                dropdown.style.display = 'none';
-                arrow.style.transform = '';
-            }
-        });
-    }, 500);
+        fontSelect.textContent = selectedFont + " ▼";
+        dropdown.style.display = "none";
+        console.log(`✅ Font selected: ${selectedFont}`);
 
+        const selectedBlock = document.querySelector(".squareCraft-selected");
+        console.log("🔍 Checking for selected block:", selectedBlock);
+
+        if (!selectedBlock) {
+            console.warn("⚠️ No block selected to apply font change.");
+            return;
+        }
+
+        const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+        console.log("📝 Found text elements:", textElements.length, textElements);
+
+        if (textElements.length === 0) {
+            console.warn("⚠️ No text elements found inside the selected block.");
+            return;
+        }
+
+        textElements.forEach(element => {
+            console.log(`🎨 Applying font "${selectedFont}" to element:`, element);
+            element.style.setProperty("font-family", selectedFont, "important");
+        });
+
+        console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
+        window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
+    });
+
+    // ✅ Hide dropdown when clicking outside (except inside dropdown)
+    document.addEventListener("click", function (event) {
+        if (!dropdownContainer.contains(event.target)) {
+            dropdown.style.display = "none";
+            console.log("📂 Clicked outside, dropdown closed.");
+        }
+    });
+
+}, 500);
+
+   
+   
     return htmlString;
-}
+ }
