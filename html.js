@@ -6,7 +6,7 @@ export function html() {
     ];
 
     const fontOptions = fontFamilies
-       .map(font => `<div class="squareCraft-font-option" data-font="${font}" style="font-family: '${font}', sans-serif; padding: 5px; cursor: pointer;">
+       .map(font => `<div class="squareCraft-font-option" data-font="${font}" style="font-family: '${font}', sans-serif; padding: 8px; cursor: pointer; color: white;">
            ${font}
        </div>`)
        .join("");
@@ -20,11 +20,12 @@ export function html() {
                 <label class="squareCraft-text-sm">Select Font</label>
                 
                 <!-- Custom Dropdown -->
-                <div class="squareCraft-dropdown">
-                    <p id="squareCraftFontSelect" class="squareCraft-selected-font" style="background: black; color: white; border: 1px solid white; padding: 5px; cursor: pointer;">
-                        Select Font
+                <div class="squareCraft-dropdown" style="position: relative;">
+                    <p id="squareCraftFontSelect" class="squareCraft-selected-font" 
+                        style="background: black; color: white; border: 1px solid white; padding: 8px; cursor: pointer; text-align: center;">
+                        Select Font ▼
                     </p>
-                    <div class="squareCraft-dropdown-content" style="display: none; background: #333; border: 1px solid white; padding: 5px; max-height: 150px; overflow-y: auto;">
+                    <div class="squareCraft-dropdown-content" style="display: none; position: absolute; width: 100%; left: 0; background: #444; border: 1px solid white; padding: 5px; max-height: 150px; overflow-y: auto; z-index: 999;">
                         ${fontOptions}
                     </div>
                 </div>
@@ -43,7 +44,8 @@ export function html() {
 
     setTimeout(() => {
         const fontSelect = document.getElementById("squareCraftFontSelect");
-        const dropdown = fontSelect.nextElementSibling;
+        const dropdownContainer = fontSelect.closest(".squareCraft-dropdown");
+        const dropdown = dropdownContainer.querySelector(".squareCraft-dropdown-content");
 
         if (!fontSelect || !dropdown) {
             console.error("❌ Custom font dropdown elements not found!");
@@ -62,7 +64,7 @@ export function html() {
             const selectedFont = event.target.dataset.font;
             if (!selectedFont) return;
 
-            fontSelect.textContent = selectedFont; // Update selected font in dropdown
+            fontSelect.textContent = selectedFont + " ▼"; // Update selected font in dropdown
             dropdown.style.display = "none"; // Hide dropdown after selection
 
             const selectedBlock = document.querySelector(".squareCraft-selected");
@@ -85,6 +87,13 @@ export function html() {
 
             console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
             window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", function (event) {
+            if (!dropdownContainer.contains(event.target)) {
+                dropdown.style.display = "none";
+            }
         });
 
     }, 500);
