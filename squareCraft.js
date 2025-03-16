@@ -473,63 +473,6 @@
     }
     
 
-    function toggleFontDropdown() {
-        const fontSelect = document.getElementById("squareCraftFontSelect");
-        const dropdownContainer = fontSelect.closest(".squareCraft-dropdown");
-        const dropdownContent = dropdownContainer.querySelector(".squareCraft-dropdown-content");
-    
-        if (!fontSelect || !dropdownContent) {
-            console.error("❌ Custom font dropdown elements not found!");
-            return;
-        }
-    
-        // Toggle dropdown on click
-        fontSelect.addEventListener("click", function (event) {
-            event.stopPropagation(); // Prevent event from bubbling to document click listener
-            dropdownContent.style.display = dropdownContent.style.display === "none" ? "block" : "none";
-        });
-    
-        // Select font on click
-        dropdownContent.addEventListener("click", function (event) {
-            const selectedFont = event.target.dataset.font;
-            if (!selectedFont) return;
-    
-            fontSelect.textContent = selectedFont + " ▼";
-            dropdownContent.style.display = "none";
-    
-            const selectedBlock = document.querySelector(".squareCraft-selected");
-    
-            if (!selectedBlock) {
-                console.warn("⚠️ No block selected to apply font change.");
-                return;
-            }
-    
-            const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-    
-            if (textElements.length === 0) {
-                console.warn("⚠️ No text elements found inside the selected block.");
-                return;
-            }
-    
-            textElements.forEach(element => {
-                element.style.setProperty("font-family", selectedFont, "important");
-            });
-    
-            console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
-            window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-        });
-    
-        // Close dropdown when clicking outside
-        document.addEventListener("click", function (event) {
-            if (!dropdownContainer.contains(event.target)) {
-                dropdownContent.style.display = "none";
-            }
-        });
-    }
-    
-    setTimeout(() => {
-        toggleFontDropdown();
-    }, 500);
     
     
 
