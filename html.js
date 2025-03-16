@@ -28,7 +28,7 @@ export function html() {
         </div>
     `;
 
-    const parser = new DOMParser();
+    const parser = new DOMParser(); 
     const doc = parser.parseFromString(htmlString, "text/html");
     const isValidHTML = doc.body.children.length > 0;
 
@@ -37,55 +37,7 @@ export function html() {
         return "❌ Error: Invalid HTML structure!";
     }
 
-    setTimeout(() => {
-        const fontSelect = document.getElementById("squareCraftFontSelect");
-        const dropdownContent = fontSelect.nextElementSibling;
-
-        if (!fontSelect || !dropdownContent) {
-            console.error("❌ Custom font dropdown elements not found!");
-            return;
-        }
-
-        fontSelect.addEventListener("click", function () {
-            dropdownContent.style.display = dropdownContent.style.display === "none" ? "block" : "none";
-        });
-
-        dropdownContent.addEventListener("click", function (event) {
-            const selectedFont = event.target.dataset.font;
-            if (!selectedFont) return;
-
-            fontSelect.textContent = selectedFont + " ▼";
-            dropdownContent.style.display = "none";
-
-            const selectedBlock = document.querySelector(".squareCraft-selected");
-
-            if (!selectedBlock) {
-                console.warn("⚠️ No block selected to apply font change.");
-                return;
-            }
-
-            const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-
-            if (textElements.length === 0) {
-                console.warn("⚠️ No text elements found inside the selected block.");
-                return;
-            }
-
-            textElements.forEach(element => {
-                element.style.setProperty("font-family", selectedFont, "important");
-            });
-
-            console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
-            window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!fontSelect.closest(".squareCraft-dropdown").contains(event.target)) {
-                dropdownContent.style.display = "none";
-            }
-        });
-
-    }, 500);
+ 
 
     return htmlString;
 }
