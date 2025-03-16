@@ -24,11 +24,10 @@ export function html() {
                     <span class="squareCraft-dropdown-arrow">▼</span>
                 </div>
                 <div id="squareCraft-font-dropdown" 
-                     style="display: none; 
+                     style="
                             position: absolute; 
-                            top: 100%; 
+                            top: 10px; 
                             left: 0; 
-                            right: 0; 
                             background: #2c2c2c; 
                             border: 1px solid #3d3d3d; 
                             border-radius: 6px; 
