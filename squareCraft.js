@@ -222,7 +222,7 @@ document.body.addEventListener("mouseout", (event) => {
             widgetContainer.innerHTML = htmlString;
             widgetContainer.style.display = "none";
             document.body.appendChild(widgetContainer);
-            // makeWidgetDraggable();
+            makeWidgetDraggable();
             widgetLoaded = true;
     
             setTimeout(() => {
