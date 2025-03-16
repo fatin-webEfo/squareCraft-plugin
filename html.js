@@ -15,7 +15,7 @@ export function html() {
             <p class="squareCraft-text-sm squareCraft-mt-6 squareCraft-poppins squareCraft-font-light">Lorem Ipsum is simply dummy text.</p>
             
             <div class="squareCraft-mt-2 squareCraft-relative">
-                <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-bg-494949 squareCraft-rounded-md squareCraft-px-3 squareCraft-cursor-pointer">
+                <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-bg-494949 squareCraft-rounded-md squareCraft-px-3 squareCraft-universal squareCraft-cursor-pointer">
                     <span class="squareCraft-text-sm squareCraft-poppins squareCraft-font-light">Select Font</span>
                     <span class="squareCraft-dropdown-arrow">▼</span>
                 </div>
