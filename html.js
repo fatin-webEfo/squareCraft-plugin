@@ -34,39 +34,39 @@ export function html() {
     }
  
     setTimeout(() => {
-       const fontSelect = document.getElementById("squareCraftFontSelect");
-       if (!fontSelect) {
-           console.error("❌ Font select element not found!");
-           return;
-       }
-   
-       console.log("✅ Font options loaded:", fontOptions);
-   
-       fontSelect.addEventListener("change", function () {
-           const selectedFont = fontSelect.value;
-           const selectedBlock = document.querySelector(".squareCraft-selected");
-   
-           if (!selectedBlock) {
-               console.warn("⚠️ No block selected to apply font change.");
-               return;
-           }
-   
-           const textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-   
-           if (textElements.length === 0) {
-               console.warn("⚠️ No text elements found inside the selected block.");
-               return;
-           }
-   
-           textElements.forEach(element => {
-               element.style.setProperty("font-family", selectedFont, "important");
-           });
-   
-           console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
-           window.parent.postMessage({ type: "FONT_CHANGE", font: selectedFont }, "*");
-       });
-   
-   }, 500);
+        const fontSelect = document.getElementById("squareCraftFontSelect");
+        if (!fontSelect) {
+            console.error("❌ Font select element not found!");
+            return;
+        }
+     
+        console.log("✅ Font options loaded:", fontOptions);
+     
+        fontSelect.addEventListener("change", function () {
+            const selectedFont = fontSelect.value;
+            let selectedBlock = document.querySelector(".squareCraft-selected");
+     
+            if (!selectedBlock) {
+                console.warn("⚠️ No block selected to apply font change.");
+                return;
+            }
+     
+            let textElements = selectedBlock.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+     
+            if (textElements.length === 0) {
+                console.warn("⚠️ No text elements found inside the selected block.");
+                return;
+            }
+     
+            textElements.forEach(element => {
+                element.style.cssText += `font-family: '${selectedFont}' !important;`;
+            });
+     
+            console.log(`🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`);
+        });
+     
+     }, 500);
+     
    
    
     return htmlString;
