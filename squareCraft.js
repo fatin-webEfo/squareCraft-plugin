@@ -510,19 +510,30 @@
   }
 
 function addHeadingEventListeners() {
-  const heading1 = document.getElementById("heading1");
-  if (heading1) {
-    heading1.addEventListener("mouseover", () =>
-      console.log("Hovered over Heading 1")
-    );
-    heading1.addEventListener("click", () =>
-      console.log("Clicked on Heading 1")
-    );
-    console.log("✅ Event listeners added to Heading 1");
-  } else {
-    console.error("❌ heading1 not found in DOM!");
-  }
+  const elements = [
+    "heading1",
+    "heading2",
+    "heading3",
+    "heading4",
+    "paragraph1",
+    "paragraph2",
+    "paragraph3",
+  ];
+
+  elements.forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener("mouseover", () =>
+        console.log(`Hovered over ${id}`)
+      );
+      element.addEventListener("click", () => console.log(`Clicked on ${id}`));
+      console.log(`✅ Event listeners added to ${id}`);
+    } else {
+      console.error(`❌ ${id} not found in DOM!`);
+    }
+  });
 }
+
 
 const observer = new MutationObserver(() => {
   addHeadingEventListeners();
