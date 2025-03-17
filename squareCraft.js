@@ -118,15 +118,15 @@
     
         let formattedText = [];
     
-        textElements.forEach((element) => {
-            let detectedType = getTextType(element);
-            let textContent = element.textContent.trim(); // Remove extra spaces
+        // textElements.forEach((element) => {
+        //     let detectedType = getTextType(element);
+        //     let textContent = element.textContent.trim(); // Remove extra spaces
     
-            if (detectedType && textContent) {
-                formattedText.push(`"${textContent}" <${element.tagName.toLowerCase()}>`);
-                element.style.border = `2px solid ${detectedType.color}`;
-            }
-        });
+        //     if (detectedType && textContent) {
+        //         formattedText.push(`"${textContent}" <${element.tagName.toLowerCase()}>`);
+        //         element.style.border = `2px solid ${detectedType.color}`;
+        //     }
+        // });
     
         if (formattedText.length > 0) {
             console.log(formattedText.join("\n"));
