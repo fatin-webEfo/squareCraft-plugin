@@ -121,12 +121,6 @@ function addHeadingEventListeners() {
         }
       });
 
-      widgetElement.addEventListener("click", () => {
-        console.log(`Clicked on ${id}`);
-
-        selectedElement = document.querySelector(tag);
-      });
-
       console.log(`✅ Event listeners added to ${id}`);
     } else {
       console.error(`❌ ${id} not found in DOM!`);
@@ -134,6 +128,23 @@ function addHeadingEventListeners() {
   });
 }
 
+// Select the element when clicked in Squarespace
+document.body.addEventListener("click", (event) => {
+  let block = event.target.closest('[id^="block-"]');
+  if (!block) return;
+
+  if (selectedElement) {
+    selectedElement.style.border = "";
+    selectedElement.classList.remove("squareCraft-selected");
+  }
+
+  selectedElement = block;
+  selectedElement.classList.add("squareCraft-selected");
+
+  console.log(`✅ Selected Element: ${selectedElement.tagName.toLowerCase()}`);
+});
+
+// Observer to ensure event listeners are added dynamically
 const observer = new MutationObserver(() => {
   addHeadingEventListeners();
 });
