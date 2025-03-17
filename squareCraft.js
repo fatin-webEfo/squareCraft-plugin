@@ -1,6 +1,3 @@
-
-// JavaScript Obfuscator must be done before publish
-
 (async function squareCraft() {
     // No changes
     // parent script call
@@ -108,55 +105,46 @@
         return null;
     }
     
- document.body.addEventListener("mouseover", (event) => {
-   let block = event.target.closest('[id^="block-"]');
-   if (!block) return;
-
-   let textElements = block.querySelectorAll(
-     "h1, h2, h3, h4, p, strong, em, a"
-   );
-
-   if (textElements.length === 0) {
-     console.log("No text found inside the block.");
-     return;
-   }
-
-   let formattedText = [];
-
-   textElements.forEach((element) => {
-     let detectedType = getTextType(element);
-     let textContent = element.textContent.trim(); // Remove extra spaces
-
-     if (detectedType && textContent) {
-       formattedText.push(
-         `"${textContent}" <${element.tagName.toLowerCase()}>`
-       );
-       element.style.border = `2px solid ${detectedType.color}`;
-
-       element.style.userSelect = "auto";
-     }
-   });
-
-   if (formattedText.length > 0) {
-     console.log(formattedText.join("\n"));
-   }
- });
-
- document.body.addEventListener("mouseout", (event) => {
-   let block = event.target.closest('[id^="block-"]');
-   if (!block) return;
-
-   let textElements = block.querySelectorAll(
-     "h1, h2, h3, h4, p, strong, em, a"
-   );
-   textElements.forEach((element) => {
-     element.style.border = "";
-
-     element.style.userSelect = "auto";
-   });
- });
-
+    document.body.addEventListener("mouseover", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
     
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+    
+        if (textElements.length === 0) {
+            console.log("No text found inside the block.");
+            return;
+        }
+    
+        let formattedText = [];
+    
+        textElements.forEach((element) => {
+            let detectedType = getTextType(element);
+            let textContent = element.textContent.trim(); // Remove extra spaces
+    
+            if (detectedType && textContent) {
+                formattedText.push(`"${textContent}" <${element.tagName.toLowerCase()}>`);
+                element.style.border = `2px solid ${detectedType.color}`;
+            }
+        });
+    
+        if (formattedText.length > 0) {
+            console.log(formattedText.join("\n"));
+        }
+    });
+    
+    document.body.addEventListener("mouseout", (event) => {
+        let block = event.target.closest('[id^="block-"]');
+        if (!block) return;
+    
+        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
+        textElements.forEach((element) => {
+            element.style.border = "";
+        });
+    });
+    
+
+
     // Clicked outline
     // navbar icon
 
@@ -173,7 +161,7 @@
     async function loadCSS(url, key) {
         let cachedData = localStorage.getItem(key);
         let lastFetched = localStorage.getItem(`${key}_timestamp`);
-        let oneDay = 24 * 60 * 60 * 1000;
+        let oneDay = 60 * 1000;
     
         if (cachedData && lastFetched && (Date.now() - lastFetched < oneDay)) {
             const style = document.createElement("style");
@@ -497,9 +485,7 @@
     }
     
 
-    document.getElementById("heading1").addEventListener("mouseover", () => {
-      console.log("Hovered over Heading 1");
-    });
+    
     
 
     function moveWidgetToDesktop() {
@@ -514,3 +500,18 @@
 
 })();
 
+// Use a tool like javascript-obfuscator
+const obfuscated = JavaScriptObfuscator.obfuscate(code, {
+    compact: true,
+    controlFlowFlattening: true,
+    controlFlowFlatteningThreshold: 0.7,
+    deadCodeInjection: true,
+    deadCodeInjectionThreshold: 0.4,
+    debugProtection: true,
+    debugProtectionInterval: 2000,
+    stringArray: true,
+    rotateStringArray: true,
+    stringArrayEncoding: ['base64'],
+    stringArrayThreshold: 0.75,
+    unicodeEscapeSequence: false
+});
