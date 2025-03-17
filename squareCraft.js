@@ -497,7 +497,9 @@
     }
     
 
-    
+    document.getElementById("heading1").addEventListener("mouseover", () => {
+      console.log("Hovered over Heading 1");
+    });
     
 
     function moveWidgetToDesktop() {

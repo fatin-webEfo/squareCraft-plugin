@@ -75,7 +75,7 @@ export function html() {
          
 <div>
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
-    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+    <div id="heading1" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal ">Heading-1</p>
       <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
