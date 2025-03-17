@@ -1,3 +1,6 @@
+
+// JavaScript Obfuscator must be done before publish
+
 (async function squareCraft() {
     // No changes
     // parent script call
@@ -509,18 +512,3 @@
 
 })();
 
-// Use a tool like javascript-obfuscator
-const obfuscated = JavaScriptObfuscator.obfuscate(code, {
-    compact: true,
-    controlFlowFlattening: true,
-    controlFlowFlatteningThreshold: 0.7,
-    deadCodeInjection: true,
-    deadCodeInjectionThreshold: 0.4,
-    debugProtection: true,
-    debugProtectionInterval: 2000,
-    stringArray: true,
-    rotateStringArray: true,
-    stringArrayEncoding: ['base64'],
-    stringArrayThreshold: 0.75,
-    unicodeEscapeSequence: false
-});
