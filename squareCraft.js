@@ -278,11 +278,10 @@
         function startDrag(event) {
             const draggableElement = event.target.closest("#squareCraft-grabbing");
             
-            // ✅ Ignore dragging if clicking inside dropdown
-            if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
-                console.log("🚫 Dragging prevented due to dropdown click");
-                return;
-            }
+            // if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
+            //     console.log("🚫 Dragging prevented due to dropdown click");
+            //     return;
+            // }
     
             event.preventDefault();
             isDragging = true;
