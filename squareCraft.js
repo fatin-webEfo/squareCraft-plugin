@@ -485,7 +485,9 @@
       console.log("Hovered over Heading 1");
     });
     
-
+document.getElementById("heading1").addEventListener("click", () => {
+  console.log("Clicked on Heading 1");
+});
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
 
