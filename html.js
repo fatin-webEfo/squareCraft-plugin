@@ -156,89 +156,29 @@ export function html() {
         return "❌ Error: Invalid HTML structure!";
     }
 
-    document.addEventListener("DOMContentLoaded", async function () {
-        console.log("✅ JavaScript Loaded and Executed!");
+  document.addEventListener("DOMContentLoaded", async function () {
+    console.log("✅ JavaScript Loaded and Executed!");
 
-        const fontSelect = document.getElementById("squareCraftFontSelect");
-        const toggleSwitch = document.getElementById("toggleSwitch");
-        const toggleText = document.getElementById("toggleText");
+    function addHeadingEventListeners() {
+      const heading1 = document.getElementById("heading1");
+      if (heading1) {
+        heading1.addEventListener("mouseover", () => {
+          console.log("Hovered over Heading 1");
+        });
 
-        if (!fontSelect) {
-            console.error("❌ ERROR: Font select element not found!");
-            return;
-        }
-
-        if (!toggleSwitch || !toggleText) {
-            console.error("❌ ERROR: Toggle switch or text not found!");
-            return;
-        }
-
-        function toggleEnableDisable() {
-            const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
-            localStorage.setItem("squareCraft_enabled", !isEnabled);
-            toggleText.innerText = !isEnabled ? "Disable" : "Enable";
-            console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
-        }
-
-        toggleSwitch.addEventListener("click", toggleEnableDisable);
-
-        if (localStorage.getItem("squareCraft_enabled") === "true") {
-            toggleText.innerText = "Disable";
-        }
-
-        async function fetchFonts(startIndex = 0, limit = 10) {
-            try {
-                let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
-                if (cachedFonts.length > startIndex) {
-                    return cachedFonts.slice(startIndex, startIndex + limit);
-                }
-
-                const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-                const data = await response.json();
-                const fonts = data.items.map(font => font.family);
-                localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
-
-                console.log(`✅ Loaded ${fonts.length} fonts from API.` , fonts);
-
-                return fonts.slice(startIndex, startIndex + limit);
-            } catch (error) {
-                console.error("🚨 Error fetching fonts:", error);
-                return [];
-            }
-        }
-
-        async function loadFonts() {
-            const fonts = await fetchFonts(0, 10);
-            if (!fonts.length) {
-                console.warn("⚠️ No new fonts loaded.");
-                return;
-            }
-
-            console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
-
-            fonts.forEach(font => {
-                const option = document.createElement("option");
-                option.value = font;
-                option.innerText = font;
-                option.style.fontFamily = `'${font}', sans-serif`;
-                fontSelect.appendChild(option);
-            });
-        }
-
-        await loadFonts();
-        document
-          .getElementById("heading1")
-          .addEventListener("mouseover", () => {
-            console.log("Hovered over Heading 1");
-          });
-
-        document.getElementById("heading1").addEventListener("click", () => {
+        heading1.addEventListener("click", () => {
           console.log("Clicked on Heading 1");
         });
 
-    });
+        console.log("✅ Event listeners added to Heading 1");
+      } else {
+        console.error("❌ heading1 not found in DOM!");
+      }
+    }
+
+    setTimeout(addHeadingEventListeners, 1000);
+  });
+
 
     return htmlString;
 
