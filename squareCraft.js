@@ -203,32 +203,48 @@
     // No changes
 
 
-  async function createWidget() {
-    console.log("🏁 Starting widget creation");
-    try {
-      console.log("📥 Importing HTML module");
-      const module = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-      );
+    async function createWidget() {
+        console.log('🏁 Starting widget creation');
+        try {
+            let cachedWidget = localStorage.getItem("squareCraft_widget");
+            let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
+            let oneDay = 24 * 60 * 60 * 1000;
+            let now = Date.now();
+    
+            console.log('📦 Cache status:', {
+                hasCachedWidget: !!cachedWidget,
+                lastFetched: new Date(parseInt(lastFetched)),
+                isExpired: now - lastFetched > oneDay
+            });
 
-      if (module && module.html) {
-        console.log("✨ HTML module loaded successfully");
-        const htmlString = module.html();
+            if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
+                console.log('🔄 Loading widget from cache');
+                loadWidgetFromString(cachedWidget);
+                return;
+            }
 
-        if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          console.log("✅ Loading widget from module");
-          loadWidgetFromString(htmlString);
-        } else {
-          console.error("❌ Retrieved HTML string is invalid or empty!");
+            console.log('📥 Importing HTML module');
+            const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+    
+            if (module && module.html) {
+                console.log('✨ HTML module loaded successfully');
+                const htmlString = module.html();
+    
+                if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+                    console.log('💾 Saving widget to cache');
+                    localStorage.setItem("squareCraft_widget", htmlString);
+                    localStorage.setItem("squareCraft_widget_timestamp", now.toString());
+                    loadWidgetFromString(htmlString);
+                } else {
+                    console.error("❌ Retrieved HTML string is invalid or empty!");
+                }
+            } else {
+                console.error("❌ Failed to retrieve the HTML function from module!");
+            }
+        } catch (error) {
+            console.error("🚨 Error loading HTML module:", error);
         }
-      } else {
-        console.error("❌ Failed to retrieve the HTML function from module!");
-      }
-    } catch (error) {
-      console.error("🚨 Error loading HTML module:", error);
     }
-  }
-
     
     function loadWidgetFromString(htmlString) {
         if (!widgetContainer) {
@@ -278,6 +294,7 @@
         function startDrag(event) {
             const draggableElement = event.target.closest("#squareCraft-grabbing");
             
+            // ✅ Ignore dragging if clicking inside dropdown
             if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
                 console.log("🚫 Dragging prevented due to dropdown click");
                 return;
@@ -484,9 +501,7 @@
       console.log("Hovered over Heading 1");
     });
     
-document.getElementById("heading1").addEventListener("click", () => {
-  console.log("Clicked on Heading 1");
-});
+
     function moveWidgetToDesktop() {
         if (!widgetContainer) return;
 
