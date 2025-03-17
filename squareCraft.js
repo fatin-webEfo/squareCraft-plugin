@@ -105,46 +105,55 @@
         return null;
     }
     
-    document.body.addEventListener("mouseover", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-    
-        if (textElements.length === 0) {
-            console.log("No text found inside the block.");
-            return;
-        }
-    
-        let formattedText = [];
-    
-        // textElements.forEach((element) => {
-        //     let detectedType = getTextType(element);
-        //     let textContent = element.textContent.trim(); // Remove extra spaces
-    
-        //     if (detectedType && textContent) {
-        //         formattedText.push(`"${textContent}" <${element.tagName.toLowerCase()}>`);
-        //         element.style.border = `2px solid ${detectedType.color}`;
-        //     }
-        // });
-    
-        if (formattedText.length > 0) {
-            console.log(formattedText.join("\n"));
-        }
-    });
-    
-    document.body.addEventListener("mouseout", (event) => {
-        let block = event.target.closest('[id^="block-"]');
-        if (!block) return;
-    
-        let textElements = block.querySelectorAll("h1, h2, h3, h4, p, strong, em, a");
-        textElements.forEach((element) => {
-            element.style.border = "";
-        });
-    });
-    
+ document.body.addEventListener("mouseover", (event) => {
+   let block = event.target.closest('[id^="block-"]');
+   if (!block) return;
 
+   let textElements = block.querySelectorAll(
+     "h1, h2, h3, h4, p, strong, em, a"
+   );
 
+   if (textElements.length === 0) {
+     console.log("No text found inside the block.");
+     return;
+   }
+
+   let formattedText = [];
+
+   textElements.forEach((element) => {
+     let detectedType = getTextType(element);
+     let textContent = element.textContent.trim(); // Remove extra spaces
+
+     if (detectedType && textContent) {
+       formattedText.push(
+         `"${textContent}" <${element.tagName.toLowerCase()}>`
+       );
+       element.style.border = `2px solid ${detectedType.color}`;
+
+       element.style.userSelect = "auto";
+     }
+   });
+
+   if (formattedText.length > 0) {
+     console.log(formattedText.join("\n"));
+   }
+ });
+
+ document.body.addEventListener("mouseout", (event) => {
+   let block = event.target.closest('[id^="block-"]');
+   if (!block) return;
+
+   let textElements = block.querySelectorAll(
+     "h1, h2, h3, h4, p, strong, em, a"
+   );
+   textElements.forEach((element) => {
+     element.style.border = "";
+
+     element.style.userSelect = "auto";
+   });
+ });
+
+    
     // Clicked outline
     // navbar icon
 
