@@ -68,69 +68,77 @@ function getTextType(element) {
   let classList = element.classList;
 
   if (tagName === "h1") {
-    return { type: "Heading 1 (h1)", color: "#FF0000" };
+    return { type: "Heading 1 (h1)", color: "#FF0000", borderColor: "#FF0000" };
   } else if (tagName === "h2") {
-    return { type: "Heading 2 (h2)", color: "#FFA500" };
+    return { type: "Heading 2 (h2)", color: "#FFA500", borderColor: "#FFA500" };
   } else if (tagName === "h3") {
-    return { type: "Heading 3 (h3)", color: "#FFFF00" };
+    return { type: "Heading 3 (h3)", color: "#FFFF00", borderColor: "#FFFF00" };
   } else if (tagName === "h4") {
-    return { type: "Heading 4 (h4)", color: "#008000" };
+    return { type: "Heading 4 (h4)", color: "#008000", borderColor: "#008000" };
   } else if (tagName === "p") {
     if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-      return { type: "Paragraph 3 (p3)", color: "#0000FF" };
+      return {
+        type: "Paragraph 3 (p3)",
+        color: "#0000FF",
+        borderColor: "#0000FF",
+      };
     } else if (classList.contains("sqsrte-large")) {
-      return { type: "Paragraph 1 (p1)", color: "#4B0082" };
+      return {
+        type: "Paragraph 1 (p1)",
+        color: "#4B0082",
+        borderColor: "#4B0082",
+      };
     } else {
-      return { type: "Paragraph 2 (p2)", color: "#9400D3" };
+      return {
+        type: "Paragraph 2 (p2)",
+        color: "#9400D3",
+        borderColor: "#9400D3",
+      };
     }
   } else if (tagName === "strong") {
-    return { type: "Bold (strong)", color: "#8B0000" };
+    return { type: "Bold (strong)", color: "#8B0000", borderColor: "#8B0000" };
   } else if (tagName === "em") {
-    return { type: "Italic (em)", color: "#FF69B4" };
+    return { type: "Italic (em)", color: "#FF69B4", borderColor: "#FF69B4" };
   } else if (tagName === "a") {
-    return { type: "Link (a)", color: "#1E90FF" };
+    return { type: "Link (a)", color: "#1E90FF", borderColor: "#1E90FF" };
   }
   return null;
 }
 
 function addHeadingEventListeners() {
-  const elements = [
-    "heading1",
-    "heading2",
-    "heading3",
-    "heading4",
-    "paragraph1",
-    "paragraph2",
-    "paragraph3",
-  ];
+  const elements = {
+    heading1: "h1",
+    heading2: "h2",
+    heading3: "h3",
+    heading4: "h4",
+    paragraph1: "p1",
+    paragraph2: "p2",
+    paragraph3: "p3",
+  };
 
-  elements.forEach((id) => {
+  let selectedElement = null;
+
+  Object.entries(elements).forEach(([id, tag]) => {
     const element = document.getElementById(id);
     if (element) {
       element.addEventListener("mouseover", () => {
         console.log(`Hovered over ${id}`);
-        let textType = getTextType(element);
-        if (textType) {
-          element.style.color = textType.color;
+        if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
+          let textType = getTextType(selectedElement);
+          if (textType) {
+            element.style.border = `2px solid ${textType.borderColor}`;
+          }
         }
       });
 
       element.addEventListener("mouseout", () => {
         console.log(`Mouse out from ${id}`);
-        element.style.color = "";
+        element.style.border = "";
       });
 
       element.addEventListener("click", () => {
         console.log(`Clicked on ${id}`);
-        elements.forEach((resetId) => {
-          const resetElement = document.getElementById(resetId);
-          if (resetElement) resetElement.style.color = "";
-        });
-
-        let textType = getTextType(element);
-        if (textType) {
-          element.style.color = textType.color;
-        }
+        selectedElement = document.querySelector(tag);
       });
 
       console.log(`✅ Event listeners added to ${id}`);
