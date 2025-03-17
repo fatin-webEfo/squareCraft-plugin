@@ -1,37 +1,14 @@
-export function html() {
-  const fontSizes = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-  ];
-  const LetterSpacing = [
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ];
 
-  const htmlString = `
-     <div
+
+export function html() {
+
+   const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
+   const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+
+  
+
+   const htmlString = `
+   <div
       class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
       <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
          <img id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
@@ -55,7 +32,7 @@ export function html() {
          </div>
       </div>
       <div
-         class="squareCraft-rounded-6px  squareCraft-mt-6  squareCraft-border squareCraft-border-solid squareCraft-border-EF7C2F squareCraft-bg-color-3d3d3d">
+         class="squareCraft-rounded-6px squareCraft-h-350 squareCraft-mt-6  squareCraft-border squareCraft-border-solid squareCraft-border-EF7C2F squareCraft-bg-color-3d3d3d">
          <div class="squareCraft-flex squareCraft-p-2 squareCraft-items-center squareCraft-justify-between">
             <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center">
                <img loading="lazy"
@@ -79,11 +56,11 @@ export function html() {
             <div
                class="squareCraft-flex squareCraft-poppins squareCraft-px-2  squareCraft-items-center squareCraft-justify-between squareCraft-gap-2">
                <div
-                  class="squareCraft-cursor-pointer squareCraft-bg-color-EF7C2F squareCraft-w-full squareCraft-font-light squareCraft-flex squareCraft-items-center squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-text-color-white squareCraft-justify-center">
+                  class="squareCraft-cursor-pointer squareCraft-bg-color-EF7C2F squareCraft-w-full squareCraft-font-light squareCraft-flex squareCraft-items-center squareCraft-text-sm squareCraft-py-1 squareCraft-rounded-6px squareCraft-text-color-white squareCraft-justify-center">
                   Normal
                </div>
                <div
-                  class="squareCraft-cursor-pointer squareCraft-bg-3f3f3f squareCraft-w-full squareCraft-text-color-white squareCraft-font-light squareCraft-flex squareCraft-text-sm squareCraft-py-1px squareCraft-rounded-6px squareCraft-items-center squareCraft-justify-center">
+                  class="squareCraft-cursor-pointer squareCraft-bg-3f3f3f squareCraft-w-full squareCraft-text-color-white squareCraft-font-light squareCraft-flex squareCraft-text-sm squareCraft-py-1 squareCraft-rounded-6px squareCraft-items-center squareCraft-justify-center">
                   Hover
                </div>
             </div>
@@ -95,179 +72,60 @@ export function html() {
             <p class="squareCraft-text-sm squareCraft-universal squareCraft-poppins">Text</p>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
-         <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
-<div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
-    <select  class="squareCraft-w-full squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
-        style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
-        <option value="" selected disabled hidden>Select Font</option>
-    </select>
-    <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px; pointer-events: none;">
-        <img class="squareCraft-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+         
+<div>
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Heading-1</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Heading-2</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Heading-3</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Heading-4</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Paragraph-1</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Paragraph-2</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
+
+  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+    <div class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+      <p class="squareCraft-poppins squareCraft-universal ">Paragraph-3</p>
+      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+    </div>
+  </div>
 </div>
 
-
-
-            <div class="squareCraft-flex squareCraft-bg-transparent squareCraft-h-9 squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4   squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
-               <div class="squareCraft-flex squareCraft-text-color-white squareCraft-items-center ">
-                  <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-4 squareCraft-rounded-6px squareCraft-items-center  ">
-                     <div class="squareCraft-font-size-container squareCraft-poppins squareCraft-universal squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-flex squareCraft-items-center  
-                        squareCraft-rounded-6px 
-                        ">
-                        <input type="text" id="squareCraftFontSizeInput" value="16" 
-                           class="squareCraft-font-size-input squareCraft-font-light squareCraft-z-99999 squareCraft-text-sm squareCraft-text-color-white 
-                           squareCraft-bg-transparent  squareCraft-universal squareCraft-font-light">
-                             <div class="squareCraft-v-line"></div>
-                        <div class="squareCraft-flex squareCraft-items-center  squareCraft-justify-center  squareCraft-items-center">
-                           <p class="squareCraft-flex squareCraft-font-light squareCraft-text-sm squareCraft-px-1_5 squareCraft-items-center squareCraft-justify-center squareCraft-items-center">
-                              px
-                        </div>
-                        <div class="squareCraft-bg-3f3f3f squareCraft-px-2 squareCraft-ml-1" style="height: 27px; padding: 0 8px; border-radius: 0px 5px 5px 0px;">
-                           <img class=" squareCraft-rotate-180 " width="12px" 
-                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-                        </div>
-                     </div>
-                     <div id="squareCraftFontSizeOptions" class="squareCraft-hidden  squareCraft-h-44 squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-20
-                        squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
-                        squareCraft-mt-1">
-                        ${fontSizes
-                          ?.map(
-                            (size) => `
-                        <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm" 
-                           data-value="${size}">${size}</div>
-                        `
-                          )
-                          .join("")}
-                     </div>
-                  </div>
-               </div>
-               <div class="squareCraft-border-r squareCraft-border-585858 "></div>
-            </div>
-         </div>
-         <div class="squareCraft-mt-2  squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
-            <div class="squareCraft-flex squareCraft-bg-494949  squareCraft-col-span-6  squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center ">
-               <div class="  squareCraft-px-2 squareCraft-w-full  ">
-                  <p class="squareCraft-text-sm squareCraft-universal squareCraft-poppins squareCraft-font-light">Regular</p>
-               </div>
-               <div class="squareCraft-bg-3f3f3f squareCraft-px-2" style="height: 27px; padding: 0 8px;">
-                  <img class=" squareCraft-mx-auto squareCraft-rotate-180" width="10px"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-               </div>
-            </div>
-            <div class="squareCraft-flex squareCraft-justify-between squareCraft-col-span-4  squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center ">
-               <div class="squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center">
-                  <img class=" squareCraft-rounded-6px squareCraft-rotate-180" width="12px"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/dot.svg" alt="">
-               </div>
-                 <div class="squareCraft-v-line"></div>
-               <div class="squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center squareCraft-border squareCraft-border-585858 squareCraft-w-13px squareCraft-border-solid squareCraft-h-13px">
-               </div>
-                 <div class="squareCraft-v-line"></div>
-               <img class=" squareCraft-rounded-6px squareCraft-rotate-180 squareCraft-flex squareCraft-mx-auto squareCraft-items-center squareCraft-justify-center" width="12px"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/gap.svg" alt="">
-            </div>
-         </div>
-         <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2 ">
-            <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center ">
-               <div
-                  class="squareCraft-flex squareCraft-items-center squareCraft-justify-between squareCraft-w-full ">
-                  <img id="squareCraftTextAlignLeft" data-align="left"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
-                     class="squareCraft-cursor-pointer alignment-icon   squareCraft-mx-auto"  alt="">
-                  <div class="squareCraft-v-line"></div>
-                  <img id="squareCraftTextAlignRight" data-align="right"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
-                     class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                  <div class="squareCraft-v-line"></div>
-                  <img id="squareCraftTextAlignCenter" data-align="center"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
-                     class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto"  alt="">
-                  <div class="squareCraft-v-line"></div>
-                  <img id="squareCraftTextAlignJustify" data-align="justify"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
-                     class="squareCraft-cursor-pointer alignment-icon    squareCraft-mx-auto "  alt="">
-               </div>
-            </div>
-            <div class="squareCraft-flex squareCraft-text-color-white squareCraft-justify-between squareCraft-col-span-3 
-               squareCraft-rounded-6px squareCraft-border squareCraft-border-solid squareCraft-border-585858 
-               squareCraft-items-center squareCraft-w-full ">
-               <div class="squareCraft-Letter-spacing-container squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-flex squareCraft-items-center squareCraft-border 
-                  squareCraft-border-solid squareCraft-border-3d3d3d  squareCraft-rounded-6px 
-                  ">
-                  <input type="text" id="squareCraftLetterSpacingInput" value="15px" class="squareCraft-Letter-spacing-input squareCraft-font-light squareCraft-text-sm squareCraft-text-color-white 
-                     squareCraft-bg-transparent squareCraft-w-full  squareCraft-py-1px squareCraft-font-light">
-                  <div class="">
-                     <img id="squareCraftLetterSpacingDropdown"
-                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
-                        class=" squareCraft-px-1 squareCraft-ml-1 squareCraft-mx-auto squareCraft-cursor-pointer" >
-                  </div>
-               </div>
-               <div id="squareCraftLetterSpacingOptions" class="squareCraft-hidden squareCraft-h-44 squareCraft-font-sm squareCraft-bg-3f3f3f squareCraft-w-20
-                  squareCraft-rounded-6px squareCraft-border squareCraft-border-585858 squareCraft-absolute 
-                  squareCraft-mt-1">
-                  ${LetterSpacing?.map(
-                    (gap) => `
-                  <div class="squareCraft-dropdown-item squareCraft-py-1px squareCraft-text-center  squareCraft-text-sm"
-                     data-value="${gap}">${gap}</div>
-                  `
-                  ).join("")}
-               </div>   
-            </div>
-
-         </div>
-         <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2">
-            <div class="squareCraft-flex squareCraft-col-span-6 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center ">
-               <div
-                  class="squareCraft-flex squareCraft-px-2 squareCraft-items-center squareCraft-justify-between squareCraft-w-full ">
-                 <p class="squareCraft-font-bold squareCraft-universal squareCraft-text-sm  ">B</p>
-                  <div class="squareCraft-v-line"></div>
-                 <p class="squareCraft-font-italic squareCraft-universal  squareCraft-text-sm squareCraft-text-center squareCraft-mx-auto">I</p>
-                  <div class="squareCraft-v-line"></div>
-                <p class="squareCraft-font-underline squareCraft-universal squareCraft-text-sm squareCraft-text-center squareCraft-mx-auto">U</p>
-                  <div class="squareCraft-v-line"></div> 
-                  <p class="squareCraft-font-underline squareCraft-universal squareCraft-text-sm squareCraft-text-center squareCraft-mx-auto">abc</p>
-                  <div class="squareCraft-v-line"></div> 
-                  <img id="squareCraftTextAlignJustify" data-align="justify"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.png"
-                  class="squareCraft-cursor-pointer  "  alt="">
-                 
-               </div>
-            </div>
-         </div>
-         <div class="squareCraft-mt-2 squareCraft-grid squareCraft-px-2 squareCraft-w-full squareCraft-grid-cols-12 squareCraft-gap-2">
-            <div class="squareCraft-flex squareCraft-col-span-6 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center ">
-               <div
-                  class="squareCraft-flex squareCraft-poppins  squareCraft-items-center squareCraft-justify-between squareCraft-w-full ">
-                 <p class=" squareCraft-mx-2 squareCraft-w-full squareCraft-text-center squareCraft-universal squareCraft-text-sm ">AG</p>
-                  <div class="squareCraft-v-line"></div>
-                 <p class=" squareCraft-universal  squareCraft-text-sm squareCraft-text-center squareCraft-w-full squareCraft-mx-auto">ag</p>
-                  <div class="squareCraft-v-line"></div>
-                  <p class=" squareCraft-universal  squareCraft-text-sm squareCraft-text-center squareCraft-w-full squareCraft-mx-auto">Ag</p>
-                  <div class="squareCraft-v-line"></div> 
-                  <p class=" squareCraft-universal  squareCraft-text-sm squareCraft-text-center squareCraft-w-full squareCraft-mx-auto">AG</p>
-                  <div class="squareCraft-v-line"></div> 
-                  <img class=" squareCraft-rounded-6px squareCraft-rotate-180 squareCraft-px-1_5" width="12px"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/dot.svg" alt="">
-                 
-               </div>
-            </div>
-
-            <div class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-rounded-6px squareCraft-items-center ">
-               <div
-                  class="squareCraft-flex squareCraft-poppins  squareCraft-items-center squareCraft-justify-between squareCraft-w-full ">
-                 <p class=" squareCraft-mx-2 squareCraft-w-full squareCraft-text-center squareCraft-universal squareCraft-text-sm ">RLT</p>
-                  <div class="squareCraft-v-line"></div>
-                 <p class=" squareCraft-universal  squareCraft-text-sm squareCraft-text-center squareCraft-w-full squareCraft-mx-auto">LTR</p>
-                  <div class="squareCraft-v-line"></div>
-                  <img class=" squareCraft-rounded-6px squareCraft-rotate-180 squareCraft-px-2" width="12px"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/dot.svg" alt="">                  
-               </div>
-            </div>
-         </div>
-        
-
       
-         <div class="squareCraft-mt-2"> </div>
+         <div class="squareCraft-mt-4"> </div>
       </div>
       <div class="squareCraft-mt-4">
          <div
@@ -286,95 +144,94 @@ export function html() {
    </div>
     `;
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, "text/html");
-  const isValidHTML = doc.body.children.length > 0;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+    const isValidHTML = doc.body.children.length > 0;
 
-  console.log("📄 Parsed Document:", doc);
-  console.log(`✅ Is Valid HTML: ${isValidHTML}`);
+    console.log("📄 Parsed Document:", doc);
+    console.log(`✅ Is Valid HTML: ${isValidHTML}`);
 
-  if (!isValidHTML) {
-    console.error("❌ Error: Invalid HTML structure!");
-    return "❌ Error: Invalid HTML structure!";
-  }
-
-  document.addEventListener("DOMContentLoaded", async function () {
-    console.log("✅ JavaScript Loaded and Executed!");
-
-    const fontSelect = document.getElementById("squareCraftFontSelect");
-    const toggleSwitch = document.getElementById("toggleSwitch");
-    const toggleText = document.getElementById("toggleText");
-
-    if (!fontSelect) {
-      console.error("❌ ERROR: Font select element not found!");
-      return;
+    if (!isValidHTML) {
+        console.error("❌ Error: Invalid HTML structure!");
+        return "❌ Error: Invalid HTML structure!";
     }
 
-    if (!toggleSwitch || !toggleText) {
-      console.error("❌ ERROR: Toggle switch or text not found!");
-      return;
-    }
+    document.addEventListener("DOMContentLoaded", async function () {
+        console.log("✅ JavaScript Loaded and Executed!");
 
-    function toggleEnableDisable() {
-      const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
-      localStorage.setItem("squareCraft_enabled", !isEnabled);
-      toggleText.innerText = !isEnabled ? "Disable" : "Enable";
-      console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
-    }
+        const fontSelect = document.getElementById("squareCraftFontSelect");
+        const toggleSwitch = document.getElementById("toggleSwitch");
+        const toggleText = document.getElementById("toggleText");
 
-    toggleSwitch.addEventListener("click", toggleEnableDisable);
-
-    if (localStorage.getItem("squareCraft_enabled") === "true") {
-      toggleText.innerText = "Disable";
-    }
-
-    async function fetchFonts(startIndex = 0, limit = 10) {
-      try {
-        let cachedFonts =
-          JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
-        if (cachedFonts.length > startIndex) {
-          return cachedFonts.slice(startIndex, startIndex + limit);
+        if (!fontSelect) {
+            console.error("❌ ERROR: Font select element not found!");
+            return;
         }
 
-        const response = await fetch(
-          "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk"
-        );
-        if (!response.ok)
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!toggleSwitch || !toggleText) {
+            console.error("❌ ERROR: Toggle switch or text not found!");
+            return;
+        }
 
-        const data = await response.json();
-        const fonts = data.items.map((font) => font.family);
-        localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
+        function toggleEnableDisable() {
+            const isEnabled = localStorage.getItem("squareCraft_enabled") === "true";
+            localStorage.setItem("squareCraft_enabled", !isEnabled);
+            toggleText.innerText = !isEnabled ? "Disable" : "Enable";
+            console.log(`🔁 Toggle Switched: ${!isEnabled ? "Enabled" : "Disabled"}`);
+        }
 
-        console.log(`✅ Loaded ${fonts.length} fonts from API.`, fonts);
+        toggleSwitch.addEventListener("click", toggleEnableDisable);
 
-        return fonts.slice(startIndex, startIndex + limit);
-      } catch (error) {
-        console.error("🚨 Error fetching fonts:", error);
-        return [];
-      }
-    }
+        if (localStorage.getItem("squareCraft_enabled") === "true") {
+            toggleText.innerText = "Disable";
+        }
 
-    async function loadFonts() {
-      const fonts = await fetchFonts(0, 10);
-      if (!fonts.length) {
-        console.warn("⚠️ No new fonts loaded.");
-        return;
-      }
+        async function fetchFonts(startIndex = 0, limit = 10) {
+            try {
+                let cachedFonts = JSON.parse(localStorage.getItem("squareCraft_fonts")) || [];
+                if (cachedFonts.length > startIndex) {
+                    return cachedFonts.slice(startIndex, startIndex + limit);
+                }
 
-      console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
+                const response = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk");
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      fonts.forEach((font) => {
-        const option = document.createElement("option");
-        option.value = font;
-        option.innerText = font;
-        option.style.fontFamily = `'${font}', sans-serif`;
-        fontSelect.appendChild(option);
-      });
-    }
+                const data = await response.json();
+                const fonts = data.items.map(font => font.family);
+                localStorage.setItem("squareCraft_fonts", JSON.stringify(fonts));
 
-    await loadFonts();
-  });
+                console.log(`✅ Loaded ${fonts.length} fonts from API.` , fonts);
 
-  return htmlString;
+                return fonts.slice(startIndex, startIndex + limit);
+            } catch (error) {
+                console.error("🚨 Error fetching fonts:", error);
+                return [];
+            }
+        }
+
+        async function loadFonts() {
+            const fonts = await fetchFonts(0, 10);
+            if (!fonts.length) {
+                console.warn("⚠️ No new fonts loaded.");
+                return;
+            }
+
+            console.log(`📌 Appending ${fonts.length} fonts to the dropdown.`);
+
+            fonts.forEach(font => {
+                const option = document.createElement("option");
+                option.value = font;
+                option.innerText = font;
+                option.style.fontFamily = `'${font}', sans-serif`;
+                fontSelect.appendChild(option);
+            });
+        }
+
+        await loadFonts();
+    });
+
+    return htmlString;
+
+
+   
 }

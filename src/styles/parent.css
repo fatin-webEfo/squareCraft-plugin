@@ -389,6 +389,14 @@
   .squareCraft-h-2px {
     height: 2px !important;
   }
+  .squareCraft-h-350{
+    height: 350px !important;
+    overflow-y: scroll !important;
+  }
+  
+  .squareCraft-text-hover-EF7C2F:hover{
+    color: #EF7C2F !important;
+  }
   .squareCraft-bg-colo-EF7C2F{
     background-color: #EF7C2F !important;
   }
