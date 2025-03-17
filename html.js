@@ -1,4 +1,6 @@
 export function html() {
+    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
+   const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
     const fontFamilies = [
        "Arial", "Verdana", "Times New Roman", "Courier New", "Georgia",
        "Palatino", "Garamond", "Comic Sans MS", "Trebuchet MS", "Arial Black",
