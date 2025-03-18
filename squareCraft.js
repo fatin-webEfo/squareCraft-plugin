@@ -85,17 +85,19 @@ function getTextType(tagName, element) {
     if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
     if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
     if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
+    
     if (tagName === "p") {
-        if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-            return { type: "paragraph3", borderColor: "#0000FF" };
-        } else if (classList.contains("sqsrte-large")) {
-            return { type: "paragraph1", borderColor: "#4B0082" };
+        if (classList.contains("sqsrte-large")) {
+            return { type: "paragraph1", borderColor: "#4B0082" }; 
+        } else if (classList.contains("sqsrte-small")) {
+            return { type: "paragraph3", borderColor: "#0000FF" }; 
         } else {
-            return { type: "paragraph2", borderColor: "#9400D3" };
+            return { type: "paragraph2", borderColor: "#9400D3" }; 
         }
     }
     return null;
 }
+
 
 function addHeadingEventListeners() {
     const widgetElementIds = {
@@ -103,9 +105,9 @@ function addHeadingEventListeners() {
         heading2: "h2",
         heading3: "h3",
         heading4: "h4",
-        paragraph1: "p",
-        paragraph2: "p",
-        paragraph3: "p",
+        paragraph1: "p.sqsrte-large", // p1
+        paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
+        paragraph3: "p.sqsrte-small", // p3
     };
 
     Object.entries(widgetElementIds).forEach(([id, tag]) => {
@@ -113,26 +115,32 @@ function addHeadingEventListeners() {
         const arrowElement = document.getElementById(`${id}Arrow`);
 
         if (widgetElement) {
+            // ✅ Hover - Apply border if selected element matches
             widgetElement.addEventListener("mouseover", () => {
                 console.log(`🟢 Hovered over ${id}`);
 
                 if (selectedElement && selectedTextType === id) {
-                    selectedElement.style.border = `2px solid ${getTextType(tag, selectedElement).borderColor}`;
-                    console.log(`✅ Applied border to: ${selectedTextType}`);
+                    let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+                    if (textType) {
+                        selectedElement.style.border = `2px solid ${textType.borderColor}`;
+                        console.log(`✅ Applied border to ${selectedTextType}`);
+                    }
                 }
             });
 
+            // ✅ Remove border on mouse out
             widgetElement.addEventListener("mouseout", () => {
                 console.log(`🔴 Mouse out from ${id}`);
 
                 if (selectedElement) {
                     selectedElement.style.border = "";
-                    console.log(`❌ Removed border from: ${selectedTextType}`);
+                    console.log(`❌ Removed border from ${selectedTextType}`);
                 }
             });
 
+            // ✅ Click - Rotate arrow
             widgetElement.addEventListener("click", () => {
-                console.log(`🔄 Clicked on ${id}`);
+                console.log(`Clicked on ${id}`);
 
                 if (arrowElement) {
                     const isRotated = arrowElement.style.transform === "rotate(180deg)";
@@ -148,6 +156,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+ 
 
 
   const observer = new MutationObserver(() => {
