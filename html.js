@@ -235,6 +235,10 @@ export function html() {
                            </div>
                         </div>
                      </div>
+                      <div class="squareCraft-px-2">
+                        <div class="squareCraft-h-1px  squareCraft-mt-4 squareCraft-bg-3f3f3f"></div>
+
+                     </div>
       </div>
    </div>
 
