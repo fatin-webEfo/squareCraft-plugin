@@ -60,7 +60,6 @@
       selectedElement.style.fontFamily = selectedFont;
     });
 
-    console.log("Font change listener added.");
   });
 
 
@@ -95,9 +94,6 @@
     let textType = getTextType(block.tagName.toLowerCase(), block);
     selectedTextType = textType ? textType.type : null;
 
-    console.log(`✅ Selected Squarespace Element: ${selectedTextType}`);
-    console.log("🔎 Element Details:", selectedElement);
-    console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
 });
 
 async function addHeadingEventListeners() {
@@ -115,14 +111,12 @@ async function addHeadingEventListeners() {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement) return;
 
-        console.log(`🟢 Hovered over ${widgetElement.id}`);
 
         if (selectedElement) {
             let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
             if (textType && textType.type === widgetElement.id) {
                 selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                console.log(`✅ Applied border to selected Squarespace element: ${selectedTextType}`);
             }
         }
     });
@@ -131,19 +125,15 @@ async function addHeadingEventListeners() {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement) return;
 
-        console.log(`🔴 Mouse out from ${widgetElement.id}`);
 
         if (selectedElement) {
             selectedElement.style.border = "";
-            console.log(`❌ Removed border from selected Squarespace element: ${selectedTextType}`);
         }
     });
 
     widgetContainer.addEventListener("click", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-        console.log(`🖱️ Clicked on ${widgetElement.id}`);
 
         document.querySelectorAll(".squareCraft-hidden").forEach((dropdown) => {
             if (!widgetElement.contains(dropdown)) {
@@ -154,7 +144,6 @@ async function addHeadingEventListeners() {
         document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
             if (!widgetElement.contains(arrow)) {
                 arrow.classList.remove("squareCraft-rotate-180");
-                console.log(`🔄 Reset other rotated arrows`);
             }
         });
 
@@ -163,13 +152,10 @@ async function addHeadingEventListeners() {
 
         if (dropdownElement) {
             dropdownElement.classList.toggle("squareCraft-hidden");
-            console.log(`🔽 Toggled dropdown visibility for ${dropdownId}`);
 
-            // **Focus on the dropdown**
             if (!dropdownElement.classList.contains("squareCraft-hidden")) {
                 setTimeout(() => {
                     dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                    console.log(`📍 Focused on ${dropdownId}`);
                 }, 200);
             }
         }
@@ -177,7 +163,6 @@ async function addHeadingEventListeners() {
         const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) {
             arrowElement.classList.toggle("squareCraft-rotate-180");
-            console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${widgetElement.id}Arrow`);
         }
     });
 }
@@ -212,7 +197,6 @@ setTimeout(() => {
     );
 
     if (textElements.length === 0) {
-      console.log("No text found inside the block.");
       return;
     }
 
@@ -231,7 +215,6 @@ setTimeout(() => {
     });
 
     if (formattedText.length > 0) {
-      console.log(formattedText.join("\n"));
     }
   });
 
@@ -297,36 +280,24 @@ setTimeout(() => {
   // No changes
 
   async function createWidget() {
-    console.log("🏁 Starting widget creation");
     try {
       let cachedWidget = localStorage.getItem("squareCraft_widget");
       let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
       let oneDay = 24 * 60 * 60 * 1000;
       let now = Date.now();
 
-      console.log("📦 Cache status:", {
-        hasCachedWidget: !!cachedWidget,
-        lastFetched: new Date(parseInt(lastFetched)),
-        isExpired: now - lastFetched > oneDay,
-      });
-
       if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
-        console.log("🔄 Loading widget from cache");
         loadWidgetFromString(cachedWidget);
         return;
       }
-
-      console.log("📥 Importing HTML module");
       const module = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
       );
 
       if (module && module.html) {
-        console.log("✨ HTML module loaded successfully");
         const htmlString = module.html();
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          console.log("💾 Saving widget to cache");
           localStorage.setItem("squareCraft_widget", htmlString);
           localStorage.setItem("squareCraft_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
@@ -397,7 +368,6 @@ setTimeout(() => {
       const draggableElement = event.target.closest("#squareCraft-grabbing");
 
       if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
-        console.log("🚫 Dragging prevented due to dropdown click");
         return;
       }
 
