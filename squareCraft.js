@@ -101,66 +101,65 @@
 });
 
 function addHeadingEventListeners() {
-    const widgetElementIds = {
-        heading1: "h1",
-        heading2: "h2",
-        heading3: "h3",
-        heading4: "h4",
-        paragraph1: "p.sqsrte-large", // p1
-        paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
-        paragraph3: "p.sqsrte-small", // p3
-    };
+    const widgetContainer = document.getElementById("squarecraft-widget-container");
 
-    Object.entries(widgetElementIds).forEach(([id, selector]) => {
-        const widgetElement = document.getElementById(id);
-        const arrowElement = document.getElementById(`${id}Arrow`);
+    if (!widgetContainer) {
+        console.error("❌ Widget container not found!");
+        return;
+    }
 
-        if (widgetElement) {
-            widgetElement.addEventListener("mouseover", () => {
-                console.log(`🟢 Hovered over ${id}`);
+    widgetContainer.addEventListener("mouseover", (event) => {
+        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        if (!widgetElement) return;
 
-                if (selectedElement) {
-                    let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+        console.log(`🟢 Hovered over ${widgetElement.id}`);
 
-                    if (textType && textType.type === id) {
-                        selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                        console.log(`✅ Applied border to selected Squarespace element: ${selectedTextType}`);
-                    }
-                }
-            });
+        if (selectedElement) {
+            let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
-            widgetElement.addEventListener("mouseout", () => {
-                console.log(`🔴 Mouse out from ${id}`);
+            if (textType && textType.type === widgetElement.id) {
+                selectedElement.style.border = `2px solid ${textType.borderColor}`;
+                console.log(`✅ Applied border to selected Squarespace element: ${selectedTextType}`);
+            }
+        }
+    });
 
-                if (selectedElement) {
-                    selectedElement.style.border = "";
-                    console.log(`❌ Removed border from selected Squarespace element: ${selectedTextType}`);
-                }
-            });
+    widgetContainer.addEventListener("mouseout", (event) => {
+        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        if (!widgetElement) return;
 
-            widgetElement.addEventListener("click", () => {
-                console.log(`🖱️ Clicked on ${id}`);
+        console.log(`🔴 Mouse out from ${widgetElement.id}`);
 
-                if (arrowElement) {
-                    arrowElement.classList.toggle("squareCraft-rotate-180");
-                    console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${id}Arrow`);
-                }
-            });
+        if (selectedElement) {
+            selectedElement.style.border = "";
+            console.log(`❌ Removed border from selected Squarespace element: ${selectedTextType}`);
+        }
+    });
 
-            console.log(`✅ Event listeners added to ${id}`);
-        } else {
-            console.error(`❌ ${id} not found in DOM!`);
+    widgetContainer.addEventListener("click", (event) => {
+        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        if (!widgetElement) return;
+
+        console.log(`🖱️ Clicked on ${widgetElement.id}`);
+
+        const arrowElement = widgetElement.querySelector("img");
+        if (arrowElement) {
+            arrowElement.classList.toggle("squareCraft-rotate-180");
+            console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${widgetElement.id}Arrow`);
         }
     });
 }
 
-
-
-
-  const observer = new MutationObserver(() => {
+const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-  });
-  
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+setTimeout(() => {
+    addHeadingEventListeners();
+}, 1000);
+
   observer.observe(document.body, { childList: true, subtree: true });
   
   
