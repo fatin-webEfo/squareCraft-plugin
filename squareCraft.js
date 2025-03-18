@@ -62,44 +62,29 @@
 
   });
 
-
-  let selectedTextType = null; 
-  
   document.body.addEventListener("click", (event) => {
     let selectedElement = event.target;
     let tagName = selectedElement.tagName.toLowerCase();
-    let classList = selectedElement.classList || [];
-    let borderColor = "";
+    let selectedTextType = tagName;
 
-    if (tagName === "h1") {
-        selectedTextType = "heading1";
-        borderColor = "#FF0000";
-    } else if (tagName === "h2") {
-        selectedTextType = "heading2";
-        borderColor = "#FFA500";
-    } else if (tagName === "h3") {
-        selectedTextType = "heading3";
-        borderColor = "#FFFF00";
-    } else if (tagName === "h4") {
-        selectedTextType = "heading4";
-        borderColor = "#008000";
-    } else if (tagName === "p") {
-        if (classList.contains("sqsrte-large")) {
+    if (tagName === "p") {
+        if (selectedElement.classList.contains("sqsrte-large")) {
             selectedTextType = "paragraph1";
-            borderColor = "#4B0082";
-        } else if (classList.contains("sqsrte-small")) {
+        } else if (selectedElement.classList.contains("sqsrte-small")) {
             selectedTextType = "paragraph3";
-            borderColor = "#0000FF";
         } else {
             selectedTextType = "paragraph2";
-            borderColor = "#9400D3";
         }
+    } else if (["h1", "h2", "h3", "h4"].includes(tagName)) {
+        selectedTextType = `heading${tagName.charAt(1)}`;
     }
 
-    if (selectedTextType) {
-        console.log(`✅ Selected Text Type: ${selectedTextType}`);
-    }
+    console.log(`✅ Selected Text Type: ${selectedTextType}`);
 });
+
+
+  let selectedTextType = null; 
+  
 
 
 
