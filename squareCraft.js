@@ -128,7 +128,6 @@ function addHeadingEventListeners() {
   });
 }
 
-// Select the element when clicked in Squarespace
 document.body.addEventListener("click", (event) => {
   let block = event.target.closest('[id^="block-"]');
   if (!block) return;
@@ -144,7 +143,6 @@ document.body.addEventListener("click", (event) => {
   console.log(`✅ Selected Element: ${selectedElement.tagName.toLowerCase()}`);
 });
 
-// Observer to ensure event listeners are added dynamically
 const observer = new MutationObserver(() => {
   addHeadingEventListeners();
 });
@@ -345,7 +343,6 @@ observer.observe(document.body, { childList: true, subtree: true });
     function startDrag(event) {
       const draggableElement = event.target.closest("#squareCraft-grabbing");
 
-      // ✅ Ignore dragging if clicking inside dropdown
       if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
         console.log("🚫 Dragging prevented due to dropdown click");
         return;
@@ -393,7 +390,6 @@ observer.observe(document.body, { childList: true, subtree: true });
       document.removeEventListener("touchend", stopDragging);
     }
 
-    // ✅ Ensure previous event listeners are removed before adding new ones
     widgetContainer.removeEventListener("mousedown", startDrag);
     widgetContainer.removeEventListener("touchstart", startDrag);
 
