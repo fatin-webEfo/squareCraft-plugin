@@ -77,49 +77,49 @@ export function html() {
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading1" class="squareCraft-bg-3f3f3f squareCraft-z-99999 squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-1</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading2" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-2</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="heading2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading3" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-3</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="heading3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading4" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-4</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="heading4Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph1" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-1</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph2" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-2</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="paragraph2Arrow src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 
   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph3" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-text-hover-EF7C2F squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-3</p>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
+      <img id="paragraph3Arrow src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
 </div>

@@ -106,9 +106,10 @@
       paragraph2: "p",
       paragraph3: "p",
     };
-    console.log(`✅selected Element is  ${selectedElement}`);
+  
     Object.entries(widgetElementIds).forEach(([id, tag]) => {
       const widgetElement = document.getElementById(id);
+      const arrowElement = document.getElementById(`${id}Arrow`);
   
       if (widgetElement) {
         widgetElement.addEventListener("mouseover", () => {
@@ -118,7 +119,7 @@
             let textType = getTextType(selectedElement);
             if (textType) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
-              console.log(`✅ Applied border to ${selectedElement}`);
+              console.log(`✅ Applied border to ${selectedElement.tagName}`);
             }
           }
         });
@@ -132,12 +133,27 @@
           }
         });
   
+        widgetElement.addEventListener("click", () => {
+          console.log(`Clicked on ${id}`);
+  
+          selectedElement = document.querySelector(tag);
+  
+          if (arrowElement) {
+            const isRotated = arrowElement.style.transform === "rotate(180deg)";
+            arrowElement.style.transition = "transform 0.3s ease-in-out";
+            arrowElement.style.transform = isRotated ? "rotate(0deg)" : "rotate(180deg)";
+            console.log(`🔄 Rotated ${id}Arrow`);
+          }
+        });
+  
         console.log(`✅ Event listeners added to ${id}`);
       } else {
         console.error(`❌ ${id} not found in DOM!`);
       }
     });
   }
+  
+  
   
   
   
