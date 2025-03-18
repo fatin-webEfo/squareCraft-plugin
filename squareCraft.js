@@ -100,7 +100,7 @@
     console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
 });
 
-function addHeadingEventListeners() {
+ async  function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (!widgetContainer) {
@@ -148,6 +148,7 @@ function addHeadingEventListeners() {
         document.querySelectorAll(".squareCraft-hidden").forEach((dropdown) => {
             if (!widgetElement.contains(dropdown)) {
                 dropdown.classList.add("squareCraft-hidden");
+                console.log(`🔄 Reset other dropdowns`);
             }
         });
 
@@ -173,6 +174,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+
 
 
 
