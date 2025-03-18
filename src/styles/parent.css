@@ -687,10 +687,15 @@ font-size: 12px !important;
 }
 
 
-.squareCraft-border-hover-EF7C2F:hover{
-  border: #EF7C2F solid 1px !important;
+.squareCraft-border-hover-EF7C2F {
+  transition: border 1s ease-in-out, border-radius 1s ease-in-out;
+}
+
+.squareCraft-border-hover-EF7C2F:hover {
+  border: #EF7C2F solid thin !important;
   border-radius: 6px !important;
 }
+
 
 .squareCraft-custom-dropdown {
   position: absolute;
