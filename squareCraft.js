@@ -85,7 +85,7 @@
     return null;
 }
 
-document.body.addEventListener("click", (event) => {
+ document.body.addEventListener("click", (event) => {
     let block = event.target.closest("h1, h2, h3, h4, p");
     if (!block) return;
 
