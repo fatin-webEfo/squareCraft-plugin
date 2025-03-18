@@ -145,12 +145,26 @@ function addHeadingEventListeners() {
 
         console.log(`🖱️ Clicked on ${widgetElement.id}`);
 
+        document.querySelectorAll(".squareCraft-hidden").forEach((dropdown) => {
+            if (!widgetElement.contains(dropdown)) {
+                dropdown.classList.add("squareCraft-hidden");
+            }
+        });
+
         document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
             if (!widgetElement.contains(arrow)) {
                 arrow.classList.remove("squareCraft-rotate-180");
                 console.log(`🔄 Reset other rotated arrows`);
             }
         });
+
+        const dropdownId = widgetElement.id + "Dropdown";
+        const dropdownElement = document.getElementById(dropdownId);
+
+        if (dropdownElement) {
+            dropdownElement.classList.toggle("squareCraft-hidden");
+            console.log(`🔽 Toggled dropdown visibility for ${dropdownId}`);
+        }
 
         const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) {
@@ -159,6 +173,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+
 
 
 const observer = new MutationObserver(() => {
