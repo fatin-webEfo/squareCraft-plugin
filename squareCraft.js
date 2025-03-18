@@ -118,10 +118,9 @@
             let textType = getTextType(selectedElement);
             if (textType) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
+              console.log(`✅ Applied border to ${selectedElement.tagName}`);
             }
-            console.log(`Selecetd Element ${selectedElement}`);
           }
-
         });
   
         widgetElement.addEventListener("mouseout", () => {
@@ -129,6 +128,7 @@
   
           if (selectedElement) {
             selectedElement.style.border = "";
+            console.log(`❌ Removed border from ${selectedElement.tagName}`);
           }
         });
   
@@ -138,6 +138,7 @@
       }
     });
   }
+  
   
   
   const observer = new MutationObserver(() => {
