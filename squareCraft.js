@@ -147,7 +147,7 @@
   
   observer.observe(document.body, { childList: true, subtree: true });
   
-
+console.log("Selected element: ", selectedElement);
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
