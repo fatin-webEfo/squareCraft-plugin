@@ -62,7 +62,7 @@
 
   });
 
-  document.body.addEventListener("click", (event) => {
+document.body.addEventListener("click", (event) => {
     let selectedElement = event.target.closest("h1, h2, h3, h4, p"); // Find the closest heading or paragraph
     if (!selectedElement) return;
 
@@ -84,6 +84,9 @@
     console.log(`✅ Selected Text Type: ${selectedTextType}`);
 });
 
+
+
+  
 
 
 
