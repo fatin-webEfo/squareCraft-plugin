@@ -8,7 +8,7 @@ export function html() {
   
 
    const htmlString = `
-   <div
+    <div
       class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
       <div class="squareCraft-flex squareCraft-poppins squareCraft-universal squareCraft-items-center squareCraft-justify-between">
          <img id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
@@ -74,7 +74,7 @@ export function html() {
          </div>
          
 <div>
- <div>
+   <div>
 
       <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
         <div id="heading1" class="squareCraft-bg-3f3f3f squareCraft-z-99999 squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
@@ -83,7 +83,7 @@ export function html() {
         </div>
       </div>
 
-      <div id="headin1Dropdown"  class="squareCraft-hidden" class="squareCraft-hidden">
+      <div id="heading1Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -235,19 +235,22 @@ export function html() {
                            </div>
                         </div>
                      </div>
-                      <div class="squareCraft-px-2">
+                     <div class="squareCraft-px-2">
                         <div class="squareCraft-h-1px  squareCraft-mt-4 squareCraft-bg-3f3f3f"></div>
 
                      </div>
       </div>
    </div>
+  
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+ <div>
+    <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading2" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-2</p>
       <img id="heading2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="headin3Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="heading2Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -404,14 +407,16 @@ export function html() {
 
                      </div>
       </div>
-  </div>
+ </div>
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+  <div>
+   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading3" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-3</p>
       <img id="heading3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="headin2Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="heading3Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -570,12 +575,14 @@ export function html() {
       </div>
   </div>
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+  <div>
+   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="heading4" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-4</p>
       <img id="heading4Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="headin4Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="heading4Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -734,12 +741,14 @@ export function html() {
       </div>
   </div>
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+  <div>
+   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph1" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-1</p>
       <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="paragraph1Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="paragraph1Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -898,12 +907,14 @@ export function html() {
       </div>
   </div>
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+  <div>
+   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph2" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-2</p>
       <img id="paragraph2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="paragraph2Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="paragraph2Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
@@ -1062,12 +1073,14 @@ export function html() {
       </div>
   </div>
 
-  <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+  <div>
+   <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
     <div id="paragraph3" class="squareCraft-bg-3f3f3f squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
       <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Paragraph-3</p>
       <img id="paragraph3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
-     <div id="paragraph2Dropdown"  class="squareCraft-hidden">
+  </div>
+   <div id="paragraph2Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
