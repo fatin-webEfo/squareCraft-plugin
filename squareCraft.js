@@ -106,7 +106,7 @@
       paragraph2: "p",
       paragraph3: "p",
     };
-  
+    console.log(`✅selected Element is  ${selectedElement}`);
     Object.entries(widgetElementIds).forEach(([id, tag]) => {
       const widgetElement = document.getElementById(id);
   
@@ -118,7 +118,7 @@
             let textType = getTextType(selectedElement);
             if (textType) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
-              console.log(`✅ Applied border to ${selectedElement.tagName}`);
+              console.log(`✅ Applied border to ${selectedElement}`);
             }
           }
         });
@@ -147,7 +147,6 @@
   
   observer.observe(document.body, { childList: true, subtree: true });
   
-console.log("Selected element: ", selectedElement);
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
