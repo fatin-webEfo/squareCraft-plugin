@@ -112,7 +112,6 @@ function addHeadingEventListeners() {
         const arrowElement = document.getElementById(`${id}Arrow`);
 
         if (widgetElement) {
-            // Handle hover to apply border
             widgetElement.addEventListener("mouseover", () => {
                 console.log(`Hovered over ${id}`);
 
