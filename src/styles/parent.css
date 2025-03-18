@@ -677,6 +677,9 @@ font-size: 12px !important;
   border: 2px solid;
   animation: squareCraft-border-animation 1.5s infinite linear;
 }
+.squareCraft-border-3f3f3f{
+  border-color: #3f3f3f !important;
+}
 
 .squareCraft-custom-select {
   display: flex;
@@ -688,13 +691,14 @@ font-size: 12px !important;
 
 
 .squareCraft-border-hover-EF7C2F {
-  transition: border 0.5s ease-in-out, border-radius 0.5s ease-in-out;
+  transition: border 0.5s linear, border-radius 0.5s linear;
 }
 
 .squareCraft-border-hover-EF7C2F:hover {
   border: #EF7C2F solid thin !important;
   border-radius: 6px !important;
 }
+
 
 
 .squareCraft-custom-dropdown {
