@@ -100,7 +100,9 @@
     console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
 });
 
- async  function addHeadingEventListeners() {
+
+
+ async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (!widgetContainer) {
@@ -145,29 +147,31 @@
 
         console.log(`🖱️ Clicked on ${widgetElement.id}`);
 
-        document.querySelectorAll(".squareCraft-hidden").forEach((dropdown) => {
-            if (!widgetElement.contains(dropdown)) {
+        const dropdownId = widgetElement.id + "Dropdown";
+        const dropdownElement = document.getElementById(dropdownId);
+        const arrowElement = widgetElement.querySelector("img");
+
+        document.querySelectorAll(".squareCraft-dropdown").forEach((dropdown) => {
+            if (dropdown.id !== dropdownId) {
                 dropdown.classList.add("squareCraft-hidden");
-                console.log(`🔄 Reset other dropdowns`);
+                console.log(`🔄 Closed ${dropdown.id}`);
             }
         });
 
         document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-            if (!widgetElement.contains(arrow)) {
+            if (arrow !== arrowElement) {
                 arrow.classList.remove("squareCraft-rotate-180");
                 console.log(`🔄 Reset other rotated arrows`);
             }
         });
 
-        const dropdownId = widgetElement.id + "Dropdown";
-        const dropdownElement = document.getElementById(dropdownId);
-
         if (dropdownElement) {
-            dropdownElement.classList.toggle("squareCraft-hidden");
+            const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+            document.querySelectorAll(".squareCraft-dropdown").forEach((d) => d.classList.add("squareCraft-hidden"));
+            if (isHidden) dropdownElement.classList.remove("squareCraft-hidden");
             console.log(`🔽 Toggled dropdown visibility for ${dropdownId}`);
         }
 
-        const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) {
             arrowElement.classList.toggle("squareCraft-rotate-180");
             console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${widgetElement.id}Arrow`);
