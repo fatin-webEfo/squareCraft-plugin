@@ -87,86 +87,74 @@
     return null;
   }
 
-  // **Click Event: Select Text Element**
   document.body.addEventListener("click", (event) => {
-      let block = event.target.closest("h1, h2, h3, h4, p");
-      if (!block) return;
+    let block = event.target.closest("h1, h2, h3, h4, p");
+    if (!block || block.closest("#squarecraft-widget-container")) return; // Prevent selecting widget elements
 
-      selectedElement = block;
-      let textType = getTextType(block.tagName.toLowerCase(), block);
-      selectedTextType = textType ? textType.type : null;
+    selectedElement = block; // Set the selected Squarespace element
+    let textType = getTextType(block.tagName.toLowerCase(), block);
+    selectedTextType = textType ? textType.type : null;
 
-      console.log(`✅ Selected Element: ${selectedTextType}`);
-      console.log("🔎 Element Details:", selectedElement);
-      console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
-  });
+    console.log(`✅ Selected Squarespace Element: ${selectedTextType}`);
+    console.log("🔎 Element Details:", selectedElement);
+    console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
+});
 
-  // **Hover and Border Application**
-  function addHeadingEventListeners() {
-      const widgetElementIds = {
-          heading1: "h1",
-          heading2: "h2",
-          heading3: "h3",
-          heading4: "h4",
-          paragraph1: "p.sqsrte-large", // p1
-          paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
-          paragraph3: "p.sqsrte-small", // p3
-      };
+function addHeadingEventListeners() {
+    const widgetElementIds = {
+        heading1: "h1",
+        heading2: "h2",
+        heading3: "h3",
+        heading4: "h4",
+        paragraph1: "p.sqsrte-large", // p1
+        paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
+        paragraph3: "p.sqsrte-small", // p3
+    };
 
-      Object.entries(widgetElementIds).forEach(([id, selector]) => {
-          const widgetElement = document.getElementById(id);
-          const arrowElement = document.getElementById(`${id}Arrow`);
+    Object.entries(widgetElementIds).forEach(([id, selector]) => {
+        const widgetElement = document.getElementById(id);
+        const arrowElement = document.getElementById(`${id}Arrow`);
 
-          if (widgetElement) {
-              widgetElement.addEventListener("mouseover", () => {
-                  console.log(`🟢 Hovered over ${id}`);
+        if (widgetElement) {
+            widgetElement.addEventListener("mouseover", () => {
+                console.log(`🟢 Hovered over ${id}`);
 
-                  if (selectedElement) {
-                      let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+                if (selectedElement) {
+                    let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
-                      if (textType && textType.type === id) {
-                          selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                          console.log(`✅ Applied border to selected element: ${selectedTextType}`);
-                          console.log("🔎 Updated Element:", selectedElement);
-                          console.log("🎨 Computed Styles After Border:", window.getComputedStyle(selectedElement));
-                      }
-                  }
-              });
-
-              widgetElement.addEventListener("mouseout", () => {
-                  console.log(`🔴 Mouse out from ${id}`);
-
-                  if (selectedElement) {
-                      selectedElement.style.border = "";
-                      console.log(`❌ Removed border from selected element: ${selectedTextType}`);
-                      console.log("🔎 Updated Element:", selectedElement);
-                      console.log("🎨 Updated Styles After Border Removal:", window.getComputedStyle(selectedElement));
-                  }
-              });
-
-              widgetElement.addEventListener("click", () => {
-                console.log(`🖱️ Clicked on ${id}`);
-            
-                if (arrowElement) {
-                    const isRotated = arrowElement.classList.contains("squareCraft-rotate-180");
-            
-                    if (isRotated) {
-                        arrowElement.classList.remove("squareCraft-rotate-180");
-                        console.log(`🔄 Removed class "squareCraft-rotate-180" from ${id}Arrow`);
-                    } else {
-                        arrowElement.classList.add("squareCraft-rotate-180");
-                        console.log(`🔄 Added class "squareCraft-rotate-180" to ${id}Arrow`);
+                    if (textType && textType.type === id) {
+                        selectedElement.style.border = `2px solid ${textType.borderColor}`;
+                        console.log(`✅ Applied border to selected Squarespace element: ${selectedTextType}`);
                     }
                 }
             });
-            
 
-              console.log(`✅ Event listeners added to ${id}`);
-          } else {
-              console.error(`❌ ${id} not found in DOM!`);
-          }
-      });
-  }
+            widgetElement.addEventListener("mouseout", () => {
+                console.log(`🔴 Mouse out from ${id}`);
+
+                if (selectedElement) {
+                    selectedElement.style.border = "";
+                    console.log(`❌ Removed border from selected Squarespace element: ${selectedTextType}`);
+                }
+            });
+
+            widgetElement.addEventListener("click", () => {
+                console.log(`🖱️ Clicked on ${id}`);
+
+                if (arrowElement) {
+                    arrowElement.classList.toggle("squareCraft-rotate-180");
+                    console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${id}Arrow`);
+                }
+            });
+
+            console.log(`✅ Event listeners added to ${id}`);
+        } else {
+            console.error(`❌ ${id} not found in DOM!`);
+        }
+    });
+}
+
+
 
 
   const observer = new MutationObserver(() => {
