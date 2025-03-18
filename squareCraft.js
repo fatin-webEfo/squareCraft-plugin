@@ -145,15 +145,21 @@
               });
 
               widgetElement.addEventListener("click", () => {
-                  console.log(`🖱️ Clicked on ${id}`);
-
-                  if (arrowElement) {
-                      const isRotated = arrowElement.style.transform === "rotate(180deg)";
-                      arrowElement.style.transition = "transform 0.3s ease-in-out";
-                      arrowElement.style.transform = isRotated ? "rotate(0deg)" : "rotate(180deg)";
-                      console.log(`🔄 Rotated ${id}Arrow`);
-                  }
-              });
+                console.log(`🖱️ Clicked on ${id}`);
+            
+                if (arrowElement) {
+                    const isRotated = arrowElement.classList.contains("squareCraft-rotate-180");
+            
+                    if (isRotated) {
+                        arrowElement.classList.remove("squareCraft-rotate-180");
+                        console.log(`🔄 Removed class "squareCraft-rotate-180" from ${id}Arrow`);
+                    } else {
+                        arrowElement.classList.add("squareCraft-rotate-180");
+                        console.log(`🔄 Added class "squareCraft-rotate-180" to ${id}Arrow`);
+                    }
+                }
+            });
+            
 
               console.log(`✅ Event listeners added to ${id}`);
           } else {
