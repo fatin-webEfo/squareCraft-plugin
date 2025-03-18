@@ -63,6 +63,7 @@
     console.log("Font change listener added.");
   });
 
+
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest("h1, h2, h3, h4, p");
     if (!block) return;
@@ -79,43 +80,43 @@
     let tagName = element.tagName.toLowerCase();
     let classList = element.classList;
   
-    if (tagName === "h1") return { type: "Heading 1 (h1)", borderColor: "#FF0000" };
-    if (tagName === "h2") return { type: "Heading 2 (h2)", borderColor: "#FFA500" };
-    if (tagName === "h3") return { type: "Heading 3 (h3)", borderColor: "#FFFF00" };
-    if (tagName === "h4") return { type: "Heading 4 (h4)", borderColor: "#008000" };
+    if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
+    if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
+    if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
+    if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
     if (tagName === "p") {
       if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-        return { type: "Paragraph 3 (p3)", borderColor: "#0000FF" };
+        return { type: "paragraph3", borderColor: "#0000FF" };
       } else if (classList.contains("sqsrte-large")) {
-        return { type: "Paragraph 1 (p1)", borderColor: "#4B0082" };
+        return { type: "paragraph1", borderColor: "#4B0082" };
       } else {
-        return { type: "Paragraph 2 (p2)", borderColor: "#9400D3" };
+        return { type: "paragraph2", borderColor: "#9400D3" };
       }
     }
     return null;
   }
   
   function addHeadingEventListeners() {
-    const elements = {
-      heading1: "h1",
-      heading2: "h2",
-      heading3: "h3",
-      heading4: "h4",
-      paragraph1: "p",
-      paragraph2: "p",
-      paragraph3: "p",
-    };
+    const widgetElementIds = [
+      "heading1",
+      "heading2",
+      "heading3",
+      "heading4",
+      "paragraph1",
+      "paragraph2",
+      "paragraph3",
+    ];
   
-    Object.entries(elements).forEach(([id, tag]) => {
+    widgetElementIds.forEach((id) => {
       const widgetElement = document.getElementById(id);
   
       if (widgetElement) {
         widgetElement.addEventListener("mouseover", () => {
           console.log(`Hovered over ${id}`);
   
-          if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
+          if (selectedElement) {
             let textType = getTextType(selectedElement);
-            if (textType) {
+            if (textType && textType.type === id) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
             }
           }
@@ -141,6 +142,7 @@
   });
   
   observer.observe(document.body, { childList: true, subtree: true });
+  
 
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
