@@ -145,18 +145,21 @@ function addHeadingEventListeners() {
 
         console.log(`🖱️ Clicked on ${widgetElement.id}`);
 
+        document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+            if (!widgetElement.contains(arrow)) {
+                arrow.classList.remove("squareCraft-rotate-180");
+                console.log(`🔄 Reset other rotated arrows`);
+            }
+        });
+
         const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) {
-            if (arrowElement.classList.contains("squareCraft-rotate-180")) {
-                arrowElement.classList.remove("squareCraft-rotate-180");
-                console.log(`🔄 Removed class "squareCraft-rotate-180" from ${widgetElement.id}Arrow`);
-            } else {
-                arrowElement.classList.add("squareCraft-rotate-180");
-                console.log(`🔄 Added class "squareCraft-rotate-180" to ${widgetElement.id}Arrow`);
-            }
+            arrowElement.classList.toggle("squareCraft-rotate-180");
+            console.log(`🔄 Toggled class "squareCraft-rotate-180" on ${widgetElement.id}Arrow`);
         }
     });
 }
+
 
 const observer = new MutationObserver(() => {
     addHeadingEventListeners();
