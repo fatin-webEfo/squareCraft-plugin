@@ -94,6 +94,8 @@
     let textType = getTextType(block.tagName.toLowerCase(), block);
     selectedTextType = textType ? textType.type : null;
 
+    console.log("Selected element:", selectedTextType);
+
 });
 
 async function addHeadingEventListeners() {
