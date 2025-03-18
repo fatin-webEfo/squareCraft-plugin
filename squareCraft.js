@@ -98,7 +98,6 @@ function getTextType(tagName, element) {
     return null;
 }
 
-
 function addHeadingEventListeners() {
     const widgetElementIds = {
         heading1: "h1",
@@ -110,35 +109,33 @@ function addHeadingEventListeners() {
         paragraph3: "p.sqsrte-small", // p3
     };
 
-    Object.entries(widgetElementIds).forEach(([id, tag]) => {
+    Object.entries(widgetElementIds).forEach(([id, selector]) => {
         const widgetElement = document.getElementById(id);
         const arrowElement = document.getElementById(`${id}Arrow`);
 
         if (widgetElement) {
-            // ✅ Hover - Apply border if selected element matches
             widgetElement.addEventListener("mouseover", () => {
                 console.log(`🟢 Hovered over ${id}`);
 
-                if (selectedElement && selectedTextType === id) {
+                if (selectedElement) {
                     let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-                    if (textType) {
+                    
+                    if (textType && textType.type === id) {
                         selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                        console.log(`✅ Applied border to ${selectedTextType}`);
+                        console.log(`✅ Applied border to selected element: ${selectedTextType}`);
                     }
                 }
             });
 
-            // ✅ Remove border on mouse out
             widgetElement.addEventListener("mouseout", () => {
                 console.log(`🔴 Mouse out from ${id}`);
 
                 if (selectedElement) {
                     selectedElement.style.border = "";
-                    console.log(`❌ Removed border from ${selectedTextType}`);
+                    console.log(`❌ Removed border from selected element: ${selectedTextType}`);
                 }
             });
 
-            // ✅ Click - Rotate arrow
             widgetElement.addEventListener("click", () => {
                 console.log(`Clicked on ${id}`);
 
@@ -156,6 +153,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+
  
 
 
