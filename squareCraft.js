@@ -64,21 +64,18 @@
   });
 
 
+  let selectedTextType = null; // Stores the selected element's type
+
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest("h1, h2, h3, h4, p");
     if (!block) return;
   
-    if (selectedElement) {
-      selectedElement.style.border = "";
-    }
-  
-    selectedElement = block;
-    console.log(`✅ Selected Element: ${selectedElement.tagName.toLowerCase()}`);
+    selectedTextType = block.tagName.toLowerCase(); // Save the selected text type
+    console.log(`✅ Selected Element Type: ${selectedTextType}`);
   });
   
-  function getTextType(element) {
-    let tagName = element.tagName.toLowerCase();
-    let classList = element.classList;
+  function getTextType(tagName, element) {
+    let classList = element?.classList || [];
   
     if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
     if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
@@ -115,11 +112,14 @@
         widgetElement.addEventListener("mouseover", () => {
           console.log(`Hovered over ${id}`);
   
-          if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
-            let textType = getTextType(selectedElement);
-            if (textType) {
-              selectedElement.style.border = `2px solid ${textType.borderColor}`;
-              console.log(`✅ Applied border to ${selectedElement.tagName}`);
+          if (selectedTextType === tag) {
+            let selectedElement = document.querySelector(selectedTextType);
+            if (selectedElement) {
+              let textType = getTextType(selectedTextType, selectedElement);
+              if (textType) {
+                selectedElement.style.border = `2px solid ${textType.borderColor}`;
+                console.log(`✅ Applied border to ${selectedTextType}`);
+              }
             }
           }
         });
@@ -127,16 +127,17 @@
         widgetElement.addEventListener("mouseout", () => {
           console.log(`Mouse out from ${id}`);
   
-          if (selectedElement) {
-            selectedElement.style.border = "";
-            console.log(`❌ Removed border from ${selectedElement.tagName}`);
+          if (selectedTextType) {
+            let selectedElement = document.querySelector(selectedTextType);
+            if (selectedElement) {
+              selectedElement.style.border = "";
+              console.log(`❌ Removed border from ${selectedTextType}`);
+            }
           }
         });
   
         widgetElement.addEventListener("click", () => {
           console.log(`Clicked on ${id}`);
-  
-          selectedElement = document.querySelector(tag);
   
           if (arrowElement) {
             const isRotated = arrowElement.style.transform === "rotate(180deg)";
@@ -153,15 +154,12 @@
     });
   }
   
-  
-  
-  
-  
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
   });
   
   observer.observe(document.body, { childList: true, subtree: true });
+  
   
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
