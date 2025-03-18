@@ -63,92 +63,84 @@
     console.log("Font change listener added.");
   });
 
-function getTextType(element) {
-  let tagName = element.tagName.toLowerCase();
-  let classList = element.classList;
-
-  if (tagName === "h1") {
-    return { type: "Heading 1 (h1)", borderColor: "#FF0000" };
-  } else if (tagName === "h2") {
-    return { type: "Heading 2 (h2)", borderColor: "#FFA500" };
-  } else if (tagName === "h3") {
-    return { type: "Heading 3 (h3)", borderColor: "#FFFF00" };
-  } else if (tagName === "h4") {
-    return { type: "Heading 4 (h4)", borderColor: "#008000" };
-  } else if (tagName === "p") {
-    if (classList.contains("sqsrte-large") && classList.contains("solve")) {
-      return { type: "Paragraph 3 (p3)", borderColor: "#0000FF" };
-    } else if (classList.contains("sqsrte-large")) {
-      return { type: "Paragraph 1 (p1)", borderColor: "#4B0082" };
-    } else {
-      return { type: "Paragraph 2 (p2)", borderColor: "#9400D3" };
+  document.body.addEventListener("click", (event) => {
+    let block = event.target.closest("h1, h2, h3, h4, p");
+    if (!block) return;
+  
+    if (selectedElement) {
+      selectedElement.style.border = "";
     }
-  }
-  return null;
-}
-
-function addHeadingEventListeners() {
-  const elements = {
-    heading1: "h1",
-    heading2: "h2",
-    heading3: "h3",
-    heading4: "h4",
-    paragraph1: "p",
-    paragraph2: "p",
-    paragraph3: "p",
-  };
-
-  Object.entries(elements).forEach(([id, tag]) => {
-    const widgetElement = document.getElementById(id);
-
-    if (widgetElement) {
-      widgetElement.addEventListener("mouseover", () => {
-        console.log(`Hovered over ${id}`);
-
-        if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
-          let textType = getTextType(selectedElement);
-          if (textType) {
-            selectedElement.style.border = `2px solid ${textType.borderColor}`;
-          }
-        }
-      });
-
-      widgetElement.addEventListener("mouseout", () => {
-        console.log(`Mouse out from ${id}`);
-
-        if (selectedElement) {
-          selectedElement.style.border = "";
-        }
-      });
-
-      console.log(`✅ Event listeners added to ${id}`);
-    } else {
-      console.error(`❌ ${id} not found in DOM!`);
-    }
+  
+    selectedElement = block;
+    console.log(`✅ Selected Element: ${selectedElement.tagName.toLowerCase()}`);
   });
-}
-
-document.body.addEventListener("click", (event) => {
-  let block = event.target.closest('[id^="block-"]');
-  if (!block) return;
-
-  if (selectedElement) {
-    selectedElement.style.border = "";
-    selectedElement.classList.remove("squareCraft-selected");
+  
+  function getTextType(element) {
+    let tagName = element.tagName.toLowerCase();
+    let classList = element.classList;
+  
+    if (tagName === "h1") return { type: "Heading 1 (h1)", borderColor: "#FF0000" };
+    if (tagName === "h2") return { type: "Heading 2 (h2)", borderColor: "#FFA500" };
+    if (tagName === "h3") return { type: "Heading 3 (h3)", borderColor: "#FFFF00" };
+    if (tagName === "h4") return { type: "Heading 4 (h4)", borderColor: "#008000" };
+    if (tagName === "p") {
+      if (classList.contains("sqsrte-large") && classList.contains("solve")) {
+        return { type: "Paragraph 3 (p3)", borderColor: "#0000FF" };
+      } else if (classList.contains("sqsrte-large")) {
+        return { type: "Paragraph 1 (p1)", borderColor: "#4B0082" };
+      } else {
+        return { type: "Paragraph 2 (p2)", borderColor: "#9400D3" };
+      }
+    }
+    return null;
   }
-
-  selectedElement = block;
-  selectedElement.classList.add("squareCraft-selected");
-
-  console.log(`✅ Selected Element: ${selectedElement.tagName.toLowerCase()}`);
-});
-
-const observer = new MutationObserver(() => {
-  addHeadingEventListeners();
-});
-
-observer.observe(document.body, { childList: true, subtree: true });
-
+  
+  function addHeadingEventListeners() {
+    const elements = {
+      heading1: "h1",
+      heading2: "h2",
+      heading3: "h3",
+      heading4: "h4",
+      paragraph1: "p",
+      paragraph2: "p",
+      paragraph3: "p",
+    };
+  
+    Object.entries(elements).forEach(([id, tag]) => {
+      const widgetElement = document.getElementById(id);
+  
+      if (widgetElement) {
+        widgetElement.addEventListener("mouseover", () => {
+          console.log(`Hovered over ${id}`);
+  
+          if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
+            let textType = getTextType(selectedElement);
+            if (textType) {
+              selectedElement.style.border = `2px solid ${textType.borderColor}`;
+            }
+          }
+        });
+  
+        widgetElement.addEventListener("mouseout", () => {
+          console.log(`Mouse out from ${id}`);
+  
+          if (selectedElement) {
+            selectedElement.style.border = "";
+          }
+        });
+  
+        console.log(`✅ Event listeners added to ${id}`);
+      } else {
+        console.error(`❌ ${id} not found in DOM!`);
+      }
+    });
+  }
+  
+  const observer = new MutationObserver(() => {
+    addHeadingEventListeners();
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
