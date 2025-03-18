@@ -688,12 +688,6 @@ font-size: 12px !important;
   width: 100%;
   position: relative;
 }
-
-
-.squareCraft-border-hover-EF7C2F {
-  transition: border 0.5s linear, border-radius 0.5s linear;
-}
-
 .squareCraft-border-hover-EF7C2F:hover {
   border: #EF7C2F solid thin !important;
   border-radius: 6px !important;
