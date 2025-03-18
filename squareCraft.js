@@ -140,36 +140,28 @@ async function addHeadingEventListeners() {
         const dropdownElement = document.getElementById(dropdownId);
         const arrowElement = widgetElement.querySelector("img");
 
+        const isAlreadyOpen = dropdownElement && !dropdownElement.classList.contains("squareCraft-hidden");
+
         document.querySelectorAll(".squareCraft-dropdown").forEach((dropdown) => {
-            if (dropdown.id !== dropdownId) {
-                dropdown.classList.add("squareCraft-hidden");
-            }
+            dropdown.classList.add("squareCraft-hidden");
         });
 
         document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-            if (arrow !== arrowElement) {
-                arrow.classList.remove("squareCraft-rotate-180");
-            }
+            arrow.classList.remove("squareCraft-rotate-180");
         });
 
-        if (dropdownElement) {
-            const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-            document.querySelectorAll(".squareCraft-dropdown").forEach((d) => d.classList.add("squareCraft-hidden"));
-            if (isHidden) {
-                dropdownElement.classList.remove("squareCraft-hidden");
-                setTimeout(() => {
-                    dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                }, 200);
-            }
+        if (!isAlreadyOpen && dropdownElement) {
+            dropdownElement.classList.remove("squareCraft-hidden");
+            setTimeout(() => {
+                dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 200);
         }
 
-        if (arrowElement) {
-            arrowElement.classList.toggle("squareCraft-rotate-180");
+        if (!isAlreadyOpen && arrowElement) {
+            arrowElement.classList.add("squareCraft-rotate-180");
         }
     });
 }
-
-
 
 
 const observer = new MutationObserver(() => {
