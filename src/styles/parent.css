@@ -688,7 +688,7 @@ font-size: 12px !important;
 
 
 .squareCraft-border-hover-EF7C2F {
-  transition: border 1s ease-in-out, border-radius 1s ease-in-out;
+  transition: border 0.5s ease-in-out, border-radius 0.5s ease-in-out;
 }
 
 .squareCraft-border-hover-EF7C2F:hover {
