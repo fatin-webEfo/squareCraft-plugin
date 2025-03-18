@@ -64,6 +64,44 @@
 
 
   let selectedTextType = null; 
+  
+  document.body.addEventListener("click", (event) => {
+    let selectedElement = event.target;
+    let tagName = selectedElement.tagName.toLowerCase();
+    let classList = selectedElement.classList || [];
+    let borderColor = "";
+
+    if (tagName === "h1") {
+        selectedTextType = "heading1";
+        borderColor = "#FF0000";
+    } else if (tagName === "h2") {
+        selectedTextType = "heading2";
+        borderColor = "#FFA500";
+    } else if (tagName === "h3") {
+        selectedTextType = "heading3";
+        borderColor = "#FFFF00";
+    } else if (tagName === "h4") {
+        selectedTextType = "heading4";
+        borderColor = "#008000";
+    } else if (tagName === "p") {
+        if (classList.contains("sqsrte-large")) {
+            selectedTextType = "paragraph1";
+            borderColor = "#4B0082";
+        } else if (classList.contains("sqsrte-small")) {
+            selectedTextType = "paragraph3";
+            borderColor = "#0000FF";
+        } else {
+            selectedTextType = "paragraph2";
+            borderColor = "#9400D3";
+        }
+    }
+
+    if (selectedTextType) {
+        console.log(`✅ Selected Text Type: ${selectedTextType}`);
+    }
+});
+
+
 
   
   function getTextType(tagName, element) {
@@ -86,17 +124,7 @@
     return null;
   }
 
-  document.body.addEventListener("click", (event) => {
-    let block = event.target.closest("h1, h2, h3, h4, p");
-    if (!block || block.closest("#squarecraft-widget-container")) return; 
-
-    selectedElement = block; 
-    let textType = getTextType(block.tagName.toLowerCase(), block);
-    selectedTextType = textType ? textType.type : null;
-
-    console.log("Selected element:", selectedTextType);
-
-});
+ 
 
 async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squarecraft-widget-container");
