@@ -62,27 +62,6 @@
 
   });
 
-document.body.addEventListener("click", (event) => {
-    let selectedElement = event.target.closest("h1, h2, h3, h4, p"); // Find the closest heading or paragraph
-    if (!selectedElement) return;
-
-    let tagName = selectedElement.tagName.toLowerCase();
-    let selectedTextType = tagName;
-
-    if (tagName === "p") {
-        if (selectedElement.classList.contains("sqsrte-large")) {
-            selectedTextType = "paragraph1";
-        } else if (selectedElement.classList.contains("sqsrte-small")) {
-            selectedTextType = "paragraph3";
-        } else {
-            selectedTextType = "paragraph2";
-        }
-    } else if (["h1", "h2", "h3", "h4"].includes(tagName)) {
-        selectedTextType = `heading${tagName.charAt(1)}`;
-    }
-
-    console.log(`✅ Selected Text Type: ${selectedTextType}`);
-});
 
 
 
@@ -111,9 +90,28 @@ document.body.addEventListener("click", (event) => {
     return null;
   }
 
- 
+  document.body.addEventListener("click", async (event) => {
+    let element = event.target.closest("h1, h2, h3, h4, p");
+    if (!element) return;
 
-async function addHeadingEventListeners() {
+    selectedElement = element;
+    let textType = getTextType(element.tagName.toLowerCase(), element);
+    selectedTextType = textType ? textType.type : null;
+
+    console.log(`✅ Selected Text Type: ${selectedTextType}`);
+
+    if (!widgetLoaded) {
+      await createWidget();
+    }
+
+    if (widgetContainer) {
+      widgetContainer.style.display = "block";
+    }
+  });
+
+
+
+  async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (!widgetContainer) {
@@ -184,8 +182,7 @@ async function addHeadingEventListeners() {
     });
 }
 
-
-const observer = new MutationObserver(() => {
+  const observer = new MutationObserver(() => {
     addHeadingEventListeners();
 });
 
