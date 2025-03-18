@@ -65,20 +65,7 @@
 
 
   let selectedTextType = null; 
-
-  document.body.addEventListener("click", (event) => {
-    let block = event.target.closest("h1, h2, h3, h4, p");
-    if (!block) return;
-
-    selectedElement = block;
-
-    let textType = getTextType(block.tagName.toLowerCase(), block);
-    selectedTextType = textType ? textType.type : null;
-
-    console.log(`✅ Selected Element: ${selectedTextType}`);
-});
-  
-function getTextType(tagName, element) {
+  function getTextType(tagName, element) {
     let classList = element?.classList || [];
 
     if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
@@ -97,6 +84,20 @@ function getTextType(tagName, element) {
     }
     return null;
 }
+
+document.body.addEventListener("click", (event) => {
+    let block = event.target.closest("h1, h2, h3, h4, p");
+    if (!block) return;
+
+    selectedElement = block;
+
+    let textType = getTextType(block.tagName.toLowerCase(), block);
+    selectedTextType = textType ? textType.type : null;
+
+    console.log(`✅ Selected Element: ${selectedTextType}`);
+    console.log("🔎 Element Details:", selectedElement);
+    console.log("🎨 Computed Styles:", window.getComputedStyle(selectedElement));
+});
 
 function addHeadingEventListeners() {
     const widgetElementIds = {
@@ -119,10 +120,12 @@ function addHeadingEventListeners() {
 
                 if (selectedElement) {
                     let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-                    
+
                     if (textType && textType.type === id) {
                         selectedElement.style.border = `2px solid ${textType.borderColor}`;
                         console.log(`✅ Applied border to selected element: ${selectedTextType}`);
+                        console.log("🔎 Updated Element:", selectedElement);
+                        console.log("🎨 Updated Styles:", window.getComputedStyle(selectedElement));
                     }
                 }
             });
@@ -133,11 +136,13 @@ function addHeadingEventListeners() {
                 if (selectedElement) {
                     selectedElement.style.border = "";
                     console.log(`❌ Removed border from selected element: ${selectedTextType}`);
+                    console.log("🔎 Updated Element:", selectedElement);
+                    console.log("🎨 Updated Styles:", window.getComputedStyle(selectedElement));
                 }
             });
 
             widgetElement.addEventListener("click", () => {
-                console.log(`Clicked on ${id}`);
+                console.log(`🖱️ Clicked on ${id}`);
 
                 if (arrowElement) {
                     const isRotated = arrowElement.style.transform === "rotate(180deg)";
@@ -154,7 +159,6 @@ function addHeadingEventListeners() {
     });
 }
 
- 
 
 
   const observer = new MutationObserver(() => {
