@@ -100,7 +100,7 @@
     console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
 });
 
-function addHeadingEventListeners() {
+async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squarecraft-widget-container");
 
     if (!widgetContainer) {
@@ -164,6 +164,14 @@ function addHeadingEventListeners() {
         if (dropdownElement) {
             dropdownElement.classList.toggle("squareCraft-hidden");
             console.log(`🔽 Toggled dropdown visibility for ${dropdownId}`);
+
+            // **Focus on the dropdown**
+            if (!dropdownElement.classList.contains("squareCraft-hidden")) {
+                setTimeout(() => {
+                    dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                    console.log(`📍 Focused on ${dropdownId}`);
+                }, 200);
+            }
         }
 
         const arrowElement = widgetElement.querySelector("img");
@@ -173,6 +181,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+
 
 
 
