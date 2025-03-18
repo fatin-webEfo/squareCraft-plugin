@@ -86,9 +86,6 @@
 
 
 
-  
-
-
 
   
   function getTextType(tagName, element) {
