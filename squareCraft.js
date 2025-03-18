@@ -70,8 +70,10 @@
     let block = event.target.closest("h1, h2, h3, h4, p");
     if (!block) return;
 
-    selectedElement = block; 
-    selectedTextType = block.tagName.toLowerCase(); 
+    selectedElement = block;
+
+    let textType = getTextType(block.tagName.toLowerCase(), block);
+    selectedTextType = textType ? textType.type : null;
 
     console.log(`✅ Selected Element: ${selectedTextType}`);
 });
@@ -95,7 +97,6 @@ function getTextType(tagName, element) {
     return null;
 }
 
-  
 function addHeadingEventListeners() {
     const widgetElementIds = {
         heading1: "h1",
@@ -113,30 +114,25 @@ function addHeadingEventListeners() {
 
         if (widgetElement) {
             widgetElement.addEventListener("mouseover", () => {
-                console.log(`Hovered over ${id}`);
+                console.log(`🟢 Hovered over ${id}`);
 
-                if (selectedElement && selectedTextType === tag) {
-                    let textType = getTextType(selectedTextType, selectedElement);
-                    if (textType) {
-                        selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                        console.log(`✅ Applied border to ${selectedTextType}`);
-                    }
+                if (selectedElement && selectedTextType === id) {
+                    selectedElement.style.border = `2px solid ${getTextType(tag, selectedElement).borderColor}`;
+                    console.log(`✅ Applied border to: ${selectedTextType}`);
                 }
             });
 
-            // Remove border on mouse out
             widgetElement.addEventListener("mouseout", () => {
-                console.log(`Mouse out from ${id}`);
+                console.log(`🔴 Mouse out from ${id}`);
 
                 if (selectedElement) {
                     selectedElement.style.border = "";
-                    console.log(`❌ Removed border from ${selectedTextType}`);
+                    console.log(`❌ Removed border from: ${selectedTextType}`);
                 }
             });
 
-            // Rotate arrow when clicked
             widgetElement.addEventListener("click", () => {
-                console.log(`Clicked on ${id}`);
+                console.log(`🔄 Clicked on ${id}`);
 
                 if (arrowElement) {
                     const isRotated = arrowElement.style.transform === "rotate(180deg)";
@@ -152,6 +148,7 @@ function addHeadingEventListeners() {
         }
     });
 }
+
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
