@@ -1080,7 +1080,7 @@ export function html() {
       <img id="paragraph3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="squareCraft-rotate-180" alt="">
     </div>
   </div>
-   <div id="paragraph2Dropdown" class="squareCraft-hidden">
+   <div id="paragraph3Dropdown" class="squareCraft-hidden">
          <div class="squareCraft-mt-2 squareCraft-relative squareCraft-grid  squareCraft-grid-cols-12 squareCraft-gap-2 squareCraft-px-2">
             <div id="squareCraftFontSelect" class="squareCraft-flex squareCraft-bg-494949 squareCraft-h-9 squareCraft-col-span-7 squareCraft-rounded-6px squareCraft-justify-between squareCraft-border squareCraft-border-solid squareCraft-border-585858 squareCraft-items-center">
                 <select  class=" squareCraft-text-sm squareCraft-poppins squareCraft-font-light" 
