@@ -63,7 +63,9 @@
   });
 
   document.body.addEventListener("click", (event) => {
-    let selectedElement = event.target;
+    let selectedElement = event.target.closest("h1, h2, h3, h4, p"); // Find the closest heading or paragraph
+    if (!selectedElement) return;
+
     let tagName = selectedElement.tagName.toLowerCase();
     let selectedTextType = tagName;
 
@@ -83,7 +85,7 @@
 });
 
 
-  let selectedTextType = null; 
+
   
 
 
