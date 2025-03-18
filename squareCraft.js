@@ -119,7 +119,9 @@
             if (textType) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
             }
+            console.log(`Selecetd Element ${selectedElement}`);
           }
+
         });
   
         widgetElement.addEventListener("mouseout", () => {
