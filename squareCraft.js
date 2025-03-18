@@ -88,9 +88,9 @@
 
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest("h1, h2, h3, h4, p");
-    if (!block || block.closest("#squarecraft-widget-container")) return; // Prevent selecting widget elements
+    if (!block || block.closest("#squarecraft-widget-container")) return; 
 
-    selectedElement = block; // Set the selected Squarespace element
+    selectedElement = block; 
     let textType = getTextType(block.tagName.toLowerCase(), block);
     selectedTextType = textType ? textType.type : null;
 
