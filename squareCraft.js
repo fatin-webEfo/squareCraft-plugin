@@ -65,6 +65,8 @@
 
 
   let selectedTextType = null; 
+
+  
   function getTextType(tagName, element) {
     let classList = element?.classList || [];
 
@@ -72,93 +74,93 @@
     if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
     if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
     if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
-    
+
     if (tagName === "p") {
         if (classList.contains("sqsrte-large")) {
-            return { type: "paragraph1", borderColor: "#4B0082" }; 
+            return { type: "paragraph1", borderColor: "#4B0082" };
         } else if (classList.contains("sqsrte-small")) {
-            return { type: "paragraph3", borderColor: "#0000FF" }; 
+            return { type: "paragraph3", borderColor: "#0000FF" };
         } else {
-            return { type: "paragraph2", borderColor: "#9400D3" }; 
+            return { type: "paragraph2", borderColor: "#9400D3" };
         }
     }
     return null;
-}
+  }
 
- document.body.addEventListener("click", (event) => {
-    let block = event.target.closest("h1, h2, h3, h4, p");
-    if (!block) return;
+  // **Click Event: Select Text Element**
+  document.body.addEventListener("click", (event) => {
+      let block = event.target.closest("h1, h2, h3, h4, p");
+      if (!block) return;
 
-    selectedElement = block;
+      selectedElement = block;
+      let textType = getTextType(block.tagName.toLowerCase(), block);
+      selectedTextType = textType ? textType.type : null;
 
-    let textType = getTextType(block.tagName.toLowerCase(), block);
-    selectedTextType = textType ? textType.type : null;
+      console.log(`✅ Selected Element: ${selectedTextType}`);
+      console.log("🔎 Element Details:", selectedElement);
+      console.log("🎨 Computed Styles Before Hover:", window.getComputedStyle(selectedElement));
+  });
 
-    console.log(`✅ Selected Element: ${selectedTextType}`);
-    console.log("🔎 Element Details:", selectedElement);
-    console.log("🎨 Computed Styles:", window.getComputedStyle(selectedElement));
-});
+  // **Hover and Border Application**
+  function addHeadingEventListeners() {
+      const widgetElementIds = {
+          heading1: "h1",
+          heading2: "h2",
+          heading3: "h3",
+          heading4: "h4",
+          paragraph1: "p.sqsrte-large", // p1
+          paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
+          paragraph3: "p.sqsrte-small", // p3
+      };
 
-function addHeadingEventListeners() {
-    const widgetElementIds = {
-        heading1: "h1",
-        heading2: "h2",
-        heading3: "h3",
-        heading4: "h4",
-        paragraph1: "p.sqsrte-large", // p1
-        paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)", // p2
-        paragraph3: "p.sqsrte-small", // p3
-    };
+      Object.entries(widgetElementIds).forEach(([id, selector]) => {
+          const widgetElement = document.getElementById(id);
+          const arrowElement = document.getElementById(`${id}Arrow`);
 
-    Object.entries(widgetElementIds).forEach(([id, selector]) => {
-        const widgetElement = document.getElementById(id);
-        const arrowElement = document.getElementById(`${id}Arrow`);
+          if (widgetElement) {
+              widgetElement.addEventListener("mouseover", () => {
+                  console.log(`🟢 Hovered over ${id}`);
 
-        if (widgetElement) {
-            widgetElement.addEventListener("mouseover", () => {
-                console.log(`🟢 Hovered over ${id}`);
+                  if (selectedElement) {
+                      let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
-                if (selectedElement) {
-                    let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+                      if (textType && textType.type === id) {
+                          selectedElement.style.border = `2px solid ${textType.borderColor}`;
+                          console.log(`✅ Applied border to selected element: ${selectedTextType}`);
+                          console.log("🔎 Updated Element:", selectedElement);
+                          console.log("🎨 Computed Styles After Border:", window.getComputedStyle(selectedElement));
+                      }
+                  }
+              });
 
-                    if (textType && textType.type === id) {
-                        selectedElement.style.border = `2px solid ${textType.borderColor}`;
-                        console.log(`✅ Applied border to selected element: ${selectedTextType}`);
-                        console.log("🔎 Updated Element:", selectedElement);
-                        console.log("🎨 Updated Styles:", window.getComputedStyle(selectedElement));
-                    }
-                }
-            });
+              widgetElement.addEventListener("mouseout", () => {
+                  console.log(`🔴 Mouse out from ${id}`);
 
-            widgetElement.addEventListener("mouseout", () => {
-                console.log(`🔴 Mouse out from ${id}`);
+                  if (selectedElement) {
+                      selectedElement.style.border = "";
+                      console.log(`❌ Removed border from selected element: ${selectedTextType}`);
+                      console.log("🔎 Updated Element:", selectedElement);
+                      console.log("🎨 Updated Styles After Border Removal:", window.getComputedStyle(selectedElement));
+                  }
+              });
 
-                if (selectedElement) {
-                    selectedElement.style.border = "";
-                    console.log(`❌ Removed border from selected element: ${selectedTextType}`);
-                    console.log("🔎 Updated Element:", selectedElement);
-                    console.log("🎨 Updated Styles:", window.getComputedStyle(selectedElement));
-                }
-            });
+              widgetElement.addEventListener("click", () => {
+                  console.log(`🖱️ Clicked on ${id}`);
 
-            widgetElement.addEventListener("click", () => {
-                console.log(`🖱️ Clicked on ${id}`);
+                  if (arrowElement) {
+                      const isRotated = arrowElement.style.transform === "rotate(180deg)";
+                      arrowElement.style.transition = "transform 0.3s ease-in-out";
+                      arrowElement.style.transform = isRotated ? "rotate(0deg)" : "rotate(180deg)";
+                      console.log(`🔄 Rotated ${id}Arrow`);
+                  }
+              });
 
-                if (arrowElement) {
-                    const isRotated = arrowElement.style.transform === "rotate(180deg)";
-                    arrowElement.style.transition = "transform 0.3s ease-in-out";
-                    arrowElement.style.transform = isRotated ? "rotate(0deg)" : "rotate(180deg)";
-                    console.log(`🔄 Rotated ${id}Arrow`);
-                }
-            });
-
-            console.log(`✅ Event listeners added to ${id}`);
-        } else {
-            console.error(`❌ ${id} not found in DOM!`);
-        }
-    });
-}
-
+              console.log(`✅ Event listeners added to ${id}`);
+          } else {
+              console.error(`❌ ${id} not found in DOM!`);
+          }
+      });
+  }
 
 
   const observer = new MutationObserver(() => {
