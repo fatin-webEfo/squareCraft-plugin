@@ -154,7 +154,9 @@
   .squareCraft-mt-2{
     margin-top: 0.5rem !important; /* 8px */
   }
-
+  .squareCraft-mt-1{
+  margin-top: 0.2rem !important; /* 4px */
+}
   .squareCraft-items-center {
     align-items: center !important;
   }
@@ -822,7 +824,10 @@ font-size: 12px !important;
   margin-left: 0.15rem !important; /* 4px */
 }
 .squareCraft-ml-2{
-  margin-left: 0.5rem !important; /* 6px */
+  margin-left: 0.6rem !important; /* 6px */
+}
+.squareCraft-ml-3{
+  margin-left: 0.8rem !important; /* 16px */
 }
 
 .squareCraft-font-size-container {
