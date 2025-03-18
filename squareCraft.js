@@ -97,26 +97,26 @@
   }
   
   function addHeadingEventListeners() {
-    const widgetElementIds = [
-      "heading1",
-      "heading2",
-      "heading3",
-      "heading4",
-      "paragraph1",
-      "paragraph2",
-      "paragraph3",
-    ];
+    const widgetElementIds = {
+      heading1: "h1",
+      heading2: "h2",
+      heading3: "h3",
+      heading4: "h4",
+      paragraph1: "p",
+      paragraph2: "p",
+      paragraph3: "p",
+    };
   
-    widgetElementIds.forEach((id) => {
+    Object.entries(widgetElementIds).forEach(([id, tag]) => {
       const widgetElement = document.getElementById(id);
   
       if (widgetElement) {
         widgetElement.addEventListener("mouseover", () => {
           console.log(`Hovered over ${id}`);
   
-          if (selectedElement) {
+          if (selectedElement && selectedElement.tagName.toLowerCase() === tag) {
             let textType = getTextType(selectedElement);
-            if (textType && textType.type === id) {
+            if (textType) {
               selectedElement.style.border = `2px solid ${textType.borderColor}`;
             }
           }
@@ -136,6 +136,7 @@
       }
     });
   }
+  
   
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
