@@ -17,7 +17,6 @@ export function injectNavbarIcon() {
 
         navContainer.parentNode.insertBefore(icon, navContainer);
 
-        // Floating message container
         const message = document.createElement("div");
         message.classList.add("squareCraft-floating-message");
         message.innerHTML = `
@@ -27,10 +26,8 @@ export function injectNavbarIcon() {
             <div class="squareCraft-message-arrow"></div>
         `;
 
-        // Position the message near the icon
         navContainer.parentNode.insertBefore(message, navContainer);
 
-        // Remove the message after 5 seconds
         setTimeout(() => {
             message.style.opacity = "0";
             setTimeout(() => message.remove(), 500);
@@ -97,6 +94,5 @@ export function injectNavbarIcon() {
 
     observer.observe(parent.document.body, { childList: true, subtree: true });
 
-    console.log("📡 Watching for new toolbar elements...");
 
 }
