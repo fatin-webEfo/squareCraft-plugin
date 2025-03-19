@@ -206,47 +206,6 @@
   observer.observe(document.body, { childList: true, subtree: true });
 
 
-  document.body.addEventListener("mouseover", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    let textElements = block.querySelectorAll(
-      "h1, h2, h3, h4, p, strong, em, a"
-    );
-
-    if (textElements.length === 0) {
-      return;
-    }
-
-    let formattedText = [];
-
-    textElements.forEach((element) => {
-      let detectedType = getTextType(element);
-      let textContent = element.textContent.trim(); // Remove extra spaces
-
-      if (detectedType && textContent) {
-        formattedText.push(
-          `"${textContent}" <${element.tagName.toLowerCase()}>`
-        );
-        element.style.border = `2px solid #EF7C2F`;
-      }
-    });
-
-    if (formattedText.length > 0) {
-    }
-  });
-
-  document.body.addEventListener("mouseout", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    let textElements = block.querySelectorAll(
-      "h1, h2, h3, h4, p, strong, em, a"
-    );
-    textElements.forEach((element) => {
-      element.style.border = "";
-    });
-  });
 
   // Clicked outline
   // navbar icon
