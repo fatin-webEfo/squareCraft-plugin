@@ -31,8 +31,8 @@ export function injectNavbarIcon() {
                 message.style.color = "white";
                 message.style.padding = "10px 14px";
                 message.style.borderRadius = "8px";
-                message.style.fontSize = "14px";
-                message.style.fontWeight = "600";
+                message.style.fontSize = "12px";
+                message.style.fontWeight = "400";
                 message.style.zIndex = "99999";
                 message.style.opacity = "1";
                 message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
