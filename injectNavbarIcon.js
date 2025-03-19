@@ -18,8 +18,8 @@ export function injectNavbarIcon() {
         
                 navContainer.parentNode.insertBefore(icon, navContainer);
         
-                if (!localStorage.getItem("squareCraft_installed")) {
-                    localStorage.setItem("squareCraft_installed", "true"); 
+                if (!sessionStorage.getItem("squareCraft_installed")) {
+                    sessionStorage.setItem("squareCraft_installed", "true");
         
                     const message = document.createElement("div");
                     message.classList.add("squareCraft-floating-message");
@@ -32,9 +32,12 @@ export function injectNavbarIcon() {
         
                     document.body.appendChild(message);
         
-                    const iconRect = icon.getBoundingClientRect();
-                    message.style.top = `${iconRect.bottom + 5}px`; 
-                    message.style.left = `${iconRect.left - message.offsetWidth / 2 + icon.offsetWidth / 2}px`;
+                    setTimeout(() => {
+                        const iconRect = icon.getBoundingClientRect();
+                        message.style.top = `${iconRect.bottom + 8}px`; 
+                        message.style.left = `${iconRect.left + icon.offsetWidth / 2 - message.offsetWidth / 2}px`;
+                        message.style.opacity = "1";
+                    }, 100);
         
                     setTimeout(() => {
                         message.style.opacity = "0";
@@ -43,7 +46,6 @@ export function injectNavbarIcon() {
                 }
             }
         }
-        
         
         
     }
