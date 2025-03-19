@@ -14,10 +14,22 @@ export function injectNavbarIcon() {
                 icon.style.cursor = "pointer";
                 icon.style.display = "inline-block";
                 icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-
+        
                 navContainer.parentNode.insertBefore(icon, navContainer);
+        
+                const message = document.createElement("div");
+                message.textContent = "✅ SquareCraft successfully installed!";
+                message.classList.add("squareCraft-floating-message");
+        
+                navContainer.parentNode.insertBefore(message, navContainer);
+        
+                setTimeout(() => {
+                    message.style.opacity = "0";
+                    setTimeout(() => message.remove(), 500);
+                }, 5000);
             }
         }
+        
     }
 
     function insertToolbarIcon() {
