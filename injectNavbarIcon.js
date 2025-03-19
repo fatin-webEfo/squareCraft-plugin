@@ -19,6 +19,10 @@ export function injectNavbarIcon() {
 
         const message = document.createElement("div");
         message.classList.add("squareCraft-floating-message", "squareCraft-message-arrow");
+        message.style.border = "1px solid #E5E4E2";
+        message.style.borderRadius = "6px";
+        message.style.padding = "6px";
+        message.style.position = "absolute";
         message.innerHTML = `
             <div class="squareCraft-message-content">
                 ✅ SquareCraft successfully installed!
