@@ -208,7 +208,7 @@
 
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
-    if (!block || block.id.startsWith("block-selector-button-")) return;
+    if (event.target.closest('[id^="block-selector-button-"]')) return;
 
     let textElements = block.querySelectorAll(
       "h1, h2, h3, h4, p, strong, em, a"
