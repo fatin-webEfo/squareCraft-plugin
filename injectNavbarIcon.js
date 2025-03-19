@@ -19,6 +19,34 @@ export function injectNavbarIcon() {
 
         const message = document.createElement("div");
         message.classList.add("squareCraft-floating-message");
+        message.style.position = "absolute";
+        message.style.backgroundColor = "#2c2c2c";
+        message.style.color = "white";
+        message.style.padding = "10px 14px";
+        message.style.borderRadius = "8px";
+        message.style.fontSize = "14px";
+        message.style.fontWeight = "600";
+        message.style.zIndex = "99999";
+        message.style.opacity = "1";
+        message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
+        message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
+        message.style.whiteSpace = "nowrap";
+        message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
+        message.style.top = "100px";
+        message.style.left = "50%";
+        message.style.transform = "translateX(-50%)";
+        
+        const messageArrow = message.querySelector(".squareCraft-message-arrow");
+        messageArrow.style.position = "absolute";
+        messageArrow.style.bottom = "-8px";
+        messageArrow.style.left = "50%";
+        messageArrow.style.transform = "translateX(-50%)";
+        messageArrow.style.width = "0";
+        messageArrow.style.height = "0";
+        messageArrow.style.borderLeft = "8px solid transparent";
+        messageArrow.style.borderRight = "8px solid transparent";
+        messageArrow.style.borderTop = "8px solid #2c2c2c";
+        
         message.innerHTML = `
             <div class="squareCraft-message-content">
                 ✅ SquareCraft successfully installed!
