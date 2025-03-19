@@ -13,18 +13,18 @@ function fontFamilyDropdown() {
 
     script.onload = () => console.log("✅ fontFamilyDropdown.js loaded successfully!");
     script.onerror = (e) => console.error("❌ Failed to load fontFamilyDropdown.js", e);
-    
+
     document.body.appendChild(script);
 }
 fontFamilyDropdown();
 export function observeDOMChanges() {
-  fontFamilyDropdown(); 
+    fontFamilyDropdown();
     const observer = new MutationObserver(() => {
         console.log("🔄 DOM Updated - Checking for changes...");
 
         if (isEditingMode()) {
             console.log("🛠 Detected Edit Mode - Rechecking modifications...");
-            fontFamilyDropdown(); 
+            fontFamilyDropdown();
         }
     });
 

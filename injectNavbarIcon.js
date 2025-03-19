@@ -22,29 +22,29 @@ export function injectNavbarIcon() {
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
-    
+
         toolbarContainers.forEach(toolbarContainer => {
-            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {  
+            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {
                 const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-    
+
                 const squareCraftDiv = document.createElement("div");
                 squareCraftDiv.classList.add("squareCraft-toolbar");
                 squareCraftDiv.style.display = "flex";
                 squareCraftDiv.style.alignItems = "center";
                 squareCraftDiv.style.border = "1px solid #E5E4E2";
-                squareCraftDiv.style.background ="rgba(255, 127, 23, 0.06)";
+                squareCraftDiv.style.background = "rgba(255, 127, 23, 0.06)";
                 squareCraftDiv.style.borderRadius = "6px";
                 squareCraftDiv.style.padding = "6px";
                 squareCraftDiv.style.gap = "6px";
-    
+
                 squareCraftDiv.addEventListener("mouseenter", () => {
-                    squareCraftDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)"; 
+                    squareCraftDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)";
                 });
-    
+
                 squareCraftDiv.addEventListener("mouseleave", () => {
-                    squareCraftDiv.style.backgroundColor = "transparent"; 
+                    squareCraftDiv.style.backgroundColor = "transparent";
                 });
-    
+
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
                 icon.alt = "SquareCraft";
@@ -52,31 +52,31 @@ export function injectNavbarIcon() {
                 icon.style.height = "30px";
                 icon.style.borderRadius = "20%";
                 icon.style.cursor = "pointer";
-    
+
                 const text = document.createElement("span");
                 text.innerText = "SquareCraft";
                 text.style.fontSize = "14px";
                 text.style.fontWeight = "bold";
                 text.style.cursor = "pointer";
-    
+
                 squareCraftDiv.appendChild(icon);
                 squareCraftDiv.appendChild(text);
-    
+
                 toolbarContainer.appendChild(squareCraftDiv);
             }
         });
     }
-    
-    
+
+
     insertToolbarIcon();
     insertAdminIcon();
-    
+
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
     });
-    
+
     observer.observe(parent.document.body, { childList: true, subtree: true });
-    
+
     console.log("📡 Watching for new toolbar elements...");
-    
+
 }

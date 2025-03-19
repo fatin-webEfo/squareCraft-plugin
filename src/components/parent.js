@@ -25,7 +25,7 @@
 
         const script = document.createElement("script");
         script.id = "squareCraft-script-tab";
-        script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/parentHtmlTab.js"; 
+        script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/parentHtmlTab.js";
         script.defer = true;
 
         script.onerror = (e) => console.error("❌ Failed to load parentHtmlTab.js", e);
@@ -63,9 +63,9 @@
         fontFamilyDropdown();
     }
 
-    let parentHtml,  observeDOMChanges
-    //  getStyles
-     ;
+    let parentHtml, observeDOMChanges
+        //  getStyles
+        ;
 
     async function loadModule(url) {
         try {
@@ -88,7 +88,7 @@
     }
 
 
-     if (!observeDOMChanges) {
+    if (!observeDOMChanges) {
         console.error("�� observeDOMChanges function not found! Check if the script loaded properly.");
 
     }
@@ -109,13 +109,13 @@
             return;
         }
 
-        if (document.getElementById("squarecraft-widget-container")) {
+        if (document.getElementById("squareCraft-widget-container")) {
             console.warn("⚠️ Widget already exists, skipping creation.");
             return;
         }
 
         const widgetContainer = document.createElement("div");
-        widgetContainer.id = "squarecraft-widget-container";
+        widgetContainer.id = "squareCraft-widget-container";
         widgetContainer.style.position = "fixed";
         widgetContainer.style.top = "100px";
         widgetContainer.style.left = "100px";
@@ -124,7 +124,7 @@
 
         const style = document.createElement("style");
         style.innerHTML = `
-                #squarecraft-widget-container {
+                #squareCraft-widget-container {
                     display: block !important;
                     visibility: visible !important;
                     opacity: 1 !important;
@@ -147,7 +147,7 @@
         }
 
         setTimeout(() => {
-            if (!document.getElementById("squarecraft-widget-container")) {
+            if (!document.getElementById("squareCraft-widget-container")) {
                 console.warn("⚠️ Widget was removed! Re-adding...");
                 document.body.appendChild(widgetContainer);
             }
@@ -158,7 +158,7 @@
 
 
     setInterval(() => {
-        if (!document.getElementById("squarecraft-widget-container")) {
+        if (!document.getElementById("squareCraft-widget-container")) {
             console.warn("⚠️ Widget removed by Squarespace! Re-adding...");
             fontFamilyDropdowninteract();
             parentTabFunction();

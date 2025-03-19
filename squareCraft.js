@@ -1,11 +1,11 @@
 (async function squareCraft() {
   // No changes
   // parent script call
-  const widgetScript = document.getElementById("squarecraft-script");
+  const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
     console.error(
-      "❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'."
+      "❌ Widget script not found! Ensure the script tag exists with id 'squareCraft-script'."
     );
     return;
   }
@@ -65,11 +65,11 @@
 
 
 
-  
 
 
 
-  
+
+
   function getTextType(tagName, element) {
     let classList = element?.classList || [];
 
@@ -79,13 +79,13 @@
     if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
 
     if (tagName === "p") {
-        if (classList.contains("sqsrte-large")) {
-            return { type: "paragraph1", borderColor: "#4B0082" };
-        } else if (classList.contains("sqsrte-small")) {
-            return { type: "paragraph3", borderColor: "#0000FF" };
-        } else {
-            return { type: "paragraph2", borderColor: "#9400D3" };
-        }
+      if (classList.contains("sqsrte-large")) {
+        return { type: "paragraph1", borderColor: "#4B0082" };
+      } else if (classList.contains("sqsrte-small")) {
+        return { type: "paragraph3", borderColor: "#0000FF" };
+      } else {
+        return { type: "paragraph2", borderColor: "#9400D3" };
+      }
     }
     return null;
   }
@@ -112,100 +112,100 @@
 
 
   async function addHeadingEventListeners() {
-    const widgetContainer = document.getElementById("squarecraft-widget-container");
+    const widgetContainer = document.getElementById("squareCraft-widget-container");
 
     if (!widgetContainer) {
-        console.error("❌ Widget container not found!");
-        return;
+      console.error("❌ Widget container not found!");
+      return;
     }
 
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
     widgetContainer.addEventListener("mouseover", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement) return;
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
 
 
-        if (selectedElement) {
-            let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+      if (selectedElement) {
+        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
-            if (textType && textType.type === widgetElement.id) {
-                selectedElement.style.border = `2px solid ${textType.borderColor}`;
-            }
+        if (textType && textType.type === widgetElement.id) {
+          selectedElement.style.border = `2px solid ${textType.borderColor}`;
         }
+      }
     });
 
     widgetContainer.addEventListener("mouseout", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement) return;
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
 
 
-        if (selectedElement) {
-            selectedElement.style.border = "";
-        }
+      if (selectedElement) {
+        selectedElement.style.border = "";
+      }
     });
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
-  
+
       document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-          if (dropdown.id !== widgetElement.id + "Dropdown") {
-              dropdown.classList.add("squareCraft-hidden");
-          }
+        if (dropdown.id !== widgetElement.id + "Dropdown") {
+          dropdown.classList.add("squareCraft-hidden");
+        }
       });
-  
+
       document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-          if (!widgetElement.contains(arrow)) {
-              arrow.classList.remove("squareCraft-rotate-180");
-          }
+        if (!widgetElement.contains(arrow)) {
+          arrow.classList.remove("squareCraft-rotate-180");
+        }
       });
-  
+
       const dropdownId = widgetElement.id + "Dropdown";
       const dropdownElement = document.getElementById(dropdownId);
-  
+
       if (dropdownElement) {
-          const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-  
-          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-              dropdown.classList.add("squareCraft-hidden");
-          });
-  
-          if (isHidden) {
-              dropdownElement.classList.remove("squareCraft-hidden");
-              setTimeout(() => {
-                  dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
-              }, 200);
-          }
+        const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+
+        document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+          dropdown.classList.add("squareCraft-hidden");
+        });
+
+        if (isHidden) {
+          dropdownElement.classList.remove("squareCraft-hidden");
+          setTimeout(() => {
+            dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 200);
+        }
       }
-  
+
       const arrowElement = widgetElement.querySelector("img");
       if (arrowElement) {
-          arrowElement.classList.toggle("squareCraft-rotate-180");
+        arrowElement.classList.toggle("squareCraft-rotate-180");
       }
-  });
-  
-}
+    });
+
+  }
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-});
-
-observer.observe(document.body, { childList: true, subtree: true });
-
-setTimeout(() => {
-    addHeadingEventListeners();
-}, 1000);
-
-
-setTimeout(() => {
-    addHeadingEventListeners();
-}, 1000);
+  });
 
   observer.observe(document.body, { childList: true, subtree: true });
-  
-  
+
+  setTimeout(() => {
+    addHeadingEventListeners();
+  }, 1000);
+
+
+  setTimeout(() => {
+    addHeadingEventListeners();
+  }, 1000);
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
@@ -333,7 +333,7 @@ setTimeout(() => {
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
       widgetContainer = document.createElement("div");
-      widgetContainer.id = "squarecraft-widget-container";
+      widgetContainer.id = "squareCraft-widget-container";
       widgetContainer.classList.add(
         "squareCraft-fixed",
         "squareCraft-text-color-white",
@@ -348,7 +348,7 @@ setTimeout(() => {
 
       setTimeout(() => {
         widgetContainer = document.getElementById(
-          "squarecraft-widget-container"
+          "squareCraft-widget-container"
         );
         if (!widgetContainer) {
           console.error("❌ Widget container failed to load.");
@@ -492,7 +492,7 @@ setTimeout(() => {
           if (!widgetLoaded) {
             createWidget().then(() => {
               widgetContainer = document.getElementById(
-                "squarecraft-widget-container"
+                "squareCraft-widget-container"
               );
               if (widgetContainer) {
                 widgetContainer.style.display = "block";

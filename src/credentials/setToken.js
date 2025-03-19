@@ -1,8 +1,8 @@
 window.setToken = async function () {
     return new Promise((resolve) => {
-        const widgetScript = document.getElementById("squarecraft-script");
+        const widgetScript = document.getElementById("squareCraft-script");
         if (!widgetScript) {
-            console.error("❌ Widget script not found! Ensure the script tag exists with id 'squarecraft-script'.");
+            console.error("❌ Widget script not found! Ensure the script tag exists with id 'squareCraft-script'.");
             resolve({});
             return;
         }
