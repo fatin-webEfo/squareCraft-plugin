@@ -477,7 +477,6 @@
   white-space: nowrap;
 }
 
-/* Message arrow */
 .squareCraft-message-arrow {
   position: absolute;
   bottom: -6px;
@@ -490,7 +489,6 @@
   border-top: 6px solid #2c2c2c;
 }
 
-/* Fade-in animation */
 @keyframes squareCraftFadeIn {
   from {
       transform: translateY(-5px);
@@ -504,9 +502,8 @@
 
 .squareCraft-px-2_5 {
   padding-left: 0.625rem !important;
-  /* 10px */
   padding-right: 0.625rem !important;
-  /* 10px */
+
 }
 
 .squareCraft-text-center {
@@ -515,12 +512,12 @@
 
 .squareCraft-gap-10px {
   gap: 0.625rem !important;
-  /* 10px */
+
 }
 
 .squareCraft-right-1 {
   right: 0.12rem !important;
-  /* 4px */
+
 }
 
 .squareCraft-rounded-22px {

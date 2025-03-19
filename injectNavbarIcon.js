@@ -2,6 +2,7 @@ export function injectNavbarIcon() {
     function insertAdminIcon() {
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
             const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+        
             if (navContainer) {
                 const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 const icon = document.createElement("img");
@@ -17,27 +18,32 @@ export function injectNavbarIcon() {
         
                 navContainer.parentNode.insertBefore(icon, navContainer);
         
-                const message = document.createElement("div");
-                message.classList.add("squareCraft-floating-message");
-                message.innerHTML = `
-                    <div class="squareCraft-message-content">
-                        ✅ SquareCraft successfully installed!
-                    </div>
-                    <div class="squareCraft-message-arrow"></div>
-                `;
+                if (!localStorage.getItem("squareCraft_installed")) {
+                    localStorage.setItem("squareCraft_installed", "true"); 
         
-                document.body.appendChild(message);
+                    const message = document.createElement("div");
+                    message.classList.add("squareCraft-floating-message");
+                    message.innerHTML = `
+                        <div class="squareCraft-message-content">
+                            ✅ SquareCraft successfully installed!
+                        </div>
+                        <div class="squareCraft-message-arrow"></div>
+                    `;
         
-                const iconRect = icon.getBoundingClientRect();
-                message.style.top = `${iconRect.bottom + 5}px`; 
-                message.style.left = `${iconRect.left - message.offsetWidth / 2 + icon.offsetWidth / 2}px`;
+                    document.body.appendChild(message);
         
-                setTimeout(() => {
-                    message.style.opacity = "0";
-                    setTimeout(() => message.remove(), 500);
-                }, 5000);
+                    const iconRect = icon.getBoundingClientRect();
+                    message.style.top = `${iconRect.bottom + 5}px`; 
+                    message.style.left = `${iconRect.left - message.offsetWidth / 2 + icon.offsetWidth / 2}px`;
+        
+                    setTimeout(() => {
+                        message.style.opacity = "0";
+                        setTimeout(() => message.remove(), 500);
+                    }, 5000);
+                }
             }
         }
+        
         
         
     }
