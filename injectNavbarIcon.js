@@ -1,53 +1,43 @@
 export function injectNavbarIcon() {
     function insertAdminIcon() {
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
-            const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-        
-            if (navContainer) {
-                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                const icon = document.createElement("img");
-                icon.src = iconSrc;
-                icon.alt = "SquareCraft";
-                icon.style.width = "30px";
-                icon.style.height = "30px";
-                icon.style.borderRadius = "20%";
-                icon.style.marginRight = "6px";
-                icon.style.cursor = "pointer";
-                icon.style.display = "inline-block";
-                icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-        
-                navContainer.parentNode.insertBefore(icon, navContainer);
-        
-                if (!sessionStorage.getItem("squareCraft_installed")) {
-                    sessionStorage.setItem("squareCraft_installed", "true");
-        
-                    const message = document.createElement("div");
-                    message.classList.add("squareCraft-floating-message");
-                    message.innerHTML = `
-                        <div class="squareCraft-message-content">
-                            ✅ SquareCraft successfully installed!
-                        </div>
-                        <div class="squareCraft-message-arrow"></div>
-                    `;
-        
-                    document.body.appendChild(message);
-        
-                    setTimeout(() => {
-                        const iconRect = icon.getBoundingClientRect();
-                        message.style.top = `${iconRect.bottom + 8}px`; 
-                        message.style.left = `${iconRect.left + icon.offsetWidth / 2 - message.offsetWidth / 2}px`;
-                        message.style.opacity = "1";
-                    }, 100);
-        
-                    setTimeout(() => {
-                        message.style.opacity = "0";
-                        setTimeout(() => message.remove(), 500);
-                    }, 5000);
-                }
-            }
-        }
-        
-        
+    const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+    if (navContainer) {
+        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        const icon = document.createElement("img");
+        icon.src = iconSrc;
+        icon.alt = "SquareCraft";
+        icon.style.width = "30px";
+        icon.style.height = "30px";
+        icon.style.borderRadius = "20%";
+        icon.style.marginRight = "6px";
+        icon.style.cursor = "pointer";
+        icon.style.display = "inline-block";
+        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+
+        navContainer.parentNode.insertBefore(icon, navContainer);
+
+        // Floating message container
+        const message = document.createElement("div");
+        message.classList.add("squareCraft-floating-message");
+        message.innerHTML = `
+            <div class="squareCraft-message-content">
+                ✅ SquareCraft successfully installed!
+            </div>
+            <div class="squareCraft-message-arrow"></div>
+        `;
+
+        // Position the message near the icon
+        navContainer.parentNode.insertBefore(message, navContainer);
+
+        // Remove the message after 5 seconds
+        setTimeout(() => {
+            message.style.opacity = "0";
+            setTimeout(() => message.remove(), 500);
+        }, 5000);
+    }
+}
+
     }
 
     function insertToolbarIcon() {
