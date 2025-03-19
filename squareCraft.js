@@ -229,7 +229,7 @@
         formattedText.push(
           `"${textContent}" <${element.tagName.toLowerCase()}>`
         );
-        element.style.border = `2px solid ${detectedType.color}`;
+        element.style.border = `2px solid #EF7C2F`;
       }
     });
 
