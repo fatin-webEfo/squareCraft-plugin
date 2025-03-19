@@ -41,7 +41,7 @@ export function injectNavbarIcon() {
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
                 message.style.top = "60px";
                 message.style.right = "10%";
-                message.style.transform = "translateX(-50%)";
+                message.style.transform = "translateX(-30%)";
 
                 navContainer.parentNode.insertBefore(message, navContainer);
 
