@@ -21,7 +21,7 @@ export function injectNavbarIcon() {
                 message.classList.add("squareCraft-floating-message");
                 message.innerHTML = `
                     <div class="squareCraft-message-content">
-                        ✅ SquareCraft successfully installed!
+                        ✅ SquareCraft installed!
                     </div>
                     <div class="squareCraft-message-arrow"></div>
                 `;
