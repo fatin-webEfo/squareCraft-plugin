@@ -122,29 +122,6 @@
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
-    widgetContainer.addEventListener("mouseover", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
-
-
-      if (selectedElement) {
-        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-
-        if (textType && textType.type === widgetElement.id) {
-          selectedElement.style.border = `2px solid ${textType.borderColor}`;
-        }
-      }
-    });
-
-    widgetContainer.addEventListener("mouseout", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
-
-
-      if (selectedElement) {
-        selectedElement.style.border = "";
-      }
-    });
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
