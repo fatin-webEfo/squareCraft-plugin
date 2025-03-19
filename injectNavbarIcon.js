@@ -47,7 +47,7 @@ export function injectNavbarIcon() {
 
                 const messageArrow = message.querySelector(".squareCraft-message-arrow");
                 messageArrow.style.position = "absolute";
-                messageArrow.style.bottom = "-8px";
+                messageArrow.style.top = "-8px";
                 messageArrow.style.left = "50%";
                 messageArrow.style.transform = "translateX(-50%)";
                 messageArrow.style.width = "0";
