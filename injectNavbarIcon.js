@@ -1,68 +1,67 @@
 export function injectNavbarIcon() {
     function insertAdminIcon() {
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
-    const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-    if (navContainer) {
-        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-        const icon = document.createElement("img");
-        icon.src = iconSrc;
-        icon.alt = "SquareCraft";
-        icon.style.width = "30px";
-        icon.style.height = "30px";
-        icon.style.borderRadius = "20%";
-        icon.style.marginRight = "6px";
-        icon.style.cursor = "pointer";
-        icon.style.display = "inline-block";
-        icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+            const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+            if (navContainer) {
+                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                const icon = document.createElement("img");
+                icon.src = iconSrc;
+                icon.alt = "SquareCraft";
+                icon.style.width = "30px";
+                icon.style.height = "30px";
+                icon.style.borderRadius = "20%";
+                icon.style.marginRight = "6px";
+                icon.style.cursor = "pointer";
+                icon.style.display = "inline-block";
+                icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
 
-        navContainer.parentNode.insertBefore(icon, navContainer);
+                navContainer.parentNode.insertBefore(icon, navContainer);
 
-        const message = document.createElement("div");
-        message.classList.add("squareCraft-floating-message");
-        message.style.position = "absolute";
-        message.style.backgroundColor = "#2c2c2c";
-        message.style.color = "white";
-        message.style.padding = "10px 14px";
-        message.style.borderRadius = "8px";
-        message.style.fontSize = "14px";
-        message.style.fontWeight = "600";
-        message.style.zIndex = "99999";
-        message.style.opacity = "1";
-        message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
-        message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
-        message.style.whiteSpace = "nowrap";
-        message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-        message.style.top = "100px";
-        message.style.left = "50%";
-        message.style.transform = "translateX(-50%)";
-        
-        const messageArrow = message.querySelector(".squareCraft-message-arrow");
-        messageArrow.style.position = "absolute";
-        messageArrow.style.bottom = "-8px";
-        messageArrow.style.left = "50%";
-        messageArrow.style.transform = "translateX(-50%)";
-        messageArrow.style.width = "0";
-        messageArrow.style.height = "0";
-        messageArrow.style.borderLeft = "8px solid transparent";
-        messageArrow.style.borderRight = "8px solid transparent";
-        messageArrow.style.borderTop = "8px solid #2c2c2c";
-        
-        message.innerHTML = `
-            <div class="squareCraft-message-content">
-                ✅ SquareCraft successfully installed!
-            </div>
-            <div class="squareCraft-message-arrow"></div>
-        `;
+                const message = document.createElement("div");
+                message.classList.add("squareCraft-floating-message");
+                message.innerHTML = `
+                    <div class="squareCraft-message-content">
+                        ✅ SquareCraft successfully installed!
+                    </div>
+                    <div class="squareCraft-message-arrow"></div>
+                `;
 
-        navContainer.parentNode.insertBefore(message, navContainer);
+                message.style.position = "absolute";
+                message.style.backgroundColor = "#2c2c2c";
+                message.style.color = "white";
+                message.style.padding = "10px 14px";
+                message.style.borderRadius = "8px";
+                message.style.fontSize = "14px";
+                message.style.fontWeight = "600";
+                message.style.zIndex = "99999";
+                message.style.opacity = "1";
+                message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
+                message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
+                message.style.whiteSpace = "nowrap";
+                message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
+                message.style.top = "100px";
+                message.style.left = "50%";
+                message.style.transform = "translateX(-50%)";
 
-        setTimeout(() => {
-            message.style.opacity = "0";
-            setTimeout(() => message.remove(), 500);
-        }, 5000);
-    }
-}
+                navContainer.parentNode.insertBefore(message, navContainer);
 
+                const messageArrow = message.querySelector(".squareCraft-message-arrow");
+                messageArrow.style.position = "absolute";
+                messageArrow.style.bottom = "-8px";
+                messageArrow.style.left = "50%";
+                messageArrow.style.transform = "translateX(-50%)";
+                messageArrow.style.width = "0";
+                messageArrow.style.height = "0";
+                messageArrow.style.borderLeft = "8px solid transparent";
+                messageArrow.style.borderRight = "8px solid transparent";
+                messageArrow.style.borderTop = "8px solid #2c2c2c";
+
+                setTimeout(() => {
+                    message.style.opacity = "0";
+                    setTimeout(() => message.remove(), 500);
+                }, 5000);
+            }
+        }
     }
 
     function insertToolbarIcon() {
@@ -112,7 +111,6 @@ export function injectNavbarIcon() {
         });
     }
 
-
     insertToolbarIcon();
     insertAdminIcon();
 
@@ -121,6 +119,4 @@ export function injectNavbarIcon() {
     });
 
     observer.observe(parent.document.body, { childList: true, subtree: true });
-
-
 }
