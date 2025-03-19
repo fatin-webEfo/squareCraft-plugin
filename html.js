@@ -36,7 +36,7 @@ export function html() {
          </div>
       </div>
       <div
-         class="squareCraft-rounded-6px squareCraft-h-350 squareCraft-mt-6  squareCraft-border squareCraft-border-solid squareCraft-border-EF7C2F squareCraft-bg-color-3d3d3d">
+         class="squareCraft-rounded-6px squareCraft-h-350 squareCraft-scrollBar squareCraft-mt-6  squareCraft-border squareCraft-border-solid squareCraft-border-EF7C2F squareCraft-bg-color-3d3d3d">
          <div class="squareCraft-flex squareCraft-p-2 squareCraft-items-center squareCraft-justify-between">
             <div class="squareCraft-flex squareCraft-gap-2 squareCraft-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.svg" alt="">

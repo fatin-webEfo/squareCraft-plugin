@@ -731,29 +731,28 @@
 }
 
 
-::-webkit-scrollbar {
+.squareCraft-scrollBar::-webkit-scrollbar {
   width: 6px !important;
 }
 
-::-webkit-scrollbar-track {
+.squareCraft-scrollBar::-webkit-scrollbar-track {
   background: #222 !important;
   border-radius: 100% !important;
 }
 
-::-webkit-scrollbar-thumb {
+.squareCraft-scrollBar::-webkit-scrollbar-thumb {
   background: #ff7f00 !important;
   border-radius: 100% !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.squareCraft-scrollBar::-webkit-scrollbar-thumb:hover {
   background: #e67600 !important;
   border-radius: 100%;
 }
 
-* {
+.squareCraft-scrollBar {
   scrollbar-width: thin !important;
   scrollbar-color: #ff7f00 #222 !important;
-
 }
 
 .squareCraft-loader {
