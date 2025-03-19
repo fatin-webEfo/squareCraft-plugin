@@ -208,33 +208,34 @@
 
   document.body.addEventListener("mouseover", (event) => {
     let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
+    if (!block || block.id.startsWith("block-selector-button-")) return; 
 
     let textElements = block.querySelectorAll(
-      "h1, h2, h3, h4, p, strong, em, a"
+        "h1, h2, h3, h4, p, strong, em, a"
     );
 
     if (textElements.length === 0) {
-      return;
+        return;
     }
 
     let formattedText = [];
 
     textElements.forEach((element) => {
-      let detectedType = getTextType(element);
-      let textContent = element.textContent.trim(); // Remove extra spaces
+        let detectedType = getTextType(element);
+        let textContent = element.textContent.trim(); // Remove extra spaces
 
-      if (detectedType && textContent) {
-        formattedText.push(
-          `"${textContent}" <${element.tagName.toLowerCase()}>`
-        );
-        element.style.border = `2px solid ${detectedType.color}`;
-      }
+        if (detectedType && textContent) {
+            formattedText.push(
+                `"${textContent}" <${element.tagName.toLowerCase()}>`
+            );
+            element.style.border = `2px solid ${detectedType.color}`;
+        }
     });
 
     if (formattedText.length > 0) {
     }
-  });
+});
+
 
   document.body.addEventListener("mouseout", (event) => {
     let block = event.target.closest('[id^="block-"]');
