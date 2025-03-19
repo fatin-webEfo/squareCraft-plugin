@@ -39,8 +39,8 @@ export function injectNavbarIcon() {
                 message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "50px";
-                message.style.right = "20%";
+                message.style.top = "60px";
+                message.style.right = "10%";
                 message.style.transform = "translateX(-50%)";
 
                 navContainer.parentNode.insertBefore(message, navContainer);
@@ -54,7 +54,7 @@ export function injectNavbarIcon() {
                 messageArrow.style.height = "0";
                 messageArrow.style.borderLeft = "8px solid transparent";
                 messageArrow.style.borderRight = "8px solid transparent";
-                messageArrow.style.borderTop = "8px solid #2c2c2c";
+                messageArrow.style.borderBottom = "8px solid #2c2c2c";
 
                 setTimeout(() => {
                     message.style.opacity = "0";
