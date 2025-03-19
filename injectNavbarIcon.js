@@ -18,7 +18,7 @@ export function injectNavbarIcon() {
         navContainer.parentNode.insertBefore(icon, navContainer);
 
         const message = document.createElement("div");
-        message.classList.add("squareCraft-floating-message");
+        message.classList.add("squareCraft-floating-message", "squareCraft-message-arrow");
         message.innerHTML = `
             <div class="squareCraft-message-content">
                 ✅ SquareCraft successfully installed!
