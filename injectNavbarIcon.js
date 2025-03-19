@@ -18,10 +18,19 @@ export function injectNavbarIcon() {
                 navContainer.parentNode.insertBefore(icon, navContainer);
         
                 const message = document.createElement("div");
-                message.textContent = "✅ SquareCraft successfully installed!";
                 message.classList.add("squareCraft-floating-message");
+                message.innerHTML = `
+                    <div class="squareCraft-message-content">
+                        ✅ SquareCraft successfully installed!
+                    </div>
+                    <div class="squareCraft-message-arrow"></div>
+                `;
         
-                navContainer.parentNode.insertBefore(message, navContainer);
+                document.body.appendChild(message);
+        
+                const iconRect = icon.getBoundingClientRect();
+                message.style.top = `${iconRect.bottom + 5}px`; 
+                message.style.left = `${iconRect.left - message.offsetWidth / 2 + icon.offsetWidth / 2}px`;
         
                 setTimeout(() => {
                     message.style.opacity = "0";
@@ -29,6 +38,7 @@ export function injectNavbarIcon() {
                 }, 5000);
             }
         }
+        
         
     }
 
