@@ -331,7 +331,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-                <div id="heading2Dropdown">
+                <div id="heading2Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
@@ -574,7 +574,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-                <div id="heading3Dropdown">
+                <div id="heading3Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
@@ -817,7 +817,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-                <div id="heading4Dropdown">
+                <div id="heading4Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
@@ -1060,7 +1060,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-               <div id="paragraph1Dropdown">
+               <div id="paragraph1Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
@@ -1303,7 +1303,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-               <div id="paragraph2Dropdown">
+               <div id="paragraph2Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
@@ -1546,7 +1546,7 @@ export function html() {
                         class="squareCraft-rotate-180" alt="">
                   </div>
                </div>
-               <div id="paragraph1Dropdown">
+               <div id="paragraph3Dropdown" class="squareCraft-hidden">
                   
                   <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                      
