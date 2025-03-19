@@ -39,8 +39,8 @@ export function injectNavbarIcon() {
                 message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "100px";
-                message.style.left = "50%";
+                message.style.top = "50px";
+                message.style.right = "20%";
                 message.style.transform = "translateX(-50%)";
 
                 navContainer.parentNode.insertBefore(message, navContainer);
