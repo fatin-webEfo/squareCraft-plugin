@@ -12,7 +12,6 @@ export function injectNavbarIcon() {
             }
         }
     }
-    
     function showFloatingMessage() {
         const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
         if (navContainer) {
