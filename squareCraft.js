@@ -134,6 +134,12 @@ console.log("parent" , Url)
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+
+      if (isInsideDropdown) {
+          return;
+      }
+
       if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
 
       document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
@@ -171,6 +177,7 @@ console.log("parent" , Url)
         arrowElement.classList.toggle("squareCraft-rotate-180");
       }
     });
+
 
   }
 
