@@ -117,7 +117,7 @@
           const hoveredElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
           if (!hoveredElement || !selectedElement || !selectedTextType) return;
   
-          selectedElement.style.border = ""; // Remove border when not hovering
+          selectedElement.style.border = ""; 
       });
   }
   
