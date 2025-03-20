@@ -1,5 +1,5 @@
 (async function squareCraft() {
-  const Url = parent.document
+  const Url = parent.document.location.href
 console.log("parent" , Url)
   // No changes
   // parent script call
