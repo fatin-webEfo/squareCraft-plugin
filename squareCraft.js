@@ -68,8 +68,6 @@
 
 
 
-
-
   function getTextType(tagName, element) {
     let classList = element?.classList || [];
 
