@@ -26,8 +26,7 @@ export function injectNavbarIcon() {
             icon.style.marginRight = "6px";
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
-            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-    
+            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");  
             navContainer.parentNode.insertBefore(icon, navContainer);
     
             const message = document.createElement("div");
