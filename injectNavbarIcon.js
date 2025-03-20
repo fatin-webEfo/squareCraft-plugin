@@ -1,15 +1,10 @@
 export function injectNavbarIcon() {
-
+    
     function insertAdminIcon() {
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
             const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
             if (navContainer) {
-                const iconSrc = localStorage.getItem("squareCraft_icon");
-
-                if (!iconSrc) {
-                    iconSrc = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                    localStorage.setItem("squareCraft_icon", iconSrc); 
-                }
+                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
                 icon.alt = "SquareCraft";
@@ -75,12 +70,7 @@ export function injectNavbarIcon() {
 
         toolbarContainers.forEach(toolbarContainer => {
             if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {
-                const iconSrc = localStorage.getItem("squareCraft_icon");
-
-                if (!iconSrc) {
-                    iconSrc = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                    localStorage.setItem("squareCraft_icon", iconSrc);  // Save to localStorage if not found
-                }
+                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
                 const squareCraftDiv = document.createElement("div");
                 squareCraftDiv.classList.add("squareCraft-toolbar");
