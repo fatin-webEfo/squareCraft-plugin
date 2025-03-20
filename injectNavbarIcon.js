@@ -50,9 +50,10 @@ export function injectNavbarIcon() {
             message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
             message.style.whiteSpace = "nowrap";
             message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-            message.style.top = "60px";
-            message.style.right = "10%";
-            message.style.transform = "translateX(-18%)";
+            
+            const iconRect = icon.getBoundingClientRect();
+            message.style.top = `${iconRect.bottom + 8}px`;  // Adds margin-top of 8px
+            message.style.left = `${iconRect.left}px`;  // Aligns it horizontally with the icon
     
             document.body.appendChild(message);
     
@@ -75,6 +76,7 @@ export function injectNavbarIcon() {
             }, 5000);
         }
     }
+    
     
     insertAdminIcon();
     
