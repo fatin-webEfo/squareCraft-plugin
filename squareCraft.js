@@ -1,4 +1,6 @@
 (async function squareCraft() {
+  const Url = parent.document
+console.log("parent" , Url)
   // No changes
   // parent script call
   const widgetScript = document.getElementById("squareCraft-script");
@@ -46,8 +48,7 @@
       console.error("No selected element found.");
       return;
     }
-
-    // Assume this dropdown is for font selection
+ 
     const fontSelector = document.getElementById("squareCraftFontSelector");
 
     if (!fontSelector) {
@@ -61,8 +62,6 @@
     });
 
   });
-
-
 
   function getTextType(tagName, element) {
     let classList = element?.classList || [];
