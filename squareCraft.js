@@ -145,32 +145,41 @@
     }
   }
 
-  function loadWidgetFromString(htmlString) {
+  async function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "squareCraft-widget-container";
-      widgetContainer.classList.add(
-        "squareCraft-fixed",
-        "squareCraft-text-color-white",
-        "squareCraft-universal",
-        "squareCraft-z-9999"
-      );
-      widgetContainer.innerHTML = htmlString;
-      widgetContainer.style.display = "none";
-      document.body.appendChild(widgetContainer);
-      makeWidgetDraggable();
-      widgetLoaded = true;
-
-      setTimeout(() => {
-        widgetContainer = document.getElementById(
-          "squareCraft-widget-container"
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "squareCraft-widget-container";
+        widgetContainer.classList.add(
+            "squareCraft-fixed",
+            "squareCraft-text-color-white",
+            "squareCraft-universal",
+            "squareCraft-z-9999"
         );
-        if (!widgetContainer) {
-          console.error("❌ Widget container failed to load.");
+        widgetContainer.innerHTML = htmlString;
+        widgetContainer.style.display = "none";
+        document.body.appendChild(widgetContainer);
+        widgetLoaded = true;
+
+        try {
+            const { makeWidgetDraggable } = await import(
+                "https://fatin-webefo.github.io/squareCraft-plugin/makeWidgetDraggable.js"
+            );
+            makeWidgetDraggable(widgetContainer); // Now we can call it safely
+        } catch (error) {
+            console.error("🚨 Failed to load makeWidgetDraggable module", error);
         }
-      }, 500);
+
+        setTimeout(() => {
+            widgetContainer = document.getElementById(
+                "squareCraft-widget-container"
+            );
+            if (!widgetContainer) {
+                console.error("❌ Widget container failed to load.");
+            }
+        }, 500);
     }
-  }
+}
+
 
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
@@ -184,16 +193,6 @@
         widgetContainer.style.display === "none" ? "block" : "none";
     }
   }
-
-  try {
-    const { makeWidgetDraggable } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/makeWidgetDraggable.js"
-    );
-
-    makeWidgetDraggable(widgetContainer);
-} catch (error) {
-    console.error("🚨 Failed to load makeWidgetDraggable module", error);
-}
 
 
   function adjustWidgetPosition() {
