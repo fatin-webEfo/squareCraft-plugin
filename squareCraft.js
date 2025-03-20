@@ -16,12 +16,10 @@
   // vars
   // Token and Ids
   try {
-    const { fetchTokens, token, squareCraft_u_id, squareCraft_w_id } = await import(
+    const { fetchTokens } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/fetchTokens.js"
     );
     fetchTokens();
-    console.log("Token:", token, "User ID:", squareCraft_u_id, "Widget ID:", squareCraft_w_id);
-    console.log("🚀 Tokens loaded successfully!", fetchTokens());
 } catch (error) {
     console.error("🚨 Failed to load fetchTokens module", error);
 }
