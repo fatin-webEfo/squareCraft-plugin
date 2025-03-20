@@ -47,7 +47,6 @@
       return;
     }
 
-    // Assume this dropdown is for font selection
     const fontSelector = document.getElementById("squareCraftFontSelector");
 
     if (!fontSelector) {
@@ -61,6 +60,78 @@
     });
 
   });
+
+
+  let selectedTextType = null;
+  let selectedBorderColor = null;
+  
+  document.body.addEventListener("click", (event) => {
+      const element = event.target.closest("h1, h2, h3, h4, p");
+      if (!element) return;
+  
+      selectedElement = element;
+      const tagName = element.tagName.toLowerCase();
+  
+      if (tagName === "h1") {
+          selectedTextType = "heading1";
+          selectedBorderColor = "#FF0000";
+      } else if (tagName === "h2") {
+          selectedTextType = "heading2";
+          selectedBorderColor = "#FFA500";
+      } else if (tagName === "h3") {
+          selectedTextType = "heading3";
+          selectedBorderColor = "#FFFF00";
+      } else if (tagName === "h4") {
+          selectedTextType = "heading4";
+          selectedBorderColor = "#008000";
+      } else if (tagName === "p") {
+          if (element.classList.contains("sqsrte-large")) {
+              selectedTextType = "paragraph1";
+              selectedBorderColor = "#4B0082";
+          } else if (element.classList.contains("sqsrte-small")) {
+              selectedTextType = "paragraph3";
+              selectedBorderColor = "#0000FF";
+          } else {
+              selectedTextType = "paragraph2";
+              selectedBorderColor = "#9400D3";
+          }
+      }
+      console.log(`✅ Selected Text Type: ${selectedTextType}`);
+  });
+  
+  
+  function addHoverEffectListener() {
+      const widgetContainer = document.getElementById("squareCraft-widget-container");
+      if (!widgetContainer) return;
+  
+      widgetContainer.addEventListener("mouseover", (event) => {
+          const hoveredElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+          if (!hoveredElement || !selectedElement || !selectedTextType) return;
+  
+          if (hoveredElement.id === selectedTextType) {
+              selectedElement.style.border = `2px solid ${selectedBorderColor}`;
+          }
+      });
+  
+      widgetContainer.addEventListener("mouseout", (event) => {
+          const hoveredElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+          if (!hoveredElement || !selectedElement || !selectedTextType) return;
+  
+          selectedElement.style.border = ""; // Remove border when not hovering
+      });
+  }
+  
+  
+  const observer = new MutationObserver(() => {
+      addHoverEffectListener();
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
+  
+  setTimeout(() => {
+      addHoverEffectListener();
+  }, 1000);
+  
 
 
 
