@@ -187,7 +187,7 @@
 
   try {
     const { makeWidgetDraggable } = await import(
-        "https://your-github-username.github.io/your-repo-name/makeWidgetDraggable.js"
+        "https://fatin-webefo.github.io/squareCraft-plugin/makeWidgetDraggable.js"
     );
 
     makeWidgetDraggable(widgetContainer);
