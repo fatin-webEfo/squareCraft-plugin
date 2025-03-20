@@ -3,7 +3,7 @@ export function injectNavbarIcon() {
         if (!parent.document.querySelector(".squareCraft-admin-icon")) {
             const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
             if (navContainer) {
-                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                const iconSrc = localStorage.getItem("squareCraft_icon") || localStorage.setItem("squareCraft_icon", "https://i.ibb.co.com/kg9fn02s/Frame-33.png");
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
                 icon.alt = "SquareCraft";

@@ -1,8 +1,6 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
-  // No changes
-  // parent script call
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
@@ -11,13 +9,9 @@ console.log("parent" , Url)
     );
     return;
   }
-  // parent script call
-  // vars
   let selectedElement = null;
   let widgetContainer = null;
   let widgetLoaded = false;
-  // vars
-  // Token and Ids
   let token = widgetScript.dataset?.token;
   let squareCraft_u_id = widgetScript.dataset?.uId;
   let squareCraft_w_id = widgetScript.dataset?.wId;
@@ -36,7 +30,6 @@ console.log("parent" , Url)
     localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
     document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
   }
-  // Token and Ids
 
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -199,10 +192,6 @@ console.log("parent" , Url)
   observer.observe(document.body, { childList: true, subtree: true });
 
 
-
-  // Clicked outline
-  // navbar icon
-
   try {
     const { injectNavbarIcon } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
@@ -212,9 +201,6 @@ console.log("parent" , Url)
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
-  // navbar Icon
-
-  // Css cdn
   async function loadCSS(url, key) {
     let cachedData = localStorage.getItem(key);
     let lastFetched = localStorage.getItem(`${key}_timestamp`);
@@ -240,14 +226,11 @@ console.log("parent" , Url)
     }
   }
 
-  // Load CSS
   loadCSS(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
     "squareCraft_parentCSS"
   );
 
-  // Css cdn
-  // No changes
 
   async function createWidget() {
     try {
