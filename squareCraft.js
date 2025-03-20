@@ -64,41 +64,6 @@
 
 
 
-  function observeMutations() {
-    const targetNode = document.body;
-    const config = { childList: true, subtree: true };
-  
-    const observer = new MutationObserver(() => {
-      applyHoverEffect();
-    });
-  
-    observer.observe(targetNode, config);
-  }
-  
-  function applyHoverEffect() {
-    document.addEventListener('mouseover', function (event) {
-      const target = event.target;
-      if (target.matches('h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small, strong, em, a')) {
-        target.style.border = "2px dashed red"; 
-        target.style.cursor = "pointer";
-      }
-    });
-  
-    document.addEventListener('mouseout', function (event) {
-      const target = event.target;
-      if (target.matches('h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small, strong, em, a')) {
-        target.style.border = "";
-        target.style.cursor = "";
-      }
-    });
-  }
-  
-  observeMutations();
-  applyHoverEffect();
-  
-
-
-
   function getTextType(tagName, element) {
     let classList = element?.classList || [];
 
