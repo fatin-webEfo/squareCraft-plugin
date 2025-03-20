@@ -14,9 +14,9 @@ export function injectNavbarIcon() {
                 icon.style.cursor = "pointer";
                 icon.style.display = "inline-block";
                 icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
-
+    
                 navContainer.parentNode.insertBefore(icon, navContainer);
-
+    
                 const message = document.createElement("div");
                 message.classList.add("squareCraft-floating-message");
                 message.innerHTML = `
@@ -25,8 +25,8 @@ export function injectNavbarIcon() {
                     </div>
                     <div class="squareCraft-message-arrow"></div>
                 `;
-
-                message.style.position = "absolute";
+    
+                message.style.position = "fixed";
                 message.style.backgroundColor = "#2c2c2c";
                 message.style.color = "white";
                 message.style.padding = "10px 14px";
@@ -39,12 +39,18 @@ export function injectNavbarIcon() {
                 message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "60px";
-                message.style.right = "10%";
-                message.style.transform = "translateX(-18%)";
-
-                navContainer.parentNode.insertBefore(message, navContainer);
-
+    
+                document.body.appendChild(message);
+    
+                const positionMessage = () => {
+                    const iconRect = icon.getBoundingClientRect();
+                    message.style.top = `${iconRect.bottom + 5}px`;
+                    message.style.left = `${iconRect.left + (iconRect.width / 2) - (message.offsetWidth / 2)}px`;
+                };
+    
+                positionMessage();
+                window.addEventListener("resize", positionMessage);
+    
                 const messageArrow = message.querySelector(".squareCraft-message-arrow");
                 messageArrow.style.position = "absolute";
                 messageArrow.style.top = "-8px";
@@ -55,14 +61,19 @@ export function injectNavbarIcon() {
                 messageArrow.style.borderLeft = "8px solid transparent";
                 messageArrow.style.borderRight = "8px solid transparent";
                 messageArrow.style.borderBottom = "8px solid #2c2c2c";
-
+    
                 setTimeout(() => {
                     message.style.opacity = "0";
-                    setTimeout(() => message.remove(), 500);
+                    setTimeout(() => {
+                        message.remove();
+                        window.removeEventListener("resize", positionMessage);
+                    }, 500);
                 }, 5000);
             }
         }
     }
+    
+    
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');

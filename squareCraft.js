@@ -47,7 +47,6 @@
       return;
     }
 
-    // Assume this dropdown is for font selection
     const fontSelector = document.getElementById("squareCraftFontSelector");
 
     if (!fontSelector) {
@@ -61,11 +60,6 @@
     });
 
   });
-
-
-
-
-
 
 
 
