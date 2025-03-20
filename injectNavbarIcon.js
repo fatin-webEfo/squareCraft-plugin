@@ -85,7 +85,7 @@ export function injectNavbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
 
         toolbarContainers.forEach((toolbarContainer) => {
-            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {
+            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {  // <-- Check if toolbar already has the icon
                 const cachedIcon = localStorage.getItem("squareCraft_icon");
                 const iconUrl = cachedIcon ? cachedIcon : "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
