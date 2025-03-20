@@ -135,10 +135,8 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-      const isInsideWidget = event.target.closest("#squareCraft-widget-container");
 
-      if (isInsideDropdown || isInsideWidget) {
-          // If click is inside a dropdown or the widget container, do nothing
+      if (isInsideDropdown) {
           return;
       }
 
@@ -179,7 +177,6 @@ console.log("parent" , Url)
         arrowElement.classList.toggle("squareCraft-rotate-180");
       }
     });
-
 
 
   }
