@@ -69,7 +69,7 @@ export function injectNavbarIcon() {
 
         toolbarContainers.forEach(toolbarContainer => {
             if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {
-                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                const iconSrc = localStorage.getItem("squareCraft_icon") || localStorage.setItem("squareCraft_icon", "https://i.ibb.co.com/kg9fn02s/Frame-33.png");
 
                 const squareCraftDiv = document.createElement("div");
                 squareCraftDiv.classList.add("squareCraft-toolbar");
