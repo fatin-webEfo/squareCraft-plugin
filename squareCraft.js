@@ -98,10 +98,18 @@ console.log("parent" , Url)
 
 
   async function addHeadingEventListeners() {
-    const widgetContainer = document.getElementById("squareCraft-widget-container");
+    const iframe = parent.document.getElementById("sqs-site-frame");
+
+    if (!iframe) {
+        console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
+        return;
+    }
+    
+    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+    const widgetContainer = parent.document.getElementById("squareCraft-widget-container");
 
     if (!widgetContainer) {
-        console.error("❌ Widget container not found!");
+        console.error("❌ Widget container not found in parent document!");
         return;
     }
 
@@ -121,6 +129,7 @@ console.log("parent" , Url)
 
             if (expectedId === widgetId) {
                 selectedElement.classList.add("squareCraft-border-realtime");
+                console.log(`✅ Realtime border applied to: ${selectedElement.tagName}`);
             }
         }
     });
@@ -130,54 +139,10 @@ console.log("parent" , Url)
         if (!widgetElement || !selectedElement) return;
 
         selectedElement.classList.remove("squareCraft-border-realtime");
-    });
-
-    widgetContainer.addEventListener("click", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-
-        if (isInsideDropdown) {
-            return;
-        }
-
-        if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-        document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-            if (dropdown.id !== widgetElement.id + "Dropdown") {
-                dropdown.classList.add("squareCraft-hidden");
-            }
-        });
-
-        document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-            if (!widgetElement.contains(arrow)) {
-                arrow.classList.remove("squareCraft-rotate-180");
-            }
-        });
-
-        const dropdownId = widgetElement.id + "Dropdown";
-        const dropdownElement = document.getElementById(dropdownId);
-
-        if (dropdownElement) {
-            const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-
-            document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-                dropdown.classList.add("squareCraft-hidden");
-            });
-
-            if (isHidden) {
-                dropdownElement.classList.remove("squareCraft-hidden");
-                setTimeout(() => {
-                    dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
-                }, 200);
-            }
-        }
-
-        const arrowElement = widgetElement.querySelector("img");
-        if (arrowElement) {
-            arrowElement.classList.toggle("squareCraft-rotate-180");
-        }
+        console.log(`❌ Realtime border removed from: ${selectedElement.tagName}`);
     });
 }
+
 
 
   const observer = new MutationObserver(() => {
