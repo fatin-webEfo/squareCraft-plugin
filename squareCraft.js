@@ -1,8 +1,6 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
-
-
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
@@ -59,19 +57,24 @@ console.log("parent" , Url)
   });
 
   function getTextType(tagName, element) {
-    if (tagName.startsWith('h') && tagName.length === 2 && !isNaN(tagName[1])) {
-        return { type: `heading${tagName[1]}`, borderColor: '#EF7C2F' };
-    } else if (tagName === 'p') {
-        if (element.classList.contains('sqsrte-large')) {
-            return { type: 'p1', borderColor: '#EF7C2F' };
-        } else if (element.classList.contains('sqsrte-small')) {
-            return { type: 'p3', borderColor: '#EF7C2F' };
-        } else {
-            return { type: 'p2', borderColor: '#EF7C2F' };
-        }
+    let classList = element?.classList || [];
+
+    if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
+    if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
+    if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
+    if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
+
+    if (tagName === "p") {
+      if (classList.contains("sqsrte-large")) {
+        return { type: "paragraph1", borderColor: "#4B0082" };
+      } else if (classList.contains("sqsrte-small")) {
+        return { type: "paragraph3", borderColor: "#0000FF" };
+      } else {
+        return { type: "paragraph2", borderColor: "#9400D3" };
+      }
     }
     return null;
-}
+  }
 
   document.body.addEventListener("click", async (event) => {
     let element = event.target.closest("h1, h2, h3, h4, p");
@@ -93,6 +96,7 @@ console.log("parent" , Url)
   });
 
 
+
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
 
@@ -107,23 +111,24 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("mouseover", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
-  
+
+
       if (selectedElement) {
-          let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-  
-          if (textType && textType.type === widgetElement.id) {
-              selectedElement.classList.add('squareCraft-border-realtime');
-          }
+        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+
+        if (textType && textType.type === widgetElement.id) {
+          selectedElement.style.border = `2px solid ${textType.borderColor}`;
+        }
       }
-  });
-  
+    });
 
     widgetContainer.addEventListener("mouseout", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
 
+
       if (selectedElement) {
-        selectedElement.classList.remove('squareCraft-border-realtime');
+        selectedElement.style.border = "";
       }
     });
 
@@ -131,7 +136,9 @@ console.log("parent" , Url)
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
 
-      if (isInsideDropdown) return;
+      if (isInsideDropdown) {
+          return;
+      }
 
       if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
 
@@ -170,8 +177,9 @@ console.log("parent" , Url)
         arrowElement.classList.toggle("squareCraft-rotate-180");
       }
     });
-}
 
+
+  }
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
