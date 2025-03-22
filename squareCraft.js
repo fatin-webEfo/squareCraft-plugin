@@ -104,16 +104,15 @@ console.log("parent" , Url)
 
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
-            const defaultClass = `squareCraft-${element.tagName.toLowerCase()}`;
-            element.classList.add(defaultClass);
-            console.log(`✅ Added default class "${defaultClass}" to element:`, element);
+            element.setAttribute("class", "");
+            console.log("✅ Added empty class to element:", element);
         }
     }
 
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small");
         tags.forEach(tag => {
             ensureElementHasClass(tag);
             console.log("✅ Ensured tag has class:", tag);
@@ -121,12 +120,11 @@ console.log("parent" , Url)
     }
 
     function monitorAndApplyClasses() {
-        const allTextElements = document.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-
-        allTextElements.forEach(element => {
-            ensureElementHasClass(element);
-            console.log("✅ Checking and ensuring classes for element:", element);
-        });
+        if (selectedElement) {
+            ensureElementHasClass(selectedElement);
+            ensureNestedTagsHaveClass(selectedElement);
+            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
+        }
     }
 
     setInterval(monitorAndApplyClasses, 300);
@@ -152,10 +150,11 @@ console.log("parent" , Url)
 
     widgetContainer.addEventListener("click", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        const blockElement = event.target.closest('[id^="block-"]');
         const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
 
-        if (isInsideDropdown) return;
-        if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
+        if (isInsideDropdown || !widgetElement || !blockElement) return;
+        if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
 
         document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
             if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
@@ -181,6 +180,9 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
 
         console.log("✅ Clicked element:", widgetElement);
+
+        // New part: Find all nested tags and ensure class existence
+        ensureNestedTagsHaveClass(blockElement);
     });
 }
 
