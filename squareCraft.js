@@ -96,33 +96,35 @@ console.log("parent" , Url)
   });
 
 
-
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
-    if (widgetContainer.dataset.eventsAdded) return;
-    widgetContainer.dataset.eventsAdded = "true";
-
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
-            element.className = ""; // Ensure a class attribute exists even if it's empty
+            element.setAttribute("class", ""); // Add an empty class if not existed
         }
     }
 
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        // Find all h1 - h4, p tags and sqsrte-large, sqsrte-small within the selected element
         const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-        tags.forEach(tag => ensureElementHasClass(tag)); // Ensure each tag has a class attribute
+        tags.forEach(tag => ensureElementHasClass(tag));
     }
+
+    function monitorAndApplyClasses() {
+        if (selectedElement) {
+            ensureElementHasClass(selectedElement); // Ensure the selected element itself has a class
+            ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
+        }
+    }
+
+    setInterval(monitorAndApplyClasses, 500); // Continuously check and apply classes every 500ms
 
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
-
-        ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
 
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
@@ -134,8 +136,6 @@ console.log("parent" , Url)
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
 
-        ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
-
         selectedElement.classList.remove("squareCraft-border-realtime");
     });
 
@@ -145,9 +145,6 @@ console.log("parent" , Url)
 
         if (isInsideDropdown) return;
         if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-        ensureElementHasClass(selectedElement);  // Ensure the selected element itself has a class
-        ensureNestedTagsHaveClass(selectedElement);  // Ensure nested tags have classes
 
         document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
             if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
@@ -173,6 +170,7 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
     });
 }
+
 
 
 
