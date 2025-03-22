@@ -109,7 +109,6 @@ console.log("parent" , Url)
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
-    // Mouseover Event Listener
     widgetContainer.addEventListener("mouseover", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
@@ -123,7 +122,6 @@ console.log("parent" , Url)
       }
     });
 
-    // Mouseout Event Listener
     widgetContainer.addEventListener("mouseout", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
@@ -133,7 +131,6 @@ console.log("parent" , Url)
       }
     });
 
-    // Click Event Listener
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
