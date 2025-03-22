@@ -213,6 +213,36 @@ console.log("parent" , Url)
   observer.observe(document.body, { childList: true, subtree: true });
 
 
+  function detectHoverOnTextElements() {
+    const iframe = parent.document.getElementById("sqs-site-frame");
+
+    if (!iframe) {
+        console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
+        return;
+    }
+
+    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+    iframeDocument.addEventListener("mouseover", (event) => {
+        const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
+        
+        if (hoveredElement) {
+            console.log(`✅ Hovered on element: <${hoveredElement.tagName}> with content: "${hoveredElement.textContent.trim()}"`);
+        }
+    });
+
+    iframeDocument.addEventListener("mouseout", (event) => {
+        const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
+        
+        if (hoveredElement) {
+            console.log(`❌ Mouse left element: <${hoveredElement.tagName}>`);
+        }
+    });
+}
+
+detectHoverOnTextElements();
+
+
   try {
     const { injectNavbarIcon } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
