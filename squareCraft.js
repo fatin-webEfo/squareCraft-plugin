@@ -12,7 +12,6 @@ console.log("parent" , Url)
   let selectedElement = null;
   let widgetContainer = null;
   let widgetLoaded = false;
-  let selectedElementType = null;
   let token = widgetScript.dataset?.token;
   let squareCraft_u_id = widgetScript.dataset?.uId;
   let squareCraft_w_id = widgetScript.dataset?.wId;
@@ -56,256 +55,149 @@ console.log("parent" , Url)
     });
 
   });
-  document.addEventListener("click", (event) => {
-    const element = event.target.closest("h1, h2, h3, h4, p");
 
-    if (element) {
-        selectedElement = element; 
-        selectedElementType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement)?.type;
-        
-        console.log(`✅ Element selected: <${element.tagName}> with content: "${element.textContent.trim()}"`);
-        console.log(`✅ Detected Type: ${selectedElementType}`);
-    }
-});
+  function getTextType(tagName, element) {
+    let classList = element?.classList || [];
 
-document.addEventListener("click", (event) => {
-  const element = event.target.closest("h1, h2, h3, h4, p");
-  if (element) {
-      selectedElement = element;
-      selectedElementType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement)?.type;
-      console.log(`✅ Element selected: <${element.tagName}> with content: "${element.textContent.trim()}"`);
-      console.log(`✅ Detected Type: ${selectedElementType}`);
-  }
-});
+    if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
+    if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
+    if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
+    if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
 
-function getTextType(tagName, element) {
-  if (tagName.startsWith('h') && tagName.length === 2 && !isNaN(tagName[1])) {
-      return { type: `heading${tagName[1]}`, borderColor: '#EF7C2F' };
-  } else if (tagName === 'p') {
-      if (element.classList.contains('sqsrte-large')) {
-          return { type: 'p1', borderColor: '#EF7C2F' };
-      } else if (element.classList.contains('sqsrte-small')) {
-          return { type: 'p3', borderColor: '#EF7C2F' };
+    if (tagName === "p") {
+      if (classList.contains("sqsrte-large")) {
+        return { type: "paragraph1", borderColor: "#4B0082" };
+      } else if (classList.contains("sqsrte-small")) {
+        return { type: "paragraph3", borderColor: "#0000FF" };
       } else {
-          return { type: 'p2', borderColor: '#EF7C2F' };
+        return { type: "paragraph2", borderColor: "#9400D3" };
       }
+    }
+    return null;
   }
-  return null;
-}
 
-function detectHoverOnWidgetElements() {
-  const iframe = parent.document.getElementById("sqs-site-frame");
+  document.body.addEventListener("click", async (event) => {
+    let element = event.target.closest("h1, h2, h3, h4, p");
+    if (!element) return;
 
-  if (!iframe) {
-      console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
+    selectedElement = element;
+    let textType = getTextType(element.tagName.toLowerCase(), element);
+    selectedTextType = textType ? textType.type : null;
+
+    console.log(`✅ Selected Text Type: ${selectedTextType}`);
+
+    if (!widgetLoaded) {
+      await createWidget();
+    }
+
+    if (widgetContainer) {
+      widgetContainer.style.display = "block";
+    }
+  });
+
+
+
+  async function addHeadingEventListeners() {
+    const widgetContainer = document.getElementById("squareCraft-widget-container");
+
+    if (!widgetContainer) {
+      console.error("❌ Widget container not found!");
       return;
+    }
+
+    if (widgetContainer.dataset.eventsAdded) return;
+    widgetContainer.dataset.eventsAdded = "true";
+
+    widgetContainer.addEventListener("mouseover", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
+
+
+      if (selectedElement) {
+        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+
+        if (textType && textType.type === widgetElement.id) {
+          selectedElement.classList.add("squareCraft-border-realtime");
+        }
+      }
+    });
+
+    widgetContainer.addEventListener("mouseout", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
+
+
+      if (selectedElement) {
+        selectedElement.classList.removea("squareCraft-border-realtime");
+
+      }
+    });
+
+    widgetContainer.addEventListener("click", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+
+      if (isInsideDropdown) {
+          return;
+      }
+
+      if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
+
+      document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+        if (dropdown.id !== widgetElement.id + "Dropdown") {
+          dropdown.classList.add("squareCraft-hidden");
+        }
+      });
+
+      document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+        if (!widgetElement.contains(arrow)) {
+          arrow.classList.remove("squareCraft-rotate-180");
+        }
+      });
+
+      const dropdownId = widgetElement.id + "Dropdown";
+      const dropdownElement = document.getElementById(dropdownId);
+
+      if (dropdownElement) {
+        const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+
+        document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+          dropdown.classList.add("squareCraft-hidden");
+        });
+
+        if (isHidden) {
+          dropdownElement.classList.remove("squareCraft-hidden");
+          setTimeout(() => {
+            dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 200);
+        }
+      }
+
+      const arrowElement = widgetElement.querySelector("img");
+      if (arrowElement) {
+        arrowElement.classList.toggle("squareCraft-rotate-180");
+      }
+    });
+
+
   }
 
-  const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
-  iframeDocument.addEventListener("mouseover", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
-          selectedElement.classList.add("squareCraft-border-realtime");
-          console.log(`✅ Realtime border applied to:`, selectedElement);
-      }
+  const observer = new MutationObserver(() => {
+    addHeadingEventListeners();
   });
 
-  iframeDocument.addEventListener("mouseout", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
-          selectedElement.classList.remove("squareCraft-border-realtime");
-          console.log(`❌ Realtime border removed from:`, selectedElement);
-      }
-  });
-}
+  observer.observe(document.body, { childList: true, subtree: true });
 
-detectHoverOnWidgetElements();
-
-  // function getTextType(tagName, element) {
-  //   let classList = element?.classList || [];
-
-  //   if (tagName === "h1") return { type: "heading1" };
-  //   if (tagName === "h2") return { type: "heading2"};
-  //   if (tagName === "h3") return { type: "heading3"};
-  //   if (tagName === "h4") return { type: "heading4"};
-
-  //   if (tagName === "p") {
-  //     if (classList.contains("sqsrte-large")) {
-  //       return { type: "paragraph1"};
-  //     } else if (classList.contains("sqsrte-small")) {
-  //       return { type: "paragraph3" };
-  //     } else {
-  //       return { type: "paragraph2"};
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // document.body.addEventListener("click", async (event) => {
-  //   let element = event.target.closest("h1, h2, h3, h4, p");
-  //   if (!element) return;
-
-  //   selectedElement = element;
-  //   let textType = getTextType(element.tagName.toLowerCase(), element);
-  //   selectedTextType = textType ? textType.type : null;
-
-  //   console.log(`✅ Selected Text Type: ${selectedTextType}`);
-
-  //   if (!widgetLoaded) {
-  //     await createWidget();
-  //   }
-
-  //   if (widgetContainer) {
-  //     widgetContainer.style.display = "block";
-  //   }
-  // });
+  setTimeout(() => {
+    addHeadingEventListeners();
+  }, 1000);
 
 
+  setTimeout(() => {
+    addHeadingEventListeners();
+  }, 1000);
 
-  // async function addHeadingEventListeners() {
-  //   const widgetContainer = document.getElementById("squareCraft-widget-container");
-
-  //   if (!widgetContainer) {
-  //     console.error("❌ Widget container not found!");
-  //     return;
-  //   }
-
-  //   if (widgetContainer.dataset.eventsAdded) return;
-  //   widgetContainer.dataset.eventsAdded = "true";
-
-  //   const iframe = parent.document.getElementById("sqs-site-frame");
-
-  //   if (!iframe) {
-  //       console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
-  //   } else {
-  //       const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-    
-  //       iframeDocument.addEventListener("mouseover", (event) => {
-  //           const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
-            
-  //           console.log(`✅ Mouseover detected on element:`, widgetElement);
-    
-  //           if (!widgetElement) return;
-    
-  //           if (selectedElement) {
-  //               let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-    
-  //               if (textType) {
-  //                   console.log(`✅ Text Type Detected:`, textType);
-  //                   if (textType.type === widgetElement.id || widgetElement.matches("h1, h2, h3, h4, p")) {
-  //                       selectedElement.classList.add("squareCraft-border-realtime");
-  //                       console.log(`✅ 'squareCraft-border-realtime' added to:`, selectedElement);
-  //                   }
-  //               }
-  //           }
-  //       });
-    
-  //       iframeDocument.addEventListener("mouseout", (event) => {
-  //           const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
-            
-  //           console.log(`❌ Mouseout detected on element:`, widgetElement);
-    
-  //           if (!widgetElement) return;
-    
-  //           if (selectedElement) {
-  //               selectedElement.classList.remove("squareCraft-border-realtime");
-  //               console.log(`❌ 'squareCraft-border-realtime' removed from:`, selectedElement);
-  //           }
-  //       });
-  //   }
-    
-    
-
-  //   widgetContainer.addEventListener("click", (event) => {
-  //     const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-  //     const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-
-  //     if (isInsideDropdown) {
-  //         return;
-  //     }
-
-  //     if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-  //     document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-  //       if (dropdown.id !== widgetElement.id + "Dropdown") {
-  //         dropdown.classList.add("squareCraft-hidden");
-  //       }
-  //     });
-
-  //     document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-  //       if (!widgetElement.contains(arrow)) {
-  //         arrow.classList.remove("squareCraft-rotate-180");
-  //       }
-  //     });
-
-  //     const dropdownId = widgetElement.id + "Dropdown";
-  //     const dropdownElement = document.getElementById(dropdownId);
-
-  //     if (dropdownElement) {
-  //       const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-
-  //       document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-  //         dropdown.classList.add("squareCraft-hidden");
-  //       });
-
-  //       if (isHidden) {
-  //         dropdownElement.classList.remove("squareCraft-hidden");
-  //         setTimeout(() => {
-  //           dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
-  //         }, 200);
-  //       }
-  //     }
-
-  //     const arrowElement = widgetElement.querySelector("img");
-  //     if (arrowElement) {
-  //       arrowElement.classList.toggle("squareCraft-rotate-180");
-  //     }
-  //   });
-
-
-  // }
-
-  // const observer = new MutationObserver(() => {
-  //   addHeadingEventListeners();
-  // });
-
-  // observer.observe(document.body, { childList: true, subtree: true });
-
-  // setTimeout(() => {
-  //   addHeadingEventListeners();
-  // }, 1000);
-
-  // observer.observe(document.body, { childList: true, subtree: true });
-
-
-//   function detectHoverOnTextElements() {
-//     const iframe = parent.document.getElementById("sqs-site-frame");
-
-//     if (!iframe) {
-//         console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
-//         return;
-//     }
-//     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
-//     iframeDocument.addEventListener("mouseover", (event) => {
-//         const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
-        
-//         if (hoveredElement) {
-//             console.log(`✅ Hovered on element: <${hoveredElement.tagName}> with content: "${hoveredElement.textContent.trim()}"`);
-//         }
-//     });
-
-//     iframeDocument.addEventListener("mouseout", (event) => {
-//         const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
-        
-//         if (hoveredElement) {
-//             console.log(`❌ Mouse left element: <${hoveredElement.tagName}>`);
-//         }
-//     });
-// }
-
-// detectHoverOnTextElements();
+  observer.observe(document.body, { childList: true, subtree: true });
 
 
   try {
