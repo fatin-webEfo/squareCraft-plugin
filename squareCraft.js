@@ -105,7 +105,7 @@ console.log("parent" , Url)
     widgetContainer.dataset.eventsAdded = "true";
 
     widgetContainer.addEventListener("mouseover", (event) => {
-      const widgetElement = parent.document.querySelector(event.target).closest('[id^="heading"], [id^="paragraph"]');
+      const widgetElement = parent.document.querySelector('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
   
       if (selectedElement) {
@@ -119,7 +119,7 @@ console.log("parent" , Url)
   
 
     widgetContainer.addEventListener("mouseout", (event) => {
-      const widgetElement = parent.document.querySelector(event.target).closest('[id^="heading"], [id^="paragraph"]');
+      const widgetElement = parent.document.querySelector('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
 
       if (selectedElement) {
