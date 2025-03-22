@@ -59,24 +59,19 @@ console.log("parent" , Url)
   });
 
   function getTextType(tagName, element) {
-    let classList = element?.classList || [];
-
-    if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
-    if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
-    if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
-    if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
-
-    if (tagName === "p") {
-      if (classList.contains("sqsrte-large")) {
-        return { type: "paragraph1", borderColor: "#4B0082" };
-      } else if (classList.contains("sqsrte-small")) {
-        return { type: "paragraph3", borderColor: "#0000FF" };
-      } else {
-        return { type: "paragraph2", borderColor: "#9400D3" };
-      }
+    if (tagName.startsWith('h') && tagName.length === 2 && !isNaN(tagName[1])) {
+        return { type: `heading${tagName[1]}`, borderColor: '#EF7C2F' };
+    } else if (tagName === 'p') {
+        if (element.classList.contains('sqsrte-large')) {
+            return { type: 'p1', borderColor: '#EF7C2F' };
+        } else if (element.classList.contains('sqsrte-small')) {
+            return { type: 'p3', borderColor: '#EF7C2F' };
+        } else {
+            return { type: 'p2', borderColor: '#EF7C2F' };
+        }
     }
     return null;
-  }
+}
 
   document.body.addEventListener("click", async (event) => {
     let element = event.target.closest("h1, h2, h3, h4, p");
@@ -109,28 +104,27 @@ console.log("parent" , Url)
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
-    widgetContainer.addEventListener("mouseover", (event) => {
+    window.addEventListener("mouseover", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
+      if (!widgetElement || !selectedElement) return;
   
-      if (selectedElement) {
-          let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+      const textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
   
-          if (textType && textType.type === widgetElement.id) {
-              selectedElement.classList.add('squareCraft-border-realtime');
-          }
+      if (textType && textType.type === widgetElement.id) {
+          selectedElement.classList.add('squareCraft-border-realtime');
       }
   });
-  
 
-    widgetContainer.addEventListener("mouseout", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
+  function setSelectedElement(element) {
+    selectedElement = element;
+}
+setSelectedElement(selectedElement);
+  window.addEventListener("mouseout", (event) => {
+    const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+    if (!widgetElement || !selectedElement) return;
 
-      if (selectedElement) {
-        selectedElement.classList.remove('squareCraft-border-realtime');
-      }
-    });
+    selectedElement.classList.remove('squareCraft-border-realtime');
+});
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
