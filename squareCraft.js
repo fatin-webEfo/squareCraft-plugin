@@ -99,7 +99,6 @@ console.log("parent" , Url)
 
   async function addHeadingEventListeners() {
     const iframe = parent.document.getElementById("sqs-site-frame");
-
     if (!iframe) {
         console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
         return;
@@ -142,6 +141,7 @@ console.log("parent" , Url)
         console.log(`❌ Realtime border removed from: ${selectedElement.tagName}`);
     });
 }
+
 
 
 
