@@ -108,30 +108,24 @@ console.log("parent" , Url)
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
-    widgetContainer.addEventListener("mouseover", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
-
-
-      if (selectedElement) {
-        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-
-        if (textType && textType.type === widgetElement.id) {
+    parent.document.addEventListener("mouseover", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p, .Marquee-item, .sqs-html-content');
+      if (!widgetElement || !selectedElement) return;
+  
+      let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+  
+      if (textType && textType.type === widgetElement.id) {
           selectedElement.classList.add("squareCraft-border-realtime");
-        }
       }
-    });
-
-    widgetContainer.addEventListener("mouseout", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      if (!widgetElement) return;
-
-
-      if (selectedElement) {
-        selectedElement.classList.remove("squareCraft-border-realtime");
-
-      }
-    });
+  });
+  
+  parent.document.addEventListener("mouseout", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p, .Marquee-item, .sqs-html-content');
+      if (!widgetElement || !selectedElement) return;
+  
+      selectedElement.classList.remove("squareCraft-border-realtime");
+  });
+  
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
