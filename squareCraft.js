@@ -116,27 +116,39 @@ console.log("parent" , Url)
         const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
     
         iframeDocument.addEventListener("mouseover", (event) => {
-    
             const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
+            
+            console.log(`✅ Mouseover detected on element:`, widgetElement);
     
-            if (!widgetElement || !selectedElement) return;
+            if (!widgetElement) return;
     
-            let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+            if (selectedElement) {
+                let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
     
-            if (textType && textType.type === widgetElement.id) {
-                selectedElement.classList.add("squareCraft-border-realtime");
+                if (textType) {
+                    console.log(`✅ Text Type Detected:`, textType);
+                    if (textType.type === widgetElement.id || widgetElement.matches("h1, h2, h3, h4, p")) {
+                        selectedElement.classList.add("squareCraft-border-realtime");
+                        console.log(`✅ 'squareCraft-border-realtime' added to:`, selectedElement);
+                    }
+                }
             }
         });
     
         iframeDocument.addEventListener("mouseout", (event) => {
-    
             const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
+            
+            console.log(`❌ Mouseout detected on element:`, widgetElement);
     
-            if (!widgetElement || !selectedElement) return;
+            if (!widgetElement) return;
     
-            selectedElement.classList.remove("squareCraft-border-realtime");
+            if (selectedElement) {
+                selectedElement.classList.remove("squareCraft-border-realtime");
+                console.log(`❌ 'squareCraft-border-realtime' removed from:`, selectedElement);
+            }
         });
     }
+    
     
 
     widgetContainer.addEventListener("click", (event) => {
@@ -206,33 +218,33 @@ console.log("parent" , Url)
   observer.observe(document.body, { childList: true, subtree: true });
 
 
-  function detectHoverOnTextElements() {
-    const iframe = parent.document.getElementById("sqs-site-frame");
+//   function detectHoverOnTextElements() {
+//     const iframe = parent.document.getElementById("sqs-site-frame");
 
-    if (!iframe) {
-        console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
-        return;
-    }
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+//     if (!iframe) {
+//         console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
+//         return;
+//     }
+//     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 
-    iframeDocument.addEventListener("mouseover", (event) => {
-        const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
+//     iframeDocument.addEventListener("mouseover", (event) => {
+//         const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
         
-        if (hoveredElement) {
-            console.log(`✅ Hovered on element: <${hoveredElement.tagName}> with content: "${hoveredElement.textContent.trim()}"`);
-        }
-    });
+//         if (hoveredElement) {
+//             console.log(`✅ Hovered on element: <${hoveredElement.tagName}> with content: "${hoveredElement.textContent.trim()}"`);
+//         }
+//     });
 
-    iframeDocument.addEventListener("mouseout", (event) => {
-        const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
+//     iframeDocument.addEventListener("mouseout", (event) => {
+//         const hoveredElement = event.target.closest("h1, h2, h3, h4, p");
         
-        if (hoveredElement) {
-            console.log(`❌ Mouse left element: <${hoveredElement.tagName}>`);
-        }
-    });
-}
+//         if (hoveredElement) {
+//             console.log(`❌ Mouse left element: <${hoveredElement.tagName}>`);
+//         }
+//     });
+// }
 
-detectHoverOnTextElements();
+// detectHoverOnTextElements();
 
 
   try {
