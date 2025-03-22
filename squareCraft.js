@@ -106,22 +106,21 @@ console.log("parent" , Url)
 
     function ensureElementHasClass(element) {
         if (element && !element.hasAttribute("class")) {
-            element.setAttribute("class", "");
+            element.setAttribute("class", ""); // Add an empty class if not existed
         }
     }
 
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-        tags.forEach(tag => ensureElementHasClass(tag));
+        // Find all h1 - h4 and p tags within the selected element and ensure they have classes
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
+        tags.forEach(tag => ensureElementHasClass(tag)); // Ensure each tag has a class attribute
     }
 
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
-
-        ensureNestedTagsHaveClass(selectedElement);
 
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
@@ -133,8 +132,6 @@ console.log("parent" , Url)
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
 
-        ensureNestedTagsHaveClass(selectedElement);
-
         selectedElement.classList.remove("squareCraft-border-realtime");
     });
 
@@ -144,6 +141,9 @@ console.log("parent" , Url)
 
         if (isInsideDropdown) return;
         if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
+
+        ensureElementHasClass(selectedElement);  // Ensure the selected element itself has a class
+        ensureNestedTagsHaveClass(selectedElement);  // Ensure nested tags have classes
 
         document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
             if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
