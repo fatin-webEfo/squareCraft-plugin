@@ -1,6 +1,15 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
+document.addEventListener('DOMContentLoaded', function () {
+  const isEditingPage = document.documentElement.classList.contains('editing-page');
+
+  if (isEditingPage) {
+      console.log(" in editing mode. ");
+  } else {
+      console.log(" in live mode.");
+  }
+});
 
 
   const widgetScript = document.getElementById("squareCraft-script");
