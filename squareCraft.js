@@ -104,8 +104,9 @@ console.log("parent" , Url)
 
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
-            element.setAttribute("class", "");
-            console.log("✅ Added empty class to element:", element);
+            const defaultClass = `squareCraft-${element.tagName.toLowerCase()}`;
+            element.classList.add(defaultClass);
+            console.log(`✅ Added default class "${defaultClass}" to element:`, element);
         }
     }
 
@@ -120,11 +121,12 @@ console.log("parent" , Url)
     }
 
     function monitorAndApplyClasses() {
-        if (selectedElement) {
-            ensureElementHasClass(selectedElement);
-            ensureNestedTagsHaveClass(selectedElement);
-            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
-        }
+        const allTextElements = document.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
+
+        allTextElements.forEach(element => {
+            ensureElementHasClass(element);
+            console.log("✅ Checking and ensuring classes for element:", element);
+        });
     }
 
     setInterval(monitorAndApplyClasses, 300);
@@ -181,6 +183,7 @@ console.log("parent" , Url)
         console.log("✅ Clicked element:", widgetElement);
     });
 }
+
 
 
 
