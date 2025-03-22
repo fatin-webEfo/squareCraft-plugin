@@ -105,22 +105,24 @@ console.log("parent" , Url)
     widgetContainer.dataset.eventsAdded = "true";
 
     function ensureElementHasClass(element) {
-        if (element && !element.hasAttribute("class")) {
-            element.setAttribute("class", ""); // Add an empty class if not existed
+        if (element && (!element.className || element.className.trim() === "")) {
+            element.className = ""; // Ensure a class attribute exists even if it's empty
         }
     }
 
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        // Find all h1 - h4 and p tags within the selected element and ensure they have classes
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
+        // Find all h1 - h4, p tags and sqsrte-large, sqsrte-small within the selected element
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
         tags.forEach(tag => ensureElementHasClass(tag)); // Ensure each tag has a class attribute
     }
 
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
+
+        ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
 
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
@@ -131,6 +133,8 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("mouseout", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
+
+        ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
 
         selectedElement.classList.remove("squareCraft-border-realtime");
     });
