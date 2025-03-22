@@ -68,48 +68,56 @@ console.log("parent" , Url)
     }
 });
 
+document.addEventListener("click", (event) => {
+  const element = event.target.closest("h1, h2, h3, h4, p");
+  if (element) {
+      selectedElement = element;
+      selectedElementType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement)?.type;
+      console.log(`✅ Element selected: <${element.tagName}> with content: "${element.textContent.trim()}"`);
+      console.log(`✅ Detected Type: ${selectedElementType}`);
+  }
+});
+
 function getTextType(tagName, element) {
-    if (tagName.startsWith('h') && tagName.length === 2 && !isNaN(tagName[1])) {
-        return { type: `heading${tagName[1]}`, borderColor: '#EF7C2F' };
-    } else if (tagName === 'p') {
-        if (element.classList.contains('sqsrte-large')) {
-            return { type: 'p1', borderColor: '#EF7C2F' };
-        } else if (element.classList.contains('sqsrte-small')) {
-            return { type: 'p3', borderColor: '#EF7C2F' };
-        } else {
-            return { type: 'p2', borderColor: '#EF7C2F' };
-        }
-    }
-    return null;
+  if (tagName.startsWith('h') && tagName.length === 2 && !isNaN(tagName[1])) {
+      return { type: `heading${tagName[1]}`, borderColor: '#EF7C2F' };
+  } else if (tagName === 'p') {
+      if (element.classList.contains('sqsrte-large')) {
+          return { type: 'p1', borderColor: '#EF7C2F' };
+      } else if (element.classList.contains('sqsrte-small')) {
+          return { type: 'p3', borderColor: '#EF7C2F' };
+      } else {
+          return { type: 'p2', borderColor: '#EF7C2F' };
+      }
+  }
+  return null;
 }
 
 function detectHoverOnWidgetElements() {
-    const iframe = parent.document.getElementById("sqs-site-frame");
+  const iframe = parent.document.getElementById("sqs-site-frame");
 
-    if (!iframe) {
-        console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
-        return;
-    }
+  if (!iframe) {
+      console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
+      return;
+  }
 
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+  const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 
-    iframeDocument.addEventListener("mouseover", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        
-        if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
-            selectedElement.classList.add("squareCraft-border-realtime");
-            console.log(`✅ Realtime border applied to:`, selectedElement);
-        }
-    });
+  iframeDocument.addEventListener("mouseover", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
+          selectedElement.classList.add("squareCraft-border-realtime");
+          console.log(`✅ Realtime border applied to:`, selectedElement);
+      }
+  });
 
-    iframeDocument.addEventListener("mouseout", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        
-        if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
-            selectedElement.classList.remove("squareCraft-border-realtime");
-            console.log(`❌ Realtime border removed from:`, selectedElement);
-        }
-    });
+  iframeDocument.addEventListener("mouseout", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (widgetElement && selectedElement && selectedElementType === widgetElement.id) {
+          selectedElement.classList.remove("squareCraft-border-realtime");
+          console.log(`❌ Realtime border removed from:`, selectedElement);
+      }
+  });
 }
 
 detectHoverOnWidgetElements();
