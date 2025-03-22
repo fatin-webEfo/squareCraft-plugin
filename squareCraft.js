@@ -96,13 +96,16 @@ console.log("parent" , Url)
   });
 
 
+
+  
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
-            element.setAttribute("class", ""); // Add an empty class if not existed
+            element.setAttribute("class", "");
+            console.log("✅ Added empty class to element:", element);
         }
     }
 
@@ -110,17 +113,21 @@ console.log("parent" , Url)
         if (!parentElement) return;
 
         const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-        tags.forEach(tag => ensureElementHasClass(tag));
+        tags.forEach(tag => {
+            ensureElementHasClass(tag);
+            console.log("✅ Ensured tag has class:", tag);
+        });
     }
 
     function monitorAndApplyClasses() {
         if (selectedElement) {
-            ensureElementHasClass(selectedElement); // Ensure the selected element itself has a class
-            ensureNestedTagsHaveClass(selectedElement); // Ensure nested tags have classes
+            ensureElementHasClass(selectedElement);
+            ensureNestedTagsHaveClass(selectedElement);
+            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
         }
     }
 
-    setInterval(monitorAndApplyClasses, 500); // Continuously check and apply classes every 500ms
+    setInterval(monitorAndApplyClasses, 300);
 
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
@@ -129,6 +136,7 @@ console.log("parent" , Url)
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
             selectedElement.classList.add("squareCraft-border-realtime");
+            console.log("✅ Added squareCraft-border-realtime to:", selectedElement);
         }
     });
 
@@ -137,6 +145,7 @@ console.log("parent" , Url)
         if (!widgetElement || !selectedElement) return;
 
         selectedElement.classList.remove("squareCraft-border-realtime");
+        console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
     });
 
     widgetContainer.addEventListener("click", (event) => {
@@ -168,10 +177,10 @@ console.log("parent" , Url)
 
         const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
+
+        console.log("✅ Clicked element:", widgetElement);
     });
 }
-
-
 
 
 
