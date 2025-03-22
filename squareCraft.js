@@ -117,7 +117,7 @@ console.log("parent" , Url)
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
 
         if (textType && textType.type === widgetElement.id) {
-          selectedElement.style.border = `2px solid ${textType.borderColor}`;
+          selectedElement.classList.add("squareCraft-border-realtime");
         }
       }
     });
@@ -128,7 +128,8 @@ console.log("parent" , Url)
 
 
       if (selectedElement) {
-        selectedElement.style.border = "";
+        selectedElement.classList.remove("squareCraft-border-realtime");
+
       }
     });
 
