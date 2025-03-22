@@ -220,7 +220,6 @@ console.log("parent" , Url)
         console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
         return;
     }
-
     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
 
     iframeDocument.addEventListener("mouseover", (event) => {
