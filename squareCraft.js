@@ -98,11 +98,6 @@ console.log("parent" , Url)
 
 
   async function addHeadingEventListeners() {
-    const iframe = parent.document.getElementById("sqs-site-frame");
-    if (!iframe) return;
-
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
@@ -174,6 +169,7 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
     });
 }
+
 
 
 
