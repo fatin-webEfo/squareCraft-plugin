@@ -27,8 +27,8 @@
 .squareCraft-mx-auto {
   margin: 0 auto !important;
 }
-.squareCraft-border{
-  border: 6px solid #fd6500 !important;
+.squareCraft-border-realtime{
+  border: 4px solid #fd6500 !important;
 }
 .squareCraft-border-r {
   border-right-width: 1px !important;
