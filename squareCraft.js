@@ -109,16 +109,16 @@ console.log("parent" , Url)
     widgetContainer.dataset.eventsAdded = "true";
 
     const iframe = parent.document.getElementById("sqs-site-frame");
+
     if (!iframe) {
         console.error("❌ The 'sqs-site-frame' iframe not found in the parent document.");
     } else {
         const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
     
-        // Mouseover Event Listener
         iframeDocument.addEventListener("mouseover", (event) => {
-            const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p, .Marquee-item, .sqs-html-content');
-            
             console.log("👉 Mouseover detected on element:", event.target);
+    
+            const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
             console.log("🔍 Closest matching widgetElement found:", widgetElement);
     
             if (!widgetElement || !selectedElement) return;
@@ -133,9 +133,9 @@ console.log("parent" , Url)
         });
     
         iframeDocument.addEventListener("mouseout", (event) => {
-            const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p, .Marquee-item, .sqs-html-content');
-            
             console.log("👉 Mouseout detected on element:", event.target);
+    
+            const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
             console.log("🔍 Closest matching widgetElement found:", widgetElement);
     
             if (!widgetElement || !selectedElement) return;
