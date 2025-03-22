@@ -116,32 +116,25 @@ console.log("parent" , Url)
         const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
     
         iframeDocument.addEventListener("mouseover", (event) => {
-            console.log("👉 Mouseover detected on element:", event.target);
     
             const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
-            console.log("🔍 Closest matching widgetElement found:", widgetElement);
     
             if (!widgetElement || !selectedElement) return;
     
             let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-            console.log("✅ Text Type Detected:", textType);
     
             if (textType && textType.type === widgetElement.id) {
                 selectedElement.classList.add("squareCraft-border-realtime");
-                console.log("✨ Added 'squareCraft-border-realtime' class to:", selectedElement);
             }
         });
     
         iframeDocument.addEventListener("mouseout", (event) => {
-            console.log("👉 Mouseout detected on element:", event.target);
     
             const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"], h1, h2, h3, h4, p');
-            console.log("🔍 Closest matching widgetElement found:", widgetElement);
     
             if (!widgetElement || !selectedElement) return;
     
             selectedElement.classList.remove("squareCraft-border-realtime");
-            console.log("❌ Removed 'squareCraft-border-realtime' class from:", selectedElement);
         });
     }
     
