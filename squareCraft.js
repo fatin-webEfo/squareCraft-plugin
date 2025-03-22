@@ -128,7 +128,7 @@ console.log("parent" , Url)
 
 
       if (selectedElement) {
-        selectedElement.classList.removea("squareCraft-border-realtime");
+        selectedElement.classList.remove("squareCraft-border-realtime");
 
       }
     });
