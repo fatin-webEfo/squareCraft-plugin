@@ -98,7 +98,6 @@ console.log("parent" , Url)
   });
 
 
-
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
 
@@ -110,10 +109,10 @@ console.log("parent" , Url)
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
+    // Mouseover Event Listener
     widgetContainer.addEventListener("mouseover", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
-
 
       if (selectedElement) {
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
@@ -124,23 +123,22 @@ console.log("parent" , Url)
       }
     });
 
+    // Mouseout Event Listener
     widgetContainer.addEventListener("mouseout", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
-
 
       if (selectedElement) {
         selectedElement.style.border = "";
       }
     });
 
+    // Click Event Listener
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
 
-      if (isInsideDropdown) {
-          return;
-      }
+      if (isInsideDropdown) return;
 
       if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
 
@@ -179,9 +177,8 @@ console.log("parent" , Url)
         arrowElement.classList.toggle("squareCraft-rotate-180");
       }
     });
+}
 
-
-  }
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
