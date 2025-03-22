@@ -2,7 +2,7 @@
   const Url = parent.document.location.href
 console.log("parent" , Url)
 function checkEditingMode() {
-  const isEditing = document.body.classList.contains("sqs-editing");
+  const isEditing = parent.document.body.classList.contains("sqs-editing");
   console.log("Editing Mode Active:", isEditing);
 }
 
