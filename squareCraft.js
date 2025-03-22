@@ -3,17 +3,6 @@
 console.log("parent" , Url)
 
 
-function checkEditingMode() {
-  const isEditing = parent.document.querySelector(".sqs-editing") !== null;
-  console.log("Editing Mode Active:", isEditing);
-}
-
-console.log("Before Editing Mode:");
-checkEditingMode();
-
-setInterval(checkEditingMode, 2000);
-
-
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
