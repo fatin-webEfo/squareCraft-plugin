@@ -109,13 +109,24 @@ console.log("parent" , Url)
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
+    function ensureElementHasClass(element) {
+        if (element && !element.hasAttribute("class")) {
+            element.setAttribute("class", "");
+        }
+    }
+
+    function ensureNestedTagsHaveClass(parentElement) {
+        if (!parentElement) return;
+
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
+        tags.forEach(tag => ensureElementHasClass(tag));
+    }
+
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
 
-        if (!selectedElement.className) {
-            selectedElement.setAttribute("class", "");
-        }
+        ensureNestedTagsHaveClass(selectedElement);
 
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
@@ -126,10 +137,8 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("mouseout", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
-        
-        if (!selectedElement.className) {
-            selectedElement.setAttribute("class", "");
-        }
+
+        ensureNestedTagsHaveClass(selectedElement);
 
         selectedElement.classList.remove("squareCraft-border-realtime");
     });
@@ -165,6 +174,7 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
     });
 }
+
 
 
   const observer = new MutationObserver(() => {
