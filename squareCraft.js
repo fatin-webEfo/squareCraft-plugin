@@ -1,15 +1,6 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
-document.addEventListener('DOMContentLoaded', function () {
-  const isEditingPage = document.documentElement.classList.contains('editing-page');
-
-  if (isEditingPage) {
-      console.log(" in editing mode. ");
-  } else {
-      console.log(" in live mode.");
-  }
-});
 
 
   const widgetScript = document.getElementById("squareCraft-script");
@@ -121,15 +112,16 @@ document.addEventListener('DOMContentLoaded', function () {
     widgetContainer.addEventListener("mouseover", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       if (!widgetElement) return;
-
+  
       if (selectedElement) {
-        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-
-        if (textType && textType.type === widgetElement.id) {
-          selectedElement.style.border = `2px solid ${textType.borderColor}`;
-        }
+          let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+  
+          if (textType && textType.type === widgetElement.id) {
+              selectedElement.classList.add('squareCraft-border');
+          }
       }
-    });
+  });
+  
 
     widgetContainer.addEventListener("mouseout", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');

@@ -27,7 +27,9 @@
 .squareCraft-mx-auto {
   margin: 0 auto !important;
 }
-
+.squareCraft-border{
+  border: 6px solid #fd6500 !important;
+}
 .squareCraft-border-r {
   border-right-width: 1px !important;
   border-right-style: solid !important;
@@ -420,7 +422,6 @@
   transition-duration: 300ms !important;
 }
 
-/* SquareCraft - Typography */
 .squareCraft-text-ellipsis {
   white-space: nowrap !important;
   overflow: hidden !important;
