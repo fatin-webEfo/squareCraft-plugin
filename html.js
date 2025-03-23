@@ -8,7 +8,7 @@ export function html() {
 
 
    const htmlString = `
-     <div
+      <div
    class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
    <div id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-w-full">
    <div
