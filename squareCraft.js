@@ -136,9 +136,13 @@ console.log("parent" , Url)
 
     function toggleTabClass(targetElement) {
         if (targetElement.classList.contains("squareCraft-activeTab-border")) {
-            targetElement.classList.replace("squareCraft-activeTab-border", "squareCraft-inActiveTab-border");
+            targetElement.classList.remove("squareCraft-activeTab-border");
+            targetElement.classList.add("squareCraft-inActiveTab-border");
+            console.log("✅ Now Inactive:", targetElement);
         } else {
-            targetElement.classList.replace("squareCraft-inActiveTab-border", "squareCraft-activeTab-border");
+            targetElement.classList.remove("squareCraft-inActiveTab-border");
+            targetElement.classList.add("squareCraft-activeTab-border");
+            console.log("✅ Now Active:", targetElement);
         }
     }
 
@@ -189,7 +193,6 @@ console.log("parent" , Url)
       const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
       if (tabElement) {
           toggleTabClass(tabElement);
-          console.log(`✅ Toggled Tab Class: ${tabElement.className}`);
       }
 
       if (widgetElement) {
@@ -201,6 +204,7 @@ console.log("parent" , Url)
       }
   });
 }
+
 
 
 
