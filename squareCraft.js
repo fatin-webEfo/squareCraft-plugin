@@ -162,15 +162,11 @@ console.log("parent" , Url)
       const blockElement = event.target.closest('[id^="block-"]');
   
       if (!widgetElement && !blockElement) return; 
+      if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
       if (widgetElement) {
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
-  
-          // Hide all other dropdowns
-          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-              if (dropdown !== dropdownElement) dropdown.classList.add("squareCraft-hidden");
-          });
   
           if (dropdownElement) {
               if (dropdownElement.classList.contains("squareCraft-hidden")) {
@@ -183,15 +179,12 @@ console.log("parent" , Url)
           const arrowElement = widgetElement.querySelector("img");
           if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
   
-          console.log("✅ Clicked widget element:", widgetElement);
       }
   
       if (blockElement) {
           ensureNestedTagsHaveClass(blockElement);
-          console.log("✅ Clicked block element:", blockElement);
       }
   });
-  
   
   
   
