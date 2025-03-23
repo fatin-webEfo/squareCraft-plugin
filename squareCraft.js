@@ -127,6 +127,7 @@ console.log("parent" , Url)
           }
       });
   }
+  
 
     function monitorAndApplyClasses() {
         if (selectedElement) {
@@ -139,7 +140,72 @@ console.log("parent" , Url)
         }
     }
 
-    function toggleTabClass(targetElement) {
+    setInterval(monitorAndApplyClasses, 300);
+
+    widgetContainer.addEventListener("mouseover", (event) => {
+        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        if (!widgetElement || !selectedElement) return;
+
+        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+        if (textType && textType.type === widgetElement.id) {
+            selectedElement.classList.add("squareCraft-border-realtime");
+            console.log("✅ Added squareCraft-border-realtime to:", selectedElement);
+        }
+    });
+
+    widgetContainer.addEventListener("mouseout", (event) => {
+        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+        if (!widgetElement || !selectedElement) return;
+
+        selectedElement.classList.remove("squareCraft-border-realtime");
+        console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
+    });
+
+
+
+    widgetContainer.addEventListener("click", (event) => {
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      const blockElement = event.target.closest('[id^="block-"]');
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+    
+      if (!widgetElement && !blockElement) return; 
+      if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
+  
+      if (!isInsideDropdown) {
+          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+              dropdown.classList.add("squareCraft-hidden");
+          });
+  
+          document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+              arrow.classList.remove("squareCraft-rotate-180");
+          });
+      }
+    
+      if (widgetElement && !isInsideDropdown) {
+          const dropdownId = widgetElement.id + "Dropdown";
+          const dropdownElement = document.getElementById(dropdownId);
+      
+          if (dropdownElement) {
+              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+        
+              if (isHidden) {
+                  dropdownElement.classList.remove("squareCraft-hidden");
+                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+              } else {
+                  dropdownElement.classList.add("squareCraft-hidden");
+              }
+          }
+      
+          const arrowElement = widgetElement.querySelector("img");
+          if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
+      
+      }
+    
+      if (blockElement) {
+          ensureNestedTagsHaveClass(blockElement);
+      }
+
+      function toggleTabClass(targetElement) {
         if (targetElement.classList.contains("squareCraft-inActiveTab-border")) {
             targetElement.classList.replace("squareCraft-inActiveTab-border", "squareCraft-activeTab-border");
             console.log("✅ Changed to active tab:", targetElement);
@@ -147,19 +213,19 @@ console.log("parent" , Url)
             targetElement.classList.replace("squareCraft-activeTab-border", "squareCraft-inActiveTab-border");
             console.log("✅ Changed to inactive tab:", targetElement);
         }
+        
     }
-
-    setInterval(monitorAndApplyClasses, 300);
-
     widgetContainer.addEventListener("click", (event) => {
-        const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
+      const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
 
-        if (tabElement) {
-            toggleTabClass(tabElement);
-        }
-    });
+      if (tabElement) {
+          toggleTabClass(tabElement);
+      }
+  });
+  });
+  
+  
 }
-
 
 
 
