@@ -166,14 +166,15 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
-      
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+  
       if (!widgetElement && !blockElement) return; 
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
-      if (widgetElement) {
+      if (widgetElement && !isInsideDropdown) {
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
-          
+  
           if (dropdownElement) {
               const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
   
@@ -200,6 +201,7 @@ console.log("parent" , Url)
           console.log("✅ Clicked block element:", blockElement);
       }
   });
+  
   
   
   
