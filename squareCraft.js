@@ -97,7 +97,6 @@ console.log("parent" , Url)
 
 
 
-  
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
@@ -150,27 +149,27 @@ console.log("parent" , Url)
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-    
+
       if (!widgetElement && !blockElement) return; 
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
-  
+
       if (!isInsideDropdown) {
           document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
               dropdown.classList.add("squareCraft-hidden");
           });
-  
+
           document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
               arrow.classList.remove("squareCraft-rotate-180");
           });
       }
-    
+
       if (widgetElement && !isInsideDropdown) {
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
-      
+
           if (dropdownElement) {
               const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-        
+
               if (isHidden) {
                   dropdownElement.classList.remove("squareCraft-hidden");
                   setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
@@ -178,11 +177,11 @@ console.log("parent" , Url)
                   dropdownElement.classList.add("squareCraft-hidden");
               }
           }
-      
+
           const arrowElement = widgetElement.querySelector("img");
           if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
       }
-    
+
       if (blockElement) {
           ensureNestedTagsHaveClass(blockElement);
       }
@@ -190,9 +189,19 @@ console.log("parent" , Url)
       const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
       if (tabElement) {
           toggleTabClass(tabElement);
+          console.log(`✅ Toggled Tab Class: ${tabElement.className}`);
       }
-  }, { once: true });
+
+      if (widgetElement) {
+          console.log(`✅ Clicked Widget Element: ${widgetElement.id}`);
+      }
+
+      if (blockElement) {
+          console.log(`✅ Clicked Block Element: ${blockElement.id}`);
+      }
+  });
 }
+
 
 
 
