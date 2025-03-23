@@ -1,6 +1,16 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
+function checkEditingMode() {
+  const isEditing = document.body.classList.contains("sqs-editing");
+  console.log("Editing Mode Active:", isEditing);
+}
+
+console.log("Before Editing Mode:");
+checkEditingMode();
+
+setInterval(checkEditingMode, 2000);
+
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
@@ -98,74 +108,88 @@ console.log("parent" , Url)
 
 
   async function addHeadingEventListeners() {
-    const iframe = parent.document.getElementById("sqs-site-frame");
-    if (!iframe) return;
-
-    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
     const widgetContainer = document.getElementById("squareCraft-widget-container");
-    if (!widgetContainer) return;
+
+    if (!widgetContainer) {
+      console.error("❌ Widget container not found!");
+      return;
+    }
 
     if (widgetContainer.dataset.eventsAdded) return;
     widgetContainer.dataset.eventsAdded = "true";
 
     widgetContainer.addEventListener("mouseover", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
 
-        if (!selectedElement.className) {
-            selectedElement.setAttribute("class", "");
-        }
 
+      if (selectedElement) {
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+
         if (textType && textType.type === widgetElement.id) {
-            selectedElement.classList.add("squareCraft-border-realtime");
+          selectedElement.style.border = `2px solid ${textType.borderColor}`;
         }
+      }
     });
 
     widgetContainer.addEventListener("mouseout", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
-        
-        if (!selectedElement.className) {
-            selectedElement.setAttribute("class", "");
-        }
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      if (!widgetElement) return;
 
-        selectedElement.classList.remove("squareCraft-border-realtime");
+
+      if (selectedElement) {
+        selectedElement.style.border = "";
+      }
     });
 
     widgetContainer.addEventListener("click", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
 
-        if (isInsideDropdown) return;
-        if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
+      if (isInsideDropdown) {
+          return;
+      }
+
+      if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
+
+      document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+        if (dropdown.id !== widgetElement.id + "Dropdown") {
+          dropdown.classList.add("squareCraft-hidden");
+        }
+      });
+
+      document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+        if (!widgetElement.contains(arrow)) {
+          arrow.classList.remove("squareCraft-rotate-180");
+        }
+      });
+
+      const dropdownId = widgetElement.id + "Dropdown";
+      const dropdownElement = document.getElementById(dropdownId);
+
+      if (dropdownElement) {
+        const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
 
         document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-            if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
+          dropdown.classList.add("squareCraft-hidden");
         });
 
-        document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-            if (!widgetElement.contains(arrow)) arrow.classList.remove("squareCraft-rotate-180");
-        });
-
-        const dropdownId = widgetElement.id + "Dropdown";
-        const dropdownElement = document.getElementById(dropdownId);
-
-        if (dropdownElement) {
-            const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-            document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => dropdown.classList.add("squareCraft-hidden"));
-            if (isHidden) {
-                dropdownElement.classList.remove("squareCraft-hidden");
-                setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-            }
+        if (isHidden) {
+          dropdownElement.classList.remove("squareCraft-hidden");
+          setTimeout(() => {
+            dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 200);
         }
+      }
 
-        const arrowElement = widgetElement.querySelector("img");
-        if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
+      const arrowElement = widgetElement.querySelector("img");
+      if (arrowElement) {
+        arrowElement.classList.toggle("squareCraft-rotate-180");
+      }
     });
-}
 
+
+  }
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
