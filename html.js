@@ -91,7 +91,7 @@ export function html() {
                </div>
             </div>
 
-            <div id="heading1Dropdown" class="squareCraft-hidden">
+            <div id="heading1Dropdown" >
                
                <div class="squareCraft-mt-2 squareCraft-px-2  squareCraft-gap-2">
                   
