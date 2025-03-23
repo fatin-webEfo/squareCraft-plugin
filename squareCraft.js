@@ -167,6 +167,11 @@ console.log("parent" , Url)
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
   
+          // Hide all other dropdowns
+          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+              if (dropdown !== dropdownElement) dropdown.classList.add("squareCraft-hidden");
+          });
+  
           if (dropdownElement) {
               if (dropdownElement.classList.contains("squareCraft-hidden")) {
                   dropdownElement.classList.remove("squareCraft-hidden");
@@ -186,6 +191,7 @@ console.log("parent" , Url)
           console.log("✅ Clicked block element:", blockElement);
       }
   });
+  
   
   
   
