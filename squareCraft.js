@@ -112,7 +112,7 @@ console.log("parent" , Url)
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small");
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
         tags.forEach(tag => {
             ensureElementHasClass(tag);
             console.log("✅ Ensured tag has class:", tag);
@@ -121,9 +121,12 @@ console.log("parent" , Url)
 
     function monitorAndApplyClasses() {
         if (selectedElement) {
-            ensureElementHasClass(selectedElement);
-            ensureNestedTagsHaveClass(selectedElement);
-            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
+            const blockElement = selectedElement.closest('[id^="block-"]');
+            if (blockElement) {
+                ensureElementHasClass(blockElement);
+                ensureNestedTagsHaveClass(blockElement);
+                console.log("✅ Checking and ensuring classes for block element:", blockElement);
+            }
         }
     }
 
@@ -180,11 +183,10 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
 
         console.log("✅ Clicked element:", widgetElement);
-
-        // New part: Find all nested tags and ensure class existence
         ensureNestedTagsHaveClass(blockElement);
     });
 }
+
 
 
 
