@@ -96,42 +96,9 @@ console.log("parent" , Url)
   });
 
 
-  async function addHeadingEventListeners() {
+  async function testToggleFunction() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
-
-    function ensureElementHasClass(element) {
-        if (element && (!element.className || element.className.trim() === "")) {
-            element.setAttribute("class", "");
-        }
-    }
-
-    function ensureNestedTagsHaveClass(parentElement) {
-      if (!parentElement) return;
-  
-      const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-  
-      tags.forEach(tag => {
-          ensureElementHasClass(tag);
-      });
-  
-      const directTags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
-      directTags.forEach(tag => {
-          if (!tag.className || tag.className.trim() === "") {
-              tag.setAttribute("class", "squareCraft-element");
-          }
-      });
-  }
-
-    function monitorAndApplyClasses() {
-        if (selectedElement) {
-            const blockElement = selectedElement.closest('[id^="block-"]');
-            if (blockElement) {
-                ensureElementHasClass(blockElement);
-                ensureNestedTagsHaveClass(blockElement);
-            }
-        }
-    }
 
     function toggleTabClass(targetElement) {
         console.log("🚀 Toggle function called for:", targetElement);
@@ -146,66 +113,13 @@ console.log("parent" , Url)
         }
     }
 
-    setInterval(monitorAndApplyClasses, 300);
-
     widgetContainer.addEventListener("click", (event) => {
-      event.stopPropagation();
-      console.log("📌 Click detected on widgetContainer");
-
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      const blockElement = event.target.closest('[id^="block-"]');
-      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-
-      if (!widgetElement && !blockElement) return; 
-      if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-      if (!isInsideDropdown) {
-          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-              dropdown.classList.add("squareCraft-hidden");
-          });
-
-          document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-              arrow.classList.remove("squareCraft-rotate-180");
-          });
-      }
-
-      if (widgetElement && !isInsideDropdown) {
-          const dropdownId = widgetElement.id + "Dropdown";
-          const dropdownElement = document.getElementById(dropdownId);
-
-          if (dropdownElement) {
-              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-
-              if (isHidden) {
-                  dropdownElement.classList.remove("squareCraft-hidden");
-                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-              } else {
-                  dropdownElement.classList.add("squareCraft-hidden");
-              }
-          }
-
-          const arrowElement = widgetElement.querySelector("img");
-          if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-      }
-
-      if (blockElement) {
-          ensureNestedTagsHaveClass(blockElement);
-      }
-
-      const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
-      if (tabElement) {
-          console.log("📌 Tab Element Clicked:", tabElement);
-          toggleTabClass(tabElement);
-      }
-
-      if (widgetElement) {
-          console.log(`✅ Clicked Widget Element: ${widgetElement.id}`);
-      }
-
-      if (blockElement) {
-          console.log(`✅ Clicked Block Element: ${blockElement.id}`);
-      }
-  });
+        const tabElement = event.target;
+        if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
+            console.log("📌 Tab Element Clicked:", tabElement);
+            toggleTabClass(tabElement);
+        }
+    });
 }
 
 
