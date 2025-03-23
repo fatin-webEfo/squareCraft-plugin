@@ -105,6 +105,7 @@ console.log("parent" , Url)
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
             element.setAttribute("class", "");
+            console.log("✅ Added empty class to element:", element);
         }
     }
 
@@ -115,12 +116,14 @@ console.log("parent" , Url)
   
       tags.forEach(tag => {
           ensureElementHasClass(tag);
+          console.log("✅ Ensured tag has class:", tag);
       });
   
       const directTags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
       directTags.forEach(tag => {
           if (!tag.className || tag.className.trim() === "") {
               tag.setAttribute("class", "squareCraft-element");
+              console.log("✅ Added 'squareCraft-element' class to:", tag);
           }
       });
   }
@@ -132,6 +135,7 @@ console.log("parent" , Url)
             if (blockElement) {
                 ensureElementHasClass(blockElement);
                 ensureNestedTagsHaveClass(blockElement);
+                console.log("✅ Checking and ensuring classes for block element:", blockElement);
             }
         }
     }
@@ -145,6 +149,7 @@ console.log("parent" , Url)
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
             selectedElement.classList.add("squareCraft-border-realtime");
+            console.log("✅ Added squareCraft-border-realtime to:", selectedElement);
         }
     });
 
@@ -152,7 +157,8 @@ console.log("parent" , Url)
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
 
-        selectedElement.classList.remove("squareCraft-border-realtime"); 
+        selectedElement.classList.remove("squareCraft-border-realtime");
+        console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
     });
 
 
@@ -160,32 +166,47 @@ console.log("parent" , Url)
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
-  
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+    
       if (!widgetElement && !blockElement) return; 
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
-      if (widgetElement) {
+      if (!isInsideDropdown) {
+          document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+              dropdown.classList.add("squareCraft-hidden");
+          });
+  
+          document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+              arrow.classList.remove("squareCraft-rotate-180");
+          });
+      }
+    
+      if (widgetElement && !isInsideDropdown) {
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
-  
+      
           if (dropdownElement) {
-              if (dropdownElement.classList.contains("squareCraft-hidden")) {
+              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+        
+              if (isHidden) {
                   dropdownElement.classList.remove("squareCraft-hidden");
+                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
               } else {
                   dropdownElement.classList.add("squareCraft-hidden");
               }
           }
-  
+      
           const arrowElement = widgetElement.querySelector("img");
           if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-  
+      
+          console.log("✅ Clicked widget element:", widgetElement);
       }
-  
+    
       if (blockElement) {
           ensureNestedTagsHaveClass(blockElement);
+          console.log("✅ Clicked block element:", blockElement);
       }
   });
-  
   
   
 }
