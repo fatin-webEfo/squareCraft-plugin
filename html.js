@@ -247,7 +247,7 @@ export function html() {
                            class="squareCraft-Letter-spacing-input squareCraft-font-light squareCraft-text-sm squareCraft-text-color-white 
                               squareCraft-bg-transparent squareCraft-w-full  squareCraft-py-1px squareCraft-font-light">
                         <div class="squareCraft-mx-auto squareCraft-ml-1 squareCraft-flex squareCraft-items-center squareCraft-justify-center">
-                           <img id="squareCraftLetterSpacingDropdown"
+                           <img id="squareCraftLetterSpacingDropdown" loading="lazy"
                               src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
                             style="width: 12px;"  class=" squareCraft-px-1 squareCraft-flex squareCraft-items-center squareCraft-justify-center squareCraft-mt-1 squareCraft-mx-auto squareCraft-cursor-pointer">
                         </div>
@@ -273,7 +273,7 @@ export function html() {
                      class="squareCraft-Letter-spacing-input squareCraft-font-light squareCraft-text-sm squareCraft-text-color-white 
                         squareCraft-bg-transparent squareCraft-w-full  squareCraft-py-1px squareCraft-font-light">
                   <div class="squareCraft-mx-auto squareCraft-ml-1 squareCraft-flex squareCraft-items-center squareCraft-justify-center">
-                     <img id="squareCraftLetterSpacingDropdown"
+                     <img id="squareCraftLetterSpacingDropdown" loading="lazy"
                         src="https://i.ibb.co.com/G460VVdR/Vector.png"
                       style="width: 15px;"  class=" squareCraft-px-1 squareCraft-flex squareCraft-items-center squareCraft-justify-center squareCraft-mx-auto squareCraft-cursor-pointer">
                   </div>
