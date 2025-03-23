@@ -8,7 +8,7 @@ export function html() {
 
 
    const htmlString = `
-    <div
+     <div
    class="squareCraft-p-4  squareCraft-text-color-white squareCraft-border squareCraft-border-solid squareCraft-border-3d3d3d squareCraft-bg-color-2c2c2c squareCraft-rounded-15px squareCraft-w-300px">
    <div id="squareCraft-grabbing" class="squareCraft-cursor-grabbing squareCraft-w-full">
    <div
@@ -78,12 +78,14 @@ export function html() {
       </div>
 
       <div>
-         <div>
+         <div class="">
 
-            <div class="squareCraft-flex squareCraft-mt-2 squareCraft-px-2">
+            <div class="squareCraft-flex  squareCraft-mt-2 squareCraft-px-2">
+               
                <div id="heading1"
-                  class="squareCraft-bg-3f3f3f squareCraft-z-99999 squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
-                  <p class="squareCraft-poppins squareCraft-universal squareCraft-text-sm ">Heading-1</p>
+                  class="squareCraft-bg-3f3f3f squareCraft-relative squareCraft-z-99999 squareCraft-flex squareCraft-border-hover-EF7C2F squareCraft-border squareCraft-border-solid squareCraft-border-3f3f3f squareCraft-cursor-pointer squareCraft-px-2 squareCraft-justify-between squareCraft-py-1 squareCraft-w-full squareCraft-rounded-6px">
+                  <div class="squareCraft-active-bar"></div>
+                  <p class="squareCraft-poppins  squareCraft-universal squareCraft-text-sm ">Heading-1</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="squareCraft-rotate-180" alt="">
                </div>

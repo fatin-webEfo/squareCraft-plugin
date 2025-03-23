@@ -24,6 +24,15 @@
   all: unset;
 }
 
+.squareCraft-active-bar{
+  background-color: #EF7C2F !important;
+  height: 100% !important;
+  width: 2px !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
 .squareCraft-mx-auto {
   margin: 0 auto !important;
 }
