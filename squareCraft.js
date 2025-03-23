@@ -161,6 +161,8 @@ console.log("parent" , Url)
         console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
     });
 
+
+
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
@@ -212,7 +214,6 @@ console.log("parent" , Url)
   
   
 }
-
 
 
 
