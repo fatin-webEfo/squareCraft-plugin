@@ -170,37 +170,31 @@ console.log("parent" , Url)
       if (!widgetElement && !blockElement) return; 
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
-      const dropdownId = widgetElement?.id + "Dropdown";
-      const dropdownElement = dropdownId ? document.getElementById(dropdownId) : null;
+      document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+          dropdown.classList.add("squareCraft-hidden");
+      });
   
-      if (dropdownElement) {
-          const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-  
-          if (isHidden) {
-              // Close all other dropdowns first
-              document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-                  if (dropdown !== dropdownElement) dropdown.classList.add("squareCraft-hidden");
-              });
-  
-              document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-                  if (!widgetElement || !widgetElement.contains(arrow)) {
-                      arrow.classList.remove("squareCraft-rotate-180");
-                  }
-              });
-  
-              // Now, show the current dropdown
-              dropdownElement.classList.remove("squareCraft-hidden");
-              console.log("✅ Dropdown opened:", dropdownElement);
-          } else {
-              // Toggle it off if it's already open
-              dropdownElement.classList.add("squareCraft-hidden");
-              console.log("✅ Dropdown closed:", dropdownElement);
-          }
-      }
+      document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+          arrow.classList.remove("squareCraft-rotate-180");
+      });
   
       if (widgetElement) {
+          const dropdownId = widgetElement.id + "Dropdown";
+          const dropdownElement = document.getElementById(dropdownId);
+  
+          if (dropdownElement) {
+              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+  
+              if (isHidden) {
+                  dropdownElement.classList.remove("squareCraft-hidden");
+                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+              }
+          }
+  
           const arrowElement = widgetElement.querySelector("img");
           if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
+  
+          console.log("✅ Clicked widget element:", widgetElement);
       }
   
       if (blockElement) {
@@ -208,7 +202,6 @@ console.log("parent" , Url)
           console.log("✅ Clicked block element:", blockElement);
       }
   });
-  
   
 }
 
