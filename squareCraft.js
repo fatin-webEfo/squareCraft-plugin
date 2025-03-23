@@ -96,7 +96,6 @@ console.log("parent" , Url)
   });
 
 
-
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
@@ -135,6 +134,7 @@ console.log("parent" , Url)
     }
 
     function toggleTabClass(targetElement) {
+        console.log("🚀 Toggle function called for:", targetElement);
         if (targetElement.classList.contains("squareCraft-activeTab-border")) {
             targetElement.classList.remove("squareCraft-activeTab-border");
             targetElement.classList.add("squareCraft-inActiveTab-border");
@@ -150,6 +150,8 @@ console.log("parent" , Url)
 
     widgetContainer.addEventListener("click", (event) => {
       event.stopPropagation();
+      console.log("📌 Click detected on widgetContainer");
+
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
@@ -192,6 +194,7 @@ console.log("parent" , Url)
 
       const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
       if (tabElement) {
+          console.log("📌 Tab Element Clicked:", tabElement);
           toggleTabClass(tabElement);
       }
 
@@ -204,6 +207,7 @@ console.log("parent" , Url)
       }
   });
 }
+
 
 
 
