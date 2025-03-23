@@ -39,7 +39,14 @@
   border-left-width: 1px !important;
   border-left-style: solid !important;
 }
-
+.squareCraft-pt-1 {
+  padding-top: 0.4rem !important;
+  /* 4px */
+}
+.squareCraft-pb-1 {
+  padding-bottom: 0.3rem !important;
+  /* 4px */
+}
 .squareCraft-border {
   border-width: 0.1px !important;
   border-style: dashed !important;
