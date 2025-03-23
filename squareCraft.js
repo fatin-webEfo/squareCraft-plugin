@@ -96,7 +96,7 @@ console.log("parent" , Url)
   });
 
 
-  async function testToggleFunction() {
+  async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
