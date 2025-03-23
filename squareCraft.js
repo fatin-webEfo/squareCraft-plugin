@@ -153,24 +153,22 @@ console.log("parent" , Url)
 
     setInterval(monitorAndApplyClasses, 300);
 
-    widgetContainer.addEventListener("mouseover", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
+    // widgetContainer.addEventListener("mouseover", (event) => {
+    //     const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+    //     if (!widgetElement || !selectedElement) return;
 
-        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-        if (textType && textType.type === widgetElement.id) {
-            selectedElement.classList.add("squareCraft-border-realtime");
-            console.log("✅ Added squareCraft-border-realtime to:", selectedElement);
-        }
-    });
+    //     let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
+    //     if (textType && textType.type === widgetElement.id) {
+    //         selectedElement.classList.add("squareCraft-border-realtime");
+    //     }
+    // });
 
-    widgetContainer.addEventListener("mouseout", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
+    // widgetContainer.addEventListener("mouseout", (event) => {
+    //     const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+    //     if (!widgetElement || !selectedElement) return;
 
-        selectedElement.classList.remove("squareCraft-border-realtime");
-        console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
-    });
+    //     selectedElement.classList.remove("squareCraft-border-realtime");
+    // });
 
     widgetContainer.addEventListener("click", (event) => {
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
