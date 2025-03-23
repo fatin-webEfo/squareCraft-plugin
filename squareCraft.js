@@ -183,7 +183,7 @@ console.log("parent" , Url)
           const dropdownElement = document.getElementById(dropdownId);
   
           if (dropdownElement) {
-              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+              const isHidden = dropdownElement.classList.add("squareCraft-hidden");
   
               if (isHidden) {
                   dropdownElement.classList.remove("squareCraft-hidden");
