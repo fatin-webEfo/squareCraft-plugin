@@ -167,7 +167,7 @@ console.log("parent" , Url)
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-  
+    
       if (!widgetElement && !blockElement) return; 
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
@@ -180,18 +180,14 @@ console.log("parent" , Url)
               arrow.classList.remove("squareCraft-rotate-180");
           });
       }
-  
+    
       if (widgetElement && !isInsideDropdown) {
           const dropdownId = widgetElement.id + "Dropdown";
           const dropdownElement = document.getElementById(dropdownId);
       
           if (dropdownElement) {
               const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-      
-              document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-                  if (dropdown !== dropdownElement) dropdown.classList.add("squareCraft-hidden");
-              });
-  
+        
               if (isHidden) {
                   dropdownElement.classList.remove("squareCraft-hidden");
                   setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
@@ -205,7 +201,7 @@ console.log("parent" , Url)
       
           console.log("✅ Clicked widget element:", widgetElement);
       }
-  
+    
       if (blockElement) {
           ensureNestedTagsHaveClass(blockElement);
           console.log("✅ Clicked block element:", blockElement);
