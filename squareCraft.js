@@ -97,6 +97,7 @@ console.log("parent" , Url)
 
 
 
+  
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
@@ -111,24 +112,18 @@ console.log("parent" , Url)
     function ensureNestedTagsHaveClass(parentElement) {
         if (!parentElement) return;
 
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-        
+        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small");
         tags.forEach(tag => {
-            if (!tag.className || tag.className.trim() === "") {
-                tag.setAttribute("class", "squareCraft-element"); 
-                console.log("✅ Added 'squareCraft-element' class to:", tag);
-            }
+            ensureElementHasClass(tag);
+            console.log("✅ Ensured tag has class:", tag);
         });
     }
 
     function monitorAndApplyClasses() {
         if (selectedElement) {
-            const blockElement = selectedElement.closest('[id^="block-"]');
-            if (blockElement) {
-                ensureElementHasClass(blockElement);
-                ensureNestedTagsHaveClass(blockElement);
-                console.log("✅ Checking and ensuring classes for block element:", blockElement);
-            }
+            ensureElementHasClass(selectedElement);
+            ensureNestedTagsHaveClass(selectedElement);
+            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
         }
     }
 
@@ -185,6 +180,8 @@ console.log("parent" , Url)
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
 
         console.log("✅ Clicked element:", widgetElement);
+
+        // New part: Find all nested tags and ensure class existence
         ensureNestedTagsHaveClass(blockElement);
     });
 }
