@@ -126,20 +126,11 @@ console.log("parent" , Url)
 
 
 
-
-
-
-
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-
-  setTimeout(() => {
-    addHeadingEventListeners();
-  }, 1000);
-
 
   setTimeout(() => {
     addHeadingEventListeners();
