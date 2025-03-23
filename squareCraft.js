@@ -189,6 +189,9 @@ console.log("parent" , Url)
                   dropdownElement.classList.remove("squareCraft-hidden");
                   setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
               }
+              else {
+                  dropdownElement.classList.add("squareCraft-hidden");
+              }
           }
   
           const arrowElement = widgetElement.querySelector("img");
