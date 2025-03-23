@@ -162,39 +162,47 @@ console.log("parent" , Url)
     });
 
     widgetContainer.addEventListener("click", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        const blockElement = event.target.closest('[id^="block-"]');
-        const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
-
-        if (isInsideDropdown || !widgetElement || !blockElement) return;
-        if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
-
-        document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-            if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
-        });
-
-        document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-            if (!widgetElement.contains(arrow)) arrow.classList.remove("squareCraft-rotate-180");
-        });
-
-        const dropdownId = widgetElement.id + "Dropdown";
-        const dropdownElement = document.getElementById(dropdownId);
-
-        if (dropdownElement) {
-            const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-            document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => dropdown.classList.add("squareCraft-hidden"));
-            if (isHidden) {
-                dropdownElement.classList.remove("squareCraft-hidden");
-                setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
-            }
-        }
-
-        const arrowElement = widgetElement.querySelector("img");
-        if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-
-        console.log("✅ Clicked element:", widgetElement);
-        ensureNestedTagsHaveClass(blockElement);
-    });
+      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
+      const blockElement = event.target.closest('[id^="block-"]');
+      const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
+  
+      if (isInsideDropdown) return;
+      if (!widgetElement && !blockElement) return; 
+      if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
+  
+      document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
+          dropdown.classList.add("squareCraft-hidden");
+      });
+  
+      document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
+          arrow.classList.remove("squareCraft-rotate-180");
+      });
+  
+      if (widgetElement) {
+          const dropdownId = widgetElement.id + "Dropdown";
+          const dropdownElement = document.getElementById(dropdownId);
+  
+          if (dropdownElement) {
+              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
+  
+              if (isHidden) {
+                  dropdownElement.classList.remove("squareCraft-hidden");
+                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+              }
+          }
+  
+          const arrowElement = widgetElement.querySelector("img");
+          if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
+  
+          console.log("✅ Clicked widget element:", widgetElement);
+      }
+  
+      if (blockElement) {
+          ensureNestedTagsHaveClass(blockElement);
+          console.log("✅ Clicked block element:", blockElement);
+      }
+  });
+  
 }
 
 
