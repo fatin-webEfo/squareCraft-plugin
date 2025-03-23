@@ -97,64 +97,49 @@ console.log("parent" , Url)
 
 
 
-  
   async function addHeadingEventListeners() {
+    const iframe = parent.document.getElementById("sqs-site-frame");
+    if (!iframe) return;
+
+    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
-    function ensureElementHasClass(element) {
-        if (element && (!element.className || element.className.trim() === "")) {
-            element.setAttribute("class", "");
-            console.log("✅ Added empty class to element:", element);
-        }
-    }
-
-    function ensureNestedTagsHaveClass(parentElement) {
-        if (!parentElement) return;
-
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, .sqsrte-large, p, .sqsrte-small");
-        tags.forEach(tag => {
-            ensureElementHasClass(tag);
-            console.log("✅ Ensured tag has class:", tag);
-        });
-    }
-
-    function monitorAndApplyClasses() {
-        if (selectedElement) {
-            ensureElementHasClass(selectedElement);
-            ensureNestedTagsHaveClass(selectedElement);
-            console.log("✅ Checking and ensuring classes for selected element:", selectedElement);
-        }
-    }
-
-    setInterval(monitorAndApplyClasses, 300);
+    if (widgetContainer.dataset.eventsAdded) return;
+    widgetContainer.dataset.eventsAdded = "true";
 
     widgetContainer.addEventListener("mouseover", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
 
+        if (!selectedElement.className) {
+            selectedElement.setAttribute("class", "");
+        }
+
         let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
         if (textType && textType.type === widgetElement.id) {
             selectedElement.classList.add("squareCraft-border-realtime");
-            console.log("✅ Added squareCraft-border-realtime to:", selectedElement);
         }
     });
 
     widgetContainer.addEventListener("mouseout", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
         if (!widgetElement || !selectedElement) return;
+        
+        if (!selectedElement.className) {
+            selectedElement.setAttribute("class", "");
+        }
 
         selectedElement.classList.remove("squareCraft-border-realtime");
-        console.log("✅ Removed squareCraft-border-realtime from:", selectedElement);
     });
 
     widgetContainer.addEventListener("click", (event) => {
         const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        const blockElement = event.target.closest('[id^="block-"]');
         const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
 
-        if (isInsideDropdown || !widgetElement || !blockElement) return;
-        if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
+        if (isInsideDropdown) return;
+        if (!widgetElement || event.target.tagName === "IMG" || event.target.tagName === "P") return;
 
         document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
             if (dropdown.id !== widgetElement.id + "Dropdown") dropdown.classList.add("squareCraft-hidden");
@@ -178,16 +163,8 @@ console.log("parent" , Url)
 
         const arrowElement = widgetElement.querySelector("img");
         if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-
-        console.log("✅ Clicked element:", widgetElement);
-
-        // New part: Find all nested tags and ensure class existence
-        ensureNestedTagsHaveClass(blockElement);
     });
 }
-
-
-
 
 
   const observer = new MutationObserver(() => {
@@ -552,4 +529,3 @@ console.log("parent" , Url)
   checkView();
   window.addEventListener("resize", checkView);
 })();
-
