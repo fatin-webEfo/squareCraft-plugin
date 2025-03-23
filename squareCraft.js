@@ -167,15 +167,19 @@ console.log("parent" , Url)
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
   
       if (isInsideDropdown) return;
-      if (!widgetElement && !blockElement) return; 
+      if (!widgetElement && !blockElement) return;
       if (event.target.tagName === "IMG" || event.target.tagName === "P") return;
   
       document.querySelectorAll('[id$="Dropdown"]').forEach((dropdown) => {
-          dropdown.classList.add("squareCraft-hidden");
+          if (dropdown !== document.getElementById(widgetElement?.id + "Dropdown")) {
+              dropdown.classList.add("squareCraft-hidden");
+          }
       });
   
       document.querySelectorAll(".squareCraft-rotate-180").forEach((arrow) => {
-          arrow.classList.remove("squareCraft-rotate-180");
+          if (!widgetElement || !widgetElement.contains(arrow)) {
+              arrow.classList.remove("squareCraft-rotate-180");
+          }
       });
   
       if (widgetElement) {
@@ -183,11 +187,12 @@ console.log("parent" , Url)
           const dropdownElement = document.getElementById(dropdownId);
   
           if (dropdownElement) {
-              const isHidden = dropdownElement.classList.contains("squareCraft-hidden");
-  
-              if (isHidden) {
+              if (dropdownElement.classList.contains("squareCraft-hidden")) {
                   dropdownElement.classList.remove("squareCraft-hidden");
-                  setTimeout(() => dropdownElement.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+                  console.log("✅ Dropdown opened:", dropdownElement);
+              } else {
+                  dropdownElement.classList.add("squareCraft-hidden");
+                  console.log("✅ Dropdown closed:", dropdownElement);
               }
           }
   
@@ -202,6 +207,7 @@ console.log("parent" , Url)
           console.log("✅ Clicked block element:", blockElement);
       }
   });
+  
   
 }
 
