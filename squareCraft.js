@@ -105,7 +105,6 @@ console.log("parent" , Url)
     function ensureElementHasClass(element) {
         if (element && (!element.className || element.className.trim() === "")) {
             element.setAttribute("class", "");
-            console.log("✅ Added empty class to element:", element);
         }
     }
 
@@ -116,14 +115,12 @@ console.log("parent" , Url)
   
       tags.forEach(tag => {
           ensureElementHasClass(tag);
-          console.log("✅ Ensured tag has class:", tag);
       });
   
       const directTags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
       directTags.forEach(tag => {
           if (!tag.className || tag.className.trim() === "") {
               tag.setAttribute("class", "squareCraft-element");
-              console.log("✅ Added 'squareCraft-element' class to:", tag);
           }
       });
   }
@@ -134,43 +131,22 @@ console.log("parent" , Url)
             if (blockElement) {
                 ensureElementHasClass(blockElement);
                 ensureNestedTagsHaveClass(blockElement);
-                console.log("✅ Checking and ensuring classes for block element:", blockElement);
             }
         }
     }
 
     function toggleTabClass(targetElement) {
         if (targetElement.classList.contains("squareCraft-activeTab-border")) {
-            targetElement.classList.remove("squareCraft-activeTab-border");
-            targetElement.classList.add("squareCraft-inActiveTab-border");
-            console.log("✅ Changed to inactive tab:", targetElement);
+            targetElement.classList.replace("squareCraft-activeTab-border", "squareCraft-inActiveTab-border");
         } else {
-            targetElement.classList.remove("squareCraft-inActiveTab-border");
-            targetElement.classList.add("squareCraft-activeTab-border");
-            console.log("✅ Changed to active tab:", targetElement);
+            targetElement.classList.replace("squareCraft-inActiveTab-border", "squareCraft-activeTab-border");
         }
     }
 
     setInterval(monitorAndApplyClasses, 300);
 
-    // widgetContainer.addEventListener("mouseover", (event) => {
-    //     const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-    //     if (!widgetElement || !selectedElement) return;
-
-    //     let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-    //     if (textType && textType.type === widgetElement.id) {
-    //         selectedElement.classList.add("squareCraft-border-realtime");
-    //     }
-    // });
-
-    // widgetContainer.addEventListener("mouseout", (event) => {
-    //     const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-    //     if (!widgetElement || !selectedElement) return;
-
-    //     selectedElement.classList.remove("squareCraft-border-realtime");
-    // });
-
     widgetContainer.addEventListener("click", (event) => {
+      event.stopPropagation();
       const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
       const blockElement = event.target.closest('[id^="block-"]');
       const isInsideDropdown = event.target.closest(".squareCraft-dropdown");
@@ -205,7 +181,6 @@ console.log("parent" , Url)
       
           const arrowElement = widgetElement.querySelector("img");
           if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-      
       }
     
       if (blockElement) {
@@ -216,7 +191,7 @@ console.log("parent" , Url)
       if (tabElement) {
           toggleTabClass(tabElement);
       }
-  });
+  }, { once: true });
 }
 
 
