@@ -1,16 +1,6 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
 console.log("parent" , Url)
-function checkEditingMode() {
-  const isEditing = document.body.classList.contains("sqs-editing");
-  console.log("Editing Mode Active:", isEditing);
-}
-
-console.log("Before Editing Mode:");
-checkEditingMode();
-
-setInterval(checkEditingMode, 2000);
-
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
