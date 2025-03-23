@@ -110,14 +110,24 @@ console.log("parent" , Url)
     }
 
     function ensureNestedTagsHaveClass(parentElement) {
-        if (!parentElement) return;
-
-        const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-        tags.forEach(tag => {
-            ensureElementHasClass(tag);
-            console.log("✅ Ensured tag has class:", tag);
-        });
-    }
+      if (!parentElement) return;
+  
+      const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
+  
+      tags.forEach(tag => {
+          ensureElementHasClass(tag);
+          console.log("✅ Ensured tag has class:", tag);
+      });
+  
+      const directTags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
+      directTags.forEach(tag => {
+          if (!tag.className || tag.className.trim() === "") {
+              tag.setAttribute("class", "squareCraft-element");
+              console.log("✅ Added 'squareCraft-element' class to:", tag);
+          }
+      });
+  }
+  
 
     function monitorAndApplyClasses() {
         if (selectedElement) {
