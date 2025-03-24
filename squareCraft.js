@@ -85,7 +85,7 @@ console.log("parent" , Url)
   function applyStylesToElement(element, css) {
       if (!element || !css) return;
       Object.keys(css).forEach((prop) => {
-          element.style[prop] = css[prop];
+          element.style.setProperty(prop, css[prop], "important"); // Apply style with !important
       });
   }
   
@@ -100,7 +100,7 @@ console.log("parent" , Url)
       lastClickedBlockId = block.id;
       console.log(`✅ Selected Block: ${selectedElement.id}`);
   
-      lastClickedElement = block; 
+      lastClickedElement = block;
   });
   
   document.body.addEventListener("click", (event) => {
@@ -108,6 +108,12 @@ console.log("parent" , Url)
   
       if (alignmentIcon && lastClickedElement) {
           const textAlign = alignmentIcon.dataset.align;
+  
+          if (lastClickedElement.style.textAlign === textAlign || 
+              lastClickedElement.querySelector(`[style*="text-align: ${textAlign}"]`)) {
+              console.log(`❌ Alignment already applied: ${textAlign}`);
+              return;
+          }
   
           if (lastAppliedAlignment === textAlign) {
               applyStylesToElement(lastClickedElement, { "textAlign": "" });
@@ -130,6 +136,7 @@ console.log("parent" , Url)
           lastActiveAlignmentElement = alignmentIcon;
       }
   });
+  
   
 
 
