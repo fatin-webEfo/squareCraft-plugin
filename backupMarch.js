@@ -96,121 +96,44 @@ console.log("parent" , Url)
   });
 
 
-
-  
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
-    function ensureElementHasClass(element) {
-        if (element && (!element.className || element.className.trim() === "")) {
-            element.setAttribute("class", "");
+    if (widgetContainer.dataset.listenerAttached === "true") return;
+
+    widgetContainer.dataset.listenerAttached = "true"; 
+
+    function toggleTabClass(targetElement) {
+        console.log("🚀 Toggle function called for:", targetElement);
+        if (targetElement.classList.contains("squareCraft-activeTab-border")) {
+            targetElement.classList.remove("squareCraft-activeTab-border");
+            targetElement.classList.add("squareCraft-inActiveTab-border");
+            console.log("✅ Now Inactive:", targetElement);
+        } else {
+            targetElement.classList.remove("squareCraft-inActiveTab-border");
+            targetElement.classList.add("squareCraft-activeTab-border");
+            console.log("✅ Now Active:", targetElement);
         }
     }
-
-    function ensureNestedTagsHaveClass(parentElement) {
-      if (!parentElement) return;
-  
-      const tags = parentElement.querySelectorAll("h1, h2, h3, h4, p, .sqsrte-large, .sqsrte-small");
-  
-      tags.forEach(tag => {
-          ensureElementHasClass(tag);
-      });
-  
-      const directTags = parentElement.querySelectorAll("h1, h2, h3, h4, p");
-      directTags.forEach(tag => {
-          if (!tag.className || tag.className.trim() === "") {
-              tag.setAttribute("class", "squareCraft-element");
-          }
-      });
-  }
-  
-
-    function monitorAndApplyClasses() {
-        if (selectedElement) {
-            const blockElement = selectedElement.closest('[id^="block-"]');
-            if (blockElement) {
-                ensureElementHasClass(blockElement);
-                ensureNestedTagsHaveClass(blockElement);
-            }
-        }
-    }
-
-    setInterval(monitorAndApplyClasses, 300);
-
-    widgetContainer.addEventListener("mouseover", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
-
-        let textType = getTextType(selectedElement.tagName.toLowerCase(), selectedElement);
-        if (textType && textType.type === widgetElement.id) {
-            selectedElement.classList.add("squareCraft-border-realtime");
-        }
-    });
-
-    widgetContainer.addEventListener("mouseout", (event) => {
-        const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-        if (!widgetElement || !selectedElement) return;
-
-        selectedElement.classList.remove("squareCraft-border-realtime"); 
-    });
-
-
 
     widgetContainer.addEventListener("click", (event) => {
-      const widgetElement = event.target.closest('[id^="heading"], [id^="paragraph"]');
-      const blockElement = event.target.closest('[id^="block-"]');
-  
-      if (!widgetElement && !blockElement) return; 
-  
-      if (widgetElement) {
-          const dropdownId = widgetElement.id + "Dropdown";
-          const dropdownElement = document.getElementById(dropdownId);
-  
-          if (dropdownElement) {
-              if (dropdownElement.classList.contains("squareCraft-hidden")) {
-                  dropdownElement.classList.remove("squareCraft-hidden");
-              } else {
-                  dropdownElement.classList.add("squareCraft-hidden");
-              }
-          }
-  
-          const arrowElement = widgetElement.querySelector("img");
-          if (arrowElement) arrowElement.classList.toggle("squareCraft-rotate-180");
-  
-          console.log("✅ Clicked widget element:", widgetElement);
-      }
-  
-      if (blockElement) {
-          ensureNestedTagsHaveClass(blockElement);
-          console.log("✅ Clicked block element:", blockElement);
-      }
-  });
-  
-  
-  
+        const tabElement = event.target;
+        if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
+            console.log("📌 Tab Element Clicked:", tabElement);
+            toggleTabClass(tabElement);
+        }
+    });
 }
 
-
-
-
-
-  const observer = new MutationObserver(() => {
+const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-  });
+});
 
-  observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(document.body, { childList: true, subtree: true });
 
-  setTimeout(() => {
-    addHeadingEventListeners();
-  }, 1000);
+addHeadingEventListeners();
 
-
-  setTimeout(() => {
-    addHeadingEventListeners();
-  }, 1000);
-
-  observer.observe(document.body, { childList: true, subtree: true });
 
 
   try {
