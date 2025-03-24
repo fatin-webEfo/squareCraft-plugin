@@ -84,61 +84,61 @@ console.log("parent" , Url)
   let lastActiveAlignmentElement = null;
   
   document.body.addEventListener("click", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    if (selectedElement) selectedElement.style.outline = "";
-    selectedElement = block;
-    selectedElement.style.outline = "2px dashed #EF7C2F";
-
-    lastClickedBlockId = block.id;
-    console.log(`✅ Selected Block: ${selectedElement.id}`);
-
-    const textElements = block.querySelectorAll("h1, h2, h3, h4, p");
-
-    textElements.forEach(textElement => {
-        let tagName = textElement.tagName.toLowerCase();
-        let textTypeInfo = getTextType(tagName, textElement);
-
-        if (textTypeInfo) {
-            console.log(`✅ Found Text Element: ${tagName}`);
-            console.log(`✅ Text Type: ${textTypeInfo.type}`);
-            console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
-
-            textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
-            lastClickedTextElement = textElement; 
-        }
-    });
-});
-
-document.body.addEventListener("click", (event) => {
-    const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
-
-    if (alignmentIcon && lastClickedTextElement) {
-        const textAlign = alignmentIcon.dataset.align;
-
-        if (lastAppliedAlignment === textAlign) {
-            lastClickedTextElement.style.textAlign = ""; 
-            lastAppliedAlignment = null;
-            console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
-        } else {
-            lastClickedTextElement.style.textAlign = textAlign; 
-            lastAppliedAlignment = textAlign;
-            console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
-        }
-
-        if (lastActiveAlignmentElement) {
-            lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-            lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
-        }
-
-        alignmentIcon.classList.add("squareCraft-activeTab-border");
-        alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
-
-        lastActiveAlignmentElement = alignmentIcon;
-    }
-});
-
+      let block = event.target.closest('[id^="block-"]');
+      if (!block) return;
+  
+      if (selectedElement) selectedElement.style.outline = "";
+      selectedElement = block;
+      selectedElement.style.outline = "2px dashed #EF7C2F";
+  
+      lastClickedBlockId = block.id;
+      console.log(`✅ Selected Block: ${selectedElement.id}`);
+  
+      const textElements = block.querySelectorAll("h1, h2, h3, h4, p");
+  
+      textElements.forEach(textElement => {
+          let tagName = textElement.tagName.toLowerCase();
+          let textTypeInfo = getTextType(tagName, textElement);
+  
+          if (textTypeInfo) {
+              console.log(`✅ Found Text Element: ${tagName}`);
+              console.log(`✅ Text Type: ${textTypeInfo.type}`);
+              console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
+  
+              textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
+              lastClickedTextElement = textElement; // Store the last clicked text element
+          }
+      });
+  });
+  
+  document.body.addEventListener("click", (event) => {
+      const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
+  
+      if (alignmentIcon && lastClickedTextElement) {
+          const textAlign = alignmentIcon.dataset.align;
+  
+          if (lastAppliedAlignment === textAlign) {
+              lastClickedTextElement.style.textAlign = "";
+              lastAppliedAlignment = null;
+              console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
+          } else {
+              lastClickedTextElement.style.textAlign = textAlign;
+              lastAppliedAlignment = textAlign;
+              console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
+          }
+  
+          if (lastActiveAlignmentElement) {
+              lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
+              lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+          }
+  
+          alignmentIcon.classList.add("squareCraft-activeTab-border");
+          alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
+  
+          lastActiveAlignmentElement = alignmentIcon;
+      }
+  });
+  
 
   
 
