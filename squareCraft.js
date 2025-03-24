@@ -83,7 +83,7 @@ console.log("parent" , Url)
   let lastAppliedAlignment = null;
   let lastActiveAlignmentElement = null;
   
-  document.body.addEventListener("click", (event) => {
+  parent.document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
       if (!block) return;
   
@@ -111,7 +111,7 @@ console.log("parent" , Url)
       });
   });
   
-  document.body.addEventListener("click", (event) => {
+  parent.document.body.addEventListener("click", (event) => {
       const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
   
       if (alignmentIcon && lastClickedTextElement) {
