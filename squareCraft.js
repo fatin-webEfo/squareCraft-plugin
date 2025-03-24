@@ -79,14 +79,26 @@ console.log("parent" , Url)
   async function attachWidgetClickListener() {
     if (!widgetContainer) return;
     
-    widgetContainer.addEventListener("click", async (event) => {
-        let element = event.target.closest("h1, h2, h3, h4, p");
-        if (!element) return;
+    document.body.addEventListener("click", async (event) => {
+        const blockElement = event.target.closest('[id^="block-"]');
+        if (!blockElement) return;
 
-        selectedElement = element;
-        let textType = getTextType(element.tagName.toLowerCase(), element);
+        const textElement = event.target.closest("h1, h2, h3, h4, p");
+        if (!textElement) return;
+
+        if (!blockElement.contains(textElement)) return;
+
+        if (selectedElement) {
+            selectedElement.classList.remove("squareCraft-selected");
+        }
+
+        selectedElement = textElement;
+        selectedElement.classList.add("squareCraft-selected");
+        
+        let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
         selectedTextType = textType ? textType.type : null;
 
+        console.log(`✅ Selected Block: ${blockElement.id}`);
         console.log(`✅ Selected Text Type: ${selectedTextType}`);
 
         if (!widgetLoaded) {
@@ -98,6 +110,8 @@ console.log("parent" , Url)
         }
     });
 }
+
+
 attachWidgetClickListener();
 
 
