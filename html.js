@@ -210,7 +210,7 @@ export function html() {
                      class="squareCraft-flex squareCraft-col-span-5 squareCraft-justify-between  squareCraft-items-center ">
                     <div
                         class="squareCraft-flex squareCraft-items-center  ">
-                        <div id="squareCraftTextAlignJustify" data-align="justify" class="squareCraft-pt-1 squareCraft-pb-1 squareCraft-px-1_5 squareCraft-activeTab-border squareCraft-cursor-pointer squareCraft-rounded-l">
+                        <div id="squareCraftTextAlignJustify" data-align="justify" class="squareCraft-pt-1 squareCraft-pb-1 squareCraft-px-1_5 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-l">
 
                            <img 
                               src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
