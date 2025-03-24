@@ -86,24 +86,24 @@ console.log("parent" , Url)
     selectedElement = block;
     selectedElement.style.outline = "2px dashed #EF7C2F";
 
-    const textElement = event.target.closest("h1, h2, h3, h4, p");
+    console.log(`✅ Selected Block: ${selectedElement.id}`);
 
-    if (textElement && block.contains(textElement)) {
+    const textElements = block.querySelectorAll("h1, h2, h3, h4, p");
+
+    textElements.forEach(textElement => {
         let tagName = textElement.tagName.toLowerCase();
         let textTypeInfo = getTextType(tagName, textElement);
 
         if (textTypeInfo) {
-            console.log(`✅ Selected Block: ${block.id}`);
-            console.log(`✅ Selected Text Type: ${textTypeInfo.type}`);
+            console.log(`✅ Found Text Element: ${tagName}`);
+            console.log(`✅ Text Type: ${textTypeInfo.type}`);
             console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
-
-        } else {
-            console.log(`❌ No Text Type Found for: ${tagName}`);
+            
+            textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
         }
-    } else {
-        console.log(`✅ Selected Block: ${block.id}`);
-    }
+    });
 });
+
 
 
 
