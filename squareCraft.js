@@ -100,6 +100,10 @@ console.log("parent" , Url)
     const widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
 
+    if (widgetContainer.dataset.listenerAttached === "true") return;
+
+    widgetContainer.dataset.listenerAttached = "true"; 
+
     function toggleTabClass(targetElement) {
         console.log("🚀 Toggle function called for:", targetElement);
         if (targetElement.classList.contains("squareCraft-activeTab-border")) {
@@ -122,21 +126,14 @@ console.log("parent" , Url)
     });
 }
 
-
-
-
-
-  const observer = new MutationObserver(() => {
+const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-  });
+});
 
-  observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(document.body, { childList: true, subtree: true });
 
-  setTimeout(() => {
-    addHeadingEventListeners();
-  }, 1000);
+addHeadingEventListeners();
 
-  observer.observe(document.body, { childList: true, subtree: true });
 
 
   try {
