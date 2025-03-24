@@ -85,7 +85,7 @@ console.log("parent" , Url)
   function applyStylesToElement(element, css) {
       if (!element || !css) return;
       Object.keys(css).forEach((prop) => {
-          element.style[prop] = css[prop];
+        element.style.setProperty(prop, css[prop], "important");
       });
   }
   
