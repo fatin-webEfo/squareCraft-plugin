@@ -83,7 +83,14 @@ console.log("parent" , Url)
   let lastAppliedAlignment = null;
   let lastActiveAlignmentElement = null;
   
-  parent.document.body.addEventListener("click", (event) => {
+  function applyStylesToElement(element, css) {
+      if (!element || !css) return;
+      Object.keys(css).forEach((prop) => {
+          element.style[prop] = css[prop];
+      });
+  }
+  
+  document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
       if (!block) return;
   
@@ -106,23 +113,23 @@ console.log("parent" , Url)
               console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
   
               textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
-              lastClickedTextElement = textElement; // Store the last clicked text element
+              lastClickedTextElement = textElement; 
           }
       });
   });
   
-  parent.document.body.addEventListener("click", (event) => {
+  document.body.addEventListener("click", (event) => {
       const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
   
       if (alignmentIcon && lastClickedTextElement) {
           const textAlign = alignmentIcon.dataset.align;
   
           if (lastAppliedAlignment === textAlign) {
-              lastClickedTextElement.style.textAlign = "";
+              applyStylesToElement(lastClickedTextElement, { "textAlign": "" });
               lastAppliedAlignment = null;
               console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
           } else {
-              lastClickedTextElement.style.textAlign = textAlign;
+              applyStylesToElement(lastClickedTextElement, { "textAlign": textAlign });
               lastAppliedAlignment = textAlign;
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
           }
@@ -139,6 +146,7 @@ console.log("parent" , Url)
       }
   });
   
+
 
   
 
