@@ -81,6 +81,7 @@ console.log("parent" , Url)
   let lastClickedBlockId = null;
   let lastClickedTextElement = null;
   let lastAppliedAlignment = null;
+  let lastActiveAlignmentElement = null;
   
   document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
@@ -125,10 +126,19 @@ console.log("parent" , Url)
               lastAppliedAlignment = textAlign;
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
           }
+  
+          if (lastActiveAlignmentElement) {
+              lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
+              lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+          }
+  
+          alignmentIcon.classList.add("squareCraft-activeTab-border");
+          alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
+  
+          lastActiveAlignmentElement = alignmentIcon;
       }
   });
   
-
 
 
 
