@@ -161,12 +161,10 @@ console.log("parent" , Url)
             colorPalette = document.createElement("input");
             colorPalette.type = "color";
             colorPalette.id = "squareCraftColorPalette";
-            colorPalette.style.position = "absolute";
             colorPalette.style.opacity = "0";
             colorPalette.style.width = "0px";
             colorPalette.style.height = "0px";
-            colorPalette.style.top="10px"
-            colorPalette.style.left="0px"
+            colorPalette.style.marginTop = "10px"
 
             textColorPalate.appendChild(colorPalette);
 
