@@ -79,39 +79,40 @@ console.log("parent" , Url)
    
     
   function attachClickListener() {
-    parent.document.querySelectorAll('[id^="block-"]').forEach(blockElement => {
+    parent.document.body.addEventListener("click", async (event) => {
+        if (event.target.closest("#squareCraft-widget-container")) return;
 
-        blockElement.addEventListener("click", async (event) => {
-            if (event.target.closest("#squareCraft-widget-container")) return;
+        const blockElement = event.target.closest('[id^="block-"]');
+        if (!blockElement) return;
 
-            const textElement = event.target.closest("h1, h2, h3, h4, p");
-            if (!textElement) return;
+        const textElement = event.target.closest("h1, h2, h3, h4, p");
+        if (!textElement) return;
 
-            if (!blockElement.contains(textElement)) return;
+        if (!blockElement.contains(textElement)) return;
 
-            if (selectedElement) {
-                selectedElement.classList.remove("squareCraft-selected");
-            }
+        if (selectedElement) {
+            selectedElement.classList.remove("squareCraft-selected");
+        }
 
-            selectedElement = textElement;
-            selectedElement.classList.add("squareCraft-selected");
+        selectedElement = textElement;
+        selectedElement.classList.add("squareCraft-selected");
 
-            let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
-            selectedTextType = textType ? textType.type : null;
+        let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
+        selectedTextType = textType ? textType.type : null;
 
-            console.log(`✅ Selected Block: ${blockElement.id}`);
-            console.log(`✅ Selected Text Type: ${selectedTextType}`);
+        console.log(`✅ Selected Block: ${blockElement.id}`);
+        console.log(`✅ Selected Text Type: ${selectedTextType}`);
 
-            if (!widgetLoaded) {
-                await createWidget();
-            }
+        if (!widgetLoaded) {
+            await createWidget();
+        }
 
-            if (widgetContainer) {
-                widgetContainer.style.display = "block";
-            }
-        });
+        if (widgetContainer) {
+            widgetContainer.style.display = "block";
+        }
     });
 }
+
 
 
 
