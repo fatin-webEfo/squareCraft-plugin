@@ -196,9 +196,9 @@ export function html() {
                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                      </div>
                   </div>
-                  
+
                   <div class="squareCraft-col-span-5 squareCraft-bg-3f3f3f squareCraft-inActiveTab-border squareCraft-flex squareCraft-justify-between squareCraft-items-center squareCraft-px-2 squareCraft-rounded-6px">
-                     <p class="squareCraft-text-sm squareCraft-poppins squareCraft-universal">#363544</p>
+                     <p id="textcolorHtml" class="squareCraft-text-sm squareCraft-poppins squareCraft-universal">Select</p>
                      <div id="textColorPalate" class="squareCraft-square-6 squareCraft-border-colors squareCraft-cursor-pointer"></div>
                   </div>
                  <div>

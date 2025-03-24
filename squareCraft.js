@@ -151,7 +151,8 @@ console.log("parent" , Url)
       }
   });
   
-  document.body.addEventListener("click", (event) => {
+
+ document.body.addEventListener("click", (event) => {
     const textColorPalate = event.target.closest('#textColorPalate');
 
     if (textColorPalate) {
@@ -164,7 +165,7 @@ console.log("parent" , Url)
             colorPalette.style.opacity = "0";
             colorPalette.style.width = "0px";
             colorPalette.style.height = "0px";
-            colorPalette.style.marginTop = "14px"
+            colorPalette.style.marginTop = "14px";
 
             textColorPalate.appendChild(colorPalette);
 
@@ -176,6 +177,11 @@ console.log("parent" , Url)
 
                     textColorPalate.style.backgroundColor = selectedColor;
 
+                    const textColorHtml = document.getElementById("textcolorHtml");
+                    if (textColorHtml) {
+                        textColorHtml.textContent = selectedColor;
+                    }
+
                     console.log(`🎨 Applied Color: ${selectedColor}`);
                 }
             });
@@ -184,6 +190,7 @@ console.log("parent" , Url)
         colorPalette.click();
     }
 });
+
 
 
 
