@@ -164,7 +164,7 @@ console.log("parent" , Url)
             colorPalette.style.opacity = "0";
             colorPalette.style.width = "0px";
             colorPalette.style.height = "0px";
-            colorPalette.style.marginTop = "10px"
+            colorPalette.style.marginTop = "14px"
 
             textColorPalate.appendChild(colorPalette);
 
