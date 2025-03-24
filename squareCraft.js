@@ -79,47 +79,40 @@ console.log("parent" , Url)
   async function attachWidgetClickListener() {
     if (!widgetContainer) return;
 
-    const observer = new MutationObserver(() => {
-        document.querySelectorAll('[id^="block-"]').forEach(blockElement => {
+    document.body.addEventListener("click", async (event) => {
+        if (event.target.closest("#squareCraft-widget-container")) return;
 
-            blockElement.addEventListener("click", async (event) => {
+        const blockElement = event.target.closest('[id^="block-"]');
+        if (!blockElement) return;
 
-                // Prevent the click from working if it's within the widget itself
-                if (event.target.closest("#squareCraft-widget-container")) return;
+        const textElement = event.target.closest("h1, h2, h3, h4, p");
+        if (!textElement) return;
 
-                const textElement = event.target.closest("h1, h2, h3, h4, p");
-                if (!textElement) return;
+        if (selectedElement) {
+            selectedElement.classList.remove("squareCraft-selected");
+        }
+        
+        selectedElement = textElement;
+        selectedElement.classList.add("squareCraft-selected");
 
-                if (!blockElement.contains(textElement)) return;
+        let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
+        selectedTextType = textType ? textType.type : null;
 
-                if (selectedElement) {
-                    selectedElement.classList.remove("squareCraft-selected");
-                }
+        console.log(`✅ Selected Block: ${blockElement.id}`);
+        console.log(`✅ Selected Text Type: ${selectedTextType}`);
 
-                selectedElement = textElement;
-                selectedElement.classList.add("squareCraft-selected");
+        if (!widgetLoaded) {
+            await createWidget();
+        }
 
-                let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
-                selectedTextType = textType ? textType.type : null;
-
-                console.log(`✅ Selected Block: ${blockElement.id}`);
-                console.log(`✅ Selected Text Type: ${selectedTextType}`);
-
-                if (!widgetLoaded) {
-                    await createWidget();
-                }
-
-                if (widgetContainer) {
-                    widgetContainer.style.display = "block";
-                }
-            });
-        });
+        if (widgetContainer) {
+            widgetContainer.style.display = "block";
+        }
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    console.log("👀 MutationObserver is now watching the DOM for changes.");
+    console.log("📌 Global click listener is now listening for text elements.");
 }
+
 attachWidgetClickListener();
 
 
