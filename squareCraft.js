@@ -76,24 +76,30 @@ console.log("parent" , Url)
     return null;
   }
 
-  document.body.addEventListener("click", async (event) => {
-    let element = event.target.closest("h1, h2, h3, h4, p");
-    if (!element) return;
+  async function attachWidgetClickListener() {
+    if (!widgetContainer) return;
+    
+    widgetContainer.addEventListener("click", async (event) => {
+        let element = event.target.closest("h1, h2, h3, h4, p");
+        if (!element) return;
 
-    selectedElement = element;
-    let textType = getTextType(element.tagName.toLowerCase(), element);
-    selectedTextType = textType ? textType.type : null;
+        selectedElement = element;
+        let textType = getTextType(element.tagName.toLowerCase(), element);
+        selectedTextType = textType ? textType.type : null;
 
-    console.log(`✅ Selected Text Type: ${selectedTextType}`);
+        console.log(`✅ Selected Text Type: ${selectedTextType}`);
 
-    if (!widgetLoaded) {
-      await createWidget();
-    }
+        if (!widgetLoaded) {
+            await createWidget();
+        }
 
-    if (widgetContainer) {
-      widgetContainer.style.display = "block";
-    }
-  });
+        if (widgetContainer) {
+            widgetContainer.style.display = "block";
+        }
+    });
+}
+attachWidgetClickListener();
+
 
 
   async function addHeadingEventListeners() {
