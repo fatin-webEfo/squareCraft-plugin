@@ -85,7 +85,7 @@ console.log("parent" , Url)
   function applyStylesToElement(element, css) {
       if (!element || !css) return;
       Object.keys(css).forEach((prop) => {
-          element.style.setProperty(prop, css[prop], "important"); // Adding !important to make sure it applies properly
+          element.style[prop] = css[prop] + " !important";
       });
   }
   
@@ -112,22 +112,25 @@ console.log("parent" , Url)
           if (lastAppliedAlignment === textAlign) {
               applyStylesToElement(lastClickedElement, { "textAlign": "" });
               lastAppliedAlignment = null;
+  
               console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
               
               if (lastActiveAlignmentElement) {
                   lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
                   lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+                  lastActiveAlignmentElement = null;
               }
           } else {
               applyStylesToElement(lastClickedElement, { "textAlign": textAlign });
               lastAppliedAlignment = textAlign;
+  
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
   
-              if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
+              if (lastActiveAlignmentElement) {
                   lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
                   lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
               }
-              
+  
               alignmentIcon.classList.add("squareCraft-activeTab-border");
               alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
   
@@ -135,7 +138,6 @@ console.log("parent" , Url)
           }
       }
   });
-  
   
 
   
