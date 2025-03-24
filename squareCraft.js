@@ -94,7 +94,7 @@ console.log("parent" , Url)
 
         selectedElement = textElement;
         selectedElement.classList.add("squareCraft-selected");
-        
+
         let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
         selectedTextType = textType ? textType.type : null;
 
@@ -110,6 +110,7 @@ console.log("parent" , Url)
         }
     });
 }
+
 
 
 
