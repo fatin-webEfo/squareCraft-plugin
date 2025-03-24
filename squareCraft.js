@@ -86,8 +86,25 @@ console.log("parent" , Url)
     selectedElement = block;
     selectedElement.style.outline = "2px dashed #EF7C2F";
 
-    console.log(`✅ Selected Element: ${selectedElement.id}`);
+    const textElement = event.target.closest("h1, h2, h3, h4, p");
+
+    if (textElement && block.contains(textElement)) {
+        let tagName = textElement.tagName.toLowerCase();
+        let textTypeInfo = getTextType(tagName, textElement);
+
+        if (textTypeInfo) {
+            console.log(`✅ Selected Block: ${block.id}`);
+            console.log(`✅ Selected Text Type: ${textTypeInfo.type}`);
+            console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
+
+        } else {
+            console.log(`❌ No Text Type Found for: ${tagName}`);
+        }
+    } else {
+        console.log(`✅ Selected Block: ${block.id}`);
+    }
 });
+
 
 
 
