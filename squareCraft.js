@@ -79,9 +79,6 @@ console.log("parent" , Url)
    
     
     document.body.addEventListener("click", async (event) => {
-      if (!widgetContainer) return;
-        const blockElement = event.target.closest('[id^="block-"]');
-        if (!blockElement) return;
 
         const textElement = event.target.closest("h1, h2, h3, h4, p");
         if (!textElement) return;
