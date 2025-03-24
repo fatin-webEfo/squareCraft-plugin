@@ -78,34 +78,45 @@ console.log("parent" , Url)
 
    
     
-    document.body.addEventListener("click", async (event) => {
+  function attachClickListener() {
+    parent.document.querySelectorAll('[id^="block-"]').forEach(blockElement => {
 
-        const textElement = event.target.closest("h1, h2, h3, h4, p");
-        if (!textElement) return;
+        blockElement.addEventListener("click", async (event) => {
+            if (event.target.closest("#squareCraft-widget-container")) return;
 
-        if (!blockElement.contains(textElement)) return;
+            const textElement = event.target.closest("h1, h2, h3, h4, p");
+            if (!textElement) return;
 
-        if (selectedElement) {
-            selectedElement.classList.remove("squareCraft-selected");
-        }
+            if (!blockElement.contains(textElement)) return;
 
-        selectedElement = textElement;
-        selectedElement.classList.add("squareCraft-selected");
-        
-        let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
-        selectedTextType = textType ? textType.type : null;
+            if (selectedElement) {
+                selectedElement.classList.remove("squareCraft-selected");
+            }
 
-        console.log(`✅ Selected Block: ${blockElement.id}`);
-        console.log(`✅ Selected Text Type: ${selectedTextType}`);
+            selectedElement = textElement;
+            selectedElement.classList.add("squareCraft-selected");
 
-        if (!widgetLoaded) {
-            await createWidget();
-        }
+            let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
+            selectedTextType = textType ? textType.type : null;
 
-        if (widgetContainer) {
-            widgetContainer.style.display = "block";
-        }
+            console.log(`✅ Selected Block: ${blockElement.id}`);
+            console.log(`✅ Selected Text Type: ${selectedTextType}`);
+
+            if (!widgetLoaded) {
+                await createWidget();
+            }
+
+            if (widgetContainer) {
+                widgetContainer.style.display = "block";
+            }
+        });
     });
+}
+
+
+
+attachClickListener();
+
 
 
 
@@ -144,9 +155,10 @@ console.log("parent" , Url)
 
 const observer = new MutationObserver(() => {
     addHeadingEventListeners();
+    attachClickListener();
 });
 
-observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(parent.document.body, { childList: true, subtree: true });
 
 addHeadingEventListeners();
 
