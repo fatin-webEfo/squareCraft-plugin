@@ -77,9 +77,8 @@ console.log("parent" , Url)
   }
 
    
-    
   let lastClickedBlockId = null;
-  let lastClickedTextElement = null;
+  let lastClickedElement = null;
   let lastAppliedAlignment = null;
   let lastActiveAlignmentElement = null;
   
@@ -101,35 +100,21 @@ console.log("parent" , Url)
       lastClickedBlockId = block.id;
       console.log(`✅ Selected Block: ${selectedElement.id}`);
   
-      const textElements = block.querySelectorAll("h1, h2, h3, h4, p");
-  
-      textElements.forEach(textElement => {
-          let tagName = textElement.tagName.toLowerCase();
-          let textTypeInfo = getTextType(tagName, textElement);
-  
-          if (textTypeInfo) {
-              console.log(`✅ Found Text Element: ${tagName}`);
-              console.log(`✅ Text Type: ${textTypeInfo.type}`);
-              console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
-  
-              textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
-              lastClickedTextElement = textElement; 
-          }
-      });
+      lastClickedElement = block; 
   });
   
   document.body.addEventListener("click", (event) => {
       const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
   
-      if (alignmentIcon && lastClickedTextElement) {
+      if (alignmentIcon && lastClickedElement) {
           const textAlign = alignmentIcon.dataset.align;
   
           if (lastAppliedAlignment === textAlign) {
-              applyStylesToElement(lastClickedTextElement, { "textAlign": "" });
+              applyStylesToElement(lastClickedElement, { "textAlign": "" });
               lastAppliedAlignment = null;
               console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
           } else {
-              applyStylesToElement(lastClickedTextElement, { "textAlign": textAlign });
+              applyStylesToElement(lastClickedElement, { "textAlign": textAlign });
               lastAppliedAlignment = textAlign;
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
           }
