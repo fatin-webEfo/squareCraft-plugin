@@ -78,47 +78,16 @@ console.log("parent" , Url)
 
    
     
-  function attachClickListener() {
-    parent.document.body.addEventListener("click", async (event) => {
-        if (event.target.closest("#squareCraft-widget-container")) return;
+  document.body.addEventListener("click", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
 
-        const blockElement = event.target.closest('[id^="block-"]');
-        if (!blockElement) return;
+    if (selectedElement) selectedElement.style.outline = "";
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F";
 
-        const textElement = event.target.closest("h1, h2, h3, h4, p");
-        if (!textElement) return;
-
-        if (!blockElement.contains(textElement)) return;
-
-        if (selectedElement) {
-            selectedElement.classList.remove("squareCraft-selected");
-        }
-
-        selectedElement = textElement;
-        selectedElement.classList.add("squareCraft-selected");
-
-        let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
-        selectedTextType = textType ? textType.type : null;
-
-        console.log(`✅ Selected Block: ${blockElement.id}`);
-        console.log(`✅ Selected Text Type: ${selectedTextType}`);
-
-        if (!widgetLoaded) {
-            await createWidget();
-        }
-
-        if (widgetContainer) {
-            widgetContainer.style.display = "block";
-        }
-    });
-}
-
-
-
-
-attachClickListener();
-
-
+    console.log(`✅ Selected Element: ${selectedElement.id}`);
+});
 
 
 
@@ -156,7 +125,6 @@ attachClickListener();
 
 const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-    attachClickListener();
 });
 
 observer.observe(parent.document.body, { childList: true, subtree: true });
