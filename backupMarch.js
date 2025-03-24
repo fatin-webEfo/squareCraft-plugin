@@ -76,24 +76,38 @@ console.log("parent" , Url)
     return null;
   }
 
-  document.body.addEventListener("click", async (event) => {
-    let element = event.target.closest("h1, h2, h3, h4, p");
-    if (!element) return;
+   
+    
+  document.body.addEventListener("click", (event) => {
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
 
-    selectedElement = element;
-    let textType = getTextType(element.tagName.toLowerCase(), element);
-    selectedTextType = textType ? textType.type : null;
+    if (selectedElement) selectedElement.style.outline = "";
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F";
 
-    console.log(`✅ Selected Text Type: ${selectedTextType}`);
+    console.log(`✅ Selected Block: ${selectedElement.id}`);
 
-    if (!widgetLoaded) {
-      await createWidget();
-    }
+    const textElements = block.querySelectorAll("h1, h2, h3, h4, p");
 
-    if (widgetContainer) {
-      widgetContainer.style.display = "block";
-    }
-  });
+    textElements.forEach(textElement => {
+        let tagName = textElement.tagName.toLowerCase();
+        let textTypeInfo = getTextType(tagName, textElement);
+
+        if (textTypeInfo) {
+            console.log(`✅ Found Text Element: ${tagName}`);
+            console.log(`✅ Text Type: ${textTypeInfo.type}`);
+            console.log(`✅ Text Type Border Color: ${textTypeInfo.borderColor}`);
+            
+            textElement.style.outline = `2px solid ${textTypeInfo.borderColor}`;
+        }
+    });
+});
+
+
+
+
+
 
 
   async function addHeadingEventListeners() {
@@ -130,7 +144,7 @@ const observer = new MutationObserver(() => {
     addHeadingEventListeners();
 });
 
-observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(parent.document.body, { childList: true, subtree: true });
 
 addHeadingEventListeners();
 
