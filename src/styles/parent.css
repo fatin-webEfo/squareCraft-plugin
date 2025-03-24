@@ -619,6 +619,11 @@
   padding-bottom: 0.5rem !important;
 }
 
+.squareCraft-py-sm{
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
 .squareCraft-border-color-585858 {
   border-color: #585858 !important;
 }

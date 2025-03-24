@@ -115,7 +115,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -369,7 +369,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -612,7 +612,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -855,7 +855,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -1098,7 +1098,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -1341,7 +1341,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
@@ -1584,7 +1584,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="squareCraft-px-2 squareCraft-py-1 squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
+                        <div class="squareCraft-px-2 squareCraft-py-sm squareCraft-inActiveTab-border squareCraft-cursor-pointer squareCraft-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
