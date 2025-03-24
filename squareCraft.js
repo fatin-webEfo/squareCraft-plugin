@@ -148,11 +148,9 @@ console.log("parent" , Url)
         if (targetElement.classList.contains("squareCraft-activeTab-border")) {
             targetElement.classList.remove("squareCraft-activeTab-border");
             targetElement.classList.add("squareCraft-inActiveTab-border");
-            console.log("✅ Now Inactive:", targetElement);
         } else {
             targetElement.classList.remove("squareCraft-inActiveTab-border");
             targetElement.classList.add("squareCraft-activeTab-border");
-            console.log("✅ Now Active:", targetElement);
         }
     }
 
