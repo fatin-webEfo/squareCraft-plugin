@@ -77,9 +77,9 @@ console.log("parent" , Url)
   }
 
   async function attachWidgetClickListener() {
-    if (!widgetContainer) return;
-    
     document.body.addEventListener("click", async (event) => {
+        if (event.target.closest("#squareCraft-widget-container")) return;
+
         const blockElement = event.target.closest('[id^="block-"]');
         if (!blockElement) return;
 
@@ -110,6 +110,7 @@ console.log("parent" , Url)
         }
     });
 }
+
 
 
 attachWidgetClickListener();
