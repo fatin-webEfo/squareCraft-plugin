@@ -76,25 +76,25 @@ console.log("parent" , Url)
     return null;
   }
 
-  async function attachWidgetClickListener() {
-    if (!widgetContainer) return;
-
+   
+    
     document.body.addEventListener("click", async (event) => {
-        if (event.target.closest("#squareCraft-widget-container")) return;
-
+      if (!widgetContainer) return;
         const blockElement = event.target.closest('[id^="block-"]');
         if (!blockElement) return;
 
         const textElement = event.target.closest("h1, h2, h3, h4, p");
         if (!textElement) return;
 
+        if (!blockElement.contains(textElement)) return;
+
         if (selectedElement) {
             selectedElement.classList.remove("squareCraft-selected");
         }
-        
+
         selectedElement = textElement;
         selectedElement.classList.add("squareCraft-selected");
-
+        
         let textType = getTextType(textElement.tagName.toLowerCase(), textElement);
         selectedTextType = textType ? textType.type : null;
 
@@ -110,10 +110,8 @@ console.log("parent" , Url)
         }
     });
 
-    console.log("📌 Global click listener is now listening for text elements.");
-}
 
-attachWidgetClickListener();
+
 
 
 
