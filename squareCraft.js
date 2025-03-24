@@ -97,8 +97,12 @@ console.log("parent" , Url)
 
 
   async function addHeadingEventListeners() {
-    const widgetContainer = document.getElementById("squareCraft-widget-container");
+    let widgetContainer = document.getElementById("squareCraft-widget-container");
     if (!widgetContainer) return;
+
+    // Remove existing listeners by cloning
+    const newWidgetContainer = widgetContainer.cloneNode(true);
+    widgetContainer.parentNode.replaceChild(newWidgetContainer, widgetContainer);
 
     function toggleTabClass(targetElement) {
         console.log("🚀 Toggle function called for:", targetElement);
@@ -113,30 +117,23 @@ console.log("parent" , Url)
         }
     }
 
-    widgetContainer.addEventListener("click", (event) => {
-        const tabElement = event.target;
-        if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
+    newWidgetContainer.addEventListener("click", (event) => {
+        const tabElement = event.target.closest('.squareCraft-inActiveTab-border, .squareCraft-activeTab-border');
+        if (tabElement) {
             console.log("📌 Tab Element Clicked:", tabElement);
             toggleTabClass(tabElement);
         }
     });
 }
 
-
-
-
-
-  const observer = new MutationObserver(() => {
+const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-  });
+});
 
-  observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(document.body, { childList: true, subtree: true });
 
-  setTimeout(() => {
-    addHeadingEventListeners();
-  }, 1000);
+addHeadingEventListeners();
 
-  observer.observe(document.body, { childList: true, subtree: true });
 
 
   try {
