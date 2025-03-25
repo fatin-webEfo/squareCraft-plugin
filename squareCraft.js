@@ -246,7 +246,59 @@
     }
   });
 
+  async function fetchModifications() {
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
+    if (!userId || !token || !widgetId || !pageId) {
+        console.warn("⚠️ Missing authentication data or page ID.");
+        return; 
+    }
+    
+    try {
+        const response = await fetch(`https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("📥 Retrieved Data from Database:", data);
+
+        if (!data.modifications || data.modifications.length === 0) {
+            console.warn("⚠️ No saved styles found for this page.");
+            return;
+        }
+
+        data.modifications.forEach(mod => {
+            if (mod.pageId === pageId) {
+                mod.elements.forEach(elem => {
+                    if (elem.css && elem.css.span) {
+                        const { id, ...styles } = elem.css.span;
+                        const element = document.getElementById(elem.elementId);
+
+                        if (element) {
+                            Object.entries(styles).forEach(([prop, value]) => {
+                                element.style[prop] = value;
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+    } catch (error) {
+        console.error("❌ Error Fetching Modifications:", error.message);
+        // This is a non-blocking error. Execution will continue.
+    }
+}
+
+fetchModifications();
 
 
 
