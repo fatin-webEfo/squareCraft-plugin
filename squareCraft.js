@@ -118,7 +118,34 @@
     console.log(`✅ Selected Block: ${selectedElement.id}`);
 
     lastClickedElement = block;
-  });
+
+    const appliedTextAlign = window.getComputedStyle(block).textAlign;
+
+    if (appliedTextAlign) {
+        lastAppliedAlignment = appliedTextAlign;
+        console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
+
+        const alignmentIconMap = {
+            "left": document.getElementById("squareCraftTextAlignLeft"),
+            "center": document.getElementById("squareCraftTextAlignCenter"),
+            "right": document.getElementById("squareCraftTextAlignRight"),
+            "justify": document.getElementById("squareCraftTextAlignJustify")
+        };
+
+        if (lastActiveAlignmentElement) {
+            lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
+            lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+        }
+
+        const activeIcon = alignmentIconMap[appliedTextAlign];
+        if (activeIcon) {
+            activeIcon.classList.add("squareCraft-activeTab-border");
+            activeIcon.classList.remove("squareCraft-inActiveTab-border");
+            lastActiveAlignmentElement = activeIcon;
+        }
+    }
+});
+
 
   document.body.addEventListener("click", async (event) => {
     const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
