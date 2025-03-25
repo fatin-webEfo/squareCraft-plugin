@@ -199,7 +199,7 @@ async function fetchModifications() {
     const widgetId = localStorage.getItem("squareCraft_w_id");
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
-    if (!pageId || !userId || !widgetId) return;
+  
 
     const response = await fetch(
       `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
@@ -217,10 +217,6 @@ async function fetchModifications() {
     const data = await response.json();
     console.log("✅ Modifications fetched successfully:", data);
 
-    if (!data.modifications || !Array.isArray(data.modifications)) {
-      console.warn("⚠️ No modifications found or invalid format.");
-      return;
-    }
 
     data.modifications.forEach(mod => {
       if (mod.pageId === pageId) {
@@ -243,11 +239,11 @@ async function fetchModifications() {
 }
 
 async function saveModifications(elementId, css, dynamicSave = false) {
-  if (!elementId || !css) return;
+
 
   applyStylesToElement(document.getElementById(elementId), css);
 
-  if (!dynamicSave) return; // Skip dynamic save if not triggered by the publish button
+ 
 
   try {
     const token = localStorage.getItem("squareCraft_auth_token");
@@ -255,7 +251,6 @@ async function saveModifications(elementId, css, dynamicSave = false) {
     const widgetId = localStorage.getItem("squareCraft_w_id");
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
-    if (!pageId || !elementId || !css) return;
 
     const modificationData = {
       userId,
@@ -296,10 +291,6 @@ async function saveModifications(elementId, css, dynamicSave = false) {
 
 
 document.getElementById("publish").addEventListener("click", async () => {
-  if (!lastClickedElement || !lastAppliedAlignment) {
-      console.warn("⚠️ No element or alignment found to save.");
-      return;
-  }
 
   const css = { "text-align": lastAppliedAlignment };
   await saveModifications(lastClickedElement.id, css, true);
