@@ -283,9 +283,16 @@
                         const element = document.getElementById(elem.elementId);
 
                         if (element) {
+                            // Apply all CSS styles
                             Object.entries(styles).forEach(([prop, value]) => {
                                 element.style[prop] = value;
                             });
+
+                            // Apply ClassName if exists
+                            if (elem.elementStructure?.className) {
+                                element.classList.add(elem.elementStructure.className);
+                                console.log(`✅ Applied class: ${elem.elementStructure.className} to element: ${elem.elementId}`);
+                            }
                         }
                     }
                 });
@@ -294,9 +301,9 @@
 
     } catch (error) {
         console.error("❌ Error Fetching Modifications:", error.message);
-        // This is a non-blocking error. Execution will continue.
     }
 }
+
 
 fetchModifications();
 
