@@ -335,9 +335,6 @@
 
 
 
-
-
-
 window.addEventListener("load", async () => {
   await fetchModifications();
 });
