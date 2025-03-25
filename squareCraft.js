@@ -88,23 +88,34 @@
     if (!element || !css) return;
 
     const elementId = element.id;
-    let styleTag = document.getElementById(`style-${elementId}`);
 
+    // Store the local modification in the localModifications Map
+    if (!localModifications.has(elementId)) {
+        localModifications.set(elementId, {});
+    }
+
+    // Merge the new styles with the existing styles
+    const existingStyles = localModifications.get(elementId);
+    const updatedStyles = { ...existingStyles, ...css };
+    localModifications.set(elementId, updatedStyles);
+
+    let styleTag = document.getElementById(`style-${elementId}`);
     if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = `style-${elementId}`;
-      document.head.appendChild(styleTag);
+        styleTag = document.createElement("style");
+        styleTag.id = `style-${elementId}`;
+        document.head.appendChild(styleTag);
     }
 
     let cssText = `#${elementId}, #${elementId} h1, #${elementId} h2, #${elementId} h3, #${elementId} h4, #${elementId} p { `;
-    Object.keys(css).forEach((prop) => {
-      cssText += `${prop}: ${css[prop]} !important; `;
+    Object.keys(updatedStyles).forEach((prop) => {
+        cssText += `${prop}: ${updatedStyles[prop]} !important; `;
     });
     cssText += "}";
 
     styleTag.innerHTML = cssText;
     console.log(`✅ Styles applied to ${elementId} and its nested elements`);
-  }
+}
+
 
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest('[id^="block-"]');
@@ -323,25 +334,22 @@
                 const element = document.getElementById(elementId);
 
                 if (element) {
-                    console.log(`✅ Applying styles to element ${elementId}`);
+                    console.log(`✅ Applying styles to element ${elementId} from API`);
 
-                    // Apply styles to the main element
+                    // Apply styles from API first
                     Object.entries(css).forEach(([prop, value]) => {
                         element.style.setProperty(prop, value, "important");
                     });
 
-                    // Apply styles to nested elements as well (h1, h2, h3, h4, p)
-                    const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
-                    nestedElements.forEach(nestedElem => {
-                        Object.entries(css).forEach(([prop, value]) => {
-                            nestedElem.style.setProperty(prop, value, "important");
-                        });
-                    });
+                    // Re-apply local modifications after API fetch to ensure priority
+                    if (localModifications.has(elementId)) {
+                        console.log(`🔥 Reapplying local modifications to ${elementId}`);
+                        applyStylesToElement(element, localModifications.get(elementId));
+                    }
 
                     if (!element.classList.contains("squareCraft-font-modified")) {
                         element.classList.add("squareCraft-font-modified");
                     }
-
                     modificationMap.delete(elementId); // Remove from the map after applying
                 }
             });
@@ -357,6 +365,7 @@
         }
     }
 }
+
 
 
 
