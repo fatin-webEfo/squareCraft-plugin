@@ -192,10 +192,120 @@ console.log("parent" , Url)
 });
 
 
+async function fetchModifications() {
+  const token = localStorage.getItem("squareCraft_auth_token");
+  const userId = localStorage.getItem("squareCraft_u_id");
+  const widgetId = localStorage.getItem("squareCraft_w_id");
+  const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+
+  if (!pageId || !userId || !widgetId) return;
+
+  try {
+      const response = await fetch(
+          `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+          {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+              }
+          }
+      );
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      console.log("✅ Modifications fetched successfully:", data);
+
+      if (!data.modifications || !Array.isArray(data.modifications)) {
+          console.warn("⚠️ No modifications found or invalid format.");
+          return;
+      }
+
+      data.modifications.forEach(mod => {
+          if (mod.pageId === pageId) {
+              mod.elements.forEach(elem => {
+                  if (elem.css && elem.css.span) {
+                      const { id, ...styles } = elem.css.span;
+                      const element = document.getElementById(elem.elementId);
+                      
+                      if (element) {
+                          Object.entries(styles).forEach(([prop, value]) => {
+                              element.style[prop] = value;
+                          });
+                      }
+                  }
+              });
+          }
+      });
+
+  } catch (error) {
+      console.error("❌ Error fetching modifications:", error);
+  }
+}
 
 
-  
+async function saveModifications(elementId, css, dynamicSave = false) {
+  if (!elementId || !css) return;
 
+  applyStylesToElement(document.getElementById(elementId), css);
+
+  if (!dynamicSave) return;
+
+  const token = localStorage.getItem("squareCraft_auth_token");
+  const userId = localStorage.getItem("squareCraft_u_id");
+  const widgetId = localStorage.getItem("squareCraft_w_id");
+  const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+
+  if (!pageId || !elementId || !css) return;
+
+  const modificationData = {
+      userId,
+      token,
+      widgetId,
+      modifications: [{
+          pageId,
+          elements: [{
+              elementId,
+              css: { span: { id: elementId, ...css } }
+          }]
+      }]
+  };
+
+  try {
+      const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+              "userId": userId,
+              "pageId": pageId,
+              "widget-id": widgetId,
+          },
+          body: JSON.stringify(modificationData)
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const result = await response.json();
+      console.log("✅ Modifications saved successfully:", result);
+
+  } catch (error) {
+      console.error("❌ Error saving modifications:", error);
+  }
+}
+
+
+
+document.getElementById("publish").addEventListener("click", async () => {
+  if (!lastClickedElement || !lastAppliedAlignment) {
+      console.warn("⚠️ No element or alignment found to save.");
+      return;
+  }
+
+  const css = { "text-align": lastAppliedAlignment };
+  await saveModifications(lastClickedElement.id, css, true);
+});
 
 
 
@@ -579,7 +689,7 @@ addHeadingEventListeners();
 
     document.body.appendChild(widgetContainer);
   }
-
+fetchModifications();
   checkView();
   window.addEventListener("resize", checkView);
 })();
