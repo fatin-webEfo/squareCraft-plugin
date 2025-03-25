@@ -279,33 +279,21 @@
             return;
         }
 
-        // Apply modifications for the current page
         data.modifications.forEach(mod => {
             if (mod.pageId === pageId) {
                 mod.elements.forEach(elem => {
                     const element = document.getElementById(elem.elementId);
                     
-                    if (elem.css && elem.css.span) {
-                        const { id, ...styles } = elem.css.span;
-                        let targetElement = document.getElementById(id);
+                    if (element && elem.css) {
+                        Object.entries(elem.css).forEach(([prop, value]) => {
+                            element.style[prop] = value;
+                        });
 
-                        if (!targetElement && element) {
-                            // Create the span if it doesn't exist
-                            targetElement = document.createElement('span');
-                            targetElement.id = id;
-                            targetElement.textContent = element.textContent; 
-                            element.innerHTML = ''; // Clear the original content
-                            element.appendChild(targetElement); // Insert the new span
-                            console.log(`✨ Recreated span with ID ${id}`);
+                        if (!element.classList.contains("squareCraft-font-modified")) {
+                            element.classList.add("squareCraft-font-modified");
                         }
 
-                        if (targetElement) {
-                            Object.entries(styles).forEach(([prop, value]) => {
-                                targetElement.style[prop] = value;
-                            });
-
-                            console.log(`✅ Applied styles to span ${id}`);
-                        }
+                        console.log(`✅ Applied styles to element ${elem.elementId}`);
                     }
                 });
             }
@@ -319,6 +307,7 @@
         }
     }
 }
+
 
 
 
@@ -359,6 +348,7 @@ window.addEventListener("load", async () => {
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
+    fetchModifications();
   });
 
   observer.observe(parent.document.body, { childList: true, subtree: true });
