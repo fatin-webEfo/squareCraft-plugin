@@ -257,7 +257,7 @@
 
     try {
         const response = await fetch(
-            `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+            `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
             {
                 method: "GET",
                 headers: {
