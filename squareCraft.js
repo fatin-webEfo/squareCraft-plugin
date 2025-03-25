@@ -13,10 +13,10 @@
   let widgetContainer = null;
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
-  let squareCraft_u_id = widgetScript.dataset?.uId;
-  let squareCraft_w_id = widgetScript.dataset?.wId;
+  let userId = widgetScript.dataset?.uId;
+  let widgetId = widgetScript.dataset?.wId;
 
-  console.log("🔑 Token:", token , "user Id" , squareCraft_u_id , "widget Id" , squareCraft_w_id);
+  console.log("🔑 Token:", token , "user Id" , userId , "widget Id" , widgetId);
 
 
 
@@ -25,14 +25,14 @@
     document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
   }
 
-  if (squareCraft_u_id) {
-    localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
-    document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+  if (userId) {
+    localStorage.setItem("squareCraft_u_id", userId);
+    document.cookie = `squareCraft_u_id=${userId}; path=.squarespace.com;`;
   }
 
-  if (squareCraft_w_id) {
-    localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
-    document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+  if (widgetId) {
+    localStorage.setItem("squareCraft_w_id", widgetId);
+    document.cookie = `squareCraft_w_id=${widgetId}; path=.squarespace.com;`;
   }
 
 
@@ -162,9 +162,9 @@
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
-          userId: squareCraft_u_id,
+          userId ,
           token: token,
-          widgetId: squareCraft_w_id,
+          widgetId,
           modifications: [{
               pageId,
               elements: [{
@@ -182,9 +182,9 @@
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-              "userId": squareCraft_u_id,
+              "userId": userId,
               "pageId": pageId,
-              "widget-id": squareCraft_w_id,
+              "widget-id": widgetId,
             },
             body: JSON.stringify(modificationData)
           });
