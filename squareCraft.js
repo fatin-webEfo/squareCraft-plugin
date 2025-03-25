@@ -246,53 +246,64 @@
     }
   });
 
-  async function fetchModifications() {
-    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+  async function fetchModifications(retries = 3) {
+    if (!pageId) return;
 
-    if (!userId || !token || !widgetId || !pageId) {
-        console.warn("⚠️ Missing authentication data or page ID.");
-        return; 
+    if (!token || !userId) {
+        console.warn("Missing authentication data");
+        return;
     }
-    
+
     try {
-        const response = await fetch(`https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+        const response = await fetch(
+            `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
             }
-        });
+        );
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("📥 Retrieved Data from Database:", data);
+        console.log("📥 Retrieved modifications:", data);
 
-        if (!data.modifications || data.modifications.length === 0) {
-            console.warn("⚠️ No saved styles found for this page.");
+        if (!data.modifications || !Array.isArray(data.modifications)) {
+            console.warn("⚠️ No modifications found or invalid format");
             return;
         }
 
+        // Apply modifications for the current page
         data.modifications.forEach(mod => {
             if (mod.pageId === pageId) {
                 mod.elements.forEach(elem => {
+                    const element = document.getElementById(elem.elementId);
+                    
                     if (elem.css && elem.css.span) {
                         const { id, ...styles } = elem.css.span;
-                        const element = document.getElementById(elem.elementId);
+                        let targetElement = document.getElementById(id);
 
-                        if (element) {
-                            // Apply all CSS styles
+                        if (!targetElement && element) {
+                            // Create the span if it doesn't exist
+                            targetElement = document.createElement('span');
+                            targetElement.id = id;
+                            targetElement.textContent = element.textContent; 
+                            element.innerHTML = ''; // Clear the original content
+                            element.appendChild(targetElement); // Insert the new span
+                            console.log(`✨ Recreated span with ID ${id}`);
+                        }
+
+                        if (targetElement) {
                             Object.entries(styles).forEach(([prop, value]) => {
-                                element.style[prop] = value;
+                                targetElement.style[prop] = value;
                             });
 
-                            // Apply ClassName if exists
-                            if (elem.elementStructure?.className) {
-                                element.classList.add(elem.elementStructure.className);
-                                console.log(`✅ Applied class: ${elem.elementStructure.className} to element: ${elem.elementId}`);
-                            }
+                            console.log(`✅ Applied styles to span ${id}`);
                         }
                     }
                 });
@@ -300,12 +311,20 @@
         });
 
     } catch (error) {
-        console.error("❌ Error Fetching Modifications:", error.message);
+        console.error("❌ Error Fetching Modifications:", error);
+        if (retries > 0) {
+            console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+            setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
     }
 }
 
 
-fetchModifications();
+
+window.addEventListener("load", async () => {
+  await fetchModifications();
+});
+
 
 
 
