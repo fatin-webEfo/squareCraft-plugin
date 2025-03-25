@@ -104,6 +104,82 @@ console.log("parent" , Url)
       console.log(`✅ Styles applied to ${elementId} and its nested elements`);
   }
   
+  async function saveModifications(elementId, css) {
+      const token = localStorage.getItem("squareCraft_auth_token");
+      const userId = localStorage.getItem("squareCraft_u_id");
+      const widgetId = localStorage.getItem("squareCraft_w_id");
+      const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+  
+      if (!pageId || !elementId || !css) return;
+  
+      const modificationData = {
+          userId,
+          token,
+          widgetId,
+          modifications: [{
+              pageId,
+              elements: [{
+                  elementId,
+                  css: { span: { id: elementId, ...css } }
+              }]
+          }]
+      };
+  
+      try {
+          const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify(modificationData)
+          });
+  
+          const result = await response.json();
+          console.log("✅ Alignment Changes Saved Successfully!", result);
+      } catch (error) {
+          console.error("❌ Error saving modifications:", error);
+      }
+  }
+  
+  async function fetchModifications() {
+      const token = localStorage.getItem("squareCraft_auth_token");
+      const userId = localStorage.getItem("squareCraft_u_id");
+      const widgetId = localStorage.getItem("squareCraft_w_id");
+      const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+  
+      if (!pageId || !userId || !widgetId) return;
+  
+      try {
+          const response = await fetch(`https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}&widgetId=${widgetId}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+              }
+          });
+  
+          const data = await response.json();
+  
+          if (data?.modifications?.length > 0) {
+              data.modifications.forEach(modification => {
+                  if (modification.pageId === pageId) {
+                      modification.elements.forEach(elementData => {
+                          const { elementId, css } = elementData;
+                          const element = document.getElementById(elementId);
+                          if (element && css?.span?.["text-align"]) {
+                              applyStylesToElement(element, { "text-align": css.span["text-align"] });
+                          }
+                      });
+                  }
+              });
+          }
+          console.log("✅ Modifications Fetched Successfully");
+      } catch (error) {
+          console.error("❌ Error fetching modifications:", error);
+      }
+  }
+  
   document.body.addEventListener("click", (event) => {
       let block = event.target.closest('[id^="block-"]');
       if (!block) return;
@@ -127,6 +203,7 @@ console.log("parent" , Url)
           if (lastAppliedAlignment === textAlign) {
               applyStylesToElement(lastClickedElement, { "text-align": "" });
               lastAppliedAlignment = null;
+              saveModifications(lastClickedElement.id, { "text-align": "" });
               console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
   
               if (lastActiveAlignmentElement) {
@@ -136,13 +213,14 @@ console.log("parent" , Url)
           } else {
               applyStylesToElement(lastClickedElement, { "text-align": textAlign });
               lastAppliedAlignment = textAlign;
+              saveModifications(lastClickedElement.id, { "text-align": textAlign });
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
   
               if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
                   lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
                   lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
               }
-              
+  
               alignmentIcon.classList.add("squareCraft-activeTab-border");
               alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
   
@@ -150,6 +228,9 @@ console.log("parent" , Url)
           }
       }
   });
+  
+  window.addEventListener("load", fetchModifications);
+  
   
 
  document.body.addEventListener("click", (event) => {
