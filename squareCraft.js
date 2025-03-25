@@ -279,16 +279,19 @@
             return;
         }
 
+        // Apply modifications for the current page
         data.modifications.forEach(mod => {
             if (mod.pageId === pageId) {
                 mod.elements.forEach(elem => {
                     const element = document.getElementById(elem.elementId);
                     
                     if (element && elem.css) {
+                        // Apply CSS styles directly to the element
                         Object.entries(elem.css).forEach(([prop, value]) => {
-                            element.style[prop] = value;
+                            element.style.setProperty(prop, value);
                         });
 
+                        // Optionally, add a class to indicate modification
                         if (!element.classList.contains("squareCraft-font-modified")) {
                             element.classList.add("squareCraft-font-modified");
                         }
@@ -307,6 +310,7 @@
         }
     }
 }
+
 
 
 
