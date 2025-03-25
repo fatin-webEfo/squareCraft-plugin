@@ -176,7 +176,7 @@ console.log("parent" , Url)
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
                         "userId": userId,
                         "pageId": pageId,
                         "widget-id": widgetId,
