@@ -279,25 +279,41 @@
             return;
         }
 
+        // Prepare a map for applying modifications later
+        const modificationMap = new Map();
+
         data.modifications.forEach(mod => {
             if (mod.pageId === pageId) {
                 mod.elements.forEach(elem => {
-                    const element = document.querySelector(`#${CSS.escape(elem.elementId)}`);
-                    
-                    if (element && elem.css) {
-                        Object.entries(elem.css).forEach(([prop, value]) => {
-                            element.style.setProperty(prop, value);
-                        });
-
-                        if (!element.classList.contains("squareCraft-font-modified")) {
-                            element.classList.add("squareCraft-font-modified");
-                        }
-
-                        console.log(`✅ Applied styles to element ${elem.elementId}`);
+                    if (elem.css) {
+                        modificationMap.set(elem.elementId, elem.css);
                     }
                 });
             }
         });
+
+        // Use MutationObserver to detect when the target element appears and apply styles
+        const observer = new MutationObserver(() => {
+            modificationMap.forEach((css, elementId) => {
+                const element = document.getElementById(elementId);
+
+                if (element) {
+                    console.log(`✅ Applying styles to element ${elementId}`);
+
+                    Object.entries(css).forEach(([prop, value]) => {
+                        element.style.setProperty(prop, value, "important");
+                    });
+
+                    if (!element.classList.contains("squareCraft-font-modified")) {
+                        element.classList.add("squareCraft-font-modified");
+                    }
+
+                    modificationMap.delete(elementId);
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
 
     } catch (error) {
         console.error("❌ Error Fetching Modifications:", error);
@@ -307,6 +323,7 @@
         }
     }
 }
+
 
 
 
