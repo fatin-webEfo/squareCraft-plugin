@@ -149,51 +149,56 @@ console.log("parent" , Url)
             lastActiveAlignmentElement = alignmentIcon;
         }
 
-        // 🔒 Proceed with saving to the server (If Publish Button is Clicked)
         document.getElementById("publish").addEventListener("click", async () => {
-            const token = localStorage.getItem("squareCraft_auth_token");
-            const userId = localStorage.getItem("squareCraft_u_id");
-            const widgetId = localStorage.getItem("squareCraft_w_id");
-            const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
-
-            if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
-
-            const modificationData = {
-                userId,
-                token,
-                widgetId,
-                modifications: [{
-                    pageId,
-                    elements: [{
-                        elementId: lastClickedElement.id,
-                        css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
-                    }]
-                }]
-            };
-
-            try {
-                const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                        "userId": userId,
-                        "pageId": pageId,
-                        "widget-id": widgetId,
-                    },
-                    body: JSON.stringify(modificationData)
-                });
-
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const result = await response.json();
-                console.log("✅ Modifications saved successfully:", result);
-
-            } catch (error) {
-                console.error("❌ Error saving modifications:", error.message);
-                // Don't return or stop anything if this fails
-            }
-        });
+          const publishButton = document.getElementById("publish");
+          publishButton.textContent = "Publishing..."; 
+      
+          const token = localStorage.getItem("squareCraft_auth_token");
+          const userId = localStorage.getItem("squareCraft_u_id");
+          const widgetId = localStorage.getItem("squareCraft_w_id");
+          const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+      
+          if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
+      
+          const modificationData = {
+              userId,
+              token,
+              widgetId,
+              modifications: [{
+                  pageId,
+                  elements: [{
+                      elementId: lastClickedElement.id,
+                      css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
+                  }]
+              }]
+          };
+      
+          try {
+              const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+                      "userId": userId,
+                      "pageId": pageId,
+                      "widget-id": widgetId,
+                  },
+                  body: JSON.stringify(modificationData)
+              });
+      
+              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+              
+              const result = await response.json();
+              console.log("✅ Modifications saved successfully:", result);
+      
+              publishButton.textContent = "Published"; 
+      
+          } catch (error) {
+              console.error("❌ Error saving modifications:", error.message);
+              publishButton.textContent = "Failed";
+          }
+      });
+      
     }
 });
 
