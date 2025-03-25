@@ -193,107 +193,105 @@ console.log("parent" , Url)
 
 
 async function fetchModifications() {
-  const token = localStorage.getItem("squareCraft_auth_token");
-  const userId = localStorage.getItem("squareCraft_u_id");
-  const widgetId = localStorage.getItem("squareCraft_w_id");
-  const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
-
-  if (!pageId || !userId || !widgetId) return;
-
   try {
-      const response = await fetch(
-          `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
-          {
-              method: "GET",
-              headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-              }
-          }
-      );
+    const token = localStorage.getItem("squareCraft_auth_token");
+    const userId = localStorage.getItem("squareCraft_u_id");
+    const widgetId = localStorage.getItem("squareCraft_w_id");
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    if (!pageId || !userId || !widgetId) return;
 
-      const data = await response.json();
-      console.log("✅ Modifications fetched successfully:", data);
-
-      if (!data.modifications || !Array.isArray(data.modifications)) {
-          console.warn("⚠️ No modifications found or invalid format.");
-          return;
+    const response = await fetch(
+      `https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+        }
       }
+    );
 
-      data.modifications.forEach(mod => {
-          if (mod.pageId === pageId) {
-              mod.elements.forEach(elem => {
-                  if (elem.css && elem.css.span) {
-                      const { id, ...styles } = elem.css.span;
-                      const element = document.getElementById(elem.elementId);
-                      
-                      if (element) {
-                          Object.entries(styles).forEach(([prop, value]) => {
-                              element.style[prop] = value;
-                          });
-                      }
-                  }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const data = await response.json();
+    console.log("✅ Modifications fetched successfully:", data);
+
+    if (!data.modifications || !Array.isArray(data.modifications)) {
+      console.warn("⚠️ No modifications found or invalid format.");
+      return;
+    }
+
+    data.modifications.forEach(mod => {
+      if (mod.pageId === pageId) {
+        mod.elements.forEach(elem => {
+          if (elem.css && elem.css.span) {
+            const { id, ...styles } = elem.css.span;
+            const element = document.getElementById(elem.elementId);
+            if (element) {
+              Object.entries(styles).forEach(([prop, value]) => {
+                element.style[prop] = value;
               });
+            }
           }
-      });
-
+        });
+      }
+    });
   } catch (error) {
-      console.error("❌ Error fetching modifications:", error);
+    console.error("❌ Error fetching modifications:", error.message);
   }
 }
-
 
 async function saveModifications(elementId, css, dynamicSave = false) {
   if (!elementId || !css) return;
 
   applyStylesToElement(document.getElementById(elementId), css);
 
-  if (!dynamicSave) return;
+  if (!dynamicSave) return; // Skip dynamic save if not triggered by the publish button
 
-  const token = localStorage.getItem("squareCraft_auth_token");
-  const userId = localStorage.getItem("squareCraft_u_id");
-  const widgetId = localStorage.getItem("squareCraft_w_id");
-  const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+  try {
+    const token = localStorage.getItem("squareCraft_auth_token");
+    const userId = localStorage.getItem("squareCraft_u_id");
+    const widgetId = localStorage.getItem("squareCraft_w_id");
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
-  if (!pageId || !elementId || !css) return;
+    if (!pageId || !elementId || !css) return;
 
-  const modificationData = {
+    const modificationData = {
       userId,
       token,
       widgetId,
       modifications: [{
-          pageId,
-          elements: [{
-              elementId,
-              css: { span: { id: elementId, ...css } }
-          }]
+        pageId,
+        elements: [{
+          elementId,
+          css: { span: { id: elementId, ...css } }
+        }]
       }]
-  };
+    };
 
-  try {
-      const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-              "userId": userId,
-              "pageId": pageId,
-              "widget-id": widgetId,
-          },
-          body: JSON.stringify(modificationData)
-      });
+    const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+        "userId": userId,
+        "pageId": pageId,
+        "widget-id": widgetId,
+      },
+      body: JSON.stringify(modificationData)
+    });
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-      const result = await response.json();
-      console.log("✅ Modifications saved successfully:", result);
+    const result = await response.json();
+    console.log("✅ Modifications saved successfully:", result);
 
   } catch (error) {
-      console.error("❌ Error saving modifications:", error);
+    console.error("❌ Error saving modifications:", error.message);
   }
 }
+
 
 
 
