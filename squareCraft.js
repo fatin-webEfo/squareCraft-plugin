@@ -247,6 +247,7 @@
   });
 
   async function fetchModifications(retries = 3) {
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
 
     if (!token || !userId) {
