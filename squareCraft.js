@@ -1,6 +1,6 @@
 (async function squareCraft() {
   const Url = parent.document.location.href
-console.log("parent" , Url)
+  console.log("parent", Url)
   const widgetScript = document.getElementById("squareCraft-script");
 
   if (!widgetScript) {
@@ -15,6 +15,13 @@ console.log("parent" , Url)
   let token = widgetScript.dataset?.token;
   let squareCraft_u_id = widgetScript.dataset?.uId;
   let squareCraft_w_id = widgetScript.dataset?.wId;
+
+  console.log("User ID:", localStorage.getItem("squareCraft_u_id"));
+  console.log("Auth Token:", localStorage.getItem("squareCraft_auth_token"));
+  console.log("Widget ID:", localStorage.getItem("squareCraft_w_id"));
+  console.log("Authorization Header:", `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`);
+
+
 
   if (token) {
     localStorage.setItem("squareCraft_auth_token", token);
@@ -41,7 +48,7 @@ console.log("parent" , Url)
       console.error("No selected element found.");
       return;
     }
- 
+
     const fontSelector = document.getElementById("squareCraftFontSelector");
 
     if (!fontSelector) {
@@ -76,172 +83,172 @@ console.log("parent" , Url)
     return null;
   }
 
-  
+
   let lastClickedBlockId = null;
   let lastClickedElement = null;
   let lastAppliedAlignment = null;
   let lastActiveAlignmentElement = null;
-  
+
   function applyStylesToElement(element, css) {
-      if (!element || !css) return;
-  
-      const elementId = element.id;
-      let styleTag = document.getElementById(`style-${elementId}`);
-  
-      if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = `style-${elementId}`;
-          document.head.appendChild(styleTag);
-      }
-  
-      let cssText = `#${elementId}, #${elementId} h1, #${elementId} h2, #${elementId} h3, #${elementId} h4, #${elementId} p { `;
-      Object.keys(css).forEach((prop) => {
-          cssText += `${prop}: ${css[prop]} !important; `;
-      });
-      cssText += "}";
-  
-      styleTag.innerHTML = cssText;
-      console.log(`✅ Styles applied to ${elementId} and its nested elements`);
+    if (!element || !css) return;
+
+    const elementId = element.id;
+    let styleTag = document.getElementById(`style-${elementId}`);
+
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = `style-${elementId}`;
+      document.head.appendChild(styleTag);
+    }
+
+    let cssText = `#${elementId}, #${elementId} h1, #${elementId} h2, #${elementId} h3, #${elementId} h4, #${elementId} p { `;
+    Object.keys(css).forEach((prop) => {
+      cssText += `${prop}: ${css[prop]} !important; `;
+    });
+    cssText += "}";
+
+    styleTag.innerHTML = cssText;
+    console.log(`✅ Styles applied to ${elementId} and its nested elements`);
   }
-  
+
   document.body.addEventListener("click", (event) => {
-      let block = event.target.closest('[id^="block-"]');
-      if (!block) return;
-  
-      if (selectedElement) selectedElement.style.outline = "";
-      selectedElement = block;
-      selectedElement.style.outline = "2px dashed #EF7C2F";
-  
-      lastClickedBlockId = block.id;
-      console.log(`✅ Selected Block: ${selectedElement.id}`);
-  
-      lastClickedElement = block;
+    let block = event.target.closest('[id^="block-"]');
+    if (!block) return;
+
+    if (selectedElement) selectedElement.style.outline = "";
+    selectedElement = block;
+    selectedElement.style.outline = "2px dashed #EF7C2F";
+
+    lastClickedBlockId = block.id;
+    console.log(`✅ Selected Block: ${selectedElement.id}`);
+
+    lastClickedElement = block;
   });
-  
+
   document.body.addEventListener("click", async (event) => {
     const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
 
     if (alignmentIcon && lastClickedElement) {
-        const textAlign = alignmentIcon.dataset.align;
+      const textAlign = alignmentIcon.dataset.align;
 
-        if (lastAppliedAlignment === textAlign) {
-            applyStylesToElement(lastClickedElement, { "text-align": "" });
-            lastAppliedAlignment = null;
-            console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
+      if (lastAppliedAlignment === textAlign) {
+        applyStylesToElement(lastClickedElement, { "text-align": "" });
+        lastAppliedAlignment = null;
+        console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
 
-            if (lastActiveAlignmentElement) {
-                lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-                lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
-            }
-        } else {
-            applyStylesToElement(lastClickedElement, { "text-align": textAlign });
-            lastAppliedAlignment = textAlign;
-            console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
+        if (lastActiveAlignmentElement) {
+          lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
+          lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+        }
+      } else {
+        applyStylesToElement(lastClickedElement, { "text-align": textAlign });
+        lastAppliedAlignment = textAlign;
+        console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
 
-            if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
-                lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-                lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
-            }
-
-            alignmentIcon.classList.add("squareCraft-activeTab-border");
-            alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
-
-            lastActiveAlignmentElement = alignmentIcon;
+        if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
+          lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
+          lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
         }
 
-        document.getElementById("publish").addEventListener("click", async () => {
-          const publishButton = document.getElementById("publish");
-          publishButton.textContent = "Publishing..."; 
-      
-          const token = localStorage.getItem("squareCraft_auth_token");
-          const userId = localStorage.getItem("squareCraft_u_id");
-          const widgetId = localStorage.getItem("squareCraft_w_id");
-          const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
-      
-          if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
-      
-          const modificationData = {
-              userId,
-              token,
-              widgetId,
-              modifications: [{
-                  pageId,
-                  elements: [{
-                      elementId: lastClickedElement.id,
-                      css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
-                  }]
-              }]
-          };
-      
-          try {
-              const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-                      "userId": userId,
-                      "pageId": pageId,
-                      "widget-id": widgetId,
-                  },
-                  body: JSON.stringify(modificationData)
-              });
-      
-              if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-              
-              const result = await response.json();
-              console.log("✅ Modifications saved successfully:", result);
-      
-              publishButton.textContent = "Published"; 
-      
-          } catch (error) {
-              console.error("❌ Error saving modifications:", error.message);
-              publishButton.textContent = "Failed";
-          }
+        alignmentIcon.classList.add("squareCraft-activeTab-border");
+        alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
+
+        lastActiveAlignmentElement = alignmentIcon;
+      }
+
+      document.getElementById("publish").addEventListener("click", async () => {
+        const publishButton = document.getElementById("publish");
+        publishButton.textContent = "Publishing...";
+
+        const token = localStorage.getItem("squareCraft_auth_token");
+        const userId = localStorage.getItem("squareCraft_u_id");
+        const widgetId = localStorage.getItem("squareCraft_w_id");
+        const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+
+        if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
+
+        const modificationData = {
+          userId,
+          token,
+          widgetId,
+          modifications: [{
+            pageId,
+            elements: [{
+              elementId: lastClickedElement.id,
+              css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
+            }]
+          }]
+        };
+
+        try {
+          const response = await fetch("https://webefo-backend.onrender.com/api/v1/modifications", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+              "userId": userId,
+              "pageId": pageId,
+              "widget-id": widgetId,
+            },
+            body: JSON.stringify(modificationData)
+          });
+
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+          const result = await response.json();
+          console.log("✅ Modifications saved successfully:", result);
+
+          publishButton.textContent = "Published";
+
+        } catch (error) {
+          console.error("❌ Error saving modifications:", error.message);
+          publishButton.textContent = "Failed";
+        }
       });
-      
+
     }
-});
+  });
 
-  
 
- document.body.addEventListener("click", (event) => {
+
+  document.body.addEventListener("click", (event) => {
     const textColorPalate = event.target.closest('#textColorPalate');
 
     if (textColorPalate) {
-        let colorPalette = document.getElementById("squareCraftColorPalette");
+      let colorPalette = document.getElementById("squareCraftColorPalette");
 
-        if (!colorPalette) {
-            colorPalette = document.createElement("input");
-            colorPalette.type = "color";
-            colorPalette.id = "squareCraftColorPalette";
-            colorPalette.style.opacity = "0";
-            colorPalette.style.width = "0px";
-            colorPalette.style.height = "0px";
-            colorPalette.style.marginTop = "14px";
+      if (!colorPalette) {
+        colorPalette = document.createElement("input");
+        colorPalette.type = "color";
+        colorPalette.id = "squareCraftColorPalette";
+        colorPalette.style.opacity = "0";
+        colorPalette.style.width = "0px";
+        colorPalette.style.height = "0px";
+        colorPalette.style.marginTop = "14px";
 
-            textColorPalate.appendChild(colorPalette);
+        textColorPalate.appendChild(colorPalette);
 
-            colorPalette.addEventListener("input", function (event) {
-                if (lastClickedElement) {
-                    const selectedColor = event.target.value;
+        colorPalette.addEventListener("input", function (event) {
+          if (lastClickedElement) {
+            const selectedColor = event.target.value;
 
-                    applyStylesToElement(lastClickedElement, { "color": `${selectedColor} !important` });
+            applyStylesToElement(lastClickedElement, { "color": `${selectedColor} !important` });
 
-                    textColorPalate.style.backgroundColor = selectedColor;
+            textColorPalate.style.backgroundColor = selectedColor;
 
-                    const textColorHtml = document.getElementById("textcolorHtml");
-                    if (textColorHtml) {
-                        textColorHtml.textContent = selectedColor;
-                    }
+            const textColorHtml = document.getElementById("textcolorHtml");
+            if (textColorHtml) {
+              textColorHtml.textContent = selectedColor;
+            }
 
-                    console.log(`🎨 Applied Color: ${selectedColor}`);
-                }
-            });
-        }
+            console.log(`🎨 Applied Color: ${selectedColor}`);
+          }
+        });
+      }
 
-        colorPalette.click();
+      colorPalette.click();
     }
-});
+  });
 
 
 
@@ -253,35 +260,35 @@ console.log("parent" , Url)
 
     if (widgetContainer.dataset.listenerAttached === "true") return;
 
-    widgetContainer.dataset.listenerAttached = "true"; 
+    widgetContainer.dataset.listenerAttached = "true";
 
     function toggleTabClass(targetElement) {
-        console.log("🚀 Toggle function called for:", targetElement);
-        if (targetElement.classList.contains("squareCraft-activeTab-border")) {
-            targetElement.classList.remove("squareCraft-activeTab-border");
-            targetElement.classList.add("squareCraft-inActiveTab-border");
-        } else {
-            targetElement.classList.remove("squareCraft-inActiveTab-border");
-            targetElement.classList.add("squareCraft-activeTab-border");
-        }
+      console.log("🚀 Toggle function called for:", targetElement);
+      if (targetElement.classList.contains("squareCraft-activeTab-border")) {
+        targetElement.classList.remove("squareCraft-activeTab-border");
+        targetElement.classList.add("squareCraft-inActiveTab-border");
+      } else {
+        targetElement.classList.remove("squareCraft-inActiveTab-border");
+        targetElement.classList.add("squareCraft-activeTab-border");
+      }
     }
 
     widgetContainer.addEventListener("click", (event) => {
-        const tabElement = event.target;
-        if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
-            console.log("📌 Tab Element Clicked:", tabElement);
-            toggleTabClass(tabElement);
-        }
+      const tabElement = event.target;
+      if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
+        console.log("📌 Tab Element Clicked:", tabElement);
+        toggleTabClass(tabElement);
+      }
     });
-}
+  }
 
-const observer = new MutationObserver(() => {
+  const observer = new MutationObserver(() => {
     addHeadingEventListeners();
-});
+  });
 
-observer.observe(parent.document.body, { childList: true, subtree: true });
+  observer.observe(parent.document.body, { childList: true, subtree: true });
 
-addHeadingEventListeners();
+  addHeadingEventListeners();
 
 
 
