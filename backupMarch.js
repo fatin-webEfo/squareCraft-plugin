@@ -16,8 +16,6 @@
   let userId = widgetScript.dataset?.uId;
   let widgetId = widgetScript.dataset?.wId;
 
-  console.log("🔑 Token:", token , "user Id" , userId , "widget Id" , widgetId);
-
 
 
   if (token) {
@@ -169,7 +167,9 @@
               pageId,
               elements: [{
                   elementId: lastClickedElement.id,
-                  css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
+                   css: { 
+                "text-align": lastAppliedAlignment 
+            }
               }]
           }]
       };
@@ -246,6 +246,98 @@
     }
   });
 
+  async function fetchModifications(retries = 3) {
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+    if (!pageId) return;
+
+    if (!token || !userId) {
+        console.warn("Missing authentication data");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("📥 Retrieved modifications:", data);
+
+        if (!data.modifications || !Array.isArray(data.modifications)) {
+            console.warn("⚠️ No modifications found or invalid format");
+            return;
+        }
+
+        const modificationMap = new Map();
+
+        data.modifications.forEach(mod => {
+            if (mod.pageId === pageId) {
+                mod.elements.forEach(elem => {
+                    if (elem.css) {
+                        modificationMap.set(elem.elementId, elem.css);
+                    }
+                });
+            }
+        });
+
+        const observer = new MutationObserver(() => {
+            modificationMap.forEach((css, elementId) => {
+                const element = document.getElementById(elementId);
+
+                if (element) {
+                    console.log(`✅ Applying styles to element ${elementId}`);
+
+                    // Apply styles to the main element
+                    Object.entries(css).forEach(([prop, value]) => {
+                        element.style.setProperty(prop, value, "important");
+                    });
+
+                    // Apply styles to nested elements as well (h1, h2, h3, h4, p)
+                    const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
+                    nestedElements.forEach(nestedElem => {
+                        Object.entries(css).forEach(([prop, value]) => {
+                            nestedElem.style.setProperty(prop, value, "important");
+                        });
+                    });
+
+                    if (!element.classList.contains("squareCraft-font-modified")) {
+                        element.classList.add("squareCraft-font-modified");
+                    }
+
+                    modificationMap.delete(elementId); // Remove from the map after applying
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+    } catch (error) {
+        console.error("❌ Error Fetching Modifications:", error);
+        if (retries > 0) {
+            console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+            setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
+    }
+}
+
+
+
+
+
+window.addEventListener("load", async () => {
+  await fetchModifications();
+});
 
 
 
@@ -280,6 +372,7 @@
 
   const observer = new MutationObserver(() => {
     addHeadingEventListeners();
+    fetchModifications();
   });
 
   observer.observe(parent.document.body, { childList: true, subtree: true });
@@ -621,7 +714,7 @@
     }
   }
 
-
+  fetchModifications();
 
   function moveWidgetToDesktop() {
     if (!widgetContainer) return;
