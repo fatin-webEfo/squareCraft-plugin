@@ -162,9 +162,6 @@
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
-          userId: squareCraft_u_id,
-          token,
-          widgetId: squareCraft_w_id,
           modifications: [{
               pageId,
               elements: [{
@@ -181,9 +178,9 @@
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
-              "userId": userId,
+              "userId": squareCraft_u_id,
               "pageId": pageId,
-              "widget-id": widgetId,
+              "widget-id": squareCraft_w_id,
             },
             body: JSON.stringify(modificationData)
           });
