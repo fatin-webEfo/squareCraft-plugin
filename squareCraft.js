@@ -279,7 +279,6 @@
             return;
         }
 
-        // Prepare a map for applying modifications later
         const modificationMap = new Map();
 
         data.modifications.forEach(mod => {
@@ -292,7 +291,6 @@
             }
         });
 
-        // Use MutationObserver to detect when the target element appears and apply styles
         const observer = new MutationObserver(() => {
             modificationMap.forEach((css, elementId) => {
                 const element = document.getElementById(elementId);
@@ -300,15 +298,24 @@
                 if (element) {
                     console.log(`✅ Applying styles to element ${elementId}`);
 
+                    // Apply styles to the main element
                     Object.entries(css).forEach(([prop, value]) => {
                         element.style.setProperty(prop, value, "important");
+                    });
+
+                    // Apply styles to nested elements as well (h1, h2, h3, h4, p)
+                    const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
+                    nestedElements.forEach(nestedElem => {
+                        Object.entries(css).forEach(([prop, value]) => {
+                            nestedElem.style.setProperty(prop, value, "important");
+                        });
                     });
 
                     if (!element.classList.contains("squareCraft-font-modified")) {
                         element.classList.add("squareCraft-font-modified");
                     }
 
-                    modificationMap.delete(elementId);
+                    modificationMap.delete(elementId); // Remove from the map after applying
                 }
             });
         });
@@ -323,6 +330,7 @@
         }
     }
 }
+
 
 
 
