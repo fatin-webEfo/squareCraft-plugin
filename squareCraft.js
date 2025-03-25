@@ -162,6 +162,9 @@
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
+          userId: squareCraft_u_id,
+          token: token,
+          widgetId: squareCraft_w_id,
           modifications: [{
               pageId,
               elements: [{
@@ -170,6 +173,7 @@
               }]
           }]
       };
+      
       
 
         try {
