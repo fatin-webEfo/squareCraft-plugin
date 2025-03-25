@@ -130,7 +130,10 @@ console.log("parent" , Url)
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
+                  "Authorization": `Bearer ${token}`,
+                  "userId": userId,
+                  "pageId": pageId,
+                  "widget-id": widgetId,
               },
               body: JSON.stringify(modificationData)
           });
@@ -151,11 +154,11 @@ console.log("parent" , Url)
       if (!pageId || !userId || !widgetId) return;
   
       try {
-          const response = await fetch(`https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}&widgetId=${widgetId}`, {
+          const response = await fetch(`https://webefo-backend.onrender.com/api/v1/get-modifications?userId=${userId}`, {
               method: "GET",
               headers: {
                   "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
+                  "Authorization": `Bearer ${token} || localStorage.getItem("squareCraft_auth_token")`,
               }
           });
   
@@ -203,7 +206,6 @@ console.log("parent" , Url)
           if (lastAppliedAlignment === textAlign) {
               applyStylesToElement(lastClickedElement, { "text-align": "" });
               lastAppliedAlignment = null;
-              saveModifications(lastClickedElement.id, { "text-align": "" });
               console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
   
               if (lastActiveAlignmentElement) {
@@ -213,7 +215,6 @@ console.log("parent" , Url)
           } else {
               applyStylesToElement(lastClickedElement, { "text-align": textAlign });
               lastAppliedAlignment = textAlign;
-              saveModifications(lastClickedElement.id, { "text-align": textAlign });
               console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
   
               if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
@@ -226,6 +227,13 @@ console.log("parent" , Url)
   
               lastActiveAlignmentElement = alignmentIcon;
           }
+      }
+  });
+  
+  document.getElementById("publish").addEventListener("click", () => {
+      if (lastClickedElement && lastAppliedAlignment) {
+          const css = { "text-align": lastAppliedAlignment };
+          saveModifications(lastClickedElement.id, css);
       }
   });
   
