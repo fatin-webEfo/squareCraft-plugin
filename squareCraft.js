@@ -16,10 +16,7 @@
   let squareCraft_u_id = widgetScript.dataset?.uId;
   let squareCraft_w_id = widgetScript.dataset?.wId;
 
-  console.log("User ID:", localStorage.getItem("squareCraft_u_id"));
-  console.log("Auth Token:", localStorage.getItem("squareCraft_auth_token"));
-  console.log("Widget ID:", localStorage.getItem("squareCraft_w_id"));
-  console.log("Authorization Header:", `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`);
+  console.log("🔑 Token:", token , "user Id" , squareCraft_u_id , "widget Id" , squareCraft_w_id);
 
 
 
@@ -160,17 +157,14 @@
         const publishButton = document.getElementById("publish");
         publishButton.textContent = "Publishing...";
 
-        const token = localStorage.getItem("squareCraft_auth_token");
-        const userId = localStorage.getItem("squareCraft_u_id");
-        const widgetId = localStorage.getItem("squareCraft_w_id");
         const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
 
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
-          userId,
+         squareCraft_u_id: userId,
           token,
-          widgetId,
+         squareCraft_w_id: widgetId,
           modifications: [{
             pageId,
             elements: [{
