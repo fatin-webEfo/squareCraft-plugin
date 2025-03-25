@@ -16,8 +16,6 @@
   let userId = widgetScript.dataset?.uId;
   let widgetId = widgetScript.dataset?.wId;
 
-  console.log("🔑 Token:", token , "user Id" , userId , "widget Id" , widgetId);
-
 
 
   if (token) {
@@ -169,7 +167,9 @@
               pageId,
               elements: [{
                   elementId: lastClickedElement.id,
-                  css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
+                   css: { 
+                "text-align": lastAppliedAlignment 
+            }
               }]
           }]
       };
