@@ -694,7 +694,7 @@ window.addEventListener("load", async () => {
     }
   }
 
-
+  fetchModifications();
 
   function moveWidgetToDesktop() {
     if (!widgetContainer) return;
