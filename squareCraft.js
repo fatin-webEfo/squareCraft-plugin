@@ -162,17 +162,18 @@
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
-         squareCraft_u_id: userId,
+          userId: squareCraft_u_id,
           token,
-         squareCraft_w_id: widgetId,
+          widgetId: squareCraft_w_id,
           modifications: [{
-            pageId,
-            elements: [{
-              elementId: lastClickedElement.id,
-              css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
-            }]
+              pageId,
+              elements: [{
+                  elementId: lastClickedElement.id,
+                  css: { span: { id: lastClickedElement.id, "text-align": lastAppliedAlignment } }
+              }]
           }]
-        };
+      };
+      
 
         try {
           const response = await fetch("https://admin.squareplugin.com/api/v1/modifications", {
