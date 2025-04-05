@@ -115,7 +115,7 @@ export function html() {
                               I</p>
                         </div>
 
-                        <div class="sc-px-2 sc-py-sm sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+                        <div class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
