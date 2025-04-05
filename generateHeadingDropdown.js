@@ -1,5 +1,5 @@
-export function createHeadingDropdown(id, fontSizes = [], letterSpacings = []) {
-    return `
+export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
+   return `
     <div id="${id}" >
                 <div class="sc-mt-2 sc-px-2  sc-gap-2">
                   
@@ -164,7 +164,7 @@ export function createHeadingDropdown(id, fontSizes = [], letterSpacings = []) {
                      <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
                            sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                            sc-mt-1">
-                        ${letterSpacings?.map(gap => `
+                        ${LetterSpacing?.map(gap => `
                         <div
                            class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
                            data-value="${gap}">${gap}
@@ -243,5 +243,4 @@ export function createHeadingDropdown(id, fontSizes = [], letterSpacings = []) {
                </div>
             </div>
     `;
-  }
-  
+}
