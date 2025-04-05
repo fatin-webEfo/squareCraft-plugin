@@ -623,6 +623,10 @@
   padding-top: 5.5px !important;
   padding-bottom: 5.6px !important;
 }
+.sc-py-xs{
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
 
 .sc-border-color-585858 {
   border-color: #585858 !important;
