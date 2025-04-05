@@ -152,27 +152,35 @@
       "paragraph1Part", "paragraph2Part", "paragraph3Part"
     ];
   
-    let shownPartId = null;
-  
+    const visibleParts = new Set();
+
     innerTextElements.forEach(el => {
       const tagName = el.tagName.toLowerCase();
       const result = getTextType(tagName, el);
       if (result) {
         console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
-        shownPartId = `${result.type}Part`;
+    
+        // ✅ Show the relevant part
+        visibleParts.add(`${result.type}Part`);
+    
+        // ✅ Apply border to the element itself
+        el.style.border = `1px solid ${result.borderColor}`;
+        el.style.borderRadius = "4px";
+        el.style.padding = "2px 4px";
       }
     });
-  
+    
     allParts.forEach(id => {
       const part = document.getElementById(id);
       if (part) {
-        if (id === shownPartId) {
+        if (visibleParts.has(id)) {
           part.classList.remove("sc-hidden");
         } else {
           part.classList.add("sc-hidden");
         }
       }
     });
+    
   });
   
   
