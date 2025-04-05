@@ -147,21 +147,34 @@
   
     const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
   
+    const allParts = [
+      "heading1Part", "heading2Part", "heading3Part", "heading4Part",
+      "paragraph1Part", "paragraph2Part", "paragraph3Part"
+    ];
+  
+    let shownPartId = null;
+  
     innerTextElements.forEach(el => {
       const tagName = el.tagName.toLowerCase();
       const result = getTextType(tagName, el);
       if (result) {
         console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+        shownPartId = `${result.type}Part`;
+      }
+    });
   
-        const partId = `${result.type}Part`;
-        const matchedSection = document.getElementById(partId);
-  
-        if (matchedSection && matchedSection.classList.contains("sc-hidden")) {
-          matchedSection.classList.remove("sc-hidden");
+    allParts.forEach(id => {
+      const part = document.getElementById(id);
+      if (part) {
+        if (id === shownPartId) {
+          part.classList.remove("sc-hidden");
+        } else {
+          part.classList.add("sc-hidden");
         }
       }
     });
   });
+  
   
   
 
