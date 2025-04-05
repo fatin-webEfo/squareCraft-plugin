@@ -1,4 +1,4 @@
-import { createHeadingDropdown } from './generateHeadingDropdown.js';
+import { createHeadingDropdown } from 'https://fatin-webefo.github.io/squareCraft-plugin/generateHeadingDropdown.js';
 
 const fontSizes = [12, 14, 16, 18, 20, 22, 24];
 const LetterSpacings = ['1px', '2px', '3px', '4px', '5px'];
