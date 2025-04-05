@@ -72,7 +72,7 @@ export function html() {
          </div>
 
          <div>
-            <div class="">
+            <div id="heading1Part" class="">
 
                <div class="sc-flex  sc-mt-2 sc-px-2">
 
@@ -89,7 +89,7 @@ export function html() {
             </div>
 
 
-            <div>
+            <div id="heading2Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading2"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
@@ -101,7 +101,7 @@ export function html() {
                ${createHeadingDropdown('heading2Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-            <div>
+            <div id="heading3Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading3"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
@@ -113,7 +113,7 @@ export function html() {
                ${createHeadingDropdown('heading3Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-            <div>
+            <div id="heading4Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading4"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
@@ -125,7 +125,7 @@ export function html() {
                ${createHeadingDropdown('heading4Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-            <div>
+            <div id="paragraph1Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph1"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
@@ -137,7 +137,7 @@ export function html() {
                ${createHeadingDropdown('paragraph1Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-            <div>
+            <div id="paragraph2Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph2"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
@@ -149,7 +149,7 @@ export function html() {
                ${createHeadingDropdown('paragraph2Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-            <div>
+            <div id="paragraph3Part">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph3"
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
