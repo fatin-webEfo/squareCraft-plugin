@@ -147,15 +147,6 @@
   
     const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
   
-    const allParts = [
-      "heading1Part", "heading2Part", "heading3Part", "heading4Part",
-      "paragraph1Part", "paragraph2Part", "paragraph3Part"
-    ];
-    allParts.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add("sc-hidden");
-    });
-  
     innerTextElements.forEach(el => {
       const tagName = el.tagName.toLowerCase();
       const result = getTextType(tagName, el);
@@ -164,7 +155,10 @@
   
         const partId = `${result.type}Part`;
         const matchedSection = document.getElementById(partId);
-        if (matchedSection) matchedSection.classList.remove("sc-hidden");
+  
+        if (matchedSection && matchedSection.classList.contains("sc-hidden")) {
+          matchedSection.classList.remove("sc-hidden");
+        }
       }
     });
   });
