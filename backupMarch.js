@@ -109,28 +109,104 @@
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
-
+  
     if (selectedElement) selectedElement.style.outline = "";
     selectedElement = block;
     selectedElement.style.outline = "2px dashed #EF7C2F";
-
+  
     lastClickedBlockId = block.id;
     console.log(`✅ Selected Block: ${selectedElement.id}`);
-
+  
     lastClickedElement = block;
+  
+    const appliedTextAlign = window.getComputedStyle(block).textAlign;
+  
+    if (appliedTextAlign) {
+      lastAppliedAlignment = appliedTextAlign;
+      console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
+  
+      const alignmentIconMap = {
+        "left": document.getElementById("scTextAlignLeft"),
+        "center": document.getElementById("scTextAlignCenter"),
+        "right": document.getElementById("scTextAlignRight"),
+        "justify": document.getElementById("scTextAlignJustify")
+      };
+  
+      if (lastActiveAlignmentElement) {
+        lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
+        lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
+      }
+  
+      const activeIcon = alignmentIconMap[appliedTextAlign];
+      if (activeIcon) {
+        activeIcon.classList.add("sc-activeTab-border");
+        activeIcon.classList.remove("sc-inActiveTab-border");
+        lastActiveAlignmentElement = activeIcon;
+      }
+    }
+  
+    const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
+  
+    const allParts = [
+      "heading1Part", "heading2Part", "heading3Part", "heading4Part",
+      "paragraph1Part", "paragraph2Part", "paragraph3Part"
+    ];
+  
+    const visibleParts = new Set();
+
+    innerTextElements.forEach(el => {
+      const tagName = el.tagName.toLowerCase();
+      const result = getTextType(tagName, el);
+      if (result) {
+        console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+    
+        // ✅ Show the relevant part
+        visibleParts.add(`${result.type}Part`);
+    
+        // ✅ Apply border to the element itself
+        el.style.border = `1px solid ${result.borderColor}`;
+        el.style.borderRadius = "4px";
+        el.style.padding = "2px 4px";
+      }
+    });
+    
+    allParts.forEach(id => {
+      const part = document.getElementById(id);
+      if (part) {
+        if (visibleParts.has(id)) {
+          part.classList.remove("sc-hidden");
+        } else {
+          part.classList.add("sc-hidden");
+        }
+      }
+    });
+    
   });
+  
+  
+  
+
 
   document.body.addEventListener("click", async (event) => {
     const alignmentIcon = event.target.closest('#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify');
-
+  
     if (alignmentIcon && lastClickedElement) {
+      const textTags = lastClickedElement.querySelectorAll("h1, h2, h3, h4, p");
+      textTags.forEach(el => {
+        const tagName = el.tagName.toLowerCase();
+        const result = getTextType(tagName, el);
+        if (result) {
+          console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+        }
+      });
+  
       const textAlign = alignmentIcon.dataset.align;
-
+  
       if (lastAppliedAlignment === textAlign) {
         applyStylesToElement(lastClickedElement, { "text-align": "" });
         lastAppliedAlignment = null;
         console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
-
+  
         if (lastActiveAlignmentElement) {
           lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
           lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
@@ -139,26 +215,25 @@
         applyStylesToElement(lastClickedElement, { "text-align": textAlign });
         lastAppliedAlignment = textAlign;
         console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
-
+  
         if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
           lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
           lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
         }
-
+  
         alignmentIcon.classList.add("sc-activeTab-border");
         alignmentIcon.classList.remove("sc-inActiveTab-border");
-
+  
         lastActiveAlignmentElement = alignmentIcon;
       }
-
+  
       document.getElementById("publish").addEventListener("click", async () => {
         const publishButton = document.getElementById("publish");
         publishButton.textContent = "Publishing...";
-
+  
         const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
-
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
-
+  
         const modificationData = {
           userId,
           token: token,
@@ -173,9 +248,7 @@
             }]
           }]
         };
-
-
-
+  
         try {
           const response = await fetch("https://admin.squareplugin.com/api/v1/modifications", {
             method: "POST",
@@ -188,22 +261,21 @@
             },
             body: JSON.stringify(modificationData)
           });
-
+  
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+  
           const result = await response.json();
           console.log("✅ Modifications saved successfully:", result);
-
           publishButton.textContent = "Published";
-
+  
         } catch (error) {
           console.error("❌ Error saving modifications:", error.message);
           publishButton.textContent = "Failed";
         }
       });
-
     }
   });
+  
 
 
 
@@ -298,12 +370,10 @@
           if (element) {
             console.log(`✅ Applying styles to element ${elementId}`);
 
-            // Apply styles to the main element
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
 
-            // Apply styles to nested elements as well (h1, h2, h3, h4, p)
             const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
             nestedElements.forEach(nestedElem => {
               Object.entries(css).forEach(([prop, value]) => {
@@ -332,15 +402,9 @@
   }
 
 
-
-
-
   window.addEventListener("load", async () => {
     await fetchModifications();
   });
-
-
-
 
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("sc-widget-container");

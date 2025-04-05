@@ -147,39 +147,45 @@
   
     const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
   
-    const allParts = [
-      "heading1Part", "heading2Part", "heading3Part", "heading4Part",
-      "paragraph1Part", "paragraph2Part", "paragraph3Part"
-    ];
-  
-    const visibleParts = new Set();
-
-    innerTextElements.forEach(el => {
-      const tagName = el.tagName.toLowerCase();
-      const result = getTextType(tagName, el);
-      if (result) {
-        console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+    [
+      "heading1", "heading2", "heading3", "heading4",
+      "paragraph1", "paragraph2", "paragraph3"
+    ].forEach(typeId => {
+      const el = document.getElementById(typeId);
+      if (!el) return;
     
-        // ✅ Show the relevant part
-        visibleParts.add(`${result.type}Part`);
+      el.addEventListener("mouseenter", () => {
+        const block = document.getElementById(lastClickedBlockId);
+        if (!block) return;
     
-        // ✅ Apply border to the element itself
-        el.style.border = `1px solid ${result.borderColor}`;
-        el.style.borderRadius = "4px";
-        el.style.padding = "2px 4px";
-      }
+        const textType = typeId.replace(/\d$/, ''); // 'heading', 'paragraph'
+        const number = typeId.match(/\d/)[0];
+        const tag = textType === "heading" ? `h${number}` : "p";
+    
+        const elements = block.querySelectorAll(tag);
+        elements.forEach(elem => {
+          const result = getTextType(elem.tagName.toLowerCase(), elem);
+          if (result && result.type === typeId) {
+            elem.style.outline = `2px solid ${result.borderColor}`;
+            elem.dataset._scHovered = "true";
+          }
+        });
+      });
+    
+      el.addEventListener("mouseleave", () => {
+        const block = document.getElementById(lastClickedBlockId);
+        if (!block) return;
+    
+        const elements = block.querySelectorAll("h1, h2, h3, h4, p");
+        elements.forEach(elem => {
+          if (elem.dataset._scHovered === "true") {
+            elem.style.outline = "";
+            delete elem.dataset._scHovered;
+          }
+        });
+      });
     });
     
-    allParts.forEach(id => {
-      const part = document.getElementById(id);
-      if (part) {
-        if (visibleParts.has(id)) {
-          part.classList.remove("sc-hidden");
-        } else {
-          part.classList.add("sc-hidden");
-        }
-      }
-    });
     
   });
   
