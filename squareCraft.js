@@ -153,21 +153,19 @@
     ];
   
     const visibleParts = new Set();
-
+  
     innerTextElements.forEach(el => {
       const tagName = el.tagName.toLowerCase();
       const result = getTextType(tagName, el);
       if (result) {
         console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
-    
         visibleParts.add(`${result.type}Part`);
-    
         el.style.border = `1px solid ${result.borderColor}`;
         el.style.borderRadius = "4px";
         el.style.padding = "2px 4px";
       }
     });
-    
+  
     allParts.forEach(id => {
       const part = document.getElementById(id);
       if (part) {
@@ -178,12 +176,39 @@
         }
       }
     });
-    
+  
+    // ✅ Real-time hover highlight logic (added here)
+    visibleParts.forEach(partId => {
+      const typeId = partId.replace("Part", ""); // e.g., "paragraph2"
+      const widgetTab = document.getElementById(typeId);
+      if (!widgetTab) return;
+  
+      widgetTab.onmouseenter = () => {
+        const block = document.getElementById(lastClickedBlockId);
+        if (!block) return;
+  
+        const tag = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
+  
+        block.querySelectorAll(tag).forEach(el => {
+          const result = getTextType(tag, el);
+          if (result && result.type === typeId) {
+            el.style.outline = `2px solid ${result.borderColor}`;
+          }
+        });
+      };
+  
+      widgetTab.onmouseleave = () => {
+        const block = document.getElementById(lastClickedBlockId);
+        if (!block) return;
+  
+        block.querySelectorAll("h1, h2, h3, h4, p").forEach(el => {
+          el.style.outline = ""; // Reset on leave
+        });
+      };
+    });
+  
   });
   
-  
-  
-
 
   document.body.addEventListener("click", async (event) => {
     const alignmentIcon = event.target.closest('#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify');
