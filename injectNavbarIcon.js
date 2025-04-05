@@ -98,7 +98,7 @@ export function injectNavbarIcon() {
                 icon.style.cursor = "pointer";
 
                 const text = document.createElement("span");
-                text.innerText = "sc";
+                text.innerText = "SquareCraft";
                 text.style.fontSize = "14px";
                 text.style.fontWeight = "bold";
                 text.style.cursor = "pointer";
