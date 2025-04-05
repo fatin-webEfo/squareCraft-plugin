@@ -1,7 +1,7 @@
 import { createHeadingDropdown } from 'https://fatin-webefo.github.io/squareCraft-plugin/generateHeadingDropdown.js';
 
 const fontSizes = [12, 14, 16, 18, 20, 22, 24];
-const LetterSpacing = ['1px', '2px', '3px', '4px', '5px'];
+const letterSpacings = ['1px', '2px', '3px', '4px', '5px'];
 
 export function html() {
   return `
@@ -18,8 +18,8 @@ export function html() {
       <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0">
       <p class="squareCraft-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
 
-      ${createHeadingDropdown('heading1Dropdown', fontSizes, LetterSpacing)}
-      ${createHeadingDropdown('heading2Dropdown', fontSizes, LetterSpacing)}
+      ${createHeadingDropdown('heading1Dropdown', fontSizes, letterSpacings)}
+      ${createHeadingDropdown('heading2Dropdown', fontSizes, letterSpacings)}
     </div>
   `;
 }
