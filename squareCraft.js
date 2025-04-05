@@ -325,12 +325,10 @@
           if (element) {
             console.log(`✅ Applying styles to element ${elementId}`);
 
-            // Apply styles to the main element
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
 
-            // Apply styles to nested elements as well (h1, h2, h3, h4, p)
             const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
             nestedElements.forEach(nestedElem => {
               Object.entries(css).forEach(([prop, value]) => {
@@ -359,15 +357,9 @@
   }
 
 
-
-
-
   window.addEventListener("load", async () => {
     await fetchModifications();
   });
-
-
-
 
   async function addHeadingEventListeners() {
     const widgetContainer = document.getElementById("sc-widget-container");
