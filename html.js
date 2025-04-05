@@ -5,21 +5,20 @@ const LetterSpacing = ['1px', '2px', '3px', '4px', '5px'];
 
 export function html() {
    const htmlString =  `
-    <div class="squareCraft-widget-container squareCraft-bg-color-2c2c2c squareCraft-text-color-white squareCraft-p-4" id="squareCraft-widget-container">
-      <h3 class="squareCraft-widget-title">🎨 SquareCraft Widget</h3>
+    <div class="sc-widget-container sc-bg-color-2c2c2c sc-text-color-white sc-p-4" id="sc-widget-container">
+      <h3 class="sc-widget-title">🎨 squareCraft Widget</h3>
 
-      <label class="squareCraft-label" for="squareCraftFontSize">Font Size:</label>
-      <input type="number" id="squareCraftFontSize" class="squareCraft-input" value="16" min="10" max="50">
+      <label class="sc-label" for="scFontSize">Font Size:</label>
+      <input type="number" id="scFontSize" class="sc-input" value="16" min="10" max="50">
 
-      <label class="squareCraft-label" for="squareCraftBgColor">Background Color:</label>
-      <input type="color" id="squareCraftBgColor" class="squareCraft-input" value="#ffffff">
+      <label class="sc-label" for="scBgColor">Background Color:</label>
+      <input type="color" id="scBgColor" class="sc-input" value="#ffffff">
 
-      <label class="squareCraft-label" for="squareCraftBorderRadius">Border Radius:</label>
-      <input type="range" id="squareCraftBorderRadius" class="squareCraft-input" min="0" max="50" value="0">
-      <p class="squareCraft-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
+      <label class="sc-label" for="scBorderRadius">Border Radius:</label>
+      <input type="range" id="scBorderRadius" class="sc-input" min="0" max="50" value="0">
+      <p class="sc-text">Border Radius: <span id="borderRadiusValue">0px</span></p>
 
       ${createHeadingDropdown('heading1Dropdown', fontSizes, LetterSpacing)}
-      ${createHeadingDropdown('heading2Dropdown', fontSizes, LetterSpacing)}
     </div>
   `;
   const parser = new DOMParser();
