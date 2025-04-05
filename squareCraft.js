@@ -109,34 +109,34 @@
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
-
+  
     if (selectedElement) selectedElement.style.outline = "";
     selectedElement = block;
     selectedElement.style.outline = "2px dashed #EF7C2F";
-
+  
     lastClickedBlockId = block.id;
     console.log(`✅ Selected Block: ${selectedElement.id}`);
-
+  
     lastClickedElement = block;
-
+  
     const appliedTextAlign = window.getComputedStyle(block).textAlign;
-
+  
     if (appliedTextAlign) {
       lastAppliedAlignment = appliedTextAlign;
       console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
-
+  
       const alignmentIconMap = {
         "left": document.getElementById("scTextAlignLeft"),
         "center": document.getElementById("scTextAlignCenter"),
         "right": document.getElementById("scTextAlignRight"),
         "justify": document.getElementById("scTextAlignJustify")
       };
-
+  
       if (lastActiveAlignmentElement) {
         lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
         lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
       }
-
+  
       const activeIcon = alignmentIconMap[appliedTextAlign];
       if (activeIcon) {
         activeIcon.classList.add("sc-activeTab-border");
@@ -144,7 +144,17 @@
         lastActiveAlignmentElement = activeIcon;
       }
     }
+  
+    const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
+    innerTextElements.forEach(el => {
+      const tagName = el.tagName.toLowerCase();
+      const result = getTextType(tagName, el);
+      if (result) {
+        console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+      }
+    });
   });
+  
 
 
   document.body.addEventListener("click", async (event) => {
