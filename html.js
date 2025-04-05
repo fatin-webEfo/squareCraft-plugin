@@ -1,3 +1,4 @@
+import { createHeadingDropdown } from 'https://fatin-webefo.github.io/squareCraft-plugin/generateHeadingDropdown.js';
 
 
 export function html() {
