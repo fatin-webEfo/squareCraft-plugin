@@ -1,14 +1,14 @@
-import { isEditingMode } from "https://fatin-webefo.github.io/squareCraft-Plugin/src/DOM/isEditingMode.js";
+import { isEditingMode } from "https://fatin-webefo.github.io/squareCraft-plugin/src/DOM/isEditingMode.js";
 
 function fontFamilyDropdown() {
-    if (document.getElementById("squareCraft-script-fontFamily")) {
-        console.warn("⚠️ SquareCraft script already exists.");
+    if (document.getElementById("sc-script-fontFamily")) {
+        console.warn("⚠️ sc script already exists.");
         return;
     }
 
     const script = document.createElement("script");
-    script.id = "squareCraft-script-fontFamily";
-    script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/fontfamilyDropdown/fontFamilyDropdowninteract.js";
+    script.id = "sc-script-fontFamily";
+    script.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/html/parentHtml/fontfamilyDropdown/fontFamilyDropdowninteract.js";
     script.defer = true;
 
     script.onload = () => console.log("✅ fontFamilyDropdown.js loaded successfully!");

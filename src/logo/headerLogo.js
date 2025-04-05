@@ -21,7 +21,7 @@
         console.log("✅ Admin Toolbar FOUND:", adminToolbar);
 
         // Prevent duplicate injection
-        if (document.getElementById("squareCraft-icon-button")) {
+        if (document.getElementById("sc-icon-button")) {
             return console.warn("⚠️ Plugin Icon already exists.");
         }
 
@@ -33,7 +33,7 @@
         buttonWrapper.className = "custom-plugin-wrapper";
 
         const pluginButton = document.createElement("button");
-        pluginButton.id = "squareCraft-icon-button";
+        pluginButton.id = "sc-icon-button";
         pluginButton.className = "custom-plugin-btn";
         pluginButton.setAttribute("aria-label", "My Plugin");
         pluginButton.setAttribute("data-test", "my-plugin-button");
@@ -72,7 +72,7 @@
 
     // 🛠️ Mutation Observer to Detect UI Changes and Reinjection
     const observer = new MutationObserver(() => {
-        if (!document.getElementById("squareCraft-icon-button")) {
+        if (!document.getElementById("sc-icon-button")) {
             console.log("🔄 Admin Navbar changed, reinjecting icon...");
             addPluginIcon();
         }

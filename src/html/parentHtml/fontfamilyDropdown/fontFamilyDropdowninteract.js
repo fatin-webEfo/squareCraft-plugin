@@ -5,23 +5,23 @@
 
   if (token) {
     console.log("🔑 Token received:", token);
-    localStorage.setItem("squareCraft_auth_token", token);
-    document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
+    localStorage.setItem("sc_auth_token", token);
+    document.cookie = `sc_auth_token=${token}; path=.squarespace.com;`;
   }
 
   if (userId) {
     console.log("👤 User ID received:", userId);
-    localStorage.setItem("squareCraft_u_id", userId);
-    document.cookie = `squareCraft_u_id=${userId}; path=.squarespace.com;`;
+    localStorage.setItem("sc_u_id", userId);
+    document.cookie = `sc_u_id=${userId}; path=.squarespace.com;`;
 
   }
 
   if (widgetId) {
     console.log("🛠️ Widget ID received:", widgetId);
-    localStorage.setItem("squareCraft_w_id", widgetId);
-    document.cookie = `squareCraft_w_id=${widgetId}; path=.squarespace.com;`;
+    localStorage.setItem("sc_w_id", widgetId);
+    document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
   }
-  console.log("✅ SquareCraft Plugin Loaded");
+  console.log("✅ sc Plugin Loaded");
   setTimeout(() => {
     if (!window.location.href.includes("squarespace.com/config")) return;
 
@@ -95,7 +95,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`
+          "Authorization": `Bearer ${token || localStorage.getItem("sc_auth_token")}`
         },
         body: JSON.stringify(modificationData),
       });
@@ -118,24 +118,24 @@
   }
 
   function toggleWidgetVisibility() {
-    const widget = document.getElementById("squareCraft-widget-container");
+    const widget = document.getElementById("sc-widget-container");
     if (!widget) return;
     widget.style.display = shouldShowWidget() ? "block" : "none";
   }
 
-  const widgetScript = document.getElementById("squareCraft-script");
+  const widgetScript = document.getElementById("sc-script");
 
 
   if (token) {
     console.log("🔑 Token received:", token);
-    localStorage.setItem("squareCraft_auth_token", token);
-    document.cookie = `squareCraft_auth_token=${token}; path=.squarespace.com;`;
+    localStorage.setItem("sc_auth_token", token);
+    document.cookie = `sc_auth_token=${token}; path=.squarespace.com;`;
   }
 
   let selectedElement = null;
   let lastHighlightedElement = null; // ✅ Store last clicked element for proper highlight reset
 
-  function initializeSquareCraft() {
+  function initializesc() {
     createWidget();
     attachEventListeners();
     fetchModifications();
@@ -145,7 +145,7 @@
 
   function createWidget() {
     const widgetContainer = document.createElement("div");
-    widgetContainer.id = "squareCraft-widget-container";
+    widgetContainer.id = "sc-widget-container";
     widgetContainer.style.position = "fixed";
     widgetContainer.style.top = "100px";
     widgetContainer.style.left = "100px";
@@ -154,19 +154,19 @@
 
     widgetContainer.innerHTML = `
         <div style="width: 300px; background: #2c2c2c; padding: 20px; border-radius: 18px; border: 1.5px solid #3D3D3D; color: white;">
-          <h3>🎨 SquareCraft Widget</h3>
+          <h3>🎨 sc Widget</h3>
   
           <label>Font Size:</label>
-          <input type="number" id="squareCraftFontSize" value="16" min="10" max="50" style="width: 100%;">
+          <input type="number" id="scFontSize" value="16" min="10" max="50" style="width: 100%;">
   
           <label>Background Color:</label>
-          <input type="color" id="squareCraftBgColor" value="#ffffff" style="width: 100%;">
+          <input type="color" id="scBgColor" value="#ffffff" style="width: 100%;">
   
           <label>Border Radius:</label>
-          <input type="range" id="squareCraftBorderRadius" min="0" max="50" value="0">
+          <input type="range" id="scBorderRadius" min="0" max="50" value="0">
           <p>Border Radius: <span id="borderRadiusValue">0px</span></p>
   
-          <button id="squareCraftPublish" style="width: 100%; padding: 10px; background: #EF7C2F; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          <button id="scPublish" style="width: 100%; padding: 10px; background: #EF7C2F; color: white; border: none; border-radius: 5px; cursor: pointer;">
             Publish Changes
           </button>
         </div>
@@ -209,14 +209,14 @@
       console.log(`🆔 Page ID: ${pageId}, Element ID: ${elementId}`);
     });
 
-    document.getElementById("squareCraftFontSize").addEventListener("input", applyStyle);
-    document.getElementById("squareCraftBgColor").addEventListener("input", applyStyle);
-    document.getElementById("squareCraftBorderRadius").addEventListener("input", function () {
+    document.getElementById("scFontSize").addEventListener("input", applyStyle);
+    document.getElementById("scBgColor").addEventListener("input", applyStyle);
+    document.getElementById("scBorderRadius").addEventListener("input", function () {
       document.getElementById("borderRadiusValue").textContent = this.value + "px";
       applyStyle();
     });
 
-    document.getElementById("squareCraftPublish").addEventListener("click", async () => {
+    document.getElementById("scPublish").addEventListener("click", async () => {
       if (!selectedElement) {
         console.warn("⚠️ No element selected for publishing.");
         return;
@@ -253,15 +253,15 @@
   function applyStyle() {
     if (!selectedElement) return;
 
-    const fontSize = document.getElementById("squareCraftFontSize").value + "px";
+    const fontSize = document.getElementById("scFontSize").value + "px";
     selectedElement.querySelectorAll("h1, h2, h3, h4, h5, h6, p, span, a, div, li, strong, em").forEach(el => {
       el.style.fontSize = fontSize;
     });
 
-    const bgColor = document.getElementById("squareCraftBgColor").value;
+    const bgColor = document.getElementById("scBgColor").value;
     selectedElement.style.backgroundColor = bgColor;
 
-    const borderRadius = document.getElementById("squareCraftBorderRadius").value + "px";
+    const borderRadius = document.getElementById("scBorderRadius").value + "px";
     selectedElement.style.borderRadius = borderRadius;
     selectedElement.querySelectorAll("img").forEach(img => {
       img.style.borderRadius = borderRadius;
@@ -331,7 +331,7 @@
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+            "Authorization": `Bearer ${token || localStorage.getItem("sc_auth_token")}`,
           },
         }
       );
@@ -360,7 +360,7 @@
 
 
 
-  document.addEventListener("DOMContentLoaded", initializeSquareCraft);
+  document.addEventListener("DOMContentLoaded", initializesc);
   window.addEventListener("hashchange", toggleWidgetVisibility);
   window.addEventListener("popstate", toggleWidgetVisibility);
 })();

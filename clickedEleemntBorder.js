@@ -4,12 +4,12 @@ document.body.addEventListener("click", (event) => {
 
   if (selectedElement) {
     selectedElement.style.outline = "";
-    selectedElement.classList.remove("squareCraft-selected");
+    selectedElement.classList.remove("sc-selected");
   }
 
   selectedElement = block;
   selectedElement.style.outline = "2px dashed #EF7C2F";
-  selectedElement.classList.add("squareCraft-selected");
+  selectedElement.classList.add("sc-selected");
 
   console.log(`✅ Selected Element: ${selectedElement.id}`);
 });

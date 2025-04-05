@@ -1,6 +1,6 @@
 export async function getStyles() {
-  const token = localStorage.getItem("squareCraft_auth_token");
-  const userId = localStorage.getItem("squareCraft_u_id");
+  const token = localStorage.getItem("sc_auth_token");
+  const userId = localStorage.getItem("sc_u_id");
   let loadedFonts = new Set();
   let selectedElement = null;
   if (!token || !userId) return;

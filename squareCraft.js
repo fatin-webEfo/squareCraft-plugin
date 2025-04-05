@@ -1,11 +1,11 @@
-(async function squareCraft() {
+(async function sc() {
   const Url = parent.document.location.href
   console.log("parent", Url)
-  const widgetScript = document.getElementById("squareCraft-script");
+  const widgetScript = document.getElementById("sc-script");
 
   if (!widgetScript) {
     console.error(
-      "❌ Widget script not found! Ensure the script tag exists with id 'squareCraft-script'."
+      "❌ Widget script not found! Ensure the script tag exists with id 'sc-script'."
     );
     return;
   }
@@ -19,24 +19,24 @@
 
 
   if (token) {
-    localStorage.setItem("squareCraft_auth_token", token);
-    document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
+    localStorage.setItem("sc_auth_token", token);
+    document.cookie = `sc_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
   }
 
   if (userId) {
-    localStorage.setItem("squareCraft_u_id", userId);
-    document.cookie = `squareCraft_u_id=${userId}; path=.squarespace.com;`;
+    localStorage.setItem("sc_u_id", userId);
+    document.cookie = `sc_u_id=${userId}; path=.squarespace.com;`;
   }
 
   if (widgetId) {
-    localStorage.setItem("squareCraft_w_id", widgetId);
-    document.cookie = `squareCraft_w_id=${widgetId}; path=.squarespace.com;`;
+    localStorage.setItem("sc_w_id", widgetId);
+    document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
   }
 
 
   document.addEventListener("DOMContentLoaded", function () {
     const selectedElement = document.querySelector(
-      ".squareCraft-selected .sqs-html-content"
+      ".sc-selected .sqs-html-content"
     );
 
     if (!selectedElement) {
@@ -44,7 +44,7 @@
       return;
     }
 
-    const fontSelector = document.getElementById("squareCraftFontSelector");
+    const fontSelector = document.getElementById("scFontSelector");
 
     if (!fontSelector) {
       console.error("Font selector not found.");
@@ -122,33 +122,33 @@
     const appliedTextAlign = window.getComputedStyle(block).textAlign;
 
     if (appliedTextAlign) {
-        lastAppliedAlignment = appliedTextAlign;
-        console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
+      lastAppliedAlignment = appliedTextAlign;
+      console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
 
-        const alignmentIconMap = {
-            "left": document.getElementById("squareCraftTextAlignLeft"),
-            "center": document.getElementById("squareCraftTextAlignCenter"),
-            "right": document.getElementById("squareCraftTextAlignRight"),
-            "justify": document.getElementById("squareCraftTextAlignJustify")
-        };
+      const alignmentIconMap = {
+        "left": document.getElementById("scTextAlignLeft"),
+        "center": document.getElementById("scTextAlignCenter"),
+        "right": document.getElementById("scTextAlignRight"),
+        "justify": document.getElementById("scTextAlignJustify")
+      };
 
-        if (lastActiveAlignmentElement) {
-            lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-            lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
-        }
+      if (lastActiveAlignmentElement) {
+        lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
+        lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
+      }
 
-        const activeIcon = alignmentIconMap[appliedTextAlign];
-        if (activeIcon) {
-            activeIcon.classList.add("squareCraft-activeTab-border");
-            activeIcon.classList.remove("squareCraft-inActiveTab-border");
-            lastActiveAlignmentElement = activeIcon;
-        }
+      const activeIcon = alignmentIconMap[appliedTextAlign];
+      if (activeIcon) {
+        activeIcon.classList.add("sc-activeTab-border");
+        activeIcon.classList.remove("sc-inActiveTab-border");
+        lastActiveAlignmentElement = activeIcon;
+      }
     }
-});
+  });
 
 
   document.body.addEventListener("click", async (event) => {
-    const alignmentIcon = event.target.closest('#squareCraftTextAlignLeft, #squareCraftTextAlignCenter, #squareCraftTextAlignRight, #squareCraftTextAlignJustify');
+    const alignmentIcon = event.target.closest('#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify');
 
     if (alignmentIcon && lastClickedElement) {
       const textAlign = alignmentIcon.dataset.align;
@@ -159,8 +159,8 @@
         console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
 
         if (lastActiveAlignmentElement) {
-          lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-          lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+          lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
+          lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
         }
       } else {
         applyStylesToElement(lastClickedElement, { "text-align": textAlign });
@@ -168,12 +168,12 @@
         console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
 
         if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
-          lastActiveAlignmentElement.classList.remove("squareCraft-activeTab-border");
-          lastActiveAlignmentElement.classList.add("squareCraft-inActiveTab-border");
+          lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
+          lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
         }
 
-        alignmentIcon.classList.add("squareCraft-activeTab-border");
-        alignmentIcon.classList.remove("squareCraft-inActiveTab-border");
+        alignmentIcon.classList.add("sc-activeTab-border");
+        alignmentIcon.classList.remove("sc-inActiveTab-border");
 
         lastActiveAlignmentElement = alignmentIcon;
       }
@@ -187,28 +187,28 @@
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
 
         const modificationData = {
-          userId ,
+          userId,
           token: token,
           widgetId,
           modifications: [{
-              pageId,
-              elements: [{
-                  elementId: lastClickedElement.id,
-                   css: { 
-                "text-align": lastAppliedAlignment 
-            }
-              }]
+            pageId,
+            elements: [{
+              elementId: lastClickedElement.id,
+              css: {
+                "text-align": lastAppliedAlignment
+              }
+            }]
           }]
-      };
-      
-      
+        };
+
+
 
         try {
           const response = await fetch("https://admin.squareplugin.com/api/v1/modifications", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token || localStorage.getItem("squareCraft_auth_token")}`,
+              "Authorization": `Bearer ${token || localStorage.getItem("sc_auth_token")}`,
               "userId": userId,
               "pageId": pageId,
               "widget-id": widgetId,
@@ -238,12 +238,12 @@
     const textColorPalate = event.target.closest('#textColorPalate');
 
     if (textColorPalate) {
-      let colorPalette = document.getElementById("squareCraftColorPalette");
+      let colorPalette = document.getElementById("scColorPalette");
 
       if (!colorPalette) {
         colorPalette = document.createElement("input");
         colorPalette.type = "color";
-        colorPalette.id = "squareCraftColorPalette";
+        colorPalette.id = "scColorPalette";
         colorPalette.style.opacity = "0";
         colorPalette.style.width = "0px";
         colorPalette.style.height = "0px";
@@ -278,99 +278,99 @@
     if (!pageId) return;
 
     if (!token || !userId) {
-        console.warn("Missing authentication data");
-        return;
+      console.warn("Missing authentication data");
+      return;
     }
 
     try {
-        const response = await fetch(
-            `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+      const response = await fetch(
+        `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          }
         }
+      );
 
-        const data = await response.json();
-        console.log("📥 Retrieved modifications:", data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-        if (!data.modifications || !Array.isArray(data.modifications)) {
-            console.warn("⚠️ No modifications found or invalid format");
-            return;
-        }
+      const data = await response.json();
+      console.log("📥 Retrieved modifications:", data);
 
-        const modificationMap = new Map();
+      if (!data.modifications || !Array.isArray(data.modifications)) {
+        console.warn("⚠️ No modifications found or invalid format");
+        return;
+      }
 
-        data.modifications.forEach(mod => {
-            if (mod.pageId === pageId) {
-                mod.elements.forEach(elem => {
-                    if (elem.css) {
-                        modificationMap.set(elem.elementId, elem.css);
-                    }
-                });
+      const modificationMap = new Map();
+
+      data.modifications.forEach(mod => {
+        if (mod.pageId === pageId) {
+          mod.elements.forEach(elem => {
+            if (elem.css) {
+              modificationMap.set(elem.elementId, elem.css);
             }
-        });
+          });
+        }
+      });
 
-        const observer = new MutationObserver(() => {
-            modificationMap.forEach((css, elementId) => {
-                const element = document.getElementById(elementId);
+      const observer = new MutationObserver(() => {
+        modificationMap.forEach((css, elementId) => {
+          const element = document.getElementById(elementId);
 
-                if (element) {
-                    console.log(`✅ Applying styles to element ${elementId}`);
+          if (element) {
+            console.log(`✅ Applying styles to element ${elementId}`);
 
-                    // Apply styles to the main element
-                    Object.entries(css).forEach(([prop, value]) => {
-                        element.style.setProperty(prop, value, "important");
-                    });
-
-                    // Apply styles to nested elements as well (h1, h2, h3, h4, p)
-                    const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
-                    nestedElements.forEach(nestedElem => {
-                        Object.entries(css).forEach(([prop, value]) => {
-                            nestedElem.style.setProperty(prop, value, "important");
-                        });
-                    });
-
-                    if (!element.classList.contains("squareCraft-font-modified")) {
-                        element.classList.add("squareCraft-font-modified");
-                    }
-
-                    modificationMap.delete(elementId); // Remove from the map after applying
-                }
+            // Apply styles to the main element
+            Object.entries(css).forEach(([prop, value]) => {
+              element.style.setProperty(prop, value, "important");
             });
-        });
 
-        observer.observe(document.body, { childList: true, subtree: true });
+            // Apply styles to nested elements as well (h1, h2, h3, h4, p)
+            const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
+            nestedElements.forEach(nestedElem => {
+              Object.entries(css).forEach(([prop, value]) => {
+                nestedElem.style.setProperty(prop, value, "important");
+              });
+            });
+
+            if (!element.classList.contains("sc-font-modified")) {
+              element.classList.add("sc-font-modified");
+            }
+
+            modificationMap.delete(elementId); // Remove from the map after applying
+          }
+        });
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
 
     } catch (error) {
-        console.error("❌ Error Fetching Modifications:", error);
-        if (retries > 0) {
-            console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
-            setTimeout(() => fetchModifications(retries - 1), 2000);
-        }
+      console.error("❌ Error Fetching Modifications:", error);
+      if (retries > 0) {
+        console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+        setTimeout(() => fetchModifications(retries - 1), 2000);
+      }
     }
-}
+  }
 
 
 
 
 
-window.addEventListener("load", async () => {
-  await fetchModifications();
-});
+  window.addEventListener("load", async () => {
+    await fetchModifications();
+  });
 
 
 
 
   async function addHeadingEventListeners() {
-    const widgetContainer = document.getElementById("squareCraft-widget-container");
+    const widgetContainer = document.getElementById("sc-widget-container");
     if (!widgetContainer) return;
 
     if (widgetContainer.dataset.listenerAttached === "true") return;
@@ -379,18 +379,18 @@ window.addEventListener("load", async () => {
 
     function toggleTabClass(targetElement) {
       console.log("🚀 Toggle function called for:", targetElement);
-      if (targetElement.classList.contains("squareCraft-activeTab-border")) {
-        targetElement.classList.remove("squareCraft-activeTab-border");
-        targetElement.classList.add("squareCraft-inActiveTab-border");
+      if (targetElement.classList.contains("sc-activeTab-border")) {
+        targetElement.classList.remove("sc-activeTab-border");
+        targetElement.classList.add("sc-inActiveTab-border");
       } else {
-        targetElement.classList.remove("squareCraft-inActiveTab-border");
-        targetElement.classList.add("squareCraft-activeTab-border");
+        targetElement.classList.remove("sc-inActiveTab-border");
+        targetElement.classList.add("sc-activeTab-border");
       }
     }
 
     widgetContainer.addEventListener("click", (event) => {
       const tabElement = event.target;
-      if (tabElement.classList.contains('squareCraft-inActiveTab-border') || tabElement.classList.contains('squareCraft-activeTab-border')) {
+      if (tabElement.classList.contains('sc-inActiveTab-border') || tabElement.classList.contains('sc-activeTab-border')) {
         console.log("📌 Tab Element Clicked:", tabElement);
         toggleTabClass(tabElement);
       }
@@ -444,14 +444,14 @@ window.addEventListener("load", async () => {
 
   loadCSS(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
-    "squareCraft_parentCSS"
+    "sc_parentCSS"
   );
 
 
   async function createWidget() {
     try {
-      let cachedWidget = localStorage.getItem("squareCraft_widget");
-      let lastFetched = localStorage.getItem("squareCraft_widget_timestamp");
+      let cachedWidget = localStorage.getItem("sc_widget");
+      let lastFetched = localStorage.getItem("sc_widget_timestamp");
       let oneDay = 24 * 60 * 60 * 1000;
       let now = Date.now();
 
@@ -467,8 +467,8 @@ window.addEventListener("load", async () => {
         const htmlString = module.html();
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          localStorage.setItem("squareCraft_widget", htmlString);
-          localStorage.setItem("squareCraft_widget_timestamp", now.toString());
+          localStorage.setItem("sc_widget", htmlString);
+          localStorage.setItem("sc_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
         } else {
           console.error("❌ Retrieved HTML string is invalid or empty!");
@@ -484,12 +484,12 @@ window.addEventListener("load", async () => {
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
       widgetContainer = document.createElement("div");
-      widgetContainer.id = "squareCraft-widget-container";
+      widgetContainer.id = "sc-widget-container";
       widgetContainer.classList.add(
-        "squareCraft-fixed",
-        "squareCraft-text-color-white",
-        "squareCraft-universal",
-        "squareCraft-z-9999"
+        "sc-fixed",
+        "sc-text-color-white",
+        "sc-universal",
+        "sc-z-9999"
       );
       widgetContainer.innerHTML = htmlString;
       widgetContainer.style.display = "none";
@@ -499,7 +499,7 @@ window.addEventListener("load", async () => {
 
       setTimeout(() => {
         widgetContainer = document.getElementById(
-          "squareCraft-widget-container"
+          "sc-widget-container"
         );
         if (!widgetContainer) {
           console.error("❌ Widget container failed to load.");
@@ -534,9 +534,9 @@ window.addEventListener("load", async () => {
       isDragging = false;
 
     function startDrag(event) {
-      const draggableElement = event.target.closest("#squareCraft-grabbing");
+      const draggableElement = event.target.closest("#sc-grabbing");
 
-      if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
+      if (!draggableElement || event.target.closest(".sc-dropdown")) {
         return;
       }
 
@@ -605,11 +605,11 @@ window.addEventListener("load", async () => {
   function injectIcon() {
     function injectIconIntoTargetElements() {
       const targets = parent.document.querySelectorAll(
-        ".tidILMJ7AVANuKwS:not(.squareCraft-processed)"
+        ".tidILMJ7AVANuKwS:not(.sc-processed)"
       );
 
       targets.forEach((element) => {
-        element.classList.add("squareCraft-processed");
+        element.classList.add("sc-processed");
 
         const deleteButton = element.querySelector('[aria-label="Remove"]');
         if (!deleteButton) {
@@ -617,13 +617,13 @@ window.addEventListener("load", async () => {
           return;
         }
 
-        if (element.querySelector(".squareCraft-toolbar-icon")) return;
+        if (element.querySelector(".sc-toolbar-icon")) return;
         const clonedIcon = document.createElement("img");
         clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-        clonedIcon.alt = "SquareCraft";
+        clonedIcon.alt = "sc";
         clonedIcon.classList.add(
-          "squareCraft-toolbar-icon",
-          "squareCraft-z-99999"
+          "sc-toolbar-icon",
+          "sc-z-99999"
         );
         clonedIcon.style.width = "35px";
         clonedIcon.style.height = "35px";
@@ -643,7 +643,7 @@ window.addEventListener("load", async () => {
           if (!widgetLoaded) {
             createWidget().then(() => {
               widgetContainer = document.getElementById(
-                "squareCraft-widget-container"
+                "sc-widget-container"
               );
               if (widgetContainer) {
                 widgetContainer.style.display = "block";
@@ -662,7 +662,7 @@ window.addEventListener("load", async () => {
     const iframe = document.querySelector("iframe");
     if (iframe) {
       iframe.contentWindow.document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("squareCraft-admin-icon")) {
+        if (event.target.classList.contains("sc-admin-icon")) {
           event.stopPropagation();
           event.preventDefault();
           toggleWidgetVisibility(event);
@@ -726,7 +726,7 @@ window.addEventListener("load", async () => {
         parent.document.head.appendChild(link);
       }
 
-      mobileContainer.classList.add("squareCraft-relative");
+      mobileContainer.classList.add("sc-relative");
 
       widgetContainer.style.position = "absolute";
       widgetContainer.style.right = "11%";

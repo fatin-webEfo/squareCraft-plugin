@@ -1,29 +1,29 @@
 export function injectNavbarIcon() {
     function insertAdminIcon() {
-        if (!parent.document.querySelector(".squareCraft-admin-icon")) {
+        if (!parent.document.querySelector(".sc-admin-icon")) {
             const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
             if (navContainer) {
-                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+                const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
-                icon.alt = "SquareCraft";
+                icon.alt = "sc";
                 icon.style.width = "30px";
                 icon.style.height = "30px";
                 icon.style.borderRadius = "20%";
                 icon.style.marginRight = "6px";
                 icon.style.cursor = "pointer";
                 icon.style.display = "inline-block";
-                icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+                icon.classList.add("sc-admin-icon", "sc-z-99999");
 
                 navContainer.parentNode.insertBefore(icon, navContainer);
 
                 const message = document.createElement("div");
-                message.classList.add("squareCraft-floating-message");
+                message.classList.add("sc-floating-message");
                 message.innerHTML = `
-                    <div class="squareCraft-message-content">
-                        ✅ SquareCraft installed!
+                    <div class="sc-message-content">
+                        ✅ sc installed!
                     </div>
-                    <div class="squareCraft-message-arrow"></div>
+                    <div class="sc-message-arrow"></div>
                 `;
 
                 message.style.position = "absolute";
@@ -36,7 +36,7 @@ export function injectNavbarIcon() {
                 message.style.zIndex = "99999";
                 message.style.opacity = "1";
                 message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
-                message.style.animation = "squareCraftFadeIn 0.5s ease-in-out";
+                message.style.animation = "scFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
                 message.style.top = "60px";
@@ -45,7 +45,7 @@ export function injectNavbarIcon() {
 
                 navContainer.parentNode.insertBefore(message, navContainer);
 
-                const messageArrow = message.querySelector(".squareCraft-message-arrow");
+                const messageArrow = message.querySelector(".sc-message-arrow");
                 messageArrow.style.position = "absolute";
                 messageArrow.style.top = "-8px";
                 messageArrow.style.left = "50%";
@@ -68,45 +68,45 @@ export function injectNavbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
 
         toolbarContainers.forEach(toolbarContainer => {
-            if (!toolbarContainer.querySelector(".squareCraft-toolbar")) {
-                const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+            if (!toolbarContainer.querySelector(".sc-toolbar")) {
+                const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
-                const squareCraftDiv = document.createElement("div");
-                squareCraftDiv.classList.add("squareCraft-toolbar");
-                squareCraftDiv.style.display = "flex";
-                squareCraftDiv.style.alignItems = "center";
-                squareCraftDiv.style.border = "1px solid #E5E4E2";
-                squareCraftDiv.style.background = "rgba(255, 127, 23, 0.06)";
-                squareCraftDiv.style.borderRadius = "6px";
-                squareCraftDiv.style.padding = "6px";
-                squareCraftDiv.style.gap = "6px";
+                const scDiv = document.createElement("div");
+                scDiv.classList.add("sc-toolbar");
+                scDiv.style.display = "flex";
+                scDiv.style.alignItems = "center";
+                scDiv.style.border = "1px solid #E5E4E2";
+                scDiv.style.background = "rgba(255, 127, 23, 0.06)";
+                scDiv.style.borderRadius = "6px";
+                scDiv.style.padding = "6px";
+                scDiv.style.gap = "6px";
 
-                squareCraftDiv.addEventListener("mouseenter", () => {
-                    squareCraftDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)";
+                scDiv.addEventListener("mouseenter", () => {
+                    scDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)";
                 });
 
-                squareCraftDiv.addEventListener("mouseleave", () => {
-                    squareCraftDiv.style.backgroundColor = "transparent";
+                scDiv.addEventListener("mouseleave", () => {
+                    scDiv.style.backgroundColor = "transparent";
                 });
 
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
-                icon.alt = "SquareCraft";
+                icon.alt = "sc";
                 icon.style.width = "30px";
                 icon.style.height = "30px";
                 icon.style.borderRadius = "20%";
                 icon.style.cursor = "pointer";
 
                 const text = document.createElement("span");
-                text.innerText = "SquareCraft";
+                text.innerText = "sc";
                 text.style.fontSize = "14px";
                 text.style.fontWeight = "bold";
                 text.style.cursor = "pointer";
 
-                squareCraftDiv.appendChild(icon);
-                squareCraftDiv.appendChild(text);
+                scDiv.appendChild(icon);
+                scDiv.appendChild(text);
 
-                toolbarContainer.appendChild(squareCraftDiv);
+                toolbarContainer.appendChild(scDiv);
             }
         });
     }

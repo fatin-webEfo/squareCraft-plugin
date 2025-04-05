@@ -1,16 +1,16 @@
 (async function parent() {
     function injectStylesheet() {
-        if (document.getElementById("squareCraft-styles")) {
-            console.warn("⚠️ SquareCraft styles already exist.");
+        if (document.getElementById("sc-styles")) {
+            console.warn("⚠️ sc styles already exist.");
             return;
         }
 
         const link = document.createElement("link");
-        link.id = "squareCraft-styles";
+        link.id = "sc-styles";
         link.rel = "stylesheet";
-        link.href = "https://fatin-webefo.github.io/squareCraft-Plugin/src/styles/parent.css"; // Change to your actual CDN or file path
+        link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"; // Change to your actual CDN or file path
         link.type = "text/css";
-        link.onerror = () => console.error("❌ Failed to load SquareCraft styles.");
+        link.onerror = () => console.error("❌ Failed to load sc styles.");
 
         document.head.appendChild(link);
     }
@@ -18,14 +18,14 @@
 
 
     function parentTabFunction() {
-        if (document.getElementById("squareCraft-script-tab")) {
-            console.warn("⚠️ SquareCraft script already exists.");
+        if (document.getElementById("sc-script-tab")) {
+            console.warn("⚠️ sc script already exists.");
             return;
         }
 
         const script = document.createElement("script");
-        script.id = "squareCraft-script-tab";
-        script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/parentHtmlTab.js";
+        script.id = "sc-script-tab";
+        script.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/html/parentHtml/parentHtmlTab.js";
         script.defer = true;
 
         script.onerror = (e) => console.error("❌ Failed to load parentHtmlTab.js", e);
@@ -35,14 +35,14 @@
 
 
     function fontFamilyDropdown() {
-        if (document.getElementById("squareCraft-script-fontFamily")) {
-            console.warn("⚠️ SquareCraft script already exists.");
+        if (document.getElementById("sc-script-fontFamily")) {
+            console.warn("⚠️ sc script already exists.");
             return;
         }
 
         const script = document.createElement("script");
-        script.id = "squareCraft-script-fontFamily";
-        script.src = "https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/fontfamilyDropdown/fontFamilyDropdowninteract.js";
+        script.id = "sc-script-fontFamily";
+        script.src = "https://fatin-webefo.github.io/squareCraft-plugin/src/html/parentHtml/fontfamilyDropdown/fontFamilyDropdowninteract.js";
         script.defer = true;
 
         script.onload = () => console.log("✅ parentHtmlTab.js loaded successfully!");
@@ -54,8 +54,8 @@
 
 
 
-    function initializeSquareCraft() {
-        console.log("⚡ Initializing SquareCraft...");
+    function initializesc() {
+        console.log("⚡ Initializing sc...");
         fontFamilyDropdowninteract();
         // getStyles();
         observeDOMChanges();
@@ -77,11 +77,11 @@
         }
     }
 
-    parentHtml = (await loadModule("https://fatin-webefo.github.io/squareCraft-Plugin/src/html/parentHtml/parentHtml.js"))?.parentHtml;
-    observeDOMChanges = (await loadModule("https://fatin-webefo.github.io/squareCraft-Plugin/src/DOM/observeDOMChanges.js"))?.observeDOMChanges;
-    // getStyles = (await loadModule("https://fatin-webefo.github.io/squareCraft-Plugin/src/utils/getStyles.js"))?.getStyles;
+    parentHtml = (await loadModule("https://fatin-webefo.github.io/squareCraft-plugin/src/html/parentHtml/parentHtml.js"))?.parentHtml;
+    observeDOMChanges = (await loadModule("https://fatin-webefo.github.io/squareCraft-plugin/src/DOM/observeDOMChanges.js"))?.observeDOMChanges;
+    // getStyles = (await loadModule("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getStyles.js"))?.getStyles;
     try {
-        const { setToken } = await import("https://fatin-webefo.github.io/squareCraft-Plugin/src/credentials/setToken.js");
+        const { setToken } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/credentials/setToken.js");
         setToken();
     } catch (error) {
         console.error("❌ Failed to import setToken:", error);
@@ -109,13 +109,13 @@
             return;
         }
 
-        if (document.getElementById("squareCraft-widget-container")) {
+        if (document.getElementById("sc-widget-container")) {
             console.warn("⚠️ Widget already exists, skipping creation.");
             return;
         }
 
         const widgetContainer = document.createElement("div");
-        widgetContainer.id = "squareCraft-widget-container";
+        widgetContainer.id = "sc-widget-container";
         widgetContainer.style.position = "fixed";
         widgetContainer.style.top = "100px";
         widgetContainer.style.left = "100px";
@@ -124,7 +124,7 @@
 
         const style = document.createElement("style");
         style.innerHTML = `
-                #squareCraft-widget-container {
+                #sc-widget-container {
                     display: block !important;
                     visibility: visible !important;
                     opacity: 1 !important;
@@ -147,7 +147,7 @@
         }
 
         setTimeout(() => {
-            if (!document.getElementById("squareCraft-widget-container")) {
+            if (!document.getElementById("sc-widget-container")) {
                 console.warn("⚠️ Widget was removed! Re-adding...");
                 document.body.appendChild(widgetContainer);
             }
@@ -158,7 +158,7 @@
 
 
     setInterval(() => {
-        if (!document.getElementById("squareCraft-widget-container")) {
+        if (!document.getElementById("sc-widget-container")) {
             console.warn("⚠️ Widget removed by Squarespace! Re-adding...");
             fontFamilyDropdowninteract();
             parentTabFunction();
@@ -168,7 +168,7 @@
     }, 1000);
 
     setTimeout(() => {
-        initializeSquareCraft();
+        initializesc();
         fontFamilyDropdown();
         parentTabFunction();
         // getStyles();

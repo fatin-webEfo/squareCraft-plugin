@@ -11,9 +11,9 @@ export function makeWidgetDraggable(widgetContainer) {
         isDragging = false;
 
     function startDrag(event) {
-        const draggableElement = event.target.closest("#squareCraft-grabbing");
+        const draggableElement = event.target.closest("#sc-grabbing");
 
-        if (!draggableElement || event.target.closest(".squareCraft-dropdown")) {
+        if (!draggableElement || event.target.closest(".sc-dropdown")) {
             return;
         }
 

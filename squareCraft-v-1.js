@@ -1,27 +1,27 @@
-(async function squareCraft() {
-    const widgetScript = document.getElementById("squareCraft-script");
+(async function sc() {
+    const widgetScript = document.getElementById("sc-script");
     if (!widgetScript) {
-        console.error("❌ Widget script not found! Ensure the script tag exists with id 'squareCraft-script'.");
+        console.error("❌ Widget script not found! Ensure the script tag exists with id 'sc-script'.");
         return;
     }
 
     const token = widgetScript.dataset?.token;
-    const squareCraft_u_id = widgetScript.dataset?.uId;
-    const squareCraft_w_id = widgetScript.dataset?.wId;
+    const sc_u_id = widgetScript.dataset?.uId;
+    const sc_w_id = widgetScript.dataset?.wId;
 
     if (token) {
-        localStorage.setItem("squareCraft_auth_token", token);
-        document.cookie = `squareCraft_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
+        localStorage.setItem("sc_auth_token", token);
+        document.cookie = `sc_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
     }
 
-    if (squareCraft_u_id) {
-        localStorage.setItem("squareCraft_u_id", squareCraft_u_id);
-        document.cookie = `squareCraft_u_id=${squareCraft_u_id}; path=.squarespace.com;`;
+    if (sc_u_id) {
+        localStorage.setItem("sc_u_id", sc_u_id);
+        document.cookie = `sc_u_id=${sc_u_id}; path=.squarespace.com;`;
     }
 
-    if (squareCraft_w_id) {
-        localStorage.setItem("squareCraft_w_id", squareCraft_w_id);
-        document.cookie = `squareCraft_w_id=${squareCraft_w_id}; path=.squarespace.com;`;
+    if (sc_w_id) {
+        localStorage.setItem("sc_w_id", sc_w_id);
+        document.cookie = `sc_w_id=${sc_w_id}; path=.squarespace.com;`;
     }
 
     const link = document.createElement("link");
@@ -42,8 +42,8 @@
 
                 if (!widgetContainer) {
                     widgetContainer = document.createElement("div");
-                    widgetContainer.id = "squareCraft-widget-container";
-                    widgetContainer.classList.add("squareCraft-fixed", "squareCraft-text-color-white", "squareCraft-universal", "squareCraft-z-9999");
+                    widgetContainer.id = "sc-widget-container";
+                    widgetContainer.classList.add("sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999");
                     widgetContainer.innerHTML = module.html();
                     widgetContainer.style.display = "none";
                     document.body.appendChild(widgetContainer);
@@ -128,32 +128,32 @@
             return;
         }
 
-        const iconSrc = localStorage.getItem("squareCraft_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
         function createIcon() {
             const icon = document.createElement("img");
             icon.src = iconSrc;
-            icon.alt = "SquareCraft";
+            icon.alt = "sc";
             icon.style.width = "30px";
             icon.style.height = "30px";
             icon.style.borderRadius = "20%";
             icon.style.marginRight = "6px";
             icon.style.cursor = "pointer";
             icon.style.display = "inline-block";
-            icon.classList.add("squareCraft-admin-icon", "squareCraft-z-99999");
+            icon.classList.add("sc-admin-icon", "sc-z-99999");
             icon.addEventListener("click", toggleWidgetVisibility);
             return icon;
         }
 
         navContainer.parentNode.insertBefore(createIcon(), navContainer);
-        console.log("✅ SquareCraft icon injected into nav bar!");
+        console.log("✅ sc icon injected into nav bar!");
 
         function injectIconIntoTargetElements() {
             console.log("🔄 Running injectIconIntoTargetElements...");
-            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.squareCraft-processed)");
+            const targets = parent.document.querySelectorAll(".tidILMJ7AVANuKwS:not(.sc-processed)");
 
             targets.forEach((element) => {
-                element.classList.add("squareCraft-processed");
+                element.classList.add("sc-processed");
 
                 const parentContainer = element.closest(".css-rxv52q");
                 if (!parentContainer) {
@@ -165,11 +165,11 @@
                 parentContainer.style.alignItems = "center";
                 parentContainer.style.position = "relative";
 
-                if (!parentContainer.parentElement.querySelector(".squareCraft-admin-icon")) {
+                if (!parentContainer.parentElement.querySelector(".sc-admin-icon")) {
                     const clonedIcon = document.createElement("img");
                     clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-                    clonedIcon.alt = "SquareCraft";
-                    clonedIcon.classList.add("squareCraft-admin-icon");
+                    clonedIcon.alt = "sc";
+                    clonedIcon.classList.add("sc-admin-icon");
                     clonedIcon.style.width = "40px";
                     clonedIcon.style.cursor = "pointer";
                     clonedIcon.style.height = "40px";

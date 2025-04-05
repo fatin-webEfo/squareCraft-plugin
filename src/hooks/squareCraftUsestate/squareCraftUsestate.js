@@ -1,4 +1,4 @@
- export function squareCraftUsestate(initialValue) {
+ export function scUsestate(initialValue) {
     let state = initialValue;
   
     function setState(newValue) {
