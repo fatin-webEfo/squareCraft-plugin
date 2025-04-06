@@ -348,11 +348,11 @@
   });
 
   async function fetchModifications(retries = 3) {
-    const scEnabled = localStorage.getItem("sc_enabled");
-  if (scEnabled === "false") {
-    console.warn("⛔ Widget is disabled. Skipping fetchModifications()");
-    return;
-  }
+    const enabled = localStorage.getItem("sc_enabled") !== "false";
+    if (!enabled) {
+      console.log("🚫 Fetch skipped: Widget is disabled");
+      return;
+    }
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
 

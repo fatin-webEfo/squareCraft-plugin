@@ -227,8 +227,19 @@ setTimeout(() => {
    const toggleText = document.getElementById("toggleText");
    const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
  
-   let isEnabled = true;
-   localStorage.setItem("sc_enabled", "true");
+   let isEnabled = localStorage.getItem("sc_enabled") !== "false";
+ 
+   if (isEnabled) {
+     toggleSwitch.style.backgroundColor = "#EF7C2F";
+     toggleBullet.style.left = "auto";
+     toggleBullet.style.right = "1.5px";
+     toggleText.textContent = "Enable";
+   } else {
+     toggleSwitch.style.backgroundColor = "#747372";
+     toggleBullet.style.left = "2px";
+     toggleBullet.style.right = "auto";
+     toggleText.textContent = "Disable";
+   }
  
    if (toggleSwitch && toggleText && toggleBullet) {
      toggleSwitch.addEventListener("click", () => {
@@ -249,5 +260,6 @@ setTimeout(() => {
      });
    }
  }, 1000);
+ 
  
  
