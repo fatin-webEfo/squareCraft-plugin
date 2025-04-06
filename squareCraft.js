@@ -14,7 +14,7 @@
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
   let userId = widgetScript.dataset?.uId;
-  let widgetId = widgetScript.dataset?.wId;
+  let widgetId = widgetScript.dataset?.wId; 
 
 
 
@@ -115,11 +115,18 @@
     selectedElement.style.outline = "2px dashed #EF7C2F";
   
     lastClickedBlockId = block.id;
-    console.log(`✅ Selected Block: ${selectedElement.id}`);
-  
     lastClickedElement = block;
   
-    const appliedTextAlign = window.getComputedStyle(block).textAlign;
+    console.log(`✅ Selected Block: ${selectedElement.id}`);
+  
+    let appliedTextAlign = window.getComputedStyle(block).textAlign;
+  
+    if (!appliedTextAlign || appliedTextAlign === "start") {
+      const nested = block.querySelector("h1,h2,h3,h4,p");
+      if (nested) {
+        appliedTextAlign = window.getComputedStyle(nested).textAlign;
+      }
+    }
   
     if (appliedTextAlign) {
       lastAppliedAlignment = appliedTextAlign;
@@ -177,9 +184,8 @@
       }
     });
   
-    // ✅ Real-time hover highlight logic (added here)
     visibleParts.forEach(partId => {
-      const typeId = partId.replace("Part", ""); // e.g., "paragraph2"
+      const typeId = partId.replace("Part", "");
       const widgetTab = document.getElementById(typeId);
       if (!widgetTab) return;
   
@@ -202,12 +208,12 @@
         if (!block) return;
   
         block.querySelectorAll("h1, h2, h3, h4, p").forEach(el => {
-          el.style.outline = ""; // Reset on leave
+          el.style.outline = "";
         });
       };
     });
-  
   });
+  
   
 
   document.body.addEventListener("click", async (event) => {
