@@ -348,19 +348,24 @@
   });
 
   async function fetchModifications(retries = 3) {
-    const isEnabled = localStorage.getItem("sc_enabled") !== "false";
-  
-    if (!isEnabled) {
-      console.log("🚫 Widget toggle is OFF");
-      return;
-    }
-  
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     const htmlString = module.html();
   
     if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
       widgetContainer.innerHTML = htmlString;
-      module.initToggleSwitch?.();
+    }
+  
+    setTimeout(() => {
+      if (typeof module.initToggleSwitch === "function") {
+        module.initToggleSwitch();
+      }
+    }, 200);
+  
+    const isEnabled = localStorage.getItem("sc_enabled") !== "false";
+  
+    if (!isEnabled) {
+      console.log("🚫 Widget toggle is OFF");
+      return;
     }
   
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
@@ -440,6 +445,7 @@
       }
     }
   }
+  
   
   
 
@@ -544,17 +550,22 @@
 
       if (module && module.html) {
         const htmlString = module.html();
-
+      
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
           localStorage.setItem("sc_widget", htmlString);
           localStorage.setItem("sc_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
+      
+          setTimeout(() => {
+            if (typeof module.initToggleSwitch === "function") {
+              module.initToggleSwitch();
+            }
+          }, 200);
         } else {
           console.error("❌ Retrieved HTML string is invalid or empty!");
         }
-      } else {
-        console.error("❌ Failed to retrieve the HTML function from module!");
       }
+      
     } catch (error) {
       console.error("🚨 Error loading HTML module:", error);
     }
