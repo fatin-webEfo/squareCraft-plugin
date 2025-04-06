@@ -775,6 +775,9 @@
   transform: translateY(-50%);
   transition: left 0.3s ease;
 }
+.toggle-container.disabled {
+  background-color: #747372;
+}
 .sc-text-xs{
   font-size: 11px !important;
 }

@@ -222,3 +222,28 @@ export function html() {
 
 
 }
+setTimeout(() => {
+   const toggleSwitch = document.getElementById("toggleSwitch");
+   const toggleText = document.getElementById("toggleText");
+   const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
+
+   let isEnabled = true;
+
+   if (toggleSwitch && toggleText && toggleBullet) {
+      toggleSwitch.addEventListener("click", () => {
+         isEnabled = !isEnabled;
+
+         if (isEnabled) {
+            toggleSwitch.style.backgroundColor = "#EF7C2F";
+            toggleBullet.style.left = "auto";
+            toggleBullet.style.right = "1.5px";
+            toggleText.textContent = "Enable";
+         } else {
+            toggleSwitch.style.backgroundColor = "#747372";
+            toggleBullet.style.left = "2px";
+            toggleBullet.style.right = "auto";
+            toggleText.textContent = "Disable";
+         }
+      });
+   }
+}, 1000);
