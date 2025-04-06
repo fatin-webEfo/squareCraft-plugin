@@ -348,11 +348,14 @@
   });
 
   async function fetchModifications(retries = 3) {
-    const enabled = localStorage.getItem("sc_enabled") !== "false";
-    if (!enabled) {
-      console.log("🚫 Fetch skipped: Widget is disabled");
-      return;
+    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+    const htmlString = module.html();
+    
+    if (typeof htmlString === "string") {
+      widgetContainer.innerHTML = htmlString;
+      module.initToggleSwitch(); 
     }
+    
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
 

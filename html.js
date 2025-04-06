@@ -1,4 +1,5 @@
 import { createHeadingDropdown } from 'https://fatin-webefo.github.io/squareCraft-plugin/generateHeadingDropdown.js';
+import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/squareCraft-plugin/toggleState.js';
 
 
 export function html() {
@@ -222,44 +223,38 @@ export function html() {
 
 
 }
-setTimeout(() => {
+export function initToggleSwitch() {
    const toggleSwitch = document.getElementById("toggleSwitch");
    const toggleText = document.getElementById("toggleText");
    const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
  
-   let isEnabled = localStorage.getItem("sc_enabled") !== "false";
+   let isEnabled = getToggleState();
  
-   if (isEnabled) {
-     toggleSwitch.style.backgroundColor = "#EF7C2F";
-     toggleBullet.style.left = "auto";
-     toggleBullet.style.right = "1.5px";
-     toggleText.textContent = "Enable";
-   } else {
-     toggleSwitch.style.backgroundColor = "#747372";
-     toggleBullet.style.left = "2px";
-     toggleBullet.style.right = "auto";
-     toggleText.textContent = "Disable";
-   }
+   const updateToggleUI = () => {
+     if (isEnabled) {
+       toggleSwitch.style.backgroundColor = "#EF7C2F";
+       toggleBullet.style.left = "auto";
+       toggleBullet.style.right = "1.5px";
+       toggleText.textContent = "Enable";
+     } else {
+       toggleSwitch.style.backgroundColor = "#747372";
+       toggleBullet.style.left = "2px";
+       toggleBullet.style.right = "auto";
+       toggleText.textContent = "Disable";
+     }
+   };
+ 
+   updateToggleUI();
  
    if (toggleSwitch && toggleText && toggleBullet) {
      toggleSwitch.addEventListener("click", () => {
        isEnabled = !isEnabled;
-       localStorage.setItem("sc_enabled", isEnabled ? "true" : "false");
- 
-       if (isEnabled) {
-         toggleSwitch.style.backgroundColor = "#EF7C2F";
-         toggleBullet.style.left = "auto";
-         toggleBullet.style.right = "1.5px";
-         toggleText.textContent = "Enable";
-       } else {
-         toggleSwitch.style.backgroundColor = "#747372";
-         toggleBullet.style.left = "2px";
-         toggleBullet.style.right = "auto";
-         toggleText.textContent = "Disable";
-       }
+       setToggleState(isEnabled);
+       updateToggleUI();
      });
    }
- }, 1000);
+ }
+ 
  
  
  
