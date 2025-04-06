@@ -548,7 +548,7 @@
       console.error("🚨 Error loading HTML module:", error);
     }
   }
-  const { makeWidgetDraggable } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/makeWidgetDraggable.js");
+
 
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
@@ -599,7 +599,7 @@
       widgetContainer.style.top = "100px";
     }
   }
-
+  const { makeWidgetDraggable } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/makeWidgetDraggable.js");
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
 
