@@ -350,93 +350,95 @@
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     const htmlString = module.html();
-    
+  
     if (typeof htmlString === "string") {
       widgetContainer.innerHTML = htmlString;
-      module.initToggleSwitch(); 
+      module.initToggleSwitch();
     }
-    
+  
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
-
+  
     if (!token || !userId) {
       console.warn("Missing authentication data");
       return;
     }
-
-    try {
-      const response = await fetch(
-        `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+  
+    const isEnabled = localStorage.getItem("sc_enabled") !== "false";
+    if (!isEnabled) {
+      console.log("🚫 Widget toggle is OFF — skipping fetchModifications() request");
+    } else {
+      try {
+        const response = await fetch(
+          `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            }
           }
+        );
+  
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  
+        const data = await response.json();
+        console.log("📥 Retrieved modifications:", data);
+  
+        if (!data.modifications || !Array.isArray(data.modifications)) {
+          console.warn("⚠️ No modifications found or invalid format");
+          return;
         }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("📥 Retrieved modifications:", data);
-
-      if (!data.modifications || !Array.isArray(data.modifications)) {
-        console.warn("⚠️ No modifications found or invalid format");
-        return;
-      }
-
-      const modificationMap = new Map();
-
-      data.modifications.forEach(mod => {
-        if (mod.pageId === pageId) {
-          mod.elements.forEach(elem => {
-            if (elem.css) {
-              modificationMap.set(elem.elementId, elem.css);
-            }
-          });
-        }
-      });
-
-      const observer = new MutationObserver(() => {
-        modificationMap.forEach((css, elementId) => {
-          const element = document.getElementById(elementId);
-
-          if (element) {
-            console.log(`✅ Applying styles to element ${elementId}`);
-
-            Object.entries(css).forEach(([prop, value]) => {
-              element.style.setProperty(prop, value, "important");
+  
+        const modificationMap = new Map();
+  
+        data.modifications.forEach(mod => {
+          if (mod.pageId === pageId) {
+            mod.elements.forEach(elem => {
+              if (elem.css) {
+                modificationMap.set(elem.elementId, elem.css);
+              }
             });
-
-            const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
-            nestedElements.forEach(nestedElem => {
-              Object.entries(css).forEach(([prop, value]) => {
-                nestedElem.style.setProperty(prop, value, "important");
-              });
-            });
-
-            if (!element.classList.contains("sc-font-modified")) {
-              element.classList.add("sc-font-modified");
-            }
-
-            modificationMap.delete(elementId); // Remove from the map after applying
           }
         });
-      });
-
-      observer.observe(document.body, { childList: true, subtree: true });
-
-    } catch (error) {
-      console.error("❌ Error Fetching Modifications:", error);
-      if (retries > 0) {
-        console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
-        setTimeout(() => fetchModifications(retries - 1), 2000);
+  
+        const observer = new MutationObserver(() => {
+          modificationMap.forEach((css, elementId) => {
+            const element = document.getElementById(elementId);
+            if (element) {
+              console.log(`✅ Applying styles to element ${elementId}`);
+              Object.entries(css).forEach(([prop, value]) => {
+                element.style.setProperty(prop, value, "important");
+              });
+  
+              const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
+              nestedElements.forEach(nestedElem => {
+                Object.entries(css).forEach(([prop, value]) => {
+                  nestedElem.style.setProperty(prop, value, "important");
+                });
+              });
+  
+              if (!element.classList.contains("sc-font-modified")) {
+                element.classList.add("sc-font-modified");
+              }
+  
+              modificationMap.delete(elementId);
+            }
+          });
+        });
+  
+        observer.observe(document.body, { childList: true, subtree: true });
+  
+      } catch (error) {
+        console.error("❌ Error Fetching Modifications:", error);
+        if (retries > 0) {
+          console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
+          setTimeout(() => fetchModifications(retries - 1), 2000);
+        }
       }
     }
   }
+  
 
 
   window.addEventListener("load", async () => {
