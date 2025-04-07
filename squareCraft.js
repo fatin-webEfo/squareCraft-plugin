@@ -334,6 +334,10 @@
         console.log(`❌ ${target.id} was active and now deactivated`);
       }
     });
+
+
+
+    
     if (textColorPalate) {
       let colorPalette = document.getElementById("scColorPalette");
 
