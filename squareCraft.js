@@ -359,13 +359,13 @@
     styleIds.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
-        el.classList.remove("sc-activeTab-border");
-        el.classList.add("sc-inActiveTab-border");
+        el.classList.remove("sc-select-activeTab-border");
+        el.classList.add("sc-select-inActiveTab-border");
       }
     });
   
-    target.classList.remove("sc-inActiveTab-border");
-    target.classList.add("sc-activeTab-border");
+    target.classList.remove("sc-select-inActiveTab-border");
+    target.classList.add("sc-select-activeTab-border");
     lastSelectedStyleElement = target;
   });
   
