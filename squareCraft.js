@@ -349,34 +349,35 @@
 
 
 
-  const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-  const selector = styleIds.map(id => `#${id}`).join(", ");
-  const target = event.target.closest(selector);
-  if (!target) return;
+  document.body.addEventListener("click", (event) => {
+    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    const selector = styleIds.map(id => `#${id}`).join(", ");
+    const target = event.target.closest(selector);
+    if (!target) return;
   
-  // Update tab styles
-  styleIds.forEach(id => {
-    const el = document.getElementById(id);
-    const desc = document.getElementById(`scDesc-${id}`);
-    
-    if (el && el !== target) {
-      el.classList.remove("sc-select-activeTab-border");
-      el.classList.add("sc-select-inActiveTab-border");
-    }
-    
-    if (desc) {
-      desc.classList.add("sc-hidden");
-    }
+    styleIds.forEach(id => {
+      const el = document.getElementById(id);
+      const desc = document.getElementById(`scDesc-${id}`);
+  
+      if (el) {
+        if (el !== target) {
+          el.classList.remove("sc-select-activeTab-border");
+          el.classList.add("sc-select-inActiveTab-border");
+        } else {
+          el.classList.add("sc-select-activeTab-border");
+          el.classList.remove("sc-select-inActiveTab-border");
+        }
+      }
+  
+      if (desc) {
+        if (target.id === id) {
+          desc.classList.remove("sc-hidden");
+        } else {
+          desc.classList.add("sc-hidden");
+        }
+      }
+    });
   });
-  
-  // Activate the selected tab and its description
-  target.classList.remove("sc-select-inActiveTab-border");
-  target.classList.add("sc-select-activeTab-border");
-  
-  const activeDesc = document.getElementById(`scDesc-${target.id}`);
-  if (activeDesc) {
-    activeDesc.classList.remove("sc-hidden");
-  }
   
   
   
