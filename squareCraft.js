@@ -305,7 +305,25 @@
     }
   });
   
-
+  document.body.addEventListener("click", (event) => {
+    const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+    if (!target) return;
+  
+    const ids = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("sc-activeTab-border");
+        el.classList.add("sc-inActiveTab-border");
+      }
+    });
+  
+    target.classList.remove("sc-inActiveTab-border");
+    target.classList.add("sc-activeTab-border");
+  
+    console.log(`✅ ${target.id} is now active`);
+  });
+  
 
 
   document.body.addEventListener("click", (event) => {

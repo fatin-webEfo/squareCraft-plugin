@@ -6,24 +6,24 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
                   <div
                      class="sc-flex sc-mt-2 sc-justify-between  sc-items-center ">
                      <div class="sc-flex sc-items-center sc-justify-between  ">
-                        <div class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                        <div id="allSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
                            <p class=" sc-universal   sc-text-sm  sc-poppins">A</p>
 
                         </div>
 
-                        <div class=" sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
+                        <div id="boldSelect" class=" sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
                            <p
                               class="sc-font-bold sc-universal sc-text-sm  sc-poppins">
                               B</p>
 
                         </div>
-                        <div class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
+                        <div id="italicSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
                            <p
                               class="sc-font-italic sc-universal  sc-text-sm sc-text-center sc-mx-auto">
                               I</p>
                         </div>
 
-                        <div class="sc-px-2 sc-py-xs sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+                        <div id="linkSelect" class="sc-px-2 sc-py-xs sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
                            <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="" alt="">
 
                         </div>
