@@ -1,4 +1,4 @@
-export function typoBLinkSelect  (fontSizes) {
+export function typoLinkSelect  (fontSizes) {
     return `
       <div
    class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
