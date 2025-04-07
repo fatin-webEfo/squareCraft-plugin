@@ -1,4 +1,4 @@
-export function typoItalicSelect  () {
+export function typoItalicSelect  (fontSizes) {
     return `
       <div
    class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">

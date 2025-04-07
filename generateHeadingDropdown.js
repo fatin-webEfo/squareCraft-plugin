@@ -35,10 +35,18 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
     <div class="sc-mt-5 sc-px-2">
      <p class="sc-text-xs sc-font-thin  sc-universal sc-text-gray-300 sc-poppins">Style</p>
 
-<div class="sc-text-xs sc-text-gray-400  sc-mt-1" id="scDesc-allSelect">All text part</div>
-<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-boldSelect">Bold text part</div>
-<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-italicSelect">Italic text part</div>
-<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-linkSelect">Link text part</div>
+<div class="sc-text-xs sc-text-gray-400  sc-mt-1" id="scDesc-allSelect">
+${typoAllSelect(fontSizes, LetterSpacing)}
+</div>
+<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-boldSelect">
+${typoBoldSelect(fontSizes)}
+</div>
+<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-italicSelect">
+${typoItalicSelect(fontSizes)}
+</div>
+<div class="sc-text-xs sc-text-gray-400  sc-mt-1 sc-hidden" id="scDesc-linkSelect">
+${typoLinkSelect(fontSizes)}
+</div>
 
      </div>
     

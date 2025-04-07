@@ -1,4 +1,4 @@
-export function typoAllSelect(){
+export function typoAllSelect(fontSizes,LetterSpacing){
     return `
      <div
       class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
