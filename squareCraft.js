@@ -346,29 +346,24 @@
     }
   });
 
-  document.body.addEventListener("click", (event) => {
-    const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
-    if (!target) return;
-  
-    const isActive = target.classList.contains("sc-activeTab-border");
-  
-    const ids = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.classList.remove("sc-activeTab-border");
-        el.classList.add("sc-inActiveTab-border");
-      }
-    });
-  
-    if (!isActive) {
-      target.classList.remove("sc-inActiveTab-border");
-      target.classList.add("sc-activeTab-border");
-      console.log(`✅ ${target.id} is now active`);
-    } else {
-      console.log(`❌ ${target.id} was active and now deactivated`);
-    }
-  });
+
+ document.body.addEventListener("click", (event) => {
+  const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+  if (!target) return;
+
+  const isActive = target.classList.contains("sc-activeTab-border");
+
+  if (isActive) {
+    target.classList.remove("sc-activeTab-border");
+    target.classList.add("sc-inActiveTab-border");
+    console.log(`❌ ${target.id} was active and now deactivated`);
+  } else {
+    target.classList.remove("sc-inActiveTab-border");
+    target.classList.add("sc-activeTab-border");
+    console.log(`✅ ${target.id} is now active`);
+  }
+});
+
 
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
