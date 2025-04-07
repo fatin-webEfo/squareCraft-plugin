@@ -678,12 +678,12 @@
 .sc-object-contain{
   object-fit: contain !important;
 }
-.sc-w-4px {
-  width: 4px !important;
+.sc-w-4 {
+  width: 6px !important;
 }
 
 .sc-h-4{
-  height: 4px !important;
+  height: 6px !important;
 }
 
 .sc-w-20 {
