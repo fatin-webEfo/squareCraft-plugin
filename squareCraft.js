@@ -373,6 +373,7 @@
     lastSelectedStyleElement = target;
   });
   
+  
 
 
   async function fetchModifications(retries = 3) {
