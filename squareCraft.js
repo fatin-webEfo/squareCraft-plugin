@@ -350,8 +350,8 @@
 
   let lastSelectedStyleElement = document.getElementById("allSelect");
   if (lastSelectedStyleElement) {
-    lastSelectedStyleElement.classList.add("sc-activeTab-border");
     lastSelectedStyleElement.classList.remove("sc-inActiveTab-border");
+    lastSelectedStyleElement.classList.add("sc-activeTab-border");
   }
   
   document.body.addEventListener("click", (event) => {
