@@ -354,28 +354,30 @@
   const target = event.target.closest(selector);
   if (!target) return;
   
+  // Update tab styles
   styleIds.forEach(id => {
     const el = document.getElementById(id);
+    const desc = document.getElementById(`scDesc-${id}`);
+    
     if (el && el !== target) {
       el.classList.remove("sc-select-activeTab-border");
       el.classList.add("sc-select-inActiveTab-border");
     }
+    
+    if (desc) {
+      desc.classList.add("sc-hidden");
+    }
   });
   
+  // Activate the selected tab and its description
   target.classList.remove("sc-select-inActiveTab-border");
   target.classList.add("sc-select-activeTab-border");
   
-  const tabDescriptions = {
-    allSelect: "All text part",
-    boldSelect: "Bold text part",
-    italicSelect: "Italic text part",
-    linkSelect: "Link text part"
-  };
-  
-  const descriptionBox = document.getElementById("scTabDescription");
-  if (descriptionBox && target.id) {
-    descriptionBox.textContent = tabDescriptions[target.id] || "";
+  const activeDesc = document.getElementById(`scDesc-${target.id}`);
+  if (activeDesc) {
+    activeDesc.classList.remove("sc-hidden");
   }
+  
   
   
   
