@@ -347,6 +347,7 @@
   });
 
 
+  
  document.body.addEventListener("click", (event) => {
   const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
   if (!target) return;
