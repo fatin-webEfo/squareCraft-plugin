@@ -23,9 +23,9 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
                               Italic</p>
                         </div>
 
-                        <div id="linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-gap-3 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+                        <div id="linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-gap-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
                         <p class=" sc-universal  sc-text-sm sc-text-center sc-mx-auto">Link</p>
-                           <img src="https://i.ibb.co.com/jvHLfd8c/Group.png"  class="sc-w-13px" alt="">
+                           <img src="https://i.ibb.co.com/jvHLfd8c/Group.png"  class="sc-w-8px" alt="">
 
                         </div>
 

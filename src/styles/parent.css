@@ -676,6 +676,10 @@
   /* 24px */
 }
 
+.sc-w-8px {
+  width: 8px !important;
+}
+
 .sc-w-20 {
   width: 50px !important;
 }
