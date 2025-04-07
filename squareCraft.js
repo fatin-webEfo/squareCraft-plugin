@@ -352,15 +352,15 @@
   document.body.addEventListener("click", (event) => {
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
     const selector = styleIds.map(id => `#${id}`).join(", ");
-    const container = event.target.closest(selector);
-    if (!container) return;
+    const target = event.target.closest(selector);
+    if (!target) return;
   
     styleIds.forEach(id => {
       const el = document.getElementById(id);
       const desc = document.getElementById(`scDesc-${id}`);
   
       if (el) {
-        if (el !== container) {
+        if (el !== target) {
           el.classList.remove("sc-select-activeTab-border");
           el.classList.add("sc-select-inActiveTab-border");
         } else {
@@ -370,7 +370,7 @@
       }
   
       if (desc) {
-        if (container.id === id) {
+        if (target.id === id) {
           desc.classList.remove("sc-hidden");
         } else {
           desc.classList.add("sc-hidden");
@@ -378,7 +378,6 @@
       }
     });
   });
-  
   
   
   
