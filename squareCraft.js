@@ -348,17 +348,16 @@
 
 
 
-  let lastSelectedStyleElement = document.getElementById("allSelect");
 
   document.body.addEventListener("click", (event) => {
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
     const selector = styleIds.map(id => `#${id}`).join(", ");
     const target = event.target.closest(selector);
-    if (!target || target === lastSelectedStyleElement) return;
+    if (!target) return;
   
     styleIds.forEach(id => {
       const el = document.getElementById(id);
-      if (el) {
+      if (el && el !== target && el.classList.contains("sc-select-activeTab-border")) {
         el.classList.remove("sc-select-activeTab-border");
         el.classList.add("sc-select-inActiveTab-border");
       }
@@ -366,8 +365,8 @@
   
     target.classList.remove("sc-select-inActiveTab-border");
     target.classList.add("sc-select-activeTab-border");
-    lastSelectedStyleElement = target;
   });
+  
   
   
   
