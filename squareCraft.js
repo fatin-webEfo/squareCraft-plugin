@@ -1,4 +1,4 @@
-(async function sc() {
+(async function squareCraft() {
   const Url = parent.document.location.href
   console.log("parent", Url)
   const widgetScript = document.getElementById("sc-script");
