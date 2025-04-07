@@ -349,23 +349,34 @@
 
 
 
-  document.body.addEventListener("click", (event) => {
-    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const selector = styleIds.map(id => `#${id}`).join(", ");
-    const target = event.target.closest(selector);
-    if (!target) return;
+  const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+  const selector = styleIds.map(id => `#${id}`).join(", ");
+  const target = event.target.closest(selector);
+  if (!target) return;
   
-    styleIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && el !== target && el.classList.contains("sc-select-activeTab-border")) {
-        el.classList.remove("sc-select-activeTab-border");
-        el.classList.add("sc-select-inActiveTab-border");
-      }
-    });
-  
-    target.classList.remove("sc-select-inActiveTab-border");
-    target.classList.add("sc-select-activeTab-border");
+  styleIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el !== target) {
+      el.classList.remove("sc-select-activeTab-border");
+      el.classList.add("sc-select-inActiveTab-border");
+    }
   });
+  
+  target.classList.remove("sc-select-inActiveTab-border");
+  target.classList.add("sc-select-activeTab-border");
+  
+  const tabDescriptions = {
+    allSelect: "All text part",
+    boldSelect: "Bold text part",
+    italicSelect: "Italic text part",
+    linkSelect: "Link text part"
+  };
+  
+  const descriptionBox = document.getElementById("scTabDescription");
+  if (descriptionBox && target.id) {
+    descriptionBox.textContent = tabDescriptions[target.id] || "";
+  }
+  
   
   
   

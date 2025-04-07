@@ -24,11 +24,25 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
            </div>
            
 
+                      </div>
+                   </div>
+                </div>
+               <div class="sc-mt-5 sc-px-2">
+                <p class="sc-text-xs sc-font-thin  sc-universal sc-text-gray-300 sc-poppins">Style</p>
+           <div id="scTabDescription" class="sc-text-xs sc-text-gray-400 sc-px-2 sc-mt-1">
+             All text part
            </div>
-        </div>
-     </div>
-    <div class="sc-mt-5 sc-px-2">
-     <p class="sc-text-xs sc-font-thin  sc-universal sc-text-gray-300 sc-poppins">Style</p>
+           <div id="scTabDescription" class="sc-text-xs sc-text-gray-400 sc-px-2 sc-mt-1">
+             Bold text part
+           </div>
+           
+           <div id="scTabDescription" class="sc-text-xs sc-text-gray-400 sc-px-2 sc-mt-1">
+             Italic text part
+           </div>
+           
+           <div id="scTabDescription" class="sc-text-xs sc-text-gray-400 sc-px-2 sc-mt-1">
+             Link text part
+           </div>
 
     <div>
       <div
