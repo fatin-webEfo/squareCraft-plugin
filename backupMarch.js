@@ -1,4 +1,4 @@
-(async function sc() {
+(async function squareCraft() {
   const Url = parent.document.location.href
   console.log("parent", Url)
   const widgetScript = document.getElementById("sc-script");
@@ -347,23 +347,30 @@
   });
 
 
+
+
+  document.body.addEventListener("click", (event) => {
+    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    const selector = styleIds.map(id => `#${id}`).join(", ");
+    const target = event.target.closest(selector);
+    if (!target) return;
   
- document.body.addEventListener("click", (event) => {
-  const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
-  if (!target) return;
-
-  const isActive = target.classList.contains("sc-activeTab-border");
-
-  if (isActive) {
-    target.classList.remove("sc-activeTab-border");
-    target.classList.add("sc-inActiveTab-border");
-    console.log(`❌ ${target.id} was active and now deactivated`);
-  } else {
-    target.classList.remove("sc-inActiveTab-border");
-    target.classList.add("sc-activeTab-border");
-    console.log(`✅ ${target.id} is now active`);
-  }
-});
+    styleIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el !== target && el.classList.contains("sc-select-activeTab-border")) {
+        el.classList.remove("sc-select-activeTab-border");
+        el.classList.add("sc-select-inActiveTab-border");
+      }
+    });
+  
+    target.classList.remove("sc-select-inActiveTab-border");
+    target.classList.add("sc-select-activeTab-border");
+  });
+  
+  
+  
+  
+  
 
 
   async function fetchModifications(retries = 3) {
@@ -815,8 +822,7 @@
 
       mobileContainer.classList.add("sc-relative");
 
-      widgetContainer.style.positi
-      on = "absolute";
+      widgetContainer.style.position = "absolute";
       widgetContainer.style.right = "11%";
       widgetContainer.style.top = "50%";
       widgetContainer.style.transform = "translateY(-50%)";
