@@ -675,9 +675,15 @@
   margin-bottom: 1.25rem !important;
   /* 24px */
 }
+.sc-object-contain{
+  object-fit: contain !important;
+}
+.sc-w-4px {
+  width: 4px !important;
+}
 
-.sc-w-8px {
-  width: 8px !important;
+.sc-h-4{
+  height: 4px !important;
 }
 
 .sc-w-20 {
