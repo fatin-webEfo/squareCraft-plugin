@@ -348,16 +348,14 @@
 
 
 
-  let lastSelectedStyleElement = document.getElementById("allSelect");
-  if (lastSelectedStyleElement) {
-    lastSelectedStyleElement.classList.remove("sc-inActiveTab-border");
-    lastSelectedStyleElement.classList.add("sc-activeTab-border");
-  }
+  document.getElementById("allSelect")?.classList.add("sc-activeTab-border");
+  document.getElementById("allSelect")?.classList.remove("sc-inActiveTab-border");
   
   document.body.addEventListener("click", (event) => {
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const target = event.target.closest(styleIds.map(id => `#${id}`).join(", "));
-    if (!target || target === lastSelectedStyleElement) return;
+    const selector = styleIds.map(id => `#${id}`).join(", ");
+    const target = event.target.closest(selector);
+    if (!target) return;
   
     styleIds.forEach(id => {
       const el = document.getElementById(id);
@@ -369,8 +367,8 @@
   
     target.classList.remove("sc-inActiveTab-border");
     target.classList.add("sc-activeTab-border");
-    lastSelectedStyleElement = target;
   });
+  
   
   
   
