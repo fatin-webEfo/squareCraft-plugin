@@ -6,29 +6,23 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
                   <div
                      class="sc-flex sc-mt-2 sc-justify-between  sc-items-center ">
                      <div class="sc-flex sc-items-center sc-justify-between  ">
-                        <div id="allSelect" class="sc-px-2 sc-py-1px sc-activeTab-border sc-cursor-pointer sc-rounded-l">
-                           <p class=" sc-universal   sc-text-sm  sc-poppins">All</p>
-
-                        </div>
-
-                        <div id="boldSelect" class=" sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
-                           <p
-                              class="sc-font-bold sc-universal sc-text-sm  sc-poppins">
-                              Bold</p>
-
-                        </div>
-                        <div id="italicSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
-                           <p
-                              class="sc-font-italic sc-universal  sc-text-sm sc-text-center sc-mx-auto">
-                              Italic</p>
-                        </div>
-
-                        <div id="linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-items-center sc-gap-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
-                        <p class=" sc-universal  sc-text-sm sc-text-center sc-mx-auto">Link</p>
-                           <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="sc-w-4 sc-h-4 sc-object-contain " alt="">
-
-
-                        </div>
+                      <div id="allSelect" class="sc-px-2 sc-py-1px sc-activeTab-border sc-cursor-pointer sc-rounded-l">
+                    <p class="sc-universal sc-text-sm sc-poppins">All</p>
+                     </div>
+                     
+                     <div id="boldSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
+                       <p class="sc-font-bold sc-universal sc-text-sm sc-poppins">Bold</p>
+                     </div>
+                     
+                     <div id="italicSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer">
+                       <p class="sc-font-italic sc-universal sc-text-sm sc-text-center sc-mx-auto">Italic</p>
+                     </div>
+                     
+                     <div id="linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-items-center sc-gap-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+                       <p class="sc-universal sc-text-sm sc-text-center sc-mx-auto">Link</p>
+                       <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="sc-w-4 sc-h-4 sc-object-contain" alt="">
+                     </div>
+                     
 
                      </div>
                   </div>

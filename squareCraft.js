@@ -349,14 +349,11 @@
 
 
   let lastSelectedStyleElement = document.getElementById("allSelect");
-  if (lastSelectedStyleElement) {
-    lastSelectedStyleElement.classList.add("sc-activeTab-border");
-    lastSelectedStyleElement.classList.remove("sc-inActiveTab-border");
-  }
-  
+
   document.body.addEventListener("click", (event) => {
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const target = event.target.closest(styleIds.map(id => `#${id}`).join(", "));
+    const selector = styleIds.map(id => `#${id}`).join(", ");
+    const target = event.target.closest(selector);
     if (!target || target === lastSelectedStyleElement) return;
   
     styleIds.forEach(id => {
@@ -371,6 +368,7 @@
     target.classList.add("sc-activeTab-border");
     lastSelectedStyleElement = target;
   });
+  
   
   
   
