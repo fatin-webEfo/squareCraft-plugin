@@ -355,12 +355,11 @@
   }
   
   document.body.addEventListener("click", (event) => {
-    const styleWrapperIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const target = event.target.closest(styleWrapperIds.map(id => `#${id}`).join(", "));
-    if (!target) return;
-    if (target === lastSelectedStyleElement) return;
+    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    const target = event.target.closest(styleIds.map(id => `#${id}`).join(", "));
+    if (!target || target === lastSelectedStyleElement) return;
   
-    styleWrapperIds.forEach(id => {
+    styleIds.forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.classList.remove("sc-activeTab-border");
@@ -372,6 +371,7 @@
     target.classList.add("sc-activeTab-border");
     lastSelectedStyleElement = target;
   });
+  
   
   
 
