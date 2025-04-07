@@ -815,7 +815,8 @@
 
       mobileContainer.classList.add("sc-relative");
 
-      widgetContainer.style.position = "absolute";
+      widgetContainer.style.positi
+      on = "absolute";
       widgetContainer.style.right = "11%";
       widgetContainer.style.top = "50%";
       widgetContainer.style.transform = "translateY(-50%)";
