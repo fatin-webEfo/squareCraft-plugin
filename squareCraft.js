@@ -10,7 +10,6 @@
     return;
   }
   let selectedElement = null;
-  let lastSelectedStyleElement = null;
   let widgetContainer = null;
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
@@ -349,29 +348,31 @@
 
 
 
+  let lastSelectedStyleElement = document.getElementById("allSelect");
+  if (lastSelectedStyleElement) {
+    lastSelectedStyleElement.classList.add("sc-activeTab-border");
+    lastSelectedStyleElement.classList.remove("sc-inActiveTab-border");
+  }
+  
   document.body.addEventListener("click", (event) => {
-    const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+    const styleWrapperIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    const target = event.target.closest(styleWrapperIds.map(id => `#${id}`).join(", "));
     if (!target) return;
+    if (target === lastSelectedStyleElement) return;
   
-    const isActive = target.classList.contains("sc-activeTab-border");
+    styleWrapperIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("sc-activeTab-border");
+        el.classList.add("sc-inActiveTab-border");
+      }
+    });
   
-    if (lastSelectedStyleElement && lastSelectedStyleElement !== target) {
-      lastSelectedStyleElement.classList.remove("sc-activeTab-border");
-      lastSelectedStyleElement.classList.add("sc-inActiveTab-border");
-    }
-  
-    if (isActive) {
-      target.classList.remove("sc-activeTab-border");
-      target.classList.add("sc-inActiveTab-border");
-      lastSelectedStyleElement = null;
-      console.log(`❌ ${target.id} deactivated`);
-    } else {
-      target.classList.remove("sc-inActiveTab-border");
-      target.classList.add("sc-activeTab-border");
-      lastSelectedStyleElement = target;
-      console.log(`✅ ${target.id} activated`);
-    }
+    target.classList.remove("sc-inActiveTab-border");
+    target.classList.add("sc-activeTab-border");
+    lastSelectedStyleElement = target;
   });
+  
 
 
   async function fetchModifications(retries = 3) {
