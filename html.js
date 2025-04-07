@@ -186,9 +186,6 @@ export function html() {
    const doc = parser.parseFromString(htmlString, "text/html");
    const isValidHTML = doc.body.children.length > 0;
 
-   console.log("📄 Parsed Document:", doc);
-   console.log(`✅ Is Valid HTML: ${isValidHTML}`);
-
    if (!isValidHTML) {
       console.error("❌ Error: Invalid HTML structure!");
       return "❌ Error: Invalid HTML structure!";
