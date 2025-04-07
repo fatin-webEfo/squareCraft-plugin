@@ -6,7 +6,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
                   <div
                      class="sc-flex sc-mt-2 sc-justify-between  sc-items-center ">
                      <div class="sc-flex sc-items-center sc-justify-between  ">
-                        <div id="allSelect" class="sc-px-2 sc-py-1px sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                        <div id="allSelect" class="sc-px-2 sc-py-1px sc-activeTab-border sc-cursor-pointer sc-rounded-l">
                            <p class=" sc-universal   sc-text-sm  sc-poppins">A</p>
 
                         </div>
