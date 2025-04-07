@@ -1,3 +1,8 @@
+import { typoAllSelect } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/typoAllSelect.js';
+import { typoBoldSelect } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/typoBoldSelect.js';
+import { typoItalicSelect } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/typoItalicSelect.js';
+import { typoLinkSelect } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/typoLinkSelect.js';
+
 export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
    return `
     <div id="${id}" >
