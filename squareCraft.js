@@ -10,6 +10,7 @@
     return;
   }
   let selectedElement = null;
+  let lastSelectedStyleElement = null;
   let widgetContainer = null;
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
@@ -347,23 +348,30 @@
   });
 
 
+
+  document.body.addEventListener("click", (event) => {
+    const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+    if (!target) return;
   
- document.body.addEventListener("click", (event) => {
-  const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
-  if (!target) return;
-
-  const isActive = target.classList.contains("sc-activeTab-border");
-
-  if (isActive) {
-    target.classList.remove("sc-activeTab-border");
-    target.classList.add("sc-inActiveTab-border");
-    console.log(`❌ ${target.id} was active and now deactivated`);
-  } else {
-    target.classList.remove("sc-inActiveTab-border");
-    target.classList.add("sc-activeTab-border");
-    console.log(`✅ ${target.id} is now active`);
-  }
-});
+    const isActive = target.classList.contains("sc-activeTab-border");
+  
+    if (lastSelectedStyleElement && lastSelectedStyleElement !== target) {
+      lastSelectedStyleElement.classList.remove("sc-activeTab-border");
+      lastSelectedStyleElement.classList.add("sc-inActiveTab-border");
+    }
+  
+    if (isActive) {
+      target.classList.remove("sc-activeTab-border");
+      target.classList.add("sc-inActiveTab-border");
+      lastSelectedStyleElement = null;
+      console.log(`❌ ${target.id} deactivated`);
+    } else {
+      target.classList.remove("sc-inActiveTab-border");
+      target.classList.add("sc-activeTab-border");
+      lastSelectedStyleElement = target;
+      console.log(`✅ ${target.id} activated`);
+    }
+  });
 
 
   async function fetchModifications(retries = 3) {

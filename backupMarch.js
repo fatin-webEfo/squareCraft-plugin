@@ -305,12 +305,11 @@
     }
   });
   
-
-
-
+  
+  
+  
   document.body.addEventListener("click", (event) => {
     const textColorPalate = event.target.closest('#textColorPalate');
-
     if (textColorPalate) {
       let colorPalette = document.getElementById("scColorPalette");
 
@@ -346,6 +345,26 @@
       colorPalette.click();
     }
   });
+
+
+  
+ document.body.addEventListener("click", (event) => {
+  const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+  if (!target) return;
+
+  const isActive = target.classList.contains("sc-activeTab-border");
+
+  if (isActive) {
+    target.classList.remove("sc-activeTab-border");
+    target.classList.add("sc-inActiveTab-border");
+    console.log(`❌ ${target.id} was active and now deactivated`);
+  } else {
+    target.classList.remove("sc-inActiveTab-border");
+    target.classList.add("sc-activeTab-border");
+    console.log(`✅ ${target.id} is now active`);
+  }
+});
+
 
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
@@ -502,30 +521,8 @@
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
-  async function loadCSS(url, key) {
-    let cachedData = localStorage.getItem(key);
-    let lastFetched = localStorage.getItem(`${key}_timestamp`);
-    let oneDay = 60 * 1000;
+  const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
-    if (cachedData && lastFetched && Date.now() - lastFetched < oneDay) {
-      const style = document.createElement("style");
-      style.textContent = cachedData;
-      document.head.appendChild(style);
-    } else {
-      try {
-        let response = await fetch(url);
-        let text = await response.text();
-        localStorage.setItem(key, text);
-        localStorage.setItem(`${key}_timestamp`, Date.now());
-
-        const style = document.createElement("style");
-        style.textContent = text;
-        document.head.appendChild(style);
-      } catch (error) {
-        console.error(`🚨 Failed to load ${key} from CDN`, error);
-      }
-    }
-  }
 
   loadCSS(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
