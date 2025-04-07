@@ -349,35 +349,47 @@
 
 
 
-  document.body.addEventListener("click", (event) => {
-    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const selector = styleIds.map(id => `#${id}`).join(", ");
-    const target = event.target.closest(selector);
-    if (!target) return;
+  function initTabListeners() {
+    const dropdowns = document.querySelectorAll('[id$="Dropdown"]'); // All dropdown sections like heading1Dropdown etc.
   
-    styleIds.forEach(id => {
-      const el = document.getElementById(id);
-      const desc = document.getElementById(`scDesc-${id}`);
+    dropdowns.forEach(dropdown => {
+      const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
   
-      if (el) {
-        if (el !== target) {
-          el.classList.remove("sc-select-activeTab-border");
-          el.classList.add("sc-select-inActiveTab-border");
-        } else {
-          el.classList.add("sc-select-activeTab-border");
-          el.classList.remove("sc-select-inActiveTab-border");
-        }
-      }
+      dropdown.addEventListener("click", (event) => {
+        const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+        if (!target) return;
   
-      if (desc) {
-        if (target.id === id) {
-          desc.classList.remove("sc-hidden");
-        } else {
-          desc.classList.add("sc-hidden");
-        }
-      }
+        styleIds.forEach(id => {
+          const el = dropdown.querySelector(`#${id}`);
+          const desc = dropdown.querySelector(`#scDesc-${id}`);
+  
+          if (el) {
+            if (el === target) {
+              el.classList.add("sc-select-activeTab-border");
+              el.classList.remove("sc-select-inActiveTab-border");
+            } else {
+              el.classList.remove("sc-select-activeTab-border");
+              el.classList.add("sc-select-inActiveTab-border");
+            }
+          }
+  
+          if (desc) {
+            if (target.id === id) {
+              desc.classList.remove("sc-hidden");
+            } else {
+              desc.classList.add("sc-hidden");
+            }
+          }
+        });
+      });
     });
-  });
+  }
+  
+  
+  setTimeout(() => {
+    initTabListeners();
+  }, 300);
+  
   
   
   
