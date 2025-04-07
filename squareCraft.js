@@ -310,34 +310,6 @@
   
   document.body.addEventListener("click", (event) => {
     const textColorPalate = event.target.closest('#textColorPalate');
-    
-    document.body.addEventListener("click", (event) => {
-      const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
-      if (!target) return;
-    
-      const isActive = target.classList.contains("sc-activeTab-border");
-    
-      const ids = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.classList.remove("sc-activeTab-border");
-          el.classList.add("sc-inActiveTab-border");
-        }
-      });
-    
-      if (!isActive) {
-        target.classList.remove("sc-inActiveTab-border");
-        target.classList.add("sc-activeTab-border");
-        console.log(`✅ ${target.id} is now active`);
-      } else {
-        console.log(`❌ ${target.id} was active and now deactivated`);
-      }
-    });
-
-
-
-    
     if (textColorPalate) {
       let colorPalette = document.getElementById("scColorPalette");
 
@@ -371,6 +343,30 @@
       }
 
       colorPalette.click();
+    }
+  });
+
+  document.body.addEventListener("click", (event) => {
+    const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
+    if (!target) return;
+  
+    const isActive = target.classList.contains("sc-activeTab-border");
+  
+    const ids = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("sc-activeTab-border");
+        el.classList.add("sc-inActiveTab-border");
+      }
+    });
+  
+    if (!isActive) {
+      target.classList.remove("sc-inActiveTab-border");
+      target.classList.add("sc-activeTab-border");
+      console.log(`✅ ${target.id} is now active`);
+    } else {
+      console.log(`❌ ${target.id} was active and now deactivated`);
     }
   });
 
