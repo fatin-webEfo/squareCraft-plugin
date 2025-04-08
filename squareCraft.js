@@ -354,11 +354,10 @@
 
    dropdowns.forEach((dropdown) => {
      dropdown.addEventListener("click", (event) => {
-       const clicked = event.target.closest(
-         "#allSelect, #boldSelect, #italicSelect, #linkSelect"
-       );
+       const clicked = event.target.closest("div[id$='Select']");
        if (!clicked) return;
 
+       const baseId = clicked.id.split("-")[0]; 
        const styleIds = [
          "allSelect",
          "boldSelect",
@@ -366,9 +365,10 @@
          "linkSelect",
        ];
 
-       styleIds.forEach((id) => {
-         const tab = dropdown.querySelector(`#${id}`);
-         const desc = dropdown.querySelector(`#scDesc-${id}`);
+       styleIds.forEach((suffix) => {
+         const fullId = `${baseId}-${suffix}`;
+         const tab = dropdown.querySelector(`#${fullId}`);
+         const desc = dropdown.querySelector(`#scDesc-${fullId}`);
 
          if (tab) {
            if (tab === clicked) {
@@ -381,7 +381,7 @@
          }
 
          if (desc) {
-           if (clicked.id === id) {
+           if (clicked.id === fullId) {
              desc.classList.remove("sc-hidden");
            } else {
              desc.classList.add("sc-hidden");
@@ -391,6 +391,7 @@
      });
    });
  }
+
 
   setTimeout(() => {
     initTabToggleEvents();
