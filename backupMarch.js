@@ -1,6 +1,6 @@
 (async function squareCraft() {
-  const Url = parent.document.location.href
-  console.log("parent", Url)
+  const Url = parent.document.location.href;
+  console.log("parent", Url);
   const widgetScript = document.getElementById("sc-script");
 
   if (!widgetScript) {
@@ -14,9 +14,7 @@
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
   let userId = widgetScript.dataset?.uId;
-  let widgetId = widgetScript.dataset?.wId; 
-
-
+  let widgetId = widgetScript.dataset?.wId;
 
   if (token) {
     localStorage.setItem("sc_auth_token", token);
@@ -32,7 +30,6 @@
     localStorage.setItem("sc_w_id", widgetId);
     document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
   }
-
 
   document.addEventListener("DOMContentLoaded", function () {
     const selectedElement = document.querySelector(
@@ -55,7 +52,6 @@
       const selectedFont = fontSelector.value;
       selectedElement.style.fontFamily = selectedFont;
     });
-
   });
 
   function getTextType(tagName, element) {
@@ -77,7 +73,6 @@
     }
     return null;
   }
-
 
   let lastClickedBlockId = null;
   let lastClickedElement = null;
@@ -109,41 +104,41 @@
   document.body.addEventListener("click", (event) => {
     let block = event.target.closest('[id^="block-"]');
     if (!block) return;
-  
+
     if (selectedElement) selectedElement.style.outline = "";
     selectedElement = block;
     selectedElement.style.outline = "2px dashed #EF7C2F";
-  
+
     lastClickedBlockId = block.id;
     lastClickedElement = block;
-  
+
     console.log(`✅ Selected Block: ${selectedElement.id}`);
-  
+
     let appliedTextAlign = window.getComputedStyle(block).textAlign;
-  
+
     if (!appliedTextAlign || appliedTextAlign === "start") {
       const nested = block.querySelector("h1,h2,h3,h4,p");
       if (nested) {
         appliedTextAlign = window.getComputedStyle(nested).textAlign;
       }
     }
-  
+
     if (appliedTextAlign) {
       lastAppliedAlignment = appliedTextAlign;
       console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
-  
+
       const alignmentIconMap = {
-        "left": document.getElementById("scTextAlignLeft"),
-        "center": document.getElementById("scTextAlignCenter"),
-        "right": document.getElementById("scTextAlignRight"),
-        "justify": document.getElementById("scTextAlignJustify")
+        left: document.getElementById("scTextAlignLeft"),
+        center: document.getElementById("scTextAlignCenter"),
+        right: document.getElementById("scTextAlignRight"),
+        justify: document.getElementById("scTextAlignJustify"),
       };
-  
+
       if (lastActiveAlignmentElement) {
         lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
         lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
       }
-  
+
       const activeIcon = alignmentIconMap[appliedTextAlign];
       if (activeIcon) {
         activeIcon.classList.add("sc-activeTab-border");
@@ -151,29 +146,38 @@
         lastActiveAlignmentElement = activeIcon;
       }
     }
-  
+
     const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
-  
+
     const allParts = [
-      "heading1Part", "heading2Part", "heading3Part", "heading4Part",
-      "paragraph1Part", "paragraph2Part", "paragraph3Part"
+      "heading1Part",
+      "heading2Part",
+      "heading3Part",
+      "heading4Part",
+      "paragraph1Part",
+      "paragraph2Part",
+      "paragraph3Part",
     ];
-  
+
     const visibleParts = new Set();
-  
-    innerTextElements.forEach(el => {
+
+    innerTextElements.forEach((el) => {
       const tagName = el.tagName.toLowerCase();
       const result = getTextType(tagName, el);
       if (result) {
-        console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+        console.log(
+          `📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${
+            result.type
+          }, BorderColor: ${result.borderColor}`
+        );
         visibleParts.add(`${result.type}Part`);
         el.style.border = `1px solid ${result.borderColor}`;
         el.style.borderRadius = "4px";
         el.style.padding = "2px 4px";
       }
     });
-  
-    allParts.forEach(id => {
+
+    allParts.forEach((id) => {
       const part = document.getElementById(id);
       if (part) {
         if (visibleParts.has(id)) {
@@ -183,59 +187,65 @@
         }
       }
     });
-  
-    visibleParts.forEach(partId => {
+
+    visibleParts.forEach((partId) => {
       const typeId = partId.replace("Part", "");
       const widgetTab = document.getElementById(typeId);
       if (!widgetTab) return;
-  
+
       widgetTab.onmouseenter = () => {
         const block = document.getElementById(lastClickedBlockId);
         if (!block) return;
-  
-        const tag = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
-  
-        block.querySelectorAll(tag).forEach(el => {
+
+        const tag = typeId.startsWith("heading")
+          ? `h${typeId.replace("heading", "")}`
+          : "p";
+
+        block.querySelectorAll(tag).forEach((el) => {
           const result = getTextType(tag, el);
           if (result && result.type === typeId) {
             el.style.outline = `2px solid ${result.borderColor}`;
           }
         });
       };
-  
+
       widgetTab.onmouseleave = () => {
         const block = document.getElementById(lastClickedBlockId);
         if (!block) return;
-  
-        block.querySelectorAll("h1, h2, h3, h4, p").forEach(el => {
+
+        block.querySelectorAll("h1, h2, h3, h4, p").forEach((el) => {
           el.style.outline = "";
         });
       };
     });
   });
-  
-  
 
   document.body.addEventListener("click", async (event) => {
-    const alignmentIcon = event.target.closest('#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify');
-  
+    const alignmentIcon = event.target.closest(
+      "#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify"
+    );
+
     if (alignmentIcon && lastClickedElement) {
       const textTags = lastClickedElement.querySelectorAll("h1, h2, h3, h4, p");
-      textTags.forEach(el => {
+      textTags.forEach((el) => {
         const tagName = el.tagName.toLowerCase();
         const result = getTextType(tagName, el);
         if (result) {
-          console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
+          console.log(
+            `📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${
+              result.type
+            }, BorderColor: ${result.borderColor}`
+          );
         }
       });
-  
+
       const textAlign = alignmentIcon.dataset.align;
-  
+
       if (lastAppliedAlignment === textAlign) {
         applyStylesToElement(lastClickedElement, { "text-align": "" });
         lastAppliedAlignment = null;
         console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
-  
+
         if (lastActiveAlignmentElement) {
           lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
           lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
@@ -243,60 +253,76 @@
       } else {
         applyStylesToElement(lastClickedElement, { "text-align": textAlign });
         lastAppliedAlignment = textAlign;
-        console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
-  
-        if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
+        console.log(
+          `✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`
+        );
+
+        if (
+          lastActiveAlignmentElement &&
+          lastActiveAlignmentElement !== alignmentIcon
+        ) {
           lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
           lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
         }
-  
+
         alignmentIcon.classList.add("sc-activeTab-border");
         alignmentIcon.classList.remove("sc-inActiveTab-border");
-  
+
         lastActiveAlignmentElement = alignmentIcon;
       }
-  
+
       document.getElementById("publish").addEventListener("click", async () => {
         const publishButton = document.getElementById("publish");
         publishButton.textContent = "Publishing...";
-  
-        const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+
+        const pageId = document
+          .querySelector("article[data-page-sections]")
+          ?.getAttribute("data-page-sections");
         if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
-  
+
         const modificationData = {
           userId,
           token: token,
           widgetId,
-          modifications: [{
-            pageId,
-            elements: [{
-              elementId: lastClickedElement.id,
-              css: {
-                "text-align": lastAppliedAlignment
-              }
-            }]
-          }]
-        };
-  
-        try {
-          const response = await fetch("https://admin.squareplugin.com/api/v1/modifications", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token || localStorage.getItem("sc_auth_token")}`,
-              "userId": userId,
-              "pageId": pageId,
-              "widget-id": widgetId,
+          modifications: [
+            {
+              pageId,
+              elements: [
+                {
+                  elementId: lastClickedElement.id,
+                  css: {
+                    "text-align": lastAppliedAlignment,
+                  },
+                },
+              ],
             },
-            body: JSON.stringify(modificationData)
-          });
-  
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  
+          ],
+        };
+
+        try {
+          const response = await fetch(
+            "https://admin.squareplugin.com/api/v1/modifications",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                  token || localStorage.getItem("sc_auth_token")
+                }`,
+                userId: userId,
+                pageId: pageId,
+                "widget-id": widgetId,
+              },
+              body: JSON.stringify(modificationData),
+            }
+          );
+
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+
           const result = await response.json();
           console.log("✅ Modifications saved successfully:", result);
           publishButton.textContent = "Published";
-  
         } catch (error) {
           console.error("❌ Error saving modifications:", error.message);
           publishButton.textContent = "Failed";
@@ -304,12 +330,9 @@
       });
     }
   });
-  
-  
-  
-  
+
   document.body.addEventListener("click", (event) => {
-    const textColorPalate = event.target.closest('#textColorPalate');
+    const textColorPalate = event.target.closest("#textColorPalate");
     if (textColorPalate) {
       let colorPalette = document.getElementById("scColorPalette");
 
@@ -328,7 +351,9 @@
           if (lastClickedElement) {
             const selectedColor = event.target.value;
 
-            applyStylesToElement(lastClickedElement, { "color": `${selectedColor} !important` });
+            applyStylesToElement(lastClickedElement, {
+              color: `${selectedColor} !important`,
+            });
 
             textColorPalate.style.backgroundColor = selectedColor;
 
@@ -346,62 +371,91 @@
     }
   });
 
-
-
-
   document.body.addEventListener("click", (event) => {
+    const clicked = event.target.closest("div[id$='Select']");
+    if (!clicked) return;
+
+    const dropdown = clicked.closest("[id$='Dropdown']");
+    if (!dropdown) {
+      console.warn("⚠️ Dropdown container not found for:", clicked.id);
+      return;
+    }
+
+    console.log("📌 Clicked tab:", clicked.id);
+
+    const baseId = clicked.id.split("-")[0]; // heading1, paragraph2, etc.
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-    const selector = styleIds.map(id => `#${id}`).join(", ");
-    const target = event.target.closest(selector);
-    if (!target) return;
-  
-    styleIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && el !== target && el.classList.contains("sc-select-activeTab-border")) {
-        el.classList.remove("sc-select-activeTab-border");
-        el.classList.add("sc-select-inActiveTab-border");
+
+    styleIds.forEach((suffix) => {
+      const fullId = `${baseId}-${suffix}`;
+      const tab = dropdown.querySelector(`#${fullId}`);
+      const desc = dropdown.querySelector(`#scDesc-${fullId}`);
+
+      if (tab) {
+        if (tab === clicked) {
+          tab.classList.add("sc-select-activeTab-border");
+          tab.classList.remove("sc-select-inActiveTab-border");
+          console.log(`✅ Activated tab: ${fullId}`);
+        } else {
+          tab.classList.remove("sc-select-activeTab-border");
+          tab.classList.add("sc-select-inActiveTab-border");
+          console.log(`🧹 Deactivated tab: ${fullId}`);
+        }
+      } else {
+        console.error(`❌ Tab not found: #${fullId}`);
+      }
+
+      if (desc) {
+        if (clicked.id === fullId) {
+          desc.classList.remove("sc-hidden");
+          console.log(`📖 Showing description: scDesc-${fullId}`);
+        } else {
+          desc.classList.add("sc-hidden");
+          console.log(`🙈 Hiding description: scDesc-${fullId}`);
+        }
+      } else {
+        console.error(`❌ Description not found: #scDesc-${fullId}`);
       }
     });
-  
-    target.classList.remove("sc-select-inActiveTab-border");
-    target.classList.add("sc-select-activeTab-border");
   });
-  
-  
-  
-  
-  
-
 
   async function fetchModifications(retries = 3) {
-    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+    const module = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+    );
     const htmlString = module.html();
-  
-    if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
+
+    if (
+      typeof htmlString === "string" &&
+      widgetContainer &&
+      widgetContainer.innerHTML.trim() === ""
+    ) {
       widgetContainer.innerHTML = htmlString;
     }
-  
+
     setTimeout(() => {
       if (typeof module.initToggleSwitch === "function") {
         module.initToggleSwitch();
       }
     }, 200);
-  
+
     const isEnabled = localStorage.getItem("sc_enabled") !== "false";
-  
+
     if (!isEnabled) {
       console.log("🚫 Widget toggle is OFF");
       return;
     }
-  
-    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+
+    const pageId = document
+      .querySelector("article[data-page-sections]")
+      ?.getAttribute("data-page-sections");
     if (!pageId) return;
-  
+
     if (!token || !userId) {
       console.warn("Missing authentication data");
       return;
     }
-  
+
     try {
       const response = await fetch(
         `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
@@ -409,33 +463,34 @@
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-  
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  
+
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+
       const data = await response.json();
       console.log("📥 Retrieved modifications:", data);
-  
+
       if (!data.modifications || !Array.isArray(data.modifications)) {
         console.warn("⚠️ No modifications found or invalid format");
         return;
       }
-  
+
       const modificationMap = new Map();
-  
-      data.modifications.forEach(mod => {
+
+      data.modifications.forEach((mod) => {
         if (mod.pageId === pageId) {
-          mod.elements.forEach(elem => {
+          mod.elements.forEach((elem) => {
             if (elem.css) {
               modificationMap.set(elem.elementId, elem.css);
             }
           });
         }
       });
-  
+
       const observer = new MutationObserver(() => {
         modificationMap.forEach((css, elementId) => {
           const element = document.getElementById(elementId);
@@ -444,25 +499,25 @@
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
-  
-            const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
-            nestedElements.forEach(nestedElem => {
+
+            const nestedElements =
+              element.querySelectorAll("h1, h2, h3, h4, p");
+            nestedElements.forEach((nestedElem) => {
               Object.entries(css).forEach(([prop, value]) => {
                 nestedElem.style.setProperty(prop, value, "important");
               });
             });
-  
+
             if (!element.classList.contains("sc-font-modified")) {
               element.classList.add("sc-font-modified");
             }
-  
+
             modificationMap.delete(elementId);
           }
         });
       });
-  
+
       observer.observe(document.body, { childList: true, subtree: true });
-  
     } catch (error) {
       console.error("❌ Error Fetching Modifications:", error);
       if (retries > 0) {
@@ -471,10 +526,6 @@
       }
     }
   }
-  
-  
-  
-
 
   window.addEventListener("load", async () => {
     await fetchModifications();
@@ -501,7 +552,10 @@
 
     widgetContainer.addEventListener("click", (event) => {
       const tabElement = event.target;
-      if (tabElement.classList.contains('sc-inActiveTab-border') || tabElement.classList.contains('sc-activeTab-border')) {
+      if (
+        tabElement.classList.contains("sc-inActiveTab-border") ||
+        tabElement.classList.contains("sc-activeTab-border")
+      ) {
         console.log("📌 Tab Element Clicked:", tabElement);
         toggleTabClass(tabElement);
       }
@@ -517,8 +571,6 @@
 
   addHeadingEventListeners();
 
-
-
   try {
     const { injectNavbarIcon } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
@@ -528,14 +580,14 @@
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
-  const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
-
+  const { loadCSS } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js"
+  );
 
   loadCSS(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
     "sc_parentCSS"
   );
-
 
   async function createWidget() {
     try {
@@ -554,12 +606,12 @@
 
       if (module && module.html) {
         const htmlString = module.html();
-      
+
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
           localStorage.setItem("sc_widget", htmlString);
           localStorage.setItem("sc_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
-      
+
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
@@ -569,7 +621,6 @@
           console.error("❌ Retrieved HTML string is invalid or empty!");
         }
       }
-      
     } catch (error) {
       console.error("🚨 Error loading HTML module:", error);
     }
@@ -592,9 +643,7 @@
       widgetLoaded = true;
 
       setTimeout(() => {
-        widgetContainer = document.getElementById(
-          "sc-widget-container"
-        );
+        widgetContainer = document.getElementById("sc-widget-container");
         if (!widgetContainer) {
           console.error("❌ Widget container failed to load.");
         }
@@ -715,10 +764,7 @@
         const clonedIcon = document.createElement("img");
         clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
         clonedIcon.alt = "sc";
-        clonedIcon.classList.add(
-          "sc-toolbar-icon",
-          "sc-z-99999"
-        );
+        clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
         clonedIcon.style.width = "35px";
         clonedIcon.style.height = "35px";
         clonedIcon.style.borderRadius = "20%";
@@ -736,9 +782,7 @@
 
           if (!widgetLoaded) {
             createWidget().then(() => {
-              widgetContainer = document.getElementById(
-                "sc-widget-container"
-              );
+              widgetContainer = document.getElementById("sc-widget-container");
               if (widgetContainer) {
                 widgetContainer.style.display = "block";
               } else {
