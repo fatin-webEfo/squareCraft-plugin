@@ -87,7 +87,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
          class="sc-mt-2  sc-grid sc-px-2  sc-grid-cols-12 sc-gap-2 ">
          <div
             class="sc-flex sc-bg-494949  sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
-            <div class="  sc-px-2   ">
+            <div class="    ">
                <p
                   class="sc-text-sm sc-universal sc-poppins sc-font-light">
                   Regular</p>
@@ -98,7 +98,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
             </div>
          </div>
  
-         <div class="sc-col-span-5 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+         <div class="sc-col-span-5 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-6px">
             <p id="textcolorHtml" class="sc-text-sm sc-poppins sc-universal">Select</p>
             <div id="textColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
          </div>
@@ -107,7 +107,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
         </div>
       </div>
       <div
-         class=" sc-px-2 sc-flex  sc-gap-2 ">
+         class=" sc-flex  sc-gap-2 ">
          <div
             class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
            <div
@@ -199,7 +199,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
       </div>
  
       <div
-         class="sc-mt-2 sc-grid sc-px-2  sc-grid-cols-12 sc-gap-2">
+         class="sc-mt-2 sc-grid  sc-grid-cols-12 sc-gap-2">
          <div
             class="sc-flex sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
             <div
