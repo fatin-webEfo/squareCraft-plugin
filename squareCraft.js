@@ -349,47 +349,53 @@
 
 
 
-  function initTabListeners() {
-    const dropdowns = document.querySelectorAll('[id$="Dropdown"]'); // All dropdown sections like heading1Dropdown etc.
-  
-    dropdowns.forEach(dropdown => {
-      const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-  
-      dropdown.addEventListener("click", (event) => {
-        const target = event.target.closest("#allSelect, #boldSelect, #italicSelect, #linkSelect");
-        if (!target) return;
-  
-        styleIds.forEach(id => {
-          const el = dropdown.querySelector(`#${id}`);
-          const desc = dropdown.querySelector(`#scDesc-${id}`);
-  
-          if (el) {
-            if (el === target) {
-              el.classList.add("sc-select-activeTab-border");
-              el.classList.remove("sc-select-inActiveTab-border");
-            } else {
-              el.classList.remove("sc-select-activeTab-border");
-              el.classList.add("sc-select-inActiveTab-border");
-            }
-          }
-  
-          if (desc) {
-            if (target.id === id) {
-              desc.classList.remove("sc-hidden");
-            } else {
-              desc.classList.add("sc-hidden");
-            }
-          }
-        });
-      });
-    });
-  }
-  
-  
+ function initTabToggleEvents() {
+   const dropdowns = document.querySelectorAll('[id$="Dropdown"]');
+
+   dropdowns.forEach((dropdown) => {
+     dropdown.addEventListener("click", (event) => {
+       const clicked = event.target.closest(
+         "#allSelect, #boldSelect, #italicSelect, #linkSelect"
+       );
+       if (!clicked) return;
+
+       const styleIds = [
+         "allSelect",
+         "boldSelect",
+         "italicSelect",
+         "linkSelect",
+       ];
+
+       styleIds.forEach((id) => {
+         const tab = dropdown.querySelector(`#${id}`);
+         const desc = dropdown.querySelector(`#scDesc-${id}`);
+
+         if (tab) {
+           if (tab === clicked) {
+             tab.classList.add("sc-select-activeTab-border");
+             tab.classList.remove("sc-select-inActiveTab-border");
+           } else {
+             tab.classList.remove("sc-select-activeTab-border");
+             tab.classList.add("sc-select-inActiveTab-border");
+           }
+         }
+
+         if (desc) {
+           if (clicked.id === id) {
+             desc.classList.remove("sc-hidden");
+           } else {
+             desc.classList.add("sc-hidden");
+           }
+         }
+       });
+     });
+   });
+ }
+
   setTimeout(() => {
-    initTabListeners();
+    initTabToggleEvents();
   }, 300);
-  
+
   
   
   
