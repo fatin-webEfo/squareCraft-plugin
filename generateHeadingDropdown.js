@@ -22,7 +22,8 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
       </div>
       <div class="sc-mt-5 sc-px-2">
         <p class="sc-text-xs sc-font-thin sc-universal sc-text-gray-300 sc-poppins">Style</p>
-        <div class="sc-text-xs sc-text-gray-400 sc-mt-1" id="scDesc-${id}-allSelect"> <div
+        <div class="sc-text-xs sc-text-gray-400 sc-mt-1" id="scDesc-${id}-allSelect"> 
+        <div
       class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
  
       <div id="scFontSelect"
@@ -351,11 +352,10 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
          <p class="sc-text-sm sc-poppins sc-universal">#363544</p>
          <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
       </div>
-   </div> </div>
+   </div> 
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-italicSelect">Italic text part</div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-linkSelect">Link text part</div>
       </div>
-    </div>
     <div class="sc-px-2">
       <div class="sc-h-1px sc-mt-4 sc-bg-3f3f3f"></div>
     </div>
