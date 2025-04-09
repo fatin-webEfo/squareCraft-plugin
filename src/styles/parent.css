@@ -1268,7 +1268,9 @@
 #font-family-arrow {
   z-index: 999999;
 }
-
+.z-index-high{
+  z-index: 999999 !important;
+}
 #scFontDropdown {
   position: absolute;
   z-index: 99999;

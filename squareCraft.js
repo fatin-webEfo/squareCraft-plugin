@@ -101,7 +101,6 @@
     cssText += "}";
 
     styleTag.innerHTML = cssText;
-    console.log(`✅ Styles applied to ${elementId} and its nested elements`);
   }
 
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -158,7 +157,6 @@
     const isEnabled = localStorage.getItem("sc_enabled") !== "false";
   
     if (!isEnabled) {
-      console.log("🚫 Widget toggle is OFF");
       return;
     }
   
@@ -185,7 +183,6 @@
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   
       const data = await response.json();
-      console.log("📥 Retrieved modifications:", data);
   
       if (!data.modifications || !Array.isArray(data.modifications)) {
         console.warn("⚠️ No modifications found or invalid format");
@@ -208,7 +205,6 @@
         modificationMap.forEach((css, elementId) => {
           const element = document.getElementById(elementId);
           if (element) {
-            console.log(`✅ Applying styles to element ${elementId}`);
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
@@ -234,7 +230,6 @@
     } catch (error) {
       console.error("❌ Error Fetching Modifications:", error);
       if (retries > 0) {
-        console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
         setTimeout(() => fetchModifications(retries - 1), 2000);
       }
     }
@@ -255,7 +250,6 @@
     widgetContainer.dataset.listenerAttached = "true";
 
     function toggleTabClass(targetElement) {
-      console.log("🚀 Toggle function called for:", targetElement);
       if (targetElement.classList.contains("sc-activeTab-border")) {
         targetElement.classList.remove("sc-activeTab-border");
         targetElement.classList.add("sc-inActiveTab-border");
@@ -268,7 +262,6 @@
     widgetContainer.addEventListener("click", (event) => {
       const tabElement = event.target;
       if (tabElement.classList.contains('sc-inActiveTab-border') || tabElement.classList.contains('sc-activeTab-border')) {
-        console.log("📌 Tab Element Clicked:", tabElement);
         toggleTabClass(tabElement);
       }
     });

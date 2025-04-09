@@ -20,9 +20,7 @@ export function handleAlignmentClick(event, context) {
   textTags.forEach(el => {
     const tagName = el.tagName.toLowerCase();
     const result = getTextType(tagName, el);
-    if (result) {
-      console.log(`📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${result.type}, BorderColor: ${result.borderColor}`);
-    }
+
   });
 
   const textAlign = alignmentIcon.dataset.align;
@@ -30,7 +28,6 @@ export function handleAlignmentClick(event, context) {
   if (lastAppliedAlignment === textAlign) {
     applyStylesToElement(lastClickedElement, { "text-align": "" });
     setLastAppliedAlignment(null);
-    console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
 
     if (lastActiveAlignmentElement) {
       lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
@@ -39,7 +36,6 @@ export function handleAlignmentClick(event, context) {
   } else {
     applyStylesToElement(lastClickedElement, { "text-align": textAlign });
     setLastAppliedAlignment(textAlign);
-    console.log(`✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`);
 
     if (lastActiveAlignmentElement && lastActiveAlignmentElement !== alignmentIcon) {
       lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
@@ -86,7 +82,6 @@ export function handleAlignmentClick(event, context) {
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const result = await response.json();
-        console.log("✅ Modifications saved successfully:", result);
         publishButton.textContent = "Published";
       } catch (error) {
         console.error("❌ Error saving modifications:", error.message);

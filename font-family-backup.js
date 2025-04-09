@@ -53,7 +53,6 @@ export function html() {
       return;
     }
 
-    console.log("✅ Font options loaded:", fontOptions);
 
     fontSelect.addEventListener("change", function () {
       const selectedFont = fontSelect.value;
@@ -77,9 +76,6 @@ export function html() {
         element.style.setProperty("font-family", selectedFont, "important");
       });
 
-      console.log(
-        `🔄 Updated font family to: ${selectedFont} for ${textElements.length} elements inside ${selectedBlock.id}`
-      );
       window.parent.postMessage(
         { type: "FONT_CHANGE", font: selectedFont },
         "*"

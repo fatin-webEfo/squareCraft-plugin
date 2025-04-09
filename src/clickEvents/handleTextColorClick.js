@@ -26,7 +26,6 @@ export function handleTextColorClick(event, lastClickedElement, applyStylesToEle
             textColorHtml.textContent = selectedColor;
           }
   
-          console.log(`🎨 Applied Color: ${selectedColor}`);
         }
       });
     }

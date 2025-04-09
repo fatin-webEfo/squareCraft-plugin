@@ -11,5 +11,4 @@ document.body.addEventListener("click", (event) => {
   selectedElement.style.outline = "2px dashed #EF7C2F";
   selectedElement.classList.add("sc-selected");
 
-  console.log(`✅ Selected Element: ${selectedElement.id}`);
 });

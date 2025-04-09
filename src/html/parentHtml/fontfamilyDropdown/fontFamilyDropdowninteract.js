@@ -4,30 +4,24 @@
   const widgetId = widgetScript.dataset?.wId;
 
   if (token) {
-    console.log("🔑 Token received:", token);
     localStorage.setItem("sc_auth_token", token);
     document.cookie = `sc_auth_token=${token}; path=.squarespace.com;`;
   }
 
   if (userId) {
-    console.log("👤 User ID received:", userId);
     localStorage.setItem("sc_u_id", userId);
     document.cookie = `sc_u_id=${userId}; path=.squarespace.com;`;
 
   }
 
   if (widgetId) {
-    console.log("🛠️ Widget ID received:", widgetId);
     localStorage.setItem("sc_w_id", widgetId);
     document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
   }
-  console.log("✅ sc Plugin Loaded");
   setTimeout(() => {
     if (!window.location.href.includes("squarespace.com/config")) return;
 
-    console.log("🔹 Injecting Custom Admin Logo...");
     const toolbar = document.querySelector('[data-test="header-nav"]');
-    console.log("toolbar found...", toolbar);
     if (!toolbar) {
       console.warn("⚠️ Squarespace navbar not found.");
       return;
@@ -51,7 +45,6 @@
     logoWrapper.appendChild(logo);
     toolbar.appendChild(logoWrapper);
 
-    console.log("✅ Custom Admin Logo Added to Squarespace Navbar");
 
   }, 2000);
 
@@ -60,11 +53,9 @@
   }
   function observeDOMChanges() {
     const observer = new MutationObserver(() => {
-      console.log("🔄 DOM Updated - Checking for changes...");
 
       if (isEditingMode()) {
-        console.log("🛠 Detected Edit Mode - Rechecking modifications...");
-        setTimeout(fetchModifications, 3000); // ✅ Wait 3s before fetching again
+        setTimeout(fetchModifications, 3000); 
       } else {
         fetchModifications();
       }
@@ -77,7 +68,6 @@
     if (!pageId || !elementId || !css) return;
 
     applyStylesToElement(elementId, css);
-    console.log("Saving modifications for Page ID and Element ID:", pageId, elementId);
     const modificationData = {
       userId,
       token,
@@ -100,16 +90,12 @@
         body: JSON.stringify(modificationData),
       });
 
-      console.log("✅ Changes Saved Successfully!", response.json());
 
     } catch (error) {
       console.error("❌ Error saving modifications:", error);
     }
   }
 
-  setTimeout(() => {
-    console.log("🔗 Full URL:", window.location.href);
-  }, 1000);
 
   function shouldShowWidget() {
     const url = window.location.href;
@@ -127,7 +113,6 @@
 
 
   if (token) {
-    console.log("🔑 Token received:", token);
     localStorage.setItem("sc_auth_token", token);
     document.cookie = `sc_auth_token=${token}; path=.squarespace.com;`;
   }
@@ -206,7 +191,6 @@
 
       selectedElement = event.target;
       highlightElement(selectedElement);
-      console.log(`🆔 Page ID: ${pageId}, Element ID: ${elementId}`);
     });
 
     document.getElementById("scFontSize").addEventListener("input", applyStyle);
@@ -229,7 +213,6 @@
       }
 
       let css = getCSSModifications(selectedElement);
-      console.log("🎨 Publishing Changes:", { pageId, elementId, css });
 
       await saveModifications(pageId, elementId, css);
     });
@@ -299,7 +282,6 @@
       }
     });
 
-    console.log(`🎨 Styles applied to ${elementId}:`, css);
   }
 
 
@@ -307,10 +289,8 @@
   async function fetchModifications() {
     try {
 
-      // 🔹 Detect Edit Mode
       if (isEditingMode()) {
-        console.log("🛠 Squarespace is in Edit Mode - Waiting for changes...");
-        setTimeout(fetchModifications, 3000); // Retry after 3s
+        setTimeout(fetchModifications, 3000); 
         return;
       }
 
@@ -323,7 +303,6 @@
         return;
       }
 
-      console.log(`📄 Fetching modifications for Page ID: ${pageId}`);
 
       const response = await fetch(
         `https://webefo-backend.vercel.app/api/v1/get-modifications?userId=${userId}`,
@@ -339,12 +318,10 @@
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
-      console.log("📥 Fetched Modifications:", data);
 
       data.modifications.forEach(({ page_id, elements }) => {
         if (page_id === pageId) {
           elements.forEach(({ elementId, css }) => {
-            console.log(`🎨 Applying styles to ${elementId}`);
             applyStylesToElement(elementId, css);
           });
         }

@@ -19,8 +19,6 @@ export function handleBlockClick(event, context) {
     setLastClickedBlockId(block.id);
     setLastClickedElement(block);
   
-    console.log(`✅ Selected Block: ${block.id}`);
-  
     let appliedTextAlign = window.getComputedStyle(block).textAlign;
     if (!appliedTextAlign || appliedTextAlign === "start") {
       const nested = block.querySelector("h1,h2,h3,h4,p");
@@ -31,7 +29,6 @@ export function handleBlockClick(event, context) {
   
     if (appliedTextAlign) {
       setLastAppliedAlignment(appliedTextAlign);
-      console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
   
       const map = {
         left: "scTextAlignLeft",
