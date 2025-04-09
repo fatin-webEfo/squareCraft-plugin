@@ -269,12 +269,10 @@
 
   const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
-
   loadCSS(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
-    "sc_parentCSS"
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
   );
-
+  
 
   async function createWidget() {
     try {
