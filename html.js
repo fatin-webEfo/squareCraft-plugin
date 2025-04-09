@@ -91,7 +91,6 @@ export function html() {
                ${createHeadingDropdown('heading1Dropdown', fontSizes, LetterSpacing)}
             </div>
 
-
             <div id="heading2Part" class="sc-hidden">
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading2"
