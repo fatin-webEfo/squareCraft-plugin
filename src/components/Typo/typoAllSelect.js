@@ -85,7 +85,9 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
       </div>
       <div
          class=" sc-flex  sc-gap-2 ">
-         <div
+
+
+           <div
      class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
     <div
         class="sc-flex sc-items-center  ">
@@ -110,7 +112,8 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
        
         </div>
      </div>
-         </div>
+
+
          <div class="sc-flex sc-text-color-white sc-px-1 
                sc-rounded-6px sc-border sc-border-solid sc-border-585858 
                sc-items-center ">
