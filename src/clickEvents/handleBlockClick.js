@@ -14,7 +14,7 @@ export function handleBlockClick(event, context) {
   
     if (selectedElement) selectedElement.style.outline = "";
     setSelectedElement(block);
-    block.style.outline = "2px dashed #EF7C2F";
+    block.style.outline = "1px dashed #EF7C2F";
   
     setLastClickedBlockId(block.id);
     setLastClickedElement(block);
