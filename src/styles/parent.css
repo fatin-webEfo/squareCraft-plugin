@@ -301,7 +301,10 @@
 .sc-border-color-494949 {
   border-color: #494949 !important;
 }
-
+.sc-mt-3{
+  margin-top: 0.75rem !important;
+  /* 12px */
+}
 .sc-mt-4 {
   margin-top: 15px !important;
 }

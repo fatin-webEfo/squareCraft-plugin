@@ -64,13 +64,12 @@ export function typoLinkSelect(fontSizes) {
       class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
       <div
          class="sc-flex sc-bg-494949  sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
-         <div class="  sc-px-2   ">
-            <p
-               class="sc-text-sm sc-universal sc-poppins sc-font-light">
+         <div class="sc-px-2">
+            <p class="sc-text-sm sc-universal sc-poppins sc-font-light">
                Regular</p>
          </div>
          <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-            <img class="sc-mx-auto sc-rotate-180 sc-mt-6" width="10px"
+            <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
       </div>
