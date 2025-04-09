@@ -50,7 +50,10 @@ export function html() {
                </div>
                <p id="toggleText" class="sc-text-sm sc-poppins">Enable</p>
             </div>
-            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/Reset.png" loading="lazy" alt="reset">
+           <div class="sc-flex sc-items-center sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
+           <p class="sc-font-light sc-text-sm">Reset</p>
+           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
+           </div>
          </div>
          <div class="sc-h-1px  sc-bg-3f3f3f"></div>
          <div class="sc-mt-2">
