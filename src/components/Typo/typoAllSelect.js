@@ -86,32 +86,39 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
       <div
          class=" sc-flex  sc-gap-2 ">
 
-
+         
+         <div
+            class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
            <div
-     class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
-    <div
-        class="sc-flex sc-items-center  ">
-        
-        <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
-
-           <p class="sc-universal sc-poppins sc-text-sm">AG</p>
-        </div>
-         <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
-
-          <p class="sc-universal sc-poppins sc-text-sm">ag</p>
-        </div>
-         <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
-
-          <p class="sc-universal sc-poppins sc-text-sm">Ag</p>
-        </div>
-        <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
-          <p class="sc-universal sc-poppins sc-text-sm">AG</p>
-        </div>
-        
-       
-       
-        </div>
-     </div>
+               class="sc-flex sc-items-center  ">
+               
+               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="left">
+               </div>
+                <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="center">
+               </div>
+                <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="right">
+               </div>
+               <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="justify">
+               </div>
+               
+            </div>
+         </div>
 
 
          <div class="sc-flex sc-text-color-white sc-px-1 
@@ -174,33 +181,30 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
       </div>
  
       <div
-         class="sc-mt-2 sc-grid  sc-grid-cols-12 sc-gap-2">
-         <div
-            class="sc-flex sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
-            <div
-               class="sc-flex sc-poppins  sc-items-center sc-justify-between sc-w-full ">
-               <p
-                  class=" sc-mx-2 sc-w-full sc-text-center sc-universal sc-text-sm ">
-                  AG</p>
-               <div class="sc-v-line"></div>
-               <p
-                  class=" sc-universal  sc-text-sm sc-text-center sc-w-full sc-mx-auto">
-                  ag</p>
-               <div class="sc-v-line"></div>
-               <p
-                  class=" sc-universal  sc-text-sm sc-text-center sc-w-full sc-mx-auto">
-                  Ag</p>
-               <div class="sc-v-line"></div>
-               <p
-                  class=" sc-universal  sc-text-sm sc-text-center sc-w-full sc-mx-auto">
-                  AG</p>
-               <div class="sc-v-line"></div>
-               <img class=" sc-rounded-6px sc-rotate-180 sc-px-1_5" width="12px"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/dot.svg" alt="">
- 
-            </div>
-         </div>
-      </div>
+     class="sc-flex sc-col-span-6 sc-justify-between  sc-items-center ">
+    <div
+        class="sc-flex sc-items-center  ">
+        
+        <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+
+           <p class="sc-universal sc-poppins sc-text-sm">AG</p>
+        </div>
+         <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+
+          <p class="sc-universal sc-poppins sc-text-sm">ag</p>
+        </div>
+         <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+
+          <p class="sc-universal sc-poppins sc-text-sm">Ag</p>
+        </div>
+        <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+          <p class="sc-universal sc-poppins sc-text-sm">AG</p>
+        </div>
+        
+       
+       
+        </div>
+     </div>
  
       <div class="sc-mt-4 ">
          <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-poppins">Text Highlight</p>
