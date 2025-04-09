@@ -317,44 +317,33 @@
       document.body.appendChild(widgetContainer);
       makeWidgetDraggable();
       widgetLoaded = true;
-
-      setTimeout(() => {
-        widgetContainer = document.getElementById("sc-widget-container");
-        if (!widgetContainer) {
-          console.error("❌ Widget container failed to load.");
-          return;
-        }
-      
-     setTimeout(() => {
-  widgetContainer = document.getElementById("sc-widget-container");
-  if (!widgetContainer) {
-    console.error("❌ Widget container failed to load.");
-    return;
-  }
-
-  setTimeout(() => {
-    const firstBlock = document.querySelector('[id^="block-"]');
-    if (firstBlock) {
-      setTimeout(() => {
-        handleBlockClick({ target: firstBlock }, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
-      }, 300); 
-    }
-  }, 300);
   
-}, 300); 
-
-      }, 500);
-      
+      // Use MutationObserver to wait until the parts are rendered
+      const observer = new MutationObserver(() => {
+        const firstBlock = document.querySelector('[id^="block-"]');
+        const allPartsReady = [
+          "heading1Part", "heading2Part", "heading3Part", "heading4Part",
+          "paragraph1Part", "paragraph2Part", "paragraph3Part"
+        ].every(id => document.getElementById(id));
+  
+        if (firstBlock && allPartsReady) {
+          handleBlockClick({ target: firstBlock }, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
+          observer.disconnect(); // Done observing
+        }
+      });
+  
+      observer.observe(document.body, { childList: true, subtree: true });
     }
   }
+  
 
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
