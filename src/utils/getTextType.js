@@ -16,6 +16,7 @@ export function getTextType(tagName, element) {
       }
     }
   
+    console.log("Element classList:", classList);
     return null;
   }
   
