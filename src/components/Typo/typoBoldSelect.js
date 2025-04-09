@@ -9,11 +9,7 @@ export function typoBoldSelect(fontSizes) {
          style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
          <option value="" selected disabled hidden>Select Fontt54t5r45t4t54t4</option>
       </select>
-      <div class="sc-bg-3f3f3f sc-px-2"
-         style="height: 27px; padding: 0 3px; pointer-events: none;">
-         <img class="sc-rotate-180 sc-mt-3" width="12px"
-            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-      </div>
+      
    </div>
 
    <div
