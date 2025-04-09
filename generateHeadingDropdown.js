@@ -6,7 +6,7 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
   return `
     <div id="${id}">
       <div class="sc-mt-2 sc-px-2 sc-gap-2">
-        <div class="sc-flex sc-mt-2 sc-justify-between sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-justify-between sc-items-center">   
           <div class="sc-flex sc-items-center sc-justify-between">
             <div id="${id}-allSelect" class="sc-px-2 sc-py-1px sc-select-activeTab-border sc-cursor-pointer sc-rounded-l">
               <p class="sc-universal sc-text-sm sc-poppins">All</p>
@@ -27,21 +27,21 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
       <div class="sc-mt-5 sc-px-2">
         <p class="sc-text-xs sc-font-thin sc-universal sc-text-gray-300 sc-poppins">Style</p>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1" id="scDesc-${id}-allSelect"> 
-         ${typoAllSelect(`${id}-allSelect`, fontSizes, LetterSpacing)}
+         ${typoAllSelect( fontSizes, LetterSpacing)}
 
-   </div>
+       </div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-boldSelect">
-         ${typoBoldSelect(`${id}-boldSelect`, fontSizes, LetterSpacing)}
+         ${typoBoldSelect( fontSizes, LetterSpacing)}
 
-</div>
+      </div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-italicSelect"> 
-         ${typoItalicSelect(`${id}-italicSelect`, fontSizes, LetterSpacing)}
+         ${typoItalicSelect(fontSizes, LetterSpacing)}
 
-</div>
+        </div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-linkSelect">
-         ${typoLinkSelect(`${id}-linkSelect`, fontSizes, LetterSpacing)}
+         ${typoLinkSelect(fontSizes, LetterSpacing)}
 
-</div>
+        </div>
       </div>
     </div>
     <div class="sc-px-2">

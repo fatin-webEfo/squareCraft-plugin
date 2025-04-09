@@ -16,8 +16,6 @@
   let userId = widgetScript.dataset?.uId;
   let widgetId = widgetScript.dataset?.wId; 
 
-
-
   if (token) {
     localStorage.setItem("sc_auth_token", token);
     document.cookie = `sc_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
