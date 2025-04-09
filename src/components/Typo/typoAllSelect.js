@@ -1,5 +1,5 @@
-export function typoAllSelect(fontSizes,LetterSpacing){
-    return `
+export function typoAllSelect(fontSizes, LetterSpacing) {
+   return `
       <div
       class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
  
@@ -11,7 +11,7 @@ export function typoAllSelect(fontSizes,LetterSpacing){
          </select>
          <div class="sc-bg-3f3f3f sc-px-2"
             style="height: 27px; padding: 0 3px; pointer-events: none;">
-            <img class="sc-rotate-180" width="12px"
+            <img class="sc-rotate-180 sc-mt-1" width="12px"
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
       </div>
@@ -45,14 +45,14 @@ export function typoAllSelect(fontSizes,LetterSpacing){
                      sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                      sc-mt-1">
                   ${fontSizes
-                    ?.map(
-                      (size) => `
+         ?.map(
+            (size) => `
                   <div
                      class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
                      data-value="${size}">${size}</div>
                   `
-                    )
-                    .join("")}
+         )
+         .join("")}
                </div>
             </div>
          </div>
@@ -135,13 +135,13 @@ export function typoAllSelect(fontSizes,LetterSpacing){
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
                ${LetterSpacing?.map(
-                 (gap) => `
+            (gap) => `
                <div
                   class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
                   data-value="${gap}">${gap}
                </div>
                `
-               ).join("")}
+         ).join("")}
             </div>
          </div>
          <div class="sc-flex sc-text-color-white sc-px-1 
@@ -163,7 +163,7 @@ export function typoAllSelect(fontSizes,LetterSpacing){
             sc-rounded-6px sc-border sc-border-585858 sc-absolute 
             sc-mt-1">
          ${LetterSpacing?.map(
-           (gap) => `
+            (gap) => `
          <div
             class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
             data-value="${gap}">${gap}
