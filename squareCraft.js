@@ -318,7 +318,6 @@
       makeWidgetDraggable();
       widgetLoaded = true;
   
-      // Use MutationObserver to wait until the parts are rendered
       const observer = new MutationObserver(() => {
         const firstBlock = document.querySelector('[id^="block-"]');
         const allPartsReady = [
@@ -326,8 +325,8 @@
           "paragraph1Part", "paragraph2Part", "paragraph3Part"
         ].every(id => document.getElementById(id));
   
-        if (firstBlock && allPartsReady) {
-          handleBlockClick({ target: firstBlock }, {
+        if (lastClickedElement) {
+          handleBlockClick({ target: lastClickedElement }, {
             getTextType,
             selectedElement,
             setSelectedElement: (val) => selectedElement = val,
@@ -336,9 +335,25 @@
             setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
             setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
           });
-          observer.disconnect(); // Done observing
         }
-      });
+        
+      });setTimeout(() => {
+        widgetContainer = document.getElementById("sc-widget-container");
+        if (!widgetContainer) return;
+      
+        if (lastClickedElement) {
+          handleBlockClick({ target: lastClickedElement }, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
+        }
+      }, 500);
+      
   
       observer.observe(document.body, { childList: true, subtree: true });
     }
