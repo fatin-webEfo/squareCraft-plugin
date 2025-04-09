@@ -29,7 +29,7 @@ export function html() {
          <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
          <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
       </div>
-      <div class="sc-border-t sc-border-solid sc-relative sc-border-color-494949 sc-w-full">
+      <div class="sc-border-t sc-border-solid sc-relative  sc-border-color-494949 sc-w-full">
          <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px">
          </div>
       </div>
@@ -50,8 +50,8 @@ export function html() {
                </div>
                <p id="toggleText" class="sc-text-sm sc-poppins">Enable</p>
             </div>
-           <div class="sc-flex sc-cursor-pointer sc-items-center sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
-           <p class="sc-font-light sc-text-sm">Reset</p>
+           <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-full sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
+           <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
            </div>
          </div>
