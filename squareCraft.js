@@ -88,6 +88,7 @@
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
   
+
   document.body.addEventListener("click", (event) => {
     handleBlockClick(event, {
       getTextType,
@@ -324,18 +325,29 @@
           return;
         }
       
-        const firstBlock = document.querySelector('[id^="block-"]');
-        if (firstBlock) {
-          handleBlockClick({ target: firstBlock }, {
-            getTextType,
-            selectedElement,
-            setSelectedElement: (val) => selectedElement = val,
-            setLastClickedBlockId: (val) => lastClickedBlockId = val,
-            setLastClickedElement: (val) => lastClickedElement = val,
-            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-          });
-        }
+     setTimeout(() => {
+  widgetContainer = document.getElementById("sc-widget-container");
+  if (!widgetContainer) {
+    console.error("❌ Widget container failed to load.");
+    return;
+  }
+
+  const firstBlock = document.querySelector('[id^="block-"]');
+  if (firstBlock) {
+    setTimeout(() => {
+      handleBlockClick({ target: firstBlock }, {
+        getTextType,
+        selectedElement,
+        setSelectedElement: (val) => selectedElement = val,
+        setLastClickedBlockId: (val) => lastClickedBlockId = val,
+        setLastClickedElement: (val) => lastClickedElement = val,
+        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      });
+    }, 300); 
+  }
+}, 300); 
+
       }, 500);
       
     }

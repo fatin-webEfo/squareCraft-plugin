@@ -17,9 +17,7 @@ export function html() {
                width="140px" />
 
          </div>
-         <p class="sc-text-sm sc-mt-6 sc-poppins sc-font-light">Lorem Ipsum is simply
-            dummy text
-            of the printing and typesetting industry.
+         <p class="sc-text-sm sc-mt-6 sc-poppins sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
          </p>
       </div>
       <div class="sc-mt-6 sc-poppins sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">

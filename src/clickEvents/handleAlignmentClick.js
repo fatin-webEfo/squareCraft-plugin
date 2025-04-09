@@ -10,7 +10,6 @@ export function handleAlignmentClick(event, context) {
     setLastAppliedAlignment,
     lastActiveAlignmentElement,
     setLastActiveAlignmentElement,
-    lastClickedBlockId,
     userId,
     token,
     widgetId
