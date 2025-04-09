@@ -361,7 +361,7 @@ document.body.addEventListener("click", (event) => {
 
   console.log("📌 Clicked tab:", clicked.id);
 
-  const baseId = clicked.id.split("-")[0]; // heading1, paragraph2, etc.
+  const baseId = clicked.id.split("-")[0]; 
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
 
   styleIds.forEach((suffix) => {
@@ -398,12 +398,7 @@ document.body.addEventListener("click", (event) => {
 });
 
   
-  
-  
-  
-  
-  
-  
+
 
 
   async function fetchModifications(retries = 3) {
