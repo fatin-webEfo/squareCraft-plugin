@@ -400,6 +400,9 @@
   /* 100px */
 }
 
+.sc-w-50{
+  width:50% !important;
+}
 .sc-w-10 {
   width: 1rem !important;
   /* 48px */
