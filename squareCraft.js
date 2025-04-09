@@ -276,27 +276,16 @@
 
   async function createWidget() {
     try {
-      let cachedWidget = localStorage.getItem("sc_widget");
-      let lastFetched = localStorage.getItem("sc_widget_timestamp");
-      let oneDay = 24 * 60 * 60 * 1000;
-      let now = Date.now();
-
-      if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
-        loadWidgetFromString(cachedWidget);
-        return;
-      }
       const module = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
       );
-
-      if (module && module.html) {
+  
+      if (module && typeof module.html === "function") {
         const htmlString = module.html();
-      
+  
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          localStorage.setItem("sc_widget", htmlString);
-          localStorage.setItem("sc_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
-      
+  
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
@@ -306,11 +295,11 @@
           console.error("❌ Retrieved HTML string is invalid or empty!");
         }
       }
-      
     } catch (error) {
       console.error("🚨 Error loading HTML module:", error);
     }
   }
+  
 
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
