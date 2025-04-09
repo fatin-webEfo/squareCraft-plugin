@@ -267,7 +267,10 @@
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
- const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
+
+
+
+const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
 loadCSS(
   "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
