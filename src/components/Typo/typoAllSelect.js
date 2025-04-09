@@ -86,39 +86,30 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
       <div
          class=" sc-flex  sc-gap-2 ">
          <div
-            class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
-           <div
-               class="sc-flex sc-items-center  ">
-               
-               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="left">
-               </div>
-                <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="center">
-               </div>
-                <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="right">
-               </div>
-               <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="justify">
-               </div>
-               
-              
-              
-               
-            </div>
+     class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
+    <div
+        class="sc-flex sc-items-center  ">
+        
+        <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+
+           <p class="sc-universal sc-poppins sc-text-sm">AG</p>
+        </div>
+         <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+
+          <p class="sc-universal sc-poppins sc-text-sm">ag</p>
+        </div>
+         <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+
+          <p class="sc-universal sc-poppins sc-text-sm">Ag</p>
+        </div>
+        <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+          <p class="sc-universal sc-poppins sc-text-sm">AG</p>
+        </div>
+        
+       
+       
+        </div>
+     </div>
          </div>
          <div class="sc-flex sc-text-color-white sc-px-1 
                sc-rounded-6px sc-border sc-border-solid sc-border-585858 
