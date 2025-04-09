@@ -274,7 +274,7 @@ loadCSS(
 );
 
 
-async function createWidget() {
+async function createWidget() { 
   try {
     const module = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/html.js"

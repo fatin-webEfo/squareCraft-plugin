@@ -7,7 +7,7 @@ export function typoBoldSelect(fontSizes) {
       class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
       <select class=" sc-text-sm sc-poppins sc-font-light"
          style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
-         <option value="" selected disabled hidden>Select Font</option>
+         <option value="" selected disabled hidden>Select FontTest</option>
       </select>
       <div class="sc-bg-3f3f3f sc-px-2"
          style="height: 27px; padding: 0 3px; pointer-events: none;">
