@@ -11,7 +11,7 @@ export function typoBoldSelect(fontSizes) {
       </select>
       <div class="sc-bg-3f3f3f sc-px-2"
          style="height: 27px; padding: 0 3px; pointer-events: none;">
-         <img class="sc-rotate-180 sc-mt-1" width="12px"
+         <img class="sc-rotate-180 sc-mt-3" width="12px"
             src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
       </div>
    </div>
@@ -37,7 +37,7 @@ export function typoBoldSelect(fontSizes) {
                </div>
                <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
                   style="height: 27px; padding: 0 8px; border-radius: 0px 5px 5px 0px;">
-                  <img class=" sc-rotate-180 " width="12px"
+                  <img class=" sc-rotate-180 sc-mt-3" width="12px"
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                </div>
             </div>
@@ -70,7 +70,7 @@ export function typoBoldSelect(fontSizes) {
                Regular</p>
          </div>
          <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-            <img class="sc-mx-auto sc-rotate-180 sc-mt-4" width="10px"
+            <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
       </div>
