@@ -90,7 +90,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
            <div
                class="sc-flex sc-items-center  ">
                
-               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
  
                   <img 
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
@@ -108,7 +108,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
                      class=" alignment-icon   sc-mx-auto" alt="right">
                </div>
-               <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+               <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
  
                   <img 
                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
