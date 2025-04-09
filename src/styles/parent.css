@@ -23,6 +23,10 @@
 .sc-btn {
   all: unset;
 }
+.sc-pl-2{
+  padding-left: 0.5rem !important;
+  /* 8px */
+}
 
 .sc-active-bar{
   background-color: #EF7C2F !important;

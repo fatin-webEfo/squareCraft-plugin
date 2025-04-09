@@ -63,7 +63,7 @@ export function typoAllSelect(fontSizes,LetterSpacing){
       <div
          class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
          <div
-            class="sc-flex sc-bg-494949 sc-px-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
+            class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
             <div class="    ">
                <p
                   class="sc-text-sm sc-universal sc-poppins sc-font-light">
