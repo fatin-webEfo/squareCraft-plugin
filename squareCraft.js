@@ -324,8 +324,7 @@
           console.error("❌ Widget container failed to load.");
           return;
         }
-  
-        // Use lastClickedElement from global scope
+
         if (lastClickedElement) {
           handleBlockClick({ target: lastClickedElement }, {
             getTextType,
