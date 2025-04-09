@@ -358,13 +358,26 @@
       widgetLoaded = true;
 
       setTimeout(() => {
-        widgetContainer = document.getElementById(
-          "sc-widget-container"
-        );
+        widgetContainer = document.getElementById("sc-widget-container");
         if (!widgetContainer) {
           console.error("❌ Widget container failed to load.");
+          return;
+        }
+      
+        const firstBlock = document.querySelector('[id^="block-"]');
+        if (firstBlock) {
+          handleBlockClick({ target: firstBlock }, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
         }
       }, 500);
+      
     }
   }
 
