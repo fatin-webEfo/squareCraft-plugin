@@ -70,7 +70,7 @@ export function typoItalicSelect(fontSizes) {
                Regular</p>
          </div>
          <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-            <img class="sc-mx-auto sc-rotate-180 sc-mt-2" width="10px"
+            <img class="sc-mx-auto sc-rotate-180 sc-mt-6" width="10px"
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
       </div>
