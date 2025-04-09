@@ -109,6 +109,7 @@
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
   const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
+  const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
   
   document.body.addEventListener("click", (event) => {
     handleBlockClick(event, {
@@ -120,10 +121,7 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-  });
-
-
-  document.body.addEventListener("click", (event) => {
+  
     handleAlignmentClick(event, {
       lastClickedElement,
       getTextType,
@@ -139,10 +137,10 @@
     });
   
     handleTextColorClick(event, lastClickedElement, applyStylesToElement);
+  
+    typoTabSelect(event);
   });
-
-const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
-document.body.addEventListener("click", typoTabSelect);
+  
 
 
   async function fetchModifications(retries = 3) {
@@ -245,8 +243,6 @@ document.body.addEventListener("click", typoTabSelect);
   }
   
   
-  
-
 
   window.addEventListener("load", async () => {
     await fetchModifications();
