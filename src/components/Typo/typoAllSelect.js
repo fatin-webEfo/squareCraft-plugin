@@ -89,6 +89,25 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
             class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
            <div
                class="sc-flex sc-items-center  ">
+               
+               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="left">
+               </div>
+                <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="center">
+               </div>
+                <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+ 
+                  <img 
+                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
+                     class=" alignment-icon   sc-mx-auto" alt="right">
+               </div>
                <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
  
                   <img 
@@ -96,24 +115,9 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                      class=" alignment-icon   sc-mx-auto" alt="justify">
                </div>
                
-               <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="justify">
-               </div>
-               <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="justify">
-               </div>
-               <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
- 
-                  <img 
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
-                     class=" alignment-icon   sc-mx-auto" alt="justify">
-               </div>
+              
+              
+               
             </div>
          </div>
          <div class="sc-flex sc-text-color-white sc-px-1 
