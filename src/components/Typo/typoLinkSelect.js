@@ -50,7 +50,7 @@ export function typoLinkSelect(fontSizes) {
                <div
                   class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
                   data-value="${size}">${size}</div>
-               `
+              `
          )
          .join("")}
             </div>
