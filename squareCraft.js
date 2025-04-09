@@ -318,29 +318,14 @@
       makeWidgetDraggable();
       widgetLoaded = true;
   
-      const observer = new MutationObserver(() => {
-        const firstBlock = document.querySelector('[id^="block-"]');
-        const allPartsReady = [
-          "heading1Part", "heading2Part", "heading3Part", "heading4Part",
-          "paragraph1Part", "paragraph2Part", "paragraph3Part"
-        ].every(id => document.getElementById(id));
-  
-        if (lastClickedElement) {
-          handleBlockClick({ target: lastClickedElement }, {
-            getTextType,
-            selectedElement,
-            setSelectedElement: (val) => selectedElement = val,
-            setLastClickedBlockId: (val) => lastClickedBlockId = val,
-            setLastClickedElement: (val) => lastClickedElement = val,
-            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-          });
-        }
-        
-      });setTimeout(() => {
+      setTimeout(() => {
         widgetContainer = document.getElementById("sc-widget-container");
-        if (!widgetContainer) return;
-      
+        if (!widgetContainer) {
+          console.error("❌ Widget container failed to load.");
+          return;
+        }
+  
+        // Use lastClickedElement from global scope
         if (lastClickedElement) {
           handleBlockClick({ target: lastClickedElement }, {
             getTextType,
@@ -353,11 +338,9 @@
           });
         }
       }, 500);
-      
-  
-      observer.observe(document.body, { childList: true, subtree: true });
     }
   }
+  
   
 
   async function toggleWidgetVisibility(event) {
