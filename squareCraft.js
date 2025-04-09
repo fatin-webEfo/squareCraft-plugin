@@ -317,30 +317,44 @@
       document.body.appendChild(widgetContainer);
       makeWidgetDraggable();
       widgetLoaded = true;
-  
+
       setTimeout(() => {
         widgetContainer = document.getElementById("sc-widget-container");
         if (!widgetContainer) {
           console.error("❌ Widget container failed to load.");
           return;
         }
+      
+     setTimeout(() => {
+  widgetContainer = document.getElementById("sc-widget-container");
+  if (!widgetContainer) {
+    console.error("❌ Widget container failed to load.");
+    return;
+  }
 
-        if (lastClickedElement) {
-          handleBlockClick({ target: lastClickedElement }, {
-            getTextType,
-            selectedElement,
-            setSelectedElement: (val) => selectedElement = val,
-            setLastClickedBlockId: (val) => lastClickedBlockId = val,
-            setLastClickedElement: (val) => lastClickedElement = val,
-            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-          });
-        }
+  setTimeout(() => {
+    const firstBlock = document.querySelector('[id^="block-"]');
+    if (firstBlock) {
+      setTimeout(() => {
+        handleBlockClick({ target: firstBlock }, {
+          getTextType,
+          selectedElement,
+          setSelectedElement: (val) => selectedElement = val,
+          setLastClickedBlockId: (val) => lastClickedBlockId = val,
+          setLastClickedElement: (val) => lastClickedElement = val,
+          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+        });
+      }, 300); 
+    }
+  }, 300);
+  
+}, 300); 
+
       }, 500);
+      
     }
   }
-  
-  
 
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
