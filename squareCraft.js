@@ -88,7 +88,6 @@
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
   
-
   document.body.addEventListener("click", (event) => {
     handleBlockClick(event, {
       getTextType,
@@ -268,25 +267,36 @@
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
-  const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
+ const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
-  loadCSS(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
-  );
-  
+loadCSS(
+  "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
+);
+
 
   async function createWidget() {
     try {
+      let cachedWidget = localStorage.getItem("sc_widget");
+      let lastFetched = localStorage.getItem("sc_widget_timestamp");
+      let oneDay = 24 * 60 * 60 * 1000;
+      let now = Date.now();
+
+      if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
+        loadWidgetFromString(cachedWidget);
+        return;
+      }
       const module = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
       );
-  
-      if (module && typeof module.html === "function") {
+
+      if (module && module.html) {
         const htmlString = module.html();
-  
+      
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+          localStorage.setItem("sc_widget", htmlString);
+          localStorage.setItem("sc_widget_timestamp", now.toString());
           loadWidgetFromString(htmlString);
-  
+      
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
@@ -296,11 +306,11 @@
           console.error("❌ Retrieved HTML string is invalid or empty!");
         }
       }
+      
     } catch (error) {
       console.error("🚨 Error loading HTML module:", error);
     }
   }
-  
 
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
@@ -325,32 +335,18 @@
           return;
         }
       
-     setTimeout(() => {
-  widgetContainer = document.getElementById("sc-widget-container");
-  if (!widgetContainer) {
-    console.error("❌ Widget container failed to load.");
-    return;
-  }
-
-  setTimeout(() => {
-    const firstBlock = document.querySelector('[id^="block-"]');
-    if (firstBlock) {
-      setTimeout(() => {
-        handleBlockClick({ target: firstBlock }, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
-      }, 300); 
-    }
-  }, 300);
-  
-}, 300); 
-
+        const firstBlock = document.querySelector('[id^="block-"]');
+        if (firstBlock) {
+          handleBlockClick({ target: firstBlock }, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
+        }
       }, 500);
       
     }
