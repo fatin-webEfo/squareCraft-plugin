@@ -71,7 +71,7 @@ export function typoBoldSelect(fontSizes) {
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="arrow">
         </div>
     
-        <ol class="sc-absolute sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-585858 sc-rounded-6px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
+        <ol class="sc-absolute sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-realtime sc-rounded-6px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
          <li class="sc-dropdown-item" style="font-weight: 300;">Light (300)</li>
          <li class="sc-dropdown-item" style="font-weight: 400;">Regular (400)</li>
          <li class="sc-dropdown-item" style="font-weight: 500;">Medium (500)</li>
