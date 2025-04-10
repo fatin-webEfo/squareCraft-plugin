@@ -125,6 +125,9 @@
   
     if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
       widgetContainer.innerHTML = htmlString;
+      handleFontWeightDropdownClick = (await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js")).handleFontWeightDropdownClick;
+      document.body.addEventListener("click", handleFontWeightDropdownClick);
+
     }
   
     setTimeout(() => {
