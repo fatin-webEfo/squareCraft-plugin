@@ -115,11 +115,12 @@
     });
   
     handleTextColorClick(event, lastClickedElement, applyStylesToElement);
-    handleFontWeightDropdownClick(event);
+    setTimeout(() => {
+      handleFontWeightDropdownClick();
+    }, 500);
     typoTabSelect(event);
   });
   
-
 
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
