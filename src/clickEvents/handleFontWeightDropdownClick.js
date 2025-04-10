@@ -1,22 +1,17 @@
-export function typoTabSelect(event) {
-    const tab = event.target.closest('[id$="Select"]');
-    if (!tab) return;
+export function handleFontWeightDropdownClick(event) {
+    const dropdownTrigger = event.target.closest("#font-weight-dropdown");
+    const dropdownList = document.getElementById("font-weight-dropdown-list");
   
-    const dropdownId = tab.id.split('-')[0];
-    const allTabs = document.querySelectorAll(`#${dropdownId}-allSelect, #${dropdownId}-boldSelect, #${dropdownId}-italicSelect, #${dropdownId}-linkSelect`);
-    const allDescs = document.querySelectorAll(`#scDesc-${dropdownId}-allSelect, #scDesc-${dropdownId}-boldSelect, #scDesc-${dropdownId}-italicSelect, #scDesc-${dropdownId}-linkSelect`);
+    if (!dropdownList) return;
   
-    allTabs.forEach(t => {
-      t.classList.remove("sc-select-activeTab-border");
-      t.classList.add("sc-select-inActiveTab-border");
-    });
-  
-    allDescs.forEach(d => d.classList.add("sc-hidden"));
-  
-    tab.classList.add("sc-select-activeTab-border");
-    tab.classList.remove("sc-select-inActiveTab-border");
-  
-    const activeDesc = document.getElementById(`scDesc-${tab.id}`);
-    if (activeDesc) activeDesc.classList.remove("sc-hidden");
+    if (dropdownTrigger) {
+      if (dropdownList.classList.contains("sc-hidden")) {
+        dropdownList.classList.remove("sc-hidden");
+        console.log("✅ sc-hidden removed: dropdown shown");
+      } else {
+        dropdownList.classList.add("sc-hidden");
+        console.log("✅ sc-hidden added: dropdown hidden");
+      }
+    }
   }
   
