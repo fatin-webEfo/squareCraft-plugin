@@ -49,8 +49,8 @@ export function injectNavbarIcon() {
                 message.style.animation = "scFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "50px";
-                message.style.left = "49%";
+                message.style.top = "54px";
+                message.style.left = "48%";
                 message.style.transform = "translateX(-50%)";
     
                 wrapper.appendChild(message);
