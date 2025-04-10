@@ -19,7 +19,7 @@ export function injectNavbarIcon() {
                 icon.style.borderRadius = "20%";
                 icon.style.marginRight = "6px";
                 icon.style.cursor = "pointer";
-                icon.style.marginTop = "6px";
+                icon.style.marginTop = "8px";
                 icon.style.cursor = "pointer";
                 icon.classList.add("sc-admin-icon", "sc-z-99999");
     
@@ -49,8 +49,8 @@ export function injectNavbarIcon() {
                 message.style.animation = "scFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "48px";
-                message.style.left = "50%";
+                message.style.top = "50px";
+                message.style.left = "49%";
                 message.style.transform = "translateX(-50%)";
     
                 wrapper.appendChild(message);
