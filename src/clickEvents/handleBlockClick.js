@@ -85,7 +85,7 @@ export function handleBlockClick(event, context) {
   
   if (!fontWeightTrigger.classList.contains("listener-attached")) {
     fontWeightTrigger.addEventListener("click", (e) => {
-      e.stopPropagation(); // prevent click-through to window
+      e.stopPropagation(); 
       fontWeightList.classList.toggle("show");
     });
   
@@ -123,7 +123,6 @@ export function handleBlockClick(event, context) {
       });
     });
   
-    // close dropdown on outside click
     window.addEventListener("click", (e) => {
       if (!fontWeightTrigger.contains(e.target) && !fontWeightList.contains(e.target)) {
         fontWeightList.classList.remove("show");

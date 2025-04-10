@@ -62,7 +62,7 @@ export function injectNavbarIcon() {
                       text-decoration: underline;
                       position: absolute;
                       right: 12px;
-                      bottom: 8px;
+                      bottom: 0px;
                       color: #9ca3af;
                       cursor: pointer;
                     ">Don't Show Again
