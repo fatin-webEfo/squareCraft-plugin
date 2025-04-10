@@ -31,25 +31,18 @@ export function injectNavbarIcon() {
                 const message = document.createElement("div");
                 message.classList.add("sc-floating-message");
                 message.innerHTML = `
-                  <div
-      class=" sc-floating-message sc-absolute sc-bg-2c2c2c sc-text-white sc-py-8 sc-px-10 sc-rounded-[8px]  sc-z-[99999] sc-opacity-100 sc-transition-opacity sc-duration-500 sc-ease-in-out sc-animation-fade-in sc-whitespace-nowrap sc-shadow-md sc-top-[54px] sc-left-[40%] sc-translate-x-[-50%]">
-      <div class="sc-message-content sc-text-center">
-         <p class="sc-universal sc-text-sm text-EF7C2F sc-font-light sc-poppins"> SquareCraft Edits Saved</p>
-         <div class="sc-mt-4">
-
-            <p class=" sc-poppins sc-universal sc-font-thin sc-text-sm"> Your SquareCraft Plugin has successfully
-               injected to <br> the Current website</p>
-         </div>
-         <div class="sc-mt-4">
-            <p
-               class="sc-poppins sc-universal sc-font-thin sc-font-underline sc-text-xs sc-absolute sc-right-3 sc-text-gray-400 sc-cursor-pointer sc-bottom-3">
-               Don't Show Again</p>
-         </div>
-      </div>
-      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png" width="14"
-         class="sc-absolute sc-cursor-pointer sc-top-3 sc-right-3" alt="">
-
-      <div class="sc-message-arrow"> </div>
+                  <div class=" sc-floating-message sc-absolute sc-bg-2c2c2c sc-text-white sc-py-8 sc-px-10 sc-rounded-[8px]  sc-z-[99999] sc-opacity-100 sc-transition-opacity sc-duration-500 sc-ease-in-out sc-animation-fade-in sc-whitespace-nowrap sc-shadow-md sc-top-[54px] sc-left-[40%] sc-translate-x-[-50%]">
+                 <div class="sc-message-content sc-text-center">
+                   <p class="sc-universal sc-text-sm text-EF7C2F sc-font-light sc-poppins"> SquareCraft Edits Saved</p>
+                   <div class="sc-mt-4">
+                     <p class=" sc-poppins sc-universal sc-font-thin sc-text-sm"> Your SquareCraft Plugin has successfully injected to <br> the Current website </p>
+                   </div>
+                   <div class="sc-mt-4">
+                     <p class="sc-poppins sc-universal sc-font-thin sc-font-underline sc-text-xs sc-absolute sc-right-3 sc-text-gray-400 sc-cursor-pointer sc-bottom-3"> Don't Show Again</p>
+                   </div>
+                 </div>
+                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png" width="14" class="sc-absolute sc-cursor-pointer sc-top-3 sc-right-3" alt="">
+                 <div class="sc-message-arrow"></div>
                 `;
     
                 message.style.position = "absolute";
