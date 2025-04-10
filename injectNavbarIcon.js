@@ -32,7 +32,7 @@ export function injectNavbarIcon() {
                 position: absolute;
                 background-color: #2c2c2c;
                 color: white;
-                padding: 1.5rem 1.5rem;
+                padding: 2rem 2rem;
                 border-radius: 8px;
                 z-index: 99999;
                 opacity: 1;
@@ -64,7 +64,7 @@ export function injectNavbarIcon() {
                       right: 12px;
                       padding: 0 !important;
                       margin: 0 !important;
-                      marginTop: 10px;
+                      marginTop: 20px;
                       bottom: 4px;
                       color: #9ca3af;
                       cursor: pointer;
