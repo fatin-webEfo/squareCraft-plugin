@@ -83,6 +83,7 @@
     styleTag.innerHTML = cssText;
   }
   const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
+  const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
   const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
@@ -114,7 +115,7 @@
     });
   
     handleTextColorClick(event, lastClickedElement, applyStylesToElement);
-  
+    handleFontWeightDropdownClick(event);
     typoTabSelect(event);
   });
   
