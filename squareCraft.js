@@ -304,27 +304,6 @@ async function createWidget() {
 }
 
 
-document.addEventListener("click", function (e) {
-  const dropdownTrigger = document.getElementById("font-weight-dropdown");
-  const dropdownList = document.getElementById("font-weight-dropdown-list");
-
-  if (!dropdownTrigger || !dropdownList) return;
-
-  const clickedInsideTrigger = dropdownTrigger.contains(e.target);
-  const clickedInsideList = dropdownList.contains(e.target);
-
-  if (clickedInsideTrigger) {
-    if (dropdownList.classList.contains("sc-hidden")) {
-      dropdownList.classList.remove("sc-hidden");
-    } else {
-      dropdownList.classList.add("sc-hidden");
-    }
-  } 
-  else if (!clickedInsideList) {
-    dropdownList.classList.add("sc-hidden");
-  }
-});
-
 
 
   function loadWidgetFromString(htmlString) {
@@ -535,9 +514,10 @@ document.addEventListener("click", function (e) {
   injectIconIntoTargetElements(); // run once at startup
 
   const observer = new MutationObserver(() => {
-    injectIconIntoTargetElements(); // react to DOM changes
+    injectIconIntoTargetElements(); 
+    setupFontWeightDropdown(); 
   });
-
+  setupFontWeightDropdown(); 
   observer.observe(parent.document.body, { childList: true, subtree: true });
 
   const iframe = document.querySelector("iframe");
