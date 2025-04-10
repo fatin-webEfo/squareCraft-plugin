@@ -7,7 +7,6 @@ export function html() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
    const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
-
    const htmlString = `
    <div
       class="sc-p-4 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
@@ -211,10 +210,7 @@ export function html() {
       setTimeout(addHeadingEventListeners, 1000);
    });
 
-
    return htmlString;
-
-
 
 }
 export function initToggleSwitch() {

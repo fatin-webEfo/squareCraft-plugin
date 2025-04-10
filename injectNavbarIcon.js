@@ -1,79 +1,44 @@
 export function injectNavbarIcon() {
-    function insertAdminIcon() {
-        if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
-            const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-            if (navContainer) {
-                const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-    
-                const wrapper = document.createElement("div");
-                wrapper.classList.add("sc-admin-icon-wrapper");
-                wrapper.style.position = "relative";
-                wrapper.style.display = "inline-block";
-                wrapper.style.zIndex = "99999";
-    
-                const icon = document.createElement("img");
-                icon.src = iconSrc;
-                icon.alt = "sc";
-                icon.style.width = "30px";
-                icon.style.height = "30px";
-                icon.style.borderRadius = "20%";
-                icon.style.marginRight = "6px";
-                icon.style.cursor = "pointer";
-                icon.style.marginTop = "8px";
-                icon.style.cursor = "pointer";
-                icon.classList.add("sc-admin-icon", "sc-z-99999");
-    
-                wrapper.appendChild(icon);
-                navContainer.parentNode.insertBefore(wrapper, navContainer);
-    
-                const message = document.createElement("div");
-                message.classList.add("sc-floating-message");
-                message.innerHTML = `
-                    <div class="sc-message-content">
-                        ✅ SquareCraft installed!
-                    </div>
-                    <div class="sc-message-arrow">
-                    </div>
-                `;
-    
-                message.style.position = "absolute";
-                message.style.backgroundColor = "#2c2c2c";
-                message.style.color = "white";
-                message.style.padding = "10px 14px";
-                message.style.borderRadius = "8px";
-                message.style.fontSize = "12px";
-                message.style.fontWeight = "400";
-                message.style.zIndex = "99999";
-                message.style.opacity = "1";
-                message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
-                message.style.animation = "scFadeIn 0.5s ease-in-out";
-                message.style.whiteSpace = "nowrap";
-                message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "54px";
-                message.style.left = "40%";
-                message.style.transform = "translateX(-50%)";
-    
-                wrapper.appendChild(message);
-    
-                const messageArrow = message.querySelector(".sc-message-arrow");
-                messageArrow.style.position = "absolute";
-                messageArrow.style.top = "-8px";
-                messageArrow.style.left = "50%";
-                messageArrow.style.transform = "translateX(-50%)";
-                messageArrow.style.width = "0";
-                messageArrow.style.height = "0";
-                messageArrow.style.borderLeft = "8px solid transparent";
-                messageArrow.style.borderRight = "8px solid transparent";
-                messageArrow.style.borderBottom = "8px solid #2c2c2c";
-    
-                setTimeout(() => {
-                    message.style.opacity = "0";
-                    setTimeout(() => message.remove(), 500);
-                }, 5000);
-            }
-        }
+
+
+   function insertAdminIcon() {
+  if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
+    const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+    if (navContainer) {
+      const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("sc-admin-icon-wrapper", "sc-relative", "sc-inline-block", "sc-z-99999");
+
+      const icon = document.createElement("img");
+      icon.src = iconSrc;
+      icon.alt = "sc";
+      icon.classList.add("sc-admin-icon", "sc-z-99999", "sc-w-30px", "sc-h-30px", "sc-rounded-20", "sc-mr-6", "sc-mt-8", "sc-cursor-pointer");
+
+      wrapper.appendChild(icon);
+      navContainer.parentNode.insertBefore(wrapper, navContainer);
+
+      const message = document.createElement("div");
+      message.classList.add("sc-floating-message", "sc-message");
+
+      message.innerHTML = `
+        <div class="sc-message-content">✅ SquareCraft installed!</div>
+        <div class="sc-message-arrow"></div>
+      `;
+
+      wrapper.appendChild(message);
+
+      const messageArrow = message.querySelector(".sc-message-arrow");
+      messageArrow.classList.add("sc-message-arrow");
+
+      setTimeout(() => {
+        message.style.opacity = "0";
+        setTimeout(() => message.remove(), 500);
+      }, 5000);
     }
-    
+  }
+}
+
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');

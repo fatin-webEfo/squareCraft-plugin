@@ -200,7 +200,7 @@
               element.classList.add("sc-font-modified");
             }
   
-            modificationMap.delete(elementId);
+            modificationMap.delete(elementId);  
           }
         });
       });
