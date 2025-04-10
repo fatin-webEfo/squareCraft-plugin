@@ -3,85 +3,97 @@ export function injectNavbarIcon() {
     
     function insertAdminIcon() {
         if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
-            const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
-            if (navContainer) {
-                const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-    
-                const wrapper = document.createElement("div");
-                wrapper.classList.add("sc-admin-icon-wrapper");
-                wrapper.style.position = "relative";
-                wrapper.style.display = "inline-block";
-                wrapper.style.zIndex = "99999";
-    
-                const icon = document.createElement("img");
-                icon.src = iconSrc;
-                icon.alt = "sc";
-                icon.style.width = "30px";
-                icon.style.height = "30px";
-                icon.style.borderRadius = "20%";
-                icon.style.marginRight = "6px";
-                icon.style.cursor = "pointer";
-                icon.style.marginTop = "8px";
-                icon.style.cursor = "pointer";
-                icon.classList.add("sc-admin-icon", "sc-z-99999");
-    
-                wrapper.appendChild(icon);
-                navContainer.parentNode.insertBefore(wrapper, navContainer);
-    
-                const message = document.createElement("div");
-                message.classList.add("sc-floating-message");
-                message.innerHTML = `
-                  <div class=" sc-floating-message sc-absolute sc-bg-2c2c2c sc-text-white sc-py-8 sc-px-10 sc-rounded-[8px]  sc-z-[99999] sc-opacity-100 sc-transition-opacity sc-duration-500 sc-ease-in-out sc-animation-fade-in sc-whitespace-nowrap sc-shadow-md sc-top-[54px] sc-left-[40%] sc-translate-x-[-50%]">
-                 <div class="sc-message-content sc-text-center">
-                   <p class="sc-universal sc-text-sm text-EF7C2F sc-font-light sc-poppins"> SquareCraft Edits Saved</p>
-                   <div class="sc-mt-4">
-                     <p class=" sc-poppins sc-universal sc-font-thin sc-text-sm"> Your SquareCraft Plugin has successfully injected to <br> the Current website </p>
-                   </div>
-                   <div class="sc-mt-4">
-                     <p class="sc-poppins sc-universal sc-font-thin sc-font-underline sc-text-xs sc-absolute sc-right-3 sc-text-gray-400 sc-cursor-pointer sc-bottom-3"> Don't Show Again</p>
-                   </div>
-                 </div>
-                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png" width="14" class="sc-absolute sc-cursor-pointer sc-top-3 sc-right-3" alt="">
-                 <div class="sc-message-arrow"></div>
-                `;
-    
-                message.style.position = "absolute";
-                message.style.backgroundColor = "#2c2c2c";
-                message.style.color = "white";
-                message.style.padding = "10px 14px";
-                message.style.borderRadius = "8px";
-                message.style.fontSize = "12px";
-                message.style.fontWeight = "400";
-                message.style.zIndex = "99999";
-                message.style.opacity = "1";
-                message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
-                message.style.animation = "scFadeIn 0.5s ease-in-out";
-                message.style.whiteSpace = "nowrap";
-                message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "54px";
-                message.style.left = "40%";
-                message.style.transform = "translateX(-50%)";
-    
-                wrapper.appendChild(message);
-    
-                const messageArrow = message.querySelector(".sc-message-arrow");
-                messageArrow.style.position = "absolute";
-                messageArrow.style.top = "-8px";
-                messageArrow.style.left = "50%";
-                messageArrow.style.transform = "translateX(-50%)";
-                messageArrow.style.width = "0";
-                messageArrow.style.height = "0";
-                messageArrow.style.borderLeft = "8px solid transparent";
-                messageArrow.style.borderRight = "8px solid transparent";
-                messageArrow.style.borderBottom = "8px solid #2c2c2c";
-    
-                setTimeout(() => {
-                    message.style.opacity = "0";
-                    setTimeout(() => message.remove(), 500);
-                }, 5000);
-            }
+          const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
+          if (navContainer) {
+            const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+      
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("sc-admin-icon-wrapper");
+            wrapper.style.position = "relative";
+            wrapper.style.display = "inline-block";
+            wrapper.style.zIndex = "99999";
+      
+            const icon = document.createElement("img");
+            icon.src = iconSrc;
+            icon.alt = "sc";
+            icon.style.width = "30px";
+            icon.style.height = "30px";
+            icon.style.borderRadius = "20%";
+            icon.style.marginRight = "6px";
+            icon.style.marginTop = "8px";
+            icon.style.cursor = "pointer";
+      
+            wrapper.appendChild(icon);
+            navContainer.parentNode.insertBefore(wrapper, navContainer);
+      
+            const message = document.createElement("div");
+            message.innerHTML = `
+              <div style="
+                position: absolute;
+                background-color: #2c2c2c;
+                color: white;
+                padding: 2rem 2rem;
+                border-radius: 8px;
+                z-index: 99999;
+                opacity: 1;
+                transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
+                animation: scFadeIn 0.5s ease-in-out;
+                white-space: nowrap;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                top: 54px;
+                left: 40%;
+                transform: translateX(-50%);
+              ">
+                <div style="text-align: center;">
+                  <p style="font-size: 14px; font-weight: 300; font-family: 'Poppins', sans-serif; color: #EF7C2F;">SquareCraft Edits Saved</p>
+                  <div style="margin-top: 15px;">
+                    <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 14px;">
+                      Your SquareCraft Plugin has successfully injected to <br> the Current website
+                    </p>
+                  </div>
+                  <div style="margin-top: 15px;">
+                    <p style="
+                      font-family: 'Poppins', sans-serif;
+                      font-weight: 300;
+                      font-size: 11px;
+                      text-decoration: underline;
+                      position: absolute;
+                      right: 12px;
+                      bottom: 12px;
+                      color: #9ca3af;
+                      cursor: pointer;
+                    ">Don't Show Again</p>
+                  </div>
+                </div>
+                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png"
+                     width="14"
+                     style="position: absolute; top: 12px; right: 12px; cursor: pointer;"
+                     alt="">
+                <div style="
+                  position: absolute;
+                  top: -8px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  width: 0;
+                  height: 0;
+                  border-left: 8px solid transparent;
+                  border-right: 8px solid transparent;
+                  border-bottom: 8px solid #2c2c2c;
+                "></div>
+              </div>
+            `;
+      
+            wrapper.appendChild(message);
+      
+            const innerMsg = message.querySelector("div");
+            setTimeout(() => {
+              innerMsg.style.opacity = "0";
+              setTimeout(() => message.remove(), 500);
+            }, 5000);
+          }
         }
-    }
+      }
+      
     
 
     function insertToolbarIcon() {
