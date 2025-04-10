@@ -8,18 +8,14 @@ export function handleBlockClick(event, context) {
     setLastAppliedAlignment,
     setLastActiveAlignmentElement
   } = context;
-
-  const block = event.target.closest('[id^="block-"]');
+  let block = event.target.closest('[id^="block-"]');
   if (!block) return;
-
   if (selectedElement) selectedElement.style.outline = "";
   setSelectedElement(block);
   block.style.outline = "1px dashed #EF7C2F";
-
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
-
-  
+  //align code start here
   let appliedTextAlign = window.getComputedStyle(block).textAlign;
   if (!appliedTextAlign || appliedTextAlign === "start") {
     const nested = block.querySelector("h1,h2,h3,h4,p");
@@ -27,17 +23,14 @@ export function handleBlockClick(event, context) {
       appliedTextAlign = window.getComputedStyle(nested).textAlign;
     }
   }
-
   if (appliedTextAlign) {
     setLastAppliedAlignment(appliedTextAlign);
-
     const map = {
       left: "scTextAlignLeft",
       center: "scTextAlignCenter",
       right: "scTextAlignRight",
       justify: "scTextAlignJustify"
     };
-
     const activeIcon = document.getElementById(map[appliedTextAlign]);
     if (activeIcon) {
       activeIcon.classList.add("sc-activeTab-border");
@@ -45,19 +38,12 @@ export function handleBlockClick(event, context) {
       setLastActiveAlignmentElement(activeIcon);
     }
   }
-
+  const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
   const allParts = [
     "heading1Part", "heading2Part", "heading3Part", "heading4Part",
     "paragraph1Part", "paragraph2Part", "paragraph3Part"
   ];
   const visibleParts = new Set();
-
-  const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
-
-  if (innerTextElements.length === 0) {
-    console.warn("⚠️ No inner text elements found inside block:", block.id);
-  }
-
   innerTextElements.forEach(el => {
     const tag = el.tagName.toLowerCase();
     const result = getTextType(tag, el);
@@ -68,19 +54,16 @@ export function handleBlockClick(event, context) {
       el.style.padding = "2px 4px";
     }
   });
-
   allParts.forEach(id => {
     const part = document.getElementById(id);
     if (part) {
       part.classList.toggle("sc-hidden", !visibleParts.has(id));
     }
   });
-
   visibleParts.forEach(partId => {
     const typeId = partId.replace("Part", "");
     const tab = document.getElementById(typeId);
     if (!tab) return;
-
     tab.onmouseenter = () => {
       const b = document.getElementById(block.id);
       const t = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
@@ -91,12 +74,58 @@ export function handleBlockClick(event, context) {
         }
       });
     };
-
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
-      b.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
-        el.style.outline = "";
-      });
+      b.querySelectorAll("h1,h2,h3,h4,p").forEach(el => el.style.outline = "");
     };
+  });
+
+  document.getElementById("squareCraftFontWeight").addEventListener("change", async function() {
+    if (!selectedElement) {
+      console.warn(":warning: No block selected");
+      return;
+    }
+    const selectedWeight = this.value;
+    const blockId = selectedElement.id;
+    let styleTag = document.getElementById(`style-${blockId}-strong`);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = `style-${blockId}-strong`;
+      document.head.appendChild(styleTag);
+    }
+    styleTag.innerHTML = `
+      #${blockId} strong {
+        font-weight: ${selectedWeight} !important;
+      }
+    `;
+    const css = {
+      "font-weight": selectedWeight
+    };
+    await saveModifications(blockId, css);
+    console.log(`:white_check_mark: Applied font-weight: ${selectedWeight} to bold words in block: ${blockId}`);
+  });
+  async function applySavedStyles() {
+    const savedStyles = await fetchModifications();
+    if (!savedStyles) return;
+    savedStyles.forEach(style => {
+        const blockId = style.elementId;
+        const weight = style.css["font-weight"];
+        if (weight) {
+            let styleTag = document.getElementById(`style-${blockId}-strong`);
+            if (!styleTag) {
+                styleTag = document.createElement("style");
+                styleTag.id = `style-${blockId}-strong`;
+                document.head.appendChild(styleTag);
+            }
+            styleTag.innerHTML = `
+                #${blockId} strong {
+                    font-weight: ${weight} !important;
+                }
+            `;
+        }
+    });
+  }
+  window.addEventListener("load", async () => {
+    await applySavedStyles();
   });
 }
