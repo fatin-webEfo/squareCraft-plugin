@@ -46,7 +46,7 @@ export function injectNavbarIcon() {
               ">
                 <div style="text-align: center;">
                   <p style="font-size: 13px; font-weight: 300; font-family: 'Poppins', sans-serif; color: #EF7C2F;">SquareCraft Edits Saved</p>
-                  <div style="margin-top: 2px;">
+                  <div >
                     <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 11px;">
                       Your SquareCraft Plugin has successfully injected to <br> the Current website
                     </p>
@@ -59,8 +59,9 @@ export function injectNavbarIcon() {
                       text-decoration: underline;
                       position: absolute;
                       right: 12px;
+                      padding: 0;
                       marginTop: 6px;
-                      bottom: 0px;
+                      bottom: 4px;
                       color: #9ca3af;
                       cursor: pointer;
                     ">Don't Show Again
