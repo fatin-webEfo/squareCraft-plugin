@@ -45,6 +45,23 @@ export function injectNavbarIcon() {
                  <div class="sc-message-arrow"></div>
                 `;
     
+                message.style.position = "absolute";
+                message.style.backgroundColor = "#2c2c2c";
+                message.style.color = "white";
+                message.style.padding = "10px 14px";
+                message.style.borderRadius = "8px";
+                message.style.fontSize = "12px";
+                message.style.fontWeight = "400";
+                message.style.zIndex = "99999";
+                message.style.opacity = "1";
+                message.style.transition = "opacity 0.5s ease-in-out, transform 0.3s ease-in-out";
+                message.style.animation = "scFadeIn 0.5s ease-in-out";
+                message.style.whiteSpace = "nowrap";
+                message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
+                message.style.top = "54px";
+                message.style.left = "40%";
+                message.style.transform = "translateX(-50%)";
+    
                 wrapper.appendChild(message);
     
                 const messageArrow = message.querySelector(".sc-message-arrow");
