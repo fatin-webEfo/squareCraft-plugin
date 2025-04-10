@@ -571,10 +571,20 @@
   gap: 0.625rem !important;
 
 }
-
+.sc-top-3{
+  top: 0.75rem !important;
+  /* 12px */
+}
+.sc-right-3{
+  right: 0.75rem !important;
+  /* 12px */
+}
 .sc-right-1 {
   right: 0.12rem !important;
 
+}
+.sc-right-0{
+  right: 0 !important;
 }
 
 .sc-rounded-22px {
