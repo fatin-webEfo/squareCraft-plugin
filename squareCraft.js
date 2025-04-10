@@ -118,6 +118,23 @@
     handleFontWeightDropdownClick(event);
     typoTabSelect(event);
   });
+
+  document.body.addEventListener("click", (event) => {
+    const dropdownTrigger = event.target.closest("#font-weight-dropdown");
+    const dropdownList = document.getElementById("font-weight-dropdown-list");
+
+    if (!dropdownList) return;
+
+    if (dropdownTrigger) {
+      if (dropdownList.classList.contains("sc-hidden")) {
+        dropdownList.classList.remove("sc-hidden");
+        console.log("✅ sc-hidden removed: dropdown shown");
+      } else {
+        dropdownList.classList.add("sc-hidden");
+        console.log("✅ sc-hidden added: dropdown hidden");
+      }
+    }
+  } );
   
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
@@ -125,8 +142,6 @@
   
     if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
       widgetContainer.innerHTML = htmlString;
-      handleFontWeightDropdownClick = (await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js")).handleFontWeightDropdownClick;
-      document.body.addEventListener("click", handleFontWeightDropdownClick);
 
     }
   
