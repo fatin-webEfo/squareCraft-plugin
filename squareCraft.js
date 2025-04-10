@@ -515,9 +515,7 @@ async function createWidget() {
 
   const observer = new MutationObserver(() => {
     injectIconIntoTargetElements(); 
-    setupFontWeightDropdown(); 
   });
-  setupFontWeightDropdown(); 
   observer.observe(parent.document.body, { childList: true, subtree: true });
 
   const iframe = document.querySelector("iframe");
@@ -602,5 +600,6 @@ async function createWidget() {
   }
 
   checkView();
+  setupFontWeightDropdown(); 
   window.addEventListener("resize", checkView);
 })();
