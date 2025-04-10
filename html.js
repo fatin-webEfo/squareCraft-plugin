@@ -222,9 +222,16 @@ export function initToggleSwitch() {
    const toggleText = document.getElementById("toggleText");
    const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
  
+   if (!toggleSwitch || !toggleText || !toggleBullet) {
+     console.log("⏳ Waiting for toggle elements...");
+     return;
+   }
+ 
    let isEnabled = getToggleState();
  
    const updateToggleUI = () => {
+     if (!toggleSwitch || !toggleBullet || !toggleText) return;
+ 
      if (isEnabled) {
        toggleSwitch.style.backgroundColor = "#EF7C2F";
        toggleBullet.style.left = "auto";
@@ -240,14 +247,13 @@ export function initToggleSwitch() {
  
    updateToggleUI();
  
-   if (toggleSwitch && toggleText && toggleBullet) {
-     toggleSwitch.addEventListener("click", () => {
-       isEnabled = !isEnabled;
-       setToggleState(isEnabled);
-       updateToggleUI();
-     });
-   }
+   toggleSwitch.addEventListener("click", () => {
+     isEnabled = !isEnabled;
+     setToggleState(isEnabled);
+     updateToggleUI();
+   });
  }
+ 
  
  
  
