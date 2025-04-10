@@ -52,7 +52,10 @@ export function injectNavbarIcon() {
                     </p>
                   </div>
                  
-                    <p style="
+                
+                 
+                </div>   
+                 <p style="
                       font-family: 'Poppins', sans-serif;
                       font-weight: 300;
                       font-size: 8px;
@@ -64,8 +67,6 @@ export function injectNavbarIcon() {
                       cursor: pointer;
                     ">Don't Show Again
                     </p>
-                 
-                </div>
                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png"
                      width="14"
                      style="position: absolute; top: 12px; right: 12px; cursor: pointer;"
