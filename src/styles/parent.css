@@ -299,6 +299,13 @@
   bottom: 0.75rem !important;
 }
 
+.sc-custom-dropdown {
+  display: none;
+}
+
+.sc-custom-dropdown.show {
+  display: block;
+}
 
 
 .sc-font-italic {

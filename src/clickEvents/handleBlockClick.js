@@ -80,30 +80,46 @@ export function handleBlockClick(event, context) {
     };
   });
 
-  document.getElementById("squareCraftFontWeight").addEventListener("change", async function() {
-    if (!selectedElement) {
-      console.warn(":warning: No block selected");
-      return;
-    }
-    const selectedWeight = this.value;
-    const blockId = selectedElement.id;
-    let styleTag = document.getElementById(`style-${blockId}-strong`);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = `style-${blockId}-strong`;
-      document.head.appendChild(styleTag);
-    }
-    styleTag.innerHTML = `
-      #${blockId} strong {
-        font-weight: ${selectedWeight} !important;
-      }
-    `;
-    const css = {
-      "font-weight": selectedWeight
-    };
-    await saveModifications(blockId, css);
-    console.log(`:white_check_mark: Applied font-weight: ${selectedWeight} to bold words in block: ${blockId}`);
+  const fontWeightTrigger = document.getElementById("scFontWeightTrigger");
+  const fontWeightList = document.getElementById("scFontWeightList");
+  
+  fontWeightTrigger.addEventListener("click", () => {
+    fontWeightList.classList.toggle("show");
   });
+  
+  fontWeightList.querySelectorAll("li").forEach(item => {
+    item.addEventListener("click", async () => {
+      const selectedWeight = item.getAttribute("data-value");
+      fontWeightTrigger.textContent = item.textContent;
+      fontWeightList.classList.remove("show");
+  
+      if (!selectedElement) {
+        console.warn("⚠️ No block selected");
+        return;
+      }
+  
+      const blockId = selectedElement.id;
+      let styleTag = document.getElementById(`style-${blockId}-strong`);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = `style-${blockId}-strong`;
+        document.head.appendChild(styleTag);
+      }
+  
+      styleTag.innerHTML = `
+        #${blockId} strong {
+          font-weight: ${selectedWeight} !important;
+        }
+      `;
+  
+      const css = {
+        "font-weight": selectedWeight
+      };
+      await saveModifications(blockId, css);
+      console.log(`✅ Applied font-weight: ${selectedWeight} to bold text in block: ${blockId}`);
+    });
+  });
+  
   async function applySavedStyles() {
     const savedStyles = await fetchModifications();
     if (!savedStyles) return;
