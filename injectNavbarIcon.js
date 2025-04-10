@@ -61,7 +61,7 @@ export function injectNavbarIcon() {
                       right: 12px;
                       padding: 0 !important;
                       margin: 0 !important;
-                      marginTop: 6px;
+                      marginTop: 10px;
                       bottom: 4px;
                       color: #9ca3af;
                       cursor: pointer;
