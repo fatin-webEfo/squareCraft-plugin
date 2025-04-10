@@ -27,7 +27,7 @@ export function typoTabSelect(event) {
           tab.classList.add("sc-select-inActiveTab-border");
         }
       } else {
-        console.error(`❌ Tab not found: #${fullId}`);
+        console.log(`❌ Its not tab: #${fullId}`);
       }
   
       if (desc) {
@@ -37,7 +37,7 @@ export function typoTabSelect(event) {
           desc.classList.add("sc-hidden");
         }
       } else {
-        console.error(`❌ Description not found: #scDesc-${fullId}`);
+        console.log(`❌ Its not tab: #scDesc-${fullId}`);
       }
     });
   }
