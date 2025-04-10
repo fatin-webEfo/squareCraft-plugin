@@ -1,9 +1,16 @@
 export function injectNavbarIcon() {
     function insertAdminIcon() {
-        if (!parent.document.querySelector(".sc-admin-icon")) {
+        if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
             const navContainer = parent.document.querySelector('ul.css-1tn5iw9');
             if (navContainer) {
                 const iconSrc = localStorage.getItem("sc_icon") || "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+    
+                const wrapper = document.createElement("div");
+                wrapper.classList.add("sc-admin-icon-wrapper");
+                wrapper.style.position = "relative";
+                wrapper.style.display = "inline-block";
+                wrapper.style.zIndex = "99999";
+    
                 const icon = document.createElement("img");
                 icon.src = iconSrc;
                 icon.alt = "sc";
@@ -12,11 +19,11 @@ export function injectNavbarIcon() {
                 icon.style.borderRadius = "20%";
                 icon.style.marginRight = "6px";
                 icon.style.cursor = "pointer";
-                icon.style.display = "inline-block";
                 icon.classList.add("sc-admin-icon", "sc-z-99999");
-
-                navContainer.parentNode.insertBefore(icon, navContainer);
-
+    
+                wrapper.appendChild(icon);
+                navContainer.parentNode.insertBefore(wrapper, navContainer);
+    
                 const message = document.createElement("div");
                 message.classList.add("sc-floating-message");
                 message.innerHTML = `
@@ -25,7 +32,7 @@ export function injectNavbarIcon() {
                     </div>
                     <div class="sc-message-arrow"></div>
                 `;
-
+    
                 message.style.position = "absolute";
                 message.style.backgroundColor = "#2c2c2c";
                 message.style.color = "white";
@@ -39,12 +46,12 @@ export function injectNavbarIcon() {
                 message.style.animation = "scFadeIn 0.5s ease-in-out";
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
-                message.style.top = "60px";
-                message.style.right = "10%";
-                message.style.transform = "translateX(-17%)";
-
-                navContainer.parentNode.insertBefore(message, navContainer);
-
+                message.style.top = "40px";
+                message.style.left = "50%";
+                message.style.transform = "translateX(-50%)";
+    
+                wrapper.appendChild(message);
+    
                 const messageArrow = message.querySelector(".sc-message-arrow");
                 messageArrow.style.position = "absolute";
                 messageArrow.style.top = "-8px";
@@ -55,7 +62,7 @@ export function injectNavbarIcon() {
                 messageArrow.style.borderLeft = "8px solid transparent";
                 messageArrow.style.borderRight = "8px solid transparent";
                 messageArrow.style.borderBottom = "8px solid #2c2c2c";
-
+    
                 setTimeout(() => {
                     message.style.opacity = "0";
                     setTimeout(() => message.remove(), 500);
@@ -63,6 +70,7 @@ export function injectNavbarIcon() {
             }
         }
     }
+    
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
