@@ -60,7 +60,7 @@ export function typoBoldSelect(fontSizes) {
  
    <div
       class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
-       <div class="sc-flex sc-bg-494949 sc-relative sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
+       <div id="font-weight-dropdown" class="sc-flex sc-bg-494949 sc-relative sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
         
         <div class="sc-px-2">
           <p class="sc-text-sm sc-universal sc-poppins sc-font-light">Regular</p>
@@ -71,7 +71,7 @@ export function typoBoldSelect(fontSizes) {
                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="arrow">
         </div>
     
-        <ol class="sc-absolute sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-realtime sc-rounded-6px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
+        <ol id="font-weight-dropdown-list" class="sc-absolute sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-realtime sc-rounded-6px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
          <li class="sc-dropdown-item" style="font-weight: 300;">Light (300)</li>
          <li class="sc-dropdown-item" style="font-weight: 400;">Regular (400)</li>
          <li class="sc-dropdown-item" style="font-weight: 500;">Medium (500)</li>
