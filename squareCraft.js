@@ -304,6 +304,25 @@ async function createWidget() {
 }
 
 
+document.addEventListener("click", function (e) {
+  const dropdownTrigger = document.getElementById("font-weight-dropdown");
+  const dropdownList = document.getElementById("font-weight-dropdown-list");
+
+  if (!dropdownTrigger || !dropdownList) return;
+
+  const clickedInsideTrigger = dropdownTrigger.contains(e.target);
+  const clickedInsideList = dropdownList.contains(e.target);
+
+  if (clickedInsideTrigger) {
+    dropdownList.classList.toggle("sc-hidden");
+  } 
+  else if (!clickedInsideList) {
+    dropdownList.classList.add("sc-hidden");
+  }
+});
+
+
+
   function loadWidgetFromString(htmlString) {
     if (!widgetContainer) {
       widgetContainer = document.createElement("div");
