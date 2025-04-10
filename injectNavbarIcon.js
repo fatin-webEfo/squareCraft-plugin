@@ -51,7 +51,7 @@ export function injectNavbarIcon() {
                       Your SquareCraft Plugin has successfully injected to <br> the Current website
                     </p>
                   </div>
-                  <div style="margin-top: 5px;">
+                 
                     <p style="
                       font-family: 'Poppins', sans-serif;
                       font-weight: 300;
@@ -62,8 +62,9 @@ export function injectNavbarIcon() {
                       bottom: 8px;
                       color: #9ca3af;
                       cursor: pointer;
-                    ">Don't Show Again</p>
-                  </div>
+                    ">Don't Show Again
+                    </p>
+                 
                 </div>
                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png"
                      width="14"
