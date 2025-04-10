@@ -59,7 +59,8 @@ export function injectNavbarIcon() {
                       text-decoration: underline;
                       position: absolute;
                       right: 12px;
-                      padding: 0;
+                      padding: 0 !important;
+                      margin: 0 !important;
                       marginTop: 6px;
                       bottom: 4px;
                       color: #9ca3af;
