@@ -83,55 +83,42 @@ export function handleBlockClick(event, context) {
   const fontWeightTrigger = document.getElementById("scFontWeightTrigger");
   const fontWeightList = document.getElementById("scFontWeightList");
   
-  if (!fontWeightTrigger.classList.contains("listener-attached")) {
-    fontWeightTrigger.addEventListener("click", (e) => {
-      e.stopPropagation(); 
-      fontWeightList.classList.toggle("show");
-    });
+  fontWeightTrigger.addEventListener("click", () => {
+    fontWeightList.classList.toggle("show");
+  });
   
-    fontWeightList.querySelectorAll("li").forEach(item => {
-      item.addEventListener("click", async (e) => {
-        e.stopPropagation();
-        const selectedWeight = item.getAttribute("data-value");
-        fontWeightTrigger.textContent = item.textContent;
-        fontWeightList.classList.remove("show");
+  fontWeightList.querySelectorAll("li").forEach(item => {
+    item.addEventListener("click", async () => {
+      const selectedWeight = item.getAttribute("data-value");
+      fontWeightTrigger.textContent = item.textContent;
+      fontWeightList.classList.remove("show");
   
-        if (!selectedElement) {
-          console.warn("⚠️ No block selected");
-          return;
-        }
-  
-        const blockId = selectedElement.id;
-        let styleTag = document.getElementById(`style-${blockId}-strong`);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = `style-${blockId}-strong`;
-          document.head.appendChild(styleTag);
-        }
-  
-        styleTag.innerHTML = `
-          #${blockId} strong {
-            font-weight: ${selectedWeight} !important;
-          }
-        `;
-  
-        const css = {
-          "font-weight": selectedWeight
-        };
-        await saveModifications(blockId, css);
-        console.log(`✅ Applied font-weight: ${selectedWeight} to bold text in block: ${blockId}`);
-      });
-    });
-  
-    window.addEventListener("click", (e) => {
-      if (!fontWeightTrigger.contains(e.target) && !fontWeightList.contains(e.target)) {
-        fontWeightList.classList.remove("show");
+      if (!selectedElement) {
+        console.warn("⚠️ No block selected");
+        return;
       }
+  
+      const blockId = selectedElement.id;
+      let styleTag = document.getElementById(`style-${blockId}-strong`);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = `style-${blockId}-strong`;
+        document.head.appendChild(styleTag);
+      }
+  
+      styleTag.innerHTML = `
+        #${blockId} strong {
+          font-weight: ${selectedWeight} !important;
+        }
+      `;
+  
+      const css = {
+        "font-weight": selectedWeight
+      };
+      await saveModifications(blockId, css);
+      console.log(`✅ Applied font-weight: ${selectedWeight} to bold text in block: ${blockId}`);
     });
-  
-    fontWeightTrigger.classList.add("listener-attached");
-  }
-  
+  });
   
   async function applySavedStyles() {
     const savedStyles = await fetchModifications();

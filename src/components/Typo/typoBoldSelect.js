@@ -60,21 +60,17 @@ export function typoBoldSelect(fontSizes) {
       <div
          class="sc-flex sc-bg-494949  sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
          <div class="sc-px-2   ">
-          <div id="scFontWeightWrapper" class="sc-custom-select-wrapper sc-w-full sc-relative">
-           <div id="scFontWeightTrigger" class="sc-custom-select">Regular (400)</div>
-           <ul id="scFontWeightList" class="sc-custom-dropdown">
-             <li class="sc-dropdown-item" data-value="100">Thin (100)</li>
-             <li class="sc-dropdown-item" data-value="200">Extra Light (200)</li>
-             <li class="sc-dropdown-item" data-value="300">Light (300)</li>
-             <li class="sc-dropdown-item" data-value="400">Regular (400)</li>
-             <li class="sc-dropdown-item" data-value="500">Medium (500)</li>
-             <li class="sc-dropdown-item" data-value="600">Semi Bold (600)</li>
-             <li class="sc-dropdown-item" data-value="700">Bold (700)</li>
-             <li class="sc-dropdown-item" data-value="800">Extra Bold (800)</li>
-             <li class="sc-dropdown-item" data-value="900">Black (900)</li>
-           </ul>
-         </div>
-
+            <select id="squareCraftFontWeight">
+                    <option value="100">Thin (100)</option>
+                    <option value="200">Extra Light (200)</option>
+                    <option value="300">Light (300)</option>
+                    <option value="400" selected>Regular (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                    <option value="900">Black (900)</option>
+            </select>
          </div>
          <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
             <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"

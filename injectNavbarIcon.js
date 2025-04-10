@@ -51,9 +51,6 @@ export function injectNavbarIcon() {
                       Your SquareCraft Plugin has successfully injected to <br> the Current website
                     </p>
                   </div>
-                 
-                
-                 
                 </div>   
                  <p style="
                       font-family: 'Poppins', sans-serif;
