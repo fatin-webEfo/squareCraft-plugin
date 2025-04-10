@@ -314,7 +314,11 @@ document.addEventListener("click", function (e) {
   const clickedInsideList = dropdownList.contains(e.target);
 
   if (clickedInsideTrigger) {
-    dropdownList.classList.toggle("sc-hidden");
+    if (dropdownList.classList.contains("sc-hidden")) {
+      dropdownList.classList.remove("sc-hidden");
+    } else {
+      dropdownList.classList.add("sc-hidden");
+    }
   } 
   else if (!clickedInsideList) {
     dropdownList.classList.add("sc-hidden");
