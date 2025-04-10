@@ -55,11 +55,11 @@ export function injectNavbarIcon() {
                     <p style="
                       font-family: 'Poppins', sans-serif;
                       font-weight: 300;
-                      font-size: 11px;
+                      font-size: 8px;
                       text-decoration: underline;
                       position: absolute;
                       right: 12px;
-                      bottom: 12px;
+                      bottom: 8px;
                       color: #9ca3af;
                       cursor: pointer;
                     ">Don't Show Again</p>
