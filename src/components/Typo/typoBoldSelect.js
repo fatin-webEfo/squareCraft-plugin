@@ -60,7 +60,7 @@ export function typoBoldSelect(fontSizes) {
  
    <div
       class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
-       <div id="font-weight-dropdown" class="sc-flex sc-bg-494949 sc-relative sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
+       <div id="font-weight-dropdown" class="sc-flex sc-bg-494949 sc-relative sc-cursor-pointer sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
         
         <div class="sc-px-2">
           <p class="sc-text-sm sc-universal sc-poppins sc-font-light">Regular</p>
