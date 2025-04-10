@@ -32,7 +32,7 @@ export function injectNavbarIcon() {
                 position: absolute;
                 background-color: #2c2c2c;
                 color: white;
-                padding: 1rem 1rem;
+                padding: 1.5rem 1.5rem;
                 border-radius: 8px;
                 z-index: 99999;
                 opacity: 1;
@@ -45,7 +45,8 @@ export function injectNavbarIcon() {
                 transform: translateX(-50%);
               ">
                 <div style="text-align: center;">
-                  <p style="font-size: 13px; font-weight: 300; font-family: 'Poppins', sans-serif; color: #EF7C2F;">SquareCraft Edits Saved</p>
+                 <div> <p style="font-size: 13px; font-weight: 300; font-family: 'Poppins', sans-serif; color: #EF7C2F; padding: 0 !important;
+                      margin: 0 !important;">SquareCraft Edits Saved</p></div>
                   <div style="marginTop: 8px;">
                     <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 11px; 
                       padding: 0 !important;
