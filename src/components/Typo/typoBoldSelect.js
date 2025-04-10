@@ -60,17 +60,25 @@ export function typoBoldSelect(fontSizes) {
  
    <div
       class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
-      <div
-         class="sc-flex sc-bg-494949  sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
-         <div class="  sc-px-2   ">
-            <p
-               class="sc-text-sm sc-universal sc-poppins sc-font-light">
-               Regular</p>
-         </div>
-         <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-            <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
-               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-         </div>
+       <div class="sc-flex sc-bg-494949 sc-relative sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
+        
+        <div class="sc-px-2">
+          <p class="sc-text-sm sc-universal sc-poppins sc-font-light">Regular</p>
+        </div>
+    
+        <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
+          <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
+               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="arrow">
+        </div>
+    
+        <ol class="sc-absolute sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-585858 sc-rounded-6px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
+         <li class="sc-dropdown-item" style="font-weight: 300;">Light (300)</li>
+         <li class="sc-dropdown-item" style="font-weight: 400;">Regular (400)</li>
+         <li class="sc-dropdown-item" style="font-weight: 500;">Medium (500)</li>
+         <li class="sc-dropdown-item" style="font-weight: 600;">Semi Bold (600)</li>
+         <li class="sc-dropdown-item" style="font-weight: 700;">Bold (700)</li>
+         <li class="sc-dropdown-item" style="font-weight: 800;">Extra Bold (800)</li>
+       </ol>
       </div>
 
       <div class="sc-col-span-5 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">

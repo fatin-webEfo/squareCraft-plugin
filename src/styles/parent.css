@@ -411,14 +411,17 @@
   width: 4rem !important;
   /* 64px */
 }
-
+.sc-top-10{
+  top: 2rem !important;
+  /* 48px */
+}
 .sc-w-20 {
   width: 10rem !important;
   /* 100px */
 }
 
 .sc-w-50{
-  width:48% !important;
+  width:44% !important;
 }
 .sc-w-10 {
   width: 1rem !important;
@@ -627,7 +630,10 @@
 .sc-h-2px {
   height: 2px !important;
 }
-
+.sc-h-dropdown{
+  height: 140px !important;
+  overflow-y: auto !important;
+}
 .sc-h-350 {
   height: 380px !important;
   overflow-y: scroll !important;
