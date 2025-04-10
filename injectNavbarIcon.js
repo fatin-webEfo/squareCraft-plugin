@@ -50,7 +50,7 @@ export function injectNavbarIcon() {
                 message.style.whiteSpace = "nowrap";
                 message.style.boxShadow = "0px 4px 10px rgba(0, 0, 0, 0.3)";
                 message.style.top = "54px";
-                message.style.left = "45%";
+                message.style.left = "40%";
                 message.style.transform = "translateX(-50%)";
     
                 wrapper.appendChild(message);
