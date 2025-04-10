@@ -31,9 +31,15 @@ export function injectNavbarIcon() {
                 const message = document.createElement("div");
                 message.classList.add("sc-floating-message");
                 message.innerHTML = `
-                    <div class="sc-message-content">
-                        ✅ SquareCraft installed!
-                    </div>
+                   <div class="sc-message-content sc-text-center">
+                       <p class="sc-universal sc-text-sm text-EF7C2F sc-font-light sc-poppins"> SquareCraft Edits Saved</p>
+                   <div class="sc-mt-4">
+
+                        <p class=" sc-poppins sc-universal sc-font-thin sc-text-sm"> Your SquareCraft Plugin has successfully injected to <br>   the Current website</p>
+                  </div>
+                 <div class="sc-mt-4">
+                 </div>
+                     </div>
                     <div class="sc-message-arrow">
                     </div>
                 `;
