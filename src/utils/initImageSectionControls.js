@@ -27,6 +27,7 @@ export function initImageSectionControls() {
         valueDisplay.textContent = `${value}px`;
       };
       
+      
   
     const startDrag = (e) => {
       e.preventDefault();
