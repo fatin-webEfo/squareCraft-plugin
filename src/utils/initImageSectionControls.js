@@ -10,24 +10,30 @@ export function initImageSectionControls() {
     const minValue = 0;
   
     const updateBulletPosition = (clientX) => {
-        const rect = field.getBoundingClientRect();
-        let offsetX = clientX - rect.left;
-      
-        const max = field.offsetWidth;
-        const bulletRadius = bullet.offsetWidth / 2;
-      
-        offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
-      
-        const percent = offsetX / max;
-        const value = Math.round(minValue + (maxValue - minValue) * percent);
-      
-        bullet.style.left = `${offsetX}px`;
-        bullet.style.transform = "translateX(-50%)";
-        fill.style.width = `${offsetX}px`;
-        valueDisplay.textContent = `${value}px`;
-      };
-      
-      
+      const rect = field.getBoundingClientRect();
+      let offsetX = clientX - rect.left;
+  
+      const max = field.offsetWidth;
+      const bulletRadius = bullet.offsetWidth / 2;
+  
+      offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
+  
+      const percent = offsetX / max;
+      const value = Math.round(minValue + (maxValue - minValue) * percent);
+  
+      bullet.style.left = `${offsetX}px`;
+      bullet.style.transform = "translateX(-50%)";
+      fill.style.width = `${offsetX}px`;
+      valueDisplay.textContent = `${value}px`;
+  
+      const activeBlock = document.querySelector('[id^="block-"].sc-selected') || window.lastClickedBlock;
+      if (activeBlock) {
+        const images = activeBlock.querySelectorAll("img:not(.ProseMirror-separator)");
+        images.forEach((img) => {
+          img.style.borderRadius = `${value}px`;
+        });
+      }
+    };
   
     const startDrag = (e) => {
       e.preventDefault();
