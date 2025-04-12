@@ -293,26 +293,31 @@ loadCSS(
 );
 
 
-async function createWidget(event) {
+async function createWidget(event) { 
   try {
-    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+    const module = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+    );
+
     if (module && typeof module.html === "function") {
       const htmlString = module.html();
+
       if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-        const clickedBlock = event?.target?.closest?.('[id^="block-"]');
-        loadWidgetFromString(htmlString, clickedBlock); 
+        loadWidgetFromString(htmlString, event);
+
         setTimeout(() => {
           if (typeof module.initToggleSwitch === "function") {
             module.initToggleSwitch();
           }
         }, 200);
+      } else {
+        console.error("❌ Retrieved HTML string is invalid or empty!");
       }
     }
-  } catch (err) {
-    console.error("🚨 Error loading HTML module:", err);
+  } catch (error) {
+    console.error("🚨 Error loading HTML module:", error);
   }
 }
-
 
 
 
