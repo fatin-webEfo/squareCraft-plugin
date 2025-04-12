@@ -16,7 +16,7 @@ export function typoTabSelect(event) {
     const tab = dropdown.querySelector(`#${fullId}`);
     const desc = dropdown.querySelector(`#scDesc-${fullId}`);
 
-    if (tab) {
+    if (tab) {  
       if (tab === clicked) {
         tab.classList.add("sc-select-activeTab-border");
         tab.classList.remove("sc-select-inActiveTab-border");
