@@ -506,34 +506,24 @@ async function createWidget() {
 
       deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
 
-      clonedIcon.addEventListener("click", async function (event) {
+      clonedIcon.addEventListener("click", function (event) {
         event.stopPropagation();
         event.preventDefault();
-      
-        const firstBlock = document.querySelector('[id^="block-"]');
-        if (!firstBlock) return;
-      
-        await handleBlockClick({ target: firstBlock }, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
-      
+
         if (!widgetLoaded) {
-          await createWidget();
-          widgetContainer = document.getElementById("sc-widget-container");
-        }
-      
-        if (widgetContainer) {
+          createWidget().then(() => {
+            widgetContainer = document.getElementById("sc-widget-container");
+            if (widgetContainer) {
+              widgetContainer.style.display = "block";
+            } else {
+              console.error("❌ Widget container not found after creation.");
+            }
+          });
+        } else {
           widgetContainer.style.display =
             widgetContainer.style.display === "none" ? "block" : "none";
         }
       });
-      
     });
   }
 
