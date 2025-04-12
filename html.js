@@ -10,7 +10,7 @@ export function html() {
      <div
    class="sc-p-4 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
    <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
-      <div class="sc-flex sc-poppins sc-universal sc-items-center sc-justify-between">
+    <div class="sc-flex sc-poppins sc-universal sc-items-center sc-justify-between">
          <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
             width="140px" />
 
@@ -32,7 +32,7 @@ export function html() {
    <div
       class="sc-rounded-6px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
   
-      ${WidgetTypoSection('typoSection', fontSizes, LetterSpacing)}
+      ${WidgetTypoSection()}
     <div id="imageSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
     <div id="buttonSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/b55pw6Wn/vote.gif" loading="lazy" alt=""></div>
    </div>
