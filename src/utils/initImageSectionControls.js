@@ -6,7 +6,7 @@ export function initImageSectionControls() {
   
     if (!bullet || !field || !valueDisplay || !fill) return;
   
-    const maxValue = 96;
+    const maxValue = 100;
     const minValue = 0;
   
     const updateBulletPosition = (clientX) => {
