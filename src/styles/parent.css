@@ -486,6 +486,8 @@
 
 #radiousBullet {
   position: absolute !important;
+  height: 12px !important;
+  width: 12px !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
 }
