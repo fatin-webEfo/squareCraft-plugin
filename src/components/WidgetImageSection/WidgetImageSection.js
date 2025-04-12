@@ -65,15 +65,16 @@ export function WidgetImageSection(id){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                  <p class="sc-font-light sc-poppins sc-universal sc-text-sm sc-text-xs">50px</p>
+                  <p id="radiousCount" class="sc-font-light sc-poppins sc-universal sc-text-sm sc-text-xs">50px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1"> 
                      <img id="paragraph1Arrow"src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="8">
                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="8" class="sc-rotate-180"alt=""> 
                      </div>
                </div>
             </div>
-           <div class="sc-mt-4 sc-px-2"> <div class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
-            <div class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+           <div class="sc-mt-4 sc-px-2">
+             <div id="radiousField" class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+            <div id="radiousBullet" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
            </div></div>
             <div class="sc-mt-4"> </div>
          </div>
