@@ -9,32 +9,45 @@ export function initImageSectionControls() {
     const maxValue = 100;
     const minValue = 0;
   
-    const updateBulletPosition = (clientX) => {
-        const rect = field.getBoundingClientRect();
-        let offsetX = clientX - rect.left;
-      
+    const block = window.lastClickedBlock;
+    if (block) {
+      const firstImg = block.querySelector("img");
+      if (firstImg) {
+        const currentRadius = parseInt(getComputedStyle(firstImg).borderRadius) || 0;
         const max = field.offsetWidth;
-        const bulletRadius = bullet.offsetWidth / 2;
-      
-        offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
-      
-        const percent = offsetX / max;
-        const value = Math.round(minValue + (maxValue - minValue) * percent);
-      
+        const offsetX = Math.round((currentRadius / maxValue) * max);
+  
         bullet.style.left = `${offsetX}px`;
         bullet.style.transform = "translateX(-50%)";
         fill.style.width = `${offsetX}px`;
-        valueDisplay.textContent = `${value}px`;
-      
-        const block = window.lastClickedBlock;
-        if (block) {
-          const images = block.querySelectorAll("img");
-          images.forEach(img => {
-            img.style.borderRadius = `${value}px`;
-          });
-        }
-      };
-      
+        valueDisplay.textContent = `${currentRadius}px`;
+      }
+    }
+  
+    const updateBulletPosition = (clientX) => {
+      const rect = field.getBoundingClientRect();
+      let offsetX = clientX - rect.left;
+  
+      const max = field.offsetWidth;
+      const bulletRadius = bullet.offsetWidth / 2;
+  
+      offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
+  
+      const percent = offsetX / max;
+      const value = Math.round(minValue + (maxValue - minValue) * percent);
+  
+      bullet.style.left = `${offsetX}px`;
+      bullet.style.transform = "translateX(-50%)";
+      fill.style.width = `${offsetX}px`;
+      valueDisplay.textContent = `${value}px`;
+  
+      if (block) {
+        const images = block.querySelectorAll("img");
+        images.forEach(img => {
+          img.style.borderRadius = `${value}px`;
+        });
+      }
+    };
   
     const startDrag = (e) => {
       e.preventDefault();
@@ -56,6 +69,8 @@ export function initImageSectionControls() {
       document.addEventListener("touchend", stopHandler);
     };
   
+    bullet.removeEventListener("mousedown", startDrag);
+    bullet.removeEventListener("touchstart", startDrag);
     bullet.addEventListener("mousedown", startDrag);
     bullet.addEventListener("touchstart", startDrag);
   }
