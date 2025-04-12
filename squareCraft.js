@@ -88,8 +88,13 @@
   const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
+  const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
   
   document.body.addEventListener("click", (event) => {
+    const clickedBlock = event.target.closest('[id^="block-"]');
+  if (clickedBlock) {
+    detectBlockElementTypes(clickedBlock); 
+  }
     handleBlockClick(event, {
       getTextType,
       selectedElement,
