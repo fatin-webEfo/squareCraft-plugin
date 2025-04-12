@@ -90,10 +90,11 @@
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
   const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
   const { initImageSectionControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js");
-setTimeout(initImageSectionControls, 100); 
+
 
   
   document.body.addEventListener("click", (event) => {
+    setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
     detectBlockElementTypes(clickedBlock); 
