@@ -26,10 +26,10 @@ export function initImageSectionControls() {
       fill.style.width = `${offsetX}px`;
       valueDisplay.textContent = `${value}px`;
   
-      const activeBlock = document.querySelector('[id^="block-"].sc-selected') || window.lastClickedBlock;
-      if (activeBlock) {
-        const images = activeBlock.querySelectorAll("img:not(.ProseMirror-separator)");
-        images.forEach((img) => {
+      const block = document.querySelector('[id^="block-"].sc-selected');
+      if (block) {
+        const images = block.querySelectorAll("img");
+        images.forEach(img => {
           img.style.borderRadius = `${value}px`;
         });
       }
