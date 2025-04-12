@@ -2,12 +2,12 @@ export function initImageSectionControls() {
     const bullet = document.getElementById("radiousBullet");
     const field = document.getElementById("radiousField");
     const valueDisplay = document.getElementById("radiousCount");
+    const fill = document.getElementById("radiousFill");
   
-    if (!bullet || !field || !valueDisplay) return;
+    if (!bullet || !field || !valueDisplay || !fill) return;
   
     const maxValue = 96;
     const minValue = 0;
-    const fieldWidth = field.offsetWidth;
   
     const updateBulletPosition = (clientX) => {
       const rect = field.getBoundingClientRect();
@@ -18,6 +18,7 @@ export function initImageSectionControls() {
       const value = Math.round(minValue + (maxValue - minValue) * percent);
   
       bullet.style.left = `${offsetX}px`;
+      fill.style.width = `${offsetX}px`;
       valueDisplay.textContent = `${value}px`;
     };
   
