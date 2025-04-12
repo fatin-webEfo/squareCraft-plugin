@@ -168,7 +168,7 @@ export function html() {
       <div class="sc-mt-4"> </div>
     </div>
 
-    <div id="imageSection"><img src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
+    <div  id="imageSection"><img src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
     <div id="buttonSection"><img src="https://i.ibb.co.com/b55pw6Wn/vote.gif" loading="lazy" alt=""></div>
    </div>
    <div class="sc-mt-4">
