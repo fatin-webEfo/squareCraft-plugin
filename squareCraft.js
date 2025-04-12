@@ -345,18 +345,19 @@ async function createWidget() {
           return;
         }
       
-        const firstBlock = document.querySelector('[id^="block-"]');
-        if (firstBlock) {
-          handleBlockClick({ target: firstBlock }, {
-            getTextType,
-            selectedElement,
-            setSelectedElement: (val) => selectedElement = val,
-            setLastClickedBlockId: (val) => lastClickedBlockId = val,
-            setLastClickedElement: (val) => lastClickedElement = val,
-            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-          });
-        }
+        const clickedBlock = event.target.closest('[id^="block-"]');
+        if (!clickedBlock) return;
+        
+         handleBlockClick({ target: clickedBlock }, {
+          getTextType,
+          selectedElement,
+          setSelectedElement: (val) => selectedElement = val,
+          setLastClickedBlockId: (val) => lastClickedBlockId = val,
+          setLastClickedElement: (val) => lastClickedElement = val,
+          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+        });
+        
       }, 500);
       
     }
