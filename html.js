@@ -1,6 +1,8 @@
 
 import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/squareCraft-plugin/toggleState.js';
 import { WidgetTypoSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSection.js';
+import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
+import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
 
 
 export function html() {
@@ -33,8 +35,9 @@ export function html() {
       class="sc-rounded-6px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
   
       ${WidgetTypoSection()}
-    <div id="imageSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
-    <div id="buttonSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/b55pw6Wn/vote.gif" loading="lazy" alt=""></div>
+      ${WidgetImageSection()}
+      ${WidgetButtonSection()}
+  
    </div>
    <div class="sc-mt-4">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
