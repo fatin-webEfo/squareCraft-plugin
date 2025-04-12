@@ -19,6 +19,7 @@ export function handleAlignmentClick(event, context) {
   textTags.forEach(el => {
     const tagName = el.tagName.toLowerCase();
     const result = getTextType(tagName, el);
+    console.log("result", result);
 
   });
 
