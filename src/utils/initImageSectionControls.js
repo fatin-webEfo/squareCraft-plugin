@@ -6,34 +6,35 @@ export function initImageSectionControls() {
   
     if (!bullet || !field || !valueDisplay || !fill) return;
   
-    const maxValue = 50;
+    const maxValue = 100;
     const minValue = 0;
   
     const updateBulletPosition = (clientX) => {
-      const rect = field.getBoundingClientRect();
-      let offsetX = clientX - rect.left;
-  
-      const max = field.offsetWidth;
-      const bulletRadius = bullet.offsetWidth / 2;
-  
-      offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
-  
-      const percent = offsetX / max;
-      const value = Math.round(minValue + (maxValue - minValue) * percent);
-  
-      bullet.style.left = `${offsetX}px`;
-      bullet.style.transform = "translateX(-50%)";
-      fill.style.width = `${offsetX}px`;
-      valueDisplay.textContent = `${value}px`;
-  
-      const block = selectedElement; 
-      if (block) {
-        const images = block.querySelectorAll("img");
-        images.forEach((img) => {
-          img.style.border = `${value}px solid black`; 
-        });
-      }
-    };
+        const rect = field.getBoundingClientRect();
+        let offsetX = clientX - rect.left;
+      
+        const max = field.offsetWidth;
+        const bulletRadius = bullet.offsetWidth / 2;
+      
+        offsetX = Math.max(bulletRadius, Math.min(offsetX, max - bulletRadius));
+      
+        const percent = offsetX / max;
+        const value = Math.round(minValue + (maxValue - minValue) * percent);
+      
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.transform = "translateX(-50%)";
+        fill.style.width = `${offsetX}px`;
+        valueDisplay.textContent = `${value}px`;
+      
+        const block = window.lastClickedBlock;
+        if (block) {
+          const images = block.querySelectorAll("img");
+          images.forEach(img => {
+            img.style.borderRadius = `${value}px`;
+          });
+        }
+      };
+      
   
     const startDrag = (e) => {
       e.preventDefault();
