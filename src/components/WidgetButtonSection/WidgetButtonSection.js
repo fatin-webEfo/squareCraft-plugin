@@ -8,7 +8,7 @@ export function WidgetButtonSection(id){
      <div id="buttonSection">
          <div  class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
-               <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.svg" alt="">
+               <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
                <p class="sc-universal sc-poppins">Button</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
