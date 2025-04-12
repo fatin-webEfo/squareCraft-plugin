@@ -168,8 +168,8 @@ export function html() {
       <div class="sc-mt-4"> </div>
     </div>
 
-    <div  id="imageSection"><img src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
-    <div id="buttonSection"><img src="https://i.ibb.co.com/b55pw6Wn/vote.gif" loading="lazy" alt=""></div>
+    <div id="imageSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/m5MbKFZ4/panorama.gif" loading="lazy" alt=""></div>
+    <div id="buttonSection"><img style="width: 100px; margin: 0 auto;" src="https://i.ibb.co.com/b55pw6Wn/vote.gif" loading="lazy" alt=""></div>
    </div>
    <div class="sc-mt-4">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
