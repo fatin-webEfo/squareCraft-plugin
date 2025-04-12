@@ -5,7 +5,7 @@ export function initImageSectionControls() {
   
     if (!bullet || !field || !valueDisplay) return;
   
-    const maxValue = 100;
+    const maxValue = 96;
     const minValue = 0;
     const fieldWidth = field.offsetWidth;
   
