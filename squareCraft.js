@@ -94,7 +94,7 @@
 
   
   document.body.addEventListener("click", (event) => {
-    setTimeout(initImageSectionControls, 100); 
+    setTimeout(initImageSectionControls(event), 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
     detectBlockElementTypes(clickedBlock); 

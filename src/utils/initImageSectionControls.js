@@ -1,4 +1,4 @@
-export function initImageSectionControls() {
+export function initImageSectionControls(event) {
     const bullet = document.getElementById("radiousBullet");
     const field = document.getElementById("radiousField");
     const valueDisplay = document.getElementById("radiousCount");
@@ -26,7 +26,7 @@ export function initImageSectionControls() {
       fill.style.width = `${offsetX}px`;
       valueDisplay.textContent = `${value}px`;
   
-      const block = document.querySelector('[id^="block-"].sc-selected');
+      const block = event.target.closest('[id^="block-"]');
       if (block) {
         const images = block.querySelectorAll("img");
         images.forEach(img => {
