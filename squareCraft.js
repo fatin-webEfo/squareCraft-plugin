@@ -369,6 +369,35 @@ function loadWidgetFromString(htmlString, clickedBlock) {
 }
 
 
+document.body.addEventListener("click", (event) => {
+  const block = event.target.closest('[id^="block-"]');
+  if (!block) return;
+
+  const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
+
+  nestedElements.forEach((el) => {
+    const tagName = el.tagName.toLowerCase();
+    const classList = el.classList;
+
+    if (tagName === "h1") console.log({ type: "heading1", element: el });
+    else if (tagName === "h2") console.log({ type: "heading2", element: el });
+    else if (tagName === "h3") console.log({ type: "heading3", element: el });
+    else if (tagName === "h4") console.log({ type: "heading4", element: el });
+    else if (tagName === "p") {
+      if (classList.contains("sqsrte-large")) {
+        console.log({ type: "paragraph1", element: el });
+      } else if (classList.contains("sqsrte-small")) {
+        console.log({ type: "paragraph3", element: el });
+      } else {
+        console.log({ type: "paragraph2", element: el });
+      }
+    } else if (tagName === "img") {
+      console.log({ type: "image", element: el });
+    } else if (tagName === "a" || tagName === "button") {
+      console.log({ type: "button", element: el });
+    }
+  });
+});
   
 
   function makeWidgetDraggable() {

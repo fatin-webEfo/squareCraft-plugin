@@ -1,6 +1,6 @@
 (async function squareCraft() {
-  const Url = parent.document.location.href;
-  console.log("parent", Url);
+  const Url = parent.document.location.href
+  console.log("parent", Url)
   const widgetScript = document.getElementById("sc-script");
 
   if (!widgetScript) {
@@ -14,7 +14,7 @@
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
   let userId = widgetScript.dataset?.uId;
-  let widgetId = widgetScript.dataset?.wId;
+  let widgetId = widgetScript.dataset?.wId; 
 
   if (token) {
     localStorage.setItem("sc_auth_token", token);
@@ -30,6 +30,7 @@
     localStorage.setItem("sc_w_id", widgetId);
     document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
   }
+
 
   document.addEventListener("DOMContentLoaded", function () {
     const selectedElement = document.querySelector(
@@ -52,27 +53,9 @@
       const selectedFont = fontSelector.value;
       selectedElement.style.fontFamily = selectedFont;
     });
+
   });
 
-  function getTextType(tagName, element) {
-    let classList = element?.classList || [];
-
-    if (tagName === "h1") return { type: "heading1", borderColor: "#FF0000" };
-    if (tagName === "h2") return { type: "heading2", borderColor: "#FFA500" };
-    if (tagName === "h3") return { type: "heading3", borderColor: "#FFFF00" };
-    if (tagName === "h4") return { type: "heading4", borderColor: "#008000" };
-
-    if (tagName === "p") {
-      if (classList.contains("sqsrte-large")) {
-        return { type: "paragraph1", borderColor: "#4B0082" };
-      } else if (classList.contains("sqsrte-small")) {
-        return { type: "paragraph3", borderColor: "#0000FF" };
-      } else {
-        return { type: "paragraph2", borderColor: "#9400D3" };
-      }
-    }
-    return null;
-  }
 
   let lastClickedBlockId = null;
   let lastClickedElement = null;
@@ -98,364 +81,89 @@
     cssText += "}";
 
     styleTag.innerHTML = cssText;
-    console.log(`✅ Styles applied to ${elementId} and its nested elements`);
   }
-
+  const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
+  const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
+  const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
+  const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
+  const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
+  const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
+  
   document.body.addEventListener("click", (event) => {
-    let block = event.target.closest('[id^="block-"]');
-    if (!block) return;
-
-    if (selectedElement) selectedElement.style.outline = "";
-    selectedElement = block;
-    selectedElement.style.outline = "2px dashed #EF7C2F";
-
-    lastClickedBlockId = block.id;
-    lastClickedElement = block;
-
-    console.log(`✅ Selected Block: ${selectedElement.id}`);
-
-    let appliedTextAlign = window.getComputedStyle(block).textAlign;
-
-    if (!appliedTextAlign || appliedTextAlign === "start") {
-      const nested = block.querySelector("h1,h2,h3,h4,p");
-      if (nested) {
-        appliedTextAlign = window.getComputedStyle(nested).textAlign;
-      }
-    }
-
-    if (appliedTextAlign) {
-      lastAppliedAlignment = appliedTextAlign;
-      console.log(`✅ Detected existing text alignment: ${appliedTextAlign}`);
-
-      const alignmentIconMap = {
-        left: document.getElementById("scTextAlignLeft"),
-        center: document.getElementById("scTextAlignCenter"),
-        right: document.getElementById("scTextAlignRight"),
-        justify: document.getElementById("scTextAlignJustify"),
-      };
-
-      if (lastActiveAlignmentElement) {
-        lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
-        lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
-      }
-
-      const activeIcon = alignmentIconMap[appliedTextAlign];
-      if (activeIcon) {
-        activeIcon.classList.add("sc-activeTab-border");
-        activeIcon.classList.remove("sc-inActiveTab-border");
-        lastActiveAlignmentElement = activeIcon;
-      }
-    }
-
-    const innerTextElements = block.querySelectorAll("h1, h2, h3, h4, p");
-
-    const allParts = [
-      "heading1Part",
-      "heading2Part",
-      "heading3Part",
-      "heading4Part",
-      "paragraph1Part",
-      "paragraph2Part",
-      "paragraph3Part",
-    ];
-
-    const visibleParts = new Set();
-
-    innerTextElements.forEach((el) => {
-      const tagName = el.tagName.toLowerCase();
-      const result = getTextType(tagName, el);
-      if (result) {
-        console.log(
-          `📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${
-            result.type
-          }, BorderColor: ${result.borderColor}`
-        );
-        visibleParts.add(`${result.type}Part`);
-        el.style.border = `1px solid ${result.borderColor}`;
-        el.style.borderRadius = "4px";
-        el.style.padding = "2px 4px";
-      }
+    handleBlockClick(event, {
+      getTextType,
+      selectedElement,
+      setSelectedElement: (val) => selectedElement = val,
+      setLastClickedBlockId: (val) => lastClickedBlockId = val,
+      setLastClickedElement: (val) => lastClickedElement = val,
+      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-
-    allParts.forEach((id) => {
-      const part = document.getElementById(id);
-      if (part) {
-        if (visibleParts.has(id)) {
-          part.classList.remove("sc-hidden");
-        } else {
-          part.classList.add("sc-hidden");
-        }
-      }
+  
+    handleAlignmentClick(event, {
+      lastClickedElement,
+      getTextType,
+      applyStylesToElement,
+      lastAppliedAlignment,
+      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+      lastActiveAlignmentElement,
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val,
+      lastClickedBlockId,
+      userId,
+      token,
+      widgetId
     });
-
-    visibleParts.forEach((partId) => {
-      const typeId = partId.replace("Part", "");
-      const widgetTab = document.getElementById(typeId);
-      if (!widgetTab) return;
-
-      widgetTab.onmouseenter = () => {
-        const block = document.getElementById(lastClickedBlockId);
-        if (!block) return;
-
-        const tag = typeId.startsWith("heading")
-          ? `h${typeId.replace("heading", "")}`
-          : "p";
-
-        block.querySelectorAll(tag).forEach((el) => {
-          const result = getTextType(tag, el);
-          if (result && result.type === typeId) {
-            el.style.outline = `2px solid ${result.borderColor}`;
-          }
-        });
-      };
-
-      widgetTab.onmouseleave = () => {
-        const block = document.getElementById(lastClickedBlockId);
-        if (!block) return;
-
-        block.querySelectorAll("h1, h2, h3, h4, p").forEach((el) => {
-          el.style.outline = "";
-        });
-      };
-    });
-  });
-
-  document.body.addEventListener("click", async (event) => {
-    const alignmentIcon = event.target.closest(
-      "#scTextAlignLeft, #scTextAlignCenter, #scTextAlignRight, #scTextAlignJustify"
-    );
-
-    if (alignmentIcon && lastClickedElement) {
-      const textTags = lastClickedElement.querySelectorAll("h1, h2, h3, h4, p");
-      textTags.forEach((el) => {
-        const tagName = el.tagName.toLowerCase();
-        const result = getTextType(tagName, el);
-        if (result) {
-          console.log(
-            `📘 getTextType → Tag: ${tagName.toUpperCase()}, Type: ${
-              result.type
-            }, BorderColor: ${result.borderColor}`
-          );
-        }
-      });
-
-      const textAlign = alignmentIcon.dataset.align;
-
-      if (lastAppliedAlignment === textAlign) {
-        applyStylesToElement(lastClickedElement, { "text-align": "" });
-        lastAppliedAlignment = null;
-        console.log(`❌ Alignment undone for Block: ${lastClickedBlockId}`);
-
-        if (lastActiveAlignmentElement) {
-          lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
-          lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
-        }
-      } else {
-        applyStylesToElement(lastClickedElement, { "text-align": textAlign });
-        lastAppliedAlignment = textAlign;
-        console.log(
-          `✅ Applying text alignment: ${textAlign} to Block: ${lastClickedBlockId}`
-        );
-
-        if (
-          lastActiveAlignmentElement &&
-          lastActiveAlignmentElement !== alignmentIcon
-        ) {
-          lastActiveAlignmentElement.classList.remove("sc-activeTab-border");
-          lastActiveAlignmentElement.classList.add("sc-inActiveTab-border");
-        }
-
-        alignmentIcon.classList.add("sc-activeTab-border");
-        alignmentIcon.classList.remove("sc-inActiveTab-border");
-
-        lastActiveAlignmentElement = alignmentIcon;
-      }
-
-      document.getElementById("publish").addEventListener("click", async () => {
-        const publishButton = document.getElementById("publish");
-        publishButton.textContent = "Publishing...";
-
-        const pageId = document
-          .querySelector("article[data-page-sections]")
-          ?.getAttribute("data-page-sections");
-        if (!lastClickedElement || !lastAppliedAlignment || !pageId) return;
-
-        const modificationData = {
-          userId,
-          token: token,
-          widgetId,
-          modifications: [
-            {
-              pageId,
-              elements: [
-                {
-                  elementId: lastClickedElement.id,
-                  css: {
-                    "text-align": lastAppliedAlignment,
-                  },
-                },
-              ],
-            },
-          ],
-        };
-
-        try {
-          const response = await fetch(
-            "https://admin.squareplugin.com/api/v1/modifications",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${
-                  token || localStorage.getItem("sc_auth_token")
-                }`,
-                userId: userId,
-                pageId: pageId,
-                "widget-id": widgetId,
-              },
-              body: JSON.stringify(modificationData),
-            }
-          );
-
-          if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
-
-          const result = await response.json();
-          console.log("✅ Modifications saved successfully:", result);
-          publishButton.textContent = "Published";
-        } catch (error) {
-          console.error("❌ Error saving modifications:", error.message);
-          publishButton.textContent = "Failed";
-        }
-      });
-    }
+  
+    handleTextColorClick(event, lastClickedElement, applyStylesToElement);
+    handleFontWeightDropdownClick(event);
+    typoTabSelect(event);
   });
 
   document.body.addEventListener("click", (event) => {
-    const textColorPalate = event.target.closest("#textColorPalate");
-    if (textColorPalate) {
-      let colorPalette = document.getElementById("scColorPalette");
+    const dropdownTrigger = event.target.closest("#font-weight-dropdown");
+    const dropdownList = document.getElementById("font-weight-dropdown-list");
 
-      if (!colorPalette) {
-        colorPalette = document.createElement("input");
-        colorPalette.type = "color";
-        colorPalette.id = "scColorPalette";
-        colorPalette.style.opacity = "0";
-        colorPalette.style.width = "0px";
-        colorPalette.style.height = "0px";
-        colorPalette.style.marginTop = "14px";
-
-        textColorPalate.appendChild(colorPalette);
-
-        colorPalette.addEventListener("input", function (event) {
-          if (lastClickedElement) {
-            const selectedColor = event.target.value;
-
-            applyStylesToElement(lastClickedElement, {
-              color: `${selectedColor} !important`,
-            });
-
-            textColorPalate.style.backgroundColor = selectedColor;
-
-            const textColorHtml = document.getElementById("textcolorHtml");
-            if (textColorHtml) {
-              textColorHtml.textContent = selectedColor;
-            }
-
-            console.log(`🎨 Applied Color: ${selectedColor}`);
-          }
-        });
-      }
-
-      colorPalette.click();
-    }
-  });
-
-  document.body.addEventListener("click", (event) => {
-    const clicked = event.target.closest("div[id$='Select']");
-    if (!clicked) return;
-
-    const dropdown = clicked.closest("[id$='Dropdown']");
-    if (!dropdown) {
-      console.warn("⚠️ Dropdown container not found for:", clicked.id);
-      return;
-    }
-
-    console.log("📌 Clicked tab:", clicked.id);
-
-    const baseId = clicked.id.split("-")[0]; // heading1, paragraph2, etc.
-    const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-
-    styleIds.forEach((suffix) => {
-      const fullId = `${baseId}-${suffix}`;
-      const tab = dropdown.querySelector(`#${fullId}`);
-      const desc = dropdown.querySelector(`#scDesc-${fullId}`);
-
-      if (tab) {
-        if (tab === clicked) {
-          tab.classList.add("sc-select-activeTab-border");
-          tab.classList.remove("sc-select-inActiveTab-border");
-          console.log(`✅ Activated tab: ${fullId}`);
-        } else {
-          tab.classList.remove("sc-select-activeTab-border");
-          tab.classList.add("sc-select-inActiveTab-border");
-          console.log(`🧹 Deactivated tab: ${fullId}`);
-        }
+  
+    if (dropdownTrigger) {
+      if (dropdownList.classList.contains("sc-hidden")) {
+        dropdownList.classList.remove("sc-hidden");
+        console.log("✅ sc-hidden removed: dropdown shown");
       } else {
-        console.error(`❌ Tab not found: #${fullId}`);
+        dropdownList.classList.add("sc-hidden");
+        console.log("✅ sc-hidden added: dropdown hidden");
       }
-
-      if (desc) {
-        if (clicked.id === fullId) {
-          desc.classList.remove("sc-hidden");
-          console.log(`📖 Showing description: scDesc-${fullId}`);
-        } else {
-          desc.classList.add("sc-hidden");
-          console.log(`🙈 Hiding description: scDesc-${fullId}`);
-        }
-      } else {
-        console.error(`❌ Description not found: #scDesc-${fullId}`);
-      }
-    });
-  });
-
+    }
+  } );
+  
   async function fetchModifications(retries = 3) {
-    const module = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-    );
+    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     const htmlString = module.html();
-
-    if (
-      typeof htmlString === "string" &&
-      widgetContainer &&
-      widgetContainer.innerHTML.trim() === ""
-    ) {
+  
+    if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
       widgetContainer.innerHTML = htmlString;
-    }
 
+    }
+  
     setTimeout(() => {
       if (typeof module.initToggleSwitch === "function") {
         module.initToggleSwitch();
       }
     }, 200);
-
+  
     const isEnabled = localStorage.getItem("sc_enabled") !== "false";
-
+  
     if (!isEnabled) {
-      console.log("🚫 Widget toggle is OFF");
       return;
     }
-
-    const pageId = document
-      .querySelector("article[data-page-sections]")
-      ?.getAttribute("data-page-sections");
+  
+    const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
-
+  
     if (!token || !userId) {
       console.warn("Missing authentication data");
       return;
     }
-
+  
     try {
       const response = await fetch(
         `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
@@ -463,69 +171,67 @@
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            "Authorization": `Bearer ${token}`,
+          }
         }
       );
-
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-
+  
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  
       const data = await response.json();
-      console.log("📥 Retrieved modifications:", data);
-
+  
       if (!data.modifications || !Array.isArray(data.modifications)) {
         console.warn("⚠️ No modifications found or invalid format");
         return;
       }
-
+  
       const modificationMap = new Map();
-
-      data.modifications.forEach((mod) => {
+  
+      data.modifications.forEach(mod => {
         if (mod.pageId === pageId) {
-          mod.elements.forEach((elem) => {
+          mod.elements.forEach(elem => {
             if (elem.css) {
               modificationMap.set(elem.elementId, elem.css);
             }
           });
         }
       });
-
+  
       const observer = new MutationObserver(() => {
         modificationMap.forEach((css, elementId) => {
           const element = document.getElementById(elementId);
           if (element) {
-            console.log(`✅ Applying styles to element ${elementId}`);
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
-
-            const nestedElements =
-              element.querySelectorAll("h1, h2, h3, h4, p");
-            nestedElements.forEach((nestedElem) => {
+  
+            const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
+            nestedElements.forEach(nestedElem => {
               Object.entries(css).forEach(([prop, value]) => {
                 nestedElem.style.setProperty(prop, value, "important");
               });
             });
-
+  
             if (!element.classList.contains("sc-font-modified")) {
               element.classList.add("sc-font-modified");
             }
-
-            modificationMap.delete(elementId);
+  
+            modificationMap.delete(elementId);  
           }
         });
       });
-
+  
       observer.observe(document.body, { childList: true, subtree: true });
+  
     } catch (error) {
       console.error("❌ Error Fetching Modifications:", error);
       if (retries > 0) {
-        console.log(`🔄 Retrying fetch... (${retries} attempts left)`);
         setTimeout(() => fetchModifications(retries - 1), 2000);
       }
     }
   }
+  
+  
 
   window.addEventListener("load", async () => {
     await fetchModifications();
@@ -540,7 +246,6 @@
     widgetContainer.dataset.listenerAttached = "true";
 
     function toggleTabClass(targetElement) {
-      console.log("🚀 Toggle function called for:", targetElement);
       if (targetElement.classList.contains("sc-activeTab-border")) {
         targetElement.classList.remove("sc-activeTab-border");
         targetElement.classList.add("sc-inActiveTab-border");
@@ -552,11 +257,7 @@
 
     widgetContainer.addEventListener("click", (event) => {
       const tabElement = event.target;
-      if (
-        tabElement.classList.contains("sc-inActiveTab-border") ||
-        tabElement.classList.contains("sc-activeTab-border")
-      ) {
-        console.log("📌 Tab Element Clicked:", tabElement);
+      if (tabElement.classList.contains('sc-inActiveTab-border') || tabElement.classList.contains('sc-activeTab-border')) {
         toggleTabClass(tabElement);
       }
     });
@@ -571,6 +272,8 @@
 
   addHeadingEventListeners();
 
+
+
   try {
     const { injectNavbarIcon } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
@@ -580,89 +283,93 @@
     console.error("🚨 Failed to load navbar icon script", error);
   }
 
-  const { loadCSS } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js"
-  );
 
-  loadCSS(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css",
-    "sc_parentCSS"
-  );
 
-  async function createWidget() {
-    try {
-      let cachedWidget = localStorage.getItem("sc_widget");
-      let lastFetched = localStorage.getItem("sc_widget_timestamp");
-      let oneDay = 24 * 60 * 60 * 1000;
-      let now = Date.now();
 
-      if (cachedWidget && lastFetched && now - lastFetched < oneDay) {
-        loadWidgetFromString(cachedWidget);
-        return;
-      }
-      const module = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-      );
+const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
-      if (module && module.html) {
-        const htmlString = module.html();
+loadCSS(
+  "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
+);
 
-        if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          localStorage.setItem("sc_widget", htmlString);
-          localStorage.setItem("sc_widget_timestamp", now.toString());
-          loadWidgetFromString(htmlString);
 
-          setTimeout(() => {
-            if (typeof module.initToggleSwitch === "function") {
-              module.initToggleSwitch();
-            }
-          }, 200);
-        } else {
-          console.error("❌ Retrieved HTML string is invalid or empty!");
-        }
-      }
-    } catch (error) {
-      console.error("🚨 Error loading HTML module:", error);
-    }
+
+
+
+async function toggleWidgetVisibility(event) {
+  event.stopPropagation();
+  const clickedBlock = event?.target?.closest('[id^="block-"]');
+
+  if (!clickedBlock) {
+    console.warn("No block element clicked.");
+    return;
   }
 
-  function loadWidgetFromString(htmlString) {
-    if (!widgetContainer) {
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "sc-widget-container";
-      widgetContainer.classList.add(
-        "sc-fixed",
-        "sc-text-color-white",
-        "sc-universal",
-        "sc-z-9999"
-      );
-      widgetContainer.innerHTML = htmlString;
-      widgetContainer.style.display = "none";
-      document.body.appendChild(widgetContainer);
-      makeWidgetDraggable();
-      widgetLoaded = true;
+  if (!widgetLoaded) {
+    await createWidget(clickedBlock);
+  } else {
+    widgetContainer.style.display =
+      widgetContainer.style.display === "none" ? "block" : "none";
 
+    handleBlockClick({ target: clickedBlock }, {
+      getTextType,
+      selectedElement,
+      setSelectedElement: (val) => selectedElement = val,
+      setLastClickedBlockId: (val) => lastClickedBlockId = val,
+      setLastClickedElement: (val) => lastClickedElement = val,
+      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+    });
+  }
+}
+
+async function createWidget(clickedBlock) {
+  try {
+    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+    const htmlString = module.html();
+
+    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+      loadWidgetFromString(htmlString, clickedBlock);
       setTimeout(() => {
-        widgetContainer = document.getElementById("sc-widget-container");
-        if (!widgetContainer) {
-          console.error("❌ Widget container failed to load.");
+        if (typeof module.initToggleSwitch === "function") {
+          module.initToggleSwitch();
         }
-      }, 500);
+      }, 200);
+    }
+  } catch (err) {
+    console.error("🚨 Error loading HTML module:", err);
+  }
+}
+
+function loadWidgetFromString(htmlString, clickedBlock) {
+  if (!widgetContainer) {
+    widgetContainer = document.createElement("div");
+    widgetContainer.id = "sc-widget-container";
+    widgetContainer.classList.add(
+      "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
+    );
+    widgetContainer.innerHTML = htmlString;
+    widgetContainer.style.display = "block"; // immediately visible
+    document.body.appendChild(widgetContainer);
+    makeWidgetDraggable();
+    widgetLoaded = true;
+
+    if (clickedBlock) {
+      handleBlockClick({ target: clickedBlock }, {
+        getTextType,
+        selectedElement,
+        setSelectedElement: (val) => selectedElement = val,
+        setLastClickedBlockId: (val) => lastClickedBlockId = val,
+        setLastClickedElement: (val) => lastClickedElement = val,
+        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      });
     }
   }
+}
 
-  async function toggleWidgetVisibility(event) {
-    event.stopPropagation();
 
-    if (!widgetLoaded) {
-      await createWidget();
-    }
-
-    if (widgetContainer) {
-      widgetContainer.style.display =
-        widgetContainer.style.display === "none" ? "block" : "none";
-    }
-  }
+  
 
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
@@ -732,6 +439,16 @@
     widgetContainer.addEventListener("touchstart", startDrag);
   }
 
+
+  document.body.addEventListener("click", (e) => {
+    const isInsideWidget = widgetContainer?.contains(e.target);
+    const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+  
+    if (!isInsideWidget && !isToolbarIcon && widgetContainer?.style.display === "block") {
+      widgetContainer.style.display = "none";
+    }
+  });
+  
   function adjustWidgetPosition() {
     if (!widgetContainer) return;
 
@@ -745,79 +462,86 @@
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
 
-  function injectIcon() {
-    function injectIconIntoTargetElements() {
-      const targets = parent.document.querySelectorAll(
-        ".tidILMJ7AVANuKwS:not(.sc-processed)"
-      );
-
-      targets.forEach((element) => {
-        element.classList.add("sc-processed");
-
-        const deleteButton = element.querySelector('[aria-label="Remove"]');
-        if (!deleteButton) {
-          console.warn("❌ Delete button not found, skipping:", element);
-          return;
-        }
-
-        if (element.querySelector(".sc-toolbar-icon")) return;
-        const clonedIcon = document.createElement("img");
-        clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-        clonedIcon.alt = "sc";
-        clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
-        clonedIcon.style.width = "35px";
-        clonedIcon.style.height = "35px";
-        clonedIcon.style.borderRadius = "20%";
-        clonedIcon.style.cursor = "pointer";
-        clonedIcon.style.backgroundColor = "white";
-        clonedIcon.style.marginLeft = "6px";
-        deleteButton.parentNode.insertBefore(
-          clonedIcon,
-          deleteButton.nextSibling
-        );
-
-        clonedIcon.addEventListener("click", function (event) {
-          event.stopPropagation();
-          event.preventDefault();
-
-          if (!widgetLoaded) {
-            createWidget().then(() => {
-              widgetContainer = document.getElementById("sc-widget-container");
-              if (widgetContainer) {
-                widgetContainer.style.display = "block";
-              } else {
-                console.error("❌ Widget container not found after creation.");
-              }
-            });
-          } else {
-            widgetContainer.style.display =
-              widgetContainer.style.display === "none" ? "block" : "none";
-          }
-        });
-      });
+ function injectIcon() {
+  async function waitForTargets(selector, maxRetries = 10, delay = 500) {
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      const elements = parent.document.querySelectorAll(selector);
+      if (elements.length > 0) return elements;
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-
-    const iframe = document.querySelector("iframe");
-    if (iframe) {
-      iframe.contentWindow.document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("sc-admin-icon")) {
-          event.stopPropagation();
-          event.preventDefault();
-          toggleWidgetVisibility(event);
-        }
-      });
-    }
-
-    setTimeout(() => {
-      injectIconIntoTargetElements();
-    }, 1000);
-    injectIconIntoTargetElements();
-
-    const observer = new MutationObserver(() => {
-      injectIconIntoTargetElements();
-    });
-    observer.observe(parent.document.body, { childList: true, subtree: true });
+    console.warn("⏱️ Timeout: Target elements not found:", selector);
+    return [];
   }
+
+  async function injectIconIntoTargetElements() {
+    const targets = await waitForTargets(".tidILMJ7AVANuKwS:not(.sc-processed)");
+
+    targets.forEach((element) => {
+      element.classList.add("sc-processed");
+
+      const deleteButton = element.querySelector('[aria-label="Remove"]');
+      if (!deleteButton) {
+        console.warn("❌ Delete button not found, skipping:", element);
+        return;
+      }
+
+      if (element.querySelector(".sc-toolbar-icon")) return;
+
+      const clonedIcon = document.createElement("img");
+      clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+      clonedIcon.alt = "sc";
+      clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
+      Object.assign(clonedIcon.style, {
+        width: "35px",
+        height: "35px",
+        borderRadius: "20%",
+        cursor: "pointer",
+        backgroundColor: "white",
+        marginLeft: "6px"
+      });
+
+      deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
+
+      clonedIcon.addEventListener("click", function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        toggleWidgetVisibility(event);
+        if (!widgetLoaded) {
+          createWidget().then(() => {
+            widgetContainer = document.getElementById("sc-widget-container");
+            if (widgetContainer) {
+              widgetContainer.style.display = "block";
+            } else {
+              console.error("❌ Widget container not found after creation.");
+            }
+          });
+        } else {
+          widgetContainer.style.display =
+            widgetContainer.style.display === "none" ? "block" : "none";
+        }
+      });
+    });
+  }
+
+  injectIconIntoTargetElements(); // run once at startup
+
+  const observer = new MutationObserver(() => {
+    injectIconIntoTargetElements(); 
+  });
+  observer.observe(parent.document.body, { childList: true, subtree: true });
+
+  const iframe = document.querySelector("iframe");
+  if (iframe) {
+    iframe.contentWindow.document.addEventListener("click", function (event) {
+      if (event.target.classList.contains("sc-admin-icon")) {
+        event.stopPropagation();
+        event.preventDefault();
+        toggleWidgetVisibility(event);
+      }
+    });
+  }
+}
+
 
   function waitForNavBar(attempts = 0) {
     if (attempts > 10) {
@@ -888,5 +612,6 @@
   }
 
   checkView();
+  setupFontWeightDropdown(); 
   window.addEventListener("resize", checkView);
 })();
