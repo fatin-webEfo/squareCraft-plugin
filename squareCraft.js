@@ -379,7 +379,7 @@ document.body.addEventListener("click", (e) => {
     const tagName = el.tagName.toLowerCase();
     const classList = el.classList;
 
-    if (tagName === "h1") return console.log({ type: "text", tag: "h1", element: el });
+    if (tagName === "h1") return console.log({ type: "text", tag: "h1", element: el }); 
     if (tagName === "h2") return console.log({ type: "text", tag: "h2", element: el });
     if (tagName === "h3") return console.log({ type: "text", tag: "h3", element: el });
     if (tagName === "h4") return console.log({ type: "text", tag: "h4", element: el });
@@ -405,7 +405,7 @@ document.body.addEventListener("click", (e) => {
     }
 
     if (tagName === "a" || tagName === "button") {
-      if (el.querySelector("img")) return; // Skip anchor used just to wrap image
+      if (el.querySelector("img")) return; 
       return console.log({ type: "button", element: el });
     }
   });
