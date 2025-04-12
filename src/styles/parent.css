@@ -489,6 +489,8 @@
   height: 12px !important;
   width: 12px !important;
   background-color: #EF7C2F !important;
+  border-radius: 100%;
+  cursor: pointer !important;
   top: 50% !important;
   transform: translate(-50%, -50%) !important;
 }
