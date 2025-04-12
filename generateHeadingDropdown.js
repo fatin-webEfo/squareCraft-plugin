@@ -2,6 +2,7 @@ import {typoAllSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/s
 import {typoBoldSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoBoldSelect.js"
 import {typoItalicSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoItalicSelect.js"
 import {typoLinkSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoLinkSelect.js"
+
 export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
   return `
     <div id="${id}">
