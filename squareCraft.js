@@ -293,88 +293,82 @@ loadCSS(
 );
 
 
-async function createWidget() { 
+async function createWidget(event) {
   try {
-    const module = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-    );
-
+    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     if (module && typeof module.html === "function") {
       const htmlString = module.html();
-
       if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-        loadWidgetFromString(htmlString);
-
+        const clickedBlock = event?.target?.closest?.('[id^="block-"]');
+        loadWidgetFromString(htmlString, clickedBlock); 
         setTimeout(() => {
           if (typeof module.initToggleSwitch === "function") {
             module.initToggleSwitch();
           }
         }, 200);
-      } else {
-        console.error("❌ Retrieved HTML string is invalid or empty!");
       }
     }
-  } catch (error) {
-    console.error("🚨 Error loading HTML module:", error);
+  } catch (err) {
+    console.error("🚨 Error loading HTML module:", err);
   }
 }
 
 
 
 
-  function loadWidgetFromString(htmlString) {
-    if (!widgetContainer) {
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "sc-widget-container";
-      widgetContainer.classList.add(
-        "sc-fixed",
-        "sc-text-color-white",
-        "sc-universal",
-        "sc-z-9999"
-      );
-      widgetContainer.innerHTML = htmlString;
-      widgetContainer.style.display = "none";
-      document.body.appendChild(widgetContainer);
-      makeWidgetDraggable();
-      widgetLoaded = true;
 
-      setTimeout(() => {
-        widgetContainer = document.getElementById("sc-widget-container");
-        if (!widgetContainer) {
-          console.error("❌ Widget container failed to load.");
-          return;
-        }
-      
-        const clickedBlock = event.target.closest('[id^="block-"]');
-        if (!clickedBlock) return;
-        
-         handleBlockClick({ target: clickedBlock }, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
-        
-      }, 500);
-      
-    }
+function loadWidgetFromString(htmlString, clickedBlock) {
+  if (!widgetContainer) {
+    widgetContainer = document.createElement("div");
+    widgetContainer.id = "sc-widget-container";
+    widgetContainer.classList.add(
+      "sc-fixed",
+      "sc-text-color-white",
+      "sc-universal",
+      "sc-z-9999"
+    );
+    widgetContainer.innerHTML = htmlString;
+    widgetContainer.style.display = "none";
+    document.body.appendChild(widgetContainer);
+    makeWidgetDraggable();
+    widgetLoaded = true;
+
+    setTimeout(() => {
+      widgetContainer = document.getElementById("sc-widget-container");
+      if (!widgetContainer) {
+        console.error("❌ Widget container failed to load.");
+        return;
+      }
+
+      if (!clickedBlock) return;
+
+      handleBlockClick({ target: clickedBlock }, {
+        getTextType,
+        selectedElement,
+        setSelectedElement: (val) => selectedElement = val,
+        setLastClickedBlockId: (val) => lastClickedBlockId = val,
+        setLastClickedElement: (val) => lastClickedElement = val,
+        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      });
+    }, 500);
   }
+}
+
 
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
-
+  
     if (!widgetLoaded) {
-      await createWidget();
+      await createWidget(event); 
     }
-
+  
     if (widgetContainer) {
       widgetContainer.style.display =
         widgetContainer.style.display === "none" ? "block" : "none";
     }
   }
+  
 
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
@@ -510,7 +504,7 @@ async function createWidget() {
       clonedIcon.addEventListener("click", function (event) {
         event.stopPropagation();
         event.preventDefault();
-
+        toggleWidgetVisibility(event);
         if (!widgetLoaded) {
           createWidget().then(() => {
             widgetContainer = document.getElementById("sc-widget-container");
