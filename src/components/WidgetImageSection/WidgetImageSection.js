@@ -5,7 +5,7 @@ export function WidgetImageSection(id){
    
     return `
 
-    <div id="imageSection">
+     <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -66,7 +66,7 @@ export function WidgetImageSection(id){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                  <p id="radiousCount" class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+                  <p id="radiousCount" class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
@@ -171,7 +171,7 @@ export function WidgetImageSection(id){
                      </div>
                      <div
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                        <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+                        <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="9">
@@ -210,7 +210,7 @@ export function WidgetImageSection(id){
                      </p>
                   </div>
                   <div class="sc-flex sc-mt-2 sc-items-center">
-                     <div class="sc-bg-3f3f3f sc-py-1px sc-px-2 sc-rounded-l">
+                     <div class="sc-bg-3f3f3f sc-py-0_5 sc-px-2 sc-rounded-l">
                         <p class="sc-universal sc-poppins sc-text-sm ">Yes</p>
                      </div>
                      <img style="width: 28px;" loading="lazy"
@@ -223,7 +223,7 @@ export function WidgetImageSection(id){
                         Color
                      </p>
                      <div
-                        class="sc-py-xs sc-gap-5 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                        class="sc-py-0_5 sc-gap-5 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                         <p class="sc-text-xs sc-poppins sc-font-light sc-universal">#363544</p>
                         <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                      </div>
@@ -303,7 +303,7 @@ export function WidgetImageSection(id){
          (X Axis)
       </p>
       <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-           <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+           <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="9">
@@ -326,7 +326,7 @@ export function WidgetImageSection(id){
          (X Axis)
       </p>
       <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-           <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+           <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="9">
@@ -376,7 +376,7 @@ export function WidgetImageSection(id){
              (X Axis)
           </p>
           <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-               <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+               <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                             <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                                   width="9">
@@ -399,7 +399,7 @@ export function WidgetImageSection(id){
              (X Axis)
           </p>
           <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-               <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
+               <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                             <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                                   width="9">
@@ -503,8 +503,7 @@ export function WidgetImageSection(id){
 
 <div class="sc-mt-6">
     <div class="sc-flex sc-justify-between sc-gap-2 sc-items-center">
-           <p style="font-size: 16px;" class="sc-poppins sc-font-thin sc-universal  sc-text-color-white">image Masking</p>
-
+      <p style="font-size: 16px;" class="sc-poppins sc-font-thin sc-universal  sc-text-color-white">image Masking</p>
    <div
       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
