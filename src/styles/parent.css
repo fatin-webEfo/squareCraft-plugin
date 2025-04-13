@@ -687,6 +687,9 @@
 .sc-h-full {
   height: 100% !important;
 }
+.sc-w-40 {
+  width: 100px !important;
+}
 .sc-py-3{
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
