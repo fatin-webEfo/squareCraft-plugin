@@ -261,7 +261,7 @@ export function WidgetImageSection(id){
                                  width="10">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
                                  class="sc-rotate-180" alt="">
-                           </div>
+                         </div>
                         </div>
                      </div>
                      <div>
