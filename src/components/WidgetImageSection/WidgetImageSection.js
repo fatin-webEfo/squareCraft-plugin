@@ -5,7 +5,7 @@ export function WidgetImageSection(id){
    
     return `
 
-     <div id="imageSection">
+    <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -53,7 +53,8 @@ export function WidgetImageSection(id){
                      class="sc-rotate-180" alt="">
                </div>
             </div>
-            <div class="sc-mt-3 sc-px-2 sc-flex sc-items-center sc-justify-between">
+            <div class="sc-px-2 sc-mt-3">
+               <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Border
                   </p>
@@ -66,7 +67,7 @@ export function WidgetImageSection(id){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                  <p id="radiousCount" class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
+                  <p id="radiousCount" class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
@@ -74,8 +75,9 @@ export function WidgetImageSection(id){
                   </div>
                </div>
             </div>
-            <div class="sc-mt-4 sc-px-2">
-               <div id="radiousField" class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6"><div id="radiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+            
+               <div id="radiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="radiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                   <div id="radiousBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                   </div>
@@ -155,7 +157,7 @@ export function WidgetImageSection(id){
                      </div>
                   </div>
                </div>
-
+              
                <div class="sc-mt-4">
                   <div class="  sc-flex sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
@@ -171,7 +173,7 @@ export function WidgetImageSection(id){
                      </div>
                      <div
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                        <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
+                        <p class="sc-font-thin sc-poppins sc-universal sc-text-xs">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="9">
@@ -187,7 +189,11 @@ export function WidgetImageSection(id){
                   </div>
 
                </div>
+            </div>
 
+
+
+               <div class="sc-mt-4 sc-px-2">
                <div class="sc-mt-4 ">
                   <div
                      class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-6px">
@@ -513,7 +519,8 @@ export function WidgetImageSection(id){
 </div>
 </div>
 
-</div>
+
+            </div>
 
             <div class="sc-mt-4"> </div>
          </div>
