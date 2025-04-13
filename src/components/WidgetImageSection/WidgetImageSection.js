@@ -5,7 +5,7 @@ export function WidgetImageSection(id){
    
     return `
 
-    <div id="imageSection">
+   <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -24,7 +24,7 @@ export function WidgetImageSection(id){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
-                  <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+                  <p class="sc-font-light sc-universal sc-text-sm sc-text-xs sc-poppins">Reset</p>
                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
                </div>
             </div>
@@ -60,25 +60,54 @@ export function WidgetImageSection(id){
                   <div
                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
+                        alt="reset">
                   </div>
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                  <p id="radiousCount" class="sc-font-light sc-poppins sc-universal sc-text-sm sc-text-xs">50px</p>
-                  <div class="sc-flex sc-flex-col sc-items-center sc-gap-1"> 
-                     <img id="paragraph1Arrow"src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="8">
-                     <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="8" class="sc-rotate-180"alt=""> 
-                     </div>
+                  <p id="radiousCount" class="sc-font-light sc-poppins sc-universal sc-text-xs">50px</p>
+                  <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+                     <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                        alt="" width="8">
+                     <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                        width="8" class="sc-rotate-180" alt="">
+                  </div>
                </div>
             </div>
-          <div class="sc-mt-4 sc-px-2">
-           <div id="radiousField" class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
-             <div id="radiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-             <div id="radiousBullet" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
-           </div>
-         </div>
-
+            <div class="sc-mt-4 sc-px-2">
+               <div id="radiousField" class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="radiousBullet"
+                     class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
+                  </div>
+               </div>
+               <div class="sc-grid sc-grid-cols-12 sc-mt-3">
+                  <div></div>
+                  <div style="padding: 4px 0px;"
+               class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-xs    sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1_5 sc-rounded-6px">
+              <div class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-bg-454545 sc-items-center sc-gap-1">
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" alt="">
+               <p  class="sc-font-light sc-poppins sc-universal ">All</p>
+              </div>
+              <div class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" alt="">
+               <p  class="sc-font-light sc-poppins sc-universal ">Top</p>
+              </div>
+              <div class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" alt="">
+               <p  class="sc-font-light sc-poppins sc-universal ">Bottom</p>
+              </div>
+              <div class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" alt="">
+               <p  class="sc-font-light sc-poppins sc-universal ">Left</p>
+              </div>
+              <div class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" alt="">
+               <p  class="sc-font-light sc-poppins sc-universal ">Right</p>
+              </div>
+            </div>
+               </div>
+            </div>
             <div class="sc-mt-4"> </div>
          </div>
     `
