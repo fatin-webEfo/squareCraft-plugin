@@ -162,9 +162,9 @@ export function WidgetImageSection(id){
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                   <p  class="sc-font-thin sc-poppins sc-universal sc-text-xs">50px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                     <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                     <img  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         alt="" width="8">
-                     <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                     <img  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         width="8" class="sc-rotate-180" alt="">
                   </div>
                </div>
