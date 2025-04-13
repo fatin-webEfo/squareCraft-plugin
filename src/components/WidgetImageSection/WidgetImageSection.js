@@ -503,7 +503,7 @@ export function WidgetImageSection(id){
 
 <div class="sc-mt-6">
     <div class="sc-flex sc-justify-between sc-gap-2 sc-items-center">
-      <h4 class="sc-poppins sc-font-thin sc-universal  sc-text-color-white">image Masking</h4>
+      <h5 class="sc-poppins sc-font-thin sc-universal  sc-text-color-white">image Masking</h5>
    <div
       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
