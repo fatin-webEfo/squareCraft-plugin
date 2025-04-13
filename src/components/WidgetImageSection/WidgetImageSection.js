@@ -77,6 +77,7 @@ export function WidgetImageSection(id){
             </div>
             <div class="sc-mt-4 sc-px-2">
                <div id="radiousField" class="sc-rounded-15px sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="radiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                   <div id="radiousBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                   </div>
