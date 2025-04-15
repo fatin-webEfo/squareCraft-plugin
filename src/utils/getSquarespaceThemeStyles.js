@@ -1,4 +1,4 @@
-export async function getSquarespaceThemeStyles () {
+export async function getSquarespaceThemeStyles() {
   let lastSnapshot = "";
 
   async function extractThemeStyles() {
@@ -14,6 +14,7 @@ export async function getSquarespaceThemeStyles () {
     for (const sheet of stylesheets) {
       try {
         const rules = sheet.cssRules ? [...sheet.cssRules] : [];
+
         rules.forEach(rule => {
           const selector = rule.selectorText || "";
           const style = rule.style;
@@ -25,7 +26,13 @@ export async function getSquarespaceThemeStyles () {
           for (let i = 0; i < style.length; i++) {
             const prop = style[i];
             const value = style.getPropertyValue(prop).trim();
-            if (prop.includes("color") && value.startsWith("#")) {
+            if (
+              prop.includes("color") &&
+              value &&
+              value !== "inherit" &&
+              value !== "transparent" &&
+              value !== "currentColor"
+            ) {
               result.colors.add(value);
             }
           }
@@ -33,7 +40,8 @@ export async function getSquarespaceThemeStyles () {
           if (
             selector.includes("button") ||
             selector.includes(".sqs-block-button-element") ||
-            selector.includes(".button")
+            selector.includes(".button") ||
+            style.backgroundColor || style.borderRadius || style.fontSize
           ) {
             result.buttons.push({
               selector,
@@ -45,7 +53,9 @@ export async function getSquarespaceThemeStyles () {
             });
           }
         });
-      } catch (e) {}
+      } catch (e) {
+       console.error("Error accessing stylesheet rules:", e);
+      }
     }
 
     return {
