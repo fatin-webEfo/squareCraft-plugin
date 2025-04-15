@@ -96,7 +96,7 @@
 
   
   document.body.addEventListener("click", (event) => {
-    initImageMaskControls(() => selectedElement);
+    
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
@@ -364,6 +364,7 @@ function loadWidgetFromString(htmlString, clickedBlock) {
     widgetContainer.innerHTML = htmlString;
     widgetContainer.style.display = "block"; // immediately visible
     document.body.appendChild(widgetContainer);
+    initImageMaskControls(() => selectedElement);
     makeWidgetDraggable();
     widgetLoaded = true;
     initImageSectionToggleControls();
