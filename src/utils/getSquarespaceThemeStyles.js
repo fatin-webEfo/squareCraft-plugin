@@ -12,17 +12,7 @@ export async function getSquarespaceThemeStyles() {
     return value ? `hsl(${value})` : null;
   }
 
-  async function logThemeStyles() {
-    const fonts = new Set();
-    const fontSizes = new Set();
-    const buttons = [];
-
-    document.querySelectorAll('*').forEach(el => {
-      const style = window.getComputedStyle(el);
-      if (style.fontFamily) fonts.add(style.fontFamily);
-      if (style.fontSize) fontSizes.add(style.fontSize);
-    });
-
+  async function logThemeColors() {
     const themeColors = {};
     paletteVars.forEach(varName => {
       const color = getColorFromVariable(varName);
@@ -32,10 +22,7 @@ export async function getSquarespaceThemeStyles() {
     });
 
     console.clear();
-    console.log("🎨 Fonts:", [...fonts]);
-    console.log("🔠 Font Sizes:", [...fontSizes]);
-    console.log("🎯 Buttons: (detecting skipped for speed)");
-    console.log("🌈 Theme Colors:", themeColors);
+    console.log("🌈 Squarespace Theme Colors:", themeColors);
   }
 
   let lastSnapshot = '';
@@ -45,7 +32,7 @@ export async function getSquarespaceThemeStyles() {
       const htmlSnapshot = document.body.innerHTML.length;
       if (htmlSnapshot !== lastSnapshot) {
         lastSnapshot = htmlSnapshot;
-        await logThemeStyles();
+        await logThemeColors();
       }
     }, 2000);
   }
