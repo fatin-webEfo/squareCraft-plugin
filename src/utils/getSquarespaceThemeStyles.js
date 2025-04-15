@@ -1,4 +1,4 @@
-export async function startThemeStyleLogger() {
+export async function getSquarespaceThemeStyles () {
   let lastSnapshot = "";
 
   async function extractThemeStyles() {
