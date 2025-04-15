@@ -4,17 +4,27 @@ export function initImageMaskControls(selectedElementRef) {
     thumbs.forEach(thumb => {
       thumb.addEventListener("click", () => {
         const maskUrl = thumb.dataset.mask;
-        const element = selectedElementRef(); 
+        let element = selectedElementRef();
   
-        if (element && maskUrl) {
-          element.style.webkitMaskImage = `url("${maskUrl}")`;
-          element.style.maskImage = `url("${maskUrl}")`;
-          element.style.maskRepeat = "no-repeat";
-          element.style.maskSize = "cover";
-          element.style.webkitMaskRepeat = "no-repeat";
-          element.style.webkitMaskSize = "cover";
+        if (!element || !maskUrl) return;
+  
+        if (element.id && element.id.startsWith("block-")) {
+          const nestedImg = element.querySelector("img");
+          if (nestedImg) element = nestedImg;
         }
+  
+        element.style.webkitMaskImage = `url("${maskUrl}")`;
+        element.style.maskImage = `url("${maskUrl}")`;
+        element.style.maskRepeat = "no-repeat";
+        element.style.maskSize = "contain";
+        element.style.maskPosition = "center";
+        element.style.webkitMaskRepeat = "no-repeat";
+        element.style.webkitMaskSize = "contain";
+        element.style.webkitMaskPosition = "center";
+        element.style.transition = "mask-image 0.3s ease, -webkit-mask-image 0.3s ease";
       });
     });
   }
   
+
+//   sqs-image-content
