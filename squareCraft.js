@@ -90,6 +90,7 @@
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
   const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
   const { initImageSectionControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js");
+  const { initImageSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js");
 
 
   
@@ -363,7 +364,7 @@ function loadWidgetFromString(htmlString, clickedBlock) {
     document.body.appendChild(widgetContainer);
     makeWidgetDraggable();
     widgetLoaded = true;
-
+    initImageSectionToggleControls();
     if (clickedBlock) {
       handleBlockClick({ target: clickedBlock }, {
         getTextType,
