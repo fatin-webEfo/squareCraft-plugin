@@ -517,37 +517,21 @@ export function WidgetImageSection(id) {
                            alt="reset">
                      </div>
                   </div>
-                  <div class="sc-mt-3 sc-grid sc-grid-cols-12 sc-gap-2">
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                      <img 
-                          data-mask="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(1).svg" 
-                          class="sc-image-mask-thumb sc-w-full sc-h-full sc-object-contain" 
-                          src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(1).svg" 
-                          alt="">
-                        
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(2).svg" alt="Mask 2">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(3).svg" alt="Mask 3">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(4).svg" alt="Mask 4">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(5).svg" alt="Mask 5">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(6).svg" alt="Mask 6">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(7).svg" alt="Mask 7">
-                     </div>
-                     <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(8).svg" alt="Mask 8">
-                     </div>
-                   </div>
+                 <div class="sc-mt-3 sc-grid sc-grid-cols-12 sc-gap-2">
+                        ${[...Array(8)].map((_, i) => {
+                          const num = i + 1;
+                          return `
+                            <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
+                              <img 
+                                data-mask="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(${num}).svg" 
+                                class="sc-image-mask-thumb sc-w-full sc-h-full sc-object-contain" 
+                                src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(${num}).svg" 
+                                alt="Mask ${num}">
+                            </div>
+                          `;
+                        }).join('')}
+                      </div>
+                      
                    
                    
                </div>
