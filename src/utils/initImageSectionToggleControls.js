@@ -18,6 +18,11 @@ export function initImageSectionToggleControls() {
             if (btnId === buttonId) {
               section.classList.remove("sc-hidden");
               section.classList.add("sc-visible");
+  
+              section.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
             } else {
               section.classList.remove("sc-visible");
               section.classList.add("sc-hidden");
