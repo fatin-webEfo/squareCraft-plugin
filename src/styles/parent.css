@@ -1006,6 +1006,10 @@
   padding: 10px !important;
 }
 
+.sc-border-EF7C2F-hover:hover {
+  border: 0.5px solid #EF7C2F !important;
+}
+
 .sc-hidden {
   opacity: 0;
   max-height: 0;
