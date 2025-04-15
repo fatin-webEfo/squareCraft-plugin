@@ -12,30 +12,33 @@ export async function getSquarespaceThemeStyles() {
     return value ? `hsl(${value})` : null;
   }
 
-  async function logThemeColors() {
-    const themeColors = {};
-    paletteVars.forEach(varName => {
-      const color = getColorFromVariable(varName);
-      if (color) {
-        themeColors[varName] = color;
-      }
+  function createColorSwatch(color) {
+    const div = document.createElement('div');
+    div.className = 'sc-w-6 sc-h-6 sc-rounded-full sc-cursor-pointer sc-border';
+    div.style.backgroundColor = color;
+    div.title = color;
+    div.addEventListener('click', () => {
+      console.log("🎨 Selected color:", color);
     });
-
-    console.clear();
-    console.log("🌈 Squarespace Theme Colors:", themeColors);
+    return div;
   }
 
-  let lastSnapshot = '';
+  function toggleColorPalette() {
+    const dropdown = document.getElementById('colorPaletteDropdown');
+    if (dropdown.classList.contains('sc-hidden')) {
+      dropdown.classList.remove('sc-hidden');
+      dropdown.innerHTML = '';
 
-  async function startTracking() {
-    setInterval(async () => {
-      const htmlSnapshot = document.body.innerHTML.length;
-      if (htmlSnapshot !== lastSnapshot) {
-        lastSnapshot = htmlSnapshot;
-        await logThemeColors();
-      }
-    }, 2000);
+      paletteVars.forEach(varName => {
+        const color = getColorFromVariable(varName);
+        if (color) {
+          dropdown.appendChild(createColorSwatch(color));
+        }
+      });
+    } else {
+      dropdown.classList.add('sc-hidden');
+    }
   }
 
-  await startTracking();
+  document.getElementById('colorPalette').addEventListener('click', toggleColorPalette);
 }

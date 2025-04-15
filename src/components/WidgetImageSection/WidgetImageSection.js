@@ -228,16 +228,19 @@ export function WidgetImageSection(id) {
                </div>
            
             <div class="sc-mt-4 sc-gap-2 sc-flex">
-               <div class="">
-                  <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
-                     Color
-                  </p>
-                  <div
-                     class="sc-py-0_5 sc-gap-5 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
-                     <p class="sc-text-xs sc-poppins sc-font-light sc-universal">#363544</p>
-                     <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
-                  </div>
-               </div>
+               <div class="sc-relative">
+  <p id="colorPalette" class="sc-poppins sc-font-thin sc-universal sc-text-sm sc-font-thin sc-text-gray-300">
+    Color
+  </p>
+
+  <div class="sc-py-0_5 sc-gap-5 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+    <p class="sc-text-xs sc-poppins sc-font-light sc-universal">#363544</p>
+    <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+  </div>
+
+  <div id="colorPaletteDropdown" class="sc-hidden sc-absolute sc-top-full sc-mt-2 sc-left-0 sc-bg-2c2c2c sc-p-2 sc-rounded-lg sc-z-50 sc-shadow-lg sc-grid sc-grid-cols-5 sc-gap-2"></div>
+</div>
+
                <div class="">
                   <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
                      Width
