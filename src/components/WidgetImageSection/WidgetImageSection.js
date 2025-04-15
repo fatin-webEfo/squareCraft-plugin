@@ -204,7 +204,7 @@ export function WidgetImageSection(id){
                </div>
 
 
-                <div id="overLaySection" class="sc-px-2 sc-mt-3">  
+                <div id="overLaySection" class="sc-px-2 sc-hidden sc-mt-3">  
                   <div class="sc-flex sc-gap-2 sc-items-center ">
                   <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Overlay
                   </p>
@@ -362,7 +362,7 @@ export function WidgetImageSection(id){
                   </div>
 
 
-                 <div id="shadowId"> 
+                 <div id="shadowSection" class="sc-hidden"> 
                   <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
                   <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                   </p>
