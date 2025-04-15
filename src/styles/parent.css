@@ -978,9 +978,7 @@
   width: 190px !important;
 }
 
-.sc-visible {
-  display: block !important;
-}
+
 
 .sc-dropdown-content {
   background-color: #3d3d3d !important;
@@ -1009,7 +1007,16 @@
 }
 
 .sc-hidden {
-  display: none !important;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.sc-visible {
+  opacity: 1;
+  max-height: 1000px; /* enough to show full content */
+  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
 .sc-scroll {

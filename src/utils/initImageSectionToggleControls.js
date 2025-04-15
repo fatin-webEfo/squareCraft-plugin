@@ -13,9 +13,13 @@ export function initImageSectionToggleControls() {
         button.addEventListener("click", () => {
           Object.entries(sections).forEach(([btnId, secId]) => {
             const section = document.getElementById(secId);
+            if (!section) return;
+  
             if (btnId === buttonId) {
               section.classList.remove("sc-hidden");
+              section.classList.add("sc-visible");
             } else {
+              section.classList.remove("sc-visible");
               section.classList.add("sc-hidden");
             }
           });
