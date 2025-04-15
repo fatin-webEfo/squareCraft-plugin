@@ -1,6 +1,13 @@
 export async function getSquarespaceThemeStyles() {
   let lastSnapshot = "";
 
+  function normalizeColor(value) {
+    return value
+      .replace(/\s+/g, "")
+      .toLowerCase()
+      .replace(/;$/, "");
+  }
+
   async function extractThemeStyles() {
     const result = {
       fonts: new Set(),
@@ -33,36 +40,55 @@ export async function getSquarespaceThemeStyles() {
               value !== "transparent" &&
               value !== "currentColor"
             ) {
-              result.colors.add(value);
+              result.colors.add(normalizeColor(value));
             }
           }
 
-          if (
+          const isThemeButton =
             selector.includes("button") ||
             selector.includes(".sqs-block-button-element") ||
-            selector.includes(".button") ||
-            style.backgroundColor || style.borderRadius || style.fontSize
+            selector.includes(".button");
+
+          const bg = style.backgroundColor;
+          const color = style.color;
+          const radius = style.borderRadius;
+          const fontSize = style.fontSize;
+          const fontFamily = style.fontFamily;
+
+          if (
+            isThemeButton &&
+            (bg || color || radius || fontSize || fontFamily)
           ) {
             result.buttons.push({
-              selector,
-              backgroundColor: style.backgroundColor || null,
-              color: style.color || null,
-              borderRadius: style.borderRadius || null,
-              fontSize: style.fontSize || null,
-              fontFamily: style.fontFamily || null,
+              selector: selector.slice(0, 100),
+              backgroundColor: bg || null,
+              color: color || null,
+              borderRadius: radius || null,
+              fontSize: fontSize || null,
+              fontFamily: fontFamily || null,
             });
           }
         });
-      } catch (e) {
-       console.error("Error accessing stylesheet rules:", e);
+      } catch (e) {}
+    }
+
+    const uniqueButtons = [];
+    const seen = new Set();
+    for (const btn of result.buttons) {
+      const key = JSON.stringify(btn);
+      if (!seen.has(key)) {
+        uniqueButtons.push(btn);
+        seen.add(key);
       }
     }
+
+    const cleanColors = [...result.colors].filter((c, i, arr) => arr.indexOf(c) === i);
 
     return {
       fonts: [...result.fonts],
       fontSizes: [...result.fontSizes],
-      buttons: result.buttons,
-      colors: [...result.colors],
+      buttons: uniqueButtons.slice(0, 5),
+      colors: cleanColors.slice(0, 10),
     };
   }
 
@@ -72,6 +98,7 @@ export async function getSquarespaceThemeStyles() {
       if (htmlSnapshot !== lastSnapshot) {
         lastSnapshot = htmlSnapshot;
         const styles = await extractThemeStyles();
+
         console.clear();
         console.log("🎨 Fonts:", styles.fonts);
         console.log("🔠 Font Sizes:", styles.fontSizes);
