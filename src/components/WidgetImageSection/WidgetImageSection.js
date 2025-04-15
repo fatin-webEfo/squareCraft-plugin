@@ -1,9 +1,9 @@
 
 
 
-export function WidgetImageSection(id){
-   
-    return `
+export function WidgetImageSection(id) {
+
+   return `
 
    <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
@@ -519,7 +519,12 @@ export function WidgetImageSection(id){
                   </div>
                   <div class="sc-mt-3 sc-grid sc-grid-cols-12 sc-gap-2">
                      <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
-                       <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(1).svg" alt="Mask 1">
+                      <img 
+                          data-mask="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(1).svg" 
+                          class="sc-image-mask-thumb sc-w-full sc-h-full sc-object-contain" 
+                          src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(1).svg" 
+                          alt="">
+                        
                      </div>
                      <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
                        <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(2).svg" alt="Mask 2">
