@@ -1,112 +1,54 @@
 export async function getSquarespaceThemeStyles() {
-  let lastSnapshot = "";
+  const paletteVars = [
+    '--accent-hsl',
+    '--black-hsl',
+    '--white-hsl',
+    '--darkAccent-hsl',
+    '--lightAccent-hsl'
+  ];
 
-  function normalizeColor(value) {
-    return value
-      .replace(/\s+/g, "")
-      .toLowerCase()
-      .replace(/;$/, "");
+  function getColorFromVariable(varName) {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    return value ? `hsl(${value})` : null;
   }
 
-  async function extractThemeStyles() {
-    const result = {
-      fonts: new Set(),
-      fontSizes: new Set(),
-      buttons: [],
-      colors: new Set(),
-    };
+  async function logThemeStyles() {
+    const fonts = new Set();
+    const fontSizes = new Set();
+    const buttons = [];
 
-    const stylesheets = [...document.styleSheets];
+    document.querySelectorAll('*').forEach(el => {
+      const style = window.getComputedStyle(el);
+      if (style.fontFamily) fonts.add(style.fontFamily);
+      if (style.fontSize) fontSizes.add(style.fontSize);
+    });
 
-    for (const sheet of stylesheets) {
-      try {
-        const rules = sheet.cssRules ? [...sheet.cssRules] : [];
-
-        rules.forEach(rule => {
-          const selector = rule.selectorText || "";
-          const style = rule.style;
-          if (!style) return;
-
-          if (style.fontFamily) result.fonts.add(style.fontFamily.trim());
-          if (style.fontSize) result.fontSizes.add(style.fontSize.trim());
-
-          for (let i = 0; i < style.length; i++) {
-            const prop = style[i];
-            const value = style.getPropertyValue(prop).trim();
-            if (
-              prop.includes("color") &&
-              value &&
-              value !== "inherit" &&
-              value !== "transparent" &&
-              value !== "currentColor"
-            ) {
-              result.colors.add(normalizeColor(value));
-            }
-          }
-
-          const isThemeButton =
-            selector.includes("button") ||
-            selector.includes(".sqs-block-button-element") ||
-            selector.includes(".button");
-
-          const bg = style.backgroundColor;
-          const color = style.color;
-          const radius = style.borderRadius;
-          const fontSize = style.fontSize;
-          const fontFamily = style.fontFamily;
-
-          if (
-            isThemeButton &&
-            (bg || color || radius || fontSize || fontFamily)
-          ) {
-            result.buttons.push({
-              selector: selector.slice(0, 100),
-              backgroundColor: bg || null,
-              color: color || null,
-              borderRadius: radius || null,
-              fontSize: fontSize || null,
-              fontFamily: fontFamily || null,
-            });
-          }
-        });
-      } catch (e) {}
-    }
-
-    const uniqueButtons = [];
-    const seen = new Set();
-    for (const btn of result.buttons) {
-      const key = JSON.stringify(btn);
-      if (!seen.has(key)) {
-        uniqueButtons.push(btn);
-        seen.add(key);
+    const themeColors = {};
+    paletteVars.forEach(varName => {
+      const color = getColorFromVariable(varName);
+      if (color) {
+        themeColors[varName] = color;
       }
-    }
+    });
 
-    const cleanColors = [...result.colors].filter((c, i, arr) => arr.indexOf(c) === i);
-
-    return {
-      fonts: [...result.fonts],
-      fontSizes: [...result.fontSizes],
-      buttons: uniqueButtons.slice(0, 5),
-      colors: cleanColors.slice(0, 10),
-    };
+    console.clear();
+    console.log("🎨 Fonts:", [...fonts]);
+    console.log("🔠 Font Sizes:", [...fontSizes]);
+    console.log("🎯 Buttons: (detecting skipped for speed)");
+    console.log("🌈 Theme Colors:", themeColors);
   }
 
-  async function startLogging() {
+  let lastSnapshot = '';
+
+  async function startTracking() {
     setInterval(async () => {
       const htmlSnapshot = document.body.innerHTML.length;
       if (htmlSnapshot !== lastSnapshot) {
         lastSnapshot = htmlSnapshot;
-        const styles = await extractThemeStyles();
-
-        console.clear();
-        console.log("🎨 Fonts:", styles.fonts);
-        console.log("🔠 Font Sizes:", styles.fontSizes);
-        console.log("🎯 Buttons:", styles.buttons);
-        console.log("🌈 Colors:", styles.colors);
+        await logThemeStyles();
       }
     }, 2000);
   }
 
-  await startLogging();
+  await startTracking();
 }
