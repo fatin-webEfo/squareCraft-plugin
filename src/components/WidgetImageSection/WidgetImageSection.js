@@ -5,7 +5,7 @@ export function WidgetImageSection(id) {
 
    return `
 
-     <div id="imageSection">
+   <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -118,11 +118,13 @@ export function WidgetImageSection(id) {
                      </div>
                   </div>
                </div>
+            
                <div class="sc-mt-4 sc-gap-2 sc-grid sc-grid-cols-12">
                   <div class="sc-col-span-5">
                      <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Border
                         Color
                      </p>
+
                      <div
                         class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                         <p class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
@@ -149,22 +151,22 @@ export function WidgetImageSection(id) {
 
                            <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
                            <div class="sc-flex color-h-selection sc-mt-2 sc-items-center sc-gap-2">
-                              <div id="color-selection" class="sc-relative">
-                                 <div
+                              <div id="color-selection-field" class="sc-relative">
+                                 <div id="color-selection-bar"
                                     class="sc-w-2 sc-h-2 sc-absolute sc-top-3 sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
                                  </div>
                               </div>
-                              <div class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
-                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px  sc-cursor-grabbing  sc-h-2 sc-bg-color-f2f2f2"></div>
+                              <div id="color-transparency" class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
+                                 <div id="color-transparency-bar" class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px  sc-cursor-grabbing  sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
-                              <div class="sc-h-full sc-w-3 sc-relative sc-rounded-15px sc-bg-color-f2f2f2">
-                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div>
+                              <div id="all-color-selction" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px sc-bg-color-f2f2f2">
+                                 <div id="all-color-selction-bar" class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
                            </div>
                            <div
                               class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
-                              <p class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
-                              <p class="sc-text-sm sc-poppins sc-font-light sc-universal">100%</p>
+                              <p id="color-code" class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
+                              <p id="color-transparency-count" class="sc-text-sm sc-poppins sc-font-light sc-universal">100%</p>
                            </div>
                         </div>
 
