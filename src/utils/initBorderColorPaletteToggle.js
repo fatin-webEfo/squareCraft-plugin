@@ -13,7 +13,7 @@ export function initBorderColorPaletteToggle(themeColors) {
     if (container.innerHTML.trim() === "") {
       Object.values(themeColors).forEach(color => {
         const swatch = document.createElement("div");
-        swatch.className = "sc-border-colors  sc-cursor-pointer";
+        swatch.className = "sc-border-colors sc-cursor-pointer";
         swatch.style.backgroundColor = color;
         swatch.style.width = "15px";
         swatch.style.height = "15px";
