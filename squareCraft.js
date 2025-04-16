@@ -98,7 +98,12 @@
  
   
   document.body.addEventListener("click", (event) => {
-    initBorderColorPaletteToggle(themeColors);
+    const trigger = event.target.closest("#border-color-select");
+
+    if (trigger) {
+      initBorderColorPaletteToggle(themeColors);
+      return;
+    }
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
