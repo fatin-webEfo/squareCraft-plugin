@@ -155,7 +155,7 @@ export function WidgetImageSection(id) {
                                  </div>
                               </div>
                               <div class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
-                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px    sc-h-2 sc-bg-color-f2f2f2"></div>
+                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px  sc-cursor-grabbing  sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
                               <div class="sc-h-full sc-w-3 sc-relative sc-rounded-15px sc-bg-color-f2f2f2">
                                  <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div>
@@ -575,6 +575,6 @@ export function WidgetImageSection(id) {
             </div>
             <div class="sc-mt-4"> </div>
          </div>
-         
+
     `
 }
