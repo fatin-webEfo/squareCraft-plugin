@@ -8,10 +8,14 @@ export function initBorderColorPaletteToggle(themeColors) {
   
     if (container.innerHTML.trim() === "") {
       Object.values(themeColors).forEach(color => {
-        console.log("Colors are",color);
         const swatch = document.createElement("div");
-        swatch.className = "sc-square-6 sc-border-colors sc-cursor-pointer";
+        swatch.className = "sc-border-colors sc-cursor-pointer"; 
         swatch.style.backgroundColor = color;
+        swatch.style.width = "24px";
+        swatch.style.height = "24px";
+        swatch.style.borderRadius = "6px";
+        swatch.style.border = "1px solid white"; 
+        swatch.title = color; 
         container.appendChild(swatch);
       });
     }
