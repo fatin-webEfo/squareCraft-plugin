@@ -129,7 +129,7 @@ export function WidgetImageSection(id) {
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
                         <div id="color-palette"
-                           class="sc-absolute  sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
+                           class="sc-absolute  sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
                            <div class="sc-color-arrow" ></div>
                            <div class="sc-flex sc-items-center sc-justify-between">
                               <div id="border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1">
