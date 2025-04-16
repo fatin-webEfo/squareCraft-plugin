@@ -129,12 +129,20 @@ export function WidgetImageSection(id) {
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
                         <div id="color-palette"
-                           class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-top-10 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
+                           class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
+                           <div class="sc-color-arrow" ></div>
                            <div class="sc-flex sc-items-center sc-justify-between">
-                              <div id="border-colors" class="sc-flex sc-relative sc-hidden sc-items-center sc-gap-1">
+                              <div id="border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1">
+                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(64.29,70%,68.63%); width: 16px; height: 16px; border-radius: 6px;"></div>
+                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(64.09,81.48%,10.59%); width: 16px; height: 16px; border-radius: 6px;"></div>
+                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(62.73,100%,95.69%); width: 16px; height: 16px; border-radius: 6px;"></div>
+                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(63.93,31.28%,61.76%); width: 16px; height: 16px; border-radius: 6px;"></div>
+                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(58.06,100%,87.84%); width: 16px; height: 16px; border-radius: 6px;"></div>
                                
-
-                              </div>
+                                 <!-- 👇 Arrow -->
+                                
+                               </div>
+                               
 
                               <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                                  <p class="sc-universal sc-text-xs sc-poppins">RGB</p>
