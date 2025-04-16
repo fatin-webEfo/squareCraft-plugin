@@ -5,7 +5,7 @@ export function WidgetImageSection(id) {
 
    return `
 
-    <div id="imageSection">
+   <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -149,11 +149,23 @@ export function WidgetImageSection(id) {
 
                            <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
                            <div class="sc-flex color-h-selection sc-mt-2 sc-items-center sc-gap-2">
-                              <div id="color-selection" class="sc-relative">
-                                 <div
-                                    class="sc-w-2 sc-h-2 sc-absolute sc-top-3 sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
+                              <div id="color-selection" class="sc-color-palette-container sc-relative sc-flex sc-gap-1">
+                           
+                                 <div 
+                                   class="sc-color-swatch sc-bg-accent sc-rounded-full sc-cursor-pointer"
+                                   data-color="hsl(64.29,70%,68.63%)">
                                  </div>
+                               
+                                 <div 
+                                   class="sc-color-swatch sc-bg-black sc-rounded-full sc-cursor-pointer"
+                                   data-color="hsl(64.09,81.48%,10.59%)">
+                                 </div>
+                               
+                                 <div id="color-indicator" 
+                                 class="sc-w-2 sc-h-2 sc-absolute sc-top-3 sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
                               </div>
+                               </div>
+                               
                               <div class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
                                  <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px  sc-cursor-grabbing  sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
@@ -575,6 +587,5 @@ export function WidgetImageSection(id) {
             </div>
             <div class="sc-mt-4"> </div>
          </div>
-
     `
 }
