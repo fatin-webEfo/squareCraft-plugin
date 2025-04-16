@@ -666,7 +666,9 @@
 .sc-bg-colo-EF7C2F-hover:hover {
   background-color: #EF7C2F !important;
 }
-
+.sc-bg-color-gray{
+  background-color: #747272 !important;
+}
 .sc-p-1px {
   padding: 1px !important;
 }
@@ -1383,7 +1385,29 @@
   border-radius: 15%;
   background-color: #6e6403;
 }
-
+#color-palette{
+  width: 230px !important;
+  z-index: 99999 !important;
+}
+#color-selection{
+  width: 100% !important;
+  height: 100px !important;
+  border-radius: 6px !important;
+  background-color: #007bff !important;
+}
+.color-h-selection{
+  
+  height: 100px !important;
+}
+.sc-w-2{
+  width: 8px !important;
+}
+.sc-border-white{
+  border: 2px solid #fff !important;
+}
+.sc-w-2{
+  width: 5px !important;
+}
 .sc-border-colors{
   border: 1px solid #757474;
 }
