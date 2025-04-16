@@ -133,13 +133,7 @@ export function WidgetImageSection(id) {
                            <div class="sc-color-arrow" ></div>
                            <div class="sc-flex sc-items-center sc-justify-between">
                               <div id="border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1">
-                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(64.29,70%,68.63%); width: 16px; height: 16px; border-radius: 6px;"></div>
-                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(64.09,81.48%,10.59%); width: 16px; height: 16px; border-radius: 6px;"></div>
-                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(62.73,100%,95.69%); width: 16px; height: 16px; border-radius: 6px;"></div>
-                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(63.93,31.28%,61.76%); width: 16px; height: 16px; border-radius: 6px;"></div>
-                                 <div class="sc-border-colors sc-cursor-pointer" style="background-color: hsl(58.06,100%,87.84%); width: 16px; height: 16px; border-radius: 6px;"></div>
                                
-                                 <!-- 👇 Arrow -->
                                 
                                </div>
                                
@@ -161,10 +155,10 @@ export function WidgetImageSection(id) {
                                  </div>
                               </div>
                               <div class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
-                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-pointer sc-h-2 sc-bg-color-f2f2f2"></div>
+                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px    sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
                               <div class="sc-h-full sc-w-3 sc-relative sc-rounded-15px sc-bg-color-f2f2f2">
-                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-pointer sc-h-2 sc-bg-color-f2f2f2"></div>
+                                 <div class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
                            </div>
                            <div
