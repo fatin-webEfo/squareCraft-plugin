@@ -26,5 +26,3 @@ export function initImageMaskControls(selectedElementRef) {
     });
   }
   
-
-//   sqs-image-content
