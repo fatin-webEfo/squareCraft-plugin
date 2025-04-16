@@ -28,7 +28,7 @@ export function initBorderColorPaletteToggle(themeColors) {
 
 function renderVerticalColorShades(baseColor, container) {
   if (!container) return;
-  container.innerHTML = ""; // Clear previous bullets
+  container.innerHTML = ""; 
 
   const indicator = document.createElement("div");
   indicator.id = "color-indicator";

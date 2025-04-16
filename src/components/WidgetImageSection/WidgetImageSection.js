@@ -150,7 +150,7 @@ export function WidgetImageSection(id) {
                            <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
                            <div class="sc-flex color-h-selection sc-mt-2 sc-items-center sc-gap-2">
                               <div id="color-selection" class="sc-relative">
-                                 <div
+                                 <div id="color-selection-bullet"
                                     class="sc-w-2 sc-h-2 sc-absolute sc-top-3 sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
                                  </div>
                               </div>
