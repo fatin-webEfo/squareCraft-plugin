@@ -1479,7 +1479,8 @@
   width: 100% !important;
   height: 100px !important;
   border-radius: 6px !important;
-  background-color: #007bff !important;
+  background: linear-gradient(to top, #000, #fff);
+
 }
 
 .color-h-selection {
@@ -1509,6 +1510,21 @@
 
 .sc-w-2 {
   width: 5px !important;
+}
+.sc-bg-gradient-main {
+  background: linear-gradient(to top, hsla(40, 100%, 50%, 1), hsla(40, 100%, 50%, 0));
+}
+
+.sc-bg-gradient-white {
+  background: linear-gradient(to top, white, transparent);
+}
+
+.sc-translate-x--1\/2 {
+  transform: translateX(-50%);
+}
+
+.sc-translate-y--1\/2 {
+  transform: translateY(-50%);
 }
 
 .sc-border-colors {
