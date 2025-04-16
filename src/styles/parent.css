@@ -656,6 +656,16 @@
 .sc-text-hover-EF7C2F:hover {
   color: #EF7C2F !important;
 }
+.sc-w-5{
+  width: 15px !important;
+}
+.sc-left-half{
+  left: 50% !important;
+transform: translateX(-50%) !important;
+}
+.sc-shadow-sm{
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.397) !important;
+}
 
 .sc-bg-colo-EF7C2F {
   background-color: #EF7C2F !important;
