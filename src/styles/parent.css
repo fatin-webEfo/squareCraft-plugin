@@ -1498,13 +1498,37 @@
 .sc-color-arrow {
   position: absolute !important;
   bottom: 100% !important;
-  left: 42% !important;
+  left: 43% !important;
   transform: translateX(-50%) !important;
   width: 0 !important;
   height: 0 !important;
   border-left: 6px solid transparent !important;
   border-right: 6px solid transparent !important;
   border-bottom: 6px solid #c47206 !important;
+}
+.sc-color-palette-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 6px;
+  padding: 4px;
+}
+
+.sc-color-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid white;
+  position: relative;
+}
+
+/* Example color classes */
+.sc-bg-accent {
+  background-color: hsl(64.29, 70%, 68.63%);
+}
+.sc-bg-black {
+  background-color: hsl(64.09, 81.48%, 10.59%);
 }
 
 .sc-w-2 {
