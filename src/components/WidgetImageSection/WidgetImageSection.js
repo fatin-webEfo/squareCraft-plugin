@@ -123,7 +123,7 @@ export function WidgetImageSection(id) {
                      <p class="sc-poppins sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Border Color
                      </p>
                      <div
-                        class="sc-py-xs sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                        class="sc-sc-py-1 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                         <p class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
