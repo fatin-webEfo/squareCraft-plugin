@@ -12,7 +12,7 @@ export async function getSquarespaceThemeStyles() {
     return value ? `hsl(${value})` : null;
   }
 
-  async function logThemeColors() {
+  function getThemeColors() {
     const themeColors = {};
     paletteVars.forEach(varName => {
       const color = getColorFromVariable(varName);
@@ -20,22 +20,8 @@ export async function getSquarespaceThemeStyles() {
         themeColors[varName] = color;
       }
     });
-
-    console.clear();
-    console.log("🌈 Squarespace Theme Colors:", themeColors);
+    return themeColors;
   }
 
-  let lastSnapshot = '';
-
-  async function startTracking() {
-    setInterval(async () => {
-      const htmlSnapshot = document.body.innerHTML.length;
-      if (htmlSnapshot !== lastSnapshot) {
-        lastSnapshot = htmlSnapshot;
-        await logThemeColors();
-      }
-    }, 2000);
-  }
-
-  await startTracking();
+  return getThemeColors(); 
 }

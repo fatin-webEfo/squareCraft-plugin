@@ -94,12 +94,13 @@
   const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
-  getSquarespaceThemeStyles();
+  const themeColors = await getSquarespaceThemeStyles();
+  initBorderColorPaletteToggle(themeColors);
   
 
   
   document.body.addEventListener("click", (event) => {
-    initBorderColorPaletteToggle();
+ 
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
