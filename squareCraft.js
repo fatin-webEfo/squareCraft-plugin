@@ -97,7 +97,6 @@
   const themeColors = await getSquarespaceThemeStyles();
  
   
-  
   document.body.addEventListener("click", (event) => {
     initBorderColorPaletteToggle(themeColors);
     setTimeout(initImageSectionControls, 100); 
