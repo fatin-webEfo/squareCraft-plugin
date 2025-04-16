@@ -575,5 +575,6 @@ export function WidgetImageSection(id) {
             </div>
             <div class="sc-mt-4"> </div>
          </div>
+         
     `
 }
