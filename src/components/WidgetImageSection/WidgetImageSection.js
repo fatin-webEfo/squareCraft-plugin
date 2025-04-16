@@ -5,7 +5,7 @@ export function WidgetImageSection(id) {
 
    return `
 
-   <div id="imageSection">
+    <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -128,7 +128,9 @@ export function WidgetImageSection(id) {
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
                         <div id="color-palette" class="sc-absolute sc-hidden sc-top-5 sc-bg-3f3f3f sc-left-0 sc-p-2 sc-rounded-15px">
-                           <div id="border-colors" class="sc-flex sc-items-center sc-gap-2 sc-square-6 sc-border-colors"></div>
+                           <div id="border-colors" class="sc-flex sc-items-center sc-gap-2 ">
+                              
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -545,14 +547,8 @@ export function WidgetImageSection(id) {
                      <div class="sc-col-span-3 sc-bg-3f3f3f sc-rounded-6px sc-cursor-pointer sc-border-EF7C2F-hover sc-p-4 sc-flex sc-items-center sc-justify-center">
                        <img class="sc-w-full sc-h-full sc-object-contain" src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageMask%20(8).svg" alt="Mask 8">
                      </div>
-                   </div>
-                   
-                   
+                   </div>      
                </div>
-
-
-          
-
             <div class="sc-mt-4"> </div>
          </div>
     `
