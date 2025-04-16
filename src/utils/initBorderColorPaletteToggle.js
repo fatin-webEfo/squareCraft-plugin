@@ -15,8 +15,8 @@ export function initBorderColorPaletteToggle(themeColors) {
         const swatch = document.createElement("div");
         swatch.className = "sc-border-colors sc-cursor-pointer";
         swatch.style.backgroundColor = color;
-        swatch.style.width = "16px";
-        swatch.style.height = "16px";
+        swatch.style.width = "18px";
+        swatch.style.height = "18px";
         swatch.style.borderRadius = "6px";
         swatch.title = color;
         container.appendChild(swatch);
