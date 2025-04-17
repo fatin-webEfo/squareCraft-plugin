@@ -12,6 +12,8 @@ export function initBorderColorPaletteToggle(themeColors) {
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
 
+  let dynamicHue = 0;
+
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
       hsl(0, 100%, 50%), 
@@ -24,7 +26,7 @@ export function initBorderColorPaletteToggle(themeColors) {
     )`;
   }
 
-  if (allColorField && allColorBullet) {
+  if (allColorField && allColorBullet && transparencyField) {
     allColorBullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
@@ -32,6 +34,15 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
         allColorBullet.style.top = `${offsetY}px`;
+
+        const percentage = offsetY / rect.height;
+        dynamicHue = Math.round(360 * percentage);
+
+        const selectedColor = `hsl(${dynamicHue}, 100%, 50%)`;
+        transparencyField.style.background = `linear-gradient(to bottom, 
+          hsla(${dynamicHue}, 100%, 50%, 1), 
+          hsla(${dynamicHue}, 100%, 50%, 0)
+        )`;
       };
       document.onmouseup = function () {
         document.onmousemove = null;
