@@ -3,9 +3,11 @@ export function initBorderColorPaletteToggle(themeColors) {
   const container = document.getElementById("border-colors");
   const selectorField = document.getElementById("color-selection-field");
   const colorCode = document.getElementById("color-code");
+  const transparencyField = document.getElementById("color-transparency-field");
+  const transparencyBar = document.getElementById("color-transparency-bar");
   const transparencyCount = document.getElementById("color-transparency-count");
 
-  if (!palette || !container || !selectorField || !colorCode || !transparencyCount) return;
+  if (!palette || !container || !selectorField || !colorCode || !transparencyField || !transparencyBar || !transparencyCount) return;
 
   palette.classList.toggle("sc-hidden");
 
@@ -21,81 +23,83 @@ export function initBorderColorPaletteToggle(themeColors) {
     swatch.title = color;
 
     swatch.addEventListener("click", () => {
-      renderVerticalColorShades(color);
+      renderColorPalette(color);
     });
 
     container.appendChild(swatch);
   });
 
-  function renderVerticalColorShades(baseColor) {
+  function renderColorPalette(baseColor) {
     selectorField.innerHTML = "";
+
+    const gradient = document.createElement("div");
+    gradient.style.width = "100%";
+    gradient.style.height = "100%";
+    gradient.style.background = `linear-gradient(to bottom, ${baseColor} 0%, rgba(255,255,255,0) 100%)`;
+    gradient.style.borderRadius = "6px";
+    gradient.style.position = "absolute";
+    gradient.style.top = "0";
+    gradient.style.left = "0";
+    selectorField.appendChild(gradient);
 
     const bullet = document.createElement("div");
     bullet.id = "color-selection-bar";
-    bullet.className = "sc-w-2 sc-h-2 sc-absolute sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white";
+    bullet.className = "sc-w-2 sc-h-2 sc-absolute sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white";
+    bullet.style.top = "0px";
+    bullet.style.left = "0px";
     selectorField.appendChild(bullet);
 
-    const heights = [];
-    const shades = [];
-
-    for (let i = 0; i <= 10; i++) {
-      const transparency = 100 - i * 10;
-      const hslaColor = baseColor
-        .replace("hsl", "hsla")
-        .replace(")", `, ${transparency / 100})`);
-
-      const bar = document.createElement("div");
-      bar.style.backgroundColor = hslaColor;
-      bar.style.width = "100%";
-      bar.style.height = "10px";
-
-      const topPosition = i * 10;
-      heights.push(topPosition);
-      shades.push(hslaColor);
-
-      bar.addEventListener("click", () => {
-        updateBullet(topPosition, hslaColor, transparency);
-      });
-
-      selectorField.appendChild(bar);
-    }
-
-    selectorField.style.position = "relative";
-
-    selectorField.addEventListener("mousedown", (e) => {
-      document.addEventListener("mousemove", onDrag);
-      document.addEventListener("mouseup", () => {
-        document.removeEventListener("mousemove", onDrag);
-      });
-    });
-
-    function onDrag(e) {
-      const rect = selectorField.getBoundingClientRect();
-      let offsetY = e.clientY - rect.top;
-      offsetY = Math.max(0, Math.min(rect.height - 10, offsetY));
-      const nearest = Math.round(offsetY / 10);
-      updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
-    }
-
-    function updateBullet(top, color, percent) {
-      bullet.style.top = `${top}px`;
-      colorCode.textContent = color;
-      transparencyCount.textContent = `${percent}%`;
-
-      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-      if (selectedBlock) {
-        const image = selectedBlock.querySelector("img");
-        if (image) {
-          image.style.borderColor = color;
-        }
-      }
-    }
-
-    updateBullet(0, shades[0], 100); // default position at top
+    initColorDrag(selectorField, bullet, baseColor);
   }
 
-  const firstColor = Object.values(themeColors)[0];
-  if (firstColor) {
-    renderVerticalColorShades(firstColor);
+  function initColorDrag(field, bullet, baseColor) {
+    bullet.onmousedown = function(e) {
+      e.preventDefault();
+      document.onmousemove = function(e) {
+        const rect = field.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+
+        x = Math.max(0, Math.min(rect.width - bullet.offsetWidth, x));
+        y = Math.max(0, Math.min(rect.height - bullet.offsetHeight, y));
+
+        bullet.style.left = `${x}px`;
+        bullet.style.top = `${y}px`;
+
+        const percent = Math.round((1 - (y / rect.height)) * 100);
+        const hslaColor = baseColor.replace('hsl', 'hsla').replace(')', `, ${percent / 100})`);
+        
+        colorCode.textContent = hslaColor;
+        transparencyCount.textContent = `${percent}%`;
+      };
+
+      document.onmouseup = function() {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
+
+  initTransparencyDrag();
+  
+  function initTransparencyDrag() {
+    transparencyBar.onmousedown = function(e) {
+      e.preventDefault();
+      document.onmousemove = function(e) {
+        const rect = transparencyField.getBoundingClientRect();
+        let y = e.clientY - rect.top;
+
+        y = Math.max(0, Math.min(rect.height - transparencyBar.offsetHeight, y));
+        transparencyBar.style.top = `${y}px`;
+
+        const percent = Math.round((1 - (y / rect.height)) * 100);
+        transparencyCount.textContent = `${percent}%`;
+      };
+
+      document.onmouseup = function() {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
   }
 }
