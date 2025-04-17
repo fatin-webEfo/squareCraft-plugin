@@ -7,6 +7,8 @@ export function initBorderColorPaletteToggle(themeColors) {
   const transparencyCount = document.getElementById("color-transparency-count");
   const allColorField = document.getElementById("all-color-selction-field");
   const allColorBullet = document.getElementById("all-color-selction-bar");
+  const transparencyField = document.getElementById("color-transparency-field");
+  const transparencyBullet = document.getElementById("color-transparency-bar");
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
 
@@ -30,6 +32,22 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
         allColorBullet.style.top = `${offsetY}px`;
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
+
+  if (transparencyField && transparencyBullet) {
+    transparencyBullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = transparencyField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
+        transparencyBullet.style.top = `${offsetY}px`;
       };
       document.onmouseup = function () {
         document.onmousemove = null;
