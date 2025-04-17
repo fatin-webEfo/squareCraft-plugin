@@ -6,9 +6,10 @@ export function initBorderColorPaletteToggle(themeColors) {
   const colorCode = document.getElementById("color-code");
   const transparencyCount = document.getElementById("color-transparency-count");
   const allColorField = document.getElementById("all-color-selction-field");
-
+  const allColorBullet = document.getElementById("all-color-selction-bar");
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
+
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
       hsl(0, 100%, 50%), 
@@ -20,7 +21,23 @@ export function initBorderColorPaletteToggle(themeColors) {
       hsl(360, 100%, 50%)
     )`;
   }
-  
+
+  if (allColorField && allColorBullet) {
+    allColorBullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = allColorField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
+        allColorBullet.style.top = `${offsetY}px`;
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
+
   palette.classList.toggle("sc-hidden");
 
   if (container.innerHTML.trim() !== "") return;
@@ -77,11 +94,10 @@ export function initBorderColorPaletteToggle(themeColors) {
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - 10, offsetY));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
         const nearest = Math.round(offsetY / 10);
         updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
       };
-
       document.onmouseup = function () {
         document.onmousemove = null;
         document.onmouseup = null;
