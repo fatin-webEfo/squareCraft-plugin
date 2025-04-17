@@ -26,7 +26,7 @@ export function initBorderColorPaletteToggle(themeColors) {
     )`;
   }
 
-  if (allColorField && allColorBullet && transparencyField) {
+  if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
     allColorBullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
@@ -34,18 +34,30 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
         allColorBullet.style.top = `${offsetY}px`;
-
+  
         const percentage = offsetY / rect.height;
         dynamicHue = Math.round(360 * percentage);
-
-        const selectedColor = `hsl(${dynamicHue}, 100%, 50%)`;
+  
         if (transparencyField) {
           transparencyField.style.background = `linear-gradient(to bottom, 
-            hsla(0, 100%, 50%, 1), 
-            hsla(0, 100%, 50%, 0)
+            hsla(${dynamicHue}, 100%, 50%, 1), 
+            hsla(${dynamicHue}, 100%, 50%, 0)
           )`;
         }
-        
+  
+        if (selectorField) {
+          selectorField.style.background = `linear-gradient(
+            to right,
+            hsl(${dynamicHue}, 100%, 20%),
+            hsl(${dynamicHue}, 100%, 30%),
+            hsl(${dynamicHue}, 100%, 40%),
+            hsl(${dynamicHue}, 100%, 50%),
+            hsl(${dynamicHue}, 100%, 60%),
+            hsl(${dynamicHue}, 100%, 70%),
+            hsl(${dynamicHue}, 100%, 80%),
+            hsl(${dynamicHue}, 100%, 90%)
+          )`;
+        }
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -53,6 +65,28 @@ export function initBorderColorPaletteToggle(themeColors) {
       };
     };
   }
+  
+  if (selectorField && bullet) {
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
+  
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+  
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
+  
 
   if (transparencyField && transparencyBullet) {
     transparencyBullet.onmousedown = function (e) {
