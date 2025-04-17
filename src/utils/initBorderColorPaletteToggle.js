@@ -29,11 +29,11 @@ export function initBorderColorPaletteToggle(themeColors) {
   });
 
   function renderVerticalColorShades(baseColor) {
+    selectorField.innerHTML = "";
+    selectorField.appendChild(bullet);
+
     const heights = [];
     const shades = [];
-
-    selectorField.innerHTML = ""; // Clear previous shades (keep bullet outside for now)
-    selectorField.appendChild(bullet); // Append bullet back
 
     for (let i = 0; i <= 10; i++) {
       const transparency = 100 - i * 10;
@@ -59,39 +59,37 @@ export function initBorderColorPaletteToggle(themeColors) {
 
     selectorField.style.position = "relative";
 
-    bullet.onmousedown = function(e) {
+    bullet.onmousedown = function (e) {
       e.preventDefault();
-      document.onmousemove = function(e) {
+      document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-        bullet.style.top = `${offsetY}px`;
-
-        const percent = Math.round(100 - (offsetY / rect.height) * 100);
+        offsetY = Math.max(0, Math.min(rect.height - 10, offsetY));
         const nearest = Math.round(offsetY / 10);
-        updateBullet(nearest * 10, shades[nearest], percent);
+        updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
       };
-      document.onmouseup = function() {
+
+      document.onmouseup = function () {
         document.onmousemove = null;
         document.onmouseup = null;
       };
     };
 
-    updateBullet(0, shades[0], 100); // Default initial
-  }
+    function updateBullet(top, color, percent) {
+      bullet.style.top = `${top}px`;
+      colorCode.textContent = color;
+      transparencyCount.textContent = `${percent}%`;
 
-  function updateBullet(top, color, percent) {
-    bullet.style.top = `${top}px`;
-    colorCode.textContent = color;
-    transparencyCount.textContent = `${percent}%`;
-
-    const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-    if (selectedBlock) {
-      const image = selectedBlock.querySelector("img");
-      if (image) {
-        image.style.borderColor = color;
+      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
+      if (selectedBlock) {
+        const image = selectedBlock.querySelector("img");
+        if (image) {
+          image.style.borderColor = color;
+        }
       }
     }
+
+    updateBullet(0, shades[0], 100);
   }
 
   const firstColor = Object.values(themeColors)[0];
