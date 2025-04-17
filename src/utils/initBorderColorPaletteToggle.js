@@ -29,46 +29,46 @@ export function initBorderColorPaletteToggle(themeColors) {
 
   function renderVerticalColorShades(baseColor) {
     selectorField.innerHTML = "";
-  
+
     const bullet = document.createElement("div");
     bullet.id = "color-selection-bar";
     bullet.className = "sc-w-2 sc-h-2 sc-absolute sc-left-0 sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white";
     selectorField.appendChild(bullet);
-  
+
     const heights = [];
     const shades = [];
-  
+
     for (let i = 0; i <= 10; i++) {
       const transparency = 100 - i * 10;
       const hslaColor = baseColor
         .replace("hsl", "hsla")
         .replace(")", `, ${transparency / 100})`);
-  
+
       const bar = document.createElement("div");
       bar.style.backgroundColor = hslaColor;
       bar.style.width = "100%";
       bar.style.height = "10px";
-  
+
       const topPosition = i * 10;
       heights.push(topPosition);
       shades.push(hslaColor);
-  
+
       bar.addEventListener("click", () => {
         updateBullet(topPosition, hslaColor, transparency);
       });
-  
+
       selectorField.appendChild(bar);
     }
-  
+
     selectorField.style.position = "relative";
-  
+
     selectorField.addEventListener("mousedown", (e) => {
       document.addEventListener("mousemove", onDrag);
       document.addEventListener("mouseup", () => {
         document.removeEventListener("mousemove", onDrag);
       });
     });
-  
+
     function onDrag(e) {
       const rect = selectorField.getBoundingClientRect();
       let offsetY = e.clientY - rect.top;
@@ -76,12 +76,12 @@ export function initBorderColorPaletteToggle(themeColors) {
       const nearest = Math.round(offsetY / 10);
       updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
     }
-  
+
     function updateBullet(top, color, percent) {
       bullet.style.top = `${top}px`;
       colorCode.textContent = color;
       transparencyCount.textContent = `${percent}%`;
-  
+
       const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
       if (selectedBlock) {
         const image = selectedBlock.querySelector("img");
@@ -90,8 +90,12 @@ export function initBorderColorPaletteToggle(themeColors) {
         }
       }
     }
-  
-    updateBullet(0, shades[0], 100); // set default position
+
+    updateBullet(0, shades[0], 100); // default position at top
   }
-  
+
+  const firstColor = Object.values(themeColors)[0];
+  if (firstColor) {
+    renderVerticalColorShades(firstColor);
+  }
 }
