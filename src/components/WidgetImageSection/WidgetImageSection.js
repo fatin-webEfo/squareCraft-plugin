@@ -5,7 +5,7 @@
 
       return `
 
-  <div id="imageSection">
+ <div id="imageSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/iamgeicon.png"
@@ -131,7 +131,7 @@
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
                         <div id="color-palette"
-                           class="sc-absolute  sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
+                           class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
                            <div class="sc-color-arrow" ></div>
                            <div class="sc-flex sc-items-center sc-justify-between">
                               <div id="border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1">
