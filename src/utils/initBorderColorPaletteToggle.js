@@ -39,10 +39,13 @@ export function initBorderColorPaletteToggle(themeColors) {
         dynamicHue = Math.round(360 * percentage);
 
         const selectedColor = `hsl(${dynamicHue}, 100%, 50%)`;
-        transparencyField.style.background = `linear-gradient(to bottom, 
-          hsla(${dynamicHue}, 100%, 50%, 1), 
-          hsla(${dynamicHue}, 100%, 50%, 0)
-        )`;
+        if (transparencyField) {
+          transparencyField.style.background = `linear-gradient(to bottom, 
+            hsla(0, 100%, 50%, 1), 
+            hsla(0, 100%, 50%, 0)
+          )`;
+        }
+        
       };
       document.onmouseup = function () {
         document.onmousemove = null;
