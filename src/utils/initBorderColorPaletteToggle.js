@@ -22,70 +22,68 @@ export function initBorderColorPaletteToggle(themeColors) {
     swatch.title = color;
 
     swatch.addEventListener("click", () => {
-      renderVerticalGradient(color);
+      renderVerticalColorPalette(color);
     });
 
     container.appendChild(swatch);
   });
 
-  function renderVerticalGradient(baseColor) {
-    selectorField.innerHTML = "";
+  function renderVerticalColorPalette(baseColor) {
+    selectorField.style.background = `linear-gradient(to bottom, white, ${baseColor}, black)`;
     selectorField.appendChild(bullet);
+    updateColorByPosition(0);
 
-    const gradient = document.createElement("div");
-    gradient.style.width = "100%";
-    gradient.style.height = "100%";
-    gradient.style.background = `linear-gradient(to bottom, hsla(0, 0%, 100%, 1), ${baseColor}, hsla(0, 0%, 0%, 1))`;
-    gradient.style.position = "absolute";
-    gradient.style.top = "0";
-    gradient.style.left = "0";
-    gradient.style.borderRadius = "6px";
-    selectorField.appendChild(gradient);
+    function updateColorByPosition(offsetY) {
+      const rect = selectorField.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, offsetY / rect.height));
+      const lightness = 100 - (percent * 100);
+      const hsl = baseColor.match(/\d+/g);
+      const h = hsl ? hsl[0] : 0;
+      const s = hsl ? hsl[1] : 100;
 
-    selectorField.style.position = "relative";
+      const finalColor = `hsl(${h}, ${s}%, ${lightness}%)`;
+      bullet.style.top = `${offsetY}px`;
+      colorCode.textContent = finalColor;
+      transparencyCount.textContent = `${Math.round(lightness)}%`;
 
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
-      document.onmousemove = function (e) {
-        const rect = selectorField.getBoundingClientRect();
-        let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height, offsetY));
-
-        bullet.style.top = `${offsetY}px`;
-
-        const percent = Math.round(100 - (offsetY / rect.height) * 100);
-        updateBorderColor(baseColor, percent);
-      };
-
-      document.onmouseup = function () {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-
-    updateBorderColor(baseColor, 100);
-    bullet.style.top = `0px`;
-  }
-
-  function updateBorderColor(baseColor, percent) {
-    const hslaColor = baseColor
-      .replace("hsl", "hsla")
-      .replace(")", `, ${percent / 100})`);
-
-    colorCode.textContent = hslaColor;
-    transparencyCount.textContent = `${percent}%`;
-
-    const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-    if (selectedBlock) {
-      const image = selectedBlock.querySelector("img");
-      if (image) {
-        image.style.borderColor = hslaColor;
+      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
+      if (selectedBlock) {
+        const image = selectedBlock.querySelector("img");
+        if (image) {
+          image.style.borderColor = finalColor;
+        }
       }
     }
+
+    function startDragging(e) {
+      e.preventDefault();
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', stopDragging);
+      document.addEventListener('touchmove', onDrag);
+      document.addEventListener('touchend', stopDragging);
+    }
+
+    function onDrag(e) {
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const rect = selectorField.getBoundingClientRect();
+      let offsetY = clientY - rect.top;
+      offsetY = Math.max(0, Math.min(rect.height, offsetY));
+      updateColorByPosition(offsetY);
+    }
+
+    function stopDragging() {
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', stopDragging);
+      document.removeEventListener('touchmove', onDrag);
+      document.removeEventListener('touchend', stopDragging);
+    }
+
+    bullet.onmousedown = startDragging;
+    bullet.ontouchstart = startDragging;
   }
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
-    renderVerticalGradient(firstColor);
+    renderVerticalColorPalette(firstColor);
   }
 }
