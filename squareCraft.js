@@ -98,25 +98,15 @@
  
   
   document.body.addEventListener("click", (event) => {
-     const trigger = event.target.closest("#border-color-select");
+    const trigger = event.target.closest("#border-color-select");
 
-     if (trigger) {
-      console.log("✅ border-color-select clicked");
-  
-      const clickedBlock = event.target.closest('[id^="block-"]');
-      const selectedImage = clickedBlock?.querySelector("img"); 
-  
-      if (!selectedImage) {
-        console.warn("❌ No selected image found inside clicked block.");
-        return;
-      }
-  
-      setTimeout(() => {
-        initBorderColorPaletteToggle(themeColors, selectedImage);
-      }, 100); 
-  
-      return;
-    }
+  if (trigger) {
+    console.log("✅ border-color-select clicked");
+    setTimeout(() => {
+      initBorderColorPaletteToggle(themeColors);
+    }, 100); // 
+    return;
+  }
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
