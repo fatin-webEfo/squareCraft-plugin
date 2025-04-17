@@ -159,7 +159,7 @@
                               <div id="color-transparency-field" class="sc-h-full sc-w-3 sc-relative  sc-rounded-15px sc-bg-colo-EF7C2F">
                                  <div id="color-transparency-bar" class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px  sc-cursor-grabbing  sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
-                              <div id="all-color-selction-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px sc-bg-color-f2f2f2">
+                              <div id="all-color-selction-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
                                  <div id="all-color-selction-bar" class="sc-absolute sc-top-3 sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div>
                               </div>
                            </div>
