@@ -1,4 +1,4 @@
-export function initBorderColorPaletteToggle(themeColors) {
+export function initBorderColorPaletteToggle(themeColors, selectedImage) {
   const palette = document.getElementById("color-palette");
   const container = document.getElementById("border-colors");
   const selectorField = document.getElementById("color-selection-field");
@@ -37,7 +37,7 @@ export function initBorderColorPaletteToggle(themeColors) {
     const gradient = document.createElement("div");
     gradient.style.width = "100%";
     gradient.style.height = "100%";
-    gradient.style.background = `linear-gradient(90deg, white, ${baseColor}, black)`;
+    gradient.style.background = `linear-gradient(to right, #ffffff, ${baseColor}, #000000)`;
     gradient.style.borderRadius = "6px";
     gradient.style.position = "absolute";
     gradient.style.top = "0";
@@ -78,8 +78,11 @@ export function initBorderColorPaletteToggle(themeColors) {
         const l = 100 - (yPercent * 100);
 
         const finalColor = `hsl(${h}, ${s}%, ${l}%)`;
-
         colorCode.textContent = finalColor;
+
+        if (selectedImage) {
+          selectedImage.style.borderColor = finalColor;
+        }
       };
 
       document.onmouseup = function() {
@@ -101,6 +104,10 @@ export function initBorderColorPaletteToggle(themeColors) {
 
         const percent = Math.round((1 - (y / rect.height)) * 100);
         transparencyCount.textContent = `${percent}%`;
+
+        if (selectedImage) {
+          selectedImage.style.opacity = (percent / 100).toFixed(2);
+        }
       };
 
       document.onmouseup = function() {
@@ -121,7 +128,10 @@ export function initBorderColorPaletteToggle(themeColors) {
         allColorBar.style.top = `${y}px`;
 
         const percent = Math.round((1 - (y / rect.height)) * 100);
-        // You can add custom behavior when moving all-color bar (brightness control if needed)
+
+        if (selectedImage) {
+          selectedImage.style.filter = `brightness(${percent}%)`;
+        }
       };
 
       document.onmouseup = function() {
