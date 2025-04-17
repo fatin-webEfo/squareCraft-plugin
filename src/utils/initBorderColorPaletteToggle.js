@@ -6,8 +6,10 @@ export function initBorderColorPaletteToggle(themeColors) {
   const transparencyField = document.getElementById("color-transparency-field");
   const transparencyBar = document.getElementById("color-transparency-bar");
   const transparencyCount = document.getElementById("color-transparency-count");
+  const allColorField = document.getElementById("all-color-selction-field");
+  const allColorBar = document.getElementById("all-color-selction-bar");
 
-  if (!palette || !container || !selectorField || !colorCode || !transparencyField || !transparencyBar || !transparencyCount) return;
+  if (!palette || !container || !selectorField || !colorCode || !transparencyField || !transparencyBar || !transparencyCount || !allColorField || !allColorBar) return;
 
   palette.classList.toggle("sc-hidden");
 
@@ -35,7 +37,7 @@ export function initBorderColorPaletteToggle(themeColors) {
     const gradient = document.createElement("div");
     gradient.style.width = "100%";
     gradient.style.height = "100%";
-    gradient.style.background = `linear-gradient(to bottom, ${baseColor} 0%, rgba(255,255,255,0) 100%)`;
+    gradient.style.background = `linear-gradient(90deg, white, ${baseColor}, black)`;
     gradient.style.borderRadius = "6px";
     gradient.style.position = "absolute";
     gradient.style.top = "0";
@@ -50,6 +52,8 @@ export function initBorderColorPaletteToggle(themeColors) {
     selectorField.appendChild(bullet);
 
     initColorDrag(selectorField, bullet, baseColor);
+    initTransparencyDrag();
+    initAllColorDrag();
   }
 
   function initColorDrag(field, bullet, baseColor) {
@@ -66,11 +70,16 @@ export function initBorderColorPaletteToggle(themeColors) {
         bullet.style.left = `${x}px`;
         bullet.style.top = `${y}px`;
 
-        const percent = Math.round((1 - (y / rect.height)) * 100);
-        const hslaColor = baseColor.replace('hsl', 'hsla').replace(')', `, ${percent / 100})`);
-        
-        colorCode.textContent = hslaColor;
-        transparencyCount.textContent = `${percent}%`;
+        const xPercent = x / rect.width;
+        const yPercent = y / rect.height;
+
+        const h = 360 * xPercent;
+        const s = 100;
+        const l = 100 - (yPercent * 100);
+
+        const finalColor = `hsl(${h}, ${s}%, ${l}%)`;
+
+        colorCode.textContent = finalColor;
       };
 
       document.onmouseup = function() {
@@ -80,8 +89,6 @@ export function initBorderColorPaletteToggle(themeColors) {
     };
   }
 
-  initTransparencyDrag();
-  
   function initTransparencyDrag() {
     transparencyBar.onmousedown = function(e) {
       e.preventDefault();
@@ -94,6 +101,27 @@ export function initBorderColorPaletteToggle(themeColors) {
 
         const percent = Math.round((1 - (y / rect.height)) * 100);
         transparencyCount.textContent = `${percent}%`;
+      };
+
+      document.onmouseup = function() {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
+
+  function initAllColorDrag() {
+    allColorBar.onmousedown = function(e) {
+      e.preventDefault();
+      document.onmousemove = function(e) {
+        const rect = allColorField.getBoundingClientRect();
+        let y = e.clientY - rect.top;
+
+        y = Math.max(0, Math.min(rect.height - allColorBar.offsetHeight, y));
+        allColorBar.style.top = `${y}px`;
+
+        const percent = Math.round((1 - (y / rect.height)) * 100);
+        // You can add custom behavior when moving all-color bar (brightness control if needed)
       };
 
       document.onmouseup = function() {
