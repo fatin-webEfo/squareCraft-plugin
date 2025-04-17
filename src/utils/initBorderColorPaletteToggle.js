@@ -20,6 +20,7 @@ export function initBorderColorPaletteToggle(themeColors) {
       hsl(360, 100%, 50%)
     )`;
   }
+  
   palette.classList.toggle("sc-hidden");
 
   if (container.innerHTML.trim() !== "") return;
