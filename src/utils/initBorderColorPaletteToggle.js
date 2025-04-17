@@ -43,15 +43,6 @@ export function initBorderColorPaletteToggle(themeColors) {
           hsla(${dynamicHue}, 100%, 50%, 1), 
           hsla(${dynamicHue}, 100%, 50%, 0)
         )`;
-
-        selectorField.style.background = `linear-gradient(to right, 
-          hsl(${dynamicHue}, 0%, 50%), 
-          hsl(${dynamicHue}, 100%, 50%)
-        ), linear-gradient(to top, 
-          hsl(${dynamicHue}, 100%, 0%), 
-          hsl(${dynamicHue}, 100%, 50%)
-        )`;
-        selectorField.style.backgroundBlendMode = 'multiply';
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -68,25 +59,6 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
         transparencyBullet.style.top = `${offsetY}px`;
-      };
-      document.onmouseup = function () {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-  }
-
-  if (selectorField && bullet) {
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
-      document.onmousemove = function (e) {
-        const rect = selectorField.getBoundingClientRect();
-        let offsetX = e.clientX - rect.left;
-        let offsetY = e.clientY - rect.top;
-        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-        bullet.style.left = `${offsetX}px`;
-        bullet.style.top = `${offsetY}px`;
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -145,20 +117,37 @@ export function initBorderColorPaletteToggle(themeColors) {
     }
 
     selectorField.style.position = "relative";
-  }
 
-  function updateBullet(top, color, percent) {
-    bullet.style.top = `${top}px`;
-    colorCode.textContent = color;
-    transparencyCount.textContent = `${percent}%`;
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+        const nearest = Math.round(offsetY / 10);
+        updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
 
-    const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-    if (selectedBlock) {
-      const image = selectedBlock.querySelector("img");
-      if (image) {
-        image.style.borderColor = color;
+    function updateBullet(top, color, percent) {
+      bullet.style.top = `${top}px`;
+      colorCode.textContent = color;
+      transparencyCount.textContent = `${percent}%`;
+
+      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
+      if (selectedBlock) {
+        const image = selectedBlock.querySelector("img");
+        if (image) {
+          image.style.borderColor = color;
+        }
       }
     }
+
+    updateBullet(0, shades[0], 100);
   }
 
   const firstColor = Object.values(themeColors)[0];
