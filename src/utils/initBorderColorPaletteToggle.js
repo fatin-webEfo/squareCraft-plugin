@@ -22,68 +22,78 @@ export function initBorderColorPaletteToggle(themeColors) {
     swatch.title = color;
 
     swatch.addEventListener("click", () => {
-      renderVerticalColorPalette(color);
+      renderVerticalColorShades(color);
     });
 
     container.appendChild(swatch);
   });
 
-  function renderVerticalColorPalette(baseColor) {
-    selectorField.style.background = `linear-gradient(to bottom, white, ${baseColor}, black)`;
+  function renderVerticalColorShades(baseColor) {
+    selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
-    updateColorByPosition(0);
 
-    function updateColorByPosition(offsetY) {
-      const rect = selectorField.getBoundingClientRect();
-      const percent = Math.max(0, Math.min(1, offsetY / rect.height));
-      const lightness = 100 - (percent * 100);
-      const hsl = baseColor.match(/\d+/g);
-      const h = hsl ? hsl[0] : 0;
-      const s = hsl ? hsl[1] : 100;
+    const heights = [];
+    const shades = [];
 
-      const finalColor = `hsl(${h}, ${s}%, ${lightness}%)`;
-      bullet.style.top = `${offsetY}px`;
-      colorCode.textContent = finalColor;
-      transparencyCount.textContent = `${Math.round(lightness)}%`;
+    for (let i = 0; i <= 10; i++) {
+      const transparency = 100 - i * 10;
+      const hslaColor = baseColor
+        .replace("hsl", "hsla")
+        .replace(")", `, ${transparency / 100})`);
+
+      const bar = document.createElement("div");
+      bar.style.backgroundColor = hslaColor;
+      bar.style.width = "100%";
+      bar.style.height = "10px";
+
+      const topPosition = i * 10;
+      heights.push(topPosition);
+      shades.push(hslaColor);
+
+      bar.addEventListener("click", () => {
+        updateBullet(topPosition, hslaColor, transparency);
+      });
+
+      selectorField.appendChild(bar);
+    }
+
+    selectorField.style.position = "relative";
+
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - 10, offsetY));
+        const nearest = Math.round(offsetY / 10);
+        updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
+      };
+
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+
+    function updateBullet(top, color, percent) {
+      bullet.style.top = `${top}px`;
+      colorCode.textContent = color;
+      transparencyCount.textContent = `${percent}%`;
 
       const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
       if (selectedBlock) {
         const image = selectedBlock.querySelector("img");
         if (image) {
-          image.style.borderColor = finalColor;
+          image.style.borderColor = color;
         }
       }
     }
 
-    function startDragging(e) {
-      e.preventDefault();
-      document.addEventListener('mousemove', onDrag);
-      document.addEventListener('mouseup', stopDragging);
-      document.addEventListener('touchmove', onDrag);
-      document.addEventListener('touchend', stopDragging);
-    }
-
-    function onDrag(e) {
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      const rect = selectorField.getBoundingClientRect();
-      let offsetY = clientY - rect.top;
-      offsetY = Math.max(0, Math.min(rect.height, offsetY));
-      updateColorByPosition(offsetY);
-    }
-
-    function stopDragging() {
-      document.removeEventListener('mousemove', onDrag);
-      document.removeEventListener('mouseup', stopDragging);
-      document.removeEventListener('touchmove', onDrag);
-      document.removeEventListener('touchend', stopDragging);
-    }
-
-    bullet.onmousedown = startDragging;
-    bullet.ontouchstart = startDragging;
+    updateBullet(0, shades[0], 100);
   }
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
-    renderVerticalColorPalette(firstColor);
+    renderVerticalColorShades(firstColor);
   }
 }
