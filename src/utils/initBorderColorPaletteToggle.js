@@ -47,25 +47,20 @@ export function initBorderColorPaletteToggle(themeColors) {
   
         if (selectorField) {
           selectorField.style.background = `
-            linear-gradient(to right,
-              hsl(${dynamicHue}, 100%, 10%),
-              hsl(${dynamicHue}, 100%, 20%),
-              hsl(${dynamicHue}, 100%, 30%),
-              hsl(${dynamicHue}, 100%, 40%),
+            linear-gradient(
+              to right,
               hsl(${dynamicHue}, 100%, 50%),
-              hsl(${dynamicHue}, 100%, 60%),
-              hsl(${dynamicHue}, 100%, 70%),
-              hsl(${dynamicHue}, 100%, 80%),
-              hsl(${dynamicHue}, 100%, 90%),
               hsl(${dynamicHue}, 100%, 100%)
             ),
-            linear-gradient(to bottom,
-              rgba(255, 255, 255, 1),
-              rgba(255, 255, 255, 0)
+            linear-gradient(
+              to top,
+              black,
+              transparent
             )
           `;
           selectorField.style.backgroundBlendMode = "multiply";
         }
+        
         
       };
       document.onmouseup = function () {
