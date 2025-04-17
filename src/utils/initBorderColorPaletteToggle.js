@@ -5,9 +5,21 @@ export function initBorderColorPaletteToggle(themeColors) {
   const bullet = document.getElementById("color-selection-bar");
   const colorCode = document.getElementById("color-code");
   const transparencyCount = document.getElementById("color-transparency-count");
+  const allColorField = document.getElementById("all-color-selction-field");
+
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
-
+  if (allColorField) {
+    allColorField.style.background = `linear-gradient(to bottom, 
+      hsl(0, 100%, 50%), 
+      hsl(60, 100%, 50%), 
+      hsl(120, 100%, 50%), 
+      hsl(180, 100%, 50%), 
+      hsl(240, 100%, 50%), 
+      hsl(300, 100%, 50%), 
+      hsl(360, 100%, 50%)
+    )`;
+  }
   palette.classList.toggle("sc-hidden");
 
   if (container.innerHTML.trim() !== "") return;
