@@ -32,41 +32,30 @@ export function initBorderColorPaletteToggle(themeColors) {
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
 
-    const heights = [];
-    const shades = [];
-
-    for (let i = 0; i <= 10; i++) {
-      const transparency = 100 - i * 10;
-      const hslaColor = baseColor
-        .replace("hsl", "hsla")
-        .replace(")", `, ${transparency / 100})`);
-
-      const bar = document.createElement("div");
-      bar.style.backgroundColor = hslaColor;
-      bar.style.width = "100%";
-      bar.style.height = "10px";
-
-      const topPosition = i * 10;
-      heights.push(topPosition);
-      shades.push(hslaColor);
-
-      bar.addEventListener("click", () => {
-        updateBullet(topPosition, hslaColor, transparency);
-      });
-
-      selectorField.appendChild(bar);
-    }
+    const gradient = document.createElement("div");
+    gradient.style.width = "100%";
+    gradient.style.height = "100%";
+    gradient.style.background = `linear-gradient(to bottom, hsla(0, 0%, 100%, 1), ${baseColor}, hsla(0, 0%, 0%, 1))`;
+    gradient.style.borderRadius = "6px";
+    gradient.style.position = "absolute";
+    gradient.style.top = "0";
+    gradient.style.left = "0";
+    selectorField.appendChild(gradient);
 
     selectorField.style.position = "relative";
 
     bullet.onmousedown = function (e) {
       e.preventDefault();
+
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - 10, offsetY));
-        const nearest = Math.round(offsetY / 10);
-        updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+
+        bullet.style.top = `${offsetY}px`;
+
+        const percent = Math.round(100 - (offsetY / rect.height) * 100);
+        updateBullet(offsetY, baseColor, percent);
       };
 
       document.onmouseup = function () {
@@ -75,21 +64,26 @@ export function initBorderColorPaletteToggle(themeColors) {
       };
     };
 
-    function updateBullet(top, color, percent) {
-      bullet.style.top = `${top}px`;
-      colorCode.textContent = color;
-      transparencyCount.textContent = `${percent}%`;
+    updateBullet(0, baseColor, 100);
+  }
 
-      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-      if (selectedBlock) {
-        const image = selectedBlock.querySelector("img");
-        if (image) {
-          image.style.borderColor = color;
-        }
+  function updateBullet(top, baseColor, percent) {
+    bullet.style.top = `${top}px`;
+
+    const finalColor = baseColor
+      .replace("hsl", "hsla")
+      .replace(")", `, ${percent / 100})`);
+
+    colorCode.textContent = finalColor;
+    transparencyCount.textContent = `${percent}%`;
+
+    const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
+    if (selectedBlock) {
+      const image = selectedBlock.querySelector("img");
+      if (image) {
+        image.style.borderColor = finalColor;
       }
     }
-
-    updateBullet(0, shades[0], 100);
   }
 
   const firstColor = Object.values(themeColors)[0];
