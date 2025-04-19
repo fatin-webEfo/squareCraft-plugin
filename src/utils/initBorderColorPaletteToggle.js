@@ -50,17 +50,16 @@ export function initBorderColorPaletteToggle(themeColors) {
             linear-gradient(
               to right,
               hsl(${dynamicHue}, 100%, 50%),
-              hsl(${dynamicHue}, 100%, 100%)
+              hsl(${dynamicHue}, 100%, 50%, 0)
             ),
             linear-gradient(
               to top,
-              black,
-              transparent
+              hsl(${dynamicHue}, 100%, 10%),
+              hsl(${dynamicHue}, 100%, 90%)
             )
           `;
-          selectorField.style.backgroundBlendMode = "multiply";
-        }
-        
+          selectorField.style.backgroundBlendMode = "screen, normal";
+        }             
         
       };
       document.onmouseup = function () {
