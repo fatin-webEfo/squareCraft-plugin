@@ -46,22 +46,26 @@ export function initBorderColorPaletteToggle(themeColors) {
         }
   
         if (selectorField) {
+          selectorField.innerHTML = ""; 
+          selectorField.appendChild(bullet); 
+        
           selectorField.style.background = `
             linear-gradient(
               to right,
               hsl(${dynamicHue}, 100%, 50%),
-              hsl(${dynamicHue}, 100%, 50%, 0)
+              white
             ),
             linear-gradient(
               to top,
-              hsl(${dynamicHue}, 100%, 10%),
-              hsl(${dynamicHue}, 100%, 90%)
+              black,
+              transparent
             )
           `;
+          selectorField.style.backgroundBlendMode = "multiply";
           selectorField.style.backgroundSize = "100% 100%";
           selectorField.style.backgroundRepeat = "no-repeat";
-          selectorField.style.backgroundBlendMode = "screen, normal";
         }
+        
                     
         
       };
