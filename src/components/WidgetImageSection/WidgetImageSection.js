@@ -127,7 +127,7 @@
 
                      <div
                         class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
-                        <p class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
+                        <p class="sc-text-sm sc-poppins sc-font-light sc-universal">Select</p>
                         <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
 
                         <div id="color-palette"
@@ -165,7 +165,7 @@
                            </div>
                            <div
                               class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
-                              <p id="color-code" class="sc-text-sm sc-poppins sc-font-light sc-universal">#363544</p>
+                              <p id="color-code" class="sc-text-sm sc-poppins sc-font-light sc-universal">Select</p>
                               <p id="color-transparency-count" class="sc-text-sm sc-poppins sc-font-light sc-universal">100%</p>
                            </div>
                         </div>
