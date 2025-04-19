@@ -11,6 +11,7 @@
   }
   let selectedElement = null;
   let widgetContainer = null;
+  
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
   let userId = widgetScript.dataset?.uId;
