@@ -26,6 +26,13 @@ export function initBorderColorPaletteToggle(themeColors) {
     )`;
   }
 
+  if (transparencyField) {
+    transparencyField.style.background = `linear-gradient(to bottom, 
+      hsla(0, 100%, 50%, 1), 
+      hsla(0, 100%, 50%, 0)
+    )`;
+  }
+
   if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
     allColorBullet.onmousedown = function (e) {
       e.preventDefault();
@@ -34,21 +41,21 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
         allColorBullet.style.top = `${offsetY}px`;
-  
+
         const percentage = offsetY / rect.height;
         dynamicHue = Math.round(360 * percentage);
-  
+
         if (transparencyField) {
           transparencyField.style.background = `linear-gradient(to bottom, 
             hsla(${dynamicHue}, 100%, 50%, 1), 
             hsla(${dynamicHue}, 100%, 50%, 0)
           )`;
         }
-  
+
         if (selectorField) {
-          selectorField.innerHTML = ""; 
-          selectorField.appendChild(bullet); 
-        
+          selectorField.innerHTML = "";
+          selectorField.appendChild(bullet);
+
           selectorField.style.background = `
             linear-gradient(
               to right,
@@ -65,9 +72,6 @@ export function initBorderColorPaletteToggle(themeColors) {
           selectorField.style.backgroundSize = "100% 100%";
           selectorField.style.backgroundRepeat = "no-repeat";
         }
-        
-                    
-        
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -75,7 +79,7 @@ export function initBorderColorPaletteToggle(themeColors) {
       };
     };
   }
-  
+
   if (selectorField && bullet) {
     bullet.onmousedown = function (e) {
       e.preventDefault();
@@ -83,12 +87,26 @@ export function initBorderColorPaletteToggle(themeColors) {
         const rect = selectorField.getBoundingClientRect();
         let offsetX = e.clientX - rect.left;
         let offsetY = e.clientY - rect.top;
-  
+
         offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
         offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-  
+
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
+
+        const percentX = offsetX / rect.width;
+        const percentY = offsetY / rect.height;
+
+        const lightness = 50 + percentX * 50;
+        const darkness = 100 - percentY * 100;
+
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+
+        const finalColor = `hsl(${dynamicHue}, 100%, ${finalLightness}%)`;
+
+        if (colorCode) {
+          colorCode.textContent = finalColor;
+        }
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -96,7 +114,6 @@ export function initBorderColorPaletteToggle(themeColors) {
       };
     };
   }
-  
 
   if (transparencyField && transparencyBullet) {
     transparencyBullet.onmousedown = function (e) {
@@ -106,6 +123,12 @@ export function initBorderColorPaletteToggle(themeColors) {
         let offsetY = e.clientY - rect.top;
         offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
         transparencyBullet.style.top = `${offsetY}px`;
+
+        const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
+
+        if (transparencyCount) {
+          transparencyCount.textContent = `${transparencyPercent}%`;
+        }
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -136,10 +159,10 @@ export function initBorderColorPaletteToggle(themeColors) {
 
   function renderVerticalColorShades(baseColor) {
     if (!selectorField) return;
-  
+
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
-  
+
     selectorField.style.background = `
       linear-gradient(
         to right,
@@ -155,19 +178,32 @@ export function initBorderColorPaletteToggle(themeColors) {
     selectorField.style.backgroundBlendMode = "multiply";
     selectorField.style.backgroundSize = "100% 100%";
     selectorField.style.backgroundRepeat = "no-repeat";
-  
+
     bullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetX = e.clientX - rect.left;
         let offsetY = e.clientY - rect.top;
-  
+
         offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
         offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-  
+
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
+
+        const percentX = offsetX / rect.width;
+        const percentY = offsetY / rect.height;
+
+        const lightness = 50 + percentX * 50;
+        const darkness = 100 - percentY * 100;
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+
+        const finalColor = `hsl(${dynamicHue}, 100%, ${finalLightness}%)`;
+
+        if (colorCode) {
+          colorCode.textContent = finalColor;
+        }
       };
       document.onmouseup = function () {
         document.onmousemove = null;
@@ -175,7 +211,6 @@ export function initBorderColorPaletteToggle(themeColors) {
       };
     };
   }
-  
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
