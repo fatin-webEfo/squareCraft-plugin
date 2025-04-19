@@ -58,8 +58,11 @@ export function initBorderColorPaletteToggle(themeColors) {
               hsl(${dynamicHue}, 100%, 90%)
             )
           `;
+          selectorField.style.backgroundSize = "100% 100%";
+          selectorField.style.backgroundRepeat = "no-repeat";
           selectorField.style.backgroundBlendMode = "screen, normal";
-        }             
+        }
+                    
         
       };
       document.onmouseup = function () {
