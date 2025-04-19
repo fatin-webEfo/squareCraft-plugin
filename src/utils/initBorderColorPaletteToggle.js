@@ -135,67 +135,47 @@ export function initBorderColorPaletteToggle(themeColors) {
   });
 
   function renderVerticalColorShades(baseColor) {
+    if (!selectorField) return;
+  
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
-
-    const heights = [];
-    const shades = [];
-
-    for (let i = 0; i <= 10; i++) {
-      const transparency = 100 - i * 10;
-      const hslaColor = baseColor
-        .replace("hsl", "hsla")
-        .replace(")", `, ${transparency / 100})`);
-
-      const bar = document.createElement("div");
-      bar.style.backgroundColor = hslaColor;
-      bar.style.width = "100%";
-      bar.style.height = "10px";
-
-      const topPosition = i * 10;
-      heights.push(topPosition);
-      shades.push(hslaColor);
-
-      bar.addEventListener("click", () => {
-        updateBullet(topPosition, hslaColor, transparency);
-      });
-
-      selectorField.appendChild(bar);
-    }
-
-    selectorField.style.position = "relative";
-
+  
+    selectorField.style.background = `
+      linear-gradient(
+        to right,
+        ${baseColor},
+        white
+      ),
+      linear-gradient(
+        to top,
+        black,
+        transparent
+      )
+    `;
+    selectorField.style.backgroundBlendMode = "multiply";
+    selectorField.style.backgroundSize = "100% 100%";
+    selectorField.style.backgroundRepeat = "no-repeat";
+  
     bullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
         let offsetY = e.clientY - rect.top;
+  
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
         offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-        const nearest = Math.round(offsetY / 10);
-        updateBullet(nearest * 10, shades[nearest], 100 - nearest * 10);
+  
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
       };
       document.onmouseup = function () {
         document.onmousemove = null;
         document.onmouseup = null;
       };
     };
-
-    function updateBullet(top, color, percent) {
-      bullet.style.top = `${top}px`;
-      colorCode.textContent = color;
-      transparencyCount.textContent = `${percent}%`;
-
-      const selectedBlock = document.querySelector(".sc-selected [id^='block-']");
-      if (selectedBlock) {
-        const image = selectedBlock.querySelector("img");
-        if (image) {
-          image.style.borderColor = color;
-        }
-      }
-    }
-
-    updateBullet(0, shades[0], 100);
   }
+  
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
