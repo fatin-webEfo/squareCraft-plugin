@@ -99,14 +99,14 @@ export function initBorderColorPaletteToggle(themeColors) {
 
         const lightness = 50 + percentX * 50;
         const darkness = 100 - percentY * 100;
-
         const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
 
-        const finalColor = `hsl(${dynamicHue}, 100%, ${finalLightness}%)`;
+        const finalColor = `hsl(${dynamicHue}, 100%, ${Math.round(finalLightness)}%)`;
 
         if (colorCode) {
           colorCode.textContent = finalColor;
         }
+
       };
       document.onmouseup = function () {
         document.onmousemove = null;
