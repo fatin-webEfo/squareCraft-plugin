@@ -344,17 +344,17 @@
         widgetContainer.innerHTML = `
             <div
                 class="sc-p-4  sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
-                <div class="sc-flex sc-poppins sc-universal sc-items-center sc-justify-between">
+                <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
                     <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
                 
                 </div>
-                <p class="sc-text-sm sc-mt-6 sc-poppins sc-font-light">Lorem Ipsum is simply dummy text
+                <p class="sc-text-sm sc-mt-6 sc-roboto sc-font-light">Lorem Ipsum is simply dummy text
                     of the printing and typesetting industry.
                 </p>
                 <div
-                    class="sc-mt-6 sc-poppins sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
+                    class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
                 </div>
-                <div class="sc-mt-6 sc-poppins sc-flex  sc-items-center sc-universal">
+                <div class="sc-mt-6 sc-roboto sc-flex  sc-items-center sc-universal">
                     <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
                     <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
                     <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
@@ -371,7 +371,7 @@
                     <div class="sc-flex sc-gap-2 sc-items-center">
                         <img loading="lazy"
                             src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.svg" alt="">
-                        <p class="sc-universal sc-poppins">Typography</p>
+                        <p class="sc-universal sc-roboto">Typography</p>
                     </div>
                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                     </div>
@@ -382,7 +382,7 @@
                         <div class="toggle-container" id="toggleSwitch">
                             <div class="toggle-bullet"></div>
                         </div>
-                        <p id="toggleText" class="sc-text-sm sc-poppins">Enable</p>
+                        <p id="toggleText" class="sc-text-sm sc-roboto">Enable</p>
                     </div>
                     </div>
                     <div class="sc-h-1px  sc-bg-3f3f3f"></div>
@@ -390,7 +390,7 @@
     
                     <div class="sc-mt-2">
                     <div
-                        class="sc-flex sc-poppins sc-px-2  sc-items-center sc-justify-between sc-gap-2">
+                        class="sc-flex sc-roboto sc-px-2  sc-items-center sc-justify-between sc-gap-2">
                         <div
                             class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1px sc-rounded-6px sc-text-color-white sc-justify-center">
                             Normal
@@ -407,7 +407,7 @@
     
     
                     <div class=" sc-mt-2 sc-px-2 sc-flex sc-justify-between">
-                    <p class="sc-text-sm sc-universal sc-poppins">Text</p>
+                    <p class="sc-text-sm sc-universal sc-roboto">Text</p>
                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
                     </div>
                     <div class="sc-mt-2  sc-grid sc-w-full sc-grid-cols-12 sc-gap-2 sc-px-2" >
@@ -518,7 +518,7 @@
                     <div class="sc-mt-2 sc-grid sc-px-2 sc-w-full sc-grid-cols-12 sc-gap-2">
                     <div class="sc-flex sc-col-span-6 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
                         <div
-                            class="sc-flex sc-poppins  sc-items-center sc-justify-between sc-w-full ">
+                            class="sc-flex sc-roboto  sc-items-center sc-justify-between sc-w-full ">
                             <p class=" sc-mx-2 sc-w-full sc-text-center sc-universal sc-text-sm squsareCraft-text-transform sc-cursor-pointer" data-transform="uppercase">AG</p>
                             <div class="sc-v-line"></div>
                             <p class=" sc-universal  sc-text-sm sc-text-center sc-w-full sc-mx-auto squsareCraft-text-transform sc-cursor-pointer" data-transform="lowercase">ag</p>

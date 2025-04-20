@@ -1,7 +1,7 @@
-import {typoAllSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoAllSelect.js"
-import {typoBoldSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoBoldSelect.js"
-import {typoItalicSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoItalicSelect.js"
-import {typoLinkSelect} from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoLinkSelect.js"
+import { typoAllSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoAllSelect.js"
+import { typoBoldSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoBoldSelect.js"
+import { typoItalicSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoItalicSelect.js"
+import { typoLinkSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/typoLinkSelect.js"
 
 export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
   return `
@@ -10,10 +10,10 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
         <div class="sc-flex sc-mt-2 sc-justify-between sc-items-center">   
           <div class="sc-flex sc-items-center sc-justify-between">
             <div id="${id}-allSelect" class="sc-px-2 sc-py-1px sc-select-activeTab-border sc-cursor-pointer sc-rounded-l">
-              <p class="sc-universal sc-text-sm sc-poppins">All</p>
+              <p class="sc-universal sc-text-sm sc-roboto">All</p>
             </div>
             <div id="${id}-boldSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
-              <p class="sc-font-bold sc-universal sc-text-sm sc-poppins">Bold</p>
+              <p class="sc-font-bold sc-universal sc-text-sm sc-roboto">Bold</p>
             </div>
             <div id="${id}-italicSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
               <p class="sc-font-italic sc-universal sc-text-sm sc-text-center sc-mx-auto">Italic</p>
@@ -26,13 +26,13 @@ export function createHeadingDropdown(id, fontSizes = [], LetterSpacing = []) {
         </div>
       </div>
       <div class="sc-mt-5 sc-px-2">
-        <p class="sc-text-xs sc-font-thin sc-universal sc-text-gray-300 sc-poppins">Style</p>
+        <p class="sc-text-xs sc-font-thin sc-universal sc-text-gray-300 sc-roboto">Style</p>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1" id="scDesc-${id}-allSelect"> 
-         ${typoAllSelect( fontSizes, LetterSpacing)}
+         ${typoAllSelect(fontSizes, LetterSpacing)}
 
        </div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-boldSelect">
-         ${typoBoldSelect( fontSizes, LetterSpacing)}
+         ${typoBoldSelect(fontSizes, LetterSpacing)}
 
       </div>
         <div class="sc-text-xs sc-text-gray-400 sc-mt-1 sc-hidden" id="scDesc-${id}-italicSelect"> 

@@ -11,17 +11,17 @@ export function html() {
      <div
    class="sc-p-2 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
    <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
-    <div class="sc-flex sc-poppins sc-universal sc-items-center sc-justify-between">
+    <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
          <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
             width="140px" />
 
       </div>
-      <p class="sc-text-sm sc-mt-6 sc-poppins sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
+      <p class="sc-text-sm sc-mt-6 sc-roboto sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
       </p>
    </div>
-   <div class="sc-mt-6 sc-poppins sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
+   <div class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
    </div>
-   <div class="sc-mt-6 sc-poppins sc-flex  sc-items-center sc-universal">
+   <div class="sc-mt-6 sc-roboto sc-flex  sc-items-center sc-universal">
       <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
       <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
       <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
@@ -41,11 +41,11 @@ export function html() {
    <div class="sc-mt-4">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
          <div id="publish"
-            class="sc-cursor-pointer sc-poppins sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
             Publish
          </div>
          <div
-            class="sc-cursor-pointer sc-poppins sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-text-sm sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-text-sm sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
             Reset
          </div>
       </div>
@@ -89,40 +89,40 @@ export function initToggleSwitch() {
    const toggleSwitch = document.getElementById("toggleSwitch");
    const toggleText = document.getElementById("toggleText");
    const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
- 
+
    if (!toggleSwitch || !toggleText || !toggleBullet) {
-     console.log("⏳ Waiting for toggle elements...");
-     return;
+      console.log("⏳ Waiting for toggle elements...");
+      return;
    }
- 
+
    let isEnabled = getToggleState();
- 
+
    const updateToggleUI = () => {
-     if (!toggleSwitch || !toggleBullet || !toggleText) return;
- 
-     if (isEnabled) {
-       toggleSwitch.style.backgroundColor = "#EF7C2F";
-       toggleBullet.style.left = "auto";
-       toggleBullet.style.right = "1.5px";
-       toggleText.textContent = "Enable";
-     } else {
-       toggleSwitch.style.backgroundColor = "#747372";
-       toggleBullet.style.left = "2px";
-       toggleBullet.style.right = "auto";
-       toggleText.textContent = "Disable";
-     }
+      if (!toggleSwitch || !toggleBullet || !toggleText) return;
+
+      if (isEnabled) {
+         toggleSwitch.style.backgroundColor = "#EF7C2F";
+         toggleBullet.style.left = "auto";
+         toggleBullet.style.right = "1.5px";
+         toggleText.textContent = "Enable";
+      } else {
+         toggleSwitch.style.backgroundColor = "#747372";
+         toggleBullet.style.left = "2px";
+         toggleBullet.style.right = "auto";
+         toggleText.textContent = "Disable";
+      }
    };
- 
+
    updateToggleUI();
- 
+
    toggleSwitch.addEventListener("click", () => {
-     isEnabled = !isEnabled;
-     setToggleState(isEnabled);
-     updateToggleUI();
+      isEnabled = !isEnabled;
+      setToggleState(isEnabled);
+      updateToggleUI();
    });
- }
- 
- 
- 
- 
- 
+}
+
+
+
+
+
