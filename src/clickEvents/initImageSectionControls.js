@@ -9,15 +9,8 @@ export function initImageMaskControls(selectedElementRef) {
       if (!element || !maskUrl) return;
 
       if (element.id && element.id.startsWith("block-")) {
-        let nestedImg = element.querySelector("img");
-        if (nestedImg) {
-          const visibleImg = Array.from(element.querySelectorAll("img")).find(img => {
-            const style = window.getComputedStyle(img);
-            return style.visibility !== "hidden" && style.display !== "none" && img.offsetWidth > 0 && img.offsetHeight > 0;
-          });
-          if (visibleImg) nestedImg = visibleImg;
-          element = nestedImg;
-        }
+        let imageContentDiv = element.querySelector(".sqs-image-content");
+        if (imageContentDiv) element = imageContentDiv;
       }
 
       element.style.webkitMaskImage = `url("${maskUrl}")`;
