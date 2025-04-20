@@ -87,7 +87,7 @@ export function handleBlockClick(event, context) {
       b.querySelectorAll(t).forEach(el => {
         const r = getTextType(t, el);
         if (r?.type === typeId) {
-          el.style.outline = `7px solid ${r.borderColor}`;
+          el.style.outline = `2px solid ${r.borderColor}`;
         }
       });
     };
