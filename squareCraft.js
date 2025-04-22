@@ -86,23 +86,25 @@
     setTimeout(initImageSectionControls, 100);
     const clickedBlock = event.target.closest('[id^="block-"]');
     if (clickedBlock) {
-      waitForElement("#typoSection, #imageSection, #buttonSection")
+      waitForElement("#typoSection, #imageSection, #buttonSection,")
         .then(() => {
+          handleBlockClick({ target: clickedBlock }, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
           detectBlockElementTypes(clickedBlock);
         })
         .catch(error => {
           console.error(error.message);
         });
+
+
     }
-    handleBlockClick(event, {
-      getTextType,
-      selectedElement,
-      setSelectedElement: (val) => selectedElement = val,
-      setLastClickedBlockId: (val) => lastClickedBlockId = val,
-      setLastClickedElement: (val) => lastClickedElement = val,
-      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-    });
 
     handleAlignmentClick(event, {
       lastClickedElement,
@@ -408,7 +410,7 @@
       initImageSectionToggleControls();
 
       if (clickedBlock) {
-        waitForElement("#typoSection, #imageSection, #buttonSection, #heading1Select, #heading2Select, #heading3Select, #heading4Select, #paragraph1Select, #paragraph2Select, #paragraph3Select")
+        waitForElement("#typoSection, #imageSection, #buttonSection,")
           .then(() => {
             handleBlockClick({ target: clickedBlock }, {
               getTextType,
