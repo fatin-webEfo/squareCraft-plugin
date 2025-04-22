@@ -80,7 +80,7 @@
     console.log("✅ border-color-select clicked");
     setTimeout(() => {
       initBorderColorPaletteToggle(themeColors);
-    }, 100); // 
+    }, 100); 
     return;
   }
     setTimeout(initImageSectionControls, 100); 
