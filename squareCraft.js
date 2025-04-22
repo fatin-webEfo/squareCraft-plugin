@@ -33,31 +33,6 @@
   }
 
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const selectedElement = document.querySelector(
-      ".sc-selected .sqs-html-content"
-    );
-
-    if (!selectedElement) {
-      console.error("No selected element found.");
-      return;
-    }
-
-    const fontSelector = document.getElementById("scFontSelector");
-
-    if (!fontSelector) {
-      console.error("Font selector not found.");
-      return;
-    }
-
-    fontSelector.addEventListener("change", function () {
-      const selectedFont = fontSelector.value;
-      selectedElement.style.fontFamily = selectedFont;
-    });
-
-  });
-
-
   let lastClickedBlockId = null;
   let lastClickedElement = null;
   let lastAppliedAlignment = null;
@@ -366,6 +341,33 @@ async function createWidget(clickedBlock) {
     console.error("🚨 Error loading HTML module:", err);
   }
 }
+function waitForElement(selector, timeout = 3000) {
+  return new Promise((resolve, reject) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      resolve(element);
+      return;
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      const el = document.querySelector(selector);
+      if (el) {
+        resolve(el);
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(() => {
+      observer.disconnect();
+      reject(new Error(`Timeout: Element ${selector} not found`));
+    }, timeout);
+  });
+}
 
 function loadWidgetFromString(htmlString, clickedBlock) {
   if (!widgetContainer) {
@@ -394,9 +396,14 @@ function loadWidgetFromString(htmlString, clickedBlock) {
         setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
       });
 
-      setTimeout(() => {
+      waitForElement("#typoSection, #imageSection, #buttonSection")
+      .then(() => {
         detectBlockElementTypes(clickedBlock);
-      }, 100);
+      })
+      .catch(error => {
+        console.error(error.message);
+      });
+      
       
     }
   }
