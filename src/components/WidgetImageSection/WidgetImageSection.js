@@ -561,7 +561,7 @@ export function WidgetImageSection(id) {
                   </div>
                </div>
                <div class="sc-mt-3 sc-grid sc-grid-cols-12 sc-gap-2">
-                  ${[...Array(8)].map((_, i) => {
+                  ${[...Array(16)].map((_, i) => {
       const num = i + 1;
       return `
                   <div
