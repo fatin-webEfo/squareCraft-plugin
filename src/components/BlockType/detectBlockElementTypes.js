@@ -15,9 +15,14 @@ export function detectBlockElementTypes(block) {
         foundType = "text";
       }
   
-      if (tagName === "img" && !classList.contains("ProseMirror-separator")) {
+      if (
+        tagName === "img" && 
+        !classList.contains("ProseMirror-separator") &&
+        el.closest('.sqs-image-content')
+      ) {
         foundType = "image";
       }
+      
   
       if ((tagName === "a" || tagName === "button") && !el.querySelector("img")) {
         foundType = "button";
