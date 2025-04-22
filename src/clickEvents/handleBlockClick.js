@@ -17,10 +17,8 @@ export function handleBlockClick(event, context) {
   block.style.outline = "1px dashed #EF7C2F";
 
   setLastClickedBlockId(block.id);
-  
   setLastClickedElement(block);
 
-  
   let appliedTextAlign = window.getComputedStyle(block).textAlign;
   if (!appliedTextAlign || appliedTextAlign === "start") {
     const nested = block.querySelector("h1,h2,h3,h4,p");
@@ -31,14 +29,12 @@ export function handleBlockClick(event, context) {
 
   if (appliedTextAlign) {
     setLastAppliedAlignment(appliedTextAlign);
-
     const map = {
       left: "scTextAlignLeft",
       center: "scTextAlignCenter",
       right: "scTextAlignRight",
       justify: "scTextAlignJustify"
     };
-
     const activeIcon = document.getElementById(map[appliedTextAlign]);
     if (activeIcon) {
       activeIcon.classList.add("sc-activeTab-border");
@@ -52,12 +48,7 @@ export function handleBlockClick(event, context) {
     "paragraph1Part", "paragraph2Part", "paragraph3Part"
   ];
   const visibleParts = new Set();
-
   const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
-
-  if (innerTextElements.length === 0) {
-    console.warn("⚠️ No inner text elements found inside block:", block.id);
-  }
 
   innerTextElements.forEach(el => {
     const tag = el.tagName.toLowerCase();
@@ -70,22 +61,12 @@ export function handleBlockClick(event, context) {
     }
   });
 
-  async function showPartsAfterWidgetReady(allParts, visibleParts) {
-    for (let attempt = 0; attempt < 10; attempt++) {
-      const allExist = allParts.every(id => document.getElementById(id));
-      if (allExist) break;
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-  
-  }
   showPartsAfterWidgetReady(allParts, visibleParts);
-
 
   visibleParts.forEach(partId => {
     const typeId = partId.replace("Part", "");
     const tab = document.getElementById(typeId);
     if (!tab) return;
-
     tab.onmouseenter = () => {
       const b = document.getElementById(block.id);
       const t = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
@@ -96,12 +77,25 @@ export function handleBlockClick(event, context) {
         }
       });
     };
-
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
       b.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
         el.style.outline = "";
       });
     };
+  });
+}
+
+async function showPartsAfterWidgetReady(allParts, visibleParts) {
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const allExist = allParts.every(id => document.getElementById(id));
+    if (allExist) break;
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  allParts.forEach(id => {
+    const part = document.getElementById(id);
+    if (part) {
+      part.classList.toggle("sc-hidden", !visibleParts.has(id));
+    }
   });
 }
