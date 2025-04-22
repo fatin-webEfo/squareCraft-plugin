@@ -312,6 +312,9 @@ async function toggleWidgetVisibility(event) {
 
   if (!widgetLoaded) {
     await createWidget(clickedBlock);
+    setTimeout(() => {
+      detectBlockElementTypes(clickedBlock); 
+    }, 500);
   } else {
     widgetContainer.style.display =
       widgetContainer.style.display === "none" ? "block" : "none";
