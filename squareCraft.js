@@ -86,24 +86,13 @@
     setTimeout(initImageSectionControls, 100);
     const clickedBlock = event.target.closest('[id^="block-"]');
     if (clickedBlock) {
-      waitForElement("#typoSection, #imageSection, #buttonSection,")
+      waitForElement("#typoSection, #imageSection, #buttonSection")
         .then(() => {
-          handleBlockClick({ target: clickedBlock }, {
-            getTextType,
-            selectedElement,
-            setSelectedElement: (val) => selectedElement = val,
-            setLastClickedBlockId: (val) => lastClickedBlockId = val,
-            setLastClickedElement: (val) => lastClickedElement = val,
-            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-          });
           detectBlockElementTypes(clickedBlock);
         })
         .catch(error => {
           console.error(error.message);
         });
-
-
     }
     handleBlockClick(event, {
       getTextType,
