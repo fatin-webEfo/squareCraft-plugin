@@ -11,11 +11,11 @@
   }
   let selectedElement = null;
   let widgetContainer = null;
-  
+
   let widgetLoaded = false;
   let token = widgetScript.dataset?.token;
   let userId = widgetScript.dataset?.uId;
-  let widgetId = widgetScript.dataset?.wId; 
+  let widgetId = widgetScript.dataset?.wId;
 
   if (token) {
     localStorage.setItem("sc_auth_token", token);
@@ -71,29 +71,29 @@
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
   const themeColors = await getSquarespaceThemeStyles();
- 
-  
+
+
   document.body.addEventListener("click", (event) => {
     const trigger = event.target.closest("#border-color-select");
 
-  if (trigger) {
-    console.log("✅ border-color-select clicked");
-    setTimeout(() => {
-      initBorderColorPaletteToggle(themeColors);
-    }, 100); 
-    return;
-  }
-    setTimeout(initImageSectionControls, 100); 
+    if (trigger) {
+      console.log("✅ border-color-select clicked");
+      setTimeout(() => {
+        initBorderColorPaletteToggle(themeColors);
+      }, 100);
+      return;
+    }
+    setTimeout(initImageSectionControls, 100);
     const clickedBlock = event.target.closest('[id^="block-"]');
-  if (clickedBlock) {
-    waitForElement("#typoSection, #imageSection, #buttonSection")
-    .then(() => {
-      detectBlockElementTypes(clickedBlock);
-    })
-    .catch(error => {
-      console.error(error.message);
-    });
-  }
+    if (clickedBlock) {
+      waitForElement("#typoSection, #imageSection, #buttonSection")
+        .then(() => {
+          detectBlockElementTypes(clickedBlock);
+        })
+        .catch(error => {
+          console.error(error.message);
+        });
+    }
     handleBlockClick(event, {
       getTextType,
       selectedElement,
@@ -103,7 +103,7 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-  
+
     handleAlignmentClick(event, {
       lastClickedElement,
       getTextType,
@@ -117,7 +117,7 @@
       token,
       widgetId
     });
-  
+
     handleTextColorClick(event, lastClickedElement, applyStylesToElement);
     handleFontWeightDropdownClick(event);
     typoTabSelect(event);
@@ -127,7 +127,7 @@
     const dropdownTrigger = event.target.closest("#font-weight-dropdown");
     const dropdownList = document.getElementById("font-weight-dropdown-list");
 
-  
+
     if (dropdownTrigger) {
       if (dropdownList.classList.contains("sc-hidden")) {
         dropdownList.classList.remove("sc-hidden");
@@ -137,38 +137,38 @@
         console.log("✅ sc-hidden added: dropdown hidden");
       }
     }
-  } );
-  
+  });
+
 
   async function fetchModifications(retries = 3) {
     const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
     const htmlString = module.html();
-  
+
     if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
       widgetContainer.innerHTML = htmlString;
 
     }
-  
+
     setTimeout(() => {
       if (typeof module.initToggleSwitch === "function") {
         module.initToggleSwitch();
       }
     }, 200);
-  
+
     const isEnabled = localStorage.getItem("sc_enabled") !== "false";
-  
+
     if (!isEnabled) {
       return;
     }
-  
+
     const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
     if (!pageId) return;
-  
+
     if (!token || !userId) {
       console.warn("Missing authentication data");
       return;
     }
-  
+
     try {
       const response = await fetch(
         `https://admin.squareplugin.com/api/v1/get-modifications?userId=${userId}`,
@@ -180,18 +180,18 @@
           }
         }
       );
-  
+
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  
+
       const data = await response.json();
-  
+
       if (!data.modifications || !Array.isArray(data.modifications)) {
         console.warn("⚠️ No modifications found or invalid format");
         return;
       }
-  
+
       const modificationMap = new Map();
-  
+
       data.modifications.forEach(mod => {
         if (mod.pageId === pageId) {
           mod.elements.forEach(elem => {
@@ -201,7 +201,7 @@
           });
         }
       });
-  
+
       const observer = new MutationObserver(() => {
         modificationMap.forEach((css, elementId) => {
           const element = document.getElementById(elementId);
@@ -209,25 +209,25 @@
             Object.entries(css).forEach(([prop, value]) => {
               element.style.setProperty(prop, value, "important");
             });
-  
+
             const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
             nestedElements.forEach(nestedElem => {
               Object.entries(css).forEach(([prop, value]) => {
                 nestedElem.style.setProperty(prop, value, "important");
               });
             });
-  
+
             if (!element.classList.contains("sc-font-modified")) {
               element.classList.add("sc-font-modified");
             }
-  
-            modificationMap.delete(elementId);  
+
+            modificationMap.delete(elementId);
           }
         });
       });
-  
+
       observer.observe(document.body, { childList: true, subtree: true });
-  
+
     } catch (error) {
       console.error("❌ Error Fetching Modifications:", error);
       if (retries > 0) {
@@ -235,8 +235,8 @@
       }
     }
   }
-  
-  
+
+
 
   window.addEventListener("load", async () => {
     await fetchModifications();
@@ -291,29 +291,45 @@
 
 
 
-const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
+  const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
 
-loadCSS(
-  "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
-);
-
-
+  loadCSS(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
+  );
 
 
 
-async function toggleWidgetVisibility(event) {
-  event.stopPropagation();
-  const clickedBlock = event?.target?.closest('[id^="block-"]');
 
-  if (!clickedBlock) {
-    console.error("No block element clicked.");
-    return;
-  }
 
-  if (!widgetLoaded) {
-    await createWidget(clickedBlock);
+  async function toggleWidgetVisibility(event) {
+    event.stopPropagation();
+    const clickedBlock = event?.target?.closest('[id^="block-"]');
 
-    setTimeout(() => {
+    if (!clickedBlock) {
+      console.error("No block element clicked.");
+      return;
+    }
+
+    if (!widgetLoaded) {
+      await createWidget(clickedBlock);
+
+      setTimeout(() => {
+        handleBlockClick({ target: clickedBlock }, {
+          getTextType,
+          selectedElement,
+          setSelectedElement: (val) => selectedElement = val,
+          setLastClickedBlockId: (val) => lastClickedBlockId = val,
+          setLastClickedElement: (val) => lastClickedElement = val,
+          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+        });
+
+        detectBlockElementTypes(clickedBlock);
+      }, 500);
+    } else {
+      widgetContainer.style.display =
+        widgetContainer.style.display === "none" ? "block" : "none";
+
       handleBlockClick({ target: clickedBlock }, {
         getTextType,
         selectedElement,
@@ -325,110 +341,94 @@ async function toggleWidgetVisibility(event) {
       });
 
       detectBlockElementTypes(clickedBlock);
-    }, 500);
-  } else {
-    widgetContainer.style.display =
-      widgetContainer.style.display === "none" ? "block" : "none";
-
-    handleBlockClick({ target: clickedBlock }, {
-      getTextType,
-      selectedElement,
-      setSelectedElement: (val) => selectedElement = val,
-      setLastClickedBlockId: (val) => lastClickedBlockId = val,
-      setLastClickedElement: (val) => lastClickedElement = val,
-      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-    });
-
-    detectBlockElementTypes(clickedBlock);
-  }
-}
-
-
-async function createWidget(clickedBlock) {
-  try {
-    const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
-    const htmlString = module.html();
-
-    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-      loadWidgetFromString(htmlString, clickedBlock);
-      setTimeout(() => {
-        if (typeof module.initToggleSwitch === "function") {
-          module.initToggleSwitch();
-        }
-      }, 200);
     }
-  } catch (err) {
-    console.error("🚨 Error loading HTML module:", err);
   }
-}
 
-function waitForElement(selector, timeout = 3000) {
-  return new Promise((resolve, reject) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      resolve(element);
-      return;
-    }
 
-    const observer = new MutationObserver((mutations) => {
-      const el = document.querySelector(selector);
-      if (el) {
-        resolve(el);
-        observer.disconnect();
+  async function createWidget(clickedBlock) {
+    try {
+      const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+      const htmlString = module.html();
+
+      if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+        loadWidgetFromString(htmlString, clickedBlock);
+        setTimeout(() => {
+          if (typeof module.initToggleSwitch === "function") {
+            module.initToggleSwitch();
+          }
+        }, 200);
       }
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    setTimeout(() => {
-      observer.disconnect();
-      reject(new Error(`Timeout: Element ${selector} not found`));
-    }, timeout);
-  });
-}
-
-function loadWidgetFromString(htmlString, clickedBlock) {
-  if (!widgetContainer) {
-    widgetContainer = document.createElement("div");
-    widgetContainer.id = "sc-widget-container";
-    widgetContainer.classList.add(
-      "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
-    );
-    widgetContainer.innerHTML = htmlString;
-    widgetContainer.style.display = "block"; 
-    document.body.appendChild(widgetContainer);
-
-    initImageMaskControls(() => selectedElement);
-    makeWidgetDraggable();
-    widgetLoaded = true;
-    initImageSectionToggleControls();
-
-    if (clickedBlock) {
-      handleBlockClick({ target: clickedBlock }, {        getTextType,
-        selectedElement,
-        setSelectedElement: (val) => selectedElement = val,
-        setLastClickedBlockId: (val) => lastClickedBlockId = val,
-        setLastClickedElement: (val) => lastClickedElement = val,
-        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-      });
-
-      waitForElement("#typoSection, #imageSection, #buttonSection")
-      .then(() => {
-        detectBlockElementTypes(clickedBlock);
-      })
-      .catch(error => {
-        console.error(error.message);
-      });
-      
-      
+    } catch (err) {
+      console.error("🚨 Error loading HTML module:", err);
     }
   }
-}
+
+  function waitForElement(selector, timeout = 3000) {
+    return new Promise((resolve, reject) => {
+      const element = document.querySelector(selector);
+      if (element) {
+        resolve(element);
+        return;
+      }
+
+      const observer = new MutationObserver((mutations) => {
+        const el = document.querySelector(selector);
+        if (el) {
+          resolve(el);
+          observer.disconnect();
+        }
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      setTimeout(() => {
+        observer.disconnect();
+        reject(new Error(`Timeout: Element ${selector} not found`));
+      }, timeout);
+    });
+  }
+
+  function loadWidgetFromString(htmlString, clickedBlock) {
+    if (!widgetContainer) {
+      widgetContainer = document.createElement("div");
+      widgetContainer.id = "sc-widget-container";
+      widgetContainer.classList.add(
+        "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
+      );
+      widgetContainer.innerHTML = htmlString;
+      widgetContainer.style.display = "block";
+      document.body.appendChild(widgetContainer);
+
+      initImageMaskControls(() => selectedElement);
+      makeWidgetDraggable();
+      widgetLoaded = true;
+      initImageSectionToggleControls();
+
+      if (clickedBlock) {
+        waitForElement("#typoSection, #imageSection, #buttonSection")
+          .then(() => {
+            handleBlockClick({ target: clickedBlock }, {
+              getTextType,
+              selectedElement,
+              setSelectedElement: (val) => selectedElement = val,
+              setLastClickedBlockId: (val) => lastClickedBlockId = val,
+              setLastClickedElement: (val) => lastClickedElement = val,
+              setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+              setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+            });
+            detectBlockElementTypes(clickedBlock);
+          })
+          .catch(error => {
+            console.error(error.message);
+          });
+
+
+      }
+    }
+  }
 
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
@@ -502,12 +502,12 @@ function loadWidgetFromString(htmlString, clickedBlock) {
   document.body.addEventListener("click", (e) => {
     const isInsideWidget = widgetContainer?.contains(e.target);
     const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-  
+
     if (!isInsideWidget && !isToolbarIcon && widgetContainer?.style.display === "block") {
       widgetContainer.style.display = "none";
     }
   });
-  
+
   function adjustWidgetPosition() {
     if (!widgetContainer) return;
 
@@ -521,85 +521,85 @@ function loadWidgetFromString(htmlString, clickedBlock) {
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
 
- function injectIcon() {
-  async function waitForTargets(selector, maxRetries = 10, delay = 500) {
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      const elements = parent.document.querySelectorAll(selector);
-      if (elements.length > 0) return elements;
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-    console.warn("⏱️ Timeout: Target elements not found:", selector);
-    return [];
-  }
-
-  async function injectIconIntoTargetElements() {
-    const targets = await waitForTargets(".tidILMJ7AVANuKwS:not(.sc-processed)");
-
-    targets.forEach((element) => {
-      element.classList.add("sc-processed");
-
-      const deleteButton = element.querySelector('[aria-label="Remove"]');
-      if (!deleteButton) {
-        console.warn("❌ Delete button not found, skipping:", element);
-        return;
+  function injectIcon() {
+    async function waitForTargets(selector, maxRetries = 10, delay = 500) {
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const elements = parent.document.querySelectorAll(selector);
+        if (elements.length > 0) return elements;
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
+      console.warn("⏱️ Timeout: Target elements not found:", selector);
+      return [];
+    }
 
-      if (element.querySelector(".sc-toolbar-icon")) return;
+    async function injectIconIntoTargetElements() {
+      const targets = await waitForTargets(".tidILMJ7AVANuKwS:not(.sc-processed)");
 
-      const clonedIcon = document.createElement("img");
-      clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
-      clonedIcon.alt = "sc";
-      clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
-      Object.assign(clonedIcon.style, {
-        width: "35px",
-        height: "35px",
-        borderRadius: "20%",
-        cursor: "pointer",
-        backgroundColor: "white",
-        marginLeft: "6px"
+      targets.forEach((element) => {
+        element.classList.add("sc-processed");
+
+        const deleteButton = element.querySelector('[aria-label="Remove"]');
+        if (!deleteButton) {
+          console.warn("❌ Delete button not found, skipping:", element);
+          return;
+        }
+
+        if (element.querySelector(".sc-toolbar-icon")) return;
+
+        const clonedIcon = document.createElement("img");
+        clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        clonedIcon.alt = "sc";
+        clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
+        Object.assign(clonedIcon.style, {
+          width: "35px",
+          height: "35px",
+          borderRadius: "20%",
+          cursor: "pointer",
+          backgroundColor: "white",
+          marginLeft: "6px"
+        });
+
+        deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
+
+        clonedIcon.addEventListener("click", function (event) {
+          event.stopPropagation();
+          event.preventDefault();
+          toggleWidgetVisibility(event);
+          if (!widgetLoaded) {
+            createWidget().then(() => {
+              widgetContainer = document.getElementById("sc-widget-container");
+              if (widgetContainer) {
+                widgetContainer.style.display = "block";
+              } else {
+                console.error("❌ Widget container not found after creation.");
+              }
+            });
+          } else {
+            widgetContainer.style.display =
+              widgetContainer.style.display === "none" ? "block" : "none";
+          }
+        });
       });
+    }
 
-      deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
+    injectIconIntoTargetElements(); // run once at startup
 
-      clonedIcon.addEventListener("click", function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-        toggleWidgetVisibility(event);
-        if (!widgetLoaded) {
-          createWidget().then(() => {
-            widgetContainer = document.getElementById("sc-widget-container");
-            if (widgetContainer) {
-              widgetContainer.style.display = "block";
-            } else {
-              console.error("❌ Widget container not found after creation.");
-            }
-          });
-        } else {
-          widgetContainer.style.display =
-            widgetContainer.style.display === "none" ? "block" : "none";
+    const observer = new MutationObserver(() => {
+      injectIconIntoTargetElements();
+    });
+    observer.observe(parent.document.body, { childList: true, subtree: true });
+
+    const iframe = document.querySelector("iframe");
+    if (iframe) {
+      iframe.contentWindow.document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("sc-admin-icon")) {
+          event.stopPropagation();
+          event.preventDefault();
+          toggleWidgetVisibility(event);
         }
       });
-    });
+    }
   }
-
-  injectIconIntoTargetElements(); // run once at startup
-
-  const observer = new MutationObserver(() => {
-    injectIconIntoTargetElements(); 
-  });
-  observer.observe(parent.document.body, { childList: true, subtree: true });
-
-  const iframe = document.querySelector("iframe");
-  if (iframe) {
-    iframe.contentWindow.document.addEventListener("click", function (event) {
-      if (event.target.classList.contains("sc-admin-icon")) {
-        event.stopPropagation();
-        event.preventDefault();
-        toggleWidgetVisibility(event);
-      }
-    });
-  }
-}
 
 
   function waitForNavBar(attempts = 0) {
