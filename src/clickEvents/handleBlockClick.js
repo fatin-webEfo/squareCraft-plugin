@@ -70,12 +70,16 @@ export function handleBlockClick(event, context) {
     }
   });
 
-  allParts.forEach(id => {
-    const part = document.getElementById(id);
-    if (part) {
-      part.classList.toggle("sc-hidden", !visibleParts.has(id));
+  async function showPartsAfterWidgetReady(allParts, visibleParts) {
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const allExist = allParts.every(id => document.getElementById(id));
+      if (allExist) break;
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
-  });
+  
+  }
+  showPartsAfterWidgetReady(allParts, visibleParts);
+
 
   visibleParts.forEach(partId => {
     const typeId = partId.replace("Part", "");
