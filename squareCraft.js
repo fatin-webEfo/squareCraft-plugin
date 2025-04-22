@@ -312,9 +312,20 @@ async function toggleWidgetVisibility(event) {
 
   if (!widgetLoaded) {
     await createWidget(clickedBlock);
+
     setTimeout(() => {
-      detectBlockElementTypes(clickedBlock); 
-    }, 500);
+      handleBlockClick({ target: clickedBlock }, {
+        getTextType,
+        selectedElement,
+        setSelectedElement: (val) => selectedElement = val,
+        setLastClickedBlockId: (val) => lastClickedBlockId = val,
+        setLastClickedElement: (val) => lastClickedElement = val,
+        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      });
+
+      detectBlockElementTypes(clickedBlock);
+    }, 500); // 🔥 add delay before handleBlockClick() when first time
   } else {
     widgetContainer.style.display =
       widgetContainer.style.display === "none" ? "block" : "none";
@@ -328,8 +339,11 @@ async function toggleWidgetVisibility(event) {
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
+
+    detectBlockElementTypes(clickedBlock);
   }
 }
+
 
 async function createWidget(clickedBlock) {
   try {
