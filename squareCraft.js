@@ -111,7 +111,9 @@
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
-    detectBlockElementTypes(clickedBlock); 
+    setTimeout(() => {
+      detectBlockElementTypes(clickedBlock);
+    }, 100); 
   }
     handleBlockClick(event, {
       getTextType,
@@ -399,10 +401,6 @@ function loadWidgetFromString(htmlString, clickedBlock) {
     }
   }
 }
-
-
-
-
 
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
