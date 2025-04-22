@@ -32,11 +32,11 @@ export function WidgetImageSection(id) {
             <div class="sc-mt-3">
                <div class="sc-flex sc-roboto sc-px-2  sc-items-center sc-justify-between sc-gap-2">
                   <div
-                     class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-thin sc-flex sc-items-center sc-text-sm sc-py-0_5 sc-rounded-6px sc-text-color-white sc-justify-center">
+                     class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-thin sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
                      Normal
                   </div>
                   <div
-                     class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-thin sc-flex sc-text-sm sc-py-0_5 sc-rounded-6px sc-items-center sc-justify-center">
+                     class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-thin sc-flex sc-text-sm sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
                      Hover
                   </div>
                </div>
