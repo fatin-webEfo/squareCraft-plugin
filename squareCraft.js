@@ -408,7 +408,7 @@
       initImageSectionToggleControls();
 
       if (clickedBlock) {
-        waitForElement("#typoSection, #imageSection, #buttonSection")
+        waitForElement("#typoSection, #imageSection, #buttonSection, #heading1Select, #heading2Select, #heading3Select, #heading4Select, #paragraph1Select, #paragraph2Select, #paragraph3Select")
           .then(() => {
             handleBlockClick({ target: clickedBlock }, {
               getTextType,
