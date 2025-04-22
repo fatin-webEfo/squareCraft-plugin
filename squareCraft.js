@@ -105,6 +105,15 @@
 
 
     }
+    handleBlockClick(event, {
+      getTextType,
+      selectedElement,
+      setSelectedElement: (val) => selectedElement = val,
+      setLastClickedBlockId: (val) => lastClickedBlockId = val,
+      setLastClickedElement: (val) => lastClickedElement = val,
+      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+    });
 
     handleAlignmentClick(event, {
       lastClickedElement,
