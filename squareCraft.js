@@ -306,7 +306,7 @@ async function toggleWidgetVisibility(event) {
   const clickedBlock = event?.target?.closest('[id^="block-"]');
 
   if (!clickedBlock) {
-    console.warn("No block element clicked.");
+    console.error("No block element clicked.");
     return;
   }
 
@@ -325,7 +325,7 @@ async function toggleWidgetVisibility(event) {
       });
 
       detectBlockElementTypes(clickedBlock);
-    }, 500); // 🔥 add delay before handleBlockClick() when first time
+    }, 500);
   } else {
     widgetContainer.style.display =
       widgetContainer.style.display === "none" ? "block" : "none";
@@ -408,8 +408,7 @@ function loadWidgetFromString(htmlString, clickedBlock) {
     initImageSectionToggleControls();
 
     if (clickedBlock) {
-      handleBlockClick({ target: clickedBlock }, {
-        getTextType,
+      handleBlockClick({ target: clickedBlock }, {        getTextType,
         selectedElement,
         setSelectedElement: (val) => selectedElement = val,
         setLastClickedBlockId: (val) => lastClickedBlockId = val,
