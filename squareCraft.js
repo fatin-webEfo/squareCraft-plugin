@@ -304,45 +304,41 @@
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
     const clickedBlock = event?.target?.closest('[id^="block-"]');
-
     if (!clickedBlock) {
       console.error("No block element clicked.");
       return;
     }
-
+  
     if (!widgetLoaded) {
       await createWidget(clickedBlock);
-
-      setTimeout(() => {
-        handleBlockClick({ target: clickedBlock }, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
-
-        detectBlockElementTypes(clickedBlock);
-      }, 500);
-    } else {
-      widgetContainer.style.display =
-        widgetContainer.style.display === "none" ? "block" : "none";
-
-      handleBlockClick({ target: clickedBlock }, {
-        getTextType,
-        selectedElement,
-        setSelectedElement: (val) => selectedElement = val,
-        setLastClickedBlockId: (val) => lastClickedBlockId = val,
-        setLastClickedElement: (val) => lastClickedElement = val,
-        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
+        handleAndDetect(clickedBlock);
+      }).catch(error => {
+        console.error(error.message);
       });
-
-      detectBlockElementTypes(clickedBlock);
+    } else {
+      widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
+        handleAndDetect(clickedBlock);
+      }).catch(error => {
+        console.error(error.message);
+      });
     }
   }
+  
+  function handleAndDetect(clickedBlock) {
+    handleBlockClick({ target: clickedBlock }, {
+      getTextType,
+      selectedElement,
+      setSelectedElement: (val) => selectedElement = val,
+      setLastClickedBlockId: (val) => lastClickedBlockId = val,
+      setLastClickedElement: (val) => lastClickedElement = val,
+      setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+    });
+    detectBlockElementTypes(clickedBlock);
+  }
+  
 
 
   async function createWidget(clickedBlock) {
@@ -365,31 +361,29 @@
 
   function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
-      const element = document.querySelector(selector);
-      if (element) {
-        resolve(element);
+      const el = document.querySelector(selector);
+      if (el) {
+        resolve(el);
         return;
       }
-
-      const observer = new MutationObserver((mutations) => {
+  
+      const observer = new MutationObserver(() => {
         const el = document.querySelector(selector);
         if (el) {
           resolve(el);
           observer.disconnect();
         }
       });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-
+  
+      observer.observe(document.body, { childList: true, subtree: true });
+  
       setTimeout(() => {
         observer.disconnect();
         reject(new Error(`Timeout: Element ${selector} not found`));
       }, timeout);
     });
   }
+  
 
   function loadWidgetFromString(htmlString, clickedBlock) {
     if (!widgetContainer) {
