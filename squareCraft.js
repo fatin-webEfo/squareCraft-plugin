@@ -86,9 +86,13 @@
     setTimeout(initImageSectionControls, 100); 
     const clickedBlock = event.target.closest('[id^="block-"]');
   if (clickedBlock) {
-    setTimeout(() => {
+    waitForElement("#typoSection, #imageSection, #buttonSection")
+    .then(() => {
       detectBlockElementTypes(clickedBlock);
-    }, 100); 
+    })
+    .catch(error => {
+      console.error(error.message);
+    });
   }
     handleBlockClick(event, {
       getTextType,
