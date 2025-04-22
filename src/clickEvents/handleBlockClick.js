@@ -1,4 +1,4 @@
-export function handleBlockClick(event, context) {
+export async function handleBlockClick(event, context) {
   const {
     getTextType,
     setSelectedElement,
@@ -47,6 +47,12 @@ export function handleBlockClick(event, context) {
     "heading1Part", "heading2Part", "heading3Part", "heading4Part",
     "paragraph1Part", "paragraph2Part", "paragraph3Part"
   ];
+
+  const allTabs = [
+    "heading1", "heading2", "heading3", "heading4",
+    "paragraph1", "paragraph2", "paragraph3"
+  ];
+
   const visibleParts = new Set();
   const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
 
@@ -61,12 +67,20 @@ export function handleBlockClick(event, context) {
     }
   });
 
-  showPartsAfterWidgetReady(allParts, visibleParts);
+  await waitForPartsAndTabsReady(allParts, allTabs);
+
+  allParts.forEach(id => {
+    const part = document.getElementById(id);
+    if (part) {
+      part.classList.toggle("sc-hidden", !visibleParts.has(id));
+    }
+  });
 
   visibleParts.forEach(partId => {
     const typeId = partId.replace("Part", "");
     const tab = document.getElementById(typeId);
     if (!tab) return;
+
     tab.onmouseenter = () => {
       const b = document.getElementById(block.id);
       const t = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
@@ -77,6 +91,7 @@ export function handleBlockClick(event, context) {
         }
       });
     };
+
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
       b.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
@@ -86,16 +101,11 @@ export function handleBlockClick(event, context) {
   });
 }
 
-async function showPartsAfterWidgetReady(allParts, visibleParts) {
+async function waitForPartsAndTabsReady(allParts, allTabs) {
   for (let attempt = 0; attempt < 10; attempt++) {
-    const allExist = allParts.every(id => document.getElementById(id));
-    if (allExist) break;
+    const partsReady = allParts.every(id => document.getElementById(id));
+    const tabsReady = allTabs.every(id => document.getElementById(id));
+    if (partsReady && tabsReady) break;
     await new Promise(resolve => setTimeout(resolve, 100));
   }
-  allParts.forEach(id => {
-    const part = document.getElementById(id);
-    if (part) {
-      part.classList.toggle("sc-hidden", !visibleParts.has(id));
-    }
-  });
 }
