@@ -341,6 +341,7 @@ async function createWidget(clickedBlock) {
     console.error("🚨 Error loading HTML module:", err);
   }
 }
+
 function waitForElement(selector, timeout = 3000) {
   return new Promise((resolve, reject) => {
     const element = document.querySelector(selector);
@@ -650,6 +651,5 @@ function loadWidgetFromString(htmlString, clickedBlock) {
   }
 
   checkView();
-  setupFontWeightDropdown(); 
   window.addEventListener("resize", checkView);
 })();
