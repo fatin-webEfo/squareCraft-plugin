@@ -373,12 +373,14 @@ function loadWidgetFromString(htmlString, clickedBlock) {
       "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
     );
     widgetContainer.innerHTML = htmlString;
-    widgetContainer.style.display = "block"; // immediately visible
+    widgetContainer.style.display = "block"; 
     document.body.appendChild(widgetContainer);
+
     initImageMaskControls(() => selectedElement);
     makeWidgetDraggable();
     widgetLoaded = true;
     initImageSectionToggleControls();
+
     if (clickedBlock) {
       handleBlockClick({ target: clickedBlock }, {
         getTextType,
@@ -389,9 +391,13 @@ function loadWidgetFromString(htmlString, clickedBlock) {
         setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
         setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
       });
+
+      // 👇 ADD THIS
+      detectBlockElementTypes(clickedBlock);
     }
   }
 }
+
 
 
 

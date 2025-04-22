@@ -48,7 +48,6 @@ export function html() {
             Reset
          </div>
       </div>
-
    </div>
 </div>
     `;
