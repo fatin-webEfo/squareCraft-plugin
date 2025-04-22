@@ -392,8 +392,10 @@ function loadWidgetFromString(htmlString, clickedBlock) {
         setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
       });
 
-      // 👇 ADD THIS
-      detectBlockElementTypes(clickedBlock);
+      setTimeout(() => {
+        detectBlockElementTypes(clickedBlock);
+      }, 100);
+      
     }
   }
 }
