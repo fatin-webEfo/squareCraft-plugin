@@ -124,7 +124,7 @@
   });
 
   document.body.addEventListener("click", (event) => {
-    const button = event.target.closest("a.sqs-block-button-element");
+    const button = event.target.closest("a[class*='sqs-button-element']");
     if (!button) return;
   
     if (button.classList.contains("sqs-button-element--primary")) {
@@ -137,6 +137,7 @@
       console.log("⚪ Button Type: Unknown");
     }
   });
+  
   
 
   document.body.addEventListener("click", (event) => {
