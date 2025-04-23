@@ -3,11 +3,11 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 
 export async function WidgetButtonSection() {
-   let buttonType = getCurrentButtonType();
+   let buttonType = await getCurrentButtonType();
    let tries = 0;
    while (buttonType === "Unknown Button" && tries < 20) {
       await new Promise(res => setTimeout(res, 500));
-      buttonType = getCurrentButtonType();
+      buttonType = await getCurrentButtonType();
       tries++;
    }
    
