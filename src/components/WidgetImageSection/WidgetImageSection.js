@@ -289,7 +289,7 @@ export function WidgetImageSection(id) {
                         <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2">
                            <p class="sc-universal sc-roboto sc-text-sm ">20px</p>
                         </div>
-                        <div class="sc-bg-454545 sc-px-2_5 sc-py-3">
+                        <div style="padding-top: 4px; padding-bottom: 4px;" class="sc-bg-454545 sc-px-2_5 ">
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                                  width="10">
@@ -308,7 +308,7 @@ export function WidgetImageSection(id) {
                         <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2">
                            <p class="sc-universal sc-roboto sc-text-sm ">20px</p>
                         </div>
-                        <div class="sc-bg-454545 sc-px-2_5 sc-py-3">
+                        <div style="padding-top: 4px; padding-bottom: 4px;" class="sc-bg-454545 sc-px-2_5 ">
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                                  width="10">
