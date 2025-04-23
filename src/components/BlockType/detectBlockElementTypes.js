@@ -1,4 +1,4 @@
-export let currentButtonType = "Button";
+export let currentButtonType ;
 
 export function detectBlockElementTypes(block) {
   const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
