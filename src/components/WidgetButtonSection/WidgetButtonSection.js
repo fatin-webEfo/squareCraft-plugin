@@ -1,3 +1,6 @@
+import { getTextType } from "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js";
+
+
 export function WidgetButtonSection() {
 
    return `
@@ -6,7 +9,7 @@ export function WidgetButtonSection() {
          <div  class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
-               <p class="sc-universal sc-roboto">Button</p>
+               <p class="sc-universal sc-roboto">${getTextType}</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
