@@ -10,7 +10,6 @@ export async function WidgetButtonSection() {
       buttonType = await getCurrentButtonType();
       tries++;
    }
-   
 
    console.log("✅ Final Button Type Used:", typeof(buttonType), buttonType);
    return `
