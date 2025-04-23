@@ -35,4 +35,4 @@ export function detectBlockElementTypes(block) {
   return currentButtonType;
 }
 
-export const getCurrentButtonType = async () => currentButtonType;
+export const getCurrentButtonType = () => currentButtonType;
