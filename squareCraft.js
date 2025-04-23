@@ -423,10 +423,7 @@
               setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
               setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
             });
-            detectBlockElementTypes(clickedBlock, (btnType) => {
-              console.log("💡 Callback Button Type:", btnType);
-            });
-            
+            detectBlockElementTypes(clickedBlock);
           })
           .catch(error => {
             console.error(error.message);
