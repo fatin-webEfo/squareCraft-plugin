@@ -6,6 +6,21 @@ export async function WidgetButtonSection() {
    let buttonType = await getCurrentButtonType();
  
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
+   if (buttonType === "Unknown Button") {
+      buttonType = "Button";
+   }
+   else if (buttonType === "Primary Button") {
+      buttonType = "Primary Button";
+   }
+   else if (buttonType === "Secondary Button") {
+      buttonType = "Secondary Button";
+   }
+   else if (buttonType === "Tertiary Button") {
+      buttonType = "Tertiary Button";
+   }
+   else {
+      buttonType = "Button";
+   }
 
 
    return `
