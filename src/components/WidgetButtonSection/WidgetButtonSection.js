@@ -38,7 +38,7 @@ export function WidgetButtonSection(id, currentButtonType) {
          </div>
        </div>
        <div class="sc-mt-2 sc-px-2 sc-flex sc-justify-between">
-         <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">${buttonType}</p>
+         <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">${currentButtonType} Button Style</p>
          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
        </div>
        <div class="sc-mt-4"></div>
