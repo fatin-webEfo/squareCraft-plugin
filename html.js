@@ -89,7 +89,6 @@ export function initToggleSwitch() {
    const toggleBullet = toggleSwitch?.querySelector(".toggle-bullet");
 
    if (!toggleSwitch || !toggleText || !toggleBullet) {
-      console.log("⏳ Waiting for toggle elements...");
       return;
    }
 
