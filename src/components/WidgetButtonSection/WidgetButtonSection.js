@@ -11,7 +11,7 @@ export async function WidgetButtonSection() {
       tries++;
    }
 
-   console.log("✅ Final Button Type Used:", typeof(buttonType), buttonType);
+   console.log("✅ Final Button Type Used:", typeof(buttonType), typeof({buttonType}), buttonType);
    return `
 
      <div id="buttonSection">
