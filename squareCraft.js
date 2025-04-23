@@ -106,8 +106,11 @@
     });
     if (clickedBlock) {
       const buttonEl = clickedBlock.querySelector("a.sqs-button-element, button.sqs-button-element");
-      getButtonTypes(buttonEl);
+      if (buttonEl) {
+        getButtonTypes(buttonEl);
+      }
     }
+    
     
     handleAlignmentClick(event, {
       lastClickedElement,
