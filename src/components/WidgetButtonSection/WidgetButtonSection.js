@@ -3,7 +3,7 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 
 export async function WidgetButtonSection() {
-   let buttonType = getCurrentButtonType();
+   let buttonType = await getCurrentButtonType();
  
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
 
