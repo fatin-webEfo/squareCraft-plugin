@@ -11,7 +11,7 @@ export function detectBlockElementTypes(block, callback) {
       foundType = "text";
     }
 
-    if (tagName === "img" && !classList.contains("ProseMirror-separator") && el.closest('.sqs-image-content')) {
+    if (tagName === "img" && !classList.contains("ProseMirror-separator") && el.closest(".sqs-image-content")) {
       foundType = "image";
     }
 
@@ -34,10 +34,14 @@ export function detectBlockElementTypes(block, callback) {
   imageSection.classList.add("sc-hidden");
   buttonSection.classList.add("sc-hidden");
 
-  if (foundType === "text") typoSection.classList.remove("sc-hidden");
-  else if (foundType === "image") imageSection.classList.remove("sc-hidden");
-  else if (foundType === "button") {
+  if (foundType === "text") {
+    typoSection.classList.remove("sc-hidden");
+  } else if (foundType === "image") {
+    imageSection.classList.remove("sc-hidden");
+  } else if (foundType === "button") {
     buttonSection.classList.remove("sc-hidden");
-    if (typeof callback === "function") callback(buttonType);
+    if (typeof callback === "function") {
+      callback(buttonType);
+    }
   }
 }

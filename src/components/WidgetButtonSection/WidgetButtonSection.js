@@ -1,12 +1,12 @@
 
 
-export function WidgetButtonSection(id, buttonType) {
+export function WidgetButtonSection(id, currentButtonType) {
    return `
      <div id="${id}">
        <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
-           <p class="sc-universal sc-roboto">${buttonType}</p>
+           <p class="sc-universal sc-roboto">${currentButtonType}</p>
          </div>
          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
        </div>
