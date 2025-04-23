@@ -88,7 +88,10 @@
     if (clickedBlock) {
       waitForElement("#typoSection, #imageSection, #buttonSection")
         .then(() => {
-          detectBlockElementTypes(clickedBlock);
+          detectBlockElementTypes(clickedBlock, (btnType) => {
+            console.log("💡 Callback Button Type:", btnType);
+          });
+          
         })
         .catch(error => {
           console.error(error.message);
@@ -340,7 +343,10 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-    detectBlockElementTypes(clickedBlock);
+    detectBlockElementTypes(clickedBlock, (btnType) => {
+      console.log("💡 Callback Button Type:", btnType);
+    });
+    
   }
   
 
@@ -417,7 +423,10 @@
               setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
               setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
             });
-            detectBlockElementTypes(clickedBlock);
+            detectBlockElementTypes(clickedBlock, (btnType) => {
+              console.log("💡 Callback Button Type:", btnType);
+            });
+            
           })
           .catch(error => {
             console.error(error.message);
