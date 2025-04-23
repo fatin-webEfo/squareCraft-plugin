@@ -28,6 +28,7 @@ export function detectBlockElementTypes(block, callback) {
 
   if (foundType === "button" && buttonType) {
     currentButtonType = buttonType;
+    console.log("✅ currentButtonType set to:", currentButtonType);
   }
 
   const typoSection = document.getElementById("typoSection");
@@ -44,8 +45,6 @@ export function detectBlockElementTypes(block, callback) {
   else if (foundType === "image") imageSection.classList.remove("sc-hidden");
   else if (foundType === "button") {
     buttonSection.classList.remove("sc-hidden");
-    if (typeof callback === "function") {
-      callback(buttonType);
-    }
+    if (typeof callback === "function") callback(buttonType);
   }
 }
