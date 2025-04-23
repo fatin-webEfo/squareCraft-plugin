@@ -317,7 +317,6 @@
     event.stopPropagation();
     const clickedBlock = event?.target?.closest('[id^="block-"]');
     if (!clickedBlock) {
-      console.error("No block element clicked.");
       return;
     }
   
