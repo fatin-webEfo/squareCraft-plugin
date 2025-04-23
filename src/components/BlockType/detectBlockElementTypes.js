@@ -1,15 +1,14 @@
-
 export function detectBlockElementTypes(block) {
-   let currentButtonType = "Unknown Button";
-  const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
-
+  let currentButtonType = "Unknown Button";
   let foundType = null;
+
+  const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
 
   nestedElements.forEach((el) => {
     const tagName = el.tagName.toLowerCase();
     const classList = el.classList;
 
-    if (tagName === "h1" || tagName === "h2" || tagName === "h3" || tagName === "h4") {
+    if (["h1", "h2", "h3", "h4"].includes(tagName)) {
       foundType = "text";
     }
 
@@ -17,11 +16,7 @@ export function detectBlockElementTypes(block) {
       foundType = "text";
     }
 
-    if (
-      tagName === "img" && 
-      !classList.contains("ProseMirror-separator") &&
-      el.closest('.sqs-image-content')
-    ) {
+    if (tagName === "img" && !classList.contains("ProseMirror-separator") && el.closest('.sqs-image-content')) {
       foundType = "image";
     }
 
@@ -30,16 +25,10 @@ export function detectBlockElementTypes(block) {
 
       if (classList.contains("sqs-button-element--primary")) {
         currentButtonType = "Primary Button";
-        console.log("🟧 Button Type:", currentButtonType);
       } else if (classList.contains("sqs-button-element--secondary")) {
         currentButtonType = "Secondary Button";
-        console.log("🟦 Button Type:", currentButtonType);
       } else if (classList.contains("sqs-button-element--tertiary")) {
         currentButtonType = "Tertiary Button";
-        console.log("🟩 Button Type:", currentButtonType);
-      } else {
-        currentButtonType = "Unknown Button";
-        console.log("⚪ Button Type:", currentButtonType);
       }
     }
   });
@@ -48,18 +37,15 @@ export function detectBlockElementTypes(block) {
   const imageSection = document.getElementById("imageSection");
   const buttonSection = document.getElementById("buttonSection");
 
-  if (!typoSection || !imageSection || !buttonSection) return;
+  if (typoSection && imageSection && buttonSection) {
+    typoSection.classList.add("sc-hidden");
+    imageSection.classList.add("sc-hidden");
+    buttonSection.classList.add("sc-hidden");
 
-  typoSection.classList.add("sc-hidden");
-  imageSection.classList.add("sc-hidden");
-  buttonSection.classList.add("sc-hidden");
-
-  if (foundType === "text") {
-    typoSection.classList.remove("sc-hidden");
-  } else if (foundType === "image") {
-    imageSection.classList.remove("sc-hidden");
-  } else if (foundType === "button") {
-    buttonSection.classList.remove("sc-hidden");
+    if (foundType === "text") typoSection.classList.remove("sc-hidden");
+    else if (foundType === "image") imageSection.classList.remove("sc-hidden");
+    else if (foundType === "button") buttonSection.classList.remove("sc-hidden");
   }
 
+  return currentButtonType; // ✅ RETURN VALUE HERE
 }
