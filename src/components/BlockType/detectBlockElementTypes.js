@@ -1,6 +1,5 @@
 export function detectBlockElementTypes(block) {
   const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
-
   let foundType = null;
 
   nestedElements.forEach((el) => {
@@ -15,25 +14,12 @@ export function detectBlockElementTypes(block) {
       foundType = "text";
     }
 
-    if (
-      tagName === "img" && 
-      !classList.contains("ProseMirror-separator") &&
-      el.closest('.sqs-image-content')
-    ) {
+    if (tagName === "img" && !classList.contains("ProseMirror-separator") && el.closest(".sqs-image-content")) {
       foundType = "image";
     }
 
     if ((tagName === "a" || tagName === "button") && !el.querySelector("img")) {
       foundType = "button";
-      if (classList.contains("sqs-button-element--primary")) {
-        console.log("🟧 Button Type: Primary");
-      } else if (classList.contains("sqs-button-element--secondary")) {
-        console.log("🟦 Button Type: Secondary");
-      } else if (classList.contains("sqs-button-element--tertiary")) {
-        console.log("🟩 Button Type: Tertiary");
-      } else {
-        console.log("⚪ Button Type: Unknown");
-      }
     }
   });
 
@@ -47,13 +33,9 @@ export function detectBlockElementTypes(block) {
   imageSection.classList.add("sc-hidden");
   buttonSection.classList.add("sc-hidden");
 
-  if (foundType === "text") {
-    typoSection.classList.remove("sc-hidden");
-  } else if (foundType === "image") {
-    imageSection.classList.remove("sc-hidden");
-  } else if (foundType === "button") {
-    buttonSection.classList.remove("sc-hidden");
-  }
+  if (foundType === "text") typoSection.classList.remove("sc-hidden");
+  else if (foundType === "image") imageSection.classList.remove("sc-hidden");
+  else if (foundType === "button") buttonSection.classList.remove("sc-hidden");
 
   console.log("Detected Block Type:", foundType);
 }
