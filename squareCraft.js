@@ -104,7 +104,11 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-    getButtonTypes()
+    const buttonEl = clickedBlock.querySelector("a.sqs-button-element, button.sqs-button-element");
+    if (buttonEl) {
+      getButtonTypes(buttonEl);
+    }
+    
     handleAlignmentClick(event, {
       lastClickedElement,
       getTextType,
