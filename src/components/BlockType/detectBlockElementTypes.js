@@ -17,15 +17,10 @@ export function detectBlockElementTypes(block, callback) {
 
     if ((tagName === "a" || tagName === "button") && !el.querySelector("img")) {
       foundType = "button";
-      if (classList.contains("sqs-button-element--primary")) {
-        buttonType = "Primary Button";
-      } else if (classList.contains("sqs-button-element--secondary")) {
-        buttonType = "Secondary Button";
-      } else if (classList.contains("sqs-button-element--tertiary")) {
-        buttonType = "Tertiary Button";
-      } else {
-        buttonType = "Unknown Button";
-      }
+      if (classList.contains("sqs-button-element--primary")) buttonType = "Primary Button";
+      else if (classList.contains("sqs-button-element--secondary")) buttonType = "Secondary Button";
+      else if (classList.contains("sqs-button-element--tertiary")) buttonType = "Tertiary Button";
+      else buttonType = "Unknown Button";
     }
   });
 
@@ -41,9 +36,8 @@ export function detectBlockElementTypes(block, callback) {
 
   if (foundType === "text") typoSection.classList.remove("sc-hidden");
   else if (foundType === "image") imageSection.classList.remove("sc-hidden");
-  else if (foundType === "button") buttonSection.classList.remove("sc-hidden");
-
-  if (foundType === "button" && typeof callback === "function") {
-    callback(buttonType);
+  else if (foundType === "button") {
+    buttonSection.classList.remove("sc-hidden");
+    if (typeof callback === "function") callback(buttonType);
   }
 }

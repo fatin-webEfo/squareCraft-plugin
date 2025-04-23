@@ -1,3 +1,5 @@
+
+
 export function WidgetButtonSection(id, buttonType = "Button") {
    return `
      <div id="${id}">
