@@ -1,6 +1,6 @@
-export let currentButtonType = "Unknown Button";
 
 export function detectBlockElementTypes(block) {
+   let currentButtonType = "Unknown Button";
   const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
 
   let foundType = null;
