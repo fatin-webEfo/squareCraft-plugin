@@ -62,5 +62,4 @@ export function detectBlockElementTypes(block) {
     buttonSection.classList.remove("sc-hidden");
   }
 
-  console.log("Detected Block Type:", foundType);
 }
