@@ -36,5 +36,5 @@ export function detectBlockElementTypes(block) {
 }
 
 export function getCurrentButtonType() {
-  return Promise.resolve(currentButtonType); // Return as resolved Promise
+  return currentButtonType;
 }
