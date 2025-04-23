@@ -104,17 +104,6 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-
-
-  if (clickedBlock) {
-  const buttonEl = clickedBlock.querySelector("a.sqs-button-element, button.sqs-button-element");
-  if (buttonEl) {
-    getButtonTypes(buttonEl);
-  } else {
-    console.warn("⚠️ No button element found in clicked block:", clickedBlock.id);
-  }
-}
-
     
     
     handleAlignmentClick(event, {
