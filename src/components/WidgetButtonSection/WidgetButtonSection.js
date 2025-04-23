@@ -7,7 +7,7 @@ export async function WidgetButtonSection() {
 
   let retries = 10;
   while (buttonType === "Unknown Button" && retries-- > 0) {
-    await new Promise(res => setTimeout(res, 30)); // wait 30ms
+    await new Promise(res => setTimeout(res, 300)); 
     buttonType = getCurrentButtonType();
   }
 
