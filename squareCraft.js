@@ -59,6 +59,7 @@
     styleTag.innerHTML = cssText;
   }
   const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
+  const { getButtonTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getButtonTypes.js");
   const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
   const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
@@ -103,7 +104,7 @@
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
       setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
     });
-
+    getButtonTypes()
     handleAlignmentClick(event, {
       lastClickedElement,
       getTextType,
