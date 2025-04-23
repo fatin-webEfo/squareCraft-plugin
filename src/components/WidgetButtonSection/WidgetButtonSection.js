@@ -4,6 +4,7 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 export function WidgetButtonSection() {
    const buttonType = getCurrentButtonType();
+   console.log("🔘 Button Type:", buttonType);
    return `
 
      <div id="buttonSection">
