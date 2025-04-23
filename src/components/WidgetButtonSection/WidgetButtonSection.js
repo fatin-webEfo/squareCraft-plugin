@@ -1,9 +1,11 @@
 
+import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js";
 
 
-export async function WidgetButtonSection({id,buttonType}) {
-
+export async function WidgetButtonSection() {
+   let buttonType =  getCurrentButtonType();
  
+   console.log("DEBUG buttonType:", buttonType, typeof buttonType);
 
 
    return `
