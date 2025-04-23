@@ -124,6 +124,23 @@
   });
 
   document.body.addEventListener("click", (event) => {
+    const button = event.target.closest("a.sqs-block-button-element");
+    if (!button) return;
+  
+    const classList = Array.from(button.classList);
+    const type = classList.includes("sqs-button-element--primary")
+      ? "Primary"
+      : classList.includes("sqs-button-element--secondary")
+      ? "Secondary"
+      : classList.includes("sqs-button-element--tertiary")
+      ? "Tertiary"
+      : "Unknown";
+  
+    console.log(`🟠 Button Type Detected: ${type}`);
+  });
+  
+
+  document.body.addEventListener("click", (event) => {
     const dropdownTrigger = event.target.closest("#font-weight-dropdown");
     const dropdownList = document.getElementById("font-weight-dropdown-list");
 
