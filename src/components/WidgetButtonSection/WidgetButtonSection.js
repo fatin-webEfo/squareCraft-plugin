@@ -1,27 +1,26 @@
 
 import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js";
-import { currentButtonType } from './../../utils/getButtonTypes';
 
 
 export async function WidgetButtonSection() {
    let buttonType = await getCurrentButtonType();
-   let currentButtonType
+   
  
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
    if (buttonType === "Unknown Button") {
-      currentButtonType = "Button";
+      buttonType = "Button";
    }
    else if (buttonType === "Primary Button") {
-      currentButtonType = "Primary Button";
+      buttonType = "Primary Button";
    }
    else if (buttonType === "Secondary Button") {
-      currentButtonType = "Secondary Button";
+      buttonType = "Secondary Button";
    }
    else if (buttonType === "Tertiary Button") {
-      currentButtonType = "Tertiary Button";
+      buttonType = "Tertiary Button";
    }
    else {
-      currentButtonType = "Button";
+      buttonType = "Button";
    }
 
 
@@ -31,7 +30,7 @@ export async function WidgetButtonSection() {
          <div  class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
-               <p class="sc-universal sc-roboto">${currentButtonType}</p>
+               <p class="sc-universal sc-roboto">${buttonType}</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
