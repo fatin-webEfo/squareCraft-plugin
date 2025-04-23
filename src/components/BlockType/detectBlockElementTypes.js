@@ -1,30 +1,38 @@
 let currentButtonType = "Unknown Button";
 
 export function detectBlockElementTypes(block) {
-  const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
-
   let foundType = null;
+  block.querySelectorAll("h1, h2, h3, h4, p, img, a, button").forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    const cls = el.classList;
 
-  nestedElements.forEach((el) => {
-    const tagName = el.tagName.toLowerCase();
-    const classList = el.classList;
+    if (["h1", "h2", "h3", "h4"].includes(tag) || (tag === "p" && !cls.contains("rte-placeholder") && el.innerText.trim())) {
+      foundType = "text";
+    }
 
-    if (["h1", "h2", "h3", "h4"].includes(tagName)) foundType = "text";
-    if (tagName === "p" && !classList.contains("rte-placeholder") && el.innerText.trim() !== "") foundType = "text";
-    if (tagName === "img" && el.closest(".sqs-image-content")) foundType = "image";
+    if (tag === "img" && !cls.contains("ProseMirror-separator") && el.closest(".sqs-image-content")) {
+      foundType = "image";
+    }
 
-    if ((tagName === "a" || tagName === "button") && !el.querySelector("img")) {
+    if ((tag === "a" || tag === "button") && !el.querySelector("img")) {
       foundType = "button";
-      if (classList.contains("sqs-button-element--primary")) currentButtonType = "Primary Button";
-      else if (classList.contains("sqs-button-element--secondary")) currentButtonType = "Secondary Button";
-      else if (classList.contains("sqs-button-element--tertiary")) currentButtonType = "Tertiary Button";
+      if (cls.contains("sqs-button-element--primary")) currentButtonType = "Primary Button";
+      else if (cls.contains("sqs-button-element--secondary")) currentButtonType = "Secondary Button";
+      else if (cls.contains("sqs-button-element--tertiary")) currentButtonType = "Tertiary Button";
       else currentButtonType = "Unknown Button";
+      console.log("🔘 Detected Button Type:", currentButtonType);
     }
   });
 
-  return foundType;
-}
+  const hide = id => document.getElementById(id)?.classList.add("sc-hidden");
+  const show = id => document.getElementById(id)?.classList.remove("sc-hidden");
 
-export function getCurrentButtonType() {
+  ["typoSection", "imageSection", "buttonSection"].forEach(hide);
+  if (foundType === "text") show("typoSection");
+  else if (foundType === "image") show("imageSection");
+  else if (foundType === "button") show("buttonSection");
+
   return currentButtonType;
 }
+
+export const getCurrentButtonType = () => currentButtonType;
