@@ -1,3 +1,5 @@
+export let currentButtonType = "Button";
+
 export function detectBlockElementTypes(block) {
   const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
 
@@ -25,14 +27,19 @@ export function detectBlockElementTypes(block) {
 
     if ((tagName === "a" || tagName === "button") && !el.querySelector("img")) {
       foundType = "button";
+
       if (classList.contains("sqs-button-element--primary")) {
-        console.log("🟧 Button Type: Primary");
+        currentButtonType = "Primary Button";
+        console.log("🟧 Button Type:", currentButtonType);
       } else if (classList.contains("sqs-button-element--secondary")) {
-        console.log("🟦 Button Type: Secondary");
+        currentButtonType = "Secondary Button";
+        console.log("🟦 Button Type:", currentButtonType);
       } else if (classList.contains("sqs-button-element--tertiary")) {
-        console.log("🟩 Button Type: Tertiary");
+        currentButtonType = "Tertiary Button";
+        console.log("🟩 Button Type:", currentButtonType);
       } else {
-        console.log("⚪ Button Type: Unknown");
+        currentButtonType = "Unknown Button";
+        console.log("⚪ Button Type:", currentButtonType);
       }
     }
   });
