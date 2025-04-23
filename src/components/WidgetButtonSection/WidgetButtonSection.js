@@ -3,6 +3,7 @@ import { currentButtonType } from "https://fatin-webefo.github.io/squareCraft-pl
 
 
 export function WidgetButtonSection() {
+   console.log("🟩 Button Section Loaded", currentButtonType);
 
    return `
 
