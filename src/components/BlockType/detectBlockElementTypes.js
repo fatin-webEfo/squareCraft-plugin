@@ -1,3 +1,5 @@
+export let currentButtonType = "Button";
+
 export function detectBlockElementTypes(block, callback) {
   const nestedElements = block.querySelectorAll("h1, h2, h3, h4, p, img, a, button");
   let foundType = null;
@@ -24,6 +26,10 @@ export function detectBlockElementTypes(block, callback) {
     }
   });
 
+  if (foundType === "button" && buttonType) {
+    currentButtonType = buttonType;
+  }
+
   const typoSection = document.getElementById("typoSection");
   const imageSection = document.getElementById("imageSection");
   const buttonSection = document.getElementById("buttonSection");
@@ -34,11 +40,9 @@ export function detectBlockElementTypes(block, callback) {
   imageSection.classList.add("sc-hidden");
   buttonSection.classList.add("sc-hidden");
 
-  if (foundType === "text") {
-    typoSection.classList.remove("sc-hidden");
-  } else if (foundType === "image") {
-    imageSection.classList.remove("sc-hidden");
-  } else if (foundType === "button") {
+  if (foundType === "text") typoSection.classList.remove("sc-hidden");
+  else if (foundType === "image") imageSection.classList.remove("sc-hidden");
+  else if (foundType === "button") {
     buttonSection.classList.remove("sc-hidden");
     if (typeof callback === "function") {
       callback(buttonType);
