@@ -1,6 +1,6 @@
 
 
-export function WidgetButtonSection(id, buttonType = "Button") {
+export function WidgetButtonSection(id, buttonType) {
    return `
      <div id="${id}">
        <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
