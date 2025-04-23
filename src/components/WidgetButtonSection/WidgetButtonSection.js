@@ -7,21 +7,11 @@ export async function WidgetButtonSection() {
    
  
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
-   if (buttonType === "Unknown Button") {
-      buttonType = "Button";
-   }
-   else if (buttonType === "Primary Button") {
-      buttonType = "Primary Button";
-   }
-   else if (buttonType === "Secondary Button") {
-      buttonType = "Secondary Button";
-   }
-   else if (buttonType === "Tertiary Button") {
-      buttonType = "Tertiary Button";
-   }
-   else {
-      buttonType = "Button";
-   }
+   const displayType = ["Primary Button", "Secondary Button", "Tertiary Button"].includes(buttonType)
+   ? buttonType
+   : "Button";
+
+ console.log("✅ Final Button Type to Display:", displayType);
 
 
    return `
@@ -30,7 +20,7 @@ export async function WidgetButtonSection() {
          <div  class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
-               <p class="sc-universal sc-roboto">${buttonType}</p>
+               <p class="sc-universal sc-roboto">${displayType}</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
