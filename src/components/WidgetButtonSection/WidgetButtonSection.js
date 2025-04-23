@@ -12,7 +12,7 @@ export async function WidgetButtonSection() {
    }
    
 
-   console.log("✅ Final Button Type Used:", typeof(buttonType));
+   console.log("✅ Final Button Type Used:", typeof(buttonType), buttonType);
    return `
 
      <div id="buttonSection">
