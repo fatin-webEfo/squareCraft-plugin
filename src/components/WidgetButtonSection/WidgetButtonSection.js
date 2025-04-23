@@ -3,14 +3,14 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 
 export async function WidgetButtonSection() {
-   let buttonType = await getCurrentButtonType();
+   let buttonType = getCurrentButtonType(); // ✅ NOT awaited
    let tries = 0;
+
    while (buttonType === "Unknown Button" && tries < 20) {
-      await new Promise(res => setTimeout(res, 500));
-      buttonType = await getCurrentButtonType();
+      await new Promise(res => setTimeout(res, 300));
+      buttonType = getCurrentButtonType();   
       tries++;
    }
-
    console.log("✅ Final Button Type Used:", typeof(buttonType), typeof({buttonType}), buttonType);
    const pTagString = `<p class="sc-universal sc-roboto">${buttonType}</p>`;
 
