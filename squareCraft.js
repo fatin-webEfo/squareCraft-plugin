@@ -123,6 +123,20 @@
     typoTabSelect(event);
   });
 
+  document.body.addEventListener("click", (event) => {
+    const button = event.target.closest("a.sqs-block-button-element");
+    if (!button) return;
+  
+    if (button.classList.contains("sqs-button-element--primary")) {
+      console.log("🟧 Button Type: Primary");
+    } else if (button.classList.contains("sqs-button-element--secondary")) {
+      console.log("🟦 Button Type: Secondary");
+    } else if (button.classList.contains("sqs-button-element--tertiary")) {
+      console.log("🟩 Button Type: Tertiary");
+    } else {
+      console.log("⚪ Button Type: Unknown");
+    }
+  });
   
 
   document.body.addEventListener("click", (event) => {
