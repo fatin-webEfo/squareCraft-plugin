@@ -243,9 +243,6 @@ export function WidgetButtonSection() {
            <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
              <p class="sc-universal sc-roboto sc-text-sm">AG</p>
            </div>
-           
-          
-          
            </div>
         </div>
       
