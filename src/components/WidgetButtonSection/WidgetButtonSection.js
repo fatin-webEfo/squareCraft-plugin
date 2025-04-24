@@ -2,8 +2,8 @@
 import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js";
 
 
-export async function WidgetButtonSection() {
-   await new Promise(res => setTimeout(res, 300)); // Adjust as needed
+export  function WidgetButtonSection() {
+    new Promise(res => setTimeout(res, 300)); // Adjust as needed
 
    const buttonType = getCurrentButtonType();
 
