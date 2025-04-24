@@ -57,7 +57,7 @@ export function WidgetTypoSection(id) {
                <div id="heading1"
                   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                   <div class="sc-active-bar sc-rounded-l"></div>
-                  <p class="sc-roboto  sc-universal sc-text-sm ">Heading-1</p>
+                  <p class="sc-roboto  sc-universal ">Heading-1</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -70,7 +70,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="heading2"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Heading-2</p>
+                  <p class="sc-roboto sc-universal ">Heading-2</p>
                   <img id="heading2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -82,7 +82,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="heading3"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Heading-3</p>
+                  <p class="sc-roboto sc-universal ">Heading-3</p>
                   <img id="heading3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -94,7 +94,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="heading4"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Heading-4</p>
+                  <p class="sc-roboto sc-universal ">Heading-4</p>
                   <img id="heading4Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -106,7 +106,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="paragraph1"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Paragraph-1</p>
+                  <p class="sc-roboto sc-universal  ">Paragraph-1</p>
                   <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -118,7 +118,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="paragraph2"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Paragraph-2</p>
+                  <p class="sc-roboto sc-universal  ">Paragraph-2</p>
                   <img id="paragraph2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -130,7 +130,7 @@ export function WidgetTypoSection(id) {
             <div class="sc-flex sc-mt-2 sc-px-2">
                <div id="paragraph3"
                   class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
-                  <p class="sc-roboto sc-universal sc-text-sm ">Paragraph-3</p>
+                  <p class="sc-roboto sc-universal  ">Paragraph-3</p>
                   <img id="paragraph3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
