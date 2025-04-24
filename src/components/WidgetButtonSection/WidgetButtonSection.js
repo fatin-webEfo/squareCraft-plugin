@@ -253,7 +253,7 @@ export function WidgetButtonSection() {
                      class="sc-rotate-180" alt="">
                </div>
 
-               <div id="bgColorSection" class="sc-mt-4 ">
+               <div id="bgColorSection" class="sc-mt-4 sc-hidden">
                   <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                   </p>
                   <div
@@ -455,7 +455,7 @@ export function WidgetButtonSection() {
                         class="sc-rotate-180" alt="">
                   </div>
 
-                  <div id="borderSection" class=" sc-mt-3">
+                  <div id="borderSection" class=" sc-mt-3 sc-hidden">
                      <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
@@ -659,7 +659,7 @@ export function WidgetButtonSection() {
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
                   </div>
-                  <div id="shadowSection" >
+                  <div id="shadowSection" class="sc-hidden">
                      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                         </p>
