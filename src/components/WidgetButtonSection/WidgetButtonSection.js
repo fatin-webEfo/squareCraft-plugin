@@ -84,7 +84,7 @@ export function WidgetButtonSection() {
                            class=" sc-font-light sc-text-center sc-text-sm sc-ml-2  ">
                            px
                      </div>
-                     <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
+                     <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-3"
                         style="height: 28px;     border-radius: 0px 5px 5px 0px;">
                         <img class="sc-cursor-pointer sc-rotate-180 sc-mt-3" width="12px"
                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
