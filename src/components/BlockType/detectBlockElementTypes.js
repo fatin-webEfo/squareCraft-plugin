@@ -1,5 +1,7 @@
 export function detectBlockElementTypes(block) {
   let foundType = null;
+  let currentButtonType = "Unknown Button";
+
   block.querySelectorAll("h1, h2, h3, h4, p, img, a, button").forEach(el => {
     const tag = el.tagName.toLowerCase();
     const cls = el.classList;
