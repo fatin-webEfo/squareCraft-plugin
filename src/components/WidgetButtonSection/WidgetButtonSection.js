@@ -3,6 +3,7 @@ export function WidgetButtonSection(_, buttonType = "Button") {
      ? buttonType
      : "Button";
  
+     console.log("🔘 Detected Button Type from WidgetButtonSection:", displayType);
    return `
      <div id="buttonSection">
        <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
