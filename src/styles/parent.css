@@ -535,6 +535,9 @@
 .sc-w-30{
   width: 90px !important;
 }
+.sc-pt-1_5{
+  padding-top: 7px !important;
+}
 
 .sc-rounded-l {
   border-radius: 6px 0px 0px 6px !important;
