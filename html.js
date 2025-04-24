@@ -8,14 +8,7 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 export function html() {
    let buttonType =  getCurrentButtonType();
-   
- 
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
-   const displayType = ["Primary Button", "Secondary Button", "Tertiary Button"].includes(buttonType)
-   ? buttonType
-   : "Button";
-
- console.log("✅ Final Button Type to Display:", displayType);
 
    const htmlString = `
      <div
@@ -44,7 +37,7 @@ export function html() {
   
       ${WidgetTypoSection("typoSection")}
       ${WidgetImageSection("imageSection")}
-      ${WidgetButtonSection("buttonSection",displayType)}
+      ${WidgetButtonSection("buttonSection",buttonType)}
   
    </div>
    <div class="sc-mt-4">
