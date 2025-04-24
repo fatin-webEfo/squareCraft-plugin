@@ -4,7 +4,7 @@ export function WidgetButtonSection() {
 
 
    return `
-     <div id="buttonSection">
+    <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -74,7 +74,7 @@ export function WidgetButtonSection() {
 
 
 
-                  <div
+                  <div id="fontSection"
                      class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
                      <div class="sc-flex sc-text-color-white sc-items-center ">
                         <div
@@ -253,7 +253,7 @@ export function WidgetButtonSection() {
                      class="sc-rotate-180" alt="">
                </div>
 
-               <div class="sc-mt-4 ">
+               <div id="bgColorSection" class="sc-mt-4 ">
                   <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                   </p>
                   <div

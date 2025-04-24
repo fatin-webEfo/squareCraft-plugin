@@ -118,7 +118,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
 
 
         <div class="sc-flex sc-text-color-white sc-px-1 
-              sc-rounded-6px sc-border sc-border-solid sc-border-585858 
+              sc-rounded-6px sc-border sc-border-solid sc-border-585858
               sc-items-center ">
            <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
                  sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
