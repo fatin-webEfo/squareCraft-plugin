@@ -3,10 +3,19 @@ import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/s
 import { WidgetTypoSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSection.js';
 import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
+import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js";
 
 
-export async function html() {
-   const buttonSection = await WidgetButtonSection("buttonSection");
+export function html() {
+   let buttonType =  getCurrentButtonType();
+   
+ 
+   console.log("DEBUG buttonType:", buttonType, typeof buttonType);
+   const displayType = ["Primary Button", "Secondary Button", "Tertiary Button"].includes(buttonType)
+   ? buttonType
+   : "Button";
+
+ console.log("✅ Final Button Type to Display:", displayType);
 
    const htmlString = `
      <div
@@ -35,7 +44,7 @@ export async function html() {
   
       ${WidgetTypoSection("typoSection")}
       ${WidgetImageSection("imageSection")}
-      ${buttonSection}
+      ${WidgetButtonSection("buttonSection",displayType)}
   
    </div>
    <div class="sc-mt-4">
