@@ -5,7 +5,8 @@ import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-p
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
 
 
-export function html() {
+export async function html() {
+   const buttonSection = await WidgetButtonSection("buttonSection");
 
    const htmlString = `
      <div
@@ -34,7 +35,7 @@ export function html() {
   
       ${WidgetTypoSection("typoSection")}
       ${WidgetImageSection("imageSection")}
-      ${WidgetButtonSection("buttonSection")}
+      ${buttonSection}
   
    </div>
    <div class="sc-mt-4">
