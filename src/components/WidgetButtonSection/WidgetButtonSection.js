@@ -3,7 +3,7 @@
 
 export  function WidgetButtonSection({displayType}) {
   
-
+console.log("🔘 Button Section Rendered with Type:", displayType);
 
    return `
 
