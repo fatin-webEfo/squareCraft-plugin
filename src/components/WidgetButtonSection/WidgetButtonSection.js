@@ -3,7 +3,7 @@ export function WidgetButtonSection() {
    const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
 
    return `
-       <div id="buttonSection">
+      <div id="buttonSection">
          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
            <div class="sc-flex sc-gap-2 sc-items-center">
              <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
@@ -84,7 +84,7 @@ export function WidgetButtonSection() {
                            class=" sc-font-light sc-text-center sc-text-sm sc-ml-2  ">
                            px
                      </div>
-                     <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-3"
+                     <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
                         style="height: 28px;     border-radius: 0px 5px 5px 0px;">
                         <img class="sc-cursor-pointer sc-rotate-180 sc-mt-3" width="12px"
                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
@@ -247,7 +247,25 @@ export function WidgetButtonSection() {
           
           
            </div>
-        </div></div>
+        </div>
+      
+      
+        <div 
+        class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+        <div class="sc-active-bar sc-rounded-l"></div>
+        <p class="sc-roboto  sc-universal ">Color</p>
+        <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+           class="sc-rotate-180" alt="">
+     </div>
+      
+     <div class="sc-mt-4 ">
+      <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color</p>
+      <div class="sc-py-1 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+         <p class="sc-text-sm sc-roboto c-font-light sc-universal">#363544</p>
+         <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+      </div>
+   </div> 
+      </div>
     
         
          <div class="sc-mt-4"></div>

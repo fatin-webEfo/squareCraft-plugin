@@ -206,5 +206,6 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
            <p class="sc-text-sm sc-roboto c-font-light sc-universal">#363544</p>
            <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
         </div>
-     </div> `
+     </div> 
+     `
 }

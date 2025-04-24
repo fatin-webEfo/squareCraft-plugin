@@ -532,6 +532,9 @@
 .sc-select-inActiveTab-border {
   border: 1px solid #585858 !important;
 }
+.sc-w-30{
+  width: 90px !important;
+}
 
 .sc-rounded-l {
   border-radius: 6px 0px 0px 6px !important;
