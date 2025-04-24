@@ -1,15 +1,11 @@
-export function WidgetButtonSection(_, buttonType = "Button") {
-   const displayType = ["Primary Button", "Secondary Button", "Tertiary Button"].includes(buttonType)
-     ? buttonType
-     : "Button";
- 
-     console.log("🔘 Detected Button Type from WidgetButtonSection:", displayType);
+export function WidgetButtonSection() {
+
    return `
      <div id="buttonSection">
        <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png" alt="">
-           <p class="sc-universal sc-roboto">${displayType}</p> 
+           <p class="sc-universal sc-roboto">Button</p> 
          </div>
          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
        </div>

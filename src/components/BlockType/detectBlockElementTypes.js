@@ -1,5 +1,3 @@
-let currentButtonType = "Unknown Button";
-
 export function detectBlockElementTypes(block) {
   let foundType = null;
   block.querySelectorAll("h1, h2, h3, h4, p, img, a, button").forEach(el => {
@@ -16,10 +14,17 @@ export function detectBlockElementTypes(block) {
 
     if ((tag === "a" || tag === "button") && !el.querySelector("img")) {
       foundType = "button";
+
       if (cls.contains("sqs-button-element--primary")) currentButtonType = "Primary Button";
       else if (cls.contains("sqs-button-element--secondary")) currentButtonType = "Secondary Button";
       else if (cls.contains("sqs-button-element--tertiary")) currentButtonType = "Tertiary Button";
-      else currentButtonType = "Unknown Button";
+      else currentButtonType = "Button";
+
+      const buttonTypeEl = document.getElementById("buttonTypeDisplay");
+      if (buttonTypeEl) {
+        buttonTypeEl.textContent = currentButtonType;
+      }
+
       console.log("🔘 Detected Button Type:", currentButtonType);
     }
   });
@@ -32,9 +37,5 @@ export function detectBlockElementTypes(block) {
   else if (foundType === "image") show("imageSection");
   else if (foundType === "button") show("buttonSection");
 
-  return currentButtonType;
-}
-
-export function getCurrentButtonType() {
   return currentButtonType;
 }
