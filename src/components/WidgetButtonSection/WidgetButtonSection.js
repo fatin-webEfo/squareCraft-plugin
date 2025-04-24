@@ -3,10 +3,8 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 
 export async function WidgetButtonSection() {
-   await new Promise(res => setTimeout(res, 300)); // Adjust as needed
-
+   await new Promise(res => setTimeout(res, 300)); 
    const buttonType = getCurrentButtonType();
-
    console.log("DEBUG buttonType:", buttonType, typeof buttonType);
 
    const displayType = ["Primary Button", "Secondary Button", "Tertiary Button"].includes(buttonType)
