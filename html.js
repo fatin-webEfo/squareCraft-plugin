@@ -8,6 +8,7 @@ import { getCurrentButtonType  } from "https://fatin-webefo.github.io/squareCraf
 
 export  function html() {
    let buttonType =  getCurrentButtonType();
+   console.log("🔘 Button Type:", buttonType);
 
    const htmlString = `
      <div
