@@ -3,7 +3,7 @@ export function initButtonSectionToggleControls() {
       fontButton: "fontSection",
       bgColorButton: "bgColorSection",
       iconButton: "iconSection",
-      borderButton: "borderSection",
+      bordersButton: "borderSection",
       shadowButton: "shadowSection"
     };
   

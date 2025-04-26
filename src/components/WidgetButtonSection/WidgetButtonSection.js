@@ -445,7 +445,7 @@ export function WidgetButtonSection() {
               </div>
 
                <div>
-                  <div id="borderButton"
+                  <div id="bordersButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Border</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
