@@ -67,6 +67,7 @@
   const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
   const { initImageSectionControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js");
   const { initImageSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js");
+  const { initButtonSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonSectionToggleControls/initButtonSectionToggleControls.js");
   const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
@@ -404,7 +405,7 @@
       makeWidgetDraggable();
       widgetLoaded = true;
       initImageSectionToggleControls();
-
+      initButtonSectionToggleControls();
       if (clickedBlock) {
         waitForElement("#typoSection, #imageSection, #buttonSection,")
           .then(() => {
