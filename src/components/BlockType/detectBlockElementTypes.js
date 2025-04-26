@@ -10,7 +10,7 @@ export function detectBlockElementTypes(block) {
       foundType = "text";
     }
 
-    if (tag === "img" && !cls.contains("ProseMirror-separator") && el.closest(".sqs-image-content")) {
+    if (tag === "img" && el.closest(".sqs-image-content") && el.closest(".fluid-image-editor-wrapper")) {
       foundType = "image";
     }
 
@@ -26,8 +26,6 @@ export function detectBlockElementTypes(block) {
       if (buttonTypeEl) {
         buttonTypeEl.textContent = currentButtonType;
       }
-
-      console.log("🔘 Detected Button Type:", currentButtonType);
     }
   });
 
