@@ -25,8 +25,8 @@ export function initButtonSectionToggleControls() {
                 block: "start"
               });
             } else {
-              section.classList.remove("sc-visible");
               section.classList.add("sc-hidden");
+              section.classList.remove("sc-visible");
             }
           });
         });
