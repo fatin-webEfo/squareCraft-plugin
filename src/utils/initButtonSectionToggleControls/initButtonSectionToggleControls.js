@@ -13,22 +13,25 @@ export function initButtonSectionToggleControls() {
   
       if (button && document.getElementById(sectionId)) {
         button.addEventListener("click", () => {
-          Object.entries(sections).forEach(([btnId, secId]) => {
+          
+          Object.values(sections).forEach((secId) => {
             const section = document.getElementById(secId);
-            if (!section) return;
-  
-            if (btnId === buttonId) {
-              section.classList.remove("sc-hidden");
-              section.classList.add("sc-visible");
-              section.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-            } else {
+            if (section) {
               section.classList.add("sc-hidden");
               section.classList.remove("sc-visible");
             }
           });
+  
+          const clickedSection = document.getElementById(sectionId);
+          if (clickedSection) {
+            clickedSection.classList.remove("sc-hidden");
+            clickedSection.classList.add("sc-visible");
+            clickedSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }
+          
         });
       }
     });
