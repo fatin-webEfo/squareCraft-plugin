@@ -465,8 +465,7 @@ export function WidgetButtonSection() {
                                  alt="reset">
                            </div>
                         </div>
-                        <div
-                           class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
+                        <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="radiousCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
@@ -650,13 +649,13 @@ export function WidgetButtonSection() {
                </div>
 
 
-               <div id="shadowButton"
+               <div id="shadowsButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Shadow</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
                   </div>
-                  <div id="shadowSection" class="sc-hidden">
+                  <div id="shadowsSection" class="sc-hidden">
                      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                         </p>

@@ -4,7 +4,7 @@ export function initButtonSectionToggleControls() {
       bgColorButton: "bgColorSection",
       iconButton: "iconSection",
       bordersButton: "bordersSection",
-      shadowButton: "shadowSection"
+      shadowsButton: "shadowsSection"
     };
   
     Object.keys(sections).forEach((buttonId) => {
