@@ -60,7 +60,7 @@ export function WidgetButtonSection() {
                </div>
                <div class=" sc-relative sc-grid sc-mt-4 sc-grid-cols-12 sc-gap-2 ">
 
-                  <div id="scFontSelect"
+                  <div id="fontButton"
                      class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
                      <select class=" sc-text-sm sc-roboto sc-font-light"
                         style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
@@ -239,14 +239,9 @@ export function WidgetButtonSection() {
                         class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
                         <p class="sc-universal sc-roboto sc-text-sm">AG</p>
                      </div>
-
-
-
                   </div>
                </div>
-
-
-               <div
+               <div id="bgColorButton"
                   class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal ">Color</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
@@ -264,14 +259,13 @@ export function WidgetButtonSection() {
                </div>
 
 
-               <div class="sc-mt-3">
-                  <div
-                     class="sc-bg-3f3f3f  sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  <div id="iconButton"
+                     class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Icon</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
                   </div>
-               </div>
+          
                <div id="iconSection" class="sc-mt-3 sc-hidden">
                <div class="">
                   <div class="sc-flex sc-items-center sc-gap-2">
@@ -451,7 +445,7 @@ export function WidgetButtonSection() {
               </div>
 
                <div>
-                  <div
+                  <div id="borderButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Border</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
@@ -656,7 +650,7 @@ export function WidgetButtonSection() {
                </div>
 
 
-               <div
+               <div id="shadowButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Shadow</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
