@@ -445,14 +445,14 @@ export function WidgetButtonSection() {
               </div>
 
                <div>
-                  <div id="borderButton"
+                  <div id="bordersButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Border</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
                   </div>
 
-                  <div id="borderSection" class=" sc-mt-3 sc-hidden">
+                  <div id="bordersSection" class=" sc-mt-3 sc-hidden">
                      <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
@@ -650,13 +650,13 @@ export function WidgetButtonSection() {
                </div>
 
 
-               <div id="shadowButton"
+               <div id="shadowsButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Shadow</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
                   </div>
-                  <div id="shadowSection" class="sc-hidden">
+                  <div id="shadowsSection" class="sc-hidden">
                      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                         </p>
