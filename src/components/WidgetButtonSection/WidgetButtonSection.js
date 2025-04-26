@@ -280,7 +280,7 @@ export function WidgetButtonSection() {
                                  class=" alignment-icon   sc-mx-auto" alt="left">
                            </div>
                            <div id="scTextAlignCenter" data-align="center"
-                              class="sc-pt-1_5 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+                              class="sc-pt-1_5 sc-pb-1_5 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                                  class=" alignment-icon   sc-mx-auto" alt="center">
@@ -643,7 +643,6 @@ export function WidgetButtonSection() {
                               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                            </div>
                         </div>
-
                      </div>
                   </div>
                </div>
