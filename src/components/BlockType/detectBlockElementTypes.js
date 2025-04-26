@@ -32,7 +32,10 @@ export function detectBlockElementTypes(block) {
   const hide = id => document.getElementById(id)?.classList.add("sc-hidden");
   const show = id => document.getElementById(id)?.classList.remove("sc-hidden");
 
-  ["typoSection", "imageSection", "buttonSection"].forEach(hide);
+  hide("typoSection");
+  hide("imageSection");
+  hide("buttonSection");
+
   if (foundType === "text") show("typoSection");
   else if (foundType === "image") show("imageSection");
   else if (foundType === "button") show("buttonSection");
