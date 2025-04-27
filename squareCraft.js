@@ -504,11 +504,13 @@
   document.body.addEventListener("click", (e) => {
     const isInsideWidget = widgetContainer?.contains(e.target);
     const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-
-    if (!isInsideWidget && !isToolbarIcon && widgetContainer?.style.display === "block") {
+    const isHiddenInput = e.target.tagName === "INPUT" && e.target.type === "file";
+  
+    if (!isInsideWidget && !isToolbarIcon && !isHiddenInput && widgetContainer?.style.display === "block") {
       widgetContainer.style.display = "none";
     }
   });
+  
 
   function adjustWidgetPosition() {
     if (!widgetContainer) return;
