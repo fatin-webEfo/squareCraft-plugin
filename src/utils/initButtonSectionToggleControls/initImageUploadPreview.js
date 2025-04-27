@@ -37,7 +37,13 @@ export function initImageUploadPreview(getSelectedElement) {
             return;
           }
   
-          let iconImg = container.querySelector("img.sqscraft-button-icon");
+          const buttonLink = container.querySelector("a");
+          if (!buttonLink) {
+            console.error("❌ Button link <a> not found inside container!");
+            return;
+          }
+  
+          let iconImg = buttonLink.querySelector("img.sqscraft-button-icon");
           if (!iconImg) {
             iconImg = document.createElement("img");
             iconImg.className = "sqscraft-button-icon";
@@ -45,22 +51,15 @@ export function initImageUploadPreview(getSelectedElement) {
             iconImg.style.objectFit = "cover";
             iconImg.style.borderRadius = "50%";
             iconImg.style.marginRight = "8px";
-          }
-  
-          iconImg.src = e.target.result;
-  
-          const buttonLink = container.querySelector("a");
-          if (buttonLink && !buttonLink.querySelector("img.sqscraft-button-icon")) {
             const textDiv = buttonLink.querySelector(".sqs-html");
             if (textDiv) {
               buttonLink.insertBefore(iconImg, textDiv);
+            } else {
+              buttonLink.insertBefore(iconImg, buttonLink.firstChild);
             }
           }
   
-          container.style.display = "flex";
-          container.style.alignItems = "center";
-          container.style.justifyContent = "center";
-          container.style.gap = "8px";
+          iconImg.src = e.target.result;
   
           hiddenInput.value = "";
         };
