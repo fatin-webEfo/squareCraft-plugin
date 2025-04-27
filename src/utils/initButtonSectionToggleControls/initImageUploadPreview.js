@@ -13,8 +13,13 @@ export function initImageUploadPreview() {
   
     document.body.appendChild(hiddenInput);
   
-    uploadButton.addEventListener("click", () => {
+    uploadButton.addEventListener("click", (e) => {
+      e.stopPropagation();
       hiddenInput.click();
+    });
+  
+    hiddenInput.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
   
     hiddenInput.addEventListener("change", (event) => {
@@ -22,7 +27,32 @@ export function initImageUploadPreview() {
   
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
+          uploadButton.innerHTML = "";
+  
+          const iconImg = document.createElement("img");
+          iconImg.src = e.target.result;
+          iconImg.loading = "lazy";
+          iconImg.style.width = "20px";
+          iconImg.style.height = "20px";
+          iconImg.style.objectFit = "cover";
+          iconImg.style.borderRadius = "50%"; 
+  
+          const textSpan = document.createElement("span");
+          textSpan.textContent = "Upload Icon"; 
+          textSpan.style.marginLeft = "8px"; 
+          textSpan.style.fontSize = "14px"; 
+          textSpan.style.fontFamily = "inherit"; 
+  
+          uploadButton.style.display = "flex";
+          uploadButton.style.alignItems = "center";
+          uploadButton.style.justifyContent = "center";
+          uploadButton.style.gap = "8px";
+  
+          uploadButton.appendChild(iconImg);
+          uploadButton.appendChild(textSpan);
+  
+          hiddenInput.value = "";
         };
         reader.readAsDataURL(file);
       }
