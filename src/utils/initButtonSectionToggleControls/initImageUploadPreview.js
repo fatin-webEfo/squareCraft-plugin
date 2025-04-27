@@ -28,8 +28,7 @@ export function initImageUploadPreview() {
             previewImg = document.createElement("img");
             previewImg.id = "imagePreviewSmall";
             previewImg.loading = "lazy";
-            previewImg.style.width = "40px"; 
-            previewImg.style.height = "40px";
+            previewImg.style.width = "30px"; 
             previewImg.style.objectFit = "cover";
             previewImg.style.marginTop = "10px";
   
