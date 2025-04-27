@@ -280,7 +280,7 @@ export function WidgetButtonSection() {
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/redo.svg"
                                  class=" alignment-icon   sc-mx-auto" alt="left">
                            </div>
-                           <div id="imageupload"  style="padding-top: 7.2px; padding-bottom: 7.2px;"
+                           <div id="imageupload"  style="padding-top: 7px; padding-bottom: 7px;"
                               class=" sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
