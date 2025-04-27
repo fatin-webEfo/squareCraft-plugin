@@ -274,19 +274,19 @@ export function WidgetButtonSection() {
                         <p class="sc-roboto sc-universal sc-text-sm sc-font-light sc-text-gray-300">Icon</p>
                         <div class="sc-flex sc-items-center  sc-mt-2">
 
-                           <div id="scTextAlignLeft" data-align="left"
+                           <div id="removeIcon" 
                               class="sc-pt-1_5 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/redo.svg"
                                  class=" alignment-icon   sc-mx-auto" alt="left">
                            </div>
-                           <div id="scTextAlignCenter" data-align="center"
+                           <div id="imageupload" 
                               class="sc-pt-1_5 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                                  class=" alignment-icon   sc-mx-auto" alt="center">
                            </div>
-                           <div id="scTextAlignRight" data-align="right"
+                           <div id="iconLibrary" 
                               class="sc-pt-1_5 sc-pb-1 sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
