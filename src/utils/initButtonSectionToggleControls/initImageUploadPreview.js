@@ -1,4 +1,4 @@
-export function initImageUploadPreview(selectedElement) {
+export function initImageUploadPreview(getSelectedElement) {
     const uploadButton = document.getElementById("imageupload");
   
     if (!uploadButton) {
@@ -15,6 +15,8 @@ export function initImageUploadPreview(selectedElement) {
   
     uploadButton.addEventListener("click", (e) => {
       e.stopPropagation();
+      const selectedElement = getSelectedElement();
+      console.log("✅ Selected Element on click:", selectedElement);
       hiddenInput.click();
     });
   
@@ -24,6 +26,8 @@ export function initImageUploadPreview(selectedElement) {
   
     hiddenInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
+      const selectedElement = getSelectedElement();
+  
       if (file && selectedElement) {
         const reader = new FileReader();
         reader.onload = function (e) {

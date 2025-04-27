@@ -408,7 +408,8 @@
       widgetLoaded = true;
       initImageSectionToggleControls();
       initButtonSectionToggleControls();
-      initImageUploadPreview();
+      initImageUploadPreview(() => selectedElement);
+
       if (clickedBlock) {
         waitForElement("#typoSection, #imageSection, #buttonSection,")
           .then(() => {
