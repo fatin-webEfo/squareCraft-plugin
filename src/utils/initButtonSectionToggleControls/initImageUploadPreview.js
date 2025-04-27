@@ -24,43 +24,39 @@ export function initImageUploadPreview(selectedElement) {
   
     hiddenInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
-  
-      if (file) {
+      if (file && selectedElement) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          if (!selectedElement) {
-            console.error("❌ No selected button element found!");
+          const container = selectedElement.querySelector(".sqs-block-button-container");
+          if (!container) {
+            console.error("❌ sqs-block-button-container not found inside selected element!");
             return;
           }
   
-          const buttonTextWrapper = selectedElement.querySelector(".sqs-html span");
-          if (!buttonTextWrapper) {
-            console.error("❌ No text wrapper found inside the button!");
-            return;
+          let iconImg = container.querySelector("img.sqscraft-button-icon");
+          if (!iconImg) {
+            iconImg = document.createElement("img");
+            iconImg.className = "sqscraft-button-icon";
+            iconImg.style.width = "18px";
+            iconImg.style.objectFit = "cover";
+            iconImg.style.borderRadius = "50%";
+            iconImg.style.marginRight = "8px";
           }
   
-          let existingIcon = selectedElement.querySelector("img.sqscraft-button-icon");
-          if (existingIcon) {
-            existingIcon.remove();
-          }
-  
-          const iconImg = document.createElement("img");
           iconImg.src = e.target.result;
-          iconImg.className = "sqscraft-button-icon";
-          iconImg.loading = "lazy";
-          iconImg.style.width = "18px";
-          iconImg.style.objectFit = "cover";
-          iconImg.style.borderRadius = "50%";
-          iconImg.style.marginRight = "8px";
-          iconImg.style.verticalAlign = "middle";
   
-          const parentDiv = buttonTextWrapper.parentNode;
-          parentDiv.insertBefore(iconImg, buttonTextWrapper);
+          const buttonLink = container.querySelector("a");
+          if (buttonLink && !buttonLink.querySelector("img.sqscraft-button-icon")) {
+            const textDiv = buttonLink.querySelector(".sqs-html");
+            if (textDiv) {
+              buttonLink.insertBefore(iconImg, textDiv);
+            }
+          }
   
-          parentDiv.style.display = "flex";
-          parentDiv.style.alignItems = "center";
-          parentDiv.style.justifyContent = "center";
-          parentDiv.style.gap = "6px";
+          container.style.display = "flex";
+          container.style.alignItems = "center";
+          container.style.justifyContent = "center";
+          container.style.gap = "8px";
   
           hiddenInput.value = "";
         };
