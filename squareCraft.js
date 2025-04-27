@@ -76,6 +76,7 @@
 
 
   document.body.addEventListener("click", (event) => {
+    initImageUploadPreview();
     const trigger = event.target.closest("#border-color-select");
 
     if (trigger) {
