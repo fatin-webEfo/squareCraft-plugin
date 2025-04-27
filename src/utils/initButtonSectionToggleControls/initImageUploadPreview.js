@@ -47,9 +47,8 @@ export function initImageUploadPreview(getSelectedElement) {
           if (!iconImg) {
             iconImg = document.createElement("img");
             iconImg.className = "sqscraft-button-icon";
-            iconImg.style.width = "18px";
+            iconImg.style.width = "20px";
             iconImg.style.objectFit = "cover";
-            iconImg.style.borderRadius = "50%";
             iconImg.style.marginRight = "8px";
             const textDiv = buttonLink.querySelector(".sqs-html");
             if (textDiv) {
