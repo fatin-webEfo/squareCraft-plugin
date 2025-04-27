@@ -25,51 +25,70 @@ export function initImageUploadPreview(getSelectedElement) {
     });
   
     hiddenInput.addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      const selectedElement = getSelectedElement();
-  
-      if (file && selectedElement) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const container = selectedElement.querySelector(".sqs-block-button-container");
-          if (!container) {
-            console.error("❌ sqs-block-button-container not found inside selected element!");
+        const file = event.target.files[0];
+        const selectedElement = getSelectedElement();
+      
+        if (file && selectedElement) {
+          const fileType = file.type;
+      
+          if (fileType !== "image/svg+xml") {
+            alert("❌ Only SVG files are allowed for icon styling.");
+            hiddenInput.value = "";
             return;
           }
-  
-          const buttonLink = container.querySelector("a");
-          if (!buttonLink) {
-            console.error("❌ Button link <a> not found inside container!");
-            return;
-          }
-  
-          let iconImg = buttonLink.querySelector("img.sqscraft-button-icon");
-          if (!iconImg) {
-            iconImg = document.createElement("img");
-            iconImg.className = "sqscraft-button-icon";
-          
-            iconImg.style.height = "1em"; 
-            iconImg.style.width = "auto"; 
-            iconImg.style.maxHeight = "20px"; 
-            iconImg.style.objectFit = "contain"; 
-            iconImg.style.marginRight = "8px";
-            iconImg.style.verticalAlign = "middle";
-          
+      
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const container = selectedElement.querySelector(".sqs-block-button-container");
+            if (!container) {
+              console.error("❌ sqs-block-button-container not found inside selected element!");
+              return;
+            }
+      
+            const buttonLink = container.querySelector("a");
+            if (!buttonLink) {
+              console.error("❌ Button link <a> not found inside container!");
+              return;
+            }
+      
+            const oldIcon = buttonLink.querySelector(".sqscraft-button-icon");
+            if (oldIcon) {
+              oldIcon.remove();
+            }
+      
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(e.target.result, "image/svg+xml");
+            const svgElement = svgDoc.querySelector("svg");
+      
+            if (!svgElement) {
+              console.error("❌ Uploaded file is not a valid SVG.");
+              return;
+            }
+      
+            svgElement.classList.add("sqscraft-button-icon");
+            svgElement.style.height = "1em";
+            svgElement.style.width = "auto";
+            svgElement.style.maxHeight = "20px";
+            svgElement.style.objectFit = "contain";
+            svgElement.style.marginRight = "8px";
+            svgElement.style.verticalAlign = "middle";
+      
             const textDiv = buttonLink.querySelector(".sqs-html");
             if (textDiv) {
-              buttonLink.insertBefore(iconImg, textDiv);
+              buttonLink.insertBefore(svgElement, textDiv);
             } else {
-              buttonLink.insertBefore(iconImg, buttonLink.firstChild);
+              buttonLink.insertBefore(svgElement, buttonLink.firstChild);
             }
-          }
-          
-  
-          iconImg.src = e.target.result;
-  
-          hiddenInput.value = "";
-        };
-        reader.readAsDataURL(file);
-      }
-    }); 
+      
+            console.log("✅ Injected SVG Code:");
+            console.log(svgElement.outerHTML); 
+      
+            hiddenInput.value = "";
+          };
+          reader.readAsText(file); 
+        }
+      });
+      
+       
   }
   
