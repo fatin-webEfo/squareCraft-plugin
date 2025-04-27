@@ -47,9 +47,14 @@ export function initImageUploadPreview(getSelectedElement) {
           if (!iconImg) {
             iconImg = document.createElement("img");
             iconImg.className = "sqscraft-button-icon";
-            iconImg.style.width = "20px";
-            iconImg.style.objectFit = "cover";
+          
+            iconImg.style.height = "1em"; 
+            iconImg.style.width = "auto"; 
+            iconImg.style.maxHeight = "20px"; 
+            iconImg.style.objectFit = "contain"; 
             iconImg.style.marginRight = "8px";
+            iconImg.style.verticalAlign = "middle";
+          
             const textDiv = buttonLink.querySelector(".sqs-html");
             if (textDiv) {
               buttonLink.insertBefore(iconImg, textDiv);
@@ -57,6 +62,7 @@ export function initImageUploadPreview(getSelectedElement) {
               buttonLink.insertBefore(iconImg, buttonLink.firstChild);
             }
           }
+          
   
           iconImg.src = e.target.result;
   
@@ -64,6 +70,6 @@ export function initImageUploadPreview(getSelectedElement) {
         };
         reader.readAsDataURL(file);
       }
-    });
+    }); 
   }
   
