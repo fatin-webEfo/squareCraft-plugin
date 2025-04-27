@@ -30,8 +30,8 @@ export function initImageUploadPreview(getSelectedElement) {
   
       if (file && selectedElement) {
         const fileType = file.type;
-  
         const reader = new FileReader();
+  
         reader.onload = function (e) {
           const container = selectedElement.querySelector(".sqs-block-button-container");
           if (!container) {
@@ -46,9 +46,7 @@ export function initImageUploadPreview(getSelectedElement) {
           }
   
           const oldIcon = buttonLink.querySelector(".sqscraft-button-icon");
-          if (oldIcon) {
-            oldIcon.remove();
-          }
+          if (oldIcon) oldIcon.remove();
   
           let svgElement;
   
@@ -56,6 +54,17 @@ export function initImageUploadPreview(getSelectedElement) {
             const parser = new DOMParser();
             const svgDoc = parser.parseFromString(e.target.result, "image/svg+xml");
             svgElement = svgDoc.querySelector("svg");
+  
+            if (svgElement) {
+              const hasFill = svgElement.querySelector("[fill]");
+              const hasStroke = svgElement.querySelector("[stroke]");
+  
+              console.log("✅ SVG uploaded!");
+              if (hasFill) console.log("🎨 SVG has fill attributes.");
+              if (hasStroke) console.log("🖌 SVG has stroke attributes.");
+              if (!hasFill && !hasStroke) console.log("⚡ SVG has no fill or stroke found.");
+            }
+  
           } else {
             const base64Image = e.target.result;
             svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -64,10 +73,12 @@ export function initImageUploadPreview(getSelectedElement) {
             svgElement.setAttribute("width", "20");
             svgElement.setAttribute("height", "20");
             svgElement.setAttribute("viewBox", "0 0 20 20");
-            imageNode.setAttributeNS(null, "href", base64Image);
+            imageNode.setAttributeNS("http://www.w3.org/1999/xlink", "href", base64Image);
             imageNode.setAttribute("width", "20");
             imageNode.setAttribute("height", "20");
             svgElement.appendChild(imageNode);
+  
+            console.log("✅ Non-SVG image wrapped into SVG container.");
           }
   
           if (!svgElement) {
@@ -90,7 +101,7 @@ export function initImageUploadPreview(getSelectedElement) {
             buttonLink.insertBefore(svgElement, buttonLink.firstChild);
           }
   
-          console.log("✅ Injected SVG Code:");
+          console.log("📄 Injected SVG Code:");
           console.log(svgElement.outerHTML);
   
           hiddenInput.value = "";
