@@ -127,7 +127,7 @@ export function WidgetButtonSection() {
                   </div>
                 </div>
                 
-                <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-190px  sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+                <div id="scButtonFontWeightOptions" class="sc-absolute sc-hidden sc-w-190px  sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
                   <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">300</div>
                   <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">400</div>
                   <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">500</div>
