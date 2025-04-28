@@ -5,6 +5,7 @@ export function initButtonStyles(selectedButtonElement) {
     const fontSizeInput = document.getElementById("scButtonFontSizeInput");
     const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
     const letterSpacingInput = document.getElementById("scLetterSpacingInput");
+    const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
     const buttonContainer = selectedButtonElement.querySelector('.sqs-block-button-container');
     if (!buttonContainer) return;
@@ -24,10 +25,7 @@ export function initButtonStyles(selectedButtonElement) {
 
     function getAllSameTypeSpansFromBody() {
         return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`))
-            .map(btn => {
-                const span = btn.querySelector('.sqs-html span') || btn.querySelector('.sqs-add-to-cart-button-inner') || btn.querySelector('span');
-                return span;
-            })
+            .map(btn => btn.querySelector('.sqs-html span') || btn.querySelector('.sqs-add-to-cart-button-inner') || btn.querySelector('span'))
             .filter(span => span);
     }
 
@@ -58,7 +56,14 @@ export function initButtonStyles(selectedButtonElement) {
         });
     }
 
-    if (fontSizeInput) {
+    if (fontSizeOptions && fontSizeInput) {
+        fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach(item => {
+            item.addEventListener("click", () => {
+                const selectedSize = item.getAttribute("data-value");
+                fontSizeInput.value = selectedSize;
+                fontSizeInput.dispatchEvent(new Event('input'));
+            });
+        });
         fontSizeInput.addEventListener("input", (e) => {
             const fontSize = e.target.value;
             applyStyleToSpans('font-size', `${fontSize}px`);
