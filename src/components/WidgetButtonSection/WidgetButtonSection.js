@@ -248,7 +248,8 @@ export function WidgetButtonSection() {
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
-               <div id="colorSection" class="sc-hidden sc-flex sc-mt-3 sc-items-center sc-gap-3">
+               <div id="colorSection" class="sc-hidden sc-mt-3 ">
+                 <div class="sc-items-center sc-gap-3  sc-flex">
                   <div id="bgColorSection" class=" ">
                      <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                      </p>
@@ -267,6 +268,7 @@ export function WidgetButtonSection() {
                         <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                      </div>
                   </div>
+                 </div>
                </div>
 
 
@@ -807,8 +809,6 @@ export function WidgetButtonSection() {
                      </div>
                   </div>
             </div>
-
-
             <div class="sc-mt-4"></div>
          </div>
    `;
