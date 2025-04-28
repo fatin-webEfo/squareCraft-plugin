@@ -1,5 +1,6 @@
 export function initButtonStyles(selectedButtonElement) {
     if (!selectedButtonElement) return;
+    console.log("✅ Selected Element:", selectedButtonElement);
   
     const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
     const fontFamilyButton = document.getElementById("buttonFontFamilyButton");
@@ -15,7 +16,7 @@ export function initButtonStyles(selectedButtonElement) {
       return;
     }
   
-    
+
     if (fontFamilyOptions && fontFamilyButton) {
       fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
         item.addEventListener("click", () => {
