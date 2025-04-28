@@ -95,13 +95,13 @@ export function WidgetButtonSection() {
                               <p class=" sc-font-light sc-text-center sc-text-sm sc-ml-2  ">
                                  px
                            </div>
-                           <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
+                           <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5 sc-ml-2"
                               style="height: 28px;     border-radius: 0px 5px 5px 0px;">
-                              <img class="sc-cursor-pointer sc-rotate-180 sc-mt-3" width="12px"
+                              <img class=" sc-rotate-180 sc-mt-3" width="12px"
                                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                            </div>
                         </div>
-                        <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
                      sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                      sc-mt-1">
                            ${fontSizes?.map((size) => `
@@ -115,18 +115,28 @@ export function WidgetButtonSection() {
                </div>
             </div>
 
-            <div class="sc-mt-2  sc-grid sc-grid-cols-12 sc-gap-2 ">
-               <div
-                  class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
+            <div class="sc-mt-2 sc-relative sc-grid sc-grid-cols-12 sc-gap-2 ">
+               <div id="scButtonFontWeightSelect" class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7 sc-cursor-pointer sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center">
                   <div>
-                     <p class="sc-text-sm sc-universal sc-roboto sc-font-light">
-                        Regular</p>
+                    <p id="scButtonFontWeightSelected" class="sc-text-sm sc-universal sc-roboto sc-font-light">
+                      400
+                    </p>
                   </div>
                   <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-                     <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
-                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                    <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                   </div>
-               </div>
+                </div>
+                
+                <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-190px  sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">300</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">400</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">500</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">600</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">700</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">800</div>
+                  <div class="sc-dropdown-item sc-py-1px sc-text-center sc-text-sm sc-cursor-pointer">900</div>
+                </div>
+                
 
                <div
                   class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-6px">
@@ -280,7 +290,7 @@ export function WidgetButtonSection() {
 
 
                   <div id="iconButton"
-                     class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Icon</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -781,9 +791,6 @@ export function WidgetButtonSection() {
                         </div>
    
                      </div>
-   
-   
-   
                      <div class="sc-mt-4">
                         <div class="  sc-flex sc-items-center sc-justify-between">
                            <div class="sc-flex sc-gap-2 sc-items-center">
@@ -816,8 +823,6 @@ export function WidgetButtonSection() {
                      </div>
                   </div>
             </div>
-
-
             <div class="sc-mt-4"></div>
          </div>
    `;

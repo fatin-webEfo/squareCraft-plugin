@@ -69,4 +69,31 @@ export function initButtonSectionToggleControls() {
       buttonFontSizeOptions.classList.toggle("sc-hidden");
     });
   }
+
+
+  const buttonFontWeightSelect = document.getElementById("scButtonFontWeightSelect");
+const buttonFontWeightOptions = document.getElementById("scButtonFontWeightOptions");
+const buttonFontWeightSelected = document.getElementById("scButtonFontWeightSelected");
+
+if (buttonFontWeightSelect && buttonFontWeightOptions) {
+  buttonFontWeightSelect.addEventListener("click", (event) => {
+    event.stopPropagation();
+    buttonFontWeightOptions.classList.toggle("sc-hidden");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!buttonFontWeightSelect.contains(event.target)) {
+      buttonFontWeightOptions.classList.add("sc-hidden");
+    }
+  });
+
+  buttonFontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selectedWeight = item.innerText;
+      buttonFontWeightSelected.innerText = selectedWeight;
+      buttonFontWeightOptions.classList.add("sc-hidden");
+    });
+  });
+}
+
 }
