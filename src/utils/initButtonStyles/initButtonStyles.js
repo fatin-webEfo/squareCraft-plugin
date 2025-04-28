@@ -2,7 +2,7 @@ export function initButtonStyles(selectedButtonElement) {
     if (!selectedButtonElement) return;
 
     const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
-    const fontSizeInput = document.getElementById("scFontSizeInput");
+    const fontSizeInput = document.getElementById("scButtonFontSizeInput");
     const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
     const letterSpacingInput = document.getElementById("scLetterSpacingInput");
 
