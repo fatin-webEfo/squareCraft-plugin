@@ -108,7 +108,7 @@ export function WidgetButtonSection() {
                                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                            </div>
                         </div>
-                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                      sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                      sc-mt-1">
                            ${fontSizes?.map((size) => `

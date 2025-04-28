@@ -453,6 +453,11 @@
   /* 100px */
 }
 
+.sc-w-12{
+  width: 7rem !important;
+  /* 48px */
+}
+
 .sc-w-50 {
   width: 44% !important;
 }
