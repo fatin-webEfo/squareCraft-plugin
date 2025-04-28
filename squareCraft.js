@@ -72,6 +72,8 @@
     const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
     const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
     const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
+    const { initButtonStyles } = await import('https://your-cdn-link/initButtonStyles.js');
+
     const themeColors = await getSquarespaceThemeStyles();
 
 
