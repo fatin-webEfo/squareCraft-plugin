@@ -297,18 +297,6 @@
   }
 
 
-
-
-  const { loadCSS } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/loadCSS.js");
-
-  loadCSS(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
-  );
-
-
-
-
-
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
     const clickedBlock = event?.target?.closest('[id^="block-"]');
@@ -352,19 +340,59 @@
     try {
       const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
       const htmlString = module.html();
-
+  
       if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-        loadWidgetFromString(htmlString, clickedBlock);
-        setTimeout(() => {
-          if (typeof module.initToggleSwitch === "function") {
-            module.initToggleSwitch();
-          }
-        }, 200);
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "sc-widget-container";
+  
+        const shadowRoot = widgetContainer.attachShadow({ mode: "open" });
+  
+        const innerWrapper = document.createElement("div");
+        innerWrapper.classList.add(
+          "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
+        );
+        innerWrapper.innerHTML = htmlString;
+  
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+  
+        shadowRoot.appendChild(link);
+        shadowRoot.appendChild(innerWrapper);
+  
+        widgetContainer.style.display = "block";
+        document.body.appendChild(widgetContainer);
+  
+        initImageMaskControls(() => selectedElement);
+        makeWidgetDraggable();
+        widgetLoaded = true;
+        initImageSectionToggleControls();
+        initButtonSectionToggleControls();
+        initImageUploadPreview(() => selectedElement);
+  
+        if (clickedBlock) {
+          waitForElement("#typoSection, #imageSection, #buttonSection").then(() => {
+            handleBlockClick({ target: clickedBlock }, {
+              getTextType,
+              selectedElement,
+              setSelectedElement: (val) => selectedElement = val,
+              setLastClickedBlockId: (val) => lastClickedBlockId = val,
+              setLastClickedElement: (val) => lastClickedElement = val,
+              setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+              setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+            });
+            detectBlockElementTypes(clickedBlock);
+          }).catch(error => {
+            console.error(error.message);
+          });
+        }
       }
     } catch (err) {
       console.error("🚨 Error loading HTML module:", err);
     }
   }
+  
 
   function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
