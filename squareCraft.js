@@ -77,7 +77,21 @@
     const themeColors = await getSquarespaceThemeStyles();
 
 
-    document.body.addEventListener("click", async (event) => {
+    document.body.addEventListener("click", (event) => {
+      if(selectedElement) {
+        initButtonStyles(selectedElement);
+      }
+      
+      const trigger = event.target.closest("#border-color-select");
+
+      if (trigger) {
+        console.log("✅ border-color-select clicked");
+        setTimeout(() => {
+          initBorderColorPaletteToggle(themeColors);
+        }, 100);
+        return;
+      }
+      setTimeout(initImageSectionControls, 100);
       const clickedBlock = event.target.closest('[id^="block-"]');
       if (clickedBlock) {
         waitForElement("#typoSection, #imageSection, #buttonSection")
@@ -87,33 +101,7 @@
           .catch(error => {
             console.error(error.message);
           });
-    
-        // ✅ Here: Select the correct text inside button block
-        const buttonElement = clickedBlock.querySelector('.sqs-block-button-element');
-        if (buttonElement) {
-          const textSpan = buttonElement.querySelector('span');
-          if (textSpan) {
-            selectedElement = buttonElement; 
-            initButtonStyles(selectedElement);  // 🔥 Now initialize styles correctly
-          } else {
-            console.warn("⚠️ No span inside button element");
-          }
-        } else {
-          console.warn("⚠️ No button found inside block");
-        }
       }
-    
-      const trigger = event.target.closest("#border-color-select");
-      if (trigger) {
-        console.log("✅ border-color-select clicked");
-        setTimeout(() => {
-          initBorderColorPaletteToggle(themeColors);
-        }, 100);
-        return;
-      }
-    
-      setTimeout(initImageSectionControls, 100);
-    
       handleBlockClick(event, {
         getTextType,
         selectedElement,
@@ -123,7 +111,8 @@
         setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
         setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
       });
-    
+      
+      
       handleAlignmentClick(event, {
         lastClickedElement,
         getTextType,
@@ -137,12 +126,11 @@
         token,
         widgetId
       });
-    
+
       handleTextColorClick(event, lastClickedElement, applyStylesToElement);
       handleFontWeightDropdownClick(event);
       typoTabSelect(event);
     });
-    
 
 
     
