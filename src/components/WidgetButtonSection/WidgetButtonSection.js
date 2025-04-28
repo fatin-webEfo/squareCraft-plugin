@@ -50,7 +50,7 @@ export function WidgetButtonSection() {
             <div class="sc-mt-4 sc-px-2">
                <div class="sc-flex ">
 
-                  <div
+                  <div id="fontButton"
                      class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                      <div class="sc-active-bar sc-rounded-l"></div>
                      <p class="sc-roboto  sc-universal ">Font</p>
@@ -58,9 +58,10 @@ export function WidgetButtonSection() {
                         class="sc-rotate-180" alt="">
                   </div>
                </div>
-              <div id="fontSection"> <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
+              <div id="fontSection">
+                <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
 
-               <div id="fontButton"
+               <div 
                   class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
                   <select class=" sc-text-sm sc-roboto sc-font-light"
                      style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
