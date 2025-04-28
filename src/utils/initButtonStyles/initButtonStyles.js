@@ -15,6 +15,7 @@ export function initButtonStyles(selectedButtonElement) {
       return;
     }
   
+    
     if (fontFamilyOptions && fontFamilyButton) {
       fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
         item.addEventListener("click", () => {
