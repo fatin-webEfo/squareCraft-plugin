@@ -81,7 +81,6 @@
       if(selectedElement) {
         initButtonStyles(selectedElement);
       }
-      console.log("✅ Clicked Element:", event.target);
       const trigger = event.target.closest("#border-color-select");
 
       if (trigger) {
