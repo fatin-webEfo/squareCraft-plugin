@@ -72,12 +72,15 @@
     const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
     const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
     const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
-    const { initButtonStyles } = await import('https://your-cdn-link/initButtonStyles.js');
+    const { initButtonStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
 
     const themeColors = await getSquarespaceThemeStyles();
 
 
     document.body.addEventListener("click", (event) => {
+      if(selectedElement) {
+        initButtonStyles(selectedElement);
+      }
       
       const trigger = event.target.closest("#border-color-select");
 
