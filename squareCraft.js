@@ -77,10 +77,13 @@
     const themeColors = await getSquarespaceThemeStyles();
 
 
-    document.body.addEventListener("click", async (event) => {
-      const clickedBlock = event.target.closest('[id^="block-"]');
-    
+    document.body.addEventListener("click", (event) => {
+      if(selectedElement) {
+        initButtonStyles(selectedElement);
+      }
+      
       const trigger = event.target.closest("#border-color-select");
+
       if (trigger) {
         console.log("✅ border-color-select clicked");
         setTimeout(() => {
@@ -88,9 +91,8 @@
         }, 100);
         return;
       }
-    
       setTimeout(initImageSectionControls, 100);
-    
+      const clickedBlock = event.target.closest('[id^="block-"]');
       if (clickedBlock) {
         waitForElement("#typoSection, #imageSection, #buttonSection")
           .then(() => {
@@ -100,8 +102,7 @@
             console.error(error.message);
           });
       }
-    
-      await handleBlockClick(event, {
+      handleBlockClick(event, {
         getTextType,
         selectedElement,
         setSelectedElement: (val) => selectedElement = val,
@@ -110,12 +111,8 @@
         setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
         setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
       });
-    
-      if (selectedElement) {
-        const { initButtonStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-        initButtonStyles(selectedElement);
-      }
-    
+      
+      
       handleAlignmentClick(event, {
         lastClickedElement,
         getTextType,
@@ -129,12 +126,11 @@
         token,
         widgetId
       });
-    
+
       handleTextColorClick(event, lastClickedElement, applyStylesToElement);
       handleFontWeightDropdownClick(event);
       typoTabSelect(event);
     });
-    
 
 
     

@@ -1069,6 +1069,65 @@
   width: 190px !important;
 }
 
+/* FONT FAMILY */
+[class*="sc-font-family-Arial"] { font-family: Arial, sans-serif !important; }
+[class*="sc-font-family-Times-New-Roman"] { font-family: 'Times New Roman', serif !important; }
+[class*="sc-font-family-Courier-New"] { font-family: 'Courier New', monospace !important; }
+[class*="sc-font-family-Georgia"] { font-family: Georgia, serif !important; }
+[class*="sc-font-family-Verdana"] { font-family: Verdana, sans-serif !important; }
+
+/* FONT SIZE */
+[class*="sc-font-size-"] {
+  font-size: var(--sc-font-size, 16px) !important;
+}
+
+.sc-font-size-12 { --sc-font-size: 12px; }
+.sc-font-size-14 { --sc-font-size: 14px; }
+.sc-font-size-16 { --sc-font-size: 16px; }
+.sc-font-size-18 { --sc-font-size: 18px; }
+.sc-font-size-20 { --sc-font-size: 20px; }
+.sc-font-size-24 { --sc-font-size: 24px; }
+.sc-font-size-30 { --sc-font-size: 30px; }
+
+/* FONT WEIGHT */
+[class*="sc-font-weight-"] {
+  font-weight: var(--sc-font-weight, 400) !important;
+}
+
+.sc-font-weight-300 { --sc-font-weight: 300; }
+.sc-font-weight-400 { --sc-font-weight: 400; }
+.sc-font-weight-500 { --sc-font-weight: 500; }
+.sc-font-weight-600 { --sc-font-weight: 600; }
+.sc-font-weight-700 { --sc-font-weight: 700; }
+.sc-font-weight-800 { --sc-font-weight: 800; }
+.sc-font-weight-900 { --sc-font-weight: 900; }
+
+/* LETTER SPACING */
+[class*="sc-letter-spacing-"] {
+  letter-spacing: var(--sc-letter-spacing, 0px) !important;
+}
+
+.sc-letter-spacing-0 { --sc-letter-spacing: 0px; }
+.sc-letter-spacing-1 { --sc-letter-spacing: 1px; }
+.sc-letter-spacing-2 { --sc-letter-spacing: 2px; }
+.sc-letter-spacing-3 { --sc-letter-spacing: 3px; }
+.sc-letter-spacing-4 { --sc-letter-spacing: 4px; }
+.sc-letter-spacing-5 { --sc-letter-spacing: 5px; }
+.sc-letter-spacing-6 { --sc-letter-spacing: 6px; }
+.sc-letter-spacing-7 { --sc-letter-spacing: 7px; }
+.sc-letter-spacing-8 { --sc-letter-spacing: 8px; }
+.sc-letter-spacing-9 { --sc-letter-spacing: 9px; }
+.sc-letter-spacing-10 { --sc-letter-spacing: 10px; }
+
+/* TEXT ALIGN */
+[class*="sc-text-align-"] {
+  text-align: var(--sc-text-align, left) !important;
+}
+
+.sc-text-align-left { --sc-text-align: left; }
+.sc-text-align-center { --sc-text-align: center; }
+.sc-text-align-right { --sc-text-align: right; }
+.sc-text-align-justify { --sc-text-align: justify; }
 
 
 .sc-dropdown-content {

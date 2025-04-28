@@ -13,10 +13,10 @@ export function initButtonStyles(selectedButtonElement) {
         item.addEventListener("click", () => {
           const fontFamily = item.style.fontFamily;
           selectedButtonElement.classList.remove(
-            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('font-family-'))
+            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-family-'))
           );
           const safeFont = fontFamily.split(',')[0].replace(/\s+/g, '-').toLowerCase();
-          selectedButtonElement.classList.add(`font-family-${safeFont}`);
+          selectedButtonElement.classList.add(`sc-font-family-${safeFont}`);
         });
       });
     }
@@ -25,9 +25,9 @@ export function initButtonStyles(selectedButtonElement) {
       fontSizeInput.addEventListener("input", (e) => {
         const fontSize = e.target.value;
         selectedButtonElement.classList.remove(
-          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('font-size-'))
+          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-size-'))
         );
-        selectedButtonElement.classList.add(`font-size-${fontSize}`);
+        selectedButtonElement.classList.add(`sc-font-size-${fontSize}`);
       });
     }
   
@@ -36,9 +36,9 @@ export function initButtonStyles(selectedButtonElement) {
         item.addEventListener("click", () => {
           const fontWeight = item.innerText.trim();
           selectedButtonElement.classList.remove(
-            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('font-weight-'))
+            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-weight-'))
           );
-          selectedButtonElement.classList.add(`font-weight-${fontWeight}`);
+          selectedButtonElement.classList.add(`sc-font-weight-${fontWeight}`);
         });
       });
     }
@@ -47,9 +47,9 @@ export function initButtonStyles(selectedButtonElement) {
       letterSpacingInput.addEventListener("input", (e) => {
         const spacing = e.target.value.replace('px', '');
         selectedButtonElement.classList.remove(
-          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('letter-spacing-'))
+          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-letter-spacing-'))
         );
-        selectedButtonElement.classList.add(`letter-spacing-${spacing}`);
+        selectedButtonElement.classList.add(`sc-letter-spacing-${spacing}`);
       });
     }
   
@@ -59,9 +59,9 @@ export function initButtonStyles(selectedButtonElement) {
         alignButton.addEventListener("click", () => {
           const align = alignButton.getAttribute("data-align");
           selectedButtonElement.classList.remove(
-            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('text-align-'))
+            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-text-align-'))
           );
-          selectedButtonElement.classList.add(`text-align-${align}`);
+          selectedButtonElement.classList.add(`sc-text-align-${align}`);
         });
       }
     });
