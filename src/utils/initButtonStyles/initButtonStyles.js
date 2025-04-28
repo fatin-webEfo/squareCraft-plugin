@@ -8,27 +8,33 @@ export function initButtonStyles(selectedButtonElement) {
     const fontWeightButton = document.getElementById("scButtonFontWeightSelect");
     const letterSpacingInput = document.getElementById("scLetterSpacingInput");
   
+    const textSpan = selectedButtonElement.querySelector('span'); 
+  
+    if (!textSpan) {
+      console.error("❌ Text span not found inside button element.");
+      return;
+    }
+  
     if (fontFamilyOptions && fontFamilyButton) {
       fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
         item.addEventListener("click", () => {
           const fontFamily = item.style.fontFamily;
-          selectedButtonElement.classList.remove(
-            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-family-'))
+          textSpan.classList.remove(
+            ...Array.from(textSpan.classList).filter(c => c.startsWith('sc-font-family-'))
           );
           const safeFont = fontFamily.split(',')[0].replace(/\s+/g, '-').toLowerCase();
-          selectedButtonElement.classList.add(`sc-font-family-${safeFont}`);
+          textSpan.classList.add(`sc-font-family-${safeFont}`);
         });
       });
     }
   
-    
     if (fontSizeInput) {
       fontSizeInput.addEventListener("input", (e) => {
         const fontSize = e.target.value;
-        selectedButtonElement.classList.remove(
-          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-size-'))
+        textSpan.classList.remove(
+          ...Array.from(textSpan.classList).filter(c => c.startsWith('sc-font-size-'))
         );
-        selectedButtonElement.classList.add(`sc-font-size-${fontSize}`);
+        textSpan.classList.add(`sc-font-size-${fontSize}`);
       });
     }
   
@@ -36,10 +42,10 @@ export function initButtonStyles(selectedButtonElement) {
       fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
         item.addEventListener("click", () => {
           const fontWeight = item.innerText.trim();
-          selectedButtonElement.classList.remove(
-            ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-font-weight-'))
+          textSpan.classList.remove(
+            ...Array.from(textSpan.classList).filter(c => c.startsWith('sc-font-weight-'))
           );
-          selectedButtonElement.classList.add(`sc-font-weight-${fontWeight}`);
+          textSpan.classList.add(`sc-font-weight-${fontWeight}`);
         });
       });
     }
@@ -47,10 +53,10 @@ export function initButtonStyles(selectedButtonElement) {
     if (letterSpacingInput) {
       letterSpacingInput.addEventListener("input", (e) => {
         const spacing = e.target.value.replace('px', '');
-        selectedButtonElement.classList.remove(
-          ...Array.from(selectedButtonElement.classList).filter(c => c.startsWith('sc-letter-spacing-'))
+        textSpan.classList.remove(
+          ...Array.from(textSpan.classList).filter(c => c.startsWith('sc-letter-spacing-'))
         );
-        selectedButtonElement.classList.add(`sc-letter-spacing-${spacing}`);
+        textSpan.classList.add(`sc-letter-spacing-${spacing}`);
       });
     }
   
