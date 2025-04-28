@@ -388,12 +388,14 @@
           "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
         );
         
+        // ✅ Inject your CSS file before setting innerHTML
         const styleLink = document.createElement("link");
         styleLink.rel = "stylesheet";
         styleLink.type = "text/css";
         styleLink.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
         widgetContainer.appendChild(styleLink);
-  
+    
+        // ✅ Then set HTML content
         const contentWrapper = document.createElement("div");
         contentWrapper.innerHTML = htmlString;
         widgetContainer.appendChild(contentWrapper);
@@ -403,7 +405,7 @@
     
         initImageMaskControls(() => selectedElement);
         makeWidgetDraggable();
-        widgetLoaded = true;a
+        widgetLoaded = true;
         initImageSectionToggleControls();
         initButtonSectionToggleControls();
         initImageUploadPreview(() => selectedElement);
