@@ -1,7 +1,7 @@
 export function initButtonSectionToggleControls() {
     const sections = {
       fontButton: "fontSection",
-      ColorButton: "ColorSection",
+      colorButton: "colorSection",
       iconButton: "iconSection",
       bordersButton: "bordersSection",
       shadowsButton: "shadowsSection"
