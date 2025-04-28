@@ -427,35 +427,29 @@
 
 .sc-text-md {
   font-size: 0.9rem !important;
-  /* 16px */
   font-family: 'Inter', 'Roboto', sans-serif !important;
 }
 
 .sc-px-4 {
   padding-left: 0.8rem !important;
-  /* 16px */
   padding-right: 0.8rem !important;
-  /* 16px */
 }
 
 .sc-w-16 {
   width: 4rem !important;
-  /* 64px */
 }
 
 .sc-top-10 {
   top: 2rem !important;
-  /* 48px */
 }
 
 .sc-w-20 {
   width: 10rem !important;
-  /* 100px */
+
 }
 
 .sc-w-12{
-  width: 2rem !important;
-  /* 48px */
+  width: 2.5rem !important;
 }
 
 .sc-w-50 {
@@ -464,7 +458,6 @@
 
 .sc-w-10 {
   width: 1rem !important;
-  /* 48px */
 }
 
 .sc-rounded-15px {
@@ -473,12 +466,10 @@
 
 .sc-pt-28 {
   padding-top: 7rem !important;
-  /* 112px */
 }
 
 .sc-pt-3 {
   padding-top: 0.75rem !important;
-  /* 12px */
 }
 
 .sc-rounded {
@@ -487,7 +478,6 @@
 
 .sc-gap-2 {
   gap: 0.5rem !important;
-  /* 8px */
 }
 
 .sc-text-16px {
