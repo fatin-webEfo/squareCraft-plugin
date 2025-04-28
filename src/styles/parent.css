@@ -1089,7 +1089,6 @@
 .sc-font-size-24 { --sc-font-size: 24px; }
 .sc-font-size-30 { --sc-font-size: 30px; }
 
-/* FONT WEIGHT */
 [class*="sc-font-weight-"] {
   font-weight: var(--sc-font-weight, 400) !important;
 }
@@ -1102,7 +1101,6 @@
 .sc-font-weight-800 { --sc-font-weight: 800; }
 .sc-font-weight-900 { --sc-font-weight: 900; }
 
-/* LETTER SPACING */
 [class*="sc-letter-spacing-"] {
   letter-spacing: var(--sc-letter-spacing, 0px) !important;
 }
@@ -1119,7 +1117,6 @@
 .sc-letter-spacing-9 { --sc-letter-spacing: 9px; }
 .sc-letter-spacing-10 { --sc-letter-spacing: 10px; }
 
-/* TEXT ALIGN */
 [class*="sc-text-align-"] {
   text-align: var(--sc-text-align, left) !important;
 }
