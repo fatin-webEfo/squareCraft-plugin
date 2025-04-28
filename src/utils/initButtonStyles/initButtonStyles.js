@@ -21,6 +21,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   
+    
     if (fontSizeInput) {
       fontSizeInput.addEventListener("input", (e) => {
         const fontSize = e.target.value;
