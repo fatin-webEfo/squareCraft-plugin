@@ -23,35 +23,45 @@ export function initButtonStyles(selectedButtonElement) {
         buttonTypeClass = "sqs-button-element--tertiary";
     }
 
-    function getAllSameTypeSpansFromBody() {
-        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`))
-            .map(btn => btn.querySelector('.sqs-html span') || btn.querySelector('.sqs-add-to-cart-button-inner') || btn.querySelector('span'))
-            .filter(span => span);
+    function getAllSameTypeButtons() {
+        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`));
     }
 
-    function getAllSameTypeContainersFromBody() {
-        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`))
-            .map(btn => btn.closest('.sqs-block-button-container'))
-            .filter(container => container);
-    }
+    function updateExternalStyles(property, value) {
+        const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
+        let styleTag = document.getElementById(styleId);
 
-    function applyStyleToSpans(property, value) {
-        getAllSameTypeSpansFromBody().forEach(span => {
-            span.style.setProperty(property, value, 'important');
-        });
-    }
+        if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
+        }
 
-    function applyAlignmentToContainers(align) {
-        getAllSameTypeContainersFromBody().forEach(container => {
-            container.style.setProperty('text-align', align, 'important');
-        });
+        const spansSelector = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
+        const buttonContainerSelector = `a.${buttonTypeClass}, button.${buttonTypeClass}`;
+
+        if (property === "text-align") {
+            styleTag.innerHTML = `${buttonContainerSelector} { text-align: ${value} !important; }` + (styleTag.innerHTML || "");
+        } else {
+            let rules = styleTag.innerHTML.split("}").filter(Boolean).map(rule => rule + "}");
+            let existingSpanRule = rules.find(r => r.includes(spansSelector));
+
+            if (existingSpanRule) {
+                let updatedRule = existingSpanRule.replace(new RegExp(`${property}:.*?;`, "g"), "").replace("}", ` ${property}: ${value} !important; }`);
+                rules = rules.map(r => r.includes(spansSelector) ? updatedRule : r);
+            } else {
+                rules.push(`${spansSelector} { ${property}: ${value} !important; }`);
+            }
+
+            styleTag.innerHTML = rules.join("\n");
+        }
     }
 
     if (fontFamilyOptions) {
         fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach(item => {
             item.addEventListener("click", () => {
                 const fontFamily = item.style.fontFamily;
-                applyStyleToSpans('font-family', fontFamily);
+                updateExternalStyles('font-family', fontFamily);
             });
         });
     }
@@ -66,7 +76,7 @@ export function initButtonStyles(selectedButtonElement) {
         });
         fontSizeInput.addEventListener("input", (e) => {
             const fontSize = e.target.value;
-            applyStyleToSpans('font-size', `${fontSize}px`);
+            updateExternalStyles('font-size', `${fontSize}px`);
         });
     }
 
@@ -74,7 +84,7 @@ export function initButtonStyles(selectedButtonElement) {
         fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach(item => {
             item.addEventListener("click", () => {
                 const fontWeight = item.innerText.trim();
-                applyStyleToSpans('font-weight', fontWeight);
+                updateExternalStyles('font-weight', fontWeight);
             });
         });
     }
@@ -82,7 +92,7 @@ export function initButtonStyles(selectedButtonElement) {
     if (letterSpacingInput) {
         letterSpacingInput.addEventListener("input", (e) => {
             const spacing = e.target.value.replace('px', '');
-            applyStyleToSpans('letter-spacing', `${spacing}px`);
+            updateExternalStyles('letter-spacing', `${spacing}px`);
         });
     }
 
@@ -91,7 +101,7 @@ export function initButtonStyles(selectedButtonElement) {
         if (alignButton) {
             alignButton.addEventListener("click", () => {
                 const align = alignButton.getAttribute("data-align");
-                applyAlignmentToContainers(align);
+                updateExternalStyles('text-align', align);
             });
         }
     });
