@@ -248,7 +248,6 @@ export function WidgetButtonSection() {
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
-
                <div id="colorSection" class="sc-hidden sc-flex sc-mt-3 sc-items-center sc-gap-3">
                   <div id="bgColorSection" class=" ">
                      <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
