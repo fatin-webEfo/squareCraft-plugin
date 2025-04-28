@@ -4,7 +4,7 @@ export function WidgetButtonSection() {
 
 
    return `
-   <div id="buttonSection">
+    <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -61,17 +61,23 @@ export function WidgetButtonSection() {
               <div id="fontSection">
                 <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
 
-               <div 
-                  class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
-                  <select class=" sc-text-sm sc-roboto sc-font-light"
-                     style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
-                     <option value="" selected disabled hidden>Select Font</option>
-                  </select>
-                  <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
-                     <img class="sc-rotate-180 sc-mt-3" width="12px"
-                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                  <div id="buttonFontFamilyButton" class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+                     <p class="sc-text-sm sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
+                       Select Font
+                     </p>
+                     <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
+                       <img class="sc-rotate-180 sc-mt-3" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                     </div>
+                   
                   </div>
-               </div>
+                  <div id="buttonFontFamilyOptions" class="sc-absolute sc-w-190px sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px  sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+                    <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: Arial, sans-serif;">Arial</div>
+                    <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Times New Roman', serif;">Times New Roman</div>
+                    <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Courier New', monospace;">Courier New</div>
+                    <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Georgia', serif;">Georgia</div>
+                    <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Verdana', sans-serif;">Verdana</div>
+                  </div>
+                   
 
 
 
@@ -628,6 +634,7 @@ export function WidgetButtonSection() {
                            </div>
                         </div>
                      </div>
+
                      <div class="sc-mt-4">
                         <div class="  sc-flex sc-items-center sc-justify-between">
                            <div class="sc-flex sc-gap-2 sc-items-center">
@@ -661,6 +668,8 @@ export function WidgetButtonSection() {
                      </div>
                   </div>
                </div>
+
+
                <div id="shadowsButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Shadow</p>
@@ -772,6 +781,9 @@ export function WidgetButtonSection() {
                         </div>
    
                      </div>
+   
+   
+   
                      <div class="sc-mt-4">
                         <div class="  sc-flex sc-items-center sc-justify-between">
                            <div class="sc-flex sc-gap-2 sc-items-center">
@@ -804,6 +816,8 @@ export function WidgetButtonSection() {
                      </div>
                   </div>
             </div>
+
+
             <div class="sc-mt-4"></div>
          </div>
    `;
