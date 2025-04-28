@@ -628,7 +628,6 @@ export function WidgetButtonSection() {
                            </div>
                         </div>
                      </div>
-
                      <div class="sc-mt-4">
                         <div class="  sc-flex sc-items-center sc-justify-between">
                            <div class="sc-flex sc-gap-2 sc-items-center">
@@ -662,8 +661,6 @@ export function WidgetButtonSection() {
                      </div>
                   </div>
                </div>
-
-
                <div id="shadowsButton"
                      class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                      <p class="sc-roboto  sc-universal ">Shadow</p>
@@ -775,9 +772,6 @@ export function WidgetButtonSection() {
                         </div>
    
                      </div>
-   
-   
-   
                      <div class="sc-mt-4">
                         <div class="  sc-flex sc-items-center sc-justify-between">
                            <div class="sc-flex sc-gap-2 sc-items-center">
