@@ -9,7 +9,10 @@ export function initButtonStyles(selectedButtonElement) {
     const buttonContainer = selectedButtonElement.querySelector('.sqs-block-button-container');
     if (!buttonContainer) return;
 
-    const buttonElement = buttonContainer.querySelector('a.sqs-block-button-element');
+    let buttonElement = buttonContainer.querySelector('a.sqs-block-button-element');
+    if (!buttonElement) {
+        buttonElement = buttonContainer.querySelector('button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary');
+    }
     if (!buttonElement) return;
 
     let buttonTypeClass = "sqs-button-element--primary";
@@ -20,14 +23,17 @@ export function initButtonStyles(selectedButtonElement) {
     }
 
     function getAllSameTypeSpansFromBody() {
-        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}`))
-            .map(a => a.querySelector('.sqs-html span'))
+        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`))
+            .map(btn => {
+                const span = btn.querySelector('.sqs-html span') || btn.querySelector('.sqs-add-to-cart-button-inner') || btn.querySelector('span');
+                return span;
+            })
             .filter(span => span);
     }
 
     function getAllSameTypeContainersFromBody() {
-        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}`))
-            .map(a => a.closest('.sqs-block-button-container'))
+        return Array.from(document.body.querySelectorAll(`a.${buttonTypeClass}, button.${buttonTypeClass}`))
+            .map(btn => btn.closest('.sqs-block-button-container'))
             .filter(container => container);
     }
 
@@ -44,7 +50,7 @@ export function initButtonStyles(selectedButtonElement) {
     }
 
     if (fontFamilyOptions) {
-        fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+        fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach(item => {
             item.addEventListener("click", () => {
                 const fontFamily = item.style.fontFamily;
                 applyStyleToSpans('font-family', fontFamily);
@@ -60,7 +66,7 @@ export function initButtonStyles(selectedButtonElement) {
     }
 
     if (fontWeightOptions) {
-        fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+        fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach(item => {
             item.addEventListener("click", () => {
                 const fontWeight = item.innerText.trim();
                 applyStyleToSpans('font-weight', fontWeight);
@@ -75,7 +81,7 @@ export function initButtonStyles(selectedButtonElement) {
         });
     }
 
-    ["scTextAlignLeft", "scTextAlignCenter", "scTextAlignRight", "scTextAlignJustify"].forEach((id) => {
+    ["scTextAlignLeft", "scTextAlignCenter", "scTextAlignRight", "scTextAlignJustify"].forEach(id => {
         const alignButton = document.getElementById(id);
         if (alignButton) {
             alignButton.addEventListener("click", () => {
