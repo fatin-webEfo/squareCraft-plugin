@@ -59,4 +59,14 @@ export function initButtonSectionToggleControls() {
       });
     });
   }
+
+
+  const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");
+  const buttonFontSizeOptions = document.getElementById("scButtonFontSizeOptions");
+
+  if (buttonFontSizeSelect && buttonFontSizeOptions) {
+    buttonFontSizeSelect.addEventListener("click", () => {
+      buttonFontSizeOptions.classList.toggle("sc-hidden");
+    });
+  }
 }
