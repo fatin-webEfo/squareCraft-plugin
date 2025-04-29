@@ -94,7 +94,7 @@ export function initButtonStyles(selectedButtonElement) {
 
   if (letterSpacingInput) {
     letterSpacingInput.addEventListener("input", (e) => {
-      const spacing = e.target.value.replace("px", "");
+      const spacing = e.target.value.replace("px", "px");
       updateExternalStyles("letter-spacing", `${spacing}px`);
     });
   }
