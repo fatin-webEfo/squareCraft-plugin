@@ -11,7 +11,7 @@ export function WidgetButtonSection() {
 
 
    return `
-    <div id="buttonSection">
+     <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -95,26 +95,30 @@ export function WidgetButtonSection() {
                         class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center  ">
                         <div
                            class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center  sc-items-center sc-rounded-6px">
-                           <input type="text" id="scButtonFontSizeInput" value="16"
+                           <input type="text" id="scFontSizeInput" value="16"
                               class="sc-font-size-input sc-font-light sc-z-99999 sc-text-sm sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
                            <div class="sc-v-line"></div>
                            <div class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
                               <p class=" sc-font-light sc-text-center sc-text-sm sc-ml-2  ">
                                  px
                            </div>
-                           <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5 sc-ml-2"
-                              style="height: 28px;     border-radius: 0px 5px 5px 0px;">
+                           <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
+                              style="height: 28px;  margin-left: 0.85rem;   border-radius: 0px 5px 5px 0px;">
                               <img class=" sc-rotate-180 sc-mt-3" width="12px"
                                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                            </div>
                         </div>
-                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
+                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
                      sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                      sc-mt-1">
-                           ${fontSizes?.map((size) => `
+                           ${fontSizes
+                             ?.map(
+                               (size) => `
                            <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm" data-value="${size}">
                               ${size}</div>
-                           `).join("")}
+                           `
+                             )
+                             .join("")}
                         </div>
                      </div>
                   </div>
@@ -160,25 +164,25 @@ export function WidgetButtonSection() {
                <div class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
                   <div class="sc-flex sc-items-center  ">
 
-                     <div id="scTextAlignLeft" data-align="left"
+                     <div id="scButtonTextAlignLeft" data-align="left"
                         class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
 
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
                            class=" alignment-icon   sc-mx-auto" alt="left">
                      </div>
-                     <div id="scTextAlignCenter" data-align="center"
+                     <div id="scButtonTextAlignCenter" data-align="center"
                         class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
                            class=" alignment-icon   sc-mx-auto" alt="center">
                      </div>
-                     <div id="scTextAlignRight" data-align="right"
+                     <div id="scButtonTextAlignRight" data-align="right"
                         class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
 
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
                            class=" alignment-icon   sc-mx-auto" alt="right">
                      </div>
-                     <div id="scTextAlignJustify" data-align="justify"
+                     <div id="scButtonTextAlignJustify" data-align="justify"
                         class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
 
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
@@ -207,31 +211,8 @@ export function WidgetButtonSection() {
                   <div id="scLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
-                     ${LetterSpacing?.map((gap) => `
-                     <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm" data-value="${gap}">${gap}
-                     </div>
-                     `).join("")}
-                  </div>
-               </div>
-               <div class="sc-flex sc-text-color-white sc-px-1 
-         sc-rounded-6px sc-border sc-border-solid sc-border-585858 
-         sc-items-center ">
-                  <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
-            sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
-            ">
-                     <input type="text" id="scLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
-               sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
-                     <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
-                        <img id="scLetterSpacingDropdown" loading="lazy"
-                           src="https://i.ibb.co.com/G460VVdR/Vector.png" style="width: 15px;"
-                           class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mx-auto sc-cursor-pointer">
-                     </div>
-                  </div>
-                  <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-            sc-rounded-6px sc-border sc-border-585858 sc-absolute 
-            sc-mt-1">
                      ${LetterSpacing?.map(
-                     (gap) => `
+                       (gap) => `
                      <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm" data-value="${gap}">${gap}
                      </div>
                      `
@@ -255,13 +236,9 @@ export function WidgetButtonSection() {
                      <p class="sc-universal sc-roboto sc-text-sm">ag</p>
                   </div>
                   <div id="scTextAlignRight" data-align="right"
-                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
 
                      <p class="sc-universal sc-roboto sc-text-sm">Ag</p>
-                  </div>
-                  <div id="scTextAlignJustify" data-align="justify"
-                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
-                     <p class="sc-universal sc-roboto sc-text-sm">AG</p>
                   </div>
                </div>
             </div>
