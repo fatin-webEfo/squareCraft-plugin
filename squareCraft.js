@@ -72,6 +72,9 @@
     const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
     const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
     const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
+    const { initButtonFontColorPaletteToggle } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
+    );
     const { initButtonStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
 
     const themeColors = await getSquarespaceThemeStyles();
@@ -82,6 +85,7 @@
         initButtonStyles(selectedElement);
       }
       const trigger = event.target.closest("#border-color-select");
+      const triggerButtonFont = event.target.closest("#buttonFontColorPalate");
 
       if (trigger) {
         console.log("✅ border-color-select clicked");
@@ -90,6 +94,15 @@
         }, 100);
         return;
       }
+
+       if (triggerButtonFont) {
+         setTimeout(() => {
+           initButtonFontColorPaletteToggle(themeColors);
+         }, 100);
+         return;
+       }
+
+
       setTimeout(initImageSectionControls, 100);
       const clickedBlock = event.target.closest('[id^="block-"]');
       if (clickedBlock) {
