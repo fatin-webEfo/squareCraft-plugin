@@ -15,6 +15,18 @@
   box-sizing: border-box !important;
   flex-shrink: 0 !important;
 }
+.sc-text-upper {
+  text-transform: uppercase !important;
+}
+
+.sc-text-lower {
+  text-transform: lowercase !important;
+}
+
+.sc-text-capitalize {
+  text-transform: capitalize !important;
+}
+
 
 .sc-gap-3 {
   gap: 0.1875rem !important;

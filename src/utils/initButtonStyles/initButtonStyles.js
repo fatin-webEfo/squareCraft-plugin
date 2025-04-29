@@ -99,18 +99,30 @@ export function initButtonStyles(selectedButtonElement) {
     });
   }
 
-  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(
-    (id) => {
-      const transformButton = document.getElementById(id);
-      if (transformButton) {
-        transformButton.addEventListener("click", () => {
-          let transform = "none";
-          if (id === "scButtonAllCapital") transform = "uppercase";
-          if (id === "scButtonAllSmall") transform = "lowercase";
-          if (id === "scButtonFirstCapital") transform = "capitalize";
-          updateExternalStyles("text-transform", transform);
-        });
-      }
-    }
+ ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(id => {
+  const transformButton = document.getElementById(id);
+  if (transformButton) {
+    transformButton.addEventListener("click", () => {
+      const transformClassMap = {
+        scButtonAllCapital: "sc-text-upper",
+        scButtonAllSmall: "sc-text-lower",
+        scButtonFirstCapital: "sc-text-capitalize"
+      };
+      const newClass = transformClassMap[id];
+
+      const spans = Array.from(document.querySelectorAll(
+        `a.${buttonTypeClass} .sqs-html span, 
+         button.${buttonTypeClass} .sqs-add-to-cart-button-inner, 
+         button.${buttonTypeClass} span`
+      ));
+
+      spans.forEach(span => {
+        span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+        span.classList.add(newClass);
+      });
+    });
+  }
+});
+
   );
 }
