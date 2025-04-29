@@ -11,7 +11,7 @@ export function WidgetButtonSection() {
 
 
    return `
-     <div id="buttonSection">
+      <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -161,37 +161,6 @@ export function WidgetButtonSection() {
             <div class=" sc-flex  sc-gap-2 ">
 
 
-               <div class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
-                  <div class="sc-flex sc-items-center  ">
-
-                     <div id="scButtonTextAlignLeft" data-align="left"
-                        class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
-
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
-                           class=" alignment-icon   sc-mx-auto" alt="left">
-                     </div>
-                     <div id="scButtonTextAlignCenter" data-align="center"
-                        class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
-
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
-                           class=" alignment-icon   sc-mx-auto" alt="center">
-                     </div>
-                     <div id="scButtonTextAlignRight" data-align="right"
-                        class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
-
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
-                           class=" alignment-icon   sc-mx-auto" alt="right">
-                     </div>
-                     <div id="scButtonTextAlignJustify" data-align="justify"
-                        class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
-
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
-                           class=" alignment-icon   sc-mx-auto" alt="justify">
-                     </div>
-
-                  </div>
-               </div>
-
 
                <div class="sc-flex sc-text-color-white sc-px-1 
                sc-rounded-6px sc-border sc-border-solid sc-border-585858 
@@ -219,29 +188,29 @@ export function WidgetButtonSection() {
                      ).join("")}
                   </div>
                </div>
-
-            </div>
-
-            <div class="sc-flex sc-col-span-6 sc-mt-2 sc-justify-between  sc-items-center ">
+ <div class="sc-flex sc-col-span-6 sc-justify-between  sc-items-center ">
                <div class="sc-flex sc-items-center  ">
 
-                  <div id="scTextAlignLeft" data-align="left"
-                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                  <div id="scButtonAllCapital" 
+                     class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
 
                      <p class="sc-universal sc-roboto sc-text-sm">AG</p>
                   </div>
-                  <div id="scTextAlignCenter" data-align="center"
-                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+                  <div id="scButtonAllSmall" 
+                     class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-cursor-pointer ">
 
                      <p class="sc-universal sc-roboto sc-text-sm">ag</p>
                   </div>
-                  <div id="scTextAlignRight" data-align="right"
-                     class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
+                  <div id="scButtonFirstCapital" 
+                     class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
 
                      <p class="sc-universal sc-roboto sc-text-sm">Ag</p>
                   </div>
                </div>
             </div>
+            </div>
+
+           
             </div>
                <div id="colorButton"
                   class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">

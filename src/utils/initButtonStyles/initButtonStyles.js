@@ -31,7 +31,7 @@ export function initButtonStyles(selectedButtonElement) {
     buttonTypeClass = "sqs-button-element--tertiary";
   }
 
-  function updateExternalStyles(property, value, target = "text") {
+  function updateExternalStyles(property, value) {
     const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
 
@@ -42,23 +42,19 @@ export function initButtonStyles(selectedButtonElement) {
     }
 
     const textSelectors = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
-    const containerSelectors = `a.${buttonTypeClass}, button.${buttonTypeClass}`;
-
-    let selector = target === "container" ? containerSelectors : textSelectors;
-
     let rules = styleTag.innerHTML
       .split("}")
       .filter(Boolean)
       .map((rule) => rule + "}");
-    let existingRule = rules.find((r) => r.includes(selector));
+    let existingRule = rules.find((r) => r.includes(textSelectors));
 
     if (existingRule) {
       let updatedRule = existingRule
         .replace(new RegExp(`${property}:.*?;`, "g"), "")
         .replace("}", ` ${property}: ${value} !important; }`);
-      rules = rules.map((r) => (r.includes(selector) ? updatedRule : r));
+      rules = rules.map((r) => (r.includes(textSelectors) ? updatedRule : r));
     } else {
-      rules.push(`${selector} { ${property}: ${value} !important; }`);
+      rules.push(`${textSelectors} { ${property}: ${value} !important; }`);
     }
 
     styleTag.innerHTML = rules.join("\n");
@@ -103,18 +99,18 @@ export function initButtonStyles(selectedButtonElement) {
     });
   }
 
-  [
-    "scButtonTextAlignLeft",
-    "scButtonTextAlignCenter",
-    "scButtonTextAlignRight",
-    "scButtonTextAlignJustify",
-  ].forEach((id) => {
-    const alignButton = document.getElementById(id);
-    if (alignButton) {
-      alignButton.addEventListener("click", () => {
-        const align = alignButton.getAttribute("data-align");
-        updateExternalStyles("text-align", align, "container");
-      });
+  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(
+    (id) => {
+      const transformButton = document.getElementById(id);
+      if (transformButton) {
+        transformButton.addEventListener("click", () => {
+          let transform = "none";
+          if (id === "scButtonAllCapital") transform = "uppercase";
+          if (id === "scButtonAllSmall") transform = "lowercase";
+          if (id === "scButtonFirstCapital") transform = "capitalize";
+          updateExternalStyles("text-transform", transform);
+        });
+      }
     }
-  });
+  );
 }
