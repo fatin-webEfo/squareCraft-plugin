@@ -130,4 +130,28 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       });
   }
 
+    const buttonFontColorTrigger = document.getElementById(
+      "buttonFontColorPalate"
+    );
+    const buttonFontColorPalette = document.getElementById(
+      "button-font-color-palette"
+    );
+
+    if (buttonFontColorTrigger && buttonFontColorPalette) {
+      buttonFontColorTrigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        buttonFontColorPalette.classList.toggle("sc-hidden");
+      });
+
+      document.addEventListener("click", (event) => {
+        if (
+          !buttonFontColorTrigger.contains(event.target) &&
+          !buttonFontColorPalette.contains(event.target)
+        ) {
+          buttonFontColorPalette.classList.add("sc-hidden");
+        }
+      });
+    }
+
+
 }
