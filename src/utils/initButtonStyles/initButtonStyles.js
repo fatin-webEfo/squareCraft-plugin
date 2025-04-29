@@ -6,7 +6,7 @@ export function initButtonStyles(selectedButtonElement) {
   const fontWeightOptions = document.getElementById(
     "scButtonFontWeightOptions"
   );
-  const letterSpacingInput = document.getElementById("scLetterSpacingInput");
+  const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
   const buttonContainer = selectedButtonElement.querySelector(
