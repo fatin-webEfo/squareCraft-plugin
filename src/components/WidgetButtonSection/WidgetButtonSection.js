@@ -155,7 +155,7 @@ export function WidgetButtonSection() {
                         class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center  ">
                         <div
                            class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center  sc-items-center sc-rounded-6px">
-                           <input type="text" id="scFontSizeInput" value="16"
+                           <input type="text" id="scButtonFontSizeInput" value="16"
                               class="sc-font-size-input sc-font-light sc-z-99999 sc-text-sm sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
                            <div class="sc-v-line"></div>
                            <div class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
