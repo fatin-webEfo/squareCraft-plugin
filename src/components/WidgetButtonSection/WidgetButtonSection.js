@@ -248,7 +248,7 @@ export function WidgetButtonSection() {
                      ).join("")}
                   </div>
                </div>
- <div class="sc-flex sc-col-span-6 sc-justify-between  sc-items-center ">
+           <div class="sc-flex sc-col-span-6 sc-justify-between  sc-items-center ">
                <div class="sc-flex sc-items-center  ">
 
                   <div id="scButtonAllCapital" 

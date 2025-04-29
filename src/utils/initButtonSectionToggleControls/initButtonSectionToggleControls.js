@@ -96,4 +96,38 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
   });
 }
 
+  const buttonLetterSpacingSelect = document.getElementById(
+    "scButtonLetterSpacingSelect"
+  );
+  const buttonLetterSpacingOptions = document.getElementById(
+    "scButtonLetterSpacingOptions"
+  );
+  const buttonLetterSpacingInput = document.getElementById(
+    "scButtonLetterSpacingInput"
+  );
+
+  if (buttonLetterSpacingSelect && buttonLetterSpacingOptions) {
+    buttonLetterSpacingSelect.addEventListener("click", (event) => {
+      event.stopPropagation();
+      buttonLetterSpacingOptions.classList.toggle("sc-hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!buttonLetterSpacingSelect.contains(event.target)) {
+        buttonLetterSpacingOptions.classList.add("sc-hidden");
+      }
+    });
+
+    buttonLetterSpacingOptions
+      .querySelectorAll(".sc-dropdown-item")
+      .forEach((item) => {
+        item.addEventListener("click", () => {
+          const selectedSpacing = item.getAttribute("data-value");
+          buttonLetterSpacingInput.value = selectedSpacing;
+          buttonLetterSpacingOptions.classList.add("sc-hidden");
+          buttonLetterSpacingInput.dispatchEvent(new Event("input"));
+        });
+      });
+  }
+
 }
