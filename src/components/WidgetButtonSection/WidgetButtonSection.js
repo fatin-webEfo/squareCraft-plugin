@@ -1,16 +1,76 @@
 export function WidgetButtonSection() {
-   const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-   const fontSizes = [
-      "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-      "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-      "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
-      "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
-      "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"
-    ]
-    
+  const ButtonLetterSpacing = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ];
+  const fontSizes = [
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+  ];
 
-
-   return `
+  return `
       <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
@@ -168,19 +228,19 @@ export function WidgetButtonSection() {
                   <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
                   sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
                   ">
-                     <input type="text" id="scLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
+                     <input type="text" id="scButtonLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
                      sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
                      <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
-                        <img id="scLetterSpacingDropdown" loading="lazy"
+                        <img id="scButtonLetterSpacingDropdown" loading="lazy"
                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
                            style="width: 12px;"
                            class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mt-1 sc-mx-auto sc-cursor-pointer">
                      </div>
                   </div>
-                  <div id="scLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                  <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
-                     ${LetterSpacing?.map(
+                     ${ButtonLetterSpacing?.map(
                        (gap) => `
                      <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm" data-value="${gap}">${gap}
                      </div>
@@ -782,5 +842,4 @@ export function WidgetButtonSection() {
             <div class="sc-mt-4"></div>
          </div>
    `;
- }
- 
+}
