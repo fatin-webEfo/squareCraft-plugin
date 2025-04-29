@@ -71,7 +71,7 @@ export function WidgetButtonSection() {
   ];
 
   return `
-      <div id="buttonSection">
+    <div id="buttonSection">
             <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -168,7 +168,7 @@ export function WidgetButtonSection() {
                                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                            </div>
                         </div>
-                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                        <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                      sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                      sc-mt-1">
                            ${fontSizes
@@ -223,21 +223,21 @@ export function WidgetButtonSection() {
 
 
                <div class="sc-flex sc-text-color-white sc-px-1 
-               sc-rounded-6px sc-border sc-border-solid sc-border-585858 
+               sc-rounded-6px sc-relative sc-border sc-border-solid sc-border-585858 
                sc-items-center ">
                   <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
                   sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
                   ">
                      <input type="text" id="scButtonLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
                      sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
-                     <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+                     <div id="scButtonLetterSpacingSelect" class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
                         <img id="scButtonLetterSpacingDropdown" loading="lazy"
                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
                            style="width: 12px;"
                            class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mt-1 sc-mx-auto sc-cursor-pointer">
                      </div>
                   </div>
-                  <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                  <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
                      ${ButtonLetterSpacing?.map(
