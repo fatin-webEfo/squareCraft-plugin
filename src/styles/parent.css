@@ -1549,6 +1549,10 @@
   width: 230px !important;
   z-index: 99999 !important;
 }
+#button-font-color-palette{
+    width: 230px !important;
+  z-index: 99999 !important;
+}
 
 #color-selection-field {
   width: 100% !important;
@@ -1570,6 +1574,17 @@
   border: 2px solid #fff !important;
 }
 
+.sc-button-color-arrow{
+   position: absolute !important;
+  bottom: 100% !important;
+  right: 3% !important;
+  transform: translateX(-50%) !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-bottom: 6px solid #c47206 !important;
+}
 .sc-color-arrow {
   position: absolute !important;
   bottom: 100% !important;
