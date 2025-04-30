@@ -21,6 +21,15 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   );
   console.log("🎨 themeColors:", themeColors);
 
+  function applyButtonBackgroundColor(color) {
+    if (!selectedElement) return;
+    const button = selectedElement.querySelector("a.sqs-block-button-element");
+    if (!button) return;
+  
+    button.style.backgroundColor = color;
+    button.dataset.scButtonBg = color;
+  }
+  
 
   if (
     !palette ||
@@ -228,6 +237,8 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   
     swatch.addEventListener("click", () => {
       renderVerticalColorShades(cleanColor);
+      applyButtonBackgroundColor(color);
+
     });
   
     container.appendChild(swatch);
