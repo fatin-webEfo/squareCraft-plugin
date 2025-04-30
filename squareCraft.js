@@ -86,7 +86,6 @@
           initButtonStyles(selectedElement);
         }
         const trigger = event.target.closest("#border-color-select");
-        const triggerButtonFont = event.target.closest("#buttonFontColorPalate") || event.target.closest("#buttonFontColorCode")?.parentElement;
 
         if (trigger) {
           console.log("✅ border-color-select clicked");
@@ -96,14 +95,10 @@
           return;
         }
 
-        if (triggerButtonFont) {
-          console.log("🎯 Triggering font color palette");
-
           setTimeout(() => {
             initButtonFontColorPaletteToggle(themeColors);
           }, 100);
-          return;
-        }
+       
 
 
         setTimeout(initImageSectionControls, 100);

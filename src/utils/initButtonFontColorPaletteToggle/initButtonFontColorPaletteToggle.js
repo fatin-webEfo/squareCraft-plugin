@@ -18,7 +18,8 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   );
   const transparencyBullet = document.getElementById(
     "button-color-transparency-bar"
-  );console.log("🎨 themeColors:", themeColors);
+  );
+  console.log("🎨 themeColors:", themeColors);
 
 
   if (
@@ -216,6 +217,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
 
   Object.values(themeColors).forEach((color) => {
     const cleanColor = color.replace(/['"]+/g, '');
+    console.log("🌈 Adding swatch:", cleanColor);
     const swatch = document.createElement("div");
     swatch.className = "sc-border-colors sc-cursor-pointer";
     swatch.style.backgroundColor = cleanColor;
