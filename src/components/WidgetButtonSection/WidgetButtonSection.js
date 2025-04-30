@@ -209,7 +209,7 @@ export function WidgetButtonSection() {
                 </div>
                 
 
-             <div class="sc-col-span-5 sc-z-99999 sc-relative ">
+             <div class="sc-col-span-5 sc-z-9999 sc-relative ">
   <div class="sc-flex sc-justify-between sc-items-center sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-rounded-6px sc-py-0_5">
     <p id="buttonFontColorCode" class="sc-text-sm sc-roboto sc-universal">Select</p>
     <div id="buttonFontColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
@@ -282,7 +282,7 @@ export function WidgetButtonSection() {
                            class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mt-1 sc-mx-auto sc-cursor-pointer">
                      </div>
                   </div>
-                  <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
+                  <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
                      ${ButtonLetterSpacing?.map(
