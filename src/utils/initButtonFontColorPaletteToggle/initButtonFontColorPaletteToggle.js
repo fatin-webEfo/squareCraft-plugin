@@ -32,10 +32,15 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       return;
     }
   
-    button.style.backgroundColor = color;
+    button.style.setProperty("background-color", color, "important");
     button.dataset.scButtonBg = color;
-    console.log("✅ Button background applied:", color);
+  
+    console.log("✅ Button background applied with !important:", color);
+    console.log("Button classes:", button.className);
+console.log("Current inline style:", button.style.backgroundColor);
+
   }
+  
   
   
 
