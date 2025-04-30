@@ -226,6 +226,8 @@ export function initButtonFontColorPaletteToggle(themeColors) {
         document.onmousemove = null;
         document.onmouseup = null;
       };
+      applyButtonBackgroundColor(finalColor);
+
     };
   }
 
@@ -332,7 +334,6 @@ export function initButtonFontColorPaletteToggle(themeColors) {
           colorCode.textContent = finalColor;
         }
   
-        // ✅ Dynamically apply background color during drag
         applyButtonBackgroundColor(finalColor);
       };
   
