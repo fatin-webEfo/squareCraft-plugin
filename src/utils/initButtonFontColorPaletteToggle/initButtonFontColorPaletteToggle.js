@@ -18,7 +18,8 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   );
   const transparencyBullet = document.getElementById(
     "button-color-transparency-bar"
-  );
+  );console.log("🎨 themeColors:", themeColors);
+
 
   if (
     !palette ||
