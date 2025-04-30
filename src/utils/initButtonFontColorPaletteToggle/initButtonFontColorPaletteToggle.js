@@ -26,20 +26,34 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       return;
     }
   
+    const blockId = selectedElement.id;
     const button = selectedElement.querySelector("a.sqs-block-button-element");
     if (!button) {
       console.warn("⚠️ No button found in selected block.");
       return;
     }
   
-    button.style.setProperty("background-color", color, "important");
+    const styleId = `sc-style-${blockId}`;
+    let styleTag = document.getElementById(styleId);
+  
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+  
+    const css = `
+      #${blockId} a.sqs-block-button-element {
+        background-color: ${color} !important;
+      }
+    `;
+    styleTag.textContent = css;
+  
     button.dataset.scButtonBg = color;
   
-    console.log("✅ Button background applied with !important:", color);
-    console.log("Button classes:", button.className);
-console.log("Current inline style:", button.style.backgroundColor);
-
+    console.log("✅ Button background applied via <style>:", color);
   }
+  
   
   
   
