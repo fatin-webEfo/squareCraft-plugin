@@ -21,13 +21,22 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   );
 
   function applyButtonBackgroundColor(color) {
-    if (!selectedElement) return;
+    if (!selectedElement) {
+      console.warn("⚠️ No block selected. Cannot apply button background.");
+      return;
+    }
+  
     const button = selectedElement.querySelector("a.sqs-block-button-element");
-    if (!button) return;
+    if (!button) {
+      console.warn("⚠️ No button found in selected block.");
+      return;
+    }
   
     button.style.backgroundColor = color;
     button.dataset.scButtonBg = color;
+    console.log("✅ Button background applied:", color);
   }
+  
   
 
   if (
