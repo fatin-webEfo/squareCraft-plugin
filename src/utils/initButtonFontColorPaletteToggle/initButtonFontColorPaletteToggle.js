@@ -22,18 +22,19 @@ export function initButtonFontColorPaletteToggle(themeColors) {
 
   function applyButtonBackgroundColor(color) {
     if (!selectedElement) {
-      console.warn("⚠️ No block selected. Cannot apply button background.");
+      console.warn("⚠️ No block selected.");
       return;
     }
   
     const blockId = selectedElement.id;
-    const button = selectedElement.querySelector("a.sqs-block-button-element");
+    const button = selectedElement.querySelector("a.sqs-button-element--tertiary");
+  
     if (!button) {
-      console.warn("⚠️ No button found in selected block.");
+      console.warn("⚠️ No .sqs-button-element--tertiary found in block.");
       return;
     }
   
-    const styleId = `sc-style-${blockId}`;
+    const styleId = `sc-style-${blockId}-tertiary`;
     let styleTag = document.getElementById(styleId);
   
     if (!styleTag) {
@@ -42,17 +43,23 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       document.head.appendChild(styleTag);
     }
   
-    const css = `
-      #${blockId} a.sqs-block-button-element {
+    styleTag.textContent = `
+      #${blockId} a.sqs-button-element--tertiary {
         background-color: ${color} !important;
+        border-color: ${color} !important;
+      }
+  
+      #${blockId} a.sqs-button-element--tertiary:hover {
+        background-color: ${color} !important;
+        border-color: ${color} !important;
+        filter: brightness(0.95);
       }
     `;
-    styleTag.textContent = css;
   
     button.dataset.scButtonBg = color;
-  
-    console.log("✅ Button background applied via <style>:", color);
+    console.log("✅ Overridden .sqs-button-element--tertiary with:", color);
   }
+  
   
   
   
