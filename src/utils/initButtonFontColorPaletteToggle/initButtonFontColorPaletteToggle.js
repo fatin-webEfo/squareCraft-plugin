@@ -215,20 +215,22 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   if (container.innerHTML.trim() !== "") return;
 
   Object.values(themeColors).forEach((color) => {
+    const cleanColor = color.replace(/['"]+/g, '');
     const swatch = document.createElement("div");
     swatch.className = "sc-border-colors sc-cursor-pointer";
-    swatch.style.backgroundColor = color;
+    swatch.style.backgroundColor = cleanColor;
     swatch.style.width = "18px";
     swatch.style.height = "18px";
     swatch.style.borderRadius = "6px";
-    swatch.title = color;
-
+    swatch.title = cleanColor;
+  
     swatch.addEventListener("click", () => {
-      renderVerticalColorShades(color);
+      renderVerticalColorShades(cleanColor);
     });
-
+  
     container.appendChild(swatch);
   });
+  
 
   function renderVerticalColorShades(baseColor) {
     if (!selectorField) return;
