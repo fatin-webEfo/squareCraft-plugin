@@ -97,14 +97,12 @@
           return;
         }
 
-        if (triggerButtonFont) {
-          console.log("🎯 Triggering font color palette");
+      
 
           setTimeout(() => {
             initButtonFontColorPaletteToggle(themeColors);
           }, 100);
-          return;
-        }
+      
 
 
         setTimeout(initImageSectionControls, 100);

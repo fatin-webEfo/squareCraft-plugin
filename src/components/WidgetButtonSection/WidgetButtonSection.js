@@ -666,7 +666,7 @@ export function WidgetButtonSection() {
                               <div
                                  class="sc-py-1_2px sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                                  <p class="sc-text-sm sc-roboto sc-font-light sc-universal">Select</p>
-                                 <div id="button-border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer">
+                                 <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
                                  </div>
 
                                  <div id="color-palette"
