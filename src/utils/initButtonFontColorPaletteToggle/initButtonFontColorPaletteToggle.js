@@ -19,7 +19,6 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   const transparencyBullet = document.getElementById(
     "button-color-transparency-bar"
   );
-  console.log("🎨 themeColors:", themeColors);
 
   function applyButtonBackgroundColor(color) {
     if (!selectedElement) return;
@@ -226,7 +225,6 @@ export function initButtonFontColorPaletteToggle(themeColors) {
 
   Object.values(themeColors).forEach((color) => {
     const cleanColor = color.replace(/['"]+/g, '');
-    console.log("🌈 Adding swatch:", cleanColor);
     const swatch = document.createElement("div");
     swatch.className = "sc-border-colors sc-cursor-pointer";
     swatch.style.backgroundColor = cleanColor;
@@ -247,7 +245,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
 
   function renderVerticalColorShades(baseColor) {
     if (!selectorField) return;
-
+  
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
     selectorField.style.background = `
@@ -257,37 +255,28 @@ export function initButtonFontColorPaletteToggle(themeColors) {
     selectorField.style.backgroundBlendMode = "multiply";
     selectorField.style.backgroundSize = "100% 100%";
     selectorField.style.backgroundRepeat = "no-repeat";
-
+  
     bullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetX = e.clientX - rect.left;
         let offsetY = e.clientY - rect.top;
-        offsetX = Math.max(
-          0,
-          Math.min(rect.width - bullet.offsetWidth, offsetX)
-        );
-        offsetY = Math.max(
-          0,
-          Math.min(rect.height - bullet.offsetHeight, offsetY)
-        );
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
-
+  
         const percentX = offsetX / rect.width;
         const percentY = offsetY / rect.height;
         const lightness = 50 + percentX * 50;
         const darkness = 100 - percentY * 100;
-        const finalLightness = Math.max(
-          0,
-          Math.min(100, (lightness * darkness) / 100)
-        );
-
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+  
         const h = dynamicHue / 360;
         const s = 1;
         const l = finalLightness / 100;
-
+  
         function hueToRgb(p, q, t) {
           if (t < 0) t += 1;
           if (t > 1) t -= 1;
@@ -296,28 +285,29 @@ export function initButtonFontColorPaletteToggle(themeColors) {
           if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
           return p;
         }
-
+  
         const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         const p = 2 * l - q;
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(
-          g * 255
-        )}, ${Math.round(b * 255)})`;
-
+        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+  
         if (colorCode) {
           colorCode.textContent = finalColor;
         }
+  
+        // ✅ Dynamically apply background color during drag
+        applyButtonBackgroundColor(finalColor);
       };
+  
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
       };
     };
-    applyButtonBackgroundColor(finalColor);
-
   }
+  
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
