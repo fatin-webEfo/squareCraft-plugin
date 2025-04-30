@@ -78,6 +78,7 @@
     const { initButtonStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
 
     const themeColors = await getSquarespaceThemeStyles();
+    console.log("✅ Theme colors fetched:", themeColors);
 
 
     document.body.addEventListener("click", (event) => {
