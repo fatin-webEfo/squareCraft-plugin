@@ -315,6 +315,8 @@ export function initButtonFontColorPaletteToggle(themeColors) {
         document.onmouseup = null;
       };
     };
+    applyButtonBackgroundColor(finalColor);
+
   }
 
   const firstColor = Object.values(themeColors)[0];
