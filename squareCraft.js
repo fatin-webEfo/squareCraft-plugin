@@ -86,7 +86,7 @@
           initButtonStyles(selectedElement);
         }
         const trigger = event.target.closest("#border-color-select");
-        const triggerButtonFont = event.target.closest("#buttonFontColorPalate") || event.target.closest("#buttonFontColorCode")?.parentElement;
+        const triggerButtonFont = event.target.closest("#button-border-color-select")
 
 
         if (trigger) {
