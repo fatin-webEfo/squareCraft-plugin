@@ -1,10 +1,9 @@
-export function initButtonFontColorPaletteToggle(themeColors) {
+export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
   let finalColor = null;
-  let selectedElement = null;
   let selectedHue = 0;
   let selectedLightness = 50;
 
-
+console.log("initButtonFontColorPaletteToggle", themeColors, selectedElement);
   const get = (id) => document.getElementById(id);
 
   const palette = get("buttonFontColorPalate");

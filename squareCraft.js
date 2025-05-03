@@ -95,10 +95,9 @@
           return;
         }
 
-      console.log("✅ border-color-select not clicked", selectedElement);
 
           setTimeout(() => {
-            initButtonFontColorPaletteToggle(themeColors);
+            initButtonFontColorPaletteToggle(themeColors,selectedElement);
           }, 100);
       
 
