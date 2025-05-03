@@ -3,20 +3,14 @@ export function initButtonStyles(selectedButtonElement) {
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
-  const fontWeightOptions = document.getElementById(
-    "scButtonFontWeightOptions"
-  );
+  const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
   const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
-  const buttonContainer = selectedButtonElement.querySelector(
-    ".sqs-block-button-container"
-  );
+  const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
   if (!buttonContainer) return;
 
-  let buttonElement = buttonContainer.querySelector(
-    "a.sqs-block-button-element"
-  );
+  let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element");
   if (!buttonElement) {
     buttonElement = buttonContainer.querySelector(
       "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
@@ -32,32 +26,34 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   function updateExternalStyles(property, value) {
-    const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
+    const styleId = `sc-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
+
+    const selector = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
 
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
-    }
-
-    const textSelectors = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
-    let rules = styleTag.innerHTML
-      .split("}")
-      .filter(Boolean)
-      .map((rule) => rule + "}");
-    let existingRule = rules.find((r) => r.includes(textSelectors));
-
-    if (existingRule) {
-      let updatedRule = existingRule
-        .replace(new RegExp(`${property}:.*?;`, "g"), "")
-        .replace("}", ` ${property}: ${value} !important; }`);
-      rules = rules.map((r) => (r.includes(textSelectors) ? updatedRule : r));
+      styleTag.innerHTML = `${selector} { ${property}: ${value} !important; }`;
     } else {
-      rules.push(`${textSelectors} { ${property}: ${value} !important; }`);
-    }
+      let rules = styleTag.innerHTML
+        .split("}")
+        .filter(Boolean)
+        .map((rule) => rule + "}");
 
-    styleTag.innerHTML = rules.join("\n");
+      const existingRuleIndex = rules.findIndex((r) => r.includes(selector));
+      if (existingRuleIndex !== -1) {
+        let updatedRule = rules[existingRuleIndex]
+          .replace(new RegExp(`${property}:.*?;`, "g"), "")
+          .replace("}", ` ${property}: ${value} !important; }`);
+        rules[existingRuleIndex] = updatedRule;
+      } else {
+        rules.push(`${selector} { ${property}: ${value} !important; }`);
+      }
+
+      styleTag.innerHTML = rules.join("\n");
+    }
   }
 
   if (fontFamilyOptions) {
@@ -99,8 +95,7 @@ export function initButtonStyles(selectedButtonElement) {
     });
   }
 
-["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(
-  (id) => {
+  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
     const transformButton = document.getElementById(id);
     if (transformButton) {
       transformButton.addEventListener("click", () => {
@@ -114,22 +109,16 @@ export function initButtonStyles(selectedButtonElement) {
         const spans = Array.from(
           document.querySelectorAll(
             `a.${buttonTypeClass} .sqs-html span, 
-         button.${buttonTypeClass} .sqs-add-to-cart-button-inner, 
-         button.${buttonTypeClass} span`
+             button.${buttonTypeClass} .sqs-add-to-cart-button-inner, 
+             button.${buttonTypeClass} span`
           )
         );
 
         spans.forEach((span) => {
-          span.classList.remove(
-            "sc-text-upper",
-            "sc-text-lower",
-            "sc-text-capitalize"
-          );
+          span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
           span.classList.add(newClass);
         });
       });
     }
-  }
-);
-
+  });
 }
