@@ -1,5 +1,5 @@
-export function initButtonStyles(selectedButtonElement) {
-  if (!selectedButtonElement) return;
+export function initButtonStyles(selectedElement) {
+  if (!selectedElement) return;
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
@@ -7,7 +7,7 @@ export function initButtonStyles(selectedButtonElement) {
   const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
-  const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
+  const buttonContainer = selectedElement.querySelector(".sqs-block-button-container");
   if (!buttonContainer) return;
 
   let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element") ||

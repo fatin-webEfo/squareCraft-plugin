@@ -34,7 +34,37 @@ export function initBorderColorPaletteToggle(themeColors) {
   }
 
   let currentButtonTypeClass = null;
-
+  function calculateFinalColor(hue, percentX, percentY) {
+    const lightness = 50 + percentX * 50;
+    const darkness = 100 - percentY * 100;
+    const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+    const h = hue / 360;
+    const s = 1;
+    const l = finalLightness / 100;
+  
+    function hueToRgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    }
+  
+    let r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hueToRgb(p, q, h + 1 / 3);
+      g = hueToRgb(p, q, h);
+      b = hueToRgb(p, q, h - 1 / 3);
+    }
+  
+    return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+  }
+  
 document.body.addEventListener("click", (e) => {
   const btn = e.target.closest(
     "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
@@ -135,7 +165,7 @@ document.body.addEventListener("click", (e) => {
           b = hueToRgb(p, q, h - 1 / 3);
         }
     
-      let  finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+        const finalColor = calculateFinalColor(dynamicHue, percentX, percentY);
         console.log("Final color is", finalColor);
     
         if (colorCode) {
@@ -266,7 +296,7 @@ document.body.addEventListener("click", (e) => {
           b = hueToRgb(p, q, h - 1/3);
         }
         
-      let   finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+        const finalColor = calculateFinalColor(dynamicHue, percentX, percentY);
         console.log("Final color is",finalColor);
         
 
