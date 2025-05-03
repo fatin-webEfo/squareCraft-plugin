@@ -197,9 +197,11 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       swatch.style.cssText = `background-color: ${clean}; width: 18px; height: 18px; border-radius: 6px;`;
       swatch.title = clean;
       swatch.onclick = () => {
-        renderVerticalColorShades(clean);
-        applyButtonBackgroundColor(clean); // Apply only selected color
+        finalColor = clean;
+        colorCode.textContent = finalColor;
+        applyButtonBackgroundColor(finalColor);
       };
+      
       container.appendChild(swatch);
     });
   }
