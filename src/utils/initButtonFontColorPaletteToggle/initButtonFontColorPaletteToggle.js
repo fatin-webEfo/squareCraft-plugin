@@ -230,12 +230,12 @@ function applyButtonBackgroundColor(color) {
         if (colorCode) {
           colorCode.textContent = finalColor;
         }
+        applyButtonBackgroundColor(finalColor);
       };
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
       };
-      applyButtonBackgroundColor(finalColor);
 
     };
   }
