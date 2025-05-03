@@ -143,6 +143,7 @@ document.body.addEventListener("click", (e) => {
           if (currentButtonTypeClass) {
             updateButtonStyleByType(currentButtonTypeClass, finalColor);
           }
+          console.log("Current button type class is", colorCode);
         }
         
       };
@@ -274,6 +275,7 @@ document.body.addEventListener("click", (e) => {
           if (currentButtonTypeClass) {
             updateButtonStyleByType(currentButtonTypeClass, finalColor);
           }
+          console.log("Current button type class is", colorCode);
         }
         
       };
