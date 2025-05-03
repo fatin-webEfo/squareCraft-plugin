@@ -1,5 +1,5 @@
 export function initBorderColorPaletteToggle(themeColors) {
-  let finalColor = null;
+  var finalColor = null;
   const palette = document.getElementById("color-palette");
   const container = document.getElementById("border-colors");
   const selectorField = document.getElementById("color-selection-field");
@@ -264,7 +264,7 @@ document.body.addEventListener("click", (e) => {
           b = hueToRgb(p, q, h - 1/3);
         }
         
-        finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+         finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
         console.log("Final color is",finalColor);
         
 
