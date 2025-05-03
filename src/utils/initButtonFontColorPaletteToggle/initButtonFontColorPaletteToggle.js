@@ -29,21 +29,30 @@ function applyButtonBackgroundColor(color) {
   }
 
   const blockId = selectedElement.id;
-  const button = selectedElement.querySelector(
-    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-  );
 
-  if (!button) {
+  const buttonTypes = [
+    "sqs-button-element--primary",
+    "sqs-button-element--secondary",
+    "sqs-button-element--tertiary"
+  ];
+
+  let buttonType = null;
+
+  for (let type of buttonTypes) {
+    if (selectedElement.querySelector(`a.${type}`)) {
+      buttonType = type;
+      break;
+    }
+  }
+
+  if (!buttonType) {
     console.warn("⚠️ No Squarespace button found in block.");
     return;
   }
 
-  let buttonType = "tertiary";
-  if (button.classList.contains("sqs-button-element--primary")) buttonType = "primary";
-  else if (button.classList.contains("sqs-button-element--secondary")) buttonType = "secondary";
-  else if (button.classList.contains("sqs-button-element--tertiary")) buttonType = "tertiary";
+  const buttonTypeShort = buttonType.split("--")[1]; // 'primary', 'secondary', or 'tertiary'
+  const styleId = `sc-style-${blockId}-${buttonTypeShort}`;
 
-  const styleId = `sc-style-${blockId}-${buttonType}`;
   let styleTag = document.getElementById(styleId);
   if (!styleTag) {
     styleTag = document.createElement("style");
@@ -52,24 +61,28 @@ function applyButtonBackgroundColor(color) {
   }
 
   styleTag.textContent = `
-  #${blockId} .sqs-button-element--${buttonType} {
-    background-color: ${color} !important;
-    background: ${color} !important;
-    border-color: ${color} !important;
-  }
+    #${blockId} .${buttonType} {
+      background-color: ${color} !important;
+      background: ${color} !important;
+      border-color: ${color} !important;
+    }
 
-  #${blockId} .sqs-button-element--${buttonType}:hover {
-    background-color: ${color} !important;
-    background: ${color} !important;
-    border-color: ${color} !important;
-    filter: brightness(0.95);
-  }
-`;
+    #${blockId} .${buttonType}:hover {
+      background-color: ${color} !important;
+      background: ${color} !important;
+      border-color: ${color} !important;
+      filter: brightness(0.95);
+    }
+  `;
 
+  const matchingButtons = selectedElement.querySelectorAll(`a.${buttonType}`);
+  matchingButtons.forEach(btn => {
+    btn.dataset.scButtonBg = color;
+  });
 
-  button.dataset.scButtonBg = color;
-  console.log(`✅ Overridden .sqs-button-element--${buttonType} with:`, color);
+  console.log(`✅ Updated all ".${buttonType}" buttons inside #${blockId} with:`, color);
 }
+
 
   
   
