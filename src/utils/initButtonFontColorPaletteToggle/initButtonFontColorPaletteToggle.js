@@ -52,16 +52,20 @@ function applyButtonBackgroundColor(color) {
   }
 
   styleTag.textContent = `
-    #${blockId} a.sqs-button-element--${buttonType} {
-      background-color: ${color} !important;
-      border-color: ${color} !important;
-    }
-    #${blockId} a.sqs-button-element--${buttonType}:hover {
-      background-color: ${color} !important;
-      border-color: ${color} !important;
-      filter: brightness(0.95);
-    }
-  `;
+  #${blockId} .sqs-button-element--${buttonType} {
+    background-color: ${color} !important;
+    background: ${color} !important;
+    border-color: ${color} !important;
+  }
+
+  #${blockId} .sqs-button-element--${buttonType}:hover {
+    background-color: ${color} !important;
+    background: ${color} !important;
+    border-color: ${color} !important;
+    filter: brightness(0.95);
+  }
+`;
+
 
   button.dataset.scButtonBg = color;
   console.log(`✅ Overridden .sqs-button-element--${buttonType} with:`, color);
