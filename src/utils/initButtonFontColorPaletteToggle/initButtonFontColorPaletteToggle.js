@@ -1,4 +1,5 @@
 export function initButtonFontColorPaletteToggle(themeColors) {
+  let finalColor = null
   const palette = document.getElementById("buttonFontColorPalate");
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
@@ -28,7 +29,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
   
     const blockId = selectedElement.id;
     const button = selectedElement.querySelector("a.sqs-button-element--tertiary");
-  
+  console.log("color code", colorCode.value)
     if (!button) {
       console.warn("⚠️ No .sqs-button-element--tertiary found in block.");
       return;
@@ -135,7 +136,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(
+         finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(
           g * 255
         )}, ${Math.round(b * 255)})`;
 

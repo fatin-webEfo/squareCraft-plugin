@@ -5,110 +5,171 @@ export function initBorderColorPaletteToggle(themeColors) {
   const bullet = document.getElementById("color-selection-bar");
   const colorCode = document.getElementById("color-code");
   const transparencyCount = document.getElementById("color-transparency-count");
+  const allColorField = document.getElementById("all-color-selction-field");
+  const allColorBullet = document.getElementById("all-color-selction-bar");
   const transparencyField = document.getElementById("color-transparency-field");
   const transparencyBullet = document.getElementById("color-transparency-bar");
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
-console.log("initBorderColorPaletteToggle called", colorCode.value);
+
   let dynamicHue = 0;
-  let currentButtonTypeClass = null;
+
+  if (allColorField) {
+    allColorField.style.background = `linear-gradient(to bottom, 
+      hsl(0, 100%, 50%), 
+      hsl(60, 100%, 50%), 
+      hsl(120, 100%, 50%), 
+      hsl(180, 100%, 50%), 
+      hsl(240, 100%, 50%), 
+      hsl(300, 100%, 50%), 
+      hsl(360, 100%, 50%)
+    )`;
+  }
 
   if (transparencyField) {
-    transparencyField.style.background = `linear-gradient(to bottom, hsla(0, 100%, 50%, 1), hsla(0, 100%, 50%, 0))`;
+    transparencyField.style.background = `linear-gradient(to bottom, 
+      hsla(0, 100%, 50%, 1), 
+      hsla(0, 100%, 50%, 0)
+    )`;
   }
 
-  function calculateFinalColor(hue, percentX, percentY) {
-    const lightness = 50 + percentX * 50;
-    const darkness = 100 - percentY * 100;
-    const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
-    const h = hue / 360, s = 1, l = finalLightness / 100;
+  if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
+    allColorBullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = allColorField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
+        allColorBullet.style.top = `${offsetY}px`;
 
-    function hueToRgb(p, q, t) {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    }
+        const percentage = offsetY / rect.height;
+        dynamicHue = Math.round(360 * percentage);
 
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    const r = hueToRgb(p, q, h + 1 / 3);
-    const g = hueToRgb(p, q, h);
-    const b = hueToRgb(p, q, h - 1 / 3);
-    return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-  }
+        const h = dynamicHue / 360;
+        const l = 0.5; // center lightness
+        const s = 1;
 
-  function updateButtonStyleByType(buttonTypeClass, color) {
-    if (!buttonTypeClass || !color) return;
+        function hueToRgb(p, q, t) {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1 / 6) return p + (q - p) * 6 * t;
+          if (t < 1 / 2) return q;
+          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+          return p;
+        }
 
-    const styleId = `sc-style-${buttonTypeClass}`;
-    let styleTag = document.getElementById(styleId);
+        let r, g, b;
+        if (s === 0) {
+          r = g = b = l;
+        } else {
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hueToRgb(p, q, h + 1 / 3);
+          g = hueToRgb(p, q, h);
+          b = hueToRgb(p, q, h - 1 / 3);
+        }
 
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
+        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
 
-    const selectorMap = {
-      "sqs-button-element--primary": `.primary-button-style-solid .sqs-button-element--primary`,
-      "sqs-button-element--secondary": `.secondary-button-style-solid .sqs-button-element--secondary`,
-      "sqs-button-element--tertiary": `.tertiary-button-style-solid .sqs-button-element--tertiary`
+        if (colorCode) {
+          colorCode.textContent = finalColor;
+        }
+
+
+        if (transparencyField) {
+          transparencyField.style.background = `linear-gradient(to bottom, 
+            hsla(${dynamicHue}, 100%, 50%, 1), 
+            hsla(${dynamicHue}, 100%, 50%, 0)
+          )`;
+        }
+
+        if (selectorField) {
+          selectorField.innerHTML = "";
+          selectorField.appendChild(bullet);
+
+          selectorField.style.background = `
+            linear-gradient(
+              to right,
+              hsl(${dynamicHue}, 100%, 50%),
+              white
+            ),
+            linear-gradient(
+              to top,
+              black,
+              transparent
+            )
+          `;
+          selectorField.style.backgroundBlendMode = "multiply";
+          selectorField.style.backgroundSize = "100% 100%";
+          selectorField.style.backgroundRepeat = "no-repeat";
+        }
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
     };
-
-    styleTag.innerHTML = `
-      ${selectorMap[buttonTypeClass]} {
-        background: ${color} !important;
-        border-color: ${color} !important;
-        color: white !important;
-        z-index: 9999 !important;
-        position: relative !important;
-      }
-    `;
   }
 
-  document.body.addEventListener("click", (e) => {
-    const btn = e.target.closest("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (btn) {
-      if (btn.classList.contains("sqs-button-element--primary")) currentButtonTypeClass = "sqs-button-element--primary";
-      if (btn.classList.contains("sqs-button-element--secondary")) currentButtonTypeClass = "sqs-button-element--secondary";
-      if (btn.classList.contains("sqs-button-element--tertiary")) currentButtonTypeClass = "sqs-button-element--tertiary";
-    }
-  });
+  if (selectorField && bullet) {
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
 
-  function applyBulletMovement(e) {
-    const rect = selectorField.getBoundingClientRect();
-    let offsetX = e.clientX - rect.left;
-    let offsetY = e.clientY - rect.top;
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
 
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
+        const percentX = offsetX / rect.width;
+        const percentY = offsetY / rect.height;
 
-    const percentX = offsetX / rect.width;
-    const percentY = offsetY / rect.height;
-    const finalColor = calculateFinalColor(dynamicHue, percentX, percentY);
+        const lightness = 50 + percentX * 50;
+        const darkness = 100 - percentY * 100;
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
 
-    if (colorCode) {
-      colorCode.textContent = finalColor;
-      if (currentButtonTypeClass) {
-        updateButtonStyleByType(currentButtonTypeClass, finalColor);
-      }
-    }
-  }
+        const h = dynamicHue / 360;
+        const l = finalLightness / 100;
+        const s = 1;
 
-  bullet.onmousedown = function (e) {
-    e.preventDefault();
-    document.onmousemove = applyBulletMovement;
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
+        function hueToRgb(p, q, t) {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1 / 6) return p + (q - p) * 6 * t;
+          if (t < 1 / 2) return q;
+          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+          return p;
+        }
+
+        let r, g, b;
+        if (s === 0) {
+          r = g = b = l;
+        } else {
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hueToRgb(p, q, h + 1 / 3);
+          g = hueToRgb(p, q, h);
+          b = hueToRgb(p, q, h - 1 / 3);
+        }
+
+        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+
+        if (colorCode) {
+          colorCode.textContent = finalColor;
+        }
+
+
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
     };
-  };
+  }
 
   if (transparencyField && transparencyBullet) {
     transparencyBullet.onmousedown = function (e) {
@@ -120,34 +181,12 @@ console.log("initBorderColorPaletteToggle called", colorCode.value);
         transparencyBullet.style.top = `${offsetY}px`;
 
         const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
+
         if (transparencyCount) {
           transparencyCount.textContent = `${transparencyPercent}%`;
         }
       };
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-  }
-
-  function renderVerticalColorShades(baseColor) {
-    if (!selectorField) return;
-    selectorField.innerHTML = "";
-    selectorField.appendChild(bullet);
-
-    selectorField.style.background = `
-      linear-gradient(to right, ${baseColor}, white),
-      linear-gradient(to top, black, transparent)
-    `;
-    selectorField.style.backgroundBlendMode = "multiply";
-    selectorField.style.backgroundSize = "100% 100%";
-    selectorField.style.backgroundRepeat = "no-repeat";
-
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
-      document.onmousemove = applyBulletMovement;
-      document.onmouseup = () => {
+      document.onmouseup = function () {
         document.onmousemove = null;
         document.onmouseup = null;
       };
@@ -173,6 +212,86 @@ console.log("initBorderColorPaletteToggle called", colorCode.value);
 
     container.appendChild(swatch);
   });
+
+  function renderVerticalColorShades(baseColor) {
+    if (!selectorField) return;
+
+    selectorField.innerHTML = "";
+    selectorField.appendChild(bullet);
+
+    selectorField.style.background = `
+      linear-gradient(
+        to right,
+        ${baseColor},
+        white
+      ),
+      linear-gradient(
+        to top,
+        black,
+        transparent
+      )
+    `;
+    selectorField.style.backgroundBlendMode = "multiply";
+    selectorField.style.backgroundSize = "100% 100%";
+    selectorField.style.backgroundRepeat = "no-repeat";
+
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
+
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
+
+        const percentX = offsetX / rect.width;
+        const percentY = offsetY / rect.height;
+
+        const lightness = 50 + percentX * 50;
+        const darkness = 100 - percentY * 100;
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+
+        const h = dynamicHue / 360;
+        const s = 1;
+        const l = finalLightness / 100;
+        
+        function hueToRgb(p, q, t) {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        }
+        
+        let r, g, b;
+        if (s === 0) {
+          r = g = b = l;
+        } else {
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hueToRgb(p, q, h + 1/3);
+          g = hueToRgb(p, q, h);
+          b = hueToRgb(p, q, h - 1/3);
+        }
+        
+        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+        
+
+        if (colorCode) {
+          colorCode.textContent = finalColor;
+        }
+      };
+      document.onmouseup = function () {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  }
 
   const firstColor = Object.values(themeColors)[0];
   if (firstColor) {
