@@ -78,17 +78,6 @@ export function initButtonFontColorPaletteToggle(themeColors) {
     console.log("✅ Overridden .sqs-button-element--tertiary with:", color);
   };
 
-  const bindDrag = (target, container, moveFn) => {
-    target.onmousedown = function (e) {
-      e.preventDefault();
-      document.onmousemove = (evt) => moveFn(evt, container);
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-  };
-
   const renderVerticalColorShades = (baseColor) => {
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
@@ -115,38 +104,76 @@ export function initButtonFontColorPaletteToggle(themeColors) {
     hsla(0, 100%, 50%, 0)
   )`;
 
-  bindDrag(allColorBullet, allColorField, (e, field) => {
-    const rect = field.getBoundingClientRect();
-    const offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, e.clientY - rect.top));
-    allColorBullet.style.top = `${offsetY}px`;
-    dynamicHue = Math.round(360 * (offsetY / rect.height));
-    const rgb = hslToRgb(dynamicHue / 360, 1, 0.5);
-    colorCode.textContent = rgb;
-    renderVerticalColorShades(rgb);
-    transparencyField.style.background = `linear-gradient(to bottom, hsla(${dynamicHue}, 100%, 50%, 1), hsla(${dynamicHue}, 100%, 50%, 0))`;
-  });
+  allColorBullet.onmousedown = function (e) {
+    e.preventDefault();
+    document.onmousemove = function (e) {
+      const rect = allColorField.getBoundingClientRect();
+      const offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, e.clientY - rect.top));
+      allColorBullet.style.top = `${offsetY}px`;
 
-  bindDrag(bullet, selectorField, (e, field) => {
-    const rect = field.getBoundingClientRect();
-    const offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, e.clientX - rect.left));
-    const offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, e.clientY - rect.top));
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
-    const lightness = 50 + (offsetX / rect.width) * 50;
-    const darkness = 100 - (offsetY / rect.height) * 100;
-    const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
-    finalColor = hslToRgb(dynamicHue / 360, 1, finalLightness / 100);
-    colorCode.textContent = finalColor;
-    applyButtonBackgroundColor(finalColor);
-  });
+      const percentage = offsetY / rect.height;
+      dynamicHue = Math.round(360 * percentage);
 
-  bindDrag(transparencyBullet, transparencyField, (e, field) => {
-    const rect = field.getBoundingClientRect();
-    const offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, e.clientY - rect.top));
-    transparencyBullet.style.top = `${offsetY}px`;
-    const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
-    transparencyCount.textContent = `${transparencyPercent}%`;
-  });
+      const h = dynamicHue / 360;
+      const s = 1;
+      const l = 0.5;
+      finalColor = hslToRgb(h, s, l);
+
+      colorCode.textContent = finalColor;
+
+      renderVerticalColorShades(finalColor);
+
+      transparencyField.style.background = `linear-gradient(to bottom, 
+        hsla(${dynamicHue}, 100%, 50%, 1), 
+        hsla(${dynamicHue}, 100%, 50%, 0)
+      )`;
+    };
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
+
+  bullet.onmousedown = function (e) {
+    e.preventDefault();
+    document.onmousemove = function (e) {
+      const rect = selectorField.getBoundingClientRect();
+      const offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, e.clientX - rect.left));
+      const offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, e.clientY - rect.top));
+      bullet.style.left = `${offsetX}px`;
+      bullet.style.top = `${offsetY}px`;
+
+      const percentX = offsetX / rect.width;
+      const percentY = offsetY / rect.height;
+      const lightness = 50 + percentX * 50;
+      const darkness = 100 - percentY * 100;
+      const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+
+      finalColor = hslToRgb(dynamicHue / 360, 1, finalLightness / 100);
+      colorCode.textContent = finalColor;
+
+      applyButtonBackgroundColor(finalColor);
+    };
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
+
+  transparencyBullet.onmousedown = function (e) {
+    e.preventDefault();
+    document.onmousemove = function (e) {
+      const rect = transparencyField.getBoundingClientRect();
+      const offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, e.clientY - rect.top));
+      transparencyBullet.style.top = `${offsetY}px`;
+      const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
+      transparencyCount.textContent = `${transparencyPercent}%`;
+    };
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
 
   palette.classList.toggle("sc-hidden");
 
@@ -159,7 +186,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       swatch.title = clean;
       swatch.onclick = () => {
         renderVerticalColorShades(clean);
-        applyButtonBackgroundColor(clean);
+        applyButtonBackgroundColor(clean); // Apply only selected color
       };
       container.appendChild(swatch);
     });
