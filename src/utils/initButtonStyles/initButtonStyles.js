@@ -32,8 +32,11 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   function updateExternalStyles(property, value) {
-    const styleId = `sc-button-style-${buttonElement.dataset.uniqueId || Date.now()}`;
-    buttonElement.dataset.uniqueId = styleId;
+    const styleId = `sc-button-style-${buttonElement.dataset.blockId}`;
+    if (!buttonElement.dataset.blockId) {
+      const parentBlock = buttonElement.closest('[id^="block-"]');
+      buttonElement.dataset.blockId = parentBlock ? parentBlock.id : Date.now();
+    }
   
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -42,7 +45,10 @@ export function initButtonStyles(selectedButtonElement) {
       document.head.appendChild(styleTag);
     }
   
-    const uniqueSelector = `[data-unique-id="${styleId}"] .sqs-html span, [data-unique-id="${styleId}"] .sqs-add-to-cart-button-inner, [data-unique-id="${styleId}"] span`;
+    const uniqueSelector = `#${buttonElement.dataset.blockId} .sqs-block-button-element, 
+                            #${buttonElement.dataset.blockId} .sqs-add-to-cart-button-inner, 
+                            #${buttonElement.dataset.blockId} button span, 
+                            #${buttonElement.dataset.blockId} a span`;
   
     let rules = styleTag.innerHTML
       .split("}")
@@ -62,6 +68,7 @@ export function initButtonStyles(selectedButtonElement) {
   
     styleTag.innerHTML = rules.join("\n");
   }
+  
   
 
   if (fontFamilyOptions) {
