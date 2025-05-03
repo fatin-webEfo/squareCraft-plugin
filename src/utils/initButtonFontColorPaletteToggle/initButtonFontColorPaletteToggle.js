@@ -1,6 +1,9 @@
 export function initButtonFontColorPaletteToggle(themeColors) {
   let finalColor = null;
   let selectedElement = null;
+  let selectedHue = 0;
+  let selectedLightness = 50;
+
 
   const get = (id) => document.getElementById(id);
 
@@ -78,16 +81,19 @@ export function initButtonFontColorPaletteToggle(themeColors) {
     console.log("✅ Overridden .sqs-button-element--tertiary with:", color);
   };
 
-  const renderVerticalColorShades = (baseColor) => {
+  function renderVerticalColorShades() {
+    const baseColor = hslToRgb(selectedHue / 360, 1, selectedLightness / 100);
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
     selectorField.style.background = `
       linear-gradient(to right, ${baseColor}, white),
-      linear-gradient(to top, black, transparent)`;
+      linear-gradient(to top, black, transparent)
+    `;
     selectorField.style.backgroundBlendMode = "multiply";
     selectorField.style.backgroundSize = "100% 100%";
     selectorField.style.backgroundRepeat = "no-repeat";
-  };
+  }
+
 
   allColorField.style.background = `linear-gradient(to bottom, 
     hsl(0, 100%, 50%), 
@@ -132,6 +138,12 @@ export function initButtonFontColorPaletteToggle(themeColors) {
       document.onmousemove = null;
       document.onmouseup = null;
     };
+    selectedHue = dynamicHue;
+    selectedLightness = 50;
+    finalColor = hslToRgb(selectedHue / 360, 1, selectedLightness / 100);
+    colorCode.textContent = finalColor;
+    renderVerticalColorShades(); // ⬅ now re-renders based on actual HSL
+
   };
 
   bullet.onmousedown = function (e) {
