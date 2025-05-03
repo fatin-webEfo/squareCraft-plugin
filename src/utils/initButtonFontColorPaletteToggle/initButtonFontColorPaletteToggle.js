@@ -20,48 +20,53 @@ export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
     "button-color-transparency-bar"
   );
 console.log("Selected Element:", selectedElement);
-  function applyButtonBackgroundColor(color) {
-    if (!selectedElement) {
-      console.warn("⚠️ No block selected.");
-      return;
-    }
-  
-    const blockId = selectedElement.id;
-    const button = selectedElement.querySelector("a.sqs-button-element--tertiary");
-  
-    if (!button) {
-      console.warn("⚠️ No .sqs-button-element--tertiary found in block.");
-      return;
-    }
-  
-    const styleId = `sc-style-${blockId}-tertiary`;
-    let styleTag = document.getElementById(styleId);
-  
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-  
-    styleTag.textContent = `
-      #${blockId} a.sqs-button-element--tertiary {
-        background-color: ${color} !important;
-        border-color: ${color} !important;
-      }
-  
-      #${blockId} a.sqs-button-element--tertiary:hover {
-        background-color: ${color} !important;
-        border-color: ${color} !important;
-        filter: brightness(0.95);
-      }
-    `;
-  
-    button.dataset.scButtonBg = color;
-    console.log("✅ Overridden .sqs-button-element--tertiary with:", color);
+
+
+function applyButtonBackgroundColor(color) {
+  if (!selectedElement) {
+    console.warn("⚠️ No block selected.");
+    return;
   }
-  
-  
-  
+
+  const blockId = selectedElement.id;
+  const button = selectedElement.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+  );
+
+  if (!button) {
+    console.warn("⚠️ No Squarespace button found in block.");
+    return;
+  }
+
+  let buttonType = "tertiary";
+  if (button.classList.contains("sqs-button-element--primary")) buttonType = "primary";
+  else if (button.classList.contains("sqs-button-element--secondary")) buttonType = "secondary";
+  else if (button.classList.contains("sqs-button-element--tertiary")) buttonType = "tertiary";
+
+  const styleId = `sc-style-${blockId}-${buttonType}`;
+  let styleTag = document.getElementById(styleId);
+  if (!styleTag) {
+    styleTag = document.createElement("style");
+    styleTag.id = styleId;
+    document.head.appendChild(styleTag);
+  }
+
+  styleTag.textContent = `
+    #${blockId} a.sqs-button-element--${buttonType} {
+      background-color: ${color} !important;
+      border-color: ${color} !important;
+    }
+    #${blockId} a.sqs-button-element--${buttonType}:hover {
+      background-color: ${color} !important;
+      border-color: ${color} !important;
+      filter: brightness(0.95);
+    }
+  `;
+
+  button.dataset.scButtonBg = color;
+  console.log(`✅ Overridden .sqs-button-element--${buttonType} with:`, color);
+}
+
   
   
 
