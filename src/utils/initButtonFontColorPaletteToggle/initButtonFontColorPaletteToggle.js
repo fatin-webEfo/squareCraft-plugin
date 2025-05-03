@@ -85,16 +85,18 @@ export function initButtonFontColorPaletteToggle(themeColors) {
     selectorField.style.backgroundRepeat = "no-repeat";
   };
 
-  const bindDragHandler = (target, container, onDrag) => {
-    target.onmousedown = function (e) {
+  function bindDragHandler(element, moveFn) {
+    if (!element) return;
+    element.onmousedown = function (e) {
       e.preventDefault();
-      document.onmousemove = (e) => onDrag(e, container);
+      document.onmousemove = moveFn;
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
       };
     };
-  };
+  }
+  
 
   let dynamicHue = 0;
 
