@@ -32,42 +32,40 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   function updateExternalStyles(property, value) {
-    const styleId = `sc-button-style-${buttonElement.dataset.blockId}`;
-    if (!buttonElement.dataset.blockId) {
-      const parentBlock = buttonElement.closest('[id^="block-"]');
-      buttonElement.dataset.blockId = parentBlock ? parentBlock.id : Date.now();
-    }
-  
+    const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
+  
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
   
-    const uniqueSelector = `#${buttonElement.dataset.blockId} .sqs-block-button-element, 
-                            #${buttonElement.dataset.blockId} .sqs-add-to-cart-button-inner, 
-                            #${buttonElement.dataset.blockId} button span, 
-                            #${buttonElement.dataset.blockId} a span`;
+    const selector = `
+      a.${buttonTypeClass} .sqs-html span, 
+      button.${buttonTypeClass} .sqs-add-to-cart-button-inner, 
+      button.${buttonTypeClass} span
+    `.trim();
   
     let rules = styleTag.innerHTML
       .split("}")
       .filter(Boolean)
       .map((rule) => rule + "}");
   
-    let existingRule = rules.find((r) => r.includes(uniqueSelector));
+    let existingRule = rules.find((r) => r.includes(selector));
   
     if (existingRule) {
       let updatedRule = existingRule
         .replace(new RegExp(`${property}:.*?;`, "g"), "")
         .replace("}", ` ${property}: ${value} !important; }`);
-      rules = rules.map((r) => (r.includes(uniqueSelector) ? updatedRule : r));
+      rules = rules.map((r) => (r.includes(selector) ? updatedRule : r));
     } else {
-      rules.push(`${uniqueSelector} { ${property}: ${value} !important; }`);
+      rules.push(`${selector} { ${property}: ${value} !important; }`);
     }
   
     styleTag.innerHTML = rules.join("\n");
   }
+  
   
   
 
