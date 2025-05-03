@@ -90,7 +90,6 @@ document.body.addEventListener("click", (e) => {
   
   if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
     bullet.onmousedown = function (e) {
-      let finalColor = null;
 
       e.preventDefault();
     
@@ -136,7 +135,7 @@ document.body.addEventListener("click", (e) => {
           b = hueToRgb(p, q, h - 1 / 3);
         }
     
-        finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+      let  finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
         console.log("Final color is", finalColor);
     
         if (colorCode) {
@@ -224,7 +223,6 @@ document.body.addEventListener("click", (e) => {
     bullet.onmousedown = function (e) {
       e.preventDefault();
       document.onmousemove = function (e) {
-        let finalColor = null;
 
         const rect = selectorField.getBoundingClientRect();
         let offsetX = e.clientX - rect.left;
@@ -267,7 +265,7 @@ document.body.addEventListener("click", (e) => {
           b = hueToRgb(p, q, h - 1/3);
         }
         
-         finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+      let   finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
         console.log("Final color is",finalColor);
         
 
