@@ -1,4 +1,4 @@
-export function initButtonStyles(selectedButtonElement) {
+function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
@@ -10,12 +10,8 @@ export function initButtonStyles(selectedButtonElement) {
   const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
   if (!buttonContainer) return;
 
-  let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element");
-  if (!buttonElement) {
-    buttonElement = buttonContainer.querySelector(
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-  }
+  let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element") ||
+    buttonContainer.querySelector("button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
   if (!buttonElement) return;
 
   let buttonTypeClass = "sqs-button-element--primary";
@@ -25,31 +21,26 @@ export function initButtonStyles(selectedButtonElement) {
     buttonTypeClass = "sqs-button-element--tertiary";
   }
 
-  function updateExternalStyles(property, value) {
+  function updateExternalStyles(property, value, buttonTypeClass) {
     const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
-  
+
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-  
+
     const textSelectors = `
       a.${buttonTypeClass} .sqs-html span,
       button.${buttonTypeClass} .sqs-add-to-cart-button-inner,
       button.${buttonTypeClass} span
     `.trim();
-  
-    let rules = styleTag.innerHTML
-      .split("}")
-      .filter(Boolean)
-      .map(rule => rule + "}");
-  
+
+    let rules = styleTag.innerHTML.split("}").filter(Boolean).map(rule => rule + "}");
     let existingRuleIndex = rules.findIndex(r => r.includes(textSelectors));
-  
     const newRule = `${textSelectors} { ${property}: ${value} !important; }`;
-  
+
     if (existingRuleIndex !== -1) {
       rules[existingRuleIndex] = rules[existingRuleIndex]
         .replace(new RegExp(`${property}:.*?;`, "g"), "")
@@ -57,54 +48,53 @@ export function initButtonStyles(selectedButtonElement) {
     } else {
       rules.push(newRule);
     }
-  
+
     styleTag.innerHTML = rules.join("\n");
   }
-  
 
   if (fontFamilyOptions) {
     fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-      item.addEventListener("click", () => {
+      item.onclick = () => {
         const fontFamily = item.style.fontFamily;
-        updateExternalStyles("font-family", fontFamily);
-      });
+        updateExternalStyles("font-family", fontFamily, buttonTypeClass);
+      };
     });
   }
 
   if (fontSizeOptions && fontSizeInput) {
     fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-      item.addEventListener("click", () => {
+      item.onclick = () => {
         const selectedSize = item.getAttribute("data-value");
         fontSizeInput.value = selectedSize;
         fontSizeInput.dispatchEvent(new Event("input"));
-      });
+      };
     });
-    fontSizeInput.addEventListener("input", (e) => {
+    fontSizeInput.oninput = (e) => {
       const fontSize = e.target.value;
-      updateExternalStyles("font-size", `${fontSize}px`);
-    });
+      updateExternalStyles("font-size", `${fontSize}px`, buttonTypeClass);
+    };
   }
 
   if (fontWeightOptions) {
     fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-      item.addEventListener("click", () => {
+      item.onclick = () => {
         const fontWeight = item.innerText.trim();
-        updateExternalStyles("font-weight", fontWeight);
-      });
+        updateExternalStyles("font-weight", fontWeight, buttonTypeClass);
+      };
     });
   }
 
   if (letterSpacingInput) {
-    letterSpacingInput.addEventListener("input", (e) => {
-      const spacing = e.target.value.replace("px", "px");
-      updateExternalStyles("letter-spacing", `${spacing}px`);
-    });
+    letterSpacingInput.oninput = (e) => {
+      const spacing = e.target.value;
+      updateExternalStyles("letter-spacing", `${spacing}px`, buttonTypeClass);
+    };
   }
 
   ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
     const transformButton = document.getElementById(id);
     if (transformButton) {
-      transformButton.addEventListener("click", () => {
+      transformButton.onclick = () => {
         const transformClassMap = {
           scButtonAllCapital: "sc-text-upper",
           scButtonAllSmall: "sc-text-lower",
@@ -124,7 +114,7 @@ export function initButtonStyles(selectedButtonElement) {
           span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
           span.classList.add(newClass);
         });
-      });
+      };
     }
   });
 }
