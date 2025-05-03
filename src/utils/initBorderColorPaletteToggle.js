@@ -9,7 +9,7 @@ export function initBorderColorPaletteToggle(themeColors) {
   const transparencyBullet = document.getElementById("color-transparency-bar");
 
   if (!palette || !container || !selectorField || !bullet || !colorCode || !transparencyCount) return;
-
+console.log("initBorderColorPaletteToggle called", colorCode.value);
   let dynamicHue = 0;
   let currentButtonTypeClass = null;
 
