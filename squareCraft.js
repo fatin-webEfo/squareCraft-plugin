@@ -90,7 +90,7 @@
         if (trigger) {
           console.log("✅ border-color-select clicked");
           setTimeout(() => {
-            initBorderColorPaletteToggle(themeColors);
+            initBorderColorPaletteToggle(themeColors,selectedElement);
           }, 100);
           return;
         }
