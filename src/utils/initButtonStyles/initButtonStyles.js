@@ -34,40 +34,31 @@ export function initButtonStyles(selectedButtonElement) {
   function updateExternalStyles(property, value) {
     const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
-  
+
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-  
-    const selector = `
-      a.${buttonTypeClass} .sqs-html span, 
-      button.${buttonTypeClass} .sqs-add-to-cart-button-inner, 
-      button.${buttonTypeClass} span
-    `.trim();
-  
+
+    const textSelectors = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
     let rules = styleTag.innerHTML
       .split("}")
       .filter(Boolean)
       .map((rule) => rule + "}");
-  
-    let existingRule = rules.find((r) => r.includes(selector));
-  
+    let existingRule = rules.find((r) => r.includes(textSelectors));
+
     if (existingRule) {
       let updatedRule = existingRule
         .replace(new RegExp(`${property}:.*?;`, "g"), "")
         .replace("}", ` ${property}: ${value} !important; }`);
-      rules = rules.map((r) => (r.includes(selector) ? updatedRule : r));
+      rules = rules.map((r) => (r.includes(textSelectors) ? updatedRule : r));
     } else {
-      rules.push(`${selector} { ${property}: ${value} !important; }`);
+      rules.push(`${textSelectors} { ${property}: ${value} !important; }`);
     }
-  
+
     styleTag.innerHTML = rules.join("\n");
   }
-  
-  
-  
 
   if (fontFamilyOptions) {
     fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
