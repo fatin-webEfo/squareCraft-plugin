@@ -71,21 +71,32 @@ export function initBorderColorPaletteToggle(themeColors) {
   }
   
   if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
-    allColorBullet.onmousedown = function (e) {
+    bullet.onmousedown = function (e) {
       e.preventDefault();
+      let finalColor = null;
+    
       document.onmousemove = function (e) {
-        const rect = allColorField.getBoundingClientRect();
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
-        allColorBullet.style.top = `${offsetY}px`;
-
-        const percentage = offsetY / rect.height;
-        dynamicHue = Math.round(360 * percentage);
-
+    
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+    
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
+    
+        const percentX = offsetX / rect.width;
+        const percentY = offsetY / rect.height;
+    
+        const lightness = 50 + percentX * 50;
+        const darkness = 100 - percentY * 100;
+        const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
+    
         const h = dynamicHue / 360;
-        const l = 0.5; // center lightness
         const s = 1;
-
+        const l = finalLightness / 100;
+    
         function hueToRgb(p, q, t) {
           if (t < 0) t += 1;
           if (t > 1) t -= 1;
@@ -94,7 +105,7 @@ export function initBorderColorPaletteToggle(themeColors) {
           if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
           return p;
         }
-
+    
         let r, g, b;
         if (s === 0) {
           r = g = b = l;
@@ -105,78 +116,20 @@ export function initBorderColorPaletteToggle(themeColors) {
           g = hueToRgb(p, q, h);
           b = hueToRgb(p, q, h - 1 / 3);
         }
-
-        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-
+    
+        finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+    
         if (colorCode) {
-          let currentButtonTypeClass = null;
-        
-          document.body.addEventListener("click", (e) => {
-            const btn = e.target.closest(
-              "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-            );
-            if (btn) {
-              if (btn.classList.contains("sqs-button-element--primary")) {
-                currentButtonTypeClass = "sqs-button-element--primary";
-              } else if (btn.classList.contains("sqs-button-element--secondary")) {
-                currentButtonTypeClass = "sqs-button-element--secondary";
-              } else if (btn.classList.contains("sqs-button-element--tertiary")) {
-                currentButtonTypeClass = "sqs-button-element--tertiary";
-              }
-            }
-          });
-        
-          const applyBackgroundToButtonType = (color) => {
-            if (!currentButtonTypeClass) return;
-            updateButtonStyleByType(currentButtonTypeClass, color);
-          };
-          
-        
-          const observer = new MutationObserver(() => {
-            const color = colorCode.textContent.trim();
-            if (color) {
-              applyBackgroundToButtonType(color);
-            }
-          });
-        
-          observer.observe(colorCode, { childList: true });
-        }
-        
-
-
-        if (transparencyField) {
-          transparencyField.style.background = `linear-gradient(to bottom, 
-            hsla(${dynamicHue}, 100%, 50%, 1), 
-            hsla(${dynamicHue}, 100%, 50%, 0)
-          )`;
-        }
-
-        if (selectorField) {
-          selectorField.innerHTML = "";
-          selectorField.appendChild(bullet);
-
-          selectorField.style.background = `
-            linear-gradient(
-              to right,
-              hsl(${dynamicHue}, 100%, 50%),
-              white
-            ),
-            linear-gradient(
-              to top,
-              black,
-              transparent
-            )
-          `;
-          selectorField.style.backgroundBlendMode = "multiply";
-          selectorField.style.backgroundSize = "100% 100%";
-          selectorField.style.backgroundRepeat = "no-repeat";
+          colorCode.textContent = finalColor;
         }
       };
+    
       document.onmouseup = function () {
         document.onmousemove = null;
         document.onmouseup = null;
       };
     };
+    
   }
 
   if (selectorField && bullet) {
