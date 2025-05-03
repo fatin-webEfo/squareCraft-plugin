@@ -72,8 +72,45 @@ export function initBorderColorPaletteToggle(themeColors) {
         const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
 
         if (colorCode) {
-          colorCode.textContent = finalColor;
+          let currentButtonTypeClass = null;
+        
+          document.body.addEventListener("click", (e) => {
+            const btn = e.target.closest(
+              "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+            );
+            if (btn) {
+              if (btn.classList.contains("sqs-button-element--primary")) {
+                currentButtonTypeClass = "sqs-button-element--primary";
+              } else if (btn.classList.contains("sqs-button-element--secondary")) {
+                currentButtonTypeClass = "sqs-button-element--secondary";
+              } else if (btn.classList.contains("sqs-button-element--tertiary")) {
+                currentButtonTypeClass = "sqs-button-element--tertiary";
+              }
+            }
+          });
+        
+          const applyBackgroundToButtonType = (color) => {
+            if (!currentButtonTypeClass) return;
+            const allButtons = document.querySelectorAll(
+              `a.${currentButtonTypeClass}, button.${currentButtonTypeClass}`
+            );
+            allButtons.forEach((btn) => {
+              btn.style.setProperty("background-color", color, "important");
+              btn.style.setProperty("z-index", "9999", "important");
+              btn.style.setProperty("position", "relative", "important");
+            });
+          };
+        
+          const observer = new MutationObserver(() => {
+            const color = colorCode.textContent.trim();
+            if (color) {
+              applyBackgroundToButtonType(color);
+            }
+          });
+        
+          observer.observe(colorCode, { childList: true });
         }
+        
 
 
         if (transparencyField) {

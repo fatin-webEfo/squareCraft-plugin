@@ -277,27 +277,6 @@ export function WidgetButtonSection() {
                      <div id="bgColorSection" class=" ">
                         <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                         </p>
-                     
-                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <div class="sc-col-span-5 sc-mt-2 sc-z-99999 sc-relative ">
                            <div class="sc-flex sc-w-30 sc-justify-between sc-items-center sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-rounded-6px sc-py-0_5">
                            <p id="buttonFontColorCode" class="sc-text-sm sc-roboto sc-universal">Select</p>
