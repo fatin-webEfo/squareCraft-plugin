@@ -19,7 +19,7 @@ export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
   const transparencyBullet = document.getElementById(
     "button-color-transparency-bar"
   );
-
+console.log("Selected Element:", selectedElement);
   function applyButtonBackgroundColor(color) {
     if (!selectedElement) {
       console.warn("⚠️ No block selected.");
