@@ -32,7 +32,44 @@ export function initBorderColorPaletteToggle(themeColors) {
       hsla(0, 100%, 50%, 0)
     )`;
   }
-
+  function updateButtonStyleByType(buttonTypeClass, color) {
+    if (!buttonTypeClass || !color) return;
+  
+    const styleId = `sc-style-${buttonTypeClass}`;
+    let styleTag = document.getElementById(styleId);
+  
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+  
+    let selector = "";
+    if (buttonTypeClass === "sqs-button-element--primary") {
+      selector = `
+        .primary-button-style-solid .sqs-button-element--primary,
+        .primary-button-style-solid .tock-block div#Tock_widget_container > div.TockWidgetWrapper .TockButton-blue.sqs-button-element--primary`;
+    } else if (buttonTypeClass === "sqs-button-element--secondary") {
+      selector = `
+        .secondary-button-style-solid .sqs-button-element--secondary,
+        .secondary-button-style-solid .tock-block div#Tock_widget_container > div.TockWidgetWrapper .TockButton-blue.sqs-button-element--secondary`;
+    } else if (buttonTypeClass === "sqs-button-element--tertiary") {
+      selector = `
+        .tertiary-button-style-solid .sqs-button-element--tertiary,
+        .tertiary-button-style-solid .tock-block div#Tock_widget_container > div.TockWidgetWrapper .TockButton-blue.sqs-button-element--tertiary`;
+    }
+  
+    styleTag.innerHTML = `
+      ${selector} {
+        background: ${color} !important;
+        border-color: ${color} !important;
+        color: white !important;
+        z-index: 9999 !important;
+        position: relative !important;
+      }
+    `;
+  }
+  
   if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
     allColorBullet.onmousedown = function (e) {
       e.preventDefault();
@@ -91,15 +128,9 @@ export function initBorderColorPaletteToggle(themeColors) {
         
           const applyBackgroundToButtonType = (color) => {
             if (!currentButtonTypeClass) return;
-            const allButtons = document.querySelectorAll(
-              `a.${currentButtonTypeClass}, button.${currentButtonTypeClass}`
-            );
-            allButtons.forEach((btn) => {
-              btn.style.setProperty("background-color", color, "important");
-              btn.style.setProperty("z-index", "9999", "important");
-              btn.style.setProperty("position", "relative", "important");
-            });
+            updateButtonStyleByType(currentButtonTypeClass, color);
           };
+          
         
           const observer = new MutationObserver(() => {
             const color = colorCode.textContent.trim();
