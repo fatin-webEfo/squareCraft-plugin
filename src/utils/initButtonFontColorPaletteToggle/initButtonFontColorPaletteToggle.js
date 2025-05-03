@@ -335,6 +335,7 @@ export function initButtonFontColorPaletteToggle(themeColors) {
         }
   
         applyButtonBackgroundColor(finalColor);
+        console.log("✅ Overridden .sqs-button-element--tertiary with:", finalColor);
       };
   
       document.onmouseup = () => {
