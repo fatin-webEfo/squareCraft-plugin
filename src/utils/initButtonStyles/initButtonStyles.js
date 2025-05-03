@@ -54,6 +54,7 @@ export function initButtonStyles(selectedButtonElement) {
 
   if (fontFamilyOptions) {
     fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
       item.onclick = () => {
         const fontFamily = item.style.fontFamily;
         updateExternalStyles("font-family", fontFamily);
@@ -63,12 +64,14 @@ export function initButtonStyles(selectedButtonElement) {
 
   if (fontSizeOptions && fontSizeInput) {
     fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
       item.onclick = () => {
         const selectedSize = item.getAttribute("data-value");
         fontSizeInput.value = selectedSize;
         fontSizeInput.dispatchEvent(new Event("input"));
       };
     });
+    fontSizeInput.oninput = null;
     fontSizeInput.oninput = (e) => {
       const fontSize = e.target.value;
       updateExternalStyles("font-size", `${fontSize}px`);
@@ -77,6 +80,7 @@ export function initButtonStyles(selectedButtonElement) {
 
   if (fontWeightOptions) {
     fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
       item.onclick = () => {
         const fontWeight = item.innerText.trim();
         updateExternalStyles("font-weight", fontWeight);
@@ -85,6 +89,7 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   if (letterSpacingInput) {
+    letterSpacingInput.oninput = null;
     letterSpacingInput.oninput = (e) => {
       const spacing = e.target.value;
       updateExternalStyles("letter-spacing", `${spacing}px`);
@@ -94,6 +99,7 @@ export function initButtonStyles(selectedButtonElement) {
   ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
     const transformButton = document.getElementById(id);
     if (transformButton) {
+      transformButton.onclick = null;
       transformButton.onclick = () => {
         const transformClassMap = {
           scButtonAllCapital: "sc-text-upper",
