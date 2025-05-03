@@ -1,4 +1,5 @@
 export function initBorderColorPaletteToggle(themeColors) {
+  let finalColor = null;
   const palette = document.getElementById("color-palette");
   const container = document.getElementById("border-colors");
   const selectorField = document.getElementById("color-selection-field");
@@ -91,7 +92,6 @@ document.body.addEventListener("click", (e) => {
   if (allColorField && allColorBullet && transparencyField && selectorField && bullet) {
     bullet.onmousedown = function (e) {
       e.preventDefault();
-      let finalColor = null;
     
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
