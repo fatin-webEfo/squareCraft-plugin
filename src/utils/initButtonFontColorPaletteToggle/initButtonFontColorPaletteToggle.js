@@ -190,51 +190,50 @@ console.log("initButtonFontColorPaletteToggle", themeColors, selectedElement);
 
   if (container.innerHTML.trim() === "") {
     Object.values(themeColors).forEach((color) => {
-      const clean = color.replace(/['"]+/g, "");
+      const cleanColor = color.replace(/['"]+/g, "");
       const swatch = document.createElement("div");
       swatch.className = "sc-border-colors sc-cursor-pointer";
-      swatch.style.cssText = `background-color: ${clean}; width: 18px; height: 18px; border-radius: 6px;`;
-      swatch.title = clean;
-      swatch.onclick = () => {
-        finalColor = clean;
-        colorCode.textContent = finalColor;
-        applyButtonBackgroundColor(finalColor);
-      };
-      
+      swatch.style.cssText = `background-color: ${cleanColor}; width: 18px; height: 18px; border-radius: 6px;`;
+      swatch.title = cleanColor;
+    
+      swatch.addEventListener("click", () => {
+        const div = document.createElement("div");
+        div.style.color = cleanColor;
+        document.body.appendChild(div);
+        const computed = getComputedStyle(div).color;
+        document.body.removeChild(div);
+    
+        const rgbMatch = computed.match(/\d+/g);
+        const [r, g, b] = rgbMatch.map(Number);
+    
+        const rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
+        const max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
+        let h = 0, s = 0, l = (max + min) / 2;
+    
+        if (max !== min) {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
+            case gNorm: h = (bNorm - rNorm) / d + 2; break;
+            case bNorm: h = (rNorm - gNorm) / d + 4; break;
+          }
+          h /= 6;
+        }
+    
+        dynamicHue = Math.round(h * 360);
+        selectedHue = dynamicHue;
+        selectedLightness = 50;
+    
+        renderVerticalColorShades();
+        applyButtonBackgroundColor(cleanColor);
+        colorCode.textContent = cleanColor;
+      });
+    
       container.appendChild(swatch);
     });
+    
   }
-  swatch.addEventListener("click", () => {
-    const div = document.createElement("div");
-    div.style.color = cleanColor;
-    document.body.appendChild(div);
-    const computed = getComputedStyle(div).color;
-    document.body.removeChild(div);
-  
-    const rgbMatch = computed.match(/\d+/g);
-    const [r, g, b] = rgbMatch.map(Number);
-  
-    const rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
-    const max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
-    let h = 0, s = 0, l = (max + min) / 2;
-  
-    if (max !== min) {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-  
-      switch (max) {
-        case rNorm: h = (gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0); break;
-        case gNorm: h = (bNorm - rNorm) / d + 2; break;
-        case bNorm: h = (rNorm - gNorm) / d + 4; break;
-      }
-  
-      h /= 6;
-    }
-  
-    dynamicHue = Math.round(h * 360); // ✅ critical update
-    renderVerticalColorShades(cleanColor);
-    applyButtonBackgroundColor(cleanColor);
-  });
   
 
   const firstColor = Object.values(themeColors)[0];
