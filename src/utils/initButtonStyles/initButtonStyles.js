@@ -1,4 +1,4 @@
-function initButtonStyles(selectedButtonElement) {
+export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
