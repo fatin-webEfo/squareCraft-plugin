@@ -24,18 +24,12 @@ export function initButtonStyles(selectedButtonElement) {
   }
   if (!buttonElement) return;
 
-  let buttonTypeClass = "";
-
-if (window.currentButtonType === "Primary Button") {
-  buttonTypeClass = "sqs-button-element--primary";
-} else if (window.currentButtonType === "Secondary Button") {
-  buttonTypeClass = "sqs-button-element--secondary";
-} else if (window.currentButtonType === "Tertiary Button") {
-  buttonTypeClass = "sqs-button-element--tertiary";
-} else {
-  return; // Unknown type — stop here
-}
-
+  let buttonTypeClass = "sqs-button-element--primary";
+  if (buttonElement.classList.contains("sqs-button-element--secondary")) {
+    buttonTypeClass = "sqs-button-element--secondary";
+  } else if (buttonElement.classList.contains("sqs-button-element--tertiary")) {
+    buttonTypeClass = "sqs-button-element--tertiary";
+  }
 
   function updateExternalStyles(property, value) {
     const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
