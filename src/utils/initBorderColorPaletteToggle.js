@@ -32,7 +32,7 @@ export function initBorderColorPaletteToggle(themeColors) {
       hsla(0, 100%, 50%, 0)
     )`;
   }
-
+console.log("color code field", colorCode.value);
   let currentButtonTypeClass = null;
   function calculateFinalColor(hue, percentX, percentY) {
     const lightness = 50 + percentX * 50;
@@ -153,8 +153,6 @@ document.body.addEventListener("click", (e) => {
           if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
           return p;
         }
-    
-        let r, g, b;
         if (s === 0) {
           r = g = b = l;
         } else {
