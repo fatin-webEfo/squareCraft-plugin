@@ -32,33 +32,37 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   function updateExternalStyles(property, value) {
-    const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
+    const styleId = `sc-button-style-${buttonElement.dataset.uniqueId || Date.now()}`;
+    buttonElement.dataset.uniqueId = styleId;
+  
     let styleTag = document.getElementById(styleId);
-
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-
-    const textSelectors = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
+  
+    const uniqueSelector = `[data-unique-id="${styleId}"] .sqs-html span, [data-unique-id="${styleId}"] .sqs-add-to-cart-button-inner, [data-unique-id="${styleId}"] span`;
+  
     let rules = styleTag.innerHTML
       .split("}")
       .filter(Boolean)
       .map((rule) => rule + "}");
-    let existingRule = rules.find((r) => r.includes(textSelectors));
-
+  
+    let existingRule = rules.find((r) => r.includes(uniqueSelector));
+  
     if (existingRule) {
       let updatedRule = existingRule
         .replace(new RegExp(`${property}:.*?;`, "g"), "")
         .replace("}", ` ${property}: ${value} !important; }`);
-      rules = rules.map((r) => (r.includes(textSelectors) ? updatedRule : r));
+      rules = rules.map((r) => (r.includes(uniqueSelector) ? updatedRule : r));
     } else {
-      rules.push(`${textSelectors} { ${property}: ${value} !important; }`);
+      rules.push(`${uniqueSelector} { ${property}: ${value} !important; }`);
     }
-
+  
     styleTag.innerHTML = rules.join("\n");
   }
+  
 
   if (fontFamilyOptions) {
     fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
