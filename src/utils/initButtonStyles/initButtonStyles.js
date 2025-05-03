@@ -26,35 +26,41 @@ export function initButtonStyles(selectedButtonElement) {
   }
 
   function updateExternalStyles(property, value) {
-    const styleId = `sc-style-${buttonTypeClass.replace(/--/g, "-")}`;
+    const styleId = `sc-button-style-${buttonTypeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
-
-    const selector = `a.${buttonTypeClass} .sqs-html span, button.${buttonTypeClass} .sqs-add-to-cart-button-inner, button.${buttonTypeClass} span`;
-
+  
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
-      styleTag.innerHTML = `${selector} { ${property}: ${value} !important; }`;
-    } else {
-      let rules = styleTag.innerHTML
-        .split("}")
-        .filter(Boolean)
-        .map((rule) => rule + "}");
-
-      const existingRuleIndex = rules.findIndex((r) => r.includes(selector));
-      if (existingRuleIndex !== -1) {
-        let updatedRule = rules[existingRuleIndex]
-          .replace(new RegExp(`${property}:.*?;`, "g"), "")
-          .replace("}", ` ${property}: ${value} !important; }`);
-        rules[existingRuleIndex] = updatedRule;
-      } else {
-        rules.push(`${selector} { ${property}: ${value} !important; }`);
-      }
-
-      styleTag.innerHTML = rules.join("\n");
     }
+  
+    const textSelectors = `
+      a.${buttonTypeClass} .sqs-html span,
+      button.${buttonTypeClass} .sqs-add-to-cart-button-inner,
+      button.${buttonTypeClass} span
+    `.trim();
+  
+    let rules = styleTag.innerHTML
+      .split("}")
+      .filter(Boolean)
+      .map(rule => rule + "}");
+  
+    let existingRuleIndex = rules.findIndex(r => r.includes(textSelectors));
+  
+    const newRule = `${textSelectors} { ${property}: ${value} !important; }`;
+  
+    if (existingRuleIndex !== -1) {
+      rules[existingRuleIndex] = rules[existingRuleIndex]
+        .replace(new RegExp(`${property}:.*?;`, "g"), "")
+        .replace("}", ` ${property}: ${value} !important; }`);
+    } else {
+      rules.push(newRule);
+    }
+  
+    styleTag.innerHTML = rules.join("\n");
   }
+  
 
   if (fontFamilyOptions) {
     fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
