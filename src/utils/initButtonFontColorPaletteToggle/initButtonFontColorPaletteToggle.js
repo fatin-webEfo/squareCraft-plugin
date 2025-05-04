@@ -422,6 +422,10 @@ if (allColorField && allColorBullet) {
     updateSelectorField(firstSwatchColor);
     moveBullet(0, 0);
   
+    if (selectorField) {
+      selectorField.style.backgroundColor = firstSwatchColor;
+    }
+  
     if (transparencyBullet && transparencyField) {
       transparencyBullet.style.top = `0px`;
     }
@@ -437,6 +441,7 @@ if (allColorField && allColorBullet) {
   
     applyButtonBackgroundColor(firstSwatchColor, currentTransparency / 100);
   }
+  
   
   
   
