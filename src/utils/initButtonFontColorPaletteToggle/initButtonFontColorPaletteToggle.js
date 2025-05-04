@@ -21,6 +21,46 @@ export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
   );
 console.log("Selected Element:", selectedElement);
 
+function updateSelectorField(hueOrColor) {
+  let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
+
+  if (!hue) {
+    const tempDiv = document.createElement("div");
+    tempDiv.style.color = hueOrColor;
+    document.body.appendChild(tempDiv);
+    const rgb = getComputedStyle(tempDiv).color;
+    document.body.removeChild(tempDiv);
+
+    const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
+    if (match) {
+      const r = parseInt(match[1]) / 255;
+      const g = parseInt(match[2]) / 255;
+      const b = parseInt(match[3]) / 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h = 0, s = 0, l = (max + min) / 2;
+      if (max !== min) {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+        else if (max === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h /= 6;
+      }
+      hue = h * 360;
+    }
+  }
+
+  dynamicHue = hue;
+  selectorField.style.background = `
+    linear-gradient(to right, hsl(${hue}, 100%, 50%), white),
+    linear-gradient(to top, black, transparent)
+  `;
+  selectorField.style.backgroundBlendMode = "multiply";
+  selectorField.style.backgroundSize = "100% 100%";
+  selectorField.style.backgroundRepeat = "no-repeat";
+}
+
+
 
 function applyButtonBackgroundColor(color) {
   if (!selectedElement) {
@@ -249,7 +289,21 @@ function applyButtonBackgroundColor(color) {
 
     };
   }
-
+  function moveBullet(offsetX, offsetY) {
+    bullet.style.left = `${offsetX}px`;
+    bullet.style.top = `${offsetY}px`;
+  
+    const width = selectorField.offsetWidth;
+    const height = selectorField.offsetHeight;
+    if (!width || !height) return;
+  
+    const ctx = getGradientCanvas(dynamicHue, width, height);
+    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+    colorCode.textContent = rgb;
+    applyButtonBackgroundColor(rgb);
+  }
+  
   if (transparencyField && transparencyBullet) {
     transparencyBullet.onmousedown = function (e) {
       e.preventDefault();
@@ -287,11 +341,15 @@ function applyButtonBackgroundColor(color) {
     swatch.style.borderRadius = "6px";
     swatch.title = cleanColor;
   
-    swatch.addEventListener("click", () => {
-      renderVerticalColorShades(cleanColor);
-      applyButtonBackgroundColor(color);
-
-    });
+    swatch.onclick = () => {
+      updateSelectorField(cleanColor); 
+      setTimeout(() => {
+        const initX = 0;
+        const initY = selectorField.offsetHeight - bullet.offsetHeight;
+        moveBullet(initX, initY);
+      }, 0);
+    };
+    
   
     container.appendChild(swatch);
   });
