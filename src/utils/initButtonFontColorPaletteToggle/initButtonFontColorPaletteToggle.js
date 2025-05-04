@@ -58,6 +58,15 @@ function updateSelectorField(hueOrColor) {
   selectorField.style.backgroundBlendMode = "multiply";
   selectorField.style.backgroundSize = "100% 100%";
   selectorField.style.backgroundRepeat = "no-repeat";
+
+
+  if (transparencyField) {
+    transparencyField.style.background = `linear-gradient(to bottom, 
+      hsla(${dynamicHue}, 100%, 50%, 1), 
+      hsla(${dynamicHue}, 100%, 50%, 0)
+    )`;
+  }
+  
 }
 
 
@@ -220,6 +229,9 @@ function applyButtonBackgroundColor(color) {
           selectorField.style.backgroundSize = "100% 100%";
           selectorField.style.backgroundRepeat = "no-repeat";
         }
+
+      
+        
       };
       document.onmouseup = () => {
         document.onmousemove = null;
