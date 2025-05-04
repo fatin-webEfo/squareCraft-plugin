@@ -12,14 +12,43 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   const transparencyField = document.getElementById("button-color-transparency-field");
   const transparencyBullet = document.getElementById("button-color-transparency-bar");
 
+  if (!palette || !selectorField || !bullet || !colorCode || !container) return;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = selectorField.offsetWidth;
+  canvas.height = selectorField.offsetHeight;
+  canvas.style.position = "absolute";
+  canvas.style.top = "0";
+  canvas.style.left = "0";
+  canvas.style.pointerEvents = "none";
+  selectorField.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+
+  function drawCanvas(hue) {
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const gradient1 = ctx.createLinearGradient(0, 0, w, 0);
+    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
+    gradient1.addColorStop(1, "white");
+
+    const gradient2 = ctx.createLinearGradient(0, h, 0, 0);
+    gradient2.addColorStop(0, "black");
+    gradient2.addColorStop(1, "transparent");
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(0, 0, w, h);
+  }
+
   function applyButtonBackgroundColor(color) {
     if (!selectedElement) return;
     const blockId = selectedElement.id;
-    const buttonTypes = [
-      "sqs-button-element--primary",
-      "sqs-button-element--secondary",
-      "sqs-button-element--tertiary"
-    ];
+    const buttonTypes = ["sqs-button-element--primary", "sqs-button-element--secondary", "sqs-button-element--tertiary"];
     let buttonType = null;
     for (let type of buttonTypes) {
       if (selectedElement.querySelector(`a.${type}`)) {
@@ -55,50 +84,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     });
   }
 
-  function getGradientCanvas(hue, width, height) {
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-
-    const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
-    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
-    gradient1.addColorStop(1, "white");
-
-    const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
-    gradient2.addColorStop(0, "black");
-    gradient2.addColorStop(1, "transparent");
-
-    ctx.fillStyle = gradient1;
-    ctx.fillRect(0, 0, width, height);
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = gradient2;
-    ctx.fillRect(0, 0, width, height);
-
-    return ctx;
+  function moveBullet(x, y) {
+    bullet.style.left = `${x}px`;
+    bullet.style.top = `${y}px`;
+    const data = ctx.getImageData(x, y, 1, 1).data;
+    const color = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+    colorCode.textContent = color;
+    applyButtonBackgroundColor(color);
   }
-
-  function updateSelectorField(hue) {
-    selectorField.style.background = `
-      linear-gradient(to right, hsl(${hue}, 100%, 50%), white),
-      linear-gradient(to top, black, transparent)
-    `;
-    selectorField.style.backgroundBlendMode = "multiply";
-    selectorField.style.backgroundSize = "100% 100%";
-    selectorField.style.backgroundRepeat = "no-repeat";
-  }
-
-  function moveBullet(offsetX, offsetY) {
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
-    const ctx = getGradientCanvas(dynamicHue, selectorField.offsetWidth, selectorField.offsetHeight);
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-    colorCode.textContent = rgb;
-    applyButtonBackgroundColor(rgb);
-  }
-
-  if (!palette || !selectorField || !bullet || !colorCode || !container) return;
 
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
@@ -120,7 +113,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       allColorBullet.style.top = `${y}px`;
       const percentage = y / rect.height;
       dynamicHue = Math.round(360 * percentage);
-      updateSelectorField(dynamicHue);
+      drawCanvas(dynamicHue);
       transparencyField.style.background = `linear-gradient(to bottom, 
         hsla(${dynamicHue}, 100%, 50%, 1), hsla(${dynamicHue}, 100%, 50%, 0))`;
     };
@@ -169,7 +162,29 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       swatch.style.borderRadius = "6px";
       swatch.title = cleanColor;
       swatch.onclick = () => {
-        updateSelectorField(cleanColor);
+        const tempDiv = document.createElement("div");
+        tempDiv.style.color = cleanColor;
+        document.body.appendChild(tempDiv);
+        const computed = getComputedStyle(tempDiv).color;
+        document.body.removeChild(tempDiv);
+        const rgbMatch = computed.match(/rgb\((\d+), (\d+), (\d+)\)/);
+        if (rgbMatch) {
+          const r = parseInt(rgbMatch[1]) / 255;
+          const g = parseInt(rgbMatch[2]) / 255;
+          const b = parseInt(rgbMatch[3]) / 255;
+          const max = Math.max(r, g, b), min = Math.min(r, g, b);
+          let h = 0, s = 0, l = (max + min) / 2;
+          if (max !== min) {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+            else if (max === g) h = (b - r) / d + 2;
+            else h = (r - g) / d + 4;
+            h /= 6;
+          }
+          dynamicHue = Math.round(h * 360);
+        }
+        drawCanvas(dynamicHue);
         applyButtonBackgroundColor(color);
       };
       container.appendChild(swatch);
@@ -178,7 +193,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   selectorField.innerHTML = "";
   selectorField.appendChild(bullet);
-  updateSelectorField(dynamicHue);
+  drawCanvas(dynamicHue);
+
   setTimeout(() => {
     const initX = 0;
     const initY = selectorField.offsetHeight - bullet.offsetHeight;
