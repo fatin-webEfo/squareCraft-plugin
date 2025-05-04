@@ -280,10 +280,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   function getGradientCanvas(hue, width, height) {
-    const canvas = document.createElement("canvas");
+    const canvas = selectedElement.querySelector("canvas");
+const ctx = canvas?.getContext("2d");
+
     canvas.width = width;
     canvas.height = height;
-    const ctx = canvas.getContext("2d");
 
     const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
     gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
