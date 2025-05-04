@@ -412,8 +412,6 @@ if (allColorField && allColorBullet) {
         }
 
       });
-
-
     };
 
     container.appendChild(swatch);
@@ -421,7 +419,17 @@ if (allColorField && allColorBullet) {
   });
 
   if (container.children.length > 0) {
-    container.children[0].click();
+    const firstSwatchColor = container.children[0].style.backgroundColor;
+    updateSelectorField(firstSwatchColor);
+    moveBullet(0, 0);
+    if (transparencyBullet && transparencyField) {
+      transparencyBullet.style.top = `0px`;
+    }
+    currentTransparency = 100;
+    if (transparencyCount) {
+      transparencyCount.textContent = `100%`;
+    }
   }
+  
 
 }
