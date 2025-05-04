@@ -256,8 +256,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
-        const canvas = getGradientCanvas(dynamicHue, rect.width, rect.height);
-        const ctx = canvas.getContext("2d");
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas?.getContext("2d");
+        if (!ctx) return;
+        
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
         
         const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
@@ -310,8 +312,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     if (!width || !height) return;
 
     const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas?.getContext("2d");
+    if (!ctx) return;
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    ;
     const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
     colorCode.textContent = rgb;
