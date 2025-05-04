@@ -364,17 +364,43 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     swatch.title = cleanColor;
 
     swatch.onclick = () => {
-      updateSelectorField(cleanColor);
-      applyButtonBackgroundColor(cleanColor, currentTransparency / 100);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const initX = 0;
-          const initY = selectorField.offsetHeight - bullet.offsetHeight;
-          moveBullet(initX, initY);
-        });
-      });
+      const color = swatch.style.backgroundColor;
+    
+      updateSelectorField(color);
+      applyButtonBackgroundColor(color, currentTransparency / 100);
       
+      requestAnimationFrame(() => {
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
+    
+        let matchedX = 0;
+        let matchedY = 0;
+        let found = false;
+    
+        for (let y = 0; y < height && !found; y++) {
+          for (let x = 0; x < width && !found; x++) {
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const pixelColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+    
+            if (pixelColor === color.replace(/\s+/g, '')) {
+              matchedX = x;
+              matchedY = y;
+              found = true;
+            }
+          }
+        }
+    
+        if (!found) {
+          matchedX = 0;
+          matchedY = height - bullet.offsetHeight;
+        }
+    
+        moveBullet(matchedX, matchedY);
+      });
     };
+    
 
 
 
