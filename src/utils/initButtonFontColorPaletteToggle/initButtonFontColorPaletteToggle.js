@@ -1,6 +1,5 @@
   export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
     let dynamicHue = 0;
-let dynamicSaturation = 1;
 let dynamicBaseLightness = 0.5;
 
     const palette = document.getElementById("buttonFontColorPalate");
@@ -321,8 +320,7 @@ let dynamicBaseLightness = 0.5;
         }
       
         dynamicHue = h * 360;
-        dynamicSaturation = s; // ⬅️ New
-        dynamicBaseLightness = l; // ⬅️ New
+        dynamicBaseLightness = l; 
       }
       
     
