@@ -48,7 +48,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = parseInt(match[1]) / 255;
         const g = parseInt(match[2]) / 255;
         const b = parseInt(match[3]) / 255;
-          
+
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h = 0, s = 0, l = (max + min) / 2;
         if (max !== min) {
@@ -243,43 +243,51 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (selectorField && bullet) {
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
-      document.onmousemove = function (e) {
-        const rect = selectorField.getBoundingClientRect();
-        const percentX = offsetX / rect.width;
-        const percentY = offsetY / rect.height;
-        const lightness = 50 + percentX * 50;
-        const darkness = 100 - percentY * 100;
-        const finalLightness = Math.max(
-          0,
-          Math.min(100, (lightness * darkness) / 100)
-        );
-        
-        const h = Math.round(dynamicHue);
-        const s = 100;
-        const l = Math.round(finalLightness);
-      
-        const temp = document.createElement("div");
-        temp.style.color = `hsl(${h}, ${s}%, ${l}%)`;
-        document.body.appendChild(temp);
-        const rgb = getComputedStyle(temp).color;
-        document.body.removeChild(temp);
-        
-        if (colorCode) {
-          colorCode.textContent = rgb;
-        }
-        
-        applyButtonBackgroundColor(rgb, currentTransparency / 100);
-        
+  bullet.onmousedown = function (e) {
+  e.preventDefault();
+  document.onmousemove = function (e) {
+    const rect = selectorField.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
 
-      };
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
+    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-    };
+    bullet.style.left = `${offsetX}px`;
+    bullet.style.top = `${offsetY}px`;
+
+    const percentX = offsetX / rect.width;
+    const percentY = offsetY / rect.height;
+    const lightness = 50 + percentX * 50;
+    const darkness = 100 - percentY * 100;
+    const finalLightness = Math.max(
+      0,
+      Math.min(100, (lightness * darkness) / 100)
+    );
+
+    const h = Math.round(dynamicHue);
+    const s = 100;
+    const l = Math.round(finalLightness);
+
+    const temp = document.createElement("div");
+    temp.style.color = `hsl(${h}, ${s}%, ${l}%)`;
+    document.body.appendChild(temp);
+    const rgb = getComputedStyle(temp).color;
+    document.body.removeChild(temp);
+
+    if (colorCode) {
+      colorCode.textContent = rgb;
+    }
+
+    applyButtonBackgroundColor(rgb, currentTransparency / 100);
+  };
+
+  document.onmouseup = () => {
+    document.onmousemove = null;
+    document.onmouseup = null;
+  };
+};
+
   }
 
   function getGradientCanvas(hue, width, height) {
