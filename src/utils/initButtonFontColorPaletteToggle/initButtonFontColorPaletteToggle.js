@@ -366,13 +366,6 @@
           }
           
           applyButtonBackgroundColor(finalColor);
-          
-    
-          if (colorCode) {
-            colorCode.textContent = finalColor;
-          }
-    
-          applyButtonBackgroundColor(finalColor);
         };
     
         document.onmouseup = () => {
