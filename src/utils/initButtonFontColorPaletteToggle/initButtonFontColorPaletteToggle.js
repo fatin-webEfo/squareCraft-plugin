@@ -289,6 +289,30 @@ function applyButtonBackgroundColor(color) {
 
     };
   }
+
+  function getGradientCanvas(hue, width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+  
+    const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
+    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
+    gradient1.addColorStop(1, "white");
+  
+    const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
+    gradient2.addColorStop(0, "black");
+    gradient2.addColorStop(1, "transparent");
+  
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(0, 0, width, height);
+  
+    return ctx;
+  }
+  
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
     bullet.style.top = `${offsetY}px`;
@@ -342,13 +366,15 @@ function applyButtonBackgroundColor(color) {
     swatch.title = cleanColor;
   
     swatch.onclick = () => {
-      updateSelectorField(cleanColor); 
+      updateSelectorField(cleanColor);
+      applyButtonBackgroundColor(cleanColor);
       setTimeout(() => {
         const initX = 0;
         const initY = selectorField.offsetHeight - bullet.offsetHeight;
         moveBullet(initX, initY);
       }, 0);
     };
+    
     
   
     container.appendChild(swatch);
