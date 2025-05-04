@@ -21,6 +21,19 @@ export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
   );
 console.log("Selected Element:", selectedElement);
 
+
+
+function updateTransparencyField(hue) { 
+  if (transparencyField) {
+    transparencyField.style.background = `linear-gradient(to bottom, 
+      hsla(${hue}, 100%, 50%, 1), 
+      hsla(${hue}, 100%, 50%, 0)
+    )`;
+  }
+}
+
+
+
 function updateSelectorField(hueOrColor) {
   let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
 
@@ -58,14 +71,9 @@ function updateSelectorField(hueOrColor) {
   selectorField.style.backgroundBlendMode = "multiply";
   selectorField.style.backgroundSize = "100% 100%";
   selectorField.style.backgroundRepeat = "no-repeat";
+  updateTransparencyField(dynamicHue);
 
 
-  if (transparencyField) {
-    transparencyField.style.background = `linear-gradient(to bottom, 
-      hsla(${dynamicHue}, 100%, 50%, 1), 
-      hsla(${dynamicHue}, 100%, 50%, 0)
-    )`;
-  }
   
 }
 
@@ -157,12 +165,6 @@ function applyButtonBackgroundColor(color) {
     )`;
   }
 
-  if (transparencyField) {
-    transparencyField.style.background = `linear-gradient(to bottom, 
-      hsla(0, 100%, 50%, 1), 
-      hsla(0, 100%, 50%, 0)
-    )`;
-  }
 
   if (
     allColorField &&
@@ -211,13 +213,6 @@ function applyButtonBackgroundColor(color) {
           colorCode.textContent = finalColor;
         }
 
-        if (transparencyField) {
-          transparencyField.style.background = `linear-gradient(to bottom, 
-            hsla(${dynamicHue}, 100%, 50%, 1), 
-            hsla(${dynamicHue}, 100%, 50%, 0)
-          )`;
-        }
-
         if (selectorField) {
           selectorField.innerHTML = "";
           selectorField.appendChild(bullet);
@@ -230,7 +225,8 @@ function applyButtonBackgroundColor(color) {
           selectorField.style.backgroundRepeat = "no-repeat";
         }
 
-      
+        updateTransparencyField(dynamicHue);
+
         
       };
       document.onmouseup = () => {
