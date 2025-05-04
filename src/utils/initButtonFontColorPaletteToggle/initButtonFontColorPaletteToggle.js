@@ -148,20 +148,17 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
       : color;
 
-    styleTag.textContent = `
-  #${blockId} .${buttonType} {
-    background-color: ${rgbaColor} !important;
-    background: ${rgbaColor} !important;
-    border-color: ${rgbaColor} !important;
-  }
-
-  #${blockId} .${buttonType}:hover {
-    background-color: ${rgbaColor} !important;
-    background: ${rgbaColor} !important;
-    border-color: ${rgbaColor} !important;
-    filter: brightness(0.95);
-  }
-`;
+      styleTag.textContent = `
+      #${blockId} .${buttonType} {
+        background-color: ${rgbaColor} !important;
+      }
+    
+      #${blockId} .${buttonType}:hover {
+        background-color: ${rgbaColor} !important;
+        filter: brightness(0.95);
+      }
+    `;
+    
 
 
     const matchingButtons = selectedElement.querySelectorAll(`a.${buttonType}`);
@@ -371,6 +368,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const color = swatch.style.backgroundColor;
 
       updateSelectorField(color);
+      // Move allColorBullet to match dynamicHue
+if (allColorField && allColorBullet) {
+  const rect = allColorField.getBoundingClientRect();
+  const huePercentage = dynamicHue / 360;
+  const bulletTop = huePercentage * rect.height;
+  allColorBullet.style.top = `${bulletTop}px`;
+}
+
       applyButtonBackgroundColor(color, currentTransparency / 100);
 
       requestAnimationFrame(() => {
