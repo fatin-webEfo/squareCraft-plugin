@@ -19,7 +19,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   const transparencyBullet = document.getElementById(
     "button-color-transparency-bar"
   );
-  console.log("Selected Element:", selectedElement);
 
 
 
@@ -141,8 +140,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     matchingButtons.forEach(btn => {
       btn.dataset.scButtonBg = color;
     });
-
-    console.log(`✅ Updated all ".${buttonType}" buttons inside #${blockId} with:`, color);
   }
 
 
@@ -240,6 +237,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmousemove = null;
         document.onmouseup = null;
       };
+      console.log("🎨 Updated dynamicHue from palette:", dynamicHue);
+
     };
   }
 
@@ -291,6 +290,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const finalColor = `rgb(${Math.round(r * 119)}, ${Math.round(
           g * 119
         )}, ${Math.round(b * 119)})`;
+        console.log("The colors are",{ h, r, g, b, finalColor });
+
 
         if (colorCode) {
           colorCode.textContent = finalColor;
