@@ -420,16 +420,21 @@ if (allColorField && allColorBullet) {
 
   if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
-    updateSelectorField(firstSwatchColor);
-    moveBullet(0, 0);
-    if (transparencyBullet && transparencyField) {
-      transparencyBullet.style.top = `0px`;
-    }
-    currentTransparency = 100;
-    if (transparencyCount) {
-      transparencyCount.textContent = `100%`;
-    }
+  
+    requestAnimationFrame(() => {
+      updateSelectorField(firstSwatchColor);
+      moveBullet(0, 0);
+  
+      if (transparencyBullet && transparencyField) {
+        transparencyBullet.style.top = `0px`;
+      }
+      currentTransparency = 100;
+      if (transparencyCount) {
+        transparencyCount.textContent = `100%`;
+      }
+    });
   }
+  
   
 
 }
