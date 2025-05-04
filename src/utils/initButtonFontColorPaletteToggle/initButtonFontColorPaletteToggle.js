@@ -385,7 +385,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     swatch.onclick = () => {
       updateSelectorField(cleanColor);
-      applyButtonBackgroundColor(cleanColor);
+      applyButtonBackgroundColor(cleanColor, currentTransparency / 100);
       setTimeout(() => {
         const initX = 0;
         const initY = selectorField.offsetHeight - bullet.offsetHeight;
