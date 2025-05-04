@@ -79,7 +79,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
 
-  function applyButtonBackgroundColor(color) {
+  function applyButtonBackgroundColor(color, alpha = 1) {
     if (!selectedElement) {
       console.warn("⚠️ No block selected.");
       return;
@@ -119,7 +119,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     const rgbaColor = color.startsWith("rgb(")
       ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
-      : color; // fallback if it's already rgba or hsl
+      : color;
 
     styleTag.textContent = `
   #${blockId} .${buttonType} {
