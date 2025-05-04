@@ -216,7 +216,7 @@ function applyButtonBackgroundColor(color) {
         );
 
         const h = dynamicHue / 360;
-        const s = 1;
+        const s = dynamicSaturation || 1;
         const l = finalLightness / 100;
 
         function hueToRgb(p, q, t) {
@@ -342,7 +342,7 @@ function applyButtonBackgroundColor(color) {
     selectorField.style.backgroundSize = "100% 100%";
     selectorField.style.backgroundRepeat = "no-repeat";
   
-    bullet.onmousedown = function (e) {
+    bullet.onmousedown = function (e) { 
       e.preventDefault();
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
@@ -360,7 +360,7 @@ function applyButtonBackgroundColor(color) {
         const finalLightness = Math.max(0, Math.min(100, (lightness * darkness) / 100));
   
         const h = dynamicHue / 360;
-        const s = 1;
+        const s = dynamicSaturation || 1;
         const l = finalLightness / 100;
   
         function hueToRgb(p, q, t) {
