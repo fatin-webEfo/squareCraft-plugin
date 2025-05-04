@@ -275,8 +275,6 @@ function applyButtonBackgroundColor(color) {
     };
   }
 
-  palette.classList.toggle("sc-hidden");
-
   if (container.innerHTML.trim() !== "") return;
 
   Object.values(themeColors).forEach((color) => {
