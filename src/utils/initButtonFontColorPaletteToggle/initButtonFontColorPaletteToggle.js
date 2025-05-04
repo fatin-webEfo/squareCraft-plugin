@@ -342,7 +342,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (transparencyCount) {
           transparencyCount.textContent = `${currentTransparency}%`;
         }
-
+        const currentColor = colorCode?.textContent;
+        if (currentColor) {
+          applyButtonBackgroundColor(currentColor, currentTransparency / 100);
+        }
+        
       };
       document.onmouseup = () => {
         document.onmousemove = null;
