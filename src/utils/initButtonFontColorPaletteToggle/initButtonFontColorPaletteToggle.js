@@ -82,9 +82,6 @@ function applyButtonBackgroundColor(color) {
 
   console.log(`✅ Updated all ".${buttonType}" buttons inside #${blockId} with:`, color);
 }
-
-
-  
   
 
   if (
@@ -305,6 +302,31 @@ function applyButtonBackgroundColor(color) {
   function renderVerticalColorShades(baseColor) {
     if (!selectorField) return;
   
+    const tempDiv = document.createElement("div");
+    tempDiv.style.color = baseColor;
+    document.body.appendChild(tempDiv);
+    const computed = getComputedStyle(tempDiv).color;
+    document.body.removeChild(tempDiv);
+  
+    const match = computed.match(/rgb\((\d+), (\d+), (\d+)\)/);
+    if (match) {
+      const r = parseInt(match[1], 10) / 255;
+      const g = parseInt(match[2], 10) / 255;
+      const b = parseInt(match[3], 10) / 255;
+  
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      let h;
+      const d = max - min;
+  
+      if (d === 0) h = 0;
+      else if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
+      else if (max === g) h = ((b - r) / d + 2) * 60;
+      else h = ((r - g) / d + 4) * 60;
+  
+      dynamicHue = Math.round(h);
+    }
+  
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
     selectorField.style.background = `
@@ -365,6 +387,7 @@ function applyButtonBackgroundColor(color) {
       };
     };
   }
+  
   
 
   const firstColor = Object.values(themeColors)[0];
