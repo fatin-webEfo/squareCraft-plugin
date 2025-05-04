@@ -256,8 +256,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
-        const ctx = getGradientCanvas(dynamicHue, rect.width, rect.height);
+        const canvas = getGradientCanvas(dynamicHue, rect.width, rect.height);
+        const ctx = canvas.getContext("2d");
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        
         const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
         if (colorCode) {
