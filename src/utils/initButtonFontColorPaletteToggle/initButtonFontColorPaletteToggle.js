@@ -260,7 +260,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     };
   }
 
-  palette.classList.toggle("sc-hidden");
 
   if (container.innerHTML.trim() !== "") return;
 
@@ -376,4 +375,34 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   if (firstColor) {
     renderVerticalColorShades(firstColor);
   }
+
+  setTimeout(() => {
+    bullet.style.left = "0px";
+    bullet.style.top = `${selectorField.offsetHeight - bullet.offsetHeight}px`;
+  
+    const canvas = document.createElement("canvas");
+    canvas.width = selectorField.offsetWidth;
+    canvas.height = selectorField.offsetHeight;
+    const ctx = canvas.getContext("2d");
+  
+    const gradient1 = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient1.addColorStop(0, `hsl(${dynamicHue}, 100%, 50%)`);
+    gradient1.addColorStop(1, "white");
+  
+    const gradient2 = ctx.createLinearGradient(0, canvas.height, 0, 0);
+    gradient2.addColorStop(0, "black");
+    gradient2.addColorStop(1, "transparent");
+  
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+    const imageData = ctx.getImageData(0, canvas.height - bullet.offsetHeight, 1, 1).data;
+    const defaultColor = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+    if (colorCode) colorCode.textContent = defaultColor;
+    applyButtonBackgroundColor(defaultColor);
+  }, 0);
+  
 }
