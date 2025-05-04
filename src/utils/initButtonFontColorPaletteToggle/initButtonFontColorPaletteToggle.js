@@ -111,62 +111,61 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       console.warn("⚠️ No block selected.");
       return;
     }
-  
+
     const blockId = selectedElement.id;
+
     const buttonTypes = [
       "sqs-button-element--primary",
       "sqs-button-element--secondary",
       "sqs-button-element--tertiary"
     ];
-  
-    let clickedButtonType = null;
-    const clickedButton = event?.target?.closest("a.sqs-block-button-element");
-    if (clickedButton) {
-      for (let type of buttonTypes) {
-        if (clickedButton.classList.contains(type)) {
-          clickedButtonType = type;
-          break;
-        }
+
+    let buttonType = null;
+
+    for (let type of buttonTypes) {
+      if (selectedElement.querySelector(`a.${type}`)) {
+        buttonType = type;
+        break;
       }
     }
-  
-    if (!clickedButtonType) {
-      console.warn("⚠️ No valid button clicked for styling.");
+
+    if (!buttonType) {
+      console.warn("⚠️ No Squarespace button found in block.");
       return;
     }
-  
-    const typeShort = clickedButtonType.split("--")[1];
-    const styleId = `sc-style-${blockId}-${typeShort}`;
-  
+
+    const buttonTypeShort = buttonType.split("--")[1]; // 'primary', 'secondary', or 'tertiary'
+    const styleId = `sc-style-${blockId}-${buttonTypeShort}`;
+
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-  
+
     const rgbaColor = color.startsWith("rgb(")
       ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
       : color;
-  
-    styleTag.textContent = `
-      #${blockId} .${clickedButtonType} {
+
+      styleTag.textContent = `
+      #${blockId} .${buttonType} {
         background-color: ${rgbaColor} !important;
       }
-  
-      #${blockId} .${clickedButtonType}:hover {
+    
+      #${blockId} .${buttonType}:hover {
         background-color: ${rgbaColor} !important;
         filter: brightness(0.95);
       }
     `;
-  
-    const matchingButtons = selectedElement.querySelectorAll(`a.${clickedButtonType}`);
+    
+
+
+    const matchingButtons = selectedElement.querySelectorAll(`a.${buttonType}`);
     matchingButtons.forEach(btn => {
-      btn.style.backgroundColor = rgbaColor;
       btn.dataset.scButtonBg = color;
     });
   }
-  
 
 
   if (
