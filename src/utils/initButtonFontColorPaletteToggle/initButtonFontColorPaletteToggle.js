@@ -378,31 +378,41 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const ctx = canvas.getContext("2d");
         const width = canvas.width;
         const height = canvas.height;
-    
+      
         let matchedX = 0;
         let matchedY = 0;
         let found = false;
-    
+      
         for (let y = 0; y < height && !found; y++) {
           for (let x = 0; x < width && !found; x++) {
             const pixel = ctx.getImageData(x, y, 1, 1).data;
-            const pixelColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-    
-            if (pixelColor === color.replace(/\s+/g, '')) {
+            const r = pixel[0], g = pixel[1], b = pixel[2];
+            const [cr, cg, cb] = color
+              .replace(/[^\d,]/g, "")
+              .split(",")
+              .map(n => parseInt(n.trim()));
+      
+            const colorMatch =
+              Math.abs(r - cr) <= 2 &&
+              Math.abs(g - cg) <= 2 &&
+              Math.abs(b - cb) <= 2;
+      
+            if (colorMatch) {
               matchedX = x;
               matchedY = y;
               found = true;
             }
           }
         }
-    
+      
         if (!found) {
           matchedX = 0;
           matchedY = height - bullet.offsetHeight;
         }
-    
+      
         moveBullet(matchedX, matchedY);
       });
+      
     };
     
 
