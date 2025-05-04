@@ -153,6 +153,8 @@ function applyButtonBackgroundColor(color) {
 
   let dynamicHue = 0;
 
+  let currentTransparency = 100;
+
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
       hsl(0, 100%, 50%), 
@@ -350,9 +352,11 @@ function applyButtonBackgroundColor(color) {
 
         const transparencyPercent =
           100 - Math.round((offsetY / rect.height) * 100);
-        if (transparencyCount) {
-          transparencyCount.textContent = `${transparencyPercent}%`;
-        }
+          currentTransparency = transparencyPercent;
+          if (transparencyCount) {
+            transparencyCount.textContent = `${currentTransparency}%`;
+          }
+          
       };
       document.onmouseup = () => {
         document.onmousemove = null;
