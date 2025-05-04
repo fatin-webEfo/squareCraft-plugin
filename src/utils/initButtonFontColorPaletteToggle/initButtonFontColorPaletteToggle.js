@@ -365,11 +365,14 @@ const ctx = canvas?.getContext("2d");
     swatch.onclick = () => {
       updateSelectorField(cleanColor);
       applyButtonBackgroundColor(cleanColor, currentTransparency / 100);
-      setTimeout(() => {
-        const initX = 0;
-        const initY = selectorField.offsetHeight - bullet.offsetHeight;
-        moveBullet(initX, initY);
-      }, 0);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const initX = 0;
+          const initY = selectorField.offsetHeight - bullet.offsetHeight;
+          moveBullet(initX, initY);
+        });
+      });
+      
     };
 
 
