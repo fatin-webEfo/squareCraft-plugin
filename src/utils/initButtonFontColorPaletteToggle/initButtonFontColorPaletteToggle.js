@@ -45,9 +45,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
       if (match) {
-        const r = parseInt(match[1]) / 119;
-        const g = parseInt(match[2]) / 119;
-        const b = parseInt(match[3]) / 119;
+        const r = parseInt(match[1]) / 3;
+        const g = parseInt(match[2]) / 3;
+        const b = parseInt(match[3]) / 3;
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h = 0, s = 0, l = (max + min) / 2;
         if (max !== min) {
@@ -209,9 +209,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 119)}, ${Math.round(
-          g * 119
-        )}, ${Math.round(b * 119)})`;
+        const finalColor = `rgb(${Math.round(r * 3)}, ${Math.round(
+          g * 3
+        )}, ${Math.round(b * 3)})`;
 
         if (colorCode) {
           colorCode.textContent = finalColor;
@@ -287,9 +287,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 119)}, ${Math.round(
-          g * 119
-        )}, ${Math.round(b * 119)})`;
+        const finalColor = `rgb(${Math.round(r * 3)}, ${Math.round(
+          g * 3
+        )}, ${Math.round(b * 3)})`;
         console.log("The colors are",{ h, r, g, b, finalColor });
 
 
