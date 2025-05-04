@@ -243,52 +243,36 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (selectorField && bullet) {
-  bullet.onmousedown = function (e) {
-  e.preventDefault();
-  document.onmousemove = function (e) {
-    const rect = selectorField.getBoundingClientRect();
-    let offsetX = e.clientX - rect.left;
-    let offsetY = e.clientY - rect.top;
-
-    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
-
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
-
-    const percentX = offsetX / rect.width;
-    const percentY = offsetY / rect.height;
-    const lightness = 50 + percentX * 50;
-    const darkness = 100 - percentY * 100;
-    const finalLightness = Math.max(
-      0,
-      Math.min(100, (lightness * darkness) / 100)
-    );
-
-    const h = Math.round(dynamicHue);
-    const s = 100;
-    const l = Math.round(finalLightness);
-
-    const temp = document.createElement("div");
-    temp.style.color = `hsl(${h}, ${s}%, ${l}%)`;
-    document.body.appendChild(temp);
-    const rgb = getComputedStyle(temp).color;
-    document.body.removeChild(temp);
-
-    if (colorCode) {
-      colorCode.textContent = rgb;
-    }
-
-    applyButtonBackgroundColor(rgb, currentTransparency / 100);
-  };
-
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-  };
-};
-
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
+  
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+  
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
+        const ctx = getGradientCanvas(dynamicHue, rect.width, rect.height);
+        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+  
+        if (colorCode) {
+          colorCode.textContent = rgb;
+        }
+  
+        applyButtonBackgroundColor(rgb, currentTransparency / 100);
+      };
+  
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
   }
+  
 
   function getGradientCanvas(hue, width, height) {
     const canvas = document.createElement("canvas");
