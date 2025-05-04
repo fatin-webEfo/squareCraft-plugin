@@ -179,12 +179,28 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return;
 
   let dynamicHue = 0;
-  const defaultHue = 0;
-  const defaultColor = hslToRgb(defaultHue / 360);
-  dynamicHue = defaultHue;
-  setSelectorCanvas(defaultHue);
-  updateTransparencyField(defaultHue);
-  if (colorCode) colorCode.textContent = defaultColor;
+  const firstThemeColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '');
+  if (firstThemeColor) {
+    const hue = getHueFromColorString(firstThemeColor);
+    dynamicHue = hue;
+  
+    const defaultColor = hslToRgb(hue / 360);
+    updateSelectorField(hue);
+    if (colorCode) colorCode.textContent = defaultColor;
+  
+    if (allColorField && allColorBullet) {
+      const rect = allColorField.getBoundingClientRect();
+      const huePercentage = hue / 360;
+      allColorBullet.style.top = `${huePercentage * rect.height}px`;
+    }
+  
+    if (transparencyField) updateTransparencyField(hue);
+    if (transparencyBullet) transparencyBullet.style.top = `0px`;
+    if (transparencyCount) transparencyCount.textContent = `100%`;
+  
+    applyButtonBackgroundColor(defaultColor, 1);
+  }
+  
   let currentTransparency = 100;
 
   if (allColorField) {
