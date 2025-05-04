@@ -209,9 +209,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 3)}, ${Math.round(
-          g * 3
-        )}, ${Math.round(b * 3)})`;
+        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+
 
         if (colorCode) {
           colorCode.textContent = finalColor;
@@ -247,19 +246,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       e.preventDefault();
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
-        let offsetX = e.clientX - rect.left;
-        let offsetY = e.clientY - rect.top;
-        offsetX = Math.max(
-          0,
-          Math.min(rect.width - bullet.offsetWidth, offsetX)
-        );
-        offsetY = Math.max(
-          0,
-          Math.min(rect.height - bullet.offsetHeight, offsetY)
-        );
-        bullet.style.left = `${offsetX}px`;
-        bullet.style.top = `${offsetY}px`;
-
         const percentX = offsetX / rect.width;
         const percentY = offsetY / rect.height;
         const lightness = 50 + percentX * 50;
@@ -268,35 +254,23 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
           0,
           Math.min(100, (lightness * darkness) / 100)
         );
-
-        const h = dynamicHue / 360;
-        const s = 1;
-        const l = finalLightness / 100;
-
-        function hueToRgb(p, q, t) {
-          if (t < 0) t += 1;
-          if (t > 1) t -= 1;
-          if (t < 1 / 6) return p + (q - p) * 6 * t;
-          if (t < 1 / 2) return q;
-          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-          return p;
-        }
-
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        const r = hueToRgb(p, q, h + 1 / 3);
-        const g = hueToRgb(p, q, h);
-        const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 3)}, ${Math.round(
-          g * 3
-        )}, ${Math.round(b * 3)})`;
-        console.log("The colors are",{ h, r, g, b, finalColor });
-
-
+        
+        const h = Math.round(dynamicHue);
+        const s = 100;
+        const l = Math.round(finalLightness);
+      
+        const temp = document.createElement("div");
+        temp.style.color = `hsl(${h}, ${s}%, ${l}%)`;
+        document.body.appendChild(temp);
+        const rgb = getComputedStyle(temp).color;
+        document.body.removeChild(temp);
+        
         if (colorCode) {
-          colorCode.textContent = finalColor;
+          colorCode.textContent = rgb;
         }
-        applyButtonBackgroundColor(finalColor, currentTransparency / 100);
+        
+        applyButtonBackgroundColor(rgb, currentTransparency / 100);
+        
 
       };
       document.onmouseup = () => {
