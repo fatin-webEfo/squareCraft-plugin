@@ -67,7 +67,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.background = `
     linear-gradient(to right, hsl(${hue}, 100%, 50%), white),
     linear-gradient(to top, black, transparent)
+
+    
   `;
+  
     selectorField.style.backgroundBlendMode = "multiply";
     selectorField.style.backgroundSize = "100% 100%";
     selectorField.style.backgroundRepeat = "no-repeat";
@@ -279,23 +282,24 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
-
+  
     const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
     gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
     gradient1.addColorStop(1, "white");
-
+  
     const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
     gradient2.addColorStop(0, "black");
     gradient2.addColorStop(1, "transparent");
-
+  
     ctx.fillStyle = gradient1;
     ctx.fillRect(0, 0, width, height);
     ctx.globalCompositeOperation = "multiply";
     ctx.fillStyle = gradient2;
     ctx.fillRect(0, 0, width, height);
-
-    return ctx;
+  
+    return canvas;
   }
+  
 
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
@@ -305,9 +309,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const height = selectorField.offsetHeight;
     if (!width || !height) return;
 
-    const ctx = getGradientCanvas(dynamicHue, width, height);
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+    const canvas = selectorField.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+
     colorCode.textContent = rgb;
     applyButtonBackgroundColor(rgb);
   }
