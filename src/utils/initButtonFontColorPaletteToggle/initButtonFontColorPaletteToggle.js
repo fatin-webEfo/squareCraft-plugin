@@ -418,31 +418,19 @@ if (allColorField && allColorBullet) {
   if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
   
-    dynamicHue = getHueFromColorString(firstSwatchColor);
-    updateSelectorField(firstSwatchColor);
-    moveBullet(0, 0);
+    requestAnimationFrame(() => {
+      updateSelectorField(firstSwatchColor);
+      moveBullet(0, 0);
   
-    if (selectorField) {
-      selectorField.style.backgroundColor = firstSwatchColor;
-    }
-  
-    if (transparencyBullet && transparencyField) {
-      transparencyBullet.style.top = `0px`;
-    }
-  
-    currentTransparency = 100;
-    if (transparencyCount) {
-      transparencyCount.textContent = `100%`;
-    }
-  
-    if (colorCode) {
-      colorCode.textContent = firstSwatchColor;
-    }
-  
-    applyButtonBackgroundColor(firstSwatchColor, currentTransparency / 100);
+      if (transparencyBullet && transparencyField) {
+        transparencyBullet.style.top = `0px`;
+      }
+      currentTransparency = 100;
+      if (transparencyCount) {
+        transparencyCount.textContent = `100%`;
+      }
+    });
   }
-  
-  
   
   
 
