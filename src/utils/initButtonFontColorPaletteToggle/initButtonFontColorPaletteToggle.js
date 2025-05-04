@@ -179,7 +179,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return;
 
   let dynamicHue = 0;
-
+  const defaultHue = 0;
+  const defaultColor = hslToRgb(defaultHue / 360);
+  dynamicHue = defaultHue;
+  setSelectorCanvas(defaultHue);
+  updateTransparencyField(defaultHue);
+  if (colorCode) colorCode.textContent = defaultColor;
   let currentTransparency = 100;
 
   if (allColorField) {
