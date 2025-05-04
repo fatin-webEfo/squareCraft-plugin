@@ -307,25 +307,30 @@ function applyButtonBackgroundColor(color) {
     document.body.appendChild(tempDiv);
     const computed = getComputedStyle(tempDiv).color;
     document.body.removeChild(tempDiv);
-  
-    const match = computed.match(/rgb\((\d+), (\d+), (\d+)\)/);
-    if (match) {
-      const r = parseInt(match[1], 10) / 255;
-      const g = parseInt(match[2], 10) / 255;
-      const b = parseInt(match[3], 10) / 255;
-  
-      const max = Math.max(r, g, b);
-      const min = Math.min(r, g, b);
-      let h;
-      const d = max - min;
-  
-      if (d === 0) h = 0;
-      else if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
-      else if (max === g) h = ((b - r) / d + 2) * 60;
-      else h = ((r - g) / d + 4) * 60;
-  
-      dynamicHue = Math.round(h);
+    
+    const rgbMatch = computed.match(/rgb\((\d+), (\d+), (\d+)\)/);
+    if (rgbMatch) {
+      const r = parseInt(rgbMatch[1], 10) / 255;
+      const g = parseInt(rgbMatch[2], 10) / 255;
+      const b = parseInt(rgbMatch[3], 10) / 255;
+    
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h = 0, s = 0, l = (max + min) / 2;
+    
+      if (max !== min) {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+        else if (max === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h /= 6;
+      }
+    
+      dynamicHue = h * 360;
+      dynamicSaturation = s; // ⬅️ New
+      dynamicBaseLightness = l; // ⬅️ New
     }
+    
   
     selectorField.innerHTML = "";
     selectorField.appendChild(bullet);
