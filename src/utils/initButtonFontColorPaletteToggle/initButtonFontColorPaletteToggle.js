@@ -200,16 +200,29 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
     
-        const x = e.clientX;
-        const y = e.clientY;
-        const targetElem = document.elementFromPoint(x, y);
-        const computedStyle = window.getComputedStyle(targetElem);
-        const finalColor = computedStyle.backgroundColor;
+        const canvas = document.createElement("canvas");
+        canvas.width = selectorField.offsetWidth;
+        canvas.height = selectorField.offsetHeight;
+        const ctx = canvas.getContext("2d");
     
-        if (colorCode) {
-          colorCode.textContent = finalColor;
-        }
+        const gradient1 = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient1.addColorStop(0, `hsl(${dynamicHue}, 100%, 50%)`);
+        gradient1.addColorStop(1, "white");
     
+        const gradient2 = ctx.createLinearGradient(0, canvas.height, 0, 0);
+        gradient2.addColorStop(0, "black");
+        gradient2.addColorStop(1, "transparent");
+    
+        ctx.fillStyle = gradient1;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "multiply";
+        ctx.fillStyle = gradient2;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+        const imageData = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const finalColor = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+    
+        if (colorCode) colorCode.textContent = finalColor;
         applyButtonBackgroundColor(finalColor);
       };
     
@@ -218,6 +231,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmouseup = null;
       };
     };
+    
     
   }
 
@@ -322,16 +336,28 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
     
-        const x = e.clientX;
-        const y = e.clientY;
-        const targetElem = document.elementFromPoint(x, y);
-        const computedStyle = window.getComputedStyle(targetElem);
-        const finalColor = computedStyle.backgroundColor;
+        const canvas = document.createElement("canvas");
+        canvas.width = selectorField.offsetWidth;
+        canvas.height = selectorField.offsetHeight;
+        const ctx = canvas.getContext("2d");
     
-        if (colorCode) {
-          colorCode.textContent = finalColor;
-        }
+        const gradient1 = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient1.addColorStop(0, `hsl(${dynamicHue}, 100%, 50%)`);
+        gradient1.addColorStop(1, "white");
     
+        const gradient2 = ctx.createLinearGradient(0, canvas.height, 0, 0);
+        gradient2.addColorStop(0, "black");
+        gradient2.addColorStop(1, "transparent");
+        ctx.fillStyle = gradient1;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "multiply";
+        ctx.fillStyle = gradient2;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+        const imageData = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const finalColor = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+    
+        if (colorCode) colorCode.textContent = finalColor;
         applyButtonBackgroundColor(finalColor);
       };
     
@@ -340,6 +366,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmouseup = null;
       };
     };
+    
     
   }
 
