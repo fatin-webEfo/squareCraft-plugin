@@ -46,9 +46,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
       if (match) {
-        const r = parseInt(match[1]) / 255;
-        const g = parseInt(match[2]) / 255;
-        const b = parseInt(match[3]) / 255;
+        const r = parseInt(match[1]) / 119;
+        const g = parseInt(match[2]) / 119;
+        const b = parseInt(match[3]) / 119;
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h = 0, s = 0, l = (max + min) / 2;
         if (max !== min) {
@@ -212,9 +212,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(
-          g * 255
-        )}, ${Math.round(b * 255)})`;
+        const finalColor = `rgb(${Math.round(r * 119)}, ${Math.round(
+          g * 119
+        )}, ${Math.round(b * 119)})`;
 
         if (colorCode) {
           colorCode.textContent = finalColor;
@@ -288,9 +288,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const r = hueToRgb(p, q, h + 1 / 3);
         const g = hueToRgb(p, q, h);
         const b = hueToRgb(p, q, h - 1 / 3);
-        const finalColor = `rgb(${Math.round(r * 255)}, ${Math.round(
-          g * 255
-        )}, ${Math.round(b * 255)})`;
+        const finalColor = `rgb(${Math.round(r * 119)}, ${Math.round(
+          g * 119
+        )}, ${Math.round(b * 119)})`;
 
         if (colorCode) {
           colorCode.textContent = finalColor;
