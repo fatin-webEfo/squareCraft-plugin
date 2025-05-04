@@ -45,9 +45,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
       if (match) {
-        const r = parseInt(match[1]) / 3;
-        const g = parseInt(match[2]) / 3;
-        const b = parseInt(match[3]) / 3;
+        const r = parseInt(match[1]) / 255;
+        const g = parseInt(match[2]) / 255;
+        const b = parseInt(match[3]) / 255;
+          
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h = 0, s = 0, l = (max + min) / 2;
         if (max !== min) {
