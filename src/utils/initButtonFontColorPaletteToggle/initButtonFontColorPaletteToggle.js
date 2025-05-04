@@ -416,10 +416,11 @@ if (allColorField && allColorBullet) {
 
     };
 
-
-
-
     container.appendChild(swatch);
+    if (container.children.length === Object.keys(themeColors).length) {
+      container.children[0].click();
+    }
+    
   });
 
 
