@@ -463,9 +463,4 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     };
   }
 
-
-  const firstColor = Object.values(themeColors)[0];
-  if (firstColor) {
-    renderVerticalColorShades(firstColor);
-  }
 }
