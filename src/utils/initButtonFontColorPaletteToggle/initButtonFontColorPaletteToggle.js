@@ -1,4 +1,8 @@
   export function initButtonFontColorPaletteToggle(themeColors,selectedElement) {
+    let dynamicHue = 0;
+let dynamicSaturation = 1;
+let dynamicBaseLightness = 0.5;
+
     const palette = document.getElementById("buttonFontColorPalate");
     const container = document.getElementById("button-border-colors");
     const selectorField = document.getElementById("button-color-selection-field");
@@ -93,8 +97,6 @@
       !transparencyCount
     )
       return;
-
-    let dynamicHue = 0;
 
     if (allColorField) {
       allColorField.style.background = `linear-gradient(to bottom, 
