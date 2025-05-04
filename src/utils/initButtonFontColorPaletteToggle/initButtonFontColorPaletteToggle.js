@@ -37,14 +37,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     document.body.appendChild(tempDiv);
     const rgb = getComputedStyle(tempDiv).color;
     document.body.removeChild(tempDiv);
-  
+
     const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
     if (!match) return null;
-  
+
     const r = parseInt(match[1]) / 255;
     const g = parseInt(match[2]) / 255;
     const b = parseInt(match[3]) / 255;
-  
+
     const max = Math.max(r, g, b), min = Math.min(r, g, b);
     let h = 0, s = 0, l = (max + min) / 2;
     if (max !== min) {
@@ -59,13 +59,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
-  
+
     const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
     canvas.style.position = "absolute";
     canvas.style.top = "0";
     canvas.style.left = "0";
     canvas.style.zIndex = "0";
-  
+
     selectorField.style.position = "relative";
     selectorField.appendChild(canvas);
     selectorField.appendChild(bullet);
@@ -79,17 +79,17 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     }
-  
+
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
-  
+
     const r = hueToRgb(p, q, h + 1 / 3);
     const g = hueToRgb(p, q, h);
     const b = hueToRgb(p, q, h - 1 / 3);
-  
+
     return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
   }
-      
+
 
   function updateSelectorField(hueOrColor) {
     let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
@@ -97,7 +97,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     if (!hue) {
       hue = getHueFromColorString(hueOrColor);
     }
-    
+
 
     dynamicHue = hue;
     setSelectorCanvas(hue);
@@ -259,9 +259,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const canvas = selectorField.querySelector("canvas");
         const ctx = canvas?.getContext("2d");
         if (!ctx) return;
-        
+
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-        
+
         const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
         if (colorCode) {
@@ -282,27 +282,27 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   function getGradientCanvas(hue, width, height) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-  
+
     canvas.width = width;
     canvas.height = height;
-  
+
     const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
     gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
     gradient1.addColorStop(1, "white");
-  
+
     const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
     gradient2.addColorStop(0, "black");
     gradient2.addColorStop(1, "transparent");
-  
+
     ctx.fillStyle = gradient1;
     ctx.fillRect(0, 0, width, height);
     ctx.globalCompositeOperation = "multiply";
     ctx.fillStyle = gradient2;
     ctx.fillRect(0, 0, width, height);
-  
+
     return canvas;
   }
-  
+
 
 
   function moveBullet(offsetX, offsetY) {
@@ -346,7 +346,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (currentColor) {
           applyButtonBackgroundColor(currentColor, currentTransparency / 100);
         }
-        
+
       };
       document.onmouseup = () => {
         document.onmousemove = null;
@@ -369,10 +369,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     swatch.onclick = () => {
       const color = swatch.style.backgroundColor;
-    
+
       updateSelectorField(color);
       applyButtonBackgroundColor(color, currentTransparency / 100);
-      
+
       requestAnimationFrame(() => {
         const canvas = selectorField.querySelector("canvas");
         const ctx = canvas.getContext("2d");
@@ -398,11 +398,19 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         }
 
         moveBullet(bestMatch.x, bestMatch.y);
+        if (transparencyBullet && transparencyField) {
+          transparencyBullet.style.top = `0px`;
+        }
+        currentTransparency = 100;
+        if (transparencyCount) {
+          transparencyCount.textContent = `100%`;
+        }
+
       });
 
-      
+
     };
-    
+
 
 
 
