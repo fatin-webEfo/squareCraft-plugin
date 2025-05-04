@@ -204,33 +204,30 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   ) {
     allColorBullet.onmousedown = function (e) {
       e.preventDefault();
+      
       document.onmousemove = function (e) {
         const rect = allColorField.getBoundingClientRect();
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(
-          0,
-          Math.min(rect.height - allColorBullet.offsetHeight, offsetY)
-        );
+        offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
         allColorBullet.style.top = `${offsetY}px`;
-
+      
         const percentage = offsetY / rect.height;
         dynamicHue = Math.round(360 * percentage);
-
+      
         const finalColor = hslToRgb(dynamicHue / 360);
-
+      
         if (colorCode) {
           colorCode.textContent = finalColor;
         }
-
+      
         if (selectorField) {
           setSelectorCanvas(dynamicHue);
-
         }
-
+      
         updateTransparencyField(dynamicHue);
-
-
+        applyButtonBackgroundColor(finalColor, currentTransparency / 100);
       };
+      
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
