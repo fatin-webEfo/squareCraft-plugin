@@ -77,7 +77,6 @@
         "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
       );
       const { initButtonStyles,initButtonIconPositionToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-
       const themeColors = await getSquarespaceThemeStyles();
 
 
