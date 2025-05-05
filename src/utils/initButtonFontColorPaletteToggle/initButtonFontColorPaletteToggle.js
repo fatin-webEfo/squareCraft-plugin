@@ -28,7 +28,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     )`;
     }
   }
-  
+  console.log("clicked element", selectedElement)
   function getHueFromColorString(colorStr) {
     const tempDiv = document.createElement("div");
     tempDiv.style.color = colorStr;
