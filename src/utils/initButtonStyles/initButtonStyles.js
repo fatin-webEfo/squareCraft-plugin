@@ -127,6 +127,7 @@ export function initButtonStyles(selectedButtonElement) {
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
+ 
   document.getElementById("buttoniconPositionSection").onclick = () => {
     document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
   };
@@ -137,19 +138,26 @@ export function initButtonIconPositionToggle(getSelectedElement) {
       document.getElementById("iconPositionLabel").innerHTML = `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
       document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
   
-      const selectedElement = getSelectedElement(); 
+      const selectedElement = getSelectedElement();
       const container = selectedElement?.querySelector(".sqs-block-button-container");
       const buttonLink = container?.querySelector("a");
       const icon = buttonLink?.querySelector(".sqscraft-button-icon");
       const textDiv = buttonLink?.querySelector(".sqs-html");
   
       if (!icon || !textDiv) return;
+  
+      icon.style.marginLeft = "";
+      icon.style.marginRight = "";
+  
       if (value === "after") {
+        icon.style.marginLeft = "8px";
         buttonLink.insertBefore(icon, textDiv.nextSibling);
       } else {
+        icon.style.marginLeft = "0px";
         buttonLink.insertBefore(icon, textDiv);
       }
     };
   });
+  
   
 }
