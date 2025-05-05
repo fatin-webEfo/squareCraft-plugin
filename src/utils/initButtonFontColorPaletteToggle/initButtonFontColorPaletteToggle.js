@@ -28,7 +28,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     )`;
     }
   }
-
+  const block = document.querySelector('[id^="block-"].sc-selected');
+  initButtonFontColorPaletteToggle(themeColors, block);
+  
   function getHueFromColorString(colorStr) {
     const tempDiv = document.createElement("div");
     tempDiv.style.color = colorStr;
@@ -157,8 +159,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       btn.dataset.scButtonBg = color;
     });
   }
-  
-
   
   if (
     !palette ||
@@ -412,7 +412,6 @@ if (allColorField && allColorBullet) {
   
     requestAnimationFrame(() => {
       updateSelectorField(firstSwatchColor);
-      moveBullet(0, 0);
   
       if (transparencyBullet && transparencyField) {
         transparencyBullet.style.top = `0px`;
