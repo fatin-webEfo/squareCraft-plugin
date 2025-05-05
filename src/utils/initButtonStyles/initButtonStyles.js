@@ -139,12 +139,15 @@ export function initButtonIconPositionToggle(getSelectedElement) {
       document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
 
       const selectedElement = getSelectedElement();
-      const container = selectedElement?.querySelector(".sqs-block-button-container");
-      const buttons = container?.querySelectorAll(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
+      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!sampleButton) return;
 
-      buttons.forEach(buttonLink => {
+      let typeClass = "sqs-button-element--primary";
+      if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+      else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      allButtons.forEach(buttonLink => {
         const icon = buttonLink.querySelector(".sqscraft-button-icon");
         const textDiv = buttonLink.querySelector(".sqs-html");
 
@@ -164,4 +167,5 @@ export function initButtonIconPositionToggle(getSelectedElement) {
     };
   });
 }
+
 
