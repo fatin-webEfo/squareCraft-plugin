@@ -1,4 +1,4 @@
-export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
+export function initButtonFontColorPaletteToggle(themeColors) {
   const palette = document.getElementById("buttonFontColorPalate");
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
@@ -119,7 +119,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   
     let buttonType = null;
     for (let type of buttonTypes) {
-      if (selectedElement.querySelector(`a.${type}`)) {
+      if (currentBlock.querySelector(`a.${type}`)) {
         buttonType = type;
         break;
       }
