@@ -117,10 +117,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   
     let buttonType = null;
     for (let type of buttonTypes) {
-      if (selectedElement.querySelector(`a.${type}`)) {
-        buttonType = type;
-        break;
-      }
+      const currentElement = selectedElement?.();
+if (currentElement?.querySelector(`a.${type}`)) {
+  buttonType = type;
+}
+
     }
   
     if (!buttonType) {
@@ -151,7 +152,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         filter: brightness(0.95);
       }
     `;
-    const allButtons = document.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
+    const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
     allButtons.forEach(btn => {
       btn.dataset.scButtonBg = color;
     });
