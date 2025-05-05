@@ -140,9 +140,26 @@ export function initButtonIconPositionToggle(getSelectedElement) {
   
       const selectedElement = getSelectedElement();
       const container = selectedElement?.querySelector(".sqs-block-button-container");
-      const buttonLink = container?.querySelector("a");
-      const icon = buttonLink?.querySelector(".sqscraft-button-icon");
-      const textDiv = buttonLink?.querySelector(".sqs-html");
+      const buttons = container?.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+
+buttons.forEach(buttonLink => {
+  const icon = buttonLink.querySelector(".sqscraft-button-icon");
+  const textDiv = buttonLink.querySelector(".sqs-html");
+
+  if (!icon || !textDiv) return;
+
+  icon.style.marginLeft = "";
+  icon.style.marginRight = "";
+
+  if (value === "after") {
+    icon.style.marginLeft = "8px";
+    buttonLink.insertBefore(icon, textDiv.nextSibling);
+  } else {
+    icon.style.marginLeft = "0px";
+    buttonLink.insertBefore(icon, textDiv);
+  }
+});
+
   
       if (!icon || !textDiv) return;
   
