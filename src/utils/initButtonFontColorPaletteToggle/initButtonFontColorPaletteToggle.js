@@ -109,61 +109,55 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       console.warn("⚠️ No block selected.");
       return;
     }
-
-    const blockId = selectedElement.id;
-
+  
     const buttonTypes = [
       "sqs-button-element--primary",
       "sqs-button-element--secondary",
       "sqs-button-element--tertiary"
     ];
-
+  
     let buttonType = null;
-
     for (let type of buttonTypes) {
       if (selectedElement.querySelector(`a.${type}`)) {
         buttonType = type;
         break;
       }
     }
-
+  
     if (!buttonType) {
       console.warn("⚠️ No Squarespace button found in block.");
       return;
     }
-
-    const buttonTypeShort = buttonType.split("--")[1]; // 'primary', 'secondary', or 'tertiary'
-    const styleId = `sc-style-${blockId}-${buttonTypeShort}`;
-
+  
+    const rgbaColor = color.startsWith("rgb(")
+      ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
+      : color;
+  
+    const styleId = `sc-style-global-${buttonType}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-
-    const rgbaColor = color.startsWith("rgb(")
-      ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
-      : color;
-
-      styleTag.textContent = `
-      #${blockId} .${buttonType} {
+  
+    styleTag.textContent = `
+      a.${buttonType},
+      button.${buttonType} {
         background-color: ${rgbaColor} !important;
       }
-    
-      #${blockId} .${buttonType}:hover {
+      a.${buttonType}:hover,
+      button.${buttonType}:hover {
         background-color: ${rgbaColor} !important;
         filter: brightness(0.95);
       }
     `;
-    
-
-
-    const matchingButtons = selectedElement.querySelectorAll(`a.${buttonType}`);
-    matchingButtons.forEach(btn => {
+    const allButtons = document.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
+    allButtons.forEach(btn => {
       btn.dataset.scButtonBg = color;
     });
   }
+  
 
   
   if (
