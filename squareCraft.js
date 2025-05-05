@@ -69,7 +69,7 @@
       const { initImageSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js");
       const { initButtonSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonSectionToggleControls/initButtonSectionToggleControls.js");
       const { initImageUploadPreview } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonSectionToggleControls/initImageUploadPreview.js");
-      const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageSectionControls.js");
+      const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js");
       const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
       const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
       const { initButtonFontColorPaletteToggle } = await import(
