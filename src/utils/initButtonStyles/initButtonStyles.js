@@ -169,3 +169,50 @@ export function initButtonIconPositionToggle(getSelectedElement) {
 }
 
 
+export function initButtonIconRotationToggle(getSelectedElement) {
+  const trigger = document.getElementById("buttoniconRotationSection");
+  const dropdown = document.getElementById("buttoniconRotationDropdown");
+  const currentLabel = document.getElementById("buttoniconRotationCurrentValue");
+
+  if (!trigger || !dropdown || !currentLabel) return;
+
+  const rotationValues = ["0", "45", "90", "135", "180", "225", "270", "315"];
+  dropdown.classList.add("sc-absolute", "sc-left-0", "sc-z-50", "sc-hidden");
+
+  dropdown.innerHTML = rotationValues
+    .map((deg) => `
+      <div data-rotation="${deg}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
+        <p class="sc-universal sc-roboto sc-text-sm">${deg} deg</p>
+      </div>
+    `)
+    .join("");
+
+  trigger.onclick = () => dropdown.classList.toggle("sc-hidden");
+
+  dropdown.querySelectorAll("[data-rotation]").forEach(item => {
+    item.onclick = () => {
+      const deg = item.dataset.rotation;
+      currentLabel.textContent = `${deg} deg`;
+      dropdown.classList.add("sc-hidden");
+
+      const selectedElement = getSelectedElement();
+      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!sampleButton) return;
+
+      let typeClass = "sqs-button-element--primary";
+      if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+      else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      allButtons.forEach(button => {
+        const icon = button.querySelector(".sqscraft-button-icon");
+        if (icon) {
+          icon.style.transform = `rotate(${deg}deg)`;
+        }
+      });
+    };
+  });
+}
+
+
+
