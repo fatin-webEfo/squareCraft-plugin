@@ -1704,7 +1704,12 @@
 .sc-selected {
   outline: 2px dashed #EF7C2F !important;
 }
-
+.sc-border-b{
+  border-bottom: 1px solid #ef7c2f2f !important;
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
 
 .sc-toolbar:hover {
   background-color: rgba(229, 229, 229, 0.2);
