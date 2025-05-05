@@ -81,7 +81,8 @@
 
 
       document.body.addEventListener("click", (event) => {
-        initButtonIconPositionToggle(selectedElement)
+        initButtonIconPositionToggle(() => selectedElement);
+
         if(selectedElement) {
           initButtonStyles(selectedElement);
         }
