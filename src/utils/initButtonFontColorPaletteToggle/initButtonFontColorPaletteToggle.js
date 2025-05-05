@@ -117,12 +117,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   
     let buttonType = null;
     for (let type of buttonTypes) {
-      const currentElement = selectedElement?.();
-if (currentElement?.querySelector(`a.${type}`)) {
-  buttonType = type;
-}
-
+      if (currentElement.querySelector(`a.${type}`)) {
+        buttonType = type;
+        break;
+      }
     }
+    
   
     if (!buttonType) {
       console.warn("⚠️ No Squarespace button found in block.");
