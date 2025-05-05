@@ -120,7 +120,8 @@
             setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
           });
         
-          initButtonFontColorPaletteToggle(themeColors, selectedElement);
+          initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
+
         }, 50);
         
         
