@@ -127,54 +127,41 @@ export function initButtonStyles(selectedButtonElement) {
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
- 
   document.getElementById("buttoniconPositionSection").onclick = () => {
     document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
   };
-  
+
   document.querySelectorAll("#iconPositionDropdown [data-value]").forEach((option) => {
     option.onclick = () => {
       const value = option.dataset.value;
-      document.getElementById("iconPositionLabel").innerHTML = `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
+      document.getElementById("iconPositionLabel").innerHTML =
+        `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
       document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
-  
+
       const selectedElement = getSelectedElement();
       const container = selectedElement?.querySelector(".sqs-block-button-container");
-      const buttons = container?.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      const buttons = container?.querySelectorAll(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
 
-buttons.forEach(buttonLink => {
-  const icon = buttonLink.querySelector(".sqscraft-button-icon");
-  const textDiv = buttonLink.querySelector(".sqs-html");
+      buttons.forEach(buttonLink => {
+        const icon = buttonLink.querySelector(".sqscraft-button-icon");
+        const textDiv = buttonLink.querySelector(".sqs-html");
 
-  if (!icon || !textDiv) return;
+        if (!icon || !textDiv) return;
 
-  icon.style.marginLeft = "";
-  icon.style.marginRight = "";
+        icon.style.marginLeft = "";
+        icon.style.marginRight = "";
 
-  if (value === "after") {
-    icon.style.marginLeft = "8px";
-    buttonLink.insertBefore(icon, textDiv.nextSibling);
-  } else {
-    icon.style.marginLeft = "0px";
-    buttonLink.insertBefore(icon, textDiv);
-  }
-});
-
-  
-      if (!icon || !textDiv) return;
-  
-      icon.style.marginLeft = "";
-      icon.style.marginRight = "";
-  
-      if (value === "after") {
-        icon.style.marginLeft = "8px";
-        buttonLink.insertBefore(icon, textDiv.nextSibling);
-      } else {
-        icon.style.marginLeft = "0px";
-        buttonLink.insertBefore(icon, textDiv);
-      }
+        if (value === "after") {
+          icon.style.marginLeft = "8px";
+          buttonLink.insertBefore(icon, textDiv.nextSibling);
+        } else {
+          icon.style.marginRight = "8px";
+          buttonLink.insertBefore(icon, textDiv);
+        }
+      });
     };
   });
-  
-  
 }
+
