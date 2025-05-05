@@ -241,7 +241,7 @@ if (currentElement?.querySelector(`a.${type}`)) {
         bullet.style.left = `${offsetX}px`;
         bullet.style.top = `${offsetY}px`;
         const canvas = selectorField.querySelector("canvas");
-        const ctx = canvas?.getContext("2d");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
         if (!ctx) return;
 
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
@@ -265,7 +265,7 @@ if (currentElement?.querySelector(`a.${type}`)) {
 
   function getGradientCanvas(hue, width, height) {
     const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
     canvas.width = width;
     canvas.height = height;
