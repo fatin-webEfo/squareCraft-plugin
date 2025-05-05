@@ -167,7 +167,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     });
   }
 
-
+  
   if (
     !palette ||
     !container ||
