@@ -177,7 +177,7 @@ export function initButtonIconRotationToggle(getSelectedElement) {
   if (!trigger || !dropdown || !currentLabel) return;
 
   const rotationValues = ["0", "45", "90", "135", "180", "225", "270", "315"];
-  dropdown.classList.add("sc-absolute", "sc-left-0", "sc-z-50", "sc-hidden");
+  dropdown.classList.add("sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "z-99999");
 
   dropdown.innerHTML = rotationValues
     .map((deg) => `
