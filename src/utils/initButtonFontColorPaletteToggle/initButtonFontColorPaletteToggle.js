@@ -105,10 +105,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   function applyButtonBackgroundColor(color, alpha = 1) {
-    if (!selectedElement) {
-      console.warn("⚠️ No block selected.");
-      return;
-    }
+    const currentElement = selectedElement?.();
+    if (!currentElement) return;
+    
   
     const buttonTypes = [
       "sqs-button-element--primary",
