@@ -20,8 +20,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     "button-color-transparency-bar"
   );
 
-
-
   function updateTransparencyField(hue) {
     if (transparencyField) {
       transparencyField.style.background = `linear-gradient(to bottom, 
@@ -430,6 +428,20 @@ if (allColorField && allColorBullet) {
         transparencyCount.textContent = `100%`;
       }
     });
+  }
+  
+  if (container.children.length === 0) {
+    const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
+    updateSelectorField(defaultColor);
+    moveBullet(0, 0);
+  
+    if (transparencyBullet && transparencyField) {
+      transparencyBullet.style.top = `0px`;
+    }
+    currentTransparency = 100;
+    if (transparencyCount) {
+      transparencyCount.textContent = `100%`;
+    }
   }
   
   
