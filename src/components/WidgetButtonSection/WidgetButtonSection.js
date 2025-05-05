@@ -382,7 +382,7 @@ export function WidgetButtonSection() {
                           <p class="sc-universal sc-roboto sc-text-sm">Before</p>
                         </div>
                       
-                        <div id="iconPositionDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-left-0 sc-top-[35px] sc-z-50">
+                        <div id="iconPositionDropdown" class="sc-absolute sc-rounded-6px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-left-0 sc-top-[35px] sc-z-50">
                           <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16 sc-cursor-pointer" data-value="before">Before</div>
                           <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer" data-value="after">After</div>
                         </div>
