@@ -187,10 +187,16 @@ export function initButtonIconRotationToggle(getSelectedElement) {
     `)
     .join("");
 
-  trigger.onclick = () => dropdown.classList.toggle("sc-hidden");
+  trigger.onclick = (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  };
+
+  dropdown.onclick = (e) => e.stopPropagation();
 
   dropdown.querySelectorAll("[data-rotation]").forEach(item => {
-    item.onclick = () => {
+    item.onclick = (e) => {
+      e.stopPropagation();
       const deg = item.dataset.rotation;
       currentLabel.textContent = `${deg} deg`;
       dropdown.classList.add("sc-hidden");
@@ -212,7 +218,10 @@ export function initButtonIconRotationToggle(getSelectedElement) {
       });
     };
   });
+
+  document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
 }
+
 
 
 
