@@ -95,12 +95,8 @@
           return;
         }
 
-
-          setTimeout(() => {
-            initButtonFontColorPaletteToggle(themeColors,selectedElement);
-          }, 100);
+         
       
-
 
         setTimeout(initImageSectionControls, 100);
         const clickedBlock = event.target.closest('[id^="block-"]');
@@ -113,15 +109,20 @@
               console.error(error.message);
             });
         }
-        handleBlockClick(event, {
-          getTextType,
-          selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-        });
+        setTimeout(() => {
+          handleBlockClick(event, {
+            getTextType,
+            selectedElement,
+            setSelectedElement: (val) => selectedElement = val,
+            setLastClickedBlockId: (val) => lastClickedBlockId = val,
+            setLastClickedElement: (val) => lastClickedElement = val,
+            setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+            setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          });
+        
+          initButtonFontColorPaletteToggle(themeColors, selectedElement);
+        }, 50);
+        
         
         
         handleAlignmentClick(event, {
@@ -141,6 +142,7 @@
         handleTextColorClick(event, lastClickedElement, applyStylesToElement);
         handleFontWeightDropdownClick(event);
         typoTabSelect(event);
+
       });
 
 
