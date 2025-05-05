@@ -105,9 +105,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   function applyButtonBackgroundColor(color, alpha = 1) {
-    if (!selectedElement) {
-      console.warn("⚠️ No block selected.");
-      return;
+    const currentBlock = document.querySelector('[id^="block-"].sc-selected');
+  if (!currentBlock) {
+    console.warn("⚠️ No block selected.");
+    return;
     }
   
     const buttonTypes = [

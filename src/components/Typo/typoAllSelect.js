@@ -15,9 +15,6 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
         </div>
      </div>
-
-
-
      <div
         class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
         <div class="sc-flex sc-text-color-white sc-items-center ">
