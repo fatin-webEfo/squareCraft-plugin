@@ -76,11 +76,13 @@
         "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
       );
       const { initButtonStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+      const { initButtonIconPositionToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
 
       const themeColors = await getSquarespaceThemeStyles();
 
 
       document.body.addEventListener("click", (event) => {
+        initButtonIconPositionToggle(selectedElement)
         if(selectedElement) {
           initButtonStyles(selectedElement);
         }

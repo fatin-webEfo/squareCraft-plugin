@@ -124,3 +124,45 @@ export function initButtonStyles(selectedButtonElement) {
     }
   });
 }
+
+
+export function initButtonIconPositionToggle(getSelectedElement) {
+  const toggleBtn = document.getElementById("buttoniconPositionSection");
+  const afterDropdown = document.querySelector('[data-value="after"]');
+  const visualLabel = document.querySelector('[data-value="before"] p');
+
+  if (!toggleBtn || !afterDropdown || !visualLabel) return;
+
+  toggleBtn.onclick = () => {
+    afterDropdown.classList.toggle("sc-hidden");
+  };
+
+  afterDropdown.onclick = () => {
+    visualLabel.innerText = "After";
+    afterDropdown.classList.add("sc-hidden");
+
+    const selectedElement = getSelectedElement();
+    const container = selectedElement?.querySelector(".sqs-block-button-container");
+    const buttonLink = container?.querySelector("a");
+    const icon = buttonLink?.querySelector(".sqscraft-button-icon");
+    const textDiv = buttonLink?.querySelector(".sqs-html");
+
+    if (icon && textDiv) {
+      buttonLink.insertBefore(icon, textDiv.nextSibling);
+    }
+  };
+
+  visualLabel.onclick = () => {
+    visualLabel.innerText = "Before";
+
+    const selectedElement = getSelectedElement();
+    const container = selectedElement?.querySelector(".sqs-block-button-container");
+    const buttonLink = container?.querySelector("a");
+    const icon = buttonLink?.querySelector(".sqscraft-button-icon");
+    const textDiv = buttonLink?.querySelector(".sqs-html");
+
+    if (icon && textDiv) {
+      buttonLink.insertBefore(icon, textDiv);
+    }
+  };
+}
