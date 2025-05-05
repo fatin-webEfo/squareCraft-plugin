@@ -1,10 +1,6 @@
 export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
-
-  if (!uploadButton) {
-    console.error("❌ imageupload button not found!");
-    return;
-  }
+  if (!uploadButton) return;
 
   const hiddenInput = document.createElement("input");
   hiddenInput.type = "file";
@@ -14,8 +10,6 @@ export function initImageUploadPreview(getSelectedElement) {
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    const selectedElement = getSelectedElement();
-    console.log("✅ Selected Element on click:", selectedElement);
     hiddenInput.click();
   });
 
@@ -25,6 +19,16 @@ export function initImageUploadPreview(getSelectedElement) {
     const file = event.target.files[0];
     const selectedElement = getSelectedElement();
     if (!file || !selectedElement) return;
+
+    const container = selectedElement.querySelector(".sqs-block-button-container");
+    if (!container) return;
+
+    const button = container.querySelector("a");
+    if (!button) return;
+
+    let typeClass = "sqs-button-element--primary";
+    if (button.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+    else if (button.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
 
     const fileType = file.type;
     const reader = new FileReader();
@@ -36,9 +40,6 @@ export function initImageUploadPreview(getSelectedElement) {
         const parser = new DOMParser();
         const svgDoc = parser.parseFromString(e.target.result, "image/svg+xml");
         svgElement = svgDoc.querySelector("svg");
-        if (svgElement) {
-          console.log("✅ SVG uploaded!");
-        }
       } else {
         const base64Image = e.target.result;
         svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -51,13 +52,9 @@ export function initImageUploadPreview(getSelectedElement) {
         imageNode.setAttribute("width", "20");
         imageNode.setAttribute("height", "20");
         svgElement.appendChild(imageNode);
-        console.log("✅ Non-SVG image wrapped into SVG container.");
       }
 
-      if (!svgElement) {
-        console.error("❌ Failed to create SVG element.");
-        return;
-      }
+      if (!svgElement) return;
 
       svgElement.classList.add("sqscraft-button-icon");
       svgElement.style.height = "1em";
@@ -67,24 +64,19 @@ export function initImageUploadPreview(getSelectedElement) {
       svgElement.style.marginRight = "8px";
       svgElement.style.verticalAlign = "middle";
 
-      const buttons = selectedElement.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-
-      buttons.forEach(buttonLink => {
-        const oldIcon = buttonLink.querySelector(".sqscraft-button-icon");
+      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      allSameTypeButtons.forEach(btn => {
+        const oldIcon = btn.querySelector(".sqscraft-button-icon");
         if (oldIcon) oldIcon.remove();
 
         const clonedIcon = svgElement.cloneNode(true);
-        const textDiv = buttonLink.querySelector(".sqs-html");
-
+        const textDiv = btn.querySelector(".sqs-html");
         if (textDiv) {
-          buttonLink.insertBefore(clonedIcon, textDiv);
+          btn.insertBefore(clonedIcon, textDiv);
         } else {
-          buttonLink.insertBefore(clonedIcon, buttonLink.firstChild);
+          btn.insertBefore(clonedIcon, btn.firstChild);
         }
       });
-
-      console.log("📄 Injected SVG Code:");
-      console.log(svgElement.outerHTML);
 
       hiddenInput.value = "";
     };
