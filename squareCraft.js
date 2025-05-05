@@ -58,7 +58,7 @@
 
         styleTag.innerHTML = cssText;
       }
-      
+
       const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
       const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
       const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -82,7 +82,7 @@
 
 
       document.body.addEventListener("click", (event) => {
-        initButtonIconPositionToggle(() => selectedElement);
+   
 
         if(selectedElement) {
           initButtonStyles(selectedElement);
@@ -124,7 +124,7 @@
           });
         
           initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
-
+          initButtonIconPositionToggle(() => selectedElement);
         }, 50);
         
         
