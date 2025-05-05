@@ -105,8 +105,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   function applyButtonBackgroundColor(color, alpha = 1) {
-    const currentBlock = document.querySelector('[id^="block-"].sc-selected');
-    if (!currentBlock) {
+    if (!selectedElement) {
       console.warn("⚠️ No block selected.");
       return;
     }
@@ -119,7 +118,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   
     let buttonType = null;
     for (let type of buttonTypes) {
-      if (currentBlock.querySelector(`a.${type}`)) {
+      if (selectedElement.querySelector(`a.${type}`)) {
         buttonType = type;
         break;
       }
@@ -153,13 +152,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         filter: brightness(0.95);
       }
     `;
-  
     const allButtons = document.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
     allButtons.forEach(btn => {
       btn.dataset.scButtonBg = color;
     });
   }
-  
   
   if (
     !palette ||
