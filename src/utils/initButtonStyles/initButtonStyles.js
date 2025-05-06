@@ -326,16 +326,18 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const fill = document.getElementById("buttonIconSpacingradiousFill");
   const countDisplay = document.getElementById("buttoniconSpacingradiousCount");
   const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"]');
-  let currentSpacingType = "Top"; // default
+  const slider = document.getElementById("buttonIconSpacingradiousField");
+
+  let currentSpacingType = "Top"; // default side
   let spacingValue = 0;
   let dragging = false;
-
-  const slider = document.getElementById("buttonIconSpacingradiousField");
   const max = slider.offsetWidth - 12;
 
   function applySpacing(type, value) {
     const selectedElement = getSelectedElement();
-    const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const sampleButton = selectedElement?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!sampleButton) return;
 
     let typeClass = "sqs-button-element--primary";
@@ -343,24 +345,28 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
 
     const allButtons = document.querySelectorAll(`a.${typeClass}`);
-    allButtons.forEach(button => {
+    allButtons.forEach((button) => {
       const icon = button.querySelector(".sqscraft-button-icon");
       if (icon) {
+        icon.style.marginTop = "";
+        icon.style.marginBottom = "";
+        icon.style.marginLeft = "";
+        icon.style.marginRight = "";
         icon.style[`margin${type}`] = `${value}px`;
       }
     });
   }
 
   function updateActiveTab(targetId) {
-    spacingTabs.forEach(tab => {
+    spacingTabs.forEach((tab) => {
       if (tab.id === targetId) tab.classList.add("sc-bg-454545");
       else tab.classList.remove("sc-bg-454545");
     });
   }
 
-  spacingTabs.forEach(tab => {
+  spacingTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
-      currentSpacingType = tab.dataset.value.replace("buttonIconSpacing", "");
+      currentSpacingType = tab.getAttribute("data-value"); // e.g., "Top", "Left"
       updateActiveTab(tab.id);
       applySpacing(currentSpacingType, spacingValue);
     });
@@ -394,6 +400,7 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
   updateActiveTab("buttonIconSpacingTop");
 }
+
 
 
 
