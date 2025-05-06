@@ -450,7 +450,7 @@ export function initButtonBorderControl(getSelectedElement) {
   }
 
   function applyBorder() {
-    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
 
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
@@ -554,9 +554,10 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
     if (!el) return;
 
     el.onclick = () => {
+      // Widget UI: clean up style classes
       typeButtons.forEach(({ id }) => {
-        const button = document.getElementById(id);
-        button?.classList.remove("sc-bg-454545", "sc-border-solid", "sc-border-dashed", "sc-border-dotted");
+        const btn = document.getElementById(id);
+        btn?.classList.remove("sc-bg-454545", "sc-border-solid", "sc-border-dashed", "sc-border-dotted");
       });
 
       el.classList.add("sc-bg-454545");
@@ -564,15 +565,17 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
       if (type === "dashed") el.classList.add("sc-border-dashed");
       if (type === "dotted") el.classList.add("sc-border-dotted");
 
+      // Update actual border state and reapply to selected element
       window.setButtonBorderStyleType?.(type);
 
       const selectedElement = getSelectedElement?.();
-      if (typeof updateBorderStyle === "function") {
+      if (selectedElement && typeof updateBorderStyle === "function") {
         updateBorderStyle(type, selectedElement);
       }
     };
   });
 }
+
 
 
 
