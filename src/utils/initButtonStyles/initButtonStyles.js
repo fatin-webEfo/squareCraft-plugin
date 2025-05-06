@@ -362,18 +362,8 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     const icon = getIconElement();
     if (!icon) return;
   
-    icon.style.display = "inline-block"; // ensure vertical margins apply properly
-  
-    icon.style.marginTop = "0px";
-    icon.style.marginBottom = "0px";
-    icon.style.marginLeft = "0px";
-    icon.style.marginRight = "0px";
-  
-    if (["Top", "Bottom", "Left", "Right"].includes(activeDirection)) {
-      icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
-    }
+    icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
   }
-  
   
   
 
