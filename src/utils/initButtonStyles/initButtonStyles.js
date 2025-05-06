@@ -312,3 +312,6 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
     heightDropdown.classList.add("sc-hidden");
   });
 }
+
+
+// initButtonStyles.js

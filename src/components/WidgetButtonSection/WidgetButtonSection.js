@@ -71,7 +71,7 @@ export function WidgetButtonSection() {
   ];
 
   return `
-    <div id="buttonSection">
+  <div id="buttonSection">
          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -409,7 +409,7 @@ export function WidgetButtonSection() {
                      </div>
                      <div id="buttoniconRotationDropdown"></div>
                      <div id="buttoniconRotationSection" style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
-                        <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                        <div class="sc-flex sc-flex-col sc-cursor-pointer sc-items-center sc-gap-2">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="10">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
@@ -424,8 +424,8 @@ export function WidgetButtonSection() {
                      <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2 ">
                         <p id="buttonIconWidthCount" class="sc-universal sc-roboto sc-text-sm ">0px</p>
                      </div>
-                     <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
-                        <div id="buttoniconWidthSelect" class="sc-flex sc-cursor-pointer sc-flex-col sc-items-center sc-gap-2">
+                     <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 ">
+                        <div id="buttoniconWidthSelect" class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="10">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
@@ -440,8 +440,8 @@ export function WidgetButtonSection() {
                      <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2 ">
                         <p id="buttonIconHeightCount" class="sc-universal sc-roboto sc-text-sm ">0px</p>
                      </div>
-                     <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
-                        <div id="buttoniconHeightSelect" class="sc-flex sc-cursor-pointer sc-flex-col sc-items-center sc-gap-2">
+                     <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 ">
+                        <div id="buttoniconHeightSelect" class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="10">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
