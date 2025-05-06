@@ -81,7 +81,9 @@
       initButtonIconRotationToggle,
        initButtonIconDimensionToggle,
         initButtonIconSpacingControl,
-         initButtonBorderControl,initButtonBorderTypeToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+         initButtonBorderControl,
+         initButtonBorderTypeToggle,
+         initButtonBorderRadiusControl } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -134,6 +136,7 @@
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
       initButtonBorderTypeToggle(() => selectedElement);
+      initButtonBorderRadiusControl(() => selectedElement);
     }, 50);
 
 

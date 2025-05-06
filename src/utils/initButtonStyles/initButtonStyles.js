@@ -567,3 +567,72 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
     };
   });
 }
+
+
+export function initButtonBorderRadiusControl(getSelectedElement) {
+  const fillField = document.getElementById("buttonBorderRadiousField");
+  const bullet = document.getElementById("buttonBorderRadiousBullet");
+  const valueText = document.getElementById("buttonBorderRadiousCount");
+  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
+
+  let radiusValue = 0;
+
+  function getButtonTypeClass(sample) {
+    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
+
+  function applyBorderRadius() {
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    if (!selectedElement) return;
+
+    const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!sampleButton) return;
+
+    const typeClass = getButtonTypeClass(sampleButton);
+    const styleId = `sc-button-radius-style-${typeClass.replace(/--/g, "-")}`;
+
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    const rule = `
+      a.${typeClass} {
+        border-radius: ${radiusValue}px !important;
+      }
+    `;
+    styleTag.innerHTML = rule.trim();
+  }
+
+  function updateUI(clientX) {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    radiusValue = Math.round((x / rect.width) * 50); // max 50px radius
+    bullet.style.left = `${percent}%`;
+    valueText.textContent = `${radiusValue}px`;
+    applyBorderRadius();
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (ev) => updateUI(ev.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    radiusValue = 0;
+    bullet.style.left = "0%";
+    valueText.textContent = "0px";
+    applyBorderRadius();
+  });
+}
