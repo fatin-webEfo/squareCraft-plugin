@@ -419,6 +419,7 @@ export function initButtonBorderControl(getSelectedElement) {
 
   let borderValue = 0;
   let activeSide = "All";
+  let borderType = "solid";
 
   const sideButtons = [
     "buttonBorderAll",
@@ -440,14 +441,22 @@ export function initButtonBorderControl(getSelectedElement) {
     });
   });
 
+  function getButtonTypeClass(sample) {
+    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
+
   function applyBorder() {
     const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!selectedElement) return;
 
-    const allButtons = selectedElement.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!allButtons.length) return;
+    const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!sampleButton) return;
 
-    const borderStyle = `${borderValue}px solid black`;
+    const typeClass = getButtonTypeClass(sampleButton);
+    const allButtons = document.querySelectorAll(`a.${typeClass}`);
+    const borderStyle = `${borderValue}px ${borderType} black`;
 
     allButtons.forEach((btn) => {
       btn.style.borderTop = "0px";
@@ -456,9 +465,11 @@ export function initButtonBorderControl(getSelectedElement) {
       btn.style.borderRight = "0px";
 
       if (activeSide === "All") {
-        btn.style.border = borderStyle;
+        btn.style.borderTop = borderStyle;
+        btn.style.borderBottom = borderStyle;
+        btn.style.borderLeft = borderStyle;
+        btn.style.borderRight = borderStyle;
       } else {
-        btn.style.border = "none";
         if (activeSide === "Top") btn.style.borderTop = borderStyle;
         if (activeSide === "Bottom") btn.style.borderBottom = borderStyle;
         if (activeSide === "Left") btn.style.borderLeft = borderStyle;
@@ -496,7 +507,13 @@ export function initButtonBorderControl(getSelectedElement) {
     valueText.textContent = "0px";
     applyBorder();
   });
+
+  window.setButtonBorderStyleType = function (type) {
+    borderType = type;
+    applyBorder();
+  };
 }
+
 
 export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
   let borderType = "solid";
