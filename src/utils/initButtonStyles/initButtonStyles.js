@@ -247,8 +247,8 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   function generateDropdownHTML(values, type) {
     return values.map(
       (val) => `
-      <div data-${type}="${val}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
-        <p class="sc-universal sc-roboto sc-text-sm">${val}px</p>
+      <div data-${type}="${val}" class="sc-bg-3f3f3f sc-py-1 sc-border sc-border-solid sc-border-EF7C2F sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
+        <p class="sc-universal sc-roboto sc-bg-colo-EF7C2F-hover sc-text-sm">${val}px</p>
       </div>`
     ).join("");
   }
