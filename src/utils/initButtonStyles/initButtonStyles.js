@@ -321,7 +321,7 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
 
 
 
-export function initButtonIconSpacingControl () {
+export function initButtonIconSpacingControl(getSelectedElement) {
   let spacingValue = 0;
   const fill = document.getElementById("buttonIconSpacingradiousFill");
   const bullet = document.getElementById("buttonIconSpacingradiousBullet");
@@ -350,10 +350,11 @@ export function initButtonIconSpacingControl () {
   });
 
   function applySpacing() {
-    if (!window.selectedElement) return;
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
 
     const buttonType = window.currentButtonType?.toLowerCase().split(" ")[0] || "";
-    const buttonsInside = window.selectedElement.querySelectorAll(
+    const buttonsInside = selectedElement.querySelectorAll(
       `a.sqs-block-button-element--${buttonType}, .sqs-block-button-element--${buttonType}`
     );
 
@@ -393,5 +394,6 @@ export function initButtonIconSpacingControl () {
       valueText.textContent = "0px";
       applySpacing();
     });
-};
+}
+
 
