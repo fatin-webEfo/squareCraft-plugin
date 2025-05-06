@@ -76,7 +76,7 @@
       const { initButtonFontColorPaletteToggle } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
       );
-      const { initButtonStyles,initButtonIconPositionToggle,initButtonIconRotationToggle  } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+      const { initButtonStyles,initButtonIconPositionToggle,initButtonIconRotationToggle,initButtonIconDimensionToggle  } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
       const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -125,6 +125,7 @@
           initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
           initButtonIconPositionToggle(() => selectedElement);
           initButtonIconRotationToggle(() => selectedElement);
+          initButtonIconDimensionToggle(() => selectedElement);
         }, 50);
         
         
