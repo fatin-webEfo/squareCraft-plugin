@@ -467,21 +467,18 @@ export function initButtonBorderControl(getSelectedElement) {
   function getButtonTypeClass(sample) {
     if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
     if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    if (sample.classList.contains("sqs-block-button-element")) return "sqs-block-button-element";
     return "sqs-button-element--primary";
   }
 
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
-  
+
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element");
     if (!sampleButton) return;
-  
-    const typeClass = sampleButton.classList.contains("sqs-button-element--secondary") ? "sqs-button-element--secondary" :
-                      sampleButton.classList.contains("sqs-button-element--tertiary") ? "sqs-button-element--tertiary" :
-                      sampleButton.classList.contains("sqs-block-button-element") ? "sqs-block-button-element" :
-                      "sqs-button-element--primary";
-  
+
+    const typeClass = getButtonTypeClass(sampleButton);
     const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -489,16 +486,15 @@ export function initButtonBorderControl(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-  
+
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
-  
     const sides = {
       Top: "border-top",
       Bottom: "border-bottom",
       Left: "border-left",
       Right: "border-right"
     };
-  
+
     let rules = "";
     if (borderState.side === "All") {
       rules = `
@@ -523,32 +519,27 @@ export function initButtonBorderControl(getSelectedElement) {
         }
       `;
     }
-  
+
     styleTag.innerHTML = rules.trim();
   }
-  
-
 
   function setupReapplyBorderListener() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
-  
+
     const buttons = selectedElement.querySelectorAll(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element"
     );
-  
+
     buttons.forEach(button => {
       button.removeEventListener("reapplyBorder", handleReapplyBorder);
       button.addEventListener("reapplyBorder", handleReapplyBorder);
     });
   }
-  
+
   function handleReapplyBorder() {
     applyBorder();
   }
-  
-  
-  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
@@ -556,11 +547,9 @@ export function initButtonBorderControl(getSelectedElement) {
     const percent = (x / rect.width) * 100;
     borderState.value = Math.round((x / rect.width) * 10);
     fill.style.width = `${percent}%`;
-    bullet.style.left = `${percent}%`;  
+    bullet.style.left = `${percent}%`;
     valueText.textContent = `${borderState.value}px`;
     applyBorder();
-    setupReapplyBorderListener();
-
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -580,17 +569,16 @@ export function initButtonBorderControl(getSelectedElement) {
     bullet.style.left = "0%";
     valueText.textContent = "0px";
     applyBorder();
-    setupReapplyBorderListener();
-
   });
 
   window.setButtonBorderStyleType = function (type) {
     borderState.type = type;
     applyBorder();
-    setupReapplyBorderListener();
-
   };
+
+  setupReapplyBorderListener(); // ensure it runs once
 }
+
 
 
 
