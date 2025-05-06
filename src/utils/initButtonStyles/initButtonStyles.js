@@ -362,6 +362,10 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     const icon = getIconElement();
     if (!icon) return;
   
+    icon.style.display = "inline-block"; 
+    icon.style.verticalAlign = "middle"; 
+    icon.style.boxSizing = "border-box";
+
     icon.style.marginTop = "0px";
     icon.style.marginBottom = "0px";
     icon.style.marginLeft = "0px";
@@ -369,6 +373,7 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   
     icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
   }
+  
   
 
   function updateUI(clientX) {
