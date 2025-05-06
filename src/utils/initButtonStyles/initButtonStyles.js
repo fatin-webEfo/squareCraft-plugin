@@ -330,17 +330,17 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
   let activeDirection = "Left";
 
-  const buttons = [
+  const directionButtons = [
     "buttonIconSpacingTop",
     "buttonIconSpacingBottom",
     "buttonIconSpacingLeft",
     "buttonIconSpacingRight",
   ];
 
-  buttons.forEach((id) => {
+  directionButtons.forEach((id) => {
     const el = document.getElementById(id);
     el.addEventListener("click", () => {
-      buttons.forEach((otherId) => {
+      directionButtons.forEach((otherId) => {
         document.getElementById(otherId).classList.remove("sc-bg-454545");
       });
       el.classList.add("sc-bg-454545");
@@ -349,20 +349,23 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     });
   });
 
+  function getIconElement() {
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    const icon = selectedElement?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    return icon || window.selectedIconElement || null;
+  }
+
   function applySpacing() {
-    const icon = window.selectedIconElement;
+    const icon = getIconElement();
     if (!icon) return;
-  
     icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
   }
-  
-  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const percent = (x / rect.width) * 100;
-    spacingValue = Math.round((x / rect.width) * 30); // max spacing 30px
+    spacingValue = Math.round((x / rect.width) * 30);
     fill.style.width = `${percent}%`;
     bullet.style.left = `${percent}%`;
     valueText.textContent = `${spacingValue}px`;
@@ -390,5 +393,6 @@ export function initButtonIconSpacingControl(getSelectedElement) {
       applySpacing();
     });
 }
+
 
 
