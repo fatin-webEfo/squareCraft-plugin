@@ -411,4 +411,93 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 }
 
 
+export function initButtonBorderControl(getSelectedElement) {
+  const fill = document.getElementById("buttonBorderFill");
+  const bullet = document.getElementById("buttonBorderBullet");
+  const field = document.getElementById("buttonBorderField");
+  const valueText = document.getElementById("buttonBorderCount");
+
+  let borderValue = 0;
+  let activeSide = "All";
+
+  const sideButtons = [
+    "buttonBorderAll",
+    "buttonBorderTop",
+    "buttonBorderBottom",
+    "buttonBorderLeft",
+    "buttonBorderRight"
+  ];
+
+  sideButtons.forEach((id) => {
+    const el = document.getElementById(id);
+    el.addEventListener("click", () => {
+      sideButtons.forEach((otherId) => {
+        document.getElementById(otherId).classList.remove("sc-bg-454545");
+      });
+      el.classList.add("sc-bg-454545");
+      activeSide = id.replace("buttonBorder", "");
+      applyBorder();
+    });
+  });
+
+  function getButtonElement() {
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    return selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary") || null;
+  }
+
+  function applyBorder() {
+    const button = getButtonElement();
+    if (!button) return;
+
+    button.style.border = "none";
+    button.style.borderTop = "none";
+    button.style.borderBottom = "none";
+    button.style.borderLeft = "none";
+    button.style.borderRight = "none";
+
+    const borderStyle = `${borderValue}px solid black`;
+
+    if (activeSide === "All") {
+      button.style.border = borderStyle;
+    } else if (activeSide === "Top") {
+      button.style.borderTop = borderStyle;
+    } else if (activeSide === "Bottom") {
+      button.style.borderBottom = borderStyle;
+    } else if (activeSide === "Left") {
+      button.style.borderLeft = borderStyle;
+    } else if (activeSide === "Right") {
+      button.style.borderRight = borderStyle;
+    }
+  }
+
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    borderValue = Math.round((x / rect.width) * 10);
+    fill.style.width = `${percent}%`;
+    bullet.style.left = `${percent}%`;
+    valueText.textContent = `${borderValue}px`;
+    applyBorder();
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const onMouseMove = (eMove) => updateUI(eMove.clientX);
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  });
+
+  document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
+    borderValue = 0;
+    fill.style.width = "0%";
+    bullet.style.left = "0%";
+    valueText.textContent = "0px";
+    applyBorder();
+  });
+}
 

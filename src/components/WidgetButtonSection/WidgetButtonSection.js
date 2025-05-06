@@ -528,7 +528,7 @@ export function WidgetButtonSection() {
                         class="sc-rotate-180" alt="">
                   </div>
 
-                  <div id="bordersSection" class=" sc-mt-3 sc-hidden">
+                  <div id="bordersSection" class=" sc-mt-3 ">
                      <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
@@ -543,7 +543,7 @@ export function WidgetButtonSection() {
                         </div>
                         <div
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                           <p id="radiousCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
+                           <p id="buttonBorderCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                                  width="9">
@@ -553,9 +553,9 @@ export function WidgetButtonSection() {
                         </div>
                      </div>
 
-                     <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-                        <div id="buttonIconSpacingradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                        <div id="buttonIconSpacingradiousBullet"
+                     <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                        <div id="buttonBorderFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                        <div id="buttonBorderBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
                      </div>
@@ -563,34 +563,34 @@ export function WidgetButtonSection() {
                         <div></div>
                         <div style="padding: 2px 0px;"
                            class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
-                           <div
-                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-bg-454545 sc-items-center sc-gap-1">
+                           <div id="buttonBorderAll"
+                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
-                                 alt="all-radious">
+                                 alt="all-border">
                               <p class="sc-font-thin sc-roboto sc-universal ">All</p>
                            </div>
-                           <div
-                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+                           <div id="buttonBorderTop"
+                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
-                                 alt="top-radious">
+                                 alt="top-border">
                               <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
                            </div>
-                           <div
-                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+                           <div id="buttonBorderBottom"
+                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg"
-                                 loading="lazy" alt="bottom-radious">
+                                 loading="lazy" alt="bottom-border">
                               <p class="sc-font-thin sc-roboto sc-universal ">Bottom</p>
                            </div>
-                           <div
-                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+                           <div id="buttonBorderLeft"
+                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg"
-                                 loading="lazy" alt="left-radious">
+                                 loading="lazy" alt="left-border">
                               <p class="sc-font-thin sc-roboto sc-universal ">Left</p>
                            </div>
-                           <div
-                              class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-6px  sc-items-center sc-gap-1">
+                           <div id="buttonBorderRight"
+                              class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg"
-                                 loading="lazy" alt="right-radious">
+                                 loading="lazy" alt="right-border">
                               <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
                            </div>
                         </div>
