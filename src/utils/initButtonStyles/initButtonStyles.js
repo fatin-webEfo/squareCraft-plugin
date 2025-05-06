@@ -126,6 +126,7 @@ export function initButtonStyles(selectedButtonElement) {
 }
 
 
+
 export function initButtonIconPositionToggle(getSelectedElement) {
   document.getElementById("buttoniconPositionSection").onclick = () => {
     document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
@@ -220,6 +221,54 @@ export function initButtonIconRotationToggle(getSelectedElement) {
   });
 
   document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
+}
+
+export function initButtonIconDimensionToggle(getSelectedElement) {
+  const widthSelect = document.getElementById("buttoniconWidthSelect");
+  const heightSelect = document.getElementById("buttoniconHeightSelect");
+  const widthLabel = document.getElementById("buttonIconWidthCount");
+  const heightLabel = document.getElementById("buttonIconHeightCount");
+
+  if (!widthSelect || !heightSelect || !widthLabel || !heightLabel) return;
+
+  function applyIconSize(dimension, value) {
+    const selectedElement = getSelectedElement();
+    const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!sampleButton) return;
+
+    let typeClass = "sqs-button-element--primary";
+    if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+    else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+
+    const allButtons = document.querySelectorAll(`a.${typeClass}`);
+    allButtons.forEach(button => {
+      const icon = button.querySelector(".sqscraft-button-icon");
+      if (icon) {
+        if (dimension === "width") icon.style.width = `${value}px`;
+        if (dimension === "height") icon.style.height = `${value}px`;
+      }
+    });
+  }
+
+  widthSelect.onclick = (e) => {
+    e.stopPropagation();
+    const next = prompt("Enter icon width in px (e.g., 16):", "16");
+    if (!next) return;
+    const px = parseInt(next);
+    if (isNaN(px)) return;
+    widthLabel.textContent = `${px}px`;
+    applyIconSize("width", px);
+  };
+
+  heightSelect.onclick = (e) => {
+    e.stopPropagation();
+    const next = prompt("Enter icon height in px (e.g., 16):", "16");
+    if (!next) return;
+    const px = parseInt(next);
+    if (isNaN(px)) return;
+    heightLabel.textContent = `${px}px`;
+    applyIconSize("height", px);
+  };
 }
 
 
