@@ -589,6 +589,7 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
     { id: "buttonBorderTypeDashed", type: "dashed" },
     { id: "buttonBorderTypeDotted", type: "dotted" }
   ];
+
   typeButtons.forEach(({ id, type }) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -601,16 +602,22 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
       el.classList.add("sc-bg-454545");
 
-      window.setButtonBorderStyleType?.(type);
       const selectedElement = getSelectedElement?.();
-      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!selectedElement) return;
+
+      const sampleButton = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element"
+      );
       if (!sampleButton) return;
 
-      const event = new Event("reapplyBorder");
+      window.setButtonBorderStyleType?.(type);
+
+      const event = new Event("reapplyBorder", { bubbles: true });
       sampleButton.dispatchEvent(event);
     };
   });
 }
+
 
 
 
