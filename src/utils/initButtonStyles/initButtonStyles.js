@@ -239,7 +239,7 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
 
   if (!widthTrigger || !widthLabel || !heightTrigger || !heightLabel) return;
 
-  const sizeValues = Array.from({ length: 51 }, (_, i) => i + 10); // 10 to 60
+  const sizeValues = Array.from({ length: 51 }, (_, i) => i + 10); 
 
   const dropdownClassList = ["sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "sc-top-12", "sc-z-99999", "sc-scrollBar"];
 
@@ -318,6 +318,80 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   });
 }
 
+export function initButtonIconSpacingControl(getSelectedElement) {
+  const bullet = document.getElementById("buttonIconSpacingradiousBullet");
+  const fill = document.getElementById("buttonIconSpacingradiousFill");
+  const countDisplay = document.getElementById("buttoniconSpacingradiousCount");
+  const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"]');
+  let currentSpacingType = "Top"; // default
+  let spacingValue = 0;
+
+  const slider = document.getElementById("buttonIconSpacingradiousField");
+  const max = slider.offsetWidth - 12;
+
+  function applySpacing(type, value) {
+    const selectedElement = getSelectedElement();
+    const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!sampleButton) return;
+
+    let typeClass = "sqs-button-element--primary";
+    if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+    else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+
+    const allButtons = document.querySelectorAll(`a.${typeClass}`);
+    allButtons.forEach(button => {
+      const icon = button.querySelector(".sqscraft-button-icon");
+      if (icon) {
+        icon.style[`margin${type}`] = `${value}px`;
+      }
+    });
+  }
+
+  function updateActiveTab(targetId) {
+    spacingTabs.forEach(tab => {
+      if (tab.id === targetId) tab.classList.add("sc-bg-454545");
+      else tab.classList.remove("sc-bg-454545");
+    });
+  }
+
+  spacingTabs.forEach(tab => {
+    tab.onclick = () => {
+      currentSpacingType = tab.dataset.value.replace("buttonIconSpacing", "");
+      updateActiveTab(tab.id);
+      applySpacing(currentSpacingType, spacingValue);
+    };
+  });
+
+  let dragging = false;
+
+  bullet.onmousedown = (e) => {
+    dragging = true;
+    document.body.style.userSelect = "none";
+  };
+
+  document.onmouseup = () => {
+    dragging = false;
+    document.body.style.userSelect = "";
+  };
+
+  document.onmousemove = (e) => {
+    if (!dragging) return;
+
+    const rect = slider.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    x = Math.max(0, Math.min(x, max));
+
+    spacingValue = Math.round((x / max) * 100);
+    countDisplay.textContent = `${spacingValue}px`;
+
+    bullet.style.left = `${x}px`;
+    fill.style.width = `${x}px`;
+
+    applySpacing(currentSpacingType, spacingValue);
+  };
+
+  updateActiveTab("buttonIconSpacingTop");
+}
 
 
 
