@@ -533,10 +533,15 @@ export function initButtonBorderControl(getSelectedElement) {
     );
   
     buttons.forEach(button => {
-      button.removeEventListener("reapplyBorder", applyBorder); // clean listener
-      button.addEventListener("reapplyBorder", applyBorder);
+      button.removeEventListener("reapplyBorder", handleReapplyBorder);
+      button.addEventListener("reapplyBorder", handleReapplyBorder);
     });
   }
+  
+  function handleReapplyBorder() {
+    applyBorder();
+  }
+  
   
   
 
