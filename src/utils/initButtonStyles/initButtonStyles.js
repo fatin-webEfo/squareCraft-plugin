@@ -344,9 +344,12 @@ export function initButtonIconSpacingControl(getSelectedElement) {
         document.getElementById(otherId).classList.remove("sc-bg-454545");
       });
       el.classList.add("sc-bg-454545");
-      activeDirection = el.dataset.value;
+      const dir = el.dataset.value;
+      activeDirection = dir.charAt(0).toUpperCase() + dir.slice(1).toLowerCase();
+    
       applySpacing();
     });
+    
   });
 
   function getIconElement() {
