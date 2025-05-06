@@ -382,7 +382,7 @@ export function WidgetButtonSection() {
                           <p class="sc-universal sc-roboto sc-text-sm">Before</p>
                         </div>
                       
-                        <div id="iconPositionDropdown" class="sc-absolute sc-rounded-6px sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
+                        <div id="iconPositionDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
                           <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16 sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="before">Before</div>
                           <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="after">After</div>
                         </div>
@@ -422,10 +422,10 @@ export function WidgetButtonSection() {
                   <p class="sc-roboto sc-universal sc-text-sm sc-font-light sc-text-gray-300">Widht</p>
                   <div class="sc-flex sc-mt-2 sc-items-center">
                      <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2 ">
-                        <p class="sc-universal sc-roboto sc-text-sm ">25px</p>
+                        <p id="buttonIconWidthCount" class="sc-universal sc-roboto sc-text-sm ">0px</p>
                      </div>
                      <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
-                        <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                        <div id="buttoniconWidthSelect" class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="10">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
@@ -438,10 +438,10 @@ export function WidgetButtonSection() {
                   <p class="sc-roboto sc-universal sc-text-sm sc-font-light sc-text-gray-300">height</p>
                   <div class="sc-flex sc-mt-2 sc-items-center">
                      <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2 ">
-                        <p class="sc-universal sc-roboto sc-text-sm ">15px</p>
+                        <p id="buttonIconHeightCount" class="sc-universal sc-roboto sc-text-sm ">15px</p>
                      </div>
                      <div style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
-                        <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                        <div id="buttoniconHeightSelect" class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
                               width="10">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
