@@ -325,13 +325,14 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSpacingradiousBullet");
   const fill = document.getElementById("buttonIconSpacingradiousFill");
   const countDisplay = document.getElementById("buttoniconSpacingradiousCount");
-  const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"]');
+  const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"][data-value]');
   const slider = document.getElementById("buttonIconSpacingradiousField");
 
   let currentSpacingType = "Top";
   let spacingValue = 0;
   let dragging = false;
-  const max = slider.offsetWidth - bullet.offsetWidth;
+
+  const max = slider.offsetWidth;
 
   function applySpacing(type, value) {
     const selectedElement = getSelectedElement();
@@ -398,8 +399,12 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     applySpacing(currentSpacingType, spacingValue);
   });
 
-  updateActiveTab("buttonIconSpacingTop");
+  const defaultTab = Array.from(spacingTabs).find(tab => tab.getAttribute("data-value") === "Top");
+  if (defaultTab) {
+    updateActiveTab(defaultTab.id);
+  }
 }
+
 
 
 
