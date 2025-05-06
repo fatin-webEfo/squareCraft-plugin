@@ -242,7 +242,7 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   const sizeValues = Array.from({ length: 51 }, (_, i) => i + 10); // 10 to 60
 
   // Common dropdown style
-  const dropdownClassList = ["sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "z-99999", "sc-scrollBar"];
+  const dropdownClassList = ["sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "sc-top-12", "sc-z-99999", "sc-scrollBar"];
 
   function generateDropdownHTML(values, type) {
     return values.map(
