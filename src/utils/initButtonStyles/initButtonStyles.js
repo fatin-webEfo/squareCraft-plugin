@@ -323,10 +323,12 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const fill = document.getElementById("buttonIconSpacingradiousFill");
   const countDisplay = document.getElementById("buttoniconSpacingradiousCount");
   const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"]');
+  const slider = document.getElementById("buttonIconSpacingradiousField");
+
   let currentSpacingType = "Top"; // default
   let spacingValue = 0;
+  let dragging = false;
 
-  const slider = document.getElementById("buttonIconSpacingradiousField");
   const max = slider.offsetWidth - 12;
 
   function applySpacing(type, value) {
@@ -342,6 +344,11 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     allButtons.forEach(button => {
       const icon = button.querySelector(".sqscraft-button-icon");
       if (icon) {
+        icon.style.marginTop = "";
+        icon.style.marginBottom = "";
+        icon.style.marginLeft = "";
+        icon.style.marginRight = "";
+
         icon.style[`margin${type}`] = `${value}px`;
       }
     });
@@ -361,8 +368,6 @@ export function initButtonIconSpacingControl(getSelectedElement) {
       applySpacing(currentSpacingType, spacingValue);
     };
   });
-
-  let dragging = false;
 
   bullet.onmousedown = (e) => {
     dragging = true;
@@ -391,7 +396,9 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   };
 
   updateActiveTab("buttonIconSpacingTop");
+  applySpacing(currentSpacingType, spacingValue);
 }
+
 
 
 
