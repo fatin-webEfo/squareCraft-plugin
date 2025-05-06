@@ -548,25 +548,19 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
     { id: "buttonBorderTypeDashed", type: "dashed" },
     { id: "buttonBorderTypeDotted", type: "dotted" }
   ];
-
   typeButtons.forEach(({ id, type }) => {
     const el = document.getElementById(id);
     if (!el) return;
 
     el.onclick = () => {
-      // Reset active styles only on widget UI buttons
       typeButtons.forEach(({ id }) => {
         const btn = document.getElementById(id);
         btn?.classList.remove("sc-bg-454545");
       });
 
-      // Mark clicked button as active
       el.classList.add("sc-bg-454545");
 
-      // Update global border type state
       window.setButtonBorderStyleType?.(type);
-
-      // Re-apply the border to selected Squarespace button
       const selectedElement = getSelectedElement?.();
       const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!sampleButton) return;
