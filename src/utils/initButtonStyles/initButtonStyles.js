@@ -411,6 +411,27 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function initButtonBorderControl(getSelectedElement) {
   const fill = document.getElementById("buttonBorderFill");
   const bullet = document.getElementById("buttonBorderBullet");
@@ -501,6 +522,22 @@ export function initButtonBorderControl(getSelectedElement) {
   
     styleTag.innerHTML = rules.trim();
   }
+
+
+  function setupReapplyBorderListener() {
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
+  
+    const buttons = selectedElement.querySelectorAll(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+  
+    buttons.forEach(button => {
+      button.removeEventListener("reapplyBorder", applyBorder); // clean listener
+      button.addEventListener("reapplyBorder", applyBorder);
+    });
+  }
+  
   
 
   function updateUI(clientX) {
@@ -512,6 +549,8 @@ export function initButtonBorderControl(getSelectedElement) {
     bullet.style.left = `${percent}%`;
     valueText.textContent = `${borderState.value}px`;
     applyBorder();
+    setupReapplyBorderListener();
+
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -531,11 +570,15 @@ export function initButtonBorderControl(getSelectedElement) {
     bullet.style.left = "0%";
     valueText.textContent = "0px";
     applyBorder();
+    setupReapplyBorderListener();
+
   });
 
   window.setButtonBorderStyleType = function (type) {
     borderState.type = type;
     applyBorder();
+    setupReapplyBorderListener();
+
   };
 }
 
@@ -570,6 +613,32 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
     };
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
