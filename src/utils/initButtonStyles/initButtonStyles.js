@@ -498,3 +498,29 @@ export function initButtonBorderControl(getSelectedElement) {
   });
 }
 
+export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
+  let borderType = "solid";
+
+  const typeButtons = [
+    { id: "buttonBorderTypeSolid", type: "solid" },
+    { id: "buttonBorderTypeDashed", type: "dashed" },
+    { id: "buttonBorderTypeDotted", type: "dotted" }
+  ];
+
+  typeButtons.forEach(({ id, type }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.onclick = () => {
+      typeButtons.forEach(({ id }) =>
+        document.getElementById(id).classList.remove("sc-bg-454545")
+      );
+      el.classList.add("sc-bg-454545");
+      borderType = type;
+      const selectedElement = getSelectedElement?.();
+      if (typeof updateBorderStyle === "function") {
+        updateBorderStyle(borderType, selectedElement);
+      }
+    };
+  });
+}
