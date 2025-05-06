@@ -321,7 +321,7 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
 
 
 
-export function initButtonIconSpacing() {
+export function initButtonIconSpacingControl () {
   let spacingValue = 0;
   const fill = document.getElementById("buttonIconSpacingradiousFill");
   const bullet = document.getElementById("buttonIconSpacingradiousBullet");
