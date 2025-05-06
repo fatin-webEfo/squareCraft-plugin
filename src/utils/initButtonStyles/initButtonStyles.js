@@ -364,38 +364,17 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     const icon = getIconElement();
     if (!icon) return;
   
-    const parent = icon.parentElement;
-    if (!parent) return;
+    icon.style.marginTop = "0px";
+    icon.style.marginBottom = "0px";
+    icon.style.marginLeft = "0px";
+    icon.style.marginRight = "0px";
   
-    icon.style.margin = "0";
-  
-    // Reset direction
-    parent.style.display = "";
-    parent.style.flexDirection = "";
-    parent.style.alignItems = "";
-  
-    if (activeDirection === "Top") {
-      parent.style.display = "flex";
-      parent.style.flexDirection = "column";
-      parent.style.alignItems = "center";
-      icon.style.marginBottom = `${spacingValue}px`;
-    }
-  
-    if (activeDirection === "Bottom") {
-      parent.style.display = "flex";
-      parent.style.flexDirection = "column-reverse";
-      parent.style.alignItems = "center";
-      icon.style.marginTop = `${spacingValue}px`;
-    }
-  
-    if (activeDirection === "Left") {
-      icon.style.marginRight = `${spacingValue}px`;
-    }
-  
-    if (activeDirection === "Right") {
-      icon.style.marginLeft = `${spacingValue}px`;
-    }
+    if (activeDirection === "Top") icon.style.marginTop = `${spacingValue}px`;
+    if (activeDirection === "Bottom") icon.style.marginBottom = `${spacingValue}px`;
+    if (activeDirection === "Left") icon.style.marginLeft = `${spacingValue}px`;
+    if (activeDirection === "Right") icon.style.marginRight = `${spacingValue}px`;
   }
+  
   
 
   function updateUI(clientX) {
