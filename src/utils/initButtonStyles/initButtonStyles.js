@@ -321,95 +321,77 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
 
 
 
-export function initButtonIconSpacingControl(getSelectedElement) {
-  const bullet = document.getElementById("buttonIconSpacingradiousBullet");
-  const fill = document.getElementById("buttonIconSpacingradiousFill");
-  const countDisplay = document.getElementById("buttoniconSpacingradiousCount");
-  const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"][data-value]');
-  const slider = document.getElementById("buttonIconSpacingradiousField");
-
-  let currentSpacingType = "Top";
+(function initButtonIconSpacing() {
   let spacingValue = 0;
-  let dragging = false;
+  const fill = document.getElementById("buttonIconSpacingradiousFill");
+  const bullet = document.getElementById("buttonIconSpacingradiousBullet");
+  const field = document.getElementById("buttonIconSpacingradiousField");
+  const valueText = document.getElementById("buttoniconSpacingradiousCount");
 
-  const max = slider.offsetWidth;
+  let activeDirection = "Left";
 
-  function applySpacing(type, value) {
-    const selectedElement = getSelectedElement();
-    const sampleButton = selectedElement?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+  const buttons = [
+    "buttonIconSpacingTop",
+    "buttonIconSpacingBottom",
+    "buttonIconSpacingLeft",
+    "buttonIconSpacingRight",
+  ];
+
+  buttons.forEach((id) => {
+    const el = document.getElementById(id);
+    el.addEventListener("click", () => {
+      buttons.forEach((otherId) => {
+        document.getElementById(otherId).classList.remove("sc-bg-454545");
+      });
+      el.classList.add("sc-bg-454545");
+      activeDirection = el.dataset.value;
+      applySpacing();
+    });
+  });
+
+  function applySpacing() {
+    if (!window.selectedElement) return;
+
+    const buttonType = window.currentButtonType?.toLowerCase().split(" ")[0] || "";
+    const buttonsInside = window.selectedElement.querySelectorAll(
+      `a.sqs-block-button-element--${buttonType}, .sqs-block-button-element--${buttonType}`
     );
-    if (!sampleButton) return;
 
-    let typeClass = "sqs-button-element--primary";
-    if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
-    else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
-
-    const allButtons = document.querySelectorAll(`a.${typeClass}`);
-    allButtons.forEach((button) => {
-      const icon = button.querySelector(".sqscraft-button-icon");
-      if (icon) {
-        icon.style.marginTop = "";
-        icon.style.marginBottom = "";
-        icon.style.marginLeft = "";
-        icon.style.marginRight = "";
-        icon.style[`margin${type}`] = `${value}px`;
-      }
+    buttonsInside.forEach((btn) => {
+      btn.style[`padding${activeDirection}`] = `${spacingValue}px`;
     });
   }
 
-  function updateActiveTab(targetId) {
-    spacingTabs.forEach((tab) => {
-      if (tab.id === targetId) tab.classList.add("sc-bg-454545");
-      else tab.classList.remove("sc-bg-454545");
-    });
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    spacingValue = Math.round((x / rect.width) * 30); // max spacing 30px
+    fill.style.width = `${percent}%`;
+    bullet.style.left = `${percent}%`;
+    valueText.textContent = `${spacingValue}px`;
+    applySpacing();
   }
 
-  spacingTabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      currentSpacingType = tab.getAttribute("data-value");
-      updateActiveTab(tab.id);
-      applySpacing(currentSpacingType, spacingValue);
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const onMouseMove = (eMove) => updateUI(eMove.clientX);
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  });
+
+  document
+    .querySelector('.sc-bg-454545 img[alt="reset"]')
+    .addEventListener("click", () => {
+      spacingValue = 0;
+      fill.style.width = "0%";
+      bullet.style.left = "0%";
+      valueText.textContent = "0px";
+      applySpacing();
     });
-  });
-
-  bullet.addEventListener("mousedown", () => {
-    dragging = true;
-    document.body.style.userSelect = "none";
-  });
-
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-    document.body.style.userSelect = "";
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (!dragging) return;
-
-    const rect = slider.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    x = Math.max(0, Math.min(x, max));
-
-    spacingValue = Math.round((x / max) * 100);
-    countDisplay.textContent = `${spacingValue}px`;
-
-    bullet.style.left = `${x}px`;
-    fill.style.width = `${x}px`;
-
-    applySpacing(currentSpacingType, spacingValue);
-  });
-
-  const defaultTab = Array.from(spacingTabs).find(tab => tab.getAttribute("data-value") === "Top");
-  if (defaultTab) {
-    updateActiveTab(defaultTab.id);
-  }
-}
-
-
-
-
-
-
-
-
+})();
 
