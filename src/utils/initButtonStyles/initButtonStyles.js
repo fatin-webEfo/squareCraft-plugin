@@ -569,9 +569,35 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
       window.setButtonBorderStyleType?.(type);
 
       const selectedElement = getSelectedElement?.();
-      if (selectedElement && typeof updateBorderStyle === "function") {
-        updateBorderStyle(type, selectedElement);
+      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!sampleButton) return;
+      
+      const typeClass = sampleButton.classList.contains("sqs-button-element--secondary")
+        ? "sqs-button-element--secondary"
+        : sampleButton.classList.contains("sqs-button-element--tertiary")
+        ? "sqs-button-element--tertiary"
+        : "sqs-button-element--primary";
+      
+      const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
       }
+      
+      const borderType = type;
+      const existingStyle = styleTag.innerHTML;
+      const borderRegex = /border-(top|bottom|left|right):\s*\d+px\s+(solid|dotted|dashed)\s+[^;]+;?/g;
+      const cleaned = existingStyle.replace(borderRegex, "");
+      
+      const sides = ["top", "bottom", "left", "right"];
+      const rules = sides.map(side => 
+        `a.${typeClass} { border-${side}: 2px ${borderType} black !important; }`
+      ).join("\n");
+      
+      styleTag.innerHTML = cleaned + "\n" + rules;
+      
     };
   });
 }
