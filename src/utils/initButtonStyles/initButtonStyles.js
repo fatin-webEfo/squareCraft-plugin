@@ -228,18 +228,20 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   const widthCounter = document.getElementById("buttonIconWidthCount");
   const heightCounter = document.getElementById("buttonIconHeightCount");
 
+  if (!widthTrigger || !heightTrigger) return;
+
   const widthValues = ["12", "16", "20", "24", "28", "32"];
   const heightValues = ["12", "16", "20", "24", "28", "32"];
 
   function createDropdown(values, type) {
     const dropdown = document.createElement("div");
     dropdown.classList.add("sc-absolute", "sc-left-0", "sc-h-44", "sc-scrollBar", "z-99999", "sc-bg-colo-EF7C2F-hover", "sc-hidden");
-    dropdown.innerHTML = values
-      .map((val) => `
-        <div data-value="${val}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
-          <p class="sc-universal sc-roboto sc-text-sm">${val}px</p>
-        </div>
-      `).join("");
+
+    dropdown.innerHTML = values.map((val) => `
+      <div data-value="${val}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
+        <p class="sc-universal sc-roboto sc-text-sm">${val}px</p>
+      </div>
+    `).join("");
 
     dropdown.querySelectorAll("[data-value]").forEach(item => {
       item.onclick = () => {
@@ -270,26 +272,27 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
       };
     });
 
+    document.body.appendChild(dropdown);
     return dropdown;
   }
 
   const widthDropdown = createDropdown(widthValues, "width");
   const heightDropdown = createDropdown(heightValues, "height");
-  document.body.appendChild(widthDropdown);
-  document.body.appendChild(heightDropdown);
 
   widthTrigger.onclick = (e) => {
     e.stopPropagation();
-    widthDropdown.style.top = `${widthTrigger.getBoundingClientRect().bottom + window.scrollY}px`;
-    widthDropdown.style.left = `${widthTrigger.getBoundingClientRect().left}px`;
+    const rect = widthTrigger.getBoundingClientRect();
+    widthDropdown.style.top = `${rect.bottom + window.scrollY}px`;
+    widthDropdown.style.left = `${rect.left}px`;
     widthDropdown.classList.toggle("sc-hidden");
     heightDropdown.classList.add("sc-hidden");
   };
 
   heightTrigger.onclick = (e) => {
     e.stopPropagation();
-    heightDropdown.style.top = `${heightTrigger.getBoundingClientRect().bottom + window.scrollY}px`;
-    heightDropdown.style.left = `${heightTrigger.getBoundingClientRect().left}px`;
+    const rect = heightTrigger.getBoundingClientRect();
+    heightDropdown.style.top = `${rect.bottom + window.scrollY}px`;
+    heightDropdown.style.left = `${rect.left}px`;
     heightDropdown.classList.toggle("sc-hidden");
     widthDropdown.classList.add("sc-hidden");
   };
@@ -302,6 +305,7 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   widthDropdown.onclick = (e) => e.stopPropagation();
   heightDropdown.onclick = (e) => e.stopPropagation();
 }
+
 
 
 
