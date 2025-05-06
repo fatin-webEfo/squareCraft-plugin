@@ -358,18 +358,44 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     return icon || window.selectedIconElement || null;
   }
 
+
+  
   function applySpacing() {
     const icon = getIconElement();
     if (!icon) return;
-
-    icon.style.display = "block";
-    if (activeDirection === "Top") icon.style.marginTop = `${spacingValue}px`;
-    if (activeDirection === "Bottom") icon.style.marginBottom = `${spacingValue}px`;
-    if (activeDirection === "Left") icon.style.marginLeft = `${spacingValue}px`;
-    if (activeDirection === "Right") icon.style.marginRight = `${spacingValue}px`;
+  
+    const parent = icon.parentElement;
+    if (!parent) return;
+  
+    icon.style.margin = "0";
+  
+    // Reset direction
+    parent.style.display = "";
+    parent.style.flexDirection = "";
+    parent.style.alignItems = "";
+  
+    if (activeDirection === "Top") {
+      parent.style.display = "flex";
+      parent.style.flexDirection = "column";
+      parent.style.alignItems = "center";
+      icon.style.marginBottom = `${spacingValue}px`;
+    }
+  
+    if (activeDirection === "Bottom") {
+      parent.style.display = "flex";
+      parent.style.flexDirection = "column-reverse";
+      parent.style.alignItems = "center";
+      icon.style.marginTop = `${spacingValue}px`;
+    }
+  
+    if (activeDirection === "Left") {
+      icon.style.marginRight = `${spacingValue}px`;
+    }
+  
+    if (activeDirection === "Right") {
+      icon.style.marginLeft = `${spacingValue}px`;
+    }
   }
-  
-  
   
 
   function updateUI(clientX) {
