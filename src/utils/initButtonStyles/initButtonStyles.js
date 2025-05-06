@@ -362,8 +362,16 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     const icon = getIconElement();
     if (!icon) return;
   
-    icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
+    let x = 0, y = 0;
+  
+    if (activeDirection === "Top") y = -spacingValue;
+    else if (activeDirection === "Bottom") y = spacingValue;
+    else if (activeDirection === "Left") x = -spacingValue;
+    else if (activeDirection === "Right") x = spacingValue;
+  
+    icon.style.transform = `translate(${x}px, ${y}px)`;
   }
+  
   
   
 
