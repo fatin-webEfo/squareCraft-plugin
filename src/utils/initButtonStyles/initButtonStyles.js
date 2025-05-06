@@ -125,8 +125,6 @@ export function initButtonStyles(selectedButtonElement) {
   });
 }
 
-
-
 export function initButtonIconPositionToggle(getSelectedElement) {
   document.getElementById("buttoniconPositionSection").onclick = () => {
     document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
@@ -168,7 +166,6 @@ export function initButtonIconPositionToggle(getSelectedElement) {
     };
   });
 }
-
 
 export function initButtonIconRotationToggle(getSelectedElement) {
   const trigger = document.getElementById("buttoniconRotationSection");
@@ -222,9 +219,6 @@ export function initButtonIconRotationToggle(getSelectedElement) {
 
   document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
 }
-
-
-
 
 export function initButtonIconDimensionToggle(getSelectedElement) {
   const widthTrigger = document.getElementById("buttoniconWidthSelect");
@@ -317,9 +311,6 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
     heightDropdown.classList.add("sc-hidden");
   });
 }
-
-
-
 
 export function initButtonIconSpacingControl(getSelectedElement) {
   let spacingValue = 0;
@@ -450,13 +441,13 @@ export function initButtonBorderControl(getSelectedElement) {
   function applyBorder() {
     const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!selectedElement) return;
-
+  
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!sampleButton) return;
-
+  
     const typeClass = getButtonTypeClass(sampleButton);
     const allButtons = document.querySelectorAll(`a.${typeClass}`);
-
+  
     const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -464,11 +455,11 @@ export function initButtonBorderControl(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-
+  
+    const borderStyle = `${borderState.value}px ${borderState.type} black`;
+  
     let rules = "";
-    const borderStyle = `${borderValue}px ${borderType} black`;
-
-    if (activeSide === "All") {
+    if (borderState.side === "All") {
       rules = `
         a.${typeClass} {
           border-top: ${borderStyle} !important;
@@ -478,30 +469,29 @@ export function initButtonBorderControl(getSelectedElement) {
         }
       `;
     } else {
-      const sides = {
-        Top: "border-top",
-        Bottom: "border-bottom",
-        Left: "border-left",
-        Right: "border-right",
-      };
-
       const allZero = `
         border-top: 0px !important;
         border-bottom: 0px !important;
         border-left: 0px !important;
         border-right: 0px !important;
       `;
-
+      const sides = {
+        Top: "border-top",
+        Bottom: "border-bottom",
+        Left: "border-left",
+        Right: "border-right"
+      };
       rules = `
         a.${typeClass} {
           ${allZero}
-          ${sides[activeSide]}: ${borderStyle} !important;
+          ${sides[borderState.side]}: ${borderStyle} !important;
         }
       `;
     }
-
+  
     styleTag.innerHTML = rules.trim();
   }
+  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
@@ -540,7 +530,6 @@ export function initButtonBorderControl(getSelectedElement) {
 }
 
 
-
 export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
   const typeButtons = [
     { id: "buttonBorderTypeSolid", type: "solid" },
@@ -566,72 +555,31 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
   });
 }
 
+export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
+  const typeButtons = [
+    { id: "buttonBorderTypeSolid", type: "solid" },
+    { id: "buttonBorderTypeDashed", type: "dashed" },
+    { id: "buttonBorderTypeDotted", type: "dotted" }
+  ];
 
+  typeButtons.forEach(({ id, type }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-export function initButtonBorderRadiusControl(getSelectedElement) {
-  const fillField = document.getElementById("buttonBorderRadiousField");
-  const bullet = document.getElementById("buttonBorderRadiousBullet");
-  const valueText = document.getElementById("buttonBorderRadiousCount");
-  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
+    el.onclick = () => {
+      typeButtons.forEach(({ id }) =>
+        document.getElementById(id)?.classList.remove("sc-bg-454545")
+      );
+      el.classList.add("sc-bg-454545");
 
-  let radiusValue = 0;
+      borderState.type = type;
 
-  function getButtonTypeClass(sample) {
-    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-    return "sqs-button-element--primary";
-  }
-
-  function applyBorderRadius() {
-    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-    if (!selectedElement) return;
-
-    const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!sampleButton) return;
-
-    const typeClass = getButtonTypeClass(sampleButton);
-    const styleId = `sc-button-radius-style-${typeClass.replace(/--/g, "-")}`;
-
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-
-    const rule = `
-      a.${typeClass} {
-        border-radius: ${radiusValue}px !important;
+      const selectedElement = getSelectedElement?.();
+      if (typeof updateBorderStyle === "function") {
+        updateBorderStyle(type, selectedElement);
       }
-    `;
-    styleTag.innerHTML = rule.trim();
-  }
-
-  function updateUI(clientX) {
-    const rect = fillField.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * 50); // max 50px radius
-    bullet.style.left = `${percent}%`;
-    valueText.textContent = `${radiusValue}px`;
-    applyBorderRadius();
-  }
-
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const move = (ev) => updateUI(ev.clientX);
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
     };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
-
-  resetBtn?.addEventListener("click", () => {
-    radiusValue = 0;
-    bullet.style.left = "0%";
-    valueText.textContent = "0px";
-    applyBorderRadius();
   });
 }
+
+
