@@ -542,8 +542,6 @@ export function initButtonBorderControl(getSelectedElement) {
 
 
 export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
-  let borderType = "solid";
-
   const typeButtons = [
     { id: "buttonBorderTypeSolid", type: "solid" },
     { id: "buttonBorderTypeDashed", type: "dashed" },
@@ -556,17 +554,18 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
 
     el.onclick = () => {
       typeButtons.forEach(({ id }) =>
-        document.getElementById(id).classList.remove("sc-bg-454545")
+        document.getElementById(id)?.classList.remove("sc-bg-454545")
       );
       el.classList.add("sc-bg-454545");
-      borderType = type;
+
       const selectedElement = getSelectedElement?.();
       if (typeof updateBorderStyle === "function") {
-        updateBorderStyle(borderType, selectedElement);
+        updateBorderStyle(type, selectedElement); // ✅ pass both
       }
     };
   });
 }
+
 
 
 export function initButtonBorderRadiusControl(getSelectedElement) {

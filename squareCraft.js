@@ -135,8 +135,13 @@
       initButtonIconDimensionToggle(() => selectedElement);
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
-      initButtonBorderTypeToggle(() => selectedElement);
-      initButtonBorderRadiusControl(() => selectedElement);
+      initButtonBorderTypeToggle(() => selectedElement, (type, selected) => {
+        if (selected) {
+          const event = new Event("reapplyBorder");
+          selected.dispatchEvent(event);
+        }
+      });
+           initButtonBorderRadiusControl(() => selectedElement);
     }, 50);
 
 
