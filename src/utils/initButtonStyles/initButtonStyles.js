@@ -350,18 +350,13 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   });
 
   function applySpacing() {
-    const selectedElement = getSelectedElement?.();
-    if (!selectedElement) return;
-
-    const buttonType = window.currentButtonType?.toLowerCase().split(" ")[0] || "";
-    const buttonsInside = selectedElement.querySelectorAll(
-      `a.sqs-block-button-element--${buttonType}, .sqs-block-button-element--${buttonType}`
-    );
-
-    buttonsInside.forEach((btn) => {
-      btn.style[`padding${activeDirection}`] = `${spacingValue}px`;
-    });
+    const icon = window.selectedIconElement;
+    if (!icon) return;
+  
+    icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
   }
+  
+  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
