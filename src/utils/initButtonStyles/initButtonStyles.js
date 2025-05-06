@@ -417,9 +417,11 @@ export function initButtonBorderControl(getSelectedElement) {
   const field = document.getElementById("buttonBorderField");
   const valueText = document.getElementById("buttonBorderCount");
 
-  let borderValue = 0;
-  let activeSide = "All";
-  let borderType = "solid";
+  let borderState = {
+    value: 0,
+    side: "All",
+    type: "solid"
+  };
 
   const sideButtons = [
     "buttonBorderAll",
@@ -436,7 +438,7 @@ export function initButtonBorderControl(getSelectedElement) {
         document.getElementById(otherId).classList.remove("sc-bg-454545");
       });
       el.classList.add("sc-bg-454545");
-      activeSide = id.replace("buttonBorder", "");
+      borderState.side = id.replace("buttonBorder", "");
       applyBorder();
     });
   });
@@ -450,13 +452,13 @@ export function initButtonBorderControl(getSelectedElement) {
   function applyBorder() {
     const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!selectedElement) return;
-  
+
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!sampleButton) return;
-  
+
     const typeClass = getButtonTypeClass(sampleButton);
     const allButtons = document.querySelectorAll(`a.${typeClass}`);
-  
+
     const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -464,9 +466,9 @@ export function initButtonBorderControl(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-  
+
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
-  
+
     let rules = "";
     if (borderState.side === "All") {
       rules = `
@@ -497,19 +499,18 @@ export function initButtonBorderControl(getSelectedElement) {
         }
       `;
     }
-  
+
     styleTag.innerHTML = rules.trim();
   }
-  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const percent = (x / rect.width) * 100;
-    borderValue = Math.round((x / rect.width) * 10);
+    borderState.value = Math.round((x / rect.width) * 10);
     fill.style.width = `${percent}%`;
     bullet.style.left = `${percent}%`;
-    valueText.textContent = `${borderValue}px`;
+    valueText.textContent = `${borderState.value}px`;
     applyBorder();
   }
 
@@ -525,7 +526,7 @@ export function initButtonBorderControl(getSelectedElement) {
   });
 
   document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
-    borderValue = 0;
+    borderState.value = 0;
     fill.style.width = "0%";
     bullet.style.left = "0%";
     valueText.textContent = "0px";
@@ -533,10 +534,11 @@ export function initButtonBorderControl(getSelectedElement) {
   });
 
   window.setButtonBorderStyleType = function (type) {
-    borderType = type;
+    borderState.type = type;
     applyBorder();
   };
 }
+
 
 
 
@@ -552,18 +554,26 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
     if (!el) return;
 
     el.onclick = () => {
-      typeButtons.forEach(({ id }) =>
-        document.getElementById(id)?.classList.remove("sc-bg-454545")
-      );
+      typeButtons.forEach(({ id }) => {
+        const button = document.getElementById(id);
+        button?.classList.remove("sc-bg-454545", "sc-border-solid", "sc-border-dashed", "sc-border-dotted");
+      });
+
       el.classList.add("sc-bg-454545");
+      if (type === "solid") el.classList.add("sc-border-solid");
+      if (type === "dashed") el.classList.add("sc-border-dashed");
+      if (type === "dotted") el.classList.add("sc-border-dotted");
+
+      window.setButtonBorderStyleType?.(type);
 
       const selectedElement = getSelectedElement?.();
       if (typeof updateBorderStyle === "function") {
-        updateBorderStyle(type, selectedElement); // ✅ pass both
+        updateBorderStyle(type, selectedElement);
       }
     };
   });
 }
+
 
 
 
