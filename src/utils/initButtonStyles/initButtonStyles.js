@@ -223,15 +223,78 @@ export function initButtonIconRotationToggle(getSelectedElement) {
   document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
 }
 
+
+
+
 export function initButtonIconDimensionToggle(getSelectedElement) {
-  const widthSelect = document.getElementById("buttoniconWidthSelect");
-  const heightSelect = document.getElementById("buttoniconHeightSelect");
+  const widthTrigger = document.getElementById("buttoniconWidthSelect");
   const widthLabel = document.getElementById("buttonIconWidthCount");
+  const widthDropdown = document.createElement("div");
+  widthDropdown.id = "buttoniconWidthDropdown";
+
+  const heightTrigger = document.getElementById("buttoniconHeightSelect");
   const heightLabel = document.getElementById("buttonIconHeightCount");
+  const heightDropdown = document.createElement("div");
+  heightDropdown.id = "buttoniconHeightDropdown";
 
-  if (!widthSelect || !heightSelect || !widthLabel || !heightLabel) return;
+  if (!widthTrigger || !widthLabel || !heightTrigger || !heightLabel) return;
 
-  function applyIconSize(dimension, value) {
+  const sizeValues = Array.from({ length: 51 }, (_, i) => i + 10); // 10 to 60
+
+  // Common dropdown style
+  const dropdownClassList = ["sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "z-99999", "sc-scrollBar"];
+
+  function generateDropdownHTML(values, type) {
+    return values.map(
+      (val) => `
+      <div data-${type}="${val}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
+        <p class="sc-universal sc-roboto sc-text-sm">${val}px</p>
+      </div>`
+    ).join("");
+  }
+
+  widthDropdown.classList.add(...dropdownClassList);
+  widthDropdown.innerHTML = generateDropdownHTML(sizeValues, "width");
+  widthTrigger.parentNode.appendChild(widthDropdown);
+
+  heightDropdown.classList.add(...dropdownClassList);
+  heightDropdown.innerHTML = generateDropdownHTML(sizeValues, "height");
+  heightTrigger.parentNode.appendChild(heightDropdown);
+
+  widthTrigger.onclick = (e) => {
+    e.stopPropagation();
+    widthDropdown.classList.toggle("sc-hidden");
+    heightDropdown.classList.add("sc-hidden");
+  };
+
+  heightTrigger.onclick = (e) => {
+    e.stopPropagation();
+    heightDropdown.classList.toggle("sc-hidden");
+    widthDropdown.classList.add("sc-hidden");
+  };
+
+  widthDropdown.onclick = (e) => e.stopPropagation();
+  heightDropdown.onclick = (e) => e.stopPropagation();
+
+  widthDropdown.querySelectorAll("[data-width]").forEach(item => {
+    item.onclick = () => {
+      const px = item.dataset.width;
+      widthLabel.textContent = `${px}px`;
+      widthDropdown.classList.add("sc-hidden");
+      applyIconStyle("width", px);
+    };
+  });
+
+  heightDropdown.querySelectorAll("[data-height]").forEach(item => {
+    item.onclick = () => {
+      const px = item.dataset.height;
+      heightLabel.textContent = `${px}px`;
+      heightDropdown.classList.add("sc-hidden");
+      applyIconStyle("height", px);
+    };
+  });
+
+  function applyIconStyle(type, value) {
     const selectedElement = getSelectedElement();
     const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!sampleButton) return;
@@ -244,32 +307,18 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
     allButtons.forEach(button => {
       const icon = button.querySelector(".sqscraft-button-icon");
       if (icon) {
-        if (dimension === "width") icon.style.width = `${value}px`;
-        if (dimension === "height") icon.style.height = `${value}px`;
+        if (type === "width") icon.style.width = `${value}px`;
+        else icon.style.height = `${value}px`;
       }
     });
   }
 
-  widthSelect.onclick = (e) => {
-    e.stopPropagation();
-    const next = prompt("Enter icon width in px (e.g., 16):", "16");
-    if (!next) return;
-    const px = parseInt(next);
-    if (isNaN(px)) return;
-    widthLabel.textContent = `${px}px`;
-    applyIconSize("width", px);
-  };
-
-  heightSelect.onclick = (e) => {
-    e.stopPropagation();
-    const next = prompt("Enter icon height in px (e.g., 16):", "16");
-    if (!next) return;
-    const px = parseInt(next);
-    if (isNaN(px)) return;
-    heightLabel.textContent = `${px}px`;
-    applyIconSize("height", px);
-  };
+  document.addEventListener("click", () => {
+    widthDropdown.classList.add("sc-hidden");
+    heightDropdown.classList.add("sc-hidden");
+  });
 }
+
 
 
 
