@@ -455,11 +455,11 @@ export function initButtonBorderControl(getSelectedElement) {
     const borderStyle = `${borderValue}px solid black`;
   
     allButtons.forEach((btn) => {
+      btn.style.borderTop = "0px";
+      btn.style.borderBottom = "0px";
+      btn.style.borderLeft = "0px";
+      btn.style.borderRight = "0px";
       btn.style.border = "none";
-      btn.style.borderTop = "none";
-      btn.style.borderBottom = "none";
-      btn.style.borderLeft = "none";
-      btn.style.borderRight = "none";
   
       if (activeSide === "All") {
         btn.style.border = borderStyle;
@@ -474,6 +474,7 @@ export function initButtonBorderControl(getSelectedElement) {
       }
     });
   }
+  
   
 
   function updateUI(clientX) {
