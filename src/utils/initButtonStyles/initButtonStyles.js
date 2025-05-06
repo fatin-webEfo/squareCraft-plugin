@@ -362,20 +362,17 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     const icon = getIconElement();
     if (!icon) return;
   
-    icon.style.position = "relative";
-    icon.style.top = "0px";
-    icon.style.bottom = "0px";
-    icon.style.left = "0px";
-    icon.style.right = "0px";
-    
-    if (activeDirection === "Top") icon.style.top = `-${spacingValue}px`;
-    if (activeDirection === "Bottom") icon.style.top = `${spacingValue}px`;
-    if (activeDirection === "Left") icon.style.left = `-${spacingValue}px`;
-    if (activeDirection === "Right") icon.style.left = `${spacingValue}px`;
-    
+    icon.style.marginTop = "0px";
+    icon.style.marginBottom = "0px";
+    icon.style.marginLeft = "0px";
+    icon.style.marginRight = "0px";
   
-    icon.style[`margin${activeDirection}`] = `${spacingValue}px`;
+    if (activeDirection === "Top") icon.style.marginTop = `${spacingValue}px`;
+    if (activeDirection === "Bottom") icon.style.marginBottom = `${spacingValue}px`;
+    if (activeDirection === "Left") icon.style.marginLeft = `${spacingValue}px`;
+    if (activeDirection === "Right") icon.style.marginRight = `${spacingValue}px`;
   }
+  
   
   
 
