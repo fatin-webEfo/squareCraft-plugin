@@ -493,7 +493,7 @@ export function WidgetButtonSection() {
                      class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
                     
                      <div id="buttonIconSpacingTop" data-value="Top"
-                        class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-bg-454545 sc-rounded-6px  sc-items-center sc-gap-1">
+                        class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
                            alt="top-radious">
                         <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
