@@ -423,6 +423,10 @@ export function initButtonBorderControl(getSelectedElement) {
     type: "solid"
   };
 
+  // Add smooth motion to bullet
+  bullet.style.transition = "left 0.2s ease";
+  fill.style.transition = "width 0.2s ease";
+
   const sideButtons = [
     "buttonBorderAll",
     "buttonBorderTop",
@@ -443,65 +447,74 @@ export function initButtonBorderControl(getSelectedElement) {
     });
   });
 
-  function getButtonTypeClass(sample) {
-    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-    return "sqs-button-element--primary";
+  function getButtonTypeClasses(sample) {
+    const types = [];
+
+    if (sample.classList.contains("sqs-button-element--primary")) types.push("sqs-button-element--primary");
+    if (sample.classList.contains("sqs-button-element--secondary")) types.push("sqs-button-element--secondary");
+    if (sample.classList.contains("sqs-button-element--tertiary")) types.push("sqs-button-element--tertiary");
+    if (sample.classList.contains("sqs-block-button-element")) types.push("sqs-block-button-element");
+
+    return types;
   }
 
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
-  
-    const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+
+    const sampleButton = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element"
+    );
     if (!sampleButton) return;
-  
-    const typeClass = getButtonTypeClass(sampleButton);
-    const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-  
+
+    const typeClasses = getButtonTypeClasses(sampleButton);
+    if (typeClasses.length === 0) return;
+
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
-  
-    let rules = "";
     const sides = {
       Top: "border-top",
       Bottom: "border-bottom",
       Left: "border-left",
       Right: "border-right"
     };
-  
-    if (borderState.side === "All") {
-      rules = `
-        a.${typeClass} {
-          border-top: ${borderStyle} !important;
-          border-bottom: ${borderStyle} !important;
-          border-left: ${borderStyle} !important;
-          border-right: ${borderStyle} !important;
-        }
-      `;
-    } else {
-      const zeroAll = `
-        border-top: 0px !important;
-        border-bottom: 0px !important;
-        border-left: 0px !important;
-        border-right: 0px !important;
-      `;
-      rules = `
-        a.${typeClass} {
-          ${zeroAll}
-          ${sides[borderState.side]}: ${borderStyle} !important;
-        }
-      `;
-    }
-  
-    styleTag.innerHTML = rules.trim();
+
+    typeClasses.forEach((typeClass) => {
+      const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+
+      let rules = "";
+      if (borderState.side === "All") {
+        rules = `
+          a.${typeClass} {
+            border-top: ${borderStyle} !important;
+            border-bottom: ${borderStyle} !important;
+            border-left: ${borderStyle} !important;
+            border-right: ${borderStyle} !important;
+          }
+        `;
+      } else {
+        const resetAll = `
+          border-top: 0px !important;
+          border-bottom: 0px !important;
+          border-left: 0px !important;
+          border-right: 0px !important;
+        `;
+        rules = `
+          a.${typeClass} {
+            ${resetAll}
+            ${sides[borderState.side]}: ${borderStyle} !important;
+          }
+        `;
+      }
+
+      styleTag.innerHTML = rules.trim();
+    });
   }
-  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
@@ -538,6 +551,7 @@ export function initButtonBorderControl(getSelectedElement) {
     applyBorder();
   };
 }
+
 
 
 
