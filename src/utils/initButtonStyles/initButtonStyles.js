@@ -456,26 +456,51 @@ export function initButtonBorderControl(getSelectedElement) {
 
     const typeClass = getButtonTypeClass(sampleButton);
     const allButtons = document.querySelectorAll(`a.${typeClass}`);
+
+    const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    let rules = "";
     const borderStyle = `${borderValue}px ${borderType} black`;
 
-    allButtons.forEach((btn) => {
-      btn.style.borderTop = "0px";
-      btn.style.borderBottom = "0px";
-      btn.style.borderLeft = "0px";
-      btn.style.borderRight = "0px";
+    if (activeSide === "All") {
+      rules = `
+        a.${typeClass} {
+          border-top: ${borderStyle} !important;
+          border-bottom: ${borderStyle} !important;
+          border-left: ${borderStyle} !important;
+          border-right: ${borderStyle} !important;
+        }
+      `;
+    } else {
+      const sides = {
+        Top: "border-top",
+        Bottom: "border-bottom",
+        Left: "border-left",
+        Right: "border-right",
+      };
 
-      if (activeSide === "All") {
-        btn.style.borderTop = borderStyle;
-        btn.style.borderBottom = borderStyle;
-        btn.style.borderLeft = borderStyle;
-        btn.style.borderRight = borderStyle;
-      } else {
-        if (activeSide === "Top") btn.style.borderTop = borderStyle;
-        if (activeSide === "Bottom") btn.style.borderBottom = borderStyle;
-        if (activeSide === "Left") btn.style.borderLeft = borderStyle;
-        if (activeSide === "Right") btn.style.borderRight = borderStyle;
-      }
-    });
+      const allZero = `
+        border-top: 0px !important;
+        border-bottom: 0px !important;
+        border-left: 0px !important;
+        border-right: 0px !important;
+      `;
+
+      rules = `
+        a.${typeClass} {
+          ${allZero}
+          ${sides[activeSide]}: ${borderStyle} !important;
+        }
+      `;
+    }
+
+    styleTag.innerHTML = rules.trim();
   }
 
   function updateUI(clientX) {
@@ -513,6 +538,7 @@ export function initButtonBorderControl(getSelectedElement) {
     applyBorder();
   };
 }
+
 
 
 export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle) {
