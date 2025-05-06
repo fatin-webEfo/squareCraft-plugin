@@ -233,11 +233,20 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   const widthValues = ["12", "16", "20", "24", "28", "32"];
   const heightValues = ["12", "16", "20", "24", "28", "32"];
 
-  function createDropdown(values, type) {
-    const dropdown = document.createElement("div");
-    dropdown.classList.add("sc-absolute", "sc-left-0", "sc-h-44", "sc-scrollBar", "z-99999", "sc-bg-colo-EF7C2F-hover", "sc-hidden");
+  const widthDropdown = document.createElement("div");
+  const heightDropdown = document.createElement("div");
 
-    dropdown.innerHTML = values.map((val) => `
+  [widthDropdown, heightDropdown].forEach(drop => {
+    drop.classList.add(
+      "sc-absolute", "sc-left-0", "sc-h-44",
+      "sc-scrollBar", "z-99999",
+      "sc-bg-colo-EF7C2F-hover", "sc-hidden"
+    );
+    document.body.appendChild(drop);
+  });
+
+  function fillDropdown(dropdown, values, type) {
+    dropdown.innerHTML = values.map(val => `
       <div data-value="${val}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
         <p class="sc-universal sc-roboto sc-text-sm">${val}px</p>
       </div>
@@ -247,7 +256,9 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
       item.onclick = () => {
         const selectedVal = item.dataset.value;
         const selectedElement = getSelectedElement();
-        const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+        const sampleButton = selectedElement?.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
         if (!sampleButton) return;
 
         let typeClass = "sqs-button-element--primary";
@@ -257,14 +268,14 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
         const allButtons = document.querySelectorAll(`a.${typeClass}`);
         allButtons.forEach(button => {
           const icon = button.querySelector(".sqscraft-button-icon");
-          if (icon) {
-            if (type === "width") {
-              icon.style.width = `${selectedVal}px`;
-              if (widthCounter) widthCounter.textContent = `${selectedVal}px`;
-            } else {
-              icon.style.height = `${selectedVal}px`;
-              if (heightCounter) heightCounter.textContent = `${selectedVal}px`;
-            }
+          if (!icon) return;
+
+          if (type === "width") {
+            icon.style.width = `${selectedVal}px`;
+            if (widthCounter) widthCounter.textContent = `${selectedVal}px`;
+          } else {
+            icon.style.height = `${selectedVal}px`;
+            if (heightCounter) heightCounter.textContent = `${selectedVal}px`;
           }
         });
 
@@ -272,12 +283,11 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
       };
     });
 
-    document.body.appendChild(dropdown);
-    return dropdown;
+    dropdown.onclick = e => e.stopPropagation();
   }
 
-  const widthDropdown = createDropdown(widthValues, "width");
-  const heightDropdown = createDropdown(heightValues, "height");
+  fillDropdown(widthDropdown, widthValues, "width");
+  fillDropdown(heightDropdown, heightValues, "height");
 
   widthTrigger.onclick = (e) => {
     e.stopPropagation();
@@ -301,11 +311,4 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
     widthDropdown.classList.add("sc-hidden");
     heightDropdown.classList.add("sc-hidden");
   });
-
-  widthDropdown.onclick = (e) => e.stopPropagation();
-  heightDropdown.onclick = (e) => e.stopPropagation();
 }
-
-
-
-
