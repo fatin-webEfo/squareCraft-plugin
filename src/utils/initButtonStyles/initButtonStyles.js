@@ -446,29 +446,35 @@ export function initButtonBorderControl(getSelectedElement) {
   }
 
   function applyBorder() {
-    const button = getButtonElement();
-    if (!button) return;
-
-    button.style.border = "none";
-    button.style.borderTop = "none";
-    button.style.borderBottom = "none";
-    button.style.borderLeft = "none";
-    button.style.borderRight = "none";
-
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    if (!selectedElement) return;
+  
+    const allButtons = selectedElement.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!allButtons.length) return;
+  
     const borderStyle = `${borderValue}px solid black`;
-
-    if (activeSide === "All") {
-      button.style.border = borderStyle;
-    } else if (activeSide === "Top") {
-      button.style.borderTop = borderStyle;
-    } else if (activeSide === "Bottom") {
-      button.style.borderBottom = borderStyle;
-    } else if (activeSide === "Left") {
-      button.style.borderLeft = borderStyle;
-    } else if (activeSide === "Right") {
-      button.style.borderRight = borderStyle;
-    }
+  
+    allButtons.forEach((btn) => {
+      btn.style.border = "none";
+      btn.style.borderTop = "none";
+      btn.style.borderBottom = "none";
+      btn.style.borderLeft = "none";
+      btn.style.borderRight = "none";
+  
+      if (activeSide === "All") {
+        btn.style.border = borderStyle;
+      } else if (activeSide === "Top") {
+        btn.style.borderTop = borderStyle;
+      } else if (activeSide === "Bottom") {
+        btn.style.borderBottom = borderStyle;
+      } else if (activeSide === "Left") {
+        btn.style.borderLeft = borderStyle;
+      } else if (activeSide === "Right") {
+        btn.style.borderRight = borderStyle;
+      }
+    });
   }
+  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
