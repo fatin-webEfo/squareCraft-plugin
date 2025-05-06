@@ -318,6 +318,9 @@ export function initButtonIconDimensionToggle(getSelectedElement) {
   });
 }
 
+
+
+
 export function initButtonIconSpacingControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSpacingradiousBullet");
   const fill = document.getElementById("buttonIconSpacingradiousFill");
@@ -325,6 +328,7 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const spacingTabs = document.querySelectorAll('[id^="buttonIconSpacing"]');
   let currentSpacingType = "Top"; // default
   let spacingValue = 0;
+  let dragging = false;
 
   const slider = document.getElementById("buttonIconSpacingradiousField");
   const max = slider.offsetWidth - 12;
@@ -355,26 +359,24 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   }
 
   spacingTabs.forEach(tab => {
-    tab.onclick = () => {
+    tab.addEventListener("click", () => {
       currentSpacingType = tab.dataset.value.replace("buttonIconSpacing", "");
       updateActiveTab(tab.id);
       applySpacing(currentSpacingType, spacingValue);
-    };
+    });
   });
 
-  let dragging = false;
-
-  bullet.onmousedown = (e) => {
+  bullet.addEventListener("mousedown", () => {
     dragging = true;
     document.body.style.userSelect = "none";
-  };
+  });
 
-  document.onmouseup = () => {
+  document.addEventListener("mouseup", () => {
     dragging = false;
     document.body.style.userSelect = "";
-  };
+  });
 
-  document.onmousemove = (e) => {
+  document.addEventListener("mousemove", (e) => {
     if (!dragging) return;
 
     const rect = slider.getBoundingClientRect();
@@ -388,10 +390,11 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     fill.style.width = `${x}px`;
 
     applySpacing(currentSpacingType, spacingValue);
-  };
+  });
 
   updateActiveTab("buttonIconSpacingTop");
 }
+
 
 
 
