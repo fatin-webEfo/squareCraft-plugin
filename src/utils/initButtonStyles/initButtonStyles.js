@@ -452,13 +452,11 @@ export function initButtonBorderControl(getSelectedElement) {
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
-
+  
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!sampleButton) return;
-
+  
     const typeClass = getButtonTypeClass(sampleButton);
-    const allButtons = document.querySelectorAll(`a.${typeClass}`);
-
     const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -466,10 +464,17 @@ export function initButtonBorderControl(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-
+  
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
-
+  
     let rules = "";
+    const sides = {
+      Top: "border-top",
+      Bottom: "border-bottom",
+      Left: "border-left",
+      Right: "border-right"
+    };
+  
     if (borderState.side === "All") {
       rules = `
         a.${typeClass} {
@@ -480,28 +485,23 @@ export function initButtonBorderControl(getSelectedElement) {
         }
       `;
     } else {
-      const allZero = `
+      const zeroAll = `
         border-top: 0px !important;
         border-bottom: 0px !important;
         border-left: 0px !important;
         border-right: 0px !important;
       `;
-      const sides = {
-        Top: "border-top",
-        Bottom: "border-bottom",
-        Left: "border-left",
-        Right: "border-right"
-      };
       rules = `
         a.${typeClass} {
-          ${allZero}
+          ${zeroAll}
           ${sides[borderState.side]}: ${borderStyle} !important;
         }
       `;
     }
-
+  
     styleTag.innerHTML = rules.trim();
   }
+  
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
@@ -554,7 +554,6 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
     if (!el) return;
 
     el.onclick = () => {
-      // Widget UI: clean up style classes
       typeButtons.forEach(({ id }) => {
         const btn = document.getElementById(id);
         btn?.classList.remove("sc-bg-454545", "sc-border-solid", "sc-border-dashed", "sc-border-dotted");
@@ -565,7 +564,6 @@ export function initButtonBorderTypeToggle(getSelectedElement, updateBorderStyle
       if (type === "dashed") el.classList.add("sc-border-dashed");
       if (type === "dotted") el.classList.add("sc-border-dotted");
 
-      // Update actual border state and reapply to selected element
       window.setButtonBorderStyleType?.(type);
 
       const selectedElement = getSelectedElement?.();
