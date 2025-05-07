@@ -480,7 +480,6 @@ export function initButtonBorderControl(getSelectedElement) {
     const color = "black";
 
     allSameTypeButtons.forEach(btn => {
-      // Reset all borders
       btn.style.setProperty("border-top", "0", "important");
       btn.style.setProperty("border-right", "0", "important");
       btn.style.setProperty("border-bottom", "0", "important");
