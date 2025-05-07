@@ -343,6 +343,7 @@
       return;
     }
 
+    
     if (!widgetLoaded) {
       await createWidget(clickedBlock);
       waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
