@@ -519,8 +519,6 @@
   }
   
 
-
-
   export function initButtonBorderTypeToggle(getSelectedElement) {
     const typeButtons = [
       { id: "buttonBorderTypeSolid", type: "solid" },
@@ -641,3 +639,29 @@
   
 
 
+  window.syncButtonStylesFromElement = function(selectedElement) {
+    if (!selectedElement) return;
+  
+    const sampleButton = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+    if (!sampleButton) return;
+  
+    const borderWidth = parseInt(sampleButton.style.borderWidth || "0");
+    document.getElementById("buttonBorderCount").textContent = `${borderWidth}px`;
+    document.getElementById("buttonBorderFill").style.width = `${(borderWidth / 10) * 100}%`;
+    document.getElementById("buttonBorderBullet").style.left = `${(borderWidth / 10) * 100}%`;
+  
+    const borderStyle = sampleButton.style.borderStyle || "solid";
+    window.__squareCraftBorderStyle = borderStyle;
+    ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle("sc-bg-454545", el.id.includes(borderStyle));
+    });
+  
+    const radius = parseInt(sampleButton.style.borderRadius || "0");
+    document.getElementById("buttonBorderRadiousCount").textContent = `${radius}px`;
+    document.getElementById("buttonBorderRadiousFill").style.width = `${(radius / 50) * 100}%`;
+    document.getElementById("buttonBorderRadiousBullet").style.left = `${(radius / 50) * 100}%`;
+  };
+  
