@@ -474,10 +474,10 @@ export function initButtonBorderControl(getSelectedElement) {
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
-
+  
     const sampleButton = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element");
     if (!sampleButton) return;
-
+  
     const typeClass = getButtonTypeClass(sampleButton);
     const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
@@ -486,7 +486,7 @@ export function initButtonBorderControl(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-
+  
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
     const sides = {
       Top: "border-top",
@@ -494,34 +494,27 @@ export function initButtonBorderControl(getSelectedElement) {
       Left: "border-left",
       Right: "border-right"
     };
-
+  
     let rules = "";
+  
     if (borderState.side === "All") {
       rules = `
         a.${typeClass}, button.${typeClass} {
-          border-top: ${borderStyle} !important;
-          border-bottom: ${borderStyle} !important;
-          border-left: ${borderStyle} !important;
-          border-right: ${borderStyle} !important;
+          border: ${borderStyle} !important;
         }
       `;
     } else {
-      const resetAll = `
-        border-top: 0px !important;
-        border-bottom: 0px !important;
-        border-left: 0px !important;
-        border-right: 0px !important;
-      `;
       rules = `
         a.${typeClass}, button.${typeClass} {
-          ${resetAll}
+          border: 0 !important;
           ${sides[borderState.side]}: ${borderStyle} !important;
         }
       `;
     }
-
+  
     styleTag.innerHTML = rules.trim();
   }
+  
 
   function setupReapplyBorderListener() {
     const selectedElement = getSelectedElement?.();
