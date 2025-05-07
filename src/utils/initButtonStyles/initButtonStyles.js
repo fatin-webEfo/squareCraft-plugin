@@ -638,12 +638,7 @@ const shadowState = {
 };
 
 export function initButtonShadowControls(getSelectedElement) {
-  const shadowState = {
-    Xaxis: 0,
-    Yaxis: 0,
-    Blur: 0,
-    Spread: 0,
-  };
+
 
   function applyShadow() {
     const el = getSelectedElement?.();
