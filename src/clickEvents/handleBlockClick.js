@@ -12,18 +12,22 @@ export async function handleBlockClick(event, context) {
   const block = event.target.closest('[id^="block-"]');
   if (!block) return;
 
-  if (selectedElement) selectedElement.style.outline = "";
+  if (selectedElement) {
+    selectedElement.style.outline = "";
+    selectedElement.classList.remove("sc-selected");
+    selectedElement.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
+      el.style.border = "";
+      el.style.borderRadius = "";
+      el.style.padding = "";
+    });
+  }
+
   setSelectedElement(block);
   block.classList.add("sc-selected");
 
-
-
-  
   if (typeof window.syncButtonStylesFromElement === "function") {
     window.syncButtonStylesFromElement(block);
   }
-  
-
 
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
@@ -56,12 +60,10 @@ export async function handleBlockClick(event, context) {
     "heading1Part", "heading2Part", "heading3Part", "heading4Part",
     "paragraph1Part", "paragraph2Part", "paragraph3Part"
   ];
-
   const allTabs = [
     "heading1", "heading2", "heading3", "heading4",
     "paragraph1", "paragraph2", "paragraph3"
   ];
-
   const visibleParts = new Set();
   const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
 
