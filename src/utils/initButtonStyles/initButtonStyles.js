@@ -628,62 +628,95 @@
     });
   }
   
-  export function initButtonShadowControls(getSelectedElement) {
-    const shadowState = {
-      Xaxis: 0,
-      Yaxis: 0,
-      Blur: 0,
-      Spread: 0
-    };
+
   
-    function applyShadow() {
-      const el = getSelectedElement?.();
-      const sample = el?.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
-      if (!sample) return;
-  
-      const boxShadow = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
-      sample.style.boxShadow = boxShadow;
-    }
-  
-    function setupShadowControl(type, max = 50) {
-      const bullet = document.getElementById(`buttonShadow${type}Bullet`);
-      const field = document.getElementById(`buttonShadow${type}Field`);
-      const label = document.getElementById(`buttonShadow${type}Count`);
-      if (!bullet || !field || !label) return;
-  
-      function updateUI(clientX) {
-        const rect = field.getBoundingClientRect();
-        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-        const percent = (x / rect.width) * 100;
-        const value = Math.round((x / rect.width) * max);
-  
-        shadowState[type] = value;
-        bullet.style.left = `${percent}%`;
-        label.textContent = `${value}px`;
-        applyShadow();
+const shadowState = {
+  Xaxis: 0,
+  Yaxis: 0,
+  Blur: 0,
+  Spread: 0
+};
+
+export function initButtonShadowControls(getSelectedElement) {
+  const shadowState = {
+    Xaxis: 0,
+    Yaxis: 0,
+    Blur: 0,
+    Spread: 0,
+  };
+
+  function applyShadow() {
+    const el = getSelectedElement?.();
+    if (!el) return;
+
+    const typeSelectors = [
+      "a.sqs-button-element--primary",
+      "a.sqs-button-element--secondary",
+      "a.sqs-button-element--tertiary"
+    ];
+
+    let selectedButton;
+    for (const selector of typeSelectors) {
+      const btn = el.querySelector(selector);
+      if (btn) {
+        selectedButton = btn;
+        break;
       }
-  
-      bullet.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        const move = (e) => updateUI(e.clientX);
-        const up = () => {
-          document.removeEventListener("mousemove", move);
-          document.removeEventListener("mouseup", up);
-        };
-        document.addEventListener("mousemove", move);
-        document.addEventListener("mouseup", up);
-      });
-  
-      field.addEventListener("click", (e) => updateUI(e.clientX));
     }
-  
-    setupShadowControl("Xaxis", 30);
-    setupShadowControl("Yaxis", 30);
-    setupShadowControl("Blur", 50);
-    setupShadowControl("Spread", 30);
+    if (!selectedButton) return;
+
+    const buttonType = [...selectedButton.classList].find(cls =>
+      cls.startsWith("sqs-button-element--")
+    );
+    if (!buttonType) return;
+
+    const shadowValue = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
+    const sameTypeButtons = el.querySelectorAll(`a.${buttonType}`);
+
+    sameTypeButtons.forEach(btn => {
+      btn.style.boxShadow = shadowValue;
+    });
   }
+
+  function setupShadowControl(type, max = 50) {
+    const bullet = document.getElementById(`buttonShadow${type}Bullet`);
+    const field = document.getElementById(`buttonShadow${type}Field`);
+    const label = document.getElementById(`buttonShadow${type}Count`);
+    if (!bullet || !field || !label) return;
+
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      const value = Math.round((x / rect.width) * max);
+
+      shadowState[type] = value;
+      bullet.style.left = `${percent}%`;
+      label.textContent = `${value}px`;
+      applyShadow();
+    }
+
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (e) => updateUI(e.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
+
+    field.addEventListener("click", (e) => updateUI(e.clientX));
+  }
+
+  setupShadowControl("Xaxis", 30);
+  setupShadowControl("Yaxis", 30);
+  setupShadowControl("Blur", 50);
+  setupShadowControl("Spread", 30);
+}
+
+
   
   
 
