@@ -566,18 +566,24 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
 
-      const sampleButton = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element"
+      const button = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
-      if (!sampleButton) return;
+      if (!button) return;
 
-      window.setButtonBorderStyleType?.(type);
+      const typeClass = [...button.classList].find(cls =>
+        cls.includes("sqs-button-element--")
+      );
+      if (!typeClass) return;
 
-      const event = new Event("reapplyBorder", { bubbles: true });
-      sampleButton.dispatchEvent(event);
+      const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
+      matchingButtons.forEach(btn => {
+        btn.style.borderStyle = type;
+      });
     };
   });
 }
+
 
 
 
