@@ -639,7 +639,6 @@ const shadowState = {
 
 export function initButtonShadowControls(getSelectedElement) {
 
-
   function applyShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
@@ -677,7 +676,23 @@ export function initButtonShadowControls(getSelectedElement) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
+
     if (!bullet || !field || !label) return;
+
+    // Create and insert active fill bar if not already
+    let fill = field.querySelector(".sc-shadow-fill");
+    if (!fill) {
+      fill = document.createElement("div");
+      fill.className = "sc-shadow-fill";
+      fill.style.position = "absolute";
+      fill.style.top = "0";
+      fill.style.left = "0";
+      fill.style.height = "100%";
+      fill.style.width = "0%";
+      fill.style.backgroundColor = "#EF7C2F";
+      fill.style.zIndex = "0";
+      field.insertBefore(fill, bullet);
+    }
 
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
@@ -687,6 +702,7 @@ export function initButtonShadowControls(getSelectedElement) {
 
       shadowState[type] = value;
       bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
       label.textContent = `${value}px`;
       applyShadow();
     }
@@ -710,6 +726,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
   
