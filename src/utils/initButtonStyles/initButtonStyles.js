@@ -629,30 +629,25 @@
   }
   
   export function initButtonShadowControls(getSelectedElement) {
-    const shadowConfig = [
-      { id: "Xaxis", max: 30 },
-      { id: "Yaxis", max: 30 },
-      { id: "Blur", max: 50 },
-      { id: "Spread", max: 30 },
-    ];
-  
     const shadowState = {
       Xaxis: 0,
       Yaxis: 0,
       Blur: 0,
-      Spread: 0,
+      Spread: 0
     };
   
     function applyShadow() {
       const el = getSelectedElement?.();
-      const sample = el?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      const sample = el?.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
       if (!sample) return;
   
-      const shadow = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
-      sample.style.boxShadow = shadow;
+      const boxShadow = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
+      sample.style.boxShadow = boxShadow;
     }
   
-    function setupAxisControl(type) {
+    function setupShadowControl(type, max = 50) {
       const bullet = document.getElementById(`buttonShadow${type}Bullet`);
       const field = document.getElementById(`buttonShadow${type}Field`);
       const label = document.getElementById(`buttonShadow${type}Count`);
@@ -662,7 +657,7 @@
         const rect = field.getBoundingClientRect();
         const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
         const percent = (x / rect.width) * 100;
-        const value = Math.round((x / rect.width) * shadowConfig.find(c => c.id === type).max);
+        const value = Math.round((x / rect.width) * max);
   
         shadowState[type] = value;
         bullet.style.left = `${percent}%`;
@@ -670,9 +665,9 @@
         applyShadow();
       }
   
-      bullet.addEventListener("mousedown", e => {
+      bullet.addEventListener("mousedown", (e) => {
         e.preventDefault();
-        const move = e => updateUI(e.clientX);
+        const move = (e) => updateUI(e.clientX);
         const up = () => {
           document.removeEventListener("mousemove", move);
           document.removeEventListener("mouseup", up);
@@ -681,11 +676,15 @@
         document.addEventListener("mouseup", up);
       });
   
-      field.addEventListener("click", e => updateUI(e.clientX));
+      field.addEventListener("click", (e) => updateUI(e.clientX));
     }
   
-    shadowConfig.forEach(({ id }) => setupAxisControl(id));
+    setupShadowControl("Xaxis", 30);
+    setupShadowControl("Yaxis", 30);
+    setupShadowControl("Blur", 50);
+    setupShadowControl("Spread", 30);
   }
+  
   
 
   window.syncButtonStylesFromElement = function(selectedElement) {
