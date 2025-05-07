@@ -474,33 +474,26 @@ export function initButtonBorderControl(getSelectedElement) {
     );
     if (!typeClass) return;
 
-    const borderStyle = `${borderState.value}px ${borderState.type} black`;
     const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+    const value = `${borderState.value}px`;
+    const style = borderState.type;
+    const color = "black";
 
     allSameTypeButtons.forEach(btn => {
+      // Reset all borders
+      btn.style.setProperty("border-top", "0", "important");
+      btn.style.setProperty("border-right", "0", "important");
+      btn.style.setProperty("border-bottom", "0", "important");
+      btn.style.setProperty("border-left", "0", "important");
+
       if (borderState.side === "All") {
-        btn.setAttribute("style", `
-          border-width: ${borderState.value}px !important;
-          border-style: ${borderState.type} !important;
-          border-color: black !important;
-        `.trim());
+        btn.style.setProperty("border", `${value} ${style} ${color}`, "important");
       } else {
-        const sideProp = `border-${borderState.side.toLowerCase()}-width`;
-        const resetSides = `
-          border-top-width: 0 !important;
-          border-right-width: 0 !important;
-          border-bottom-width: 0 !important;
-          border-left-width: 0 !important;
-        `;
-        btn.setAttribute("style", `
-          ${resetSides}
-          ${sideProp}: ${borderState.value}px !important;
-          border-style: ${borderState.type} !important;
-          border-color: black !important;
-        `.trim());
+        const side = borderState.side.toLowerCase();
+        const prop = `border-${side}`;
+        btn.style.setProperty(prop, `${value} ${style} ${color}`, "important");
       }
     });
-    
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -538,6 +531,7 @@ export function initButtonBorderControl(getSelectedElement) {
     applyBorder();
   };
 }
+
 
 
 
