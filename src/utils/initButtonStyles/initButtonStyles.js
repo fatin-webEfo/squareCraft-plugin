@@ -487,12 +487,25 @@ export function initButtonBorderControl(getSelectedElement) {
       btn.style.setProperty("border-left", "0", "important");
 
       if (borderState.side === "All") {
-        btn.style.setProperty("border", `${value} ${style} ${color}`, "important");
+        btn.style.setProperty("border-width", value, "important");
+        btn.style.setProperty("border-style", style, "important");
+        btn.style.setProperty("border-color", color, "important");
       } else {
-        const side = borderState.side.toLowerCase();
-        const prop = `border-${side}`;
-        btn.style.setProperty(prop, `${value} ${style} ${color}`, "important");
+        btn.style.setProperty("border-width", "0 0 0 0", "important"); // reset all sides
+        btn.style.setProperty("border-style", style, "important");
+        btn.style.setProperty("border-color", color, "important");
+      
+        if (borderState.side === "Top") {
+          btn.style.setProperty("border-top-width", value, "important");
+        } else if (borderState.side === "Right") {
+          btn.style.setProperty("border-right-width", value, "important");
+        } else if (borderState.side === "Bottom") {
+          btn.style.setProperty("border-bottom-width", value, "important");
+        } else if (borderState.side === "Left") {
+          btn.style.setProperty("border-left-width", value, "important");
+        }
       }
+      
     });
   }
 
