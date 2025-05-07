@@ -444,34 +444,35 @@
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-  
+    
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!sample) return;
-  
+    
       const typeClass = [...sample.classList].find(cls =>
         cls.includes("sqs-button-element--")
       );
       if (!typeClass) return;
-  
+    
       const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
       const value = `${borderState.value}px`;
       const color = "black";
-  
+      const style = window.__squareCraftBorderStyle || "solid";
+    
       allSameTypeButtons.forEach(btn => {
         btn.style.setProperty("border-top", "0", "important");
         btn.style.setProperty("border-right", "0", "important");
         btn.style.setProperty("border-bottom", "0", "important");
         btn.style.setProperty("border-left", "0", "important");
-  
+    
+        btn.style.setProperty("border-style", style, "important");
+        btn.style.setProperty("border-color", color, "important");
+    
         if (borderState.side === "All") {
           btn.style.setProperty("border-width", value, "important");
-          btn.style.setProperty("border-color", color, "important");
         } else {
           btn.style.setProperty("border-width", "0 0 0 0", "important");
-          btn.style.setProperty("border-color", color, "important");
-  
           if (borderState.side === "Top") {
             btn.style.setProperty("border-top-width", value, "important");
           } else if (borderState.side === "Right") {
@@ -484,6 +485,7 @@
         }
       });
     }
+    
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -535,27 +537,30 @@
           const btn = document.getElementById(id);
           btn?.classList.remove("sc-bg-454545");
         });
-
+      
         el.classList.add("sc-bg-454545");
-
+      
+        window.__squareCraftBorderStyle = type;
+      
         const selectedElement = getSelectedElement?.();
         if (!selectedElement) return;
-
+      
         const sample = selectedElement.querySelector(
           "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
         );
         if (!sample) return;
-
+      
         const typeClass = [...sample.classList].find(cls =>
           cls.includes("sqs-button-element--")
         );
         if (!typeClass) return;
-
+      
         const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
         allSameTypeButtons.forEach(btn => {
-          btn.style.borderStyle = type;
+          btn.style.setProperty("border-style", type, "important");
         });
       };
+      
     });
   }
 
