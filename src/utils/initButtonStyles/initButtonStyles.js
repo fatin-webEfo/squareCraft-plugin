@@ -432,96 +432,6 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
 
 
-export function initButtonBorderRadiusControl(getSelectedElement) {
-  const fillField = document.getElementById("buttonBorderRadiousField");
-  const bullet = document.getElementById("buttonBorderRadiousBullet");
-  const fill = document.getElementById("buttonBorderRadiousFill");
-  const valueText = document.getElementById("buttonBorderRadiousCount");
-  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
-
-  if (!fillField || !bullet || !fill || !valueText) return;
-
-  bullet.style.transition = "left 0.15s ease";
-  fill.style.transition = "width 0.15s ease";
-
-  let radiusValue = 0;
-
-  function getButtonTypeClass(sample) {
-    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-    return "sqs-button-element--primary";
-  }
-
-  function applyBorderRadius() {
-    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-    if (!selectedElement) return;
-
-    const sampleButton = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
-    if (!sampleButton) return;
-
-    const typeClass = getButtonTypeClass(sampleButton);
-    const allButtons = document.querySelectorAll(`a.${typeClass}`);
-    allButtons.forEach(btn => {
-      btn.style.setProperty("border-radius", `${radiusValue}px`, "important");
-    });
-  }
-
-  function updateUI(clientX) {
-    const rect = fillField.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * 50);
-
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    valueText.textContent = `${radiusValue}px`;
-
-    applyBorderRadius();
-  }
-
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const onMouseMove = (eMove) => updateUI(eMove.clientX);
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-    };
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  });
-
-  resetBtn?.addEventListener("click", () => {
-    radiusValue = 0;
-    bullet.style.left = "0%";
-    fill.style.width = "0%";
-    valueText.textContent = "0px";
-    applyBorderRadius();
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -606,6 +516,8 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   const valueText = document.getElementById("buttonBorderRadiousCount");
   const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
 
+  if (!fillField || !bullet || !fill || !valueText) return;
+
   bullet.style.transition = "left 0.15s ease";
   fill.style.transition = "width 0.15s ease";
 
@@ -628,8 +540,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
     const typeClass = getButtonTypeClass(sampleButton);
     const allButtons = document.querySelectorAll(`a.${typeClass}`);
-
-    allButtons.forEach((btn) => {
+    allButtons.forEach(btn => {
       btn.style.setProperty("border-radius", `${radiusValue}px`, "important");
     });
   }
@@ -638,7 +549,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     const rect = fillField.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * 50); // max 50px
+    radiusValue = Math.round((x / rect.width) * 50);
 
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
@@ -649,13 +560,13 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (ev) => updateUI(ev.clientX);
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
+    const onMouseMove = (eMove) => updateUI(eMove.clientX);
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
     };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
   });
 
   resetBtn?.addEventListener("click", () => {
@@ -666,4 +577,5 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     applyBorderRadius();
   });
 }
+
 
