@@ -432,80 +432,53 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
 
 
-export function initButtonBorderControl(getSelectedElement) {
-  const fill = document.getElementById("buttonBorderFill");
-  const bullet = document.getElementById("buttonBorderBullet");
-  const field = document.getElementById("buttonBorderField");
-  const valueText = document.getElementById("buttonBorderCount");
+export function initButtonBorderRadiusControl(getSelectedElement) {
+  const fillField = document.getElementById("buttonBorderRadiousField");
+  const bullet = document.getElementById("buttonBorderRadiousBullet");
+  const fill = document.getElementById("buttonBorderRadiousFill");
+  const valueText = document.getElementById("buttonBorderRadiousCount");
+  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  let borderState = {
-    value: 0,
-    side: "All",
-    type: "solid"
-  };
+  if (!fillField || !bullet || !fill || !valueText) return;
 
-  const sideButtons = [
-    "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom", "buttonBorderLeft", "buttonBorderRight"
-  ];
+  bullet.style.transition = "left 0.15s ease";
+  fill.style.transition = "width 0.15s ease";
 
-  sideButtons.forEach((id) => {
-    const el = document.getElementById(id);
-    el.addEventListener("click", () => {
-      sideButtons.forEach((otherId) => {
-        document.getElementById(otherId).classList.remove("sc-bg-454545");
-      });
-      el.classList.add("sc-bg-454545");
-      borderState.side = id.replace("buttonBorder", "");
-      applyBorder();
-    });
-  });
+  let radiusValue = 0;
 
-  function applyBorder() {
-    const selectedElement = getSelectedElement?.();
+  function getButtonTypeClass(sample) {
+    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
+
+  function applyBorderRadius() {
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!selectedElement) return;
 
-    const sample = selectedElement.querySelector(
+    const sampleButton = selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
     );
-    if (!sample) return;
+    if (!sampleButton) return;
 
-    const typeClass = [...sample.classList].find(cls =>
-      cls.includes("sqs-button-element--")
-    );
-    if (!typeClass) return;
-
-    const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
-    const value = `${borderState.value}px`;
-    const style = borderState.type;
-    const color = "black";
-
-    allSameTypeButtons.forEach(btn => {
-      btn.style.setProperty("border-top", "0", "important");
-      btn.style.setProperty("border-right", "0", "important");
-      btn.style.setProperty("border-bottom", "0", "important");
-      btn.style.setProperty("border-left", "0", "important");
-
-      if (borderState.side === "All") {
-        btn.style.setProperty("border-width", value, "important");
-        btn.style.setProperty("border-style", style, "important");
-        btn.style.setProperty("border-color", color, "important");
-      } else {
-        btn.style.setProperty("border-width", "0 0 0 0", "important"); // reset all sides
-        btn.style.setProperty("border-style", style, "important");
-        btn.style.setProperty("border-color", color, "important");
-      
-        if (borderState.side === "Top") {
-          btn.style.setProperty("border-top-width", value, "important");
-        } else if (borderState.side === "Right") {
-          btn.style.setProperty("border-right-width", value, "important");
-        } else if (borderState.side === "Bottom") {
-          btn.style.setProperty("border-bottom-width", value, "important");
-        } else if (borderState.side === "Left") {
-          btn.style.setProperty("border-left-width", value, "important");
-        }
-      }
-      
+    const typeClass = getButtonTypeClass(sampleButton);
+    const allButtons = document.querySelectorAll(`a.${typeClass}`);
+    allButtons.forEach(btn => {
+      btn.style.setProperty("border-radius", `${radiusValue}px`, "important");
     });
+  }
+
+  function updateUI(clientX) {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    radiusValue = Math.round((x / rect.width) * 50);
+
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${radiusValue}px`;
+
+    applyBorderRadius();
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -519,30 +492,15 @@ export function initButtonBorderControl(getSelectedElement) {
     document.addEventListener("mouseup", onMouseUp);
   });
 
-  function updateUI(clientX) {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    borderState.value = Math.round((x / rect.width) * 10);
-    fill.style.width = `${percent}%`;
-    bullet.style.left = `${percent}%`;
-    valueText.textContent = `${borderState.value}px`;
-    applyBorder();
-  }
-
-  document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
-    borderState.value = 0;
-    fill.style.width = "0%";
+  resetBtn?.addEventListener("click", () => {
+    radiusValue = 0;
     bullet.style.left = "0%";
+    fill.style.width = "0%";
     valueText.textContent = "0px";
-    applyBorder();
+    applyBorderRadius();
   });
-
-  window.setButtonBorderStyleType = function (type) {
-    borderState.type = type;
-    applyBorder();
-  };
 }
+
 
 
 
