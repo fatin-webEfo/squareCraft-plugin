@@ -83,7 +83,8 @@
         initButtonIconSpacingControl,
          initButtonBorderControl,
          initButtonBorderTypeToggle,
-         initButtonBorderRadiusControl } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+         initButtonBorderRadiusControl,
+         initButtonShadowControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -135,6 +136,7 @@
       initButtonIconDimensionToggle(() => selectedElement);
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
+      initButtonShadowControls(() => selectedElement);
       initButtonBorderTypeToggle(() => selectedElement, ( selected) => {
         if (selected) {
           const event = new Event("reapplyBorder");
@@ -343,7 +345,7 @@
       return;
     }
 
-    
+
     if (!widgetLoaded) {
       await createWidget(clickedBlock);
       waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
