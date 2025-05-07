@@ -71,7 +71,7 @@ export function WidgetButtonSection() {
   ];
 
   return `
-  <div id="buttonSection">
+ <div id="buttonSection">
          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -832,7 +832,7 @@ export function WidgetButtonSection() {
                            </div>
                         </div>
                      </div>
-                     <div id="buttonShadowBlurFiled" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonShadowBlurField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                         <div id="buttonShadowBlurBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
