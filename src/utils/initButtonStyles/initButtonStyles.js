@@ -464,20 +464,26 @@ export function initButtonBorderControl(getSelectedElement) {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
 
-    const button = selectedElement.querySelector(
+    const sample = selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
     );
-    if (!button) return;
+    if (!sample) return;
 
-    const typeClass = [...button.classList].find(cls =>
+    const typeClass = [...sample.classList].find(cls =>
       cls.includes("sqs-button-element--")
     );
     if (!typeClass) return;
 
-    const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
+    const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
 
-    matchingButtons.forEach(btn => {
+    allSameTypeButtons.forEach(btn => {
+      btn.style.borderTop = "";
+      btn.style.borderBottom = "";
+      btn.style.borderLeft = "";
+      btn.style.borderRight = "";
+      btn.style.borderwidth = "0px 0px 0px 0px";
+
       if (borderState.side === "All") {
         btn.style.border = borderStyle;
       } else {
@@ -593,23 +599,24 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
 
-      const button = selectedElement.querySelector(
+      const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
-      if (!button) return;
+      if (!sample) return;
 
-      const typeClass = [...button.classList].find(cls =>
+      const typeClass = [...sample.classList].find(cls =>
         cls.includes("sqs-button-element--")
       );
       if (!typeClass) return;
 
-      const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
-      matchingButtons.forEach(btn => {
+      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      allSameTypeButtons.forEach(btn => {
         btn.style.borderStyle = type;
       });
     };
   });
 }
+
 
 
 
