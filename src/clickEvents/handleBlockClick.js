@@ -14,7 +14,16 @@ export async function handleBlockClick(event, context) {
 
   if (selectedElement) selectedElement.style.outline = "";
   setSelectedElement(block);
-  block.style.outline = "1px dashed #EF7C2F";
+  block.classList.add("sc-selected");
+
+
+
+  
+  if (typeof window.syncButtonStylesFromElement === "function") {
+    window.syncButtonStylesFromElement(block);
+  }
+  
+
 
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
@@ -109,3 +118,4 @@ async function waitForPartsAndTabsReady(allParts, allTabs) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 }
+window.syncButtonStylesFromElement(selectedElement)

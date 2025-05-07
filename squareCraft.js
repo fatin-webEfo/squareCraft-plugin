@@ -368,9 +368,9 @@
       setLastClickedBlockId: (val) => lastClickedBlockId = val,
       setLastClickedElement: (val) => lastClickedElement = val,
       setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+      setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val,
+     
     });
-    window.syncButtonStylesFromElement(selectedElement);
 
     detectBlockElementTypes(clickedBlock);
   }
