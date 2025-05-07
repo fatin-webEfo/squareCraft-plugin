@@ -118,4 +118,3 @@ async function waitForPartsAndTabsReady(allParts, allTabs) {
     await new Promise(resolve => setTimeout(resolve, 100));
   }
 }
-window.syncButtonStylesFromElement(selectedElement)
