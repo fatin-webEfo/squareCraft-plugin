@@ -12,7 +12,7 @@ export async function handleBlockClick(event, context) {
   const block = event.target.closest('[id^="block-"]');
   if (!block) return;
 
-  if (selectedElement) {
+  if (selectedElement && selectedElement !== block) {
     selectedElement.style.outline = "";
     selectedElement.classList.remove("sc-selected");
     selectedElement.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
