@@ -642,6 +642,26 @@
   window.syncButtonStylesFromElement = function(selectedElement) {
     if (!selectedElement) return;
   
+    document.getElementById("buttonBorderCount").textContent = "0px";
+    document.getElementById("buttonBorderFill").style.width = "0%";
+    document.getElementById("buttonBorderBullet").style.left = "0%";
+  
+    ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
+      document.getElementById(id)?.classList.remove("sc-bg-454545");
+    });
+    window.__squareCraftBorderStyle = "solid";
+  
+    document.getElementById("buttonBorderRadiousCount").textContent = "0px";
+    document.getElementById("buttonBorderRadiousFill").style.width = "0%";
+    document.getElementById("buttonBorderRadiousBullet").style.left = "0%";
+  
+    document.getElementById("buttonIconWidthCount").textContent = "0px";
+    document.getElementById("buttonIconHeightCount").textContent = "0px";
+  
+    document.getElementById("buttoniconSpacingradiousCount").textContent = "0px";
+    document.getElementById("buttonIconSpacingradiousFill").style.width = "0%";
+    document.getElementById("buttonIconSpacingradiousBullet").style.left = "0%";
+  
     const sampleButton = selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
     );
@@ -664,4 +684,5 @@
     document.getElementById("buttonBorderRadiousFill").style.width = `${(radius / 50) * 100}%`;
     document.getElementById("buttonBorderRadiousBullet").style.left = `${(radius / 50) * 100}%`;
   };
+  
   
