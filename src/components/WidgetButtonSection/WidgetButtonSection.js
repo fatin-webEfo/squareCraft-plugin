@@ -734,7 +734,7 @@ export function WidgetButtonSection() {
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
-               <div id="shadowsSection" class="">
+               <div id="shadowsSection" class="sc-hidden">
                   <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                      </p>

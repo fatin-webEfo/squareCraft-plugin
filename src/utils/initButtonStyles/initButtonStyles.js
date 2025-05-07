@@ -665,7 +665,7 @@ export function initButtonShadowControls(getSelectedElement) {
     if (!buttonType) return;
 
     const shadowValue = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
-    const sameTypeButtons = el.querySelectorAll(`a.${buttonType}`);
+    const sameTypeButtons = document.querySelectorAll(`a.${buttonType}`);
 
     sameTypeButtons.forEach(btn => {
       btn.style.boxShadow = shadowValue;
