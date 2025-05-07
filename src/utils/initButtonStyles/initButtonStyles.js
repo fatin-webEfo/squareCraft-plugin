@@ -632,7 +632,6 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 export function initButtonBorderRadiusControl(getSelectedElement) {
   const fillField = document.getElementById("buttonBorderRadiousField");
   const bullet = document.getElementById("buttonBorderRadiousBullet");
-  const fill = document.getElementById("buttonBorderRadiousFill");
   const valueText = document.getElementById("buttonBorderRadiousCount");
   const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
 
@@ -661,7 +660,11 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    const rule = `a.${typeClass} { border-radius: ${radiusValue}px !important; }`;
+    const rule = `
+      a.${typeClass} {
+        border-radius: ${radiusValue}px !important;
+      }
+    `;
     styleTag.innerHTML = rule.trim();
   }
 
@@ -669,31 +672,27 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     const rect = fillField.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * 50);
-
+    radiusValue = Math.round((x / rect.width) * 50); // max 50px radius
     bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
     valueText.textContent = `${radiusValue}px`;
     applyBorderRadius();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const onMouseMove = (eMove) => updateUI(eMove.clientX);
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+    const move = (ev) => updateUI(ev.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
     };
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
   });
 
   resetBtn?.addEventListener("click", () => {
     radiusValue = 0;
     bullet.style.left = "0%";
-    fill.style.width = "0%";
     valueText.textContent = "0px";
     applyBorderRadius();
   });
 }
-
