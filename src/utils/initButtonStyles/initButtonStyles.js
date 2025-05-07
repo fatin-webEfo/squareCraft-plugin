@@ -478,19 +478,29 @@ export function initButtonBorderControl(getSelectedElement) {
     const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
 
     allSameTypeButtons.forEach(btn => {
-      btn.style.borderTop = "";
-      btn.style.borderBottom = "";
-      btn.style.borderLeft = "";
-      btn.style.borderRight = "";
-      btn.style.borderwidth = "0px 0px 0px 0px";
-
       if (borderState.side === "All") {
-        btn.style.border = borderStyle;
+        btn.setAttribute("style", `
+          border-width: ${borderState.value}px !important;
+          border-style: ${borderState.type} !important;
+          border-color: black !important;
+        `.trim());
       } else {
-        btn.style.border = "0";
-        btn.style[`border${borderState.side}`] = borderStyle;
+        const sideProp = `border-${borderState.side.toLowerCase()}-width`;
+        const resetSides = `
+          border-top-width: 0 !important;
+          border-right-width: 0 !important;
+          border-bottom-width: 0 !important;
+          border-left-width: 0 !important;
+        `;
+        btn.setAttribute("style", `
+          ${resetSides}
+          ${sideProp}: ${borderState.value}px !important;
+          border-style: ${borderState.type} !important;
+          border-color: black !important;
+        `.trim());
       }
     });
+    
   }
 
   bullet.addEventListener("mousedown", (e) => {
