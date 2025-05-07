@@ -1,4 +1,7 @@
-  export function initButtonStyles(selectedButtonElement) {
+ 
+ 
+ 
+ export function initButtonStyles(selectedButtonElement) {
     if (!selectedButtonElement) return;
 
     const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
@@ -125,8 +128,6 @@
     });
   }
 
-
-
   export function initButtonIconPositionToggle(getSelectedElement) {
     document.getElementById("buttoniconPositionSection").onclick = () => {
       document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
@@ -168,7 +169,6 @@
       };
     });
   }
-
 
   export function initButtonIconRotationToggle(getSelectedElement) {
     const trigger = document.getElementById("buttoniconRotationSection");
@@ -222,9 +222,6 @@
 
     document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
   }
-
-
-
 
   export function initButtonIconDimensionToggle(getSelectedElement) {
     const widthTrigger = document.getElementById("buttoniconWidthSelect");
@@ -318,9 +315,6 @@
     });
   }
 
-
-
-
   export function initButtonIconSpacingControl(getSelectedElement) {
     let spacingValue = 0;
     const fill = document.getElementById("buttonIconSpacingradiousFill");
@@ -409,9 +403,6 @@
         applySpacing();
       });
   }
-
-
-
 
 
   export function initButtonBorderControl(getSelectedElement) {
