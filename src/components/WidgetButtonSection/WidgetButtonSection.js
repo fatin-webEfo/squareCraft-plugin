@@ -347,7 +347,7 @@ export function WidgetButtonSection() {
                         class="sc-rotate-180" alt="">
                   </div>
          
-               <div id="iconSection" class="sc-mt-3 ">
+               <div id="iconSection" class="sc-mt-3 sc-hidden">
                <div class="">
                   <div class="sc-flex sc-items-center sc-gap-2">
                      <div>
@@ -528,7 +528,7 @@ export function WidgetButtonSection() {
                         class="sc-rotate-180" alt="">
                   </div>
 
-                  <div id="bordersSection" class=" sc-mt-3 ">
+                  <div id="bordersSection" class=" sc-mt-3 sc-hidden">
                      <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
