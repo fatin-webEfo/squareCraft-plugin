@@ -460,56 +460,32 @@ export function initButtonBorderControl(getSelectedElement) {
     });
   });
 
-  function getButtonTypeClass(sample) {
-    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-    if (sample.classList.contains("sqs-block-button-element")) return "sqs-block-button-element";
-    return "sqs-button-element--primary";
-  }
-
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
 
-    const sampleButton = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-block-button-element"
+    const button = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
     );
-    if (!sampleButton) return;
+    if (!button) return;
 
-    const typeClass = getButtonTypeClass(sampleButton);
-    const styleId = `sc-button-border-style-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
+    const typeClass = [...button.classList].find(cls =>
+      cls.includes("sqs-button-element--")
+    );
+    if (!typeClass) return;
 
+    const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
     const borderStyle = `${borderState.value}px ${borderState.type} black`;
-    const sides = {
-      Top: "border-top",
-      Bottom: "border-bottom",
-      Left: "border-left",
-      Right: "border-right"
-    };
 
-    const fullReset = `border: 0 !important;`;
-    const specificSide = `${sides[borderState.side]}: ${borderStyle} !important;`;
-
-    const rule = borderState.side === "All"
-      ? `a.${typeClass}, button.${typeClass} { border: ${borderStyle} !important; }`
-      : `a.${typeClass}, button.${typeClass} { ${fullReset} ${specificSide} }`;
-
-    styleTag.innerHTML = rule;
+    matchingButtons.forEach(btn => {
+      if (borderState.side === "All") {
+        btn.style.border = borderStyle;
+      } else {
+        btn.style.border = "0";
+        btn.style[`border${borderState.side}`] = borderStyle;
+      }
+    });
   }
-
-  document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
-    borderState.value = 0;
-    fill.style.width = "0%";
-    bullet.style.left = "0%";
-    valueText.textContent = "0px";
-    applyBorder();
-  });
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
@@ -533,11 +509,62 @@ export function initButtonBorderControl(getSelectedElement) {
     applyBorder();
   }
 
+  document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
+    borderState.value = 0;
+    fill.style.width = "0%";
+    bullet.style.left = "0%";
+    valueText.textContent = "0px";
+    applyBorder();
+  });
+
   window.setButtonBorderStyleType = function (type) {
     borderState.type = type;
     applyBorder();
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -578,38 +605,30 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
       const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
       matchingButtons.forEach(btn => {
-        btn.style.borderStyle = type;
+        const width = btn.style.borderWidth || "1px"; // default fallback
+        const color = btn.style.borderColor || "black"; // default fallback
+
+        const currentStyle = `${width} ${type} ${color}`;
+
+        btn.style.borderTop = "";
+        btn.style.borderBottom = "";
+        btn.style.borderLeft = "";
+        btn.style.borderRight = "";
+
+        const activeSideBtn = document.querySelector(".sc-bg-454545[id^='buttonBorder']");
+        const side = activeSideBtn?.id?.replace("buttonBorder", "") || "All";
+
+        if (side === "All") {
+          btn.style.border = currentStyle;
+        } else {
+          btn.style.border = "0";
+          const cssProp = `border${side}`;
+          btn.style[cssProp] = currentStyle;
+        }
       });
     };
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
