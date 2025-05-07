@@ -605,31 +605,11 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
       const matchingButtons = selectedElement.querySelectorAll(`a.${typeClass}`);
       matchingButtons.forEach(btn => {
-        const width = btn.style.borderWidth || "1px"; // default fallback
-        const color = btn.style.borderColor || "black"; // default fallback
-
-        const currentStyle = `${width} ${type} ${color}`;
-
-        btn.style.borderTop = "";
-        btn.style.borderBottom = "";
-        btn.style.borderLeft = "";
-        btn.style.borderRight = "";
-
-        const activeSideBtn = document.querySelector(".sc-bg-454545[id^='buttonBorder']");
-        const side = activeSideBtn?.id?.replace("buttonBorder", "") || "All";
-
-        if (side === "All") {
-          btn.style.border = currentStyle;
-        } else {
-          btn.style.border = "0";
-          const cssProp = `border${side}`;
-          btn.style[cssProp] = currentStyle;
-        }
+        btn.style.borderStyle = type;
       });
     };
   });
 }
-
 
 
 
