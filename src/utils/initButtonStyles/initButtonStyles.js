@@ -176,6 +176,7 @@
     const field = document.getElementById("buttonIconRotationradiousField");
     const label = document.getElementById("buttoniconRotationradiousCount");
   
+    let isDragging = false;
     let currentRotation = 0;
   
     function updateUI(clientX) {
@@ -191,7 +192,6 @@
   
       const fillLeft = 50 + Math.min(percentFromCenter, 0);
       const fillWidth = Math.abs(percentFromCenter);
-  
       fill.style.left = `${fillLeft}%`;
       fill.style.width = `${fillWidth}%`;
   
@@ -229,8 +229,13 @@
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
+      isDragging = true;
+  
+      const move = (e) => {
+        if (isDragging) updateUI(e.clientX);
+      };
       const up = () => {
+        isDragging = false;
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
       };
@@ -239,7 +244,8 @@
     });
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
-  }  
+  }
+    
    
 
   export function initButtonIconSizeControl(getSelectedElement) {
