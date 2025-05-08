@@ -78,8 +78,8 @@
   );
   const { initButtonStyles,
      initButtonIconPositionToggle,
-      initButtonIconRotationToggle,
-       initButtonIconDimensionToggle,
+      initButtonIconRotationControl,
+       initButtonIconSizeControl,
         initButtonIconSpacingControl,
          initButtonBorderControl,
          initButtonBorderTypeToggle,
@@ -132,8 +132,8 @@
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
       initButtonIconPositionToggle(() => selectedElement);
-      initButtonIconRotationToggle(() => selectedElement);
-      initButtonIconDimensionToggle(() => selectedElement);
+      initButtonIconRotationControl(() => selectedElement);
+      initButtonIconSizeControl(() => selectedElement);
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
       initButtonShadowControls(() => selectedElement);

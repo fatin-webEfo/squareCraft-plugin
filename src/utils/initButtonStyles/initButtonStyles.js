@@ -170,150 +170,94 @@
     });
   }
 
-  export function initButtonIconRotationToggle(getSelectedElement) {
-    const trigger = document.getElementById("buttoniconRotationSection");
-    const dropdown = document.getElementById("buttoniconRotationDropdown");
-    const currentLabel = document.getElementById("buttoniconRotationCurrentValue");
-
-    if (!trigger || !dropdown || !currentLabel) return;
-
-    const rotationValues = ["0", "45", "90", "135", "180", "225", "270", "315"];
-    dropdown.classList.add("sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "z-99999", "sc-scrollBar");
-
-    dropdown.innerHTML = rotationValues
-      .map((deg) => `
-        <div data-rotation="${deg}" class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
-          <p class="sc-universal sc-roboto sc-text-sm">${deg} deg</p>
-        </div>
-      `)
-      .join("");
-
-    trigger.onclick = (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle("sc-hidden");
-    };
-    
-    dropdown.onclick = (e) => e.stopPropagation();
-
-    dropdown.querySelectorAll("[data-rotation]").forEach(item => {
-      item.onclick = (e) => {
-        e.stopPropagation();
-        const deg = item.dataset.rotation;
-        currentLabel.textContent = `${deg} deg`;
-        dropdown.classList.add("sc-hidden");
-
-        const selectedElement = getSelectedElement();
-        const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-        if (!sampleButton) return;
-
-        let typeClass = "sqs-button-element--primary";
-        if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
-        else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
-
-        const allButtons = document.querySelectorAll(`a.${typeClass}`);
-        allButtons.forEach(button => {
-          const icon = button.querySelector(".sqscraft-button-icon");
-          if (icon) {
-            icon.style.transform = `rotate(${deg}deg)`;
-          }
-        });
-      };
-    });
-
-    document.addEventListener("click", () => dropdown.classList.add("sc-hidden"));
-  }
-
-  export function initButtonIconDimensionToggle(getSelectedElement) {
-    const widthTrigger = document.getElementById("buttoniconWidthSelect");
-    const widthLabel = document.getElementById("buttonIconWidthCount");
-    const widthDropdown = document.createElement("div");
-    widthDropdown.id = "buttoniconWidthDropdown";
-
-    const heightTrigger = document.getElementById("buttoniconHeightSelect");
-    const heightLabel = document.getElementById("buttonIconHeightCount");
-    const heightDropdown = document.createElement("div");
-    heightDropdown.id = "buttoniconHeightDropdown";
-
-    if (!widthTrigger || !widthLabel || !heightTrigger || !heightLabel) return;
-
-    const sizeValues = Array.from({ length: 51 }, (_, i) => i + 10); 
-
-    const dropdownClassList = ["sc-absolute", "sc-left-0", "sc-hidden", "sc-h-44", "sc-bg-colo-EF7C2F-hover", "sc-top-12", "sc-z-99999", "sc-scrollBar"];
-
-    function generateDropdownHTML(values, type) {
-      return values.map(
-        (val) => `
-        <div data-${type}="${val}" class="sc-bg-3f3f3f sc-py-1 sc-bg-colo-EF7C2F-hover sc-border sc-border-solid sc-border-EF7C2F sc-px-2 sc-w-20 sc-cursor-pointer hover:sc-bg-555">
-          <p class="sc-universal sc-roboto  sc-text-sm">${val}px</p>
-        </div>`
-      ).join("");
+  export function initButtonIconRotationControl(getSelectedElement) {
+    const bullet = document.getElementById("buttonIconRotationradiousBullet");
+    const fill = document.getElementById("buttonIconRotationradiousFill");
+    const field = document.getElementById("buttonIconRotationradiousField");
+    const label = document.getElementById("buttoniconRotationradiousCount");
+  
+    let currentRotation = 0;
+  
+    function updateRotation(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+  
+      currentRotation = Math.round(((x / rect.width) * 360) - 180); // -180 to +180
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      label.textContent = `${currentRotation}deg`;
+  
+      const selectedElement = getSelectedElement?.();
+      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!btn) return;
+  
+      const icon = btn.querySelector(".sqscraft-button-icon");
+      if (icon) icon.style.transform = `rotate(${currentRotation}deg)`;
     }
-
-    widthDropdown.classList.add(...dropdownClassList);
-    widthDropdown.innerHTML = generateDropdownHTML(sizeValues, "width");
-    widthTrigger.parentNode.appendChild(widthDropdown);
-
-    heightDropdown.classList.add(...dropdownClassList);
-    heightDropdown.innerHTML = generateDropdownHTML(sizeValues, "height");
-    heightTrigger.parentNode.appendChild(heightDropdown);
-
-    widthTrigger.onclick = (e) => {
-      e.stopPropagation();
-      widthDropdown.classList.toggle("sc-hidden");
-      heightDropdown.classList.add("sc-hidden");
-    };
-
-    heightTrigger.onclick = (e) => {
-      e.stopPropagation();
-      heightDropdown.classList.toggle("sc-hidden");
-      widthDropdown.classList.add("sc-hidden");
-    };
-
-    widthDropdown.onclick = (e) => e.stopPropagation();
-    heightDropdown.onclick = (e) => e.stopPropagation();
-
-    widthDropdown.querySelectorAll("[data-width]").forEach(item => {
-      item.onclick = () => {
-        const px = item.dataset.width;
-        widthLabel.textContent = `${px}px`;
-        widthDropdown.classList.add("sc-hidden");
-        applyIconStyle("width", px);
+  
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (e) => updateRotation(e.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
       };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     });
-
-    heightDropdown.querySelectorAll("[data-height]").forEach(item => {
-      item.onclick = () => {
-        const px = item.dataset.height;
-        heightLabel.textContent = `${px}px`;
-        heightDropdown.classList.add("sc-hidden");
-        applyIconStyle("height", px);
-      };
-    });
-
-    function applyIconStyle(type, value) {
-      const selectedElement = getSelectedElement();
-      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!sampleButton) return;
-
-      let typeClass = "sqs-button-element--primary";
-      if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
-      else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
-
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
-      allButtons.forEach(button => {
-        const icon = button.querySelector(".sqscraft-button-icon");
-        if (icon) {
-          if (type === "width") icon.style.width = `${value}px`;
-          else icon.style.height = `${value}px`;
-        }
-      });
-    }
-
-    document.addEventListener("click", () => {
-      widthDropdown.classList.add("sc-hidden");
-      heightDropdown.classList.add("sc-hidden");
-    });
+  
+    field.addEventListener("click", (e) => updateRotation(e.clientX));
   }
+  
+
+  export function initButtonIconSizeControl(getSelectedElement) {
+    const bullet = document.getElementById("buttonIconSizeradiousBullet");
+    const fill = document.getElementById("buttonIconSizeradiousFill");
+    const field = document.getElementById("buttonIconSizeradiousField");
+    const label = document.getElementById("buttoniconSizeradiousCount");
+  
+    let iconSize = 0;
+  
+    function applySize() {
+      const selectedElement = getSelectedElement?.();
+      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!btn) return;
+  
+      const icon = btn.querySelector(".sqscraft-button-icon");
+      if (icon) {
+        icon.style.width = `${iconSize}px`;
+        icon.style.height = "auto"; // Keep it proportional
+      }
+    }
+  
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      iconSize = Math.round((x / rect.width) * 50); // max 50px
+  
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      label.textContent = `${iconSize}px`;
+  
+      applySize();
+    }
+  
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (e) => updateUI(e.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
+  
+    field.addEventListener("click", (e) => updateUI(e.clientX));
+  }
+  
 
   export function initButtonIconSpacingControl(getSelectedElement) {
     let spacingValue = 0;
