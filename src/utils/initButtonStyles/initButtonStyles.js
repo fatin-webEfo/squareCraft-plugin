@@ -218,14 +218,30 @@
       });
     }
   
-    function initializeUI() {
-      bullet.style.left = "50%";
-      fill.style.left = "50%";
-      fill.style.width = "0%";
-      label.textContent = "0deg";
+    function syncFromIconRotation() {
+      const selectedElement = getSelectedElement?.();
+      const btn = selectedElement?.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+  
+      const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+      if (!icon || !icon.style.transform) return;
+  
+      const match = icon.style.transform.match(/rotate\((-?\d+)deg\)/);
+      if (!match) return;
+  
+      const rotation = parseInt(match[1]);
+      const percent = ((rotation + 180) / 360) * 100;
+  
+      bullet.style.left = `${percent}%`;
+      fill.style.left = `${Math.min(percent, 50)}%`;
+      fill.style.width = `${Math.abs(percent - 50)}%`;
+      label.textContent = `${rotation}deg`;
+      currentRotation = rotation;
     }
   
-    initializeUI();
+    syncFromIconRotation();
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -239,7 +255,8 @@
     });
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
-  }  
+  }
+    
    
 
   export function initButtonIconSizeControl(getSelectedElement) {
