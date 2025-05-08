@@ -181,30 +181,35 @@
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
   
-      bullet.style.left = `${percent}%`;
+      const centerX = rect.width / 2;
+      const deltaX = x - centerX;
+      const percentFromCenter = (deltaX / centerX) * 100;
   
-      const centerPercent = 50;
-      const delta = percent - centerPercent;
-      const fillLeft = centerPercent + Math.min(delta, 0);
-      const fillWidth = Math.abs(delta);
+      const bulletPercent = (x / rect.width) * 100;
+      bullet.style.left = `${bulletPercent}%`;
   
+      const fillLeft = 50 + Math.min(percentFromCenter, 0);
+      const fillWidth = Math.abs(percentFromCenter);
       fill.style.left = `${fillLeft}%`;
       fill.style.width = `${fillWidth}%`;
   
-      currentRotation = Math.round((x / rect.width) * 360 - 180);
+      currentRotation = Math.round((deltaX / centerX) * 180);
       label.textContent = `${currentRotation}deg`;
   
       const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      const btn = selectedElement?.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
       if (!btn) return;
   
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      const typeClass = [...btn.classList].find(cls =>
+        cls.startsWith("sqs-button-element--")
+      );
       if (!typeClass) return;
   
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
-      allButtons.forEach(button => {
+      const buttons = document.querySelectorAll(`a.${typeClass}`);
+      buttons.forEach(button => {
         const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
         if (icon) {
           icon.style.transform = `rotate(${currentRotation}deg)`;
@@ -212,10 +217,14 @@
       });
     }
   
-    bullet.style.left = "50%";
-    fill.style.left = "50%";
-    fill.style.width = "0%";
-    label.textContent = "0deg";
+    function initializeUI() {
+      bullet.style.left = "50%";
+      fill.style.left = "50%";
+      fill.style.width = "0%";
+      label.textContent = "0deg";
+    }
+  
+    initializeUI();
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -230,6 +239,7 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
   
   
