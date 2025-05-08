@@ -251,18 +251,24 @@
       const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
   
-      const icon = btn.querySelector(".sqscraft-button-icon");
-      if (icon) {
-        icon.style.width = `${iconSize}px`;
-        icon.style.height = "auto"; 
-      }
+      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      allButtons.forEach(button => {
+        const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+        if (icon) {
+          icon.style.width = `${iconSize}px`;
+          icon.style.height = "auto";
+        }
+      });
     }
   
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-      iconSize = Math.round((x / rect.width) * 50); 
+      iconSize = Math.round((x / rect.width) * 50);
   
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
@@ -284,6 +290,7 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
 
   export function initButtonIconSpacingControl(getSelectedElement) {
