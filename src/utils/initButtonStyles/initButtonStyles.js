@@ -187,7 +187,6 @@
   
       const centerPercent = 50;
       const delta = percent - centerPercent;
-  
       const fillLeft = centerPercent + Math.min(delta, 0);
       const fillWidth = Math.abs(delta);
   
@@ -198,18 +197,14 @@
       label.textContent = `${currentRotation}deg`;
   
       const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
+      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
   
-      const typeClass = [...btn.classList].find(cls =>
-        cls.startsWith("sqs-button-element--")
-      );
+      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
   
-      const buttons = document.querySelectorAll(`a.${typeClass}`);
-      buttons.forEach(button => {
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      allButtons.forEach(button => {
         const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
         if (icon) {
           icon.style.transform = `rotate(${currentRotation}deg)`;
@@ -235,6 +230,7 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
   
 
