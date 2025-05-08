@@ -182,12 +182,12 @@
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-    
+  
       bullet.style.left = `${percent}%`;
-    
+  
       const centerPercent = 50;
       const delta = percent - centerPercent;
-    
+  
       if (delta >= 0) {
         fill.style.left = `${centerPercent}%`;
         fill.style.width = `${delta}%`;
@@ -195,23 +195,31 @@
         fill.style.left = `${centerPercent + delta}%`;
         fill.style.width = `${-delta}%`;
       }
-    
+  
       currentRotation = Math.round((x / rect.width) * 360 - 180);
       label.textContent = `${currentRotation}deg`;
-    
+  
       const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      const btn = selectedElement?.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
       if (!btn) return;
-    
-      const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-      if (icon) {
-        icon.style.transform = `rotate(${currentRotation}deg)`;
-      }
+  
+      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const buttons = document.querySelectorAll(`a.${typeClass}`);
+      buttons.forEach(button => {
+        const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+        if (icon) {
+          icon.style.transform = `rotate(${currentRotation}deg)`;
+        }
+      });
     }
-    
   
     bullet.style.left = "50%";
-    fill.style.width = "50%";
+    fill.style.left = "50%";
+    fill.style.width = "0%";
     label.textContent = "0deg";
   
     bullet.addEventListener("mousedown", (e) => {
@@ -227,7 +235,6 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
-  
   
 
   export function initButtonIconSizeControl(getSelectedElement) {
@@ -246,7 +253,7 @@
       const icon = btn.querySelector(".sqscraft-button-icon");
       if (icon) {
         icon.style.width = `${iconSize}px`;
-        icon.style.height = "auto"; // Keep it proportional
+        icon.style.height = "auto"; 
       }
     }
   
@@ -254,7 +261,7 @@
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-      iconSize = Math.round((x / rect.width) * 50); // max 50px
+      iconSize = Math.round((x / rect.width) * 50); 
   
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
