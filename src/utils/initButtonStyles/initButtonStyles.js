@@ -257,83 +257,7 @@
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
   
-  window.syncButtonStylesFromElement = function (selectedElement) {
-    if (!selectedElement) return;
-  
-    const sampleButton = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
-    if (!sampleButton) return;
-  
-    const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-  
-    const getPercent = (val, max) => `${(val / max) * 100}%`;
-    const set = (id, value, max) => {
-      const count = document.getElementById(id + "Count");
-      const fill = document.getElementById(id + "Fill");
-      const bullet = document.getElementById(id + "Bullet");
-      if (!count || !fill || !bullet) return;
-      count.textContent = `${value}px`;
-      fill.style.width = getPercent(value, max);
-      bullet.style.left = getPercent(value, max);
-    };
-  
-    set("buttonBorder", parseInt(sampleButton.style.borderWidth || "0"), 10);
-  
-    window.__squareCraftBorderStyle = sampleButton.style.borderStyle || "solid";
-    ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
-      const btn = document.getElementById(id);
-      if (btn) btn.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle));
-    });
-  
-    set("buttonBorderRadious", parseInt(sampleButton.style.borderRadius || "0"), 50);
-  
-    const size = parseInt(icon?.style.width || "0");
-    set("buttonIconSizeradious", size, 50);
-  
-    if (icon?.style.transform) {
-      const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-      if (match) {
-        const rotation = parseFloat(match[1]);
-        const percent = ((rotation + 180) / 360) * 100;
-        document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
-        document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
-        document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
-        document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
-      }
-    }
-  
-    const spacing = {
-      top: parseInt(icon?.style.marginTop || "0"),
-      bottom: parseInt(icon?.style.marginBottom || "0"),
-      left: parseInt(icon?.style.marginLeft || "0"),
-      right: parseInt(icon?.style.marginRight || "0")
-    };
-    const spacingValue = Math.max(...Object.values(spacing));
-    const spacingPercent = getPercent(spacingValue, 30);
-    document.getElementById("buttoniconSpacingradiousCount").textContent = `${spacingValue}px`;
-    document.getElementById("buttonIconSpacingradiousFill").style.width = spacingPercent;
-    document.getElementById("buttonIconSpacingradiousBullet").style.left = spacingPercent;
-    ["Top", "Bottom", "Left", "Right"].forEach(dir => {
-      const el = document.getElementById(`buttonIconSpacing${dir}`);
-      if (el) el.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);
-    });
-  
-    const shadow = sampleButton.style.boxShadow || "";
-    const match = shadow.match(/(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(\d+)px/);
-    if (match) {
-      const [x, y, blur, spread] = match.slice(1).map(Number);
-      const props = { Xaxis: [x, 30], Yaxis: [y, 30], Blur: [blur, 50], Spread: [spread, 30] };
-      Object.entries(props).forEach(([type, [val, max]]) => {
-        const count = document.getElementById(`buttonShadow${type}Count`);
-        const bullet = document.getElementById(`buttonShadow${type}Bullet`);
-        const fill = document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`);
-        if (count) count.textContent = `${val}px`;
-        if (bullet) bullet.style.left = getPercent(val, max);
-        if (fill) fill.style.width = getPercent(val, max);
-      });
-    }
-  };
+
    
     
    
@@ -825,16 +749,21 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   const getPercent = (val, max) => `${(val / max) * 100}%`;
   const set = (id, value, max) => {
-    document.getElementById(id + "Count").textContent = `${value}px`;
-    document.getElementById(id + "Fill").style.width = getPercent(value, max);
-    document.getElementById(id + "Bullet").style.left = getPercent(value, max);
+    const count = document.getElementById(id + "Count");
+    const fill = document.getElementById(id + "Fill");
+    const bullet = document.getElementById(id + "Bullet");
+    if (!count || !fill || !bullet) return;
+    count.textContent = `${value}px`;
+    fill.style.width = getPercent(value, max);
+    bullet.style.left = getPercent(value, max);
   };
 
   set("buttonBorder", parseInt(sampleButton.style.borderWidth || "0"), 10);
 
   window.__squareCraftBorderStyle = sampleButton.style.borderStyle || "solid";
   ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
-    document.getElementById(id)?.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle));
+    const btn = document.getElementById(id);
+    if (btn) btn.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle));
   });
 
   set("buttonBorderRadious", parseInt(sampleButton.style.borderRadius || "0"), 50);
@@ -867,7 +796,7 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   document.getElementById("buttonIconSpacingradiousBullet").style.left = spacingPercent;
   ["Top", "Bottom", "Left", "Right"].forEach(dir => {
     const el = document.getElementById(`buttonIconSpacing${dir}`);
-    el?.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);
+    if (el) el.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);
   });
 
   const shadow = sampleButton.style.boxShadow || "";
@@ -876,9 +805,12 @@ window.syncButtonStylesFromElement = function (selectedElement) {
     const [x, y, blur, spread] = match.slice(1).map(Number);
     const props = { Xaxis: [x, 30], Yaxis: [y, 30], Blur: [blur, 50], Spread: [spread, 30] };
     Object.entries(props).forEach(([type, [val, max]]) => {
-      document.getElementById(`buttonShadow${type}Count`).textContent = `${val}px`;
-      document.getElementById(`buttonShadow${type}Bullet`).style.left = getPercent(val, max);
-      document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`)?.style.width = getPercent(val, max);
+      const count = document.getElementById(`buttonShadow${type}Count`);
+      const bullet = document.getElementById(`buttonShadow${type}Bullet`);
+      const fill = document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`);
+      if (count) count.textContent = `${val}px`;
+      if (bullet) bullet.style.left = getPercent(val, max);
+      if (fill) fill.style.width = getPercent(val, max);
     });
   }
 };
