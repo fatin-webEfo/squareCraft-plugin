@@ -1,0 +1,18 @@
+<svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_2027_61)">
+<rect x="15" y="11" width="37.7208" height="37.7208" rx="3" fill="#3D3D3D" shape-rendering="crispEdges"/>
+<path d="M39.4922 21.8906C41.4689 22.1334 43 23.818 43 25.8604V35.8604C43 38.0695 41.2091 39.8604 39 39.8604H29C26.7909 39.8604 25 38.0695 25 35.8604V25.8604C25 23.818 26.5311 22.1334 28.5078 21.8906C28.503 21.9632 28.5 22.0365 28.5 22.1104C28.5 23.9053 29.9551 25.3604 31.75 25.3604H36.25C38.0449 25.3604 39.5 23.9053 39.5 22.1104C39.5 22.0365 39.497 21.9632 39.4922 21.8906ZM30 35.1104C29.5858 35.1104 29.25 35.4461 29.25 35.8604C29.25 36.2746 29.5858 36.6104 30 36.6104H34C34.4142 36.6104 34.75 36.2746 34.75 35.8604C34.75 35.4461 34.4142 35.1104 34 35.1104H30ZM30 31.1104C29.5858 31.1104 29.25 31.4461 29.25 31.8604C29.25 32.2746 29.5858 32.6104 30 32.6104H38C38.4142 32.6104 38.75 32.2746 38.75 31.8604C38.75 31.4461 38.4142 31.1104 38 31.1104H30ZM30 27.1104C29.5858 27.1104 29.25 27.4461 29.25 27.8604C29.25 28.2746 29.5858 28.6104 30 28.6104H38C38.4142 28.6104 38.75 28.2746 38.75 27.8604C38.75 27.4461 38.4142 27.1104 38 27.1104H30ZM36 19.8604C37.1046 19.8604 38 20.7558 38 21.8604C38 22.9649 37.1046 23.8604 36 23.8604H32C30.8954 23.8604 30 22.9649 30 21.8604C30 20.7558 30.8954 19.8604 32 19.8604H36Z" fill="#888888"/>
+</g>
+<defs>
+<filter id="filter0_d_2027_61" x="0" y="0" width="67.7207" height="67.7208" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="7.5"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.183333 0 0 0 0 0.183333 0 0 0 0 0.183333 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2027_61"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2027_61" result="shape"/>
+</filter>
+</defs>
+</svg>
