@@ -244,25 +244,28 @@
   
     function applySize() {
       const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector(
+      if (!selectedElement) return;
+    
+      const btn = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (!btn) return;
-  
+    
       const typeClass = [...btn.classList].find(cls =>
         cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
-  
+    
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
       allButtons.forEach(button => {
-        const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-        if (icon) {
+        const icons = button.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
+        icons.forEach(icon => {
           icon.style.width = `${iconSize}px`;
           icon.style.height = "auto";
-        }
+        });
       });
     }
+    
   
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
