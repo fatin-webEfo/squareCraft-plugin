@@ -176,26 +176,23 @@
     const field = document.getElementById("buttonIconRotationradiousField");
     const label = document.getElementById("buttoniconRotationradiousCount");
   
-    let isDragging = false;
     let currentRotation = 0;
+    let currentClientX = null;
   
     function updateUI(clientX) {
+      currentClientX = clientX; // persist position
+  
       const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const centerX = rect.left + rect.width / 2;
+      const deltaX = clientX - centerX;
+      const percentFromCenter = (deltaX / (rect.width / 2)) * 100;
+      const bulletPercent = ((clientX - rect.left) / rect.width) * 100;
   
-      const centerX = rect.width / 2;
-      const deltaX = x - centerX;
-      const percentFromCenter = (deltaX / centerX) * 50;
-  
-      const bulletPercent = (x / rect.width) * 100;
       bullet.style.left = `${bulletPercent}%`;
+      fill.style.left = `${50 + Math.min(percentFromCenter, 0)}%`;
+      fill.style.width = `${Math.abs(percentFromCenter)}%`;
   
-      const fillLeft = 50 + Math.min(percentFromCenter, 0);
-      const fillWidth = Math.abs(percentFromCenter);
-      fill.style.left = `${fillLeft}%`;
-      fill.style.width = `${fillWidth}%`;
-  
-      currentRotation = Math.round((deltaX / centerX) * 180);
+      currentRotation = Math.round((deltaX / (rect.width / 2)) * 180);
       label.textContent = `${currentRotation}deg`;
   
       const selectedElement = getSelectedElement?.();
@@ -218,24 +215,20 @@
       });
     }
   
-    function initializeUI() {
+    // Initialize bullet and fill once
+    function initUIToCenter() {
       bullet.style.left = "50%";
       fill.style.left = "50%";
       fill.style.width = "0%";
       label.textContent = "0deg";
     }
   
-    initializeUI();
+    initUIToCenter();
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      isDragging = true;
-  
-      const move = (e) => {
-        if (isDragging) updateUI(e.clientX);
-      };
+      const move = (eMove) => updateUI(eMove.clientX);
       const up = () => {
-        isDragging = false;
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
       };
@@ -243,8 +236,11 @@
       document.addEventListener("mouseup", up);
     });
   
-    field.addEventListener("click", (e) => updateUI(e.clientX));
+    field.addEventListener("click", (e) => {
+      updateUI(e.clientX);
+    });
   }
+  
     
    
 
