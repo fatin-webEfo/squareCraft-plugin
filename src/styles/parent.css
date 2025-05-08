@@ -52,6 +52,25 @@
 .sc-btn {
   all: unset;
 }
+#buttonIconRotationradiousField {
+  position: relative !important;
+}
+
+#buttonIconRotationradiousFill {
+  position: absolute !important;
+  top: 0 !important;
+  height: 100% !important;
+  background-color: #EF7C2F !important;
+  z-index: 0 !important;
+  transition: width 0.2s, left 0.2s !important;
+}
+
+#buttonIconRotationradiousBullet {
+  position: absolute !important;
+  top: 0 !important;
+  transform: translateX(-50%) !important;
+  z-index: 1 !important;
+}
 
 .sc-flex-col {
   display: flex !important;

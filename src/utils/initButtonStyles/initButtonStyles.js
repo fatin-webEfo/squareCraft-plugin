@@ -184,13 +184,14 @@
   
       const centerX = rect.width / 2;
       const deltaX = x - centerX;
-      const percentFromCenter = (deltaX / centerX) * 100;
+      const percentFromCenter = (deltaX / centerX) * 50;
   
       const bulletPercent = (x / rect.width) * 100;
       bullet.style.left = `${bulletPercent}%`;
   
       const fillLeft = 50 + Math.min(percentFromCenter, 0);
       const fillWidth = Math.abs(percentFromCenter);
+  
       fill.style.left = `${fillLeft}%`;
       fill.style.width = `${fillWidth}%`;
   
@@ -217,6 +218,15 @@
       });
     }
   
+    function initializeUI() {
+      bullet.style.left = "50%";
+      fill.style.left = "50%";
+      fill.style.width = "0%";
+      label.textContent = "0deg";
+    }
+  
+    initializeUI();
+  
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
       const move = (e) => updateUI(e.clientX);
@@ -230,6 +240,7 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
   
   
