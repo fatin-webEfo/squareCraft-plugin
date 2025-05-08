@@ -178,27 +178,37 @@
   
     let currentRotation = 0;
   
-    function updateRotation(clientX) {
+    function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
   
-      currentRotation = Math.round(((x / rect.width) * 360) - 180); // -180 to +180
+      // Set bullet and fill
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
+  
+      // Calculate rotation (-180 to 180)
+      currentRotation = Math.round((x / rect.width) * 360 - 180);
       label.textContent = `${currentRotation}deg`;
   
       const selectedElement = getSelectedElement?.();
       const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
   
-      const icon = btn.querySelector(".sqscraft-button-icon");
-      if (icon) icon.style.transform = `rotate(${currentRotation}deg)`;
+      const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+      if (icon) {
+        icon.style.transform = `rotate(${currentRotation}deg)`;
+      }
     }
+  
+    // Center bullet initially
+    bullet.style.left = "50%";
+    fill.style.width = "50%";
+    label.textContent = "0deg";
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = (e) => updateRotation(e.clientX);
+      const move = (e) => updateUI(e.clientX);
       const up = () => {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
@@ -207,8 +217,9 @@
       document.addEventListener("mouseup", up);
     });
   
-    field.addEventListener("click", (e) => updateRotation(e.clientX));
+    field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
 
   export function initButtonIconSizeControl(getSelectedElement) {
