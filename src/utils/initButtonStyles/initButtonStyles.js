@@ -717,23 +717,24 @@ export function initButtonShadowControls(getSelectedElement) {
 }
 
 
-window.syncButtonStylesFromElement = function(selectedElement) {
+window.syncButtonStylesFromElement = function (selectedElement) {
   if (!selectedElement) return;
+
+  const getPercent = (value, max) => `${(value / max) * 100}%`;
 
   const sampleButton = selectedElement.querySelector(
     "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
   );
   if (!sampleButton) return;
 
-  const getPercent = (value, max) => `${(value / max) * 100}%`;
+  const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
 
-  // ----- Border Width -----
+  // Border
   const borderWidth = parseInt(sampleButton.style.borderWidth || "0");
   document.getElementById("buttonBorderCount").textContent = `${borderWidth}px`;
   document.getElementById("buttonBorderFill").style.width = getPercent(borderWidth, 10);
   document.getElementById("buttonBorderBullet").style.left = getPercent(borderWidth, 10);
 
-  // ----- Border Style -----
   const borderStyle = sampleButton.style.borderStyle || "solid";
   window.__squareCraftBorderStyle = borderStyle;
   ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
@@ -741,67 +742,60 @@ window.syncButtonStylesFromElement = function(selectedElement) {
     if (el) el.classList.toggle("sc-bg-454545", el.id.includes(borderStyle));
   });
 
-  // ----- Border Radius -----
-  const radius = parseInt(sampleButton.style.borderRadius || "0");
-  document.getElementById("buttonBorderRadiousCount").textContent = `${radius}px`;
-  document.getElementById("buttonBorderRadiousFill").style.width = getPercent(radius, 50);
-  document.getElementById("buttonBorderRadiousBullet").style.left = getPercent(radius, 50);
+  const borderRadius = parseInt(sampleButton.style.borderRadius || "0");
+  document.getElementById("buttonBorderRadiousCount").textContent = `${borderRadius}px`;
+  document.getElementById("buttonBorderRadiousFill").style.width = getPercent(borderRadius, 50);
+  document.getElementById("buttonBorderRadiousBullet").style.left = getPercent(borderRadius, 50);
 
-  // ----- Icon Element -----
-  const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+  // Icon Size
+  const size = parseInt(icon?.style.width || "0");
+  document.getElementById("buttoniconSizeradiousCount").textContent = `${size}px`;
+  document.getElementById("buttonIconSizeradiousFill").style.width = getPercent(size, 50);
+  document.getElementById("buttonIconSizeradiousBullet").style.left = getPercent(size, 50);
 
-  // ----- Icon Size -----
-  if (icon?.style.width) {
-    const size = parseInt(icon.style.width);
-    document.getElementById("buttoniconSizeradiousCount").textContent = `${size}px`;
-    document.getElementById("buttonIconSizeradiousFill").style.width = getPercent(size, 50);
-    document.getElementById("buttonIconSizeradiousBullet").style.left = getPercent(size, 50);
-  }
+  // Icon Rotation
+  const transform = icon?.style.transform || "rotate(0deg)";
+  const rotation = parseInt(transform.replace(/[^-0-9]/g, "")) || 0;
+  const rotationPercent = ((rotation + 180) / 360) * 100;
+  document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
+  document.getElementById("buttonIconRotationradiousBullet").style.left = `${rotationPercent}%`;
+  document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(rotationPercent, 50)}%`;
+  document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(rotationPercent - 50)}%`;
 
-  // ----- Icon Rotation -----
-  if (icon?.style.transform) {
-    const match = icon.style.transform.match(/rotate\((-?\d+)deg\)/);
-    if (match) {
-      const rotation = parseInt(match[1]);
-      const percent = ((rotation + 180) / 360) * 100;
-      document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
-      document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
-      document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
-      document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
-    }
-  }
+  // Icon Spacing
+  const spacing = {
+    top: parseInt(icon?.style.marginTop || "0"),
+    bottom: parseInt(icon?.style.marginBottom || "0"),
+    left: parseInt(icon?.style.marginLeft || "0"),
+    right: parseInt(icon?.style.marginRight || "0")
+  };
+  const spacingValue = Math.max(spacing.top, spacing.bottom, spacing.left, spacing.right);
+  const spacingPercent = getPercent(spacingValue, 30);
 
-  // ----- Icon Spacing -----
-  const ml = parseInt(icon?.style.marginLeft || "0");
-  const mr = parseInt(icon?.style.marginRight || "0");
-  const mt = parseInt(icon?.style.marginTop || "0");
-  const mb = parseInt(icon?.style.marginBottom || "0");
-
-  const spacing = Math.max(ml, mr, mt, mb);
-  document.getElementById("buttoniconSpacingradiousCount").textContent = `${spacing}px`;
-  document.getElementById("buttonIconSpacingradiousFill").style.width = getPercent(spacing, 30);
-  document.getElementById("buttonIconSpacingradiousBullet").style.left = getPercent(spacing, 30);
+  document.getElementById("buttoniconSpacingradiousCount").textContent = `${spacingValue}px`;
+  document.getElementById("buttonIconSpacingradiousFill").style.width = spacingPercent;
+  document.getElementById("buttonIconSpacingradiousBullet").style.left = spacingPercent;
 
   ["buttonIconSpacingTop", "buttonIconSpacingBottom", "buttonIconSpacingLeft", "buttonIconSpacingRight"].forEach(id => {
     document.getElementById(id)?.classList.remove("sc-bg-454545");
   });
-  if (mt > 0) document.getElementById("buttonIconSpacingTop")?.classList.add("sc-bg-454545");
-  else if (mb > 0) document.getElementById("buttonIconSpacingBottom")?.classList.add("sc-bg-454545");
-  else if (ml > 0) document.getElementById("buttonIconSpacingLeft")?.classList.add("sc-bg-454545");
-  else if (mr > 0) document.getElementById("buttonIconSpacingRight")?.classList.add("sc-bg-454545");
+  if (spacing.top > 0) document.getElementById("buttonIconSpacingTop")?.classList.add("sc-bg-454545");
+  if (spacing.bottom > 0) document.getElementById("buttonIconSpacingBottom")?.classList.add("sc-bg-454545");
+  if (spacing.left > 0) document.getElementById("buttonIconSpacingLeft")?.classList.add("sc-bg-454545");
+  if (spacing.right > 0) document.getElementById("buttonIconSpacingRight")?.classList.add("sc-bg-454545");
 
-  // ----- Shadow (X, Y, Blur, Spread) -----
+  // Box Shadow
   const shadow = sampleButton.style.boxShadow || "";
   const match = shadow.match(/(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(\d+)px/);
   if (match) {
     const [x, y, blur, spread] = match.slice(1).map(Number);
-    const map = {
+    const shadowProps = {
       Xaxis: { value: x, max: 30 },
       Yaxis: { value: y, max: 30 },
       Blur: { value: blur, max: 50 },
       Spread: { value: spread, max: 30 }
     };
-    Object.entries(map).forEach(([type, { value, max }]) => {
+    Object.entries(shadowProps).forEach(([type, { value, max }]) => {
       document.getElementById(`buttonShadow${type}Count`).textContent = `${value}px`;
       document.getElementById(`buttonShadow${type}Bullet`).style.left = getPercent(value, max);
       const fill = document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`);
@@ -809,6 +803,7 @@ window.syncButtonStylesFromElement = function(selectedElement) {
     });
   }
 };
+
 
   
   
