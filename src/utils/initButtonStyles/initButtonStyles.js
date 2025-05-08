@@ -188,13 +188,11 @@
       const centerPercent = 50;
       const delta = percent - centerPercent;
   
-      if (delta >= 0) {
-        fill.style.left = `${centerPercent}%`;
-        fill.style.width = `${delta}%`;
-      } else {
-        fill.style.left = `${centerPercent + delta}%`;
-        fill.style.width = `${-delta}%`;
-      }
+      const fillLeft = centerPercent + Math.min(delta, 0);
+      const fillWidth = Math.abs(delta);
+  
+      fill.style.left = `${fillLeft}%`;
+      fill.style.width = `${fillWidth}%`;
   
       currentRotation = Math.round((x / rect.width) * 360 - 180);
       label.textContent = `${currentRotation}deg`;
@@ -205,7 +203,9 @@
       );
       if (!btn) return;
   
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      const typeClass = [...btn.classList].find(cls =>
+        cls.startsWith("sqs-button-element--")
+      );
       if (!typeClass) return;
   
       const buttons = document.querySelectorAll(`a.${typeClass}`);
@@ -235,6 +235,7 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
+  
   
 
   export function initButtonIconSizeControl(getSelectedElement) {
