@@ -325,61 +325,29 @@
   
 
   export function initButtonIconSpacingControl(getSelectedElement) {
-    let spacingValue = 0;
+    let spacingValue = 8; // Default 8px
     const fill = document.getElementById("buttonIconSpacingradiousFill");
     const bullet = document.getElementById("buttonIconSpacingradiousBullet");
     const field = document.getElementById("buttonIconSpacingradiousField");
     const valueText = document.getElementById("buttoniconSpacingradiousCount");
-
-    let activeDirection = "Left";
-
-    const directionButtons = [
-      "buttonIconSpacingTop",
-      "buttonIconSpacingBottom",
-      "buttonIconSpacingLeft",
-      "buttonIconSpacingRight",
-    ];
-
-    directionButtons.forEach((id) => {
-      const el = document.getElementById(id);
-      el.addEventListener("click", () => {
-        directionButtons.forEach((otherId) => {
-          document.getElementById(otherId).classList.remove("sc-bg-454545");
-        });
-        el.classList.add("sc-bg-454545");
-        const dir = el.dataset.value;
-        activeDirection = dir.charAt(0).toUpperCase() + dir.slice(1).toLowerCase();
-      
-        applySpacing();
-      });
-      
-    });
-
+  
     function getIconElement() {
       const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
       const icon = selectedElement?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
       return icon || window.selectedIconElement || null;
     }
-
-
-    
+  
     function applySpacing() {
       const icon = getIconElement();
       if (!icon) return;
-    
-      icon.style.marginTop = "0px";
-      icon.style.marginBottom = "0px";
-      icon.style.marginLeft = "0px";
-      icon.style.marginRight = "0px";
-    
-      if (activeDirection === "Top") icon.style.marginTop = `${spacingValue}px`;
-      if (activeDirection === "Bottom") icon.style.marginBottom = `${spacingValue}px`;
-      if (activeDirection === "Left") icon.style.marginLeft = `${spacingValue}px`;
-      if (activeDirection === "Right") icon.style.marginRight = `${spacingValue}px`;
+      icon.style.marginRight = `${spacingValue}px`;
+      const parent = icon.parentElement;
+      if (parent) {
+        parent.style.display = "flex";
+        parent.style.alignItems = "center";
+      }
     }
-    
-    
-
+  
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
@@ -390,7 +358,7 @@
       valueText.textContent = `${spacingValue}px`;
       applySpacing();
     }
-
+  
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
       const onMouseMove = (eMove) => updateUI(eMove.clientX);
@@ -401,17 +369,20 @@
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
     });
-
-    document
-      .querySelector('.sc-bg-454545 img[alt="reset"]')
-      .addEventListener("click", () => {
-        spacingValue = 0;
-        fill.style.width = "0%";
-        bullet.style.left = "0%";
-        valueText.textContent = "0px";
-        applySpacing();
-      });
+  
+    const resetBtn = document.querySelector('#buttoniconSpacingradiousCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
+    resetBtn?.addEventListener("click", () => {
+      spacingValue = 0;
+      fill.style.width = "0%";
+      bullet.style.left = "0%";
+      valueText.textContent = "0px";
+      applySpacing();
+    });
+  
+    // Initial application for default value
+    applySpacing();
   }
+  
 
 
   export function initButtonBorderControl(getSelectedElement) {
