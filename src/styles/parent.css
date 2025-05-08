@@ -65,12 +65,7 @@
   transition: width 0.2s, left 0.2s !important;
 }
 
-#buttonIconRotationradiousBullet {
-  position: absolute !important;
-  top: 0 !important;
-  transform: translateX(-50%) !important;
-  z-index: 1 !important;
-}
+
 
 .sc-flex-col {
   display: flex !important;
