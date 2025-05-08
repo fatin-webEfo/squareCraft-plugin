@@ -239,11 +239,8 @@
     });
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
-  }
-  
-  
-  
-  
+  }  
+   
 
   export function initButtonIconSizeControl(getSelectedElement) {
     const bullet = document.getElementById("buttonIconSizeradiousBullet");
