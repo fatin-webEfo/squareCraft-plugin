@@ -255,7 +255,7 @@
     });
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
-  }
+  }  
     
    
 
