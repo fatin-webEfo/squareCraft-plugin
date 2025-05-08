@@ -182,26 +182,34 @@
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-  
-      // Set bullet and fill
+    
       bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-  
-      // Calculate rotation (-180 to 180)
+    
+      const centerPercent = 50;
+      const delta = percent - centerPercent;
+    
+      if (delta >= 0) {
+        fill.style.left = `${centerPercent}%`;
+        fill.style.width = `${delta}%`;
+      } else {
+        fill.style.left = `${centerPercent + delta}%`;
+        fill.style.width = `${-delta}%`;
+      }
+    
       currentRotation = Math.round((x / rect.width) * 360 - 180);
       label.textContent = `${currentRotation}deg`;
-  
+    
       const selectedElement = getSelectedElement?.();
       const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
-  
+    
       const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
       if (icon) {
         icon.style.transform = `rotate(${currentRotation}deg)`;
       }
     }
+    
   
-    // Center bullet initially
     bullet.style.left = "50%";
     fill.style.width = "50%";
     label.textContent = "0deg";
