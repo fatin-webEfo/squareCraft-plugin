@@ -217,15 +217,6 @@
       });
     }
   
-    function initializeUI() {
-      bullet.style.left = "50%";
-      fill.style.left = "50%";
-      fill.style.width = "0%";
-      label.textContent = "0deg";
-    }
-  
-    initializeUI();
-  
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
       const move = (e) => updateUI(e.clientX);
@@ -239,7 +230,6 @@
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
-  
   
   
   
