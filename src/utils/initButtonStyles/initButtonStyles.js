@@ -717,50 +717,98 @@ export function initButtonShadowControls(getSelectedElement) {
 }
 
 
-  window.syncButtonStylesFromElement = function(selectedElement) {
-    if (!selectedElement) return;
-  
-    document.getElementById("buttonBorderCount").textContent = "0px";
-    document.getElementById("buttonBorderFill").style.width = "0%";
-    document.getElementById("buttonBorderBullet").style.left = "0%";
-  
-    ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
-      document.getElementById(id)?.classList.remove("sc-bg-454545");
+window.syncButtonStylesFromElement = function(selectedElement) {
+  if (!selectedElement) return;
+
+  const sampleButton = selectedElement.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+  );
+  if (!sampleButton) return;
+
+  const getPercent = (value, max) => `${(value / max) * 100}%`;
+
+  // ----- Border Width -----
+  const borderWidth = parseInt(sampleButton.style.borderWidth || "0");
+  document.getElementById("buttonBorderCount").textContent = `${borderWidth}px`;
+  document.getElementById("buttonBorderFill").style.width = getPercent(borderWidth, 10);
+  document.getElementById("buttonBorderBullet").style.left = getPercent(borderWidth, 10);
+
+  // ----- Border Style -----
+  const borderStyle = sampleButton.style.borderStyle || "solid";
+  window.__squareCraftBorderStyle = borderStyle;
+  ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle("sc-bg-454545", el.id.includes(borderStyle));
+  });
+
+  // ----- Border Radius -----
+  const radius = parseInt(sampleButton.style.borderRadius || "0");
+  document.getElementById("buttonBorderRadiousCount").textContent = `${radius}px`;
+  document.getElementById("buttonBorderRadiousFill").style.width = getPercent(radius, 50);
+  document.getElementById("buttonBorderRadiousBullet").style.left = getPercent(radius, 50);
+
+  // ----- Icon Element -----
+  const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+
+  // ----- Icon Size -----
+  if (icon?.style.width) {
+    const size = parseInt(icon.style.width);
+    document.getElementById("buttoniconSizeradiousCount").textContent = `${size}px`;
+    document.getElementById("buttonIconSizeradiousFill").style.width = getPercent(size, 50);
+    document.getElementById("buttonIconSizeradiousBullet").style.left = getPercent(size, 50);
+  }
+
+  // ----- Icon Rotation -----
+  if (icon?.style.transform) {
+    const match = icon.style.transform.match(/rotate\((-?\d+)deg\)/);
+    if (match) {
+      const rotation = parseInt(match[1]);
+      const percent = ((rotation + 180) / 360) * 100;
+      document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
+      document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
+      document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
+      document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
+    }
+  }
+
+  // ----- Icon Spacing -----
+  const ml = parseInt(icon?.style.marginLeft || "0");
+  const mr = parseInt(icon?.style.marginRight || "0");
+  const mt = parseInt(icon?.style.marginTop || "0");
+  const mb = parseInt(icon?.style.marginBottom || "0");
+
+  const spacing = Math.max(ml, mr, mt, mb);
+  document.getElementById("buttoniconSpacingradiousCount").textContent = `${spacing}px`;
+  document.getElementById("buttonIconSpacingradiousFill").style.width = getPercent(spacing, 30);
+  document.getElementById("buttonIconSpacingradiousBullet").style.left = getPercent(spacing, 30);
+
+  ["buttonIconSpacingTop", "buttonIconSpacingBottom", "buttonIconSpacingLeft", "buttonIconSpacingRight"].forEach(id => {
+    document.getElementById(id)?.classList.remove("sc-bg-454545");
+  });
+  if (mt > 0) document.getElementById("buttonIconSpacingTop")?.classList.add("sc-bg-454545");
+  else if (mb > 0) document.getElementById("buttonIconSpacingBottom")?.classList.add("sc-bg-454545");
+  else if (ml > 0) document.getElementById("buttonIconSpacingLeft")?.classList.add("sc-bg-454545");
+  else if (mr > 0) document.getElementById("buttonIconSpacingRight")?.classList.add("sc-bg-454545");
+
+  // ----- Shadow (X, Y, Blur, Spread) -----
+  const shadow = sampleButton.style.boxShadow || "";
+  const match = shadow.match(/(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(\d+)px/);
+  if (match) {
+    const [x, y, blur, spread] = match.slice(1).map(Number);
+    const map = {
+      Xaxis: { value: x, max: 30 },
+      Yaxis: { value: y, max: 30 },
+      Blur: { value: blur, max: 50 },
+      Spread: { value: spread, max: 30 }
+    };
+    Object.entries(map).forEach(([type, { value, max }]) => {
+      document.getElementById(`buttonShadow${type}Count`).textContent = `${value}px`;
+      document.getElementById(`buttonShadow${type}Bullet`).style.left = getPercent(value, max);
+      const fill = document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`);
+      if (fill) fill.style.width = getPercent(value, max);
     });
-    window.__squareCraftBorderStyle = "solid";
-  
-    document.getElementById("buttonBorderRadiousCount").textContent = "0px";
-    document.getElementById("buttonBorderRadiousFill").style.width = "0%";
-    document.getElementById("buttonBorderRadiousBullet").style.left = "0%";
-  
-    document.getElementById("buttonIconWidthCount").textContent = "0px";
-    document.getElementById("buttonIconHeightCount").textContent = "0px";
-  
-    document.getElementById("buttoniconSpacingradiousCount").textContent = "0px";
-    document.getElementById("buttonIconSpacingradiousFill").style.width = "0%";
-    document.getElementById("buttonIconSpacingradiousBullet").style.left = "0%";
-  
-    const sampleButton = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
-    if (!sampleButton) return;
-  
-    const borderWidth = parseInt(sampleButton.style.borderWidth || "0");
-    document.getElementById("buttonBorderCount").textContent = `${borderWidth}px`;
-    document.getElementById("buttonBorderFill").style.width = `${(borderWidth / 10) * 100}%`;
-    document.getElementById("buttonBorderBullet").style.left = `${(borderWidth / 10) * 100}%`;
-  
-    const borderStyle = sampleButton.style.borderStyle || "solid";
-    window.__squareCraftBorderStyle = borderStyle;
-    ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle("sc-bg-454545", el.id.includes(borderStyle));
-    });
-  
-    const radius = parseInt(sampleButton.style.borderRadius || "0");
-    document.getElementById("buttonBorderRadiousCount").textContent = `${radius}px`;
-    document.getElementById("buttonBorderRadiousFill").style.width = `${(radius / 50) * 100}%`;
-    document.getElementById("buttonBorderRadiousBullet").style.left = `${(radius / 50) * 100}%`;
-  };
+  }
+};
+
   
   
