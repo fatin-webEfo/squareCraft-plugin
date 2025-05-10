@@ -98,7 +98,8 @@
       initButtonStyles(selectedElement);
     }
     if (selectedElement) {
-      initHoverButtonShadowControls(selectedElement);
+      initHoverButtonShadowControls(() => selectedElement);
+
     }
     const trigger = event.target.closest("#border-color-select");
 
