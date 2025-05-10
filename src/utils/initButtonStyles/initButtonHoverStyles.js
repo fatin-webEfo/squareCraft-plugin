@@ -24,6 +24,7 @@ const hoverShadowState = {
           break;
         }
       }
+  
       if (!selectedButton) return;
   
       const buttonType = [...selectedButton.classList].find(cls =>
@@ -39,10 +40,10 @@ const hoverShadowState = {
         document.head.appendChild(styleTag);
       }
   
-      const shadowVal = `${hoverShadowState.Xaxis}px ${hoverShadowState.Yaxis}px ${hoverShadowState.Blur}px ${hoverShadowState.Spread}px rgba(0,0,0,0.3)`;
+      const shadowValue = `${hoverShadowState.Xaxis}px ${hoverShadowState.Yaxis}px ${hoverShadowState.Blur}px ${hoverShadowState.Spread}px rgba(0,0,0,0.3)`;
       styleTag.innerHTML = `
         a.${buttonType}:hover {
-          box-shadow: ${shadowVal} !important;
+          box-shadow: ${shadowValue} !important;
         }
       `;
     }
