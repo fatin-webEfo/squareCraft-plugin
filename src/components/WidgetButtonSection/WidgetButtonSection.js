@@ -347,7 +347,7 @@ export function WidgetButtonSection() {
                      class="sc-rotate-180" alt="">
                </div>
       
-            <div id="iconSection" class="sc-mt-3 sc-hidden">
+            <div id="iconSection" class="sc-mt-3  ">
             <div class="">
                <div class="sc-flex sc-items-center sc-gap-2">
                   <div>
@@ -366,11 +366,81 @@ export function WidgetButtonSection() {
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                               class=" alignment-icon   sc-mx-auto" alt="center">
                         </div>
-                        <div 
-                           class="sc-pt-1_5 sc-pb-1 sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                        <div id="iconLibraryButton"
+                           class="sc-pt-1_5 sc-pb-1 sc-relative sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
 
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
+
+                              <div class="sc-absolute sc-hidden sc-p-2 sc-z-99999 sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                               <div
+                               style="
+                                 position: absolute;
+                                 top: -8px;
+                                 left: 6px;
+                                 width: 0;
+                                 height: 0;
+                                 border-left: 7px solid transparent;
+                                 border-right: 7px solid transparent;
+                                 border-bottom: 7px solid #fd8905;
+                                 z-index: 99999;
+                               "
+                             ></div>
+                            <div class="sc-absolute sc-flex sc-items-center sc-gap-3">
+                            <div id="buttonIconSolidClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
+                              <div  class="sc-roboto   sc-text-xs sc-font-light sc-text-EF7C2F" >Solid</div>
+                            </div>
+                            <div id="buttonIconOutlineClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
+                              <div class="sc-roboto   sc-text-xs sc-font-light " >Outline</div>
+                            </div>
+                            </div>
+
+                            <div id="buttonIconOutlineoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c  ">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/outline-icons/outlineIcon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
+                            </div>
+                            <div class="buttonIconSolidoptions"></div>
+                              </div>
                         </div>
 
                      </div>
@@ -506,6 +576,34 @@ export function WidgetButtonSection() {
             </div>
             <div class="sc-grid sc-grid-cols-12 sc-mt-3">
                <div></div>
+               <div style="padding: 2px 0px;"
+                  class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
+                 
+                  <div id="buttonIconSpacingTop" data-value="Top"
+                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
+                        alt="top-radious">
+                     <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
+                  </div>
+                  <div id="buttonIconSpacingBottom" data-value="Bottom"
+                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" loading="lazy"
+                        alt="bottom-radious">
+                     <p class="sc-font-thin sc-roboto sc-universal ">Bottom</p>
+                  </div>
+                  <div id="buttonIconSpacingLeft" data-value="Left"
+                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" loading="lazy"
+                        alt="left-radious">
+                     <p class="sc-font-thin sc-roboto sc-universal ">Left</p>
+                  </div>
+                  <div id="buttonIconSpacingRight" data-value="Right"
+                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" loading="lazy"
+                        alt="right-radious">
+                     <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
+                  </div>
+               </div>
             </div>
          </div>
 

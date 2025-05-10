@@ -1536,9 +1536,9 @@ width: 240px !important;
   color: white !important;
   transition: background 0.3s ease !important;
 }
-.sc-grid-cols-5 {
+.sc-grid-cols-6 {
   display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
+  grid-template-columns: repeat(6, 1fr) !important;
 }
 .sc-dropdown-item:hover {
   background-color: #EF7C2F !important;
