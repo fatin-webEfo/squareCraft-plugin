@@ -970,7 +970,7 @@ export function WidgetButtonSection() {
                <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
-            <div id="hover-colorSection" class="sc-mt-3 sc-hidden">
+            <div id="hover-colorSection" class="sc-mt-3 ">
             <div class="sc-items-center sc-gap-3  sc-flex">
                <div id="hover-bgColorSection" class=" ">
                   <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
