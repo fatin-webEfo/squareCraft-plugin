@@ -153,5 +153,42 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       });
     }
 
-
+    const buttonNormalStateClick = document.getElementById("buttonNormalStateClick");
+    const buttonHoverStateClick = document.getElementById("buttonHoverStateClick");
+    const buttonStateWrapper = document.getElementById("buttonSection");
+    
+    if (buttonNormalStateClick && buttonHoverStateClick && buttonStateWrapper) {
+      buttonHoverStateClick.addEventListener("click", () => {
+        const currentState = document.getElementById("ButtonNormalState");
+        if (currentState) currentState.remove();
+    
+        buttonNormalStateClick.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
+        buttonNormalStateClick.classList.add("sc-bg-3f3f3f");
+    
+        buttonHoverStateClick.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
+        buttonHoverStateClick.classList.remove("sc-bg-3f3f3f");
+    
+        const hoverEl = document.createElement("div");
+        hoverEl.id = "ButtonHoverState";
+        hoverEl.className = "sc-mt-4 sc-text-sm sc-text-gray-300 sc-font-light sc-roboto";
+        hoverEl.innerText = "This is the Hover state section. Custom controls coming soon.";
+        buttonStateWrapper.insertBefore(hoverEl, document.getElementById("colorButton"));
+      });
+    
+      buttonNormalStateClick.addEventListener("click", () => {
+        const hoverState = document.getElementById("ButtonHoverState");
+        if (hoverState) hoverState.remove();
+    
+        buttonNormalStateClick.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
+        buttonNormalStateClick.classList.remove("sc-bg-3f3f3f");
+    
+        buttonHoverStateClick.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
+        buttonHoverStateClick.classList.add("sc-bg-3f3f3f");
+    
+        const normalStateSection = document.createElement("div");
+        normalStateSection.id = "ButtonNormalState";
+        normalStateSection.innerHTML = ''; 
+      });
+    }
+    
 }
