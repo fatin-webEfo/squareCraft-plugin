@@ -31,7 +31,7 @@
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
-        document.head.appendChild(styleTag);
+        document.head.appendChild(styleTag);  
       }
 
       const textSelectors = `
