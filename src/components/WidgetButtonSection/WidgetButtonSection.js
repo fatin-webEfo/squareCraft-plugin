@@ -71,7 +71,7 @@ export function WidgetButtonSection() {
   ];
 
   return `
-  <div id="buttonSection">
+   <div id="buttonSection">
          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
@@ -97,11 +97,11 @@ export function WidgetButtonSection() {
          <div class="sc-h-1px sc-bg-3f3f3f"></div>
          <div class="sc-mt-2">
             <div class="sc-flex sc-roboto sc-px-2 sc-items-center sc-justify-between sc-gap-2">
-               <div
+               <div id="buttonNormalStateClick"
                   class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
                   Normal
                </div>
-               <div
+               <div id="buttonHoverStateClick"
                   class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-text-sm sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
                   Hover
                </div>
@@ -114,7 +114,7 @@ export function WidgetButtonSection() {
             <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">Button</p>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
-         <div class="sc-mt-4 sc-px-2">
+         <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
             <div class="sc-flex ">
 
                <div id="fontButton"
