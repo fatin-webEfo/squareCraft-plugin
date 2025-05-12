@@ -324,7 +324,7 @@
   
   
 
-  export function initButtonIconSpacingControl (getSelectedElement) {
+  export function initButtonIconSpacingControl(getSelectedElement) {
     const fill = document.getElementById("buttonIconSpacingradiousFill");
     const bullet = document.getElementById("buttonIconSpacingradiousBullet");
     const field = document.getElementById("buttonIconSpacingradiousField");
@@ -333,14 +333,19 @@
   
     if (!fill || !bullet || !field || !valueText) return;
   
-    let gapValue = 8;
     const maxGap = 30;
   
-    function applyGap() {
-      const selected = getSelectedElement?.();
-      const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!btn) return;
+    let gapValue = 8; // fallback default
   
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (btn) {
+      const computedGap = parseInt(window.getComputedStyle(btn).gap);
+      if (!isNaN(computedGap)) gapValue = computedGap;
+    }
+  
+    function applyGap() {
+      if (!btn) return;
       const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
       if (!btnClass) return;
   
@@ -377,6 +382,7 @@
     resetBtn?.addEventListener("click", () => updateUI(8));
     updateUI(gapValue);
   }
+  
     
   
   
