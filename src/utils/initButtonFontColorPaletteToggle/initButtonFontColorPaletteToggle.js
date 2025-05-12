@@ -424,7 +424,7 @@ if (allColorField && allColorBullet) {
           const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
           const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
           colorCode.textContent = rgb;
-          applyButtonBackgroundColor(rgb, 1);
+          applyButtonBackgroundColor(rgb, currentTransparency / 100);
         }
       }
   
@@ -436,7 +436,7 @@ if (allColorField && allColorBullet) {
         transparencyCount.textContent = `100%`;
       }
     });
-  }
+  }  
   
   
   if (container.children.length === 0) {
