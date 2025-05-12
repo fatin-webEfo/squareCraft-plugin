@@ -192,14 +192,7 @@ const buttonIconOutlineoptions = document.getElementById("buttonIconOutlineoptio
 
 if (iconLibraryButton && buttonIconOutlineoptions) {
   iconLibraryButton.addEventListener("click", (e) => {
-    e.stopPropagation();
     buttonIconOutlineoptions.classList.toggle("sc-hidden");
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!iconLibraryButton.contains(e.target) && !buttonIconOutlineoptions.contains(e.target)) {
-      buttonIconOutlineoptions.classList.add("sc-hidden");
-    }
   });
 }
 
