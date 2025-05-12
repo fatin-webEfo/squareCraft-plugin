@@ -576,37 +576,6 @@ export function WidgetButtonSection() {
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
-            <div class="sc-grid sc-grid-cols-12 sc-mt-3">
-               <div></div>
-               <div style="padding: 2px 0px;"
-                  class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
-                 
-                  <div id="buttonIconSpacingTop" data-value="Top"
-                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
-                        alt="top-radious">
-                     <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
-                  </div>
-                  <div id="buttonIconSpacingBottom" data-value="Bottom"
-                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" loading="lazy"
-                        alt="bottom-radious">
-                     <p class="sc-font-thin sc-roboto sc-universal ">Bottom</p>
-                  </div>
-                  <div id="buttonIconSpacingLeft" data-value="Left"
-                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" loading="lazy"
-                        alt="left-radious">
-                     <p class="sc-font-thin sc-roboto sc-universal ">Left</p>
-                  </div>
-                  <div id="buttonIconSpacingRight" data-value="Right"
-                     class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-rounded-6px  sc-items-center sc-gap-1">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" loading="lazy"
-                        alt="right-radious">
-                     <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
-                  </div>
-               </div>
-            </div>
          </div>
 
             <div>
