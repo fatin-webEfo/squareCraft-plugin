@@ -444,10 +444,6 @@
   
       let css = `
   .${typeClass} {
-    border-top-width: 0 !important;
-    border-right-width: 0 !important;
-    border-bottom-width: 0 !important;
-    border-left-width: 0 !important;
     border-style: ${style} !important;
     border-color: ${color} !important;
   `;
@@ -458,7 +454,11 @@
         });
       } else {
         sides.forEach(side => {
-          css += `  border-${side}-width: ${side === activeSide ? value : "0"} !important;\n`;
+          if (side === activeSide) {
+            css += `  border-${side}-width: ${value} !important;\n`;
+          } else {
+            css += `  border-${side}-width: 0px !important;\n`;
+          }
         });
       }
   
@@ -496,6 +496,7 @@
       applyBorder();
     });
   }
+  
   
    
   
