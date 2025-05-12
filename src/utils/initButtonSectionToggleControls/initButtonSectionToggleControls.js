@@ -187,5 +187,20 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       });
     }
     
-    
+    const iconLibraryButton = document.getElementById("iconLibraryButton");
+const buttonIconOutlineoptions = document.getElementById("buttonIconOutlineoptions");
+
+if (iconLibraryButton && buttonIconOutlineoptions) {
+  iconLibraryButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    buttonIconOutlineoptions.classList.toggle("sc-hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!iconLibraryButton.contains(e.target) && !buttonIconOutlineoptions.contains(e.target)) {
+      buttonIconOutlineoptions.classList.add("sc-hidden");
+    }
+  });
+}
+
 }
