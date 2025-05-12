@@ -386,6 +386,7 @@
 
 
   export function initButtonBorderControl(getSelectedElement) {
+    console.log("selected Element" ,getSelectedElement)
     const fill = document.getElementById("buttonBorderFill");
     const bullet = document.getElementById("buttonBorderBullet");
     const field = document.getElementById("buttonBorderField");
