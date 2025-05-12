@@ -353,13 +353,17 @@
       if (!btnClass) return;
     
       document.querySelectorAll(`a.${btnClass}`).forEach(el => {
-        const hasIcon = el.querySelector(".sqscraft-button-icon");
-        if (!hasIcon) return;
-    
-        el.classList.add("sc-flex", "sc-items-center");
-        el.style.gap = `${gapValue}px`;
+        const hasIcon = el.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+        if (hasIcon) {
+          el.classList.add("sc-flex", "sc-items-center");
+          el.style.gap = `${gapValue}px`;
+        } else {
+          el.classList.remove("sc-flex", "sc-items-center");
+          el.style.gap = ""; // Clear inline gap if no icon
+        }
       });
     }
+    
     
   
     function updateUI(val) {
