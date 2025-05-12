@@ -379,7 +379,7 @@
     resetBtn?.addEventListener("click", () => updateFromValue(8));
   
     updateFromValue(spacingValue);
-  }
+  }  
   
   
   
