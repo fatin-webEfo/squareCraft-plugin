@@ -34,8 +34,7 @@ export function initHoverButtonSectionToggleControls() {
       });
     }
   });
-
-  // 🎯 Effect Type Dropdown
+  
   const effectTypeDropdown = document.getElementById("hover-buttonTransitionDropdown");
   const effectTypeSelect = document.getElementById("hover-buttonTransitionTypeSelect");
   const effectTypeLabel = document.getElementById("hover-buttonTransitionTypeLabel");
@@ -60,7 +59,6 @@ export function initHoverButtonSectionToggleControls() {
     });
   }
 
-  // ⏱️ Duration Dropdown
   const durationDropdown = document.getElementById("hover-all-color-selction-bar");
   const durationSelect = document.getElementById("hover-buttonDuration Select");
   const durationLabel = document.getElementById("hover-buttonDurationLabel");
@@ -85,7 +83,6 @@ export function initHoverButtonSectionToggleControls() {
     });
   }
 
-  // ⏳ Delay Dropdown
   const delayDropdown = document.getElementById("hover-buttonDelayDropdown");
   const delaySelect = document.getElementById("hover-buttonDelayTypeSelect");
   const delayLabel = document.getElementById("hover-buttonDelayLabel");

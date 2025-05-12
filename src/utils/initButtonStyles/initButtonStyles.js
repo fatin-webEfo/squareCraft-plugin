@@ -389,23 +389,22 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
-    let borderState = {
-      value: 0,
-      side: "All"
-    };
+    let selectedBorderSide = "All";
+    let currentValue = 0;
   
     const sideButtons = [
-      "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom", "buttonBorderLeft", "buttonBorderRight"
+      "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom",
+      "buttonBorderLeft", "buttonBorderRight"
     ];
   
-    sideButtons.forEach((id) => {
+    sideButtons.forEach(id => {
       const el = document.getElementById(id);
       el.addEventListener("click", () => {
-        sideButtons.forEach((otherId) => {
-          document.getElementById(otherId).classList.remove("sc-bg-454545");
-        });
+        sideButtons.forEach(otherId =>
+          document.getElementById(otherId).classList.remove("sc-bg-454545")
+        );
         el.classList.add("sc-bg-454545");
-        borderState.side = id.replace("buttonBorder", "");
+        selectedBorderSide = id.replace("buttonBorder", "");
         applyBorder();
       });
     });
@@ -413,79 +412,80 @@
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-    
-      const sample = selectedElement.querySelector(
+  
+      const btn = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
-      if (!sample) return;
-    
-      const typeClass = [...sample.classList].find(cls =>
+      if (!btn) return;
+  
+      const typeClass = [...btn.classList].find(cls =>
         cls.includes("sqs-button-element--")
       );
       if (!typeClass) return;
-    
-      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
-      const value = `${borderState.value}px`;
-      const color = "black";
-      const style = window.__squareCraftBorderStyle || "solid";
-    
-      allSameTypeButtons.forEach(btn => {
-        btn.style.setProperty("border-top", "0", "important");
-        btn.style.setProperty("border-right", "0", "important");
-        btn.style.setProperty("border-bottom", "0", "important");
-        btn.style.setProperty("border-left", "0", "important");
-    
-        btn.style.setProperty("border-style", style, "important");
-        btn.style.setProperty("border-color", color, "important");
-    
-        if (borderState.side === "All") {
-          btn.style.setProperty("border-width", value, "important");
+  
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+  
+      allButtons.forEach(button => {
+        // Reset all first
+        button.style.setProperty("border-top-width", "0px", "important");
+        button.style.setProperty("border-right-width", "0px", "important");
+        button.style.setProperty("border-bottom-width", "0px", "important");
+        button.style.setProperty("border-left-width", "0px", "important");
+  
+        button.style.setProperty("border-style", window.__squareCraftBorderStyle || "solid", "important");
+        button.style.setProperty("border-color", "black", "important");
+  
+        if (selectedBorderSide === "All") {
+          button.style.setProperty("border-width", `${currentValue}px`, "important");
         } else {
-          btn.style.setProperty("border-width", "0 0 0 0", "important");
-          if (borderState.side === "Top") {
-            btn.style.setProperty("border-top-width", value, "important");
-          } else if (borderState.side === "Right") {
-            btn.style.setProperty("border-right-width", value, "important");
-          } else if (borderState.side === "Bottom") {
-            btn.style.setProperty("border-bottom-width", value, "important");
-          } else if (borderState.side === "Left") {
-            btn.style.setProperty("border-left-width", value, "important");
+          button.style.setProperty("border-width", "0px", "important");
+          const map = {
+            Top: "border-top-width",
+            Right: "border-right-width",
+            Bottom: "border-bottom-width",
+            Left: "border-left-width",
+          };
+          const prop = map[selectedBorderSide];
+          if (prop) {
+            button.style.setProperty(prop, `${currentValue}px`, "important");
           }
         }
       });
     }
-    
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const onMouseMove = (eMove) => updateUI(eMove.clientX);
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
   
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-      borderState.value = Math.round((x / rect.width) * 10);
+      currentValue = Math.round((x / rect.width) * 10);
+  
       fill.style.width = `${percent}%`;
       bullet.style.left = `${percent}%`;
-      valueText.textContent = `${borderState.value}px`;
+      valueText.textContent = `${currentValue}px`;
+  
       applyBorder();
     }
   
-    document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
-      borderState.value = 0;
+    bullet.addEventListener("mousedown", e => {
+      e.preventDefault();
+      const move = eMove => updateUI(eMove.clientX);
+      const stop = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", stop);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", stop);
+    });
+  
+    document.querySelector('#bordersSection img[alt="reset"]')?.addEventListener("click", () => {
+      currentValue = 0;
       fill.style.width = "0%";
       bullet.style.left = "0%";
       valueText.textContent = "0px";
       applyBorder();
     });
   }
+  
   
 
   export function initButtonBorderTypeToggle(getSelectedElement) {
