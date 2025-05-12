@@ -331,33 +331,37 @@
     const field = document.getElementById("buttonIconSpacingradiousField");
     const valueText = document.getElementById("buttoniconSpacingradiousCount");
   
-    function applySpacingToAllSameType() {
-      const selected = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-      if (!selected) return;
+    const maxGap = 30;
   
-      const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    function applySpacingToAllSameType() {
+      const selected = getSelectedElement?.();
+      const button = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!button) return;
   
-      const classToMatch = [...button.classList].find(c => c.startsWith("sqs-button-element--"));
-      if (!classToMatch) return;
+      const typeClass = [...button.classList].find(c => c.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
   
-      const allButtons = document.querySelectorAll(`a.${classToMatch}`);
-      allButtons.forEach(btn => {
+      document.querySelectorAll(`a.${typeClass}`).forEach(btn => {
         btn.style.display = "flex";
         btn.style.alignItems = "center";
         btn.style.gap = `${spacingValue}px`;
       });
     }
   
+    function updateFromValue(val) {
+      spacingValue = val;
+      const percent = (val / maxGap) * 100;
+      fill.style.width = `${percent}%`;
+      bullet.style.left = `${percent}%`;
+      valueText.textContent = `${val}px`;
+      applySpacingToAllSameType();
+    }
+  
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      spacingValue = Math.round((x / rect.width) * 30);
-      fill.style.width = `${percent}%`;
-      bullet.style.left = `${percent}%`;
-      valueText.textContent = `${spacingValue}px`;
-      applySpacingToAllSameType();
+      const newVal = Math.round((x / rect.width) * maxGap);
+      updateFromValue(newVal);
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -372,16 +376,11 @@
     });
   
     const resetBtn = document.querySelector('#buttoniconSpacingradiousCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
-    resetBtn?.addEventListener("click", () => {
-      spacingValue = 8;
-      fill.style.width = `26.6%`;
-      bullet.style.left = `26.6%`;
-      valueText.textContent = "8px";
-      applySpacingToAllSameType();
-    });
+    resetBtn?.addEventListener("click", () => updateFromValue(8));
   
-    applySpacingToAllSameType();
+    updateFromValue(spacingValue);
   }
+  
   
   
   
