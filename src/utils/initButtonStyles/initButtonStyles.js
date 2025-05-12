@@ -324,7 +324,7 @@
   
   
 
-  export function updateButtonIconGapControl(getSelectedElement) {
+  export function initButtonIconSpacingControl (getSelectedElement) {
     const fill = document.getElementById("buttonIconSpacingradiousFill");
     const bullet = document.getElementById("buttonIconSpacingradiousBullet");
     const field = document.getElementById("buttonIconSpacingradiousField");
