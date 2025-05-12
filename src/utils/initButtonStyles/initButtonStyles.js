@@ -424,7 +424,8 @@
     });
   
     function ensureStyleInjected() {
-      if (document.getElementById("sc-dynamic-border-style")) return;
+      const existing = document.getElementById("sc-dynamic-border-style");
+      if (existing) existing.remove();
       const style = document.createElement("style");
       style.id = "sc-dynamic-border-style";
       const types = ["primary", "secondary", "tertiary"];
@@ -434,16 +435,16 @@
         sides.forEach(side => {
           const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
           if (side === "all") {
-            css += `${base} { border-width: var(--sc-border-width, 0px); border-style: solid; border-color: black; }\n`;
+            css += `${base} { border-width: var(--sc-border-width, 0px) !important; border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
           } else {
-            const resets = ["top", "right", "bottom", "left"].filter(s => s !== side).map(s => `border-${s}-width: 0px;`).join(" ");
-            css += `${base} { border-${side}-width: var(--sc-border-width, 0px); ${resets} border-style: solid; border-color: black; }\n`;
+            const resets = ["top", "right", "bottom", "left"].filter(s => s !== side).map(s => `border-${s}-width: 0px !important;`).join(" ");
+            css += `${base} { border-${side}-width: var(--sc-border-width, 0px) !important; ${resets} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
           }
         });
       });
       style.textContent = css;
       document.head.appendChild(style);
-      console.log("✅ Dynamic border CSS injected");
+      console.log("✅ Re-injected dynamic border CSS");
     }
   
     function applyBorder() {
@@ -477,6 +478,8 @@
   
       allButtons.forEach((btn) => {
         btn.style.setProperty("--sc-border-width", value);
+        btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
+        btn.style.setProperty("--sc-border-color", "black");
         btn.classList.remove(
           `${classPrefix}-all`,
           `${classPrefix}-top`,
@@ -525,6 +528,7 @@
       console.warn("⚠️ Reset button not found for border control");
     }
   }
+  
   
   
   
