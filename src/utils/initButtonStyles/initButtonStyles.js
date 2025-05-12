@@ -434,12 +434,14 @@
       types.forEach(type => {
         sides.forEach(side => {
           const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
+          const allReset = `border-top-width: 0px !important; border-right-width: 0px !important; border-bottom-width: 0px !important; border-left-width: 0px !important;`;
+          let rule = "";
           if (side === "all") {
-            css += `${base} { border-width: var(--sc-border-width, 0px) !important; border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
+            rule = `border-width: var(--sc-border-width-${type}-all, 0px) !important;`;
           } else {
-            const resets = ["top", "right", "bottom", "left"].filter(s => s !== side).map(s => `border-${s}-width: 0px !important;`).join(" ");
-            css += `${base} { border-${side}-width: var(--sc-border-width, 0px) !important; ${resets} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
+            rule = `${allReset} border-${side}-width: var(--sc-border-width-${type}-${side}, 0px) !important;`;
           }
+          css += `${base} { ${rule} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
         });
       });
       style.textContent = css;
@@ -473,11 +475,24 @@
   
       const type = typeClass.split("--")[1];
       const classPrefix = `sc-button-border-${type}`;
+      const side = borderState.side.toLowerCase();
       const value = `${borderState.value}px`;
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
   
       allButtons.forEach((btn) => {
-        btn.style.setProperty("--sc-border-width", value);
+        const varName = `--sc-border-width-${type}-${side}`;
+        btn.style.removeProperty(`--sc-border-width-${type}-top`);
+        btn.style.removeProperty(`--sc-border-width-${type}-right`);
+        btn.style.removeProperty(`--sc-border-width-${type}-bottom`);
+        btn.style.removeProperty(`--sc-border-width-${type}-left`);
+        btn.style.removeProperty(`--sc-border-width-${type}-all`);
+  
+        if (side === "all") {
+          btn.style.setProperty(`--sc-border-width-${type}-all`, value);
+        } else {
+          btn.style.setProperty(varName, value);
+        }
+  
         btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
         btn.style.setProperty("--sc-border-color", "black");
         btn.classList.remove(
@@ -487,7 +502,7 @@
           `${classPrefix}-bottom`,
           `${classPrefix}-left`
         );
-        const targetClass = `${classPrefix}-${borderState.side.toLowerCase()}`;
+        const targetClass = `${classPrefix}-${side}`;
         btn.classList.add(targetClass);
       });
       console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
@@ -528,6 +543,7 @@
       console.warn("⚠️ Reset button not found for border control");
     }
   }
+  
   
   
   
