@@ -415,56 +415,55 @@
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-  
+    
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!sample) return;
-  
+    
       const typeClass = [...sample.classList].find(cls =>
         cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
-  
+    
       const styleId = "sc-button-border-style-global";
       let styleTag = document.getElementById(styleId);
-  
+    
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
         document.head.appendChild(styleTag);
       }
-  
+    
       const value = `${borderState.value}px`;
       const style = window.__squareCraftBorderStyle || "solid";
       const color = "black";
-  
+    
       let css = `
-  .${typeClass} {
-    border-style: ${style} !important;
-    border-color: ${color} !important;
-  `;
-  
+    .${typeClass} {
+      border-style: ${style} !important;
+      border-color: ${color} !important;
+    `;
+    
+      // ✅ Only apply to one side — reset others to 0
+      const sides = ["top", "right", "bottom", "left"];
+    
       if (borderState.side === "All") {
-        css += `
-    border-top-width: ${value} !important;
-    border-right-width: ${value} !important;
-    border-bottom-width: ${value} !important;
-    border-left-width: ${value} !important;
-  }`;
+        sides.forEach(side => {
+          css += `  border-${side}-width: ${value} !important;\n`;
+        });
       } else {
-        const side = borderState.side.toLowerCase();
-        css += `
-    border-top-width: 0 !important;
-    border-right-width: 0 !important;
-    border-bottom-width: 0 !important;
-    border-left-width: 0 !important;
-    border-${side}-width: ${value} !important;
-  }`;
+        sides.forEach(side => {
+          const isActive = side === borderState.side.toLowerCase();
+          css += `  border-${side}-width: ${isActive ? value : "0"} !important;\n`;
+        });
       }
-  
+    
+      css += `}`;
+    
       styleTag.textContent = css;
     }
+    
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
