@@ -374,7 +374,7 @@ export function WidgetButtonSection() {
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
-                              <div class="sc-absolute sc-hidden sc-p-2 sc-z-99999 sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                              <div id="buttonIconOutlineoptions" class="sc-absolute sc-hidden sc-p-2 sc-z-99999 sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
                                <div
                                style="
                                  position: absolute;
@@ -397,7 +397,7 @@ export function WidgetButtonSection() {
                             </div>
                             </div>
 
-                            <div id="buttonIconOutlineoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c  ">
+                            <div  class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c  ">
                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(1).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(2).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(3).svg" class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
