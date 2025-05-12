@@ -436,8 +436,8 @@
           const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
           const resetAll = ["top", "right", "bottom", "left"].map(s => `border-${s}-width: 0px !important;`).join(" ");
           const rule = side === "all"
-            ? `border-width: var(--sc-border-width, 0px) !important;`
-            : `${resetAll} border-${side}-width: var(--sc-border-width, 0px) !important;`;
+            ? `border-width: var(--sc-border-width-${type}-all, 0px) !important;`
+            : `${resetAll} border-${side}-width: var(--sc-border-width-${type}-${side}, 0px) !important;`;
           css += `${base} { ${rule} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
         });
       });
@@ -488,22 +488,15 @@
         btn.classList.add(targetClass);
         btn.classList.add(typeClass);
   
-        btn.removeAttribute("style");
+        ["top", "right", "bottom", "left", "all"].forEach(dir => {
+          btn.style.removeProperty(`--sc-border-width-${type}-${dir}`);
+        });
+  
+        const varName = side === "all" ? `--sc-border-width-${type}-all` : `--sc-border-width-${type}-${side}`;
+        btn.style.setProperty(varName, value);
+        btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
+        btn.style.setProperty("--sc-border-color", "black");
       });
-  
-      const style = document.getElementById("sc-dynamic-border-values");
-      if (style) style.remove();
-  
-      const newStyle = document.createElement("style");
-      newStyle.id = "sc-dynamic-border-values";
-      newStyle.innerHTML = `
-        :root {
-          --sc-border-width: ${value};
-          --sc-border-style: ${window.__squareCraftBorderStyle || "solid"};
-          --sc-border-color: black;
-        }
-      `;
-      document.head.appendChild(newStyle);
   
       console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
     }
@@ -543,6 +536,7 @@
       console.warn("⚠️ Reset button not found for border control");
     }
   }
+  
   
   
   
