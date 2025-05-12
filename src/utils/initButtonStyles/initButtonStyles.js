@@ -331,20 +331,22 @@
     const field = document.getElementById("buttonIconSpacingradiousField");
     const valueText = document.getElementById("buttoniconSpacingradiousCount");
   
-    function getIconElement() {
-      const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-      return selectedElement?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon") || window.selectedIconElement || null;
-    }
+    function applySpacingToAllSameType() {
+      const selected = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+      if (!selected) return;
   
-    function applySpacing() {
-      const icon = getIconElement();
-      if (!icon) return;
-      icon.style.marginRight = `${spacingValue}px`;
-      const parent = icon.parentElement;
-      if (parent) {
-        parent.style.display = "flex";
-        parent.style.alignItems = "center";
-      }
+      const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!button) return;
+  
+      const classToMatch = [...button.classList].find(c => c.startsWith("sqs-button-element--"));
+      if (!classToMatch) return;
+  
+      const allButtons = document.querySelectorAll(`a.${classToMatch}`);
+      allButtons.forEach(btn => {
+        btn.style.display = "flex";
+        btn.style.alignItems = "center";
+        btn.style.gap = `${spacingValue}px`;
+      });
     }
   
     function updateUI(clientX) {
@@ -355,7 +357,7 @@
       fill.style.width = `${percent}%`;
       bullet.style.left = `${percent}%`;
       valueText.textContent = `${spacingValue}px`;
-      applySpacing();
+      applySpacingToAllSameType();
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -371,15 +373,16 @@
   
     const resetBtn = document.querySelector('#buttoniconSpacingradiousCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
     resetBtn?.addEventListener("click", () => {
-      spacingValue = 0;
-      fill.style.width = "0%";
-      bullet.style.left = "0%";
-      valueText.textContent = "0px";
-      applySpacing();
+      spacingValue = 8;
+      fill.style.width = `26.6%`;
+      bullet.style.left = `26.6%`;
+      valueText.textContent = "8px";
+      applySpacingToAllSameType();
     });
   
-    applySpacing();
+    applySpacingToAllSameType();
   }
+  
   
   
 
