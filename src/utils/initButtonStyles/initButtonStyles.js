@@ -391,110 +391,103 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
-    const sideButtons = {
-      All: document.getElementById("buttonBorderAll"),
-      Top: document.getElementById("buttonBorderTop"),
-      Right: document.getElementById("buttonBorderRight"),
-      Bottom: document.getElementById("buttonBorderBottom"),
-      Left: document.getElementById("buttonBorderLeft"),
+    let borderState = {
+      value: 0,
+      side: "All"
     };
   
-    let selectedSide = "All";
-    let currentWidth = 0;
+    const sideButtons = [
+      "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom", "buttonBorderLeft", "buttonBorderRight"
+    ];
   
-    Object.entries(sideButtons).forEach(([side, el]) => {
+    sideButtons.forEach((id) => {
+      const el = document.getElementById(id);
       el.addEventListener("click", () => {
-        Object.values(sideButtons).forEach(btn => btn.classList.remove("sc-bg-454545"));
+        sideButtons.forEach((otherId) => {
+          document.getElementById(otherId).classList.remove("sc-bg-454545");
+        });
         el.classList.add("sc-bg-454545");
-        selectedSide = side;
+        borderState.side = id.replace("buttonBorder", "");
         applyBorder();
       });
     });
   
     function applyBorder() {
-      const selectedBlock = getSelectedElement?.();
-      if (!selectedBlock) return;
-  
-      const button = selectedBlock.querySelector(
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
+    
+      const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
-      if (!button) return;
-  
-      const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      if (!sample) return;
+    
+      const typeClass = [...sample.classList].find(cls =>
+        cls.includes("sqs-button-element--")
+      );
       if (!typeClass) return;
-  
-      const blockId = selectedBlock.id;
-      const styleId = "sc-button-border-style";
-      let styleTag = document.getElementById(styleId);
-  
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-  
-      const selector = `#${blockId} a.${typeClass}`;
+    
+      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      const value = `${borderState.value}px`;
       const color = "black";
       const style = window.__squareCraftBorderStyle || "solid";
-  
-      let css = `
-  ${selector} {
-    border-style: ${style} !important;
-    border-color: ${color} !important;
-  `;
-  
-      if (selectedSide === "All") {
-        css += `
-    border-top-width: ${currentWidth}px !important;
-    border-right-width: ${currentWidth}px !important;
-    border-bottom-width: ${currentWidth}px !important;
-    border-left-width: ${currentWidth}px !important;
-  }`;
-      } else {
-        css += `
-    border-top-width: 0 !important;
-    border-right-width: 0 !important;
-    border-bottom-width: 0 !important;
-    border-left-width: 0 !important;
-    border-${selectedSide.toLowerCase()}-width: ${currentWidth}px !important;
-  }`;
-      }
-  
-      styleTag.textContent = css;
+    
+      allSameTypeButtons.forEach(btn => {
+        btn.style.setProperty("border-top", "0", "important");
+        btn.style.setProperty("border-right", "0", "important");
+        btn.style.setProperty("border-bottom", "0", "important");
+        btn.style.setProperty("border-left", "0", "important");
+    
+        btn.style.setProperty("border-style", style, "important");
+        btn.style.setProperty("border-color", color, "important");
+    
+        if (borderState.side === "All") {
+          btn.style.setProperty("border-width", value, "important");
+        } else {
+          btn.style.setProperty("border-width", "0 0 0 0", "important");
+          if (borderState.side === "Top") {
+            btn.style.setProperty("border-top-width", value, "important");
+          } else if (borderState.side === "Right") {
+            btn.style.setProperty("border-right-width", value, "important");
+          } else if (borderState.side === "Bottom") {
+            btn.style.setProperty("border-bottom-width", value, "important");
+          } else if (borderState.side === "Left") {
+            btn.style.setProperty("border-left-width", value, "important");
+          }
+        }
+      });
     }
-  
-    function updateSlider(px) {
-      const percent = (px / field.offsetWidth) * 100;
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      valueText.textContent = `${px}px`;
-      currentWidth = px;
-      applyBorder();
-    }
+    
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const onMove = (eMove) => {
-        const rect = field.getBoundingClientRect();
-        const clientX = eMove.clientX || eMove.touches?.[0]?.clientX;
-        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-        const px = Math.round((x / rect.width) * 10);
-        updateSlider(px);
+      const onMouseMove = (eMove) => updateUI(eMove.clientX);
+      const onMouseUp = () => {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
       };
-      const stop = () => {
-        document.removeEventListener("mousemove", onMove);
-        document.removeEventListener("mouseup", stop);
-      };
-      document.addEventListener("mousemove", onMove);
-      document.addEventListener("mouseup", stop);
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
     });
   
-    document.querySelector('#bordersSection img[alt="reset"]')?.addEventListener("click", () => {
-      updateSlider(0);
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      borderState.value = Math.round((x / rect.width) * 10);
+      fill.style.width = `${percent}%`;
+      bullet.style.left = `${percent}%`;
+      valueText.textContent = `${borderState.value}px`;
+      applyBorder();
+    }
+  
+    document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
+      borderState.value = 0;
+      fill.style.width = "0%";
+      bullet.style.left = "0%";
+      valueText.textContent = "0px";
+      applyBorder();
     });
   }
-    
-  
   
 
   export function initButtonBorderTypeToggle(getSelectedElement) {
