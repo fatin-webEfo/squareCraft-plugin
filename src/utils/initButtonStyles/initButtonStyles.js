@@ -507,7 +507,7 @@
     } else {
       console.warn("⚠️ Reset button not found for border control");
     }
-  }
+  }  
   
   
   
