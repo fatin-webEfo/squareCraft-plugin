@@ -396,7 +396,7 @@
       Top: document.getElementById("buttonBorderTop"),
       Right: document.getElementById("buttonBorderRight"),
       Bottom: document.getElementById("buttonBorderBottom"),
-      Left: document.getElementById("buttonBorderLeft")
+      Left: document.getElementById("buttonBorderLeft"),
     };
   
     let selectedSide = "All";
@@ -420,7 +420,7 @@
       );
       if (!button) return;
   
-      const typeClass = [...button.classList].find(cls => cls.includes("sqs-button-element--"));
+      const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
   
       const blockId = selectedBlock.id;
@@ -434,33 +434,33 @@
       }
   
       const selector = `#${blockId} a.${typeClass}`;
-      let newCSS = "";
-  
       const color = "black";
       const style = window.__squareCraftBorderStyle || "solid";
   
-      if (selectedSide === "All") {
-        newCSS += `
+      let css = `
   ${selector} {
-    border-width: ${currentWidth}px !important;
     border-style: ${style} !important;
     border-color: ${color} !important;
+  `;
+  
+      if (selectedSide === "All") {
+        css += `
+    border-top-width: ${currentWidth}px !important;
+    border-right-width: ${currentWidth}px !important;
+    border-bottom-width: ${currentWidth}px !important;
+    border-left-width: ${currentWidth}px !important;
   }`;
       } else {
-        const side = selectedSide.toLowerCase();
-        newCSS += `
-  ${selector} {
+        css += `
     border-top-width: 0 !important;
     border-right-width: 0 !important;
     border-bottom-width: 0 !important;
     border-left-width: 0 !important;
-    border-${side}-width: ${currentWidth}px !important;
-    border-style: ${style} !important;
-    border-${side}-color: ${color} !important;
+    border-${selectedSide.toLowerCase()}-width: ${currentWidth}px !important;
   }`;
       }
   
-      styleTag.textContent = newCSS;
+      styleTag.textContent = css;
     }
   
     function updateSlider(px) {
@@ -492,7 +492,8 @@
     document.querySelector('#bordersSection img[alt="reset"]')?.addEventListener("click", () => {
       updateSlider(0);
     });
-  }  
+  }
+    
   
   
 
