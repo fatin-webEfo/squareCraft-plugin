@@ -492,7 +492,7 @@
     document.querySelector('#bordersSection img[alt="reset"]')?.addEventListener("click", () => {
       updateSlider(0);
     });
-  }
+  }  
   
   
 
