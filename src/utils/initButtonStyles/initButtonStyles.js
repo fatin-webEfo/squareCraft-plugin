@@ -495,7 +495,7 @@
       valueText.textContent = "0px";
       applyBorder();
     });
-  }
+  }  
   
   
   
