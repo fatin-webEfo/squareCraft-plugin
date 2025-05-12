@@ -258,9 +258,7 @@
   }
   
 
-   
-    
-   
+
 
   export function initButtonIconSizeControl(getSelectedElement) {
     const bullet = document.getElementById("buttonIconSizeradiousBullet");
