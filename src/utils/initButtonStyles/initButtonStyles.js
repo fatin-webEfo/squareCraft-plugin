@@ -495,6 +495,8 @@
       bullet.style.left = "0%";
       valueText.textContent = "0px";
       applyBorder();
+    });
+  }
    
   
   
