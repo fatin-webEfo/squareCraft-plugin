@@ -875,13 +875,7 @@ width: 240px !important;
 .sc-h-toogle {
   height: 16px !important;
 }
-a.sqs-button-element--primary,
-a.sqs-button-element--secondary,
-a.sqs-button-element--tertiary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+
 
 .sqscraft-button-icon {
   height: 1em;

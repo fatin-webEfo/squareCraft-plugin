@@ -48,11 +48,16 @@ export function initImageUploadPreview(getSelectedElement) {
       document.querySelectorAll(`a.${typeClass}`).forEach(btn => {
         btn.querySelector(".sqscraft-button-icon")?.remove();
         btn.insertBefore(svg.cloneNode(true), btn.querySelector(".sqs-html") || btn.firstChild);
+
+        // Ensure flex + spacing via classes only
+        btn.classList.add("sc-flex", "sc-items-center", "sc-gap-8");
       });
 
       input.value = "";
     };
 
-    file.type === "image/svg+xml" ? reader.readAsText(file) : reader.readAsDataURL(file);
+    file.type === "image/svg+xml"
+      ? reader.readAsText(file)
+      : reader.readAsDataURL(file);
   });
 }
