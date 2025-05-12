@@ -324,49 +324,48 @@
   
   
 
-  export function initButtonIconSpacingControl(getSelectedElement) {
-    let spacingValue = 8;
+  export function updateButtonIconGapControl(getSelectedElement) {
     const fill = document.getElementById("buttonIconSpacingradiousFill");
     const bullet = document.getElementById("buttonIconSpacingradiousBullet");
     const field = document.getElementById("buttonIconSpacingradiousField");
     const valueText = document.getElementById("buttoniconSpacingradiousCount");
+    const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
   
+    if (!fill || !bullet || !field || !valueText) return;
+  
+    let gapValue = 8;
     const maxGap = 30;
   
-    function applySpacingToAllSameType() {
+    function applyGap() {
       const selected = getSelectedElement?.();
-      const button = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!button) return;
+      const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!btn) return;
   
-      const typeClass = [...button.classList].find(c => c.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
+      const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+      if (!btnClass) return;
   
-      document.querySelectorAll(`a.${typeClass}`).forEach(btn => {
-        btn.style.display = "flex";
-        btn.style.alignItems = "center";
-        btn.style.gap = `${spacingValue}px`;
+      document.querySelectorAll(`a.${btnClass}`).forEach(el => {
+        el.classList.add("sc-flex", "sc-items-center");
+        el.style.gap = `${gapValue}px`;
       });
     }
   
-    function updateFromValue(val) {
-      spacingValue = val;
+    function updateUI(val) {
+      gapValue = val;
       const percent = (val / maxGap) * 100;
       fill.style.width = `${percent}%`;
       bullet.style.left = `${percent}%`;
       valueText.textContent = `${val}px`;
-      applySpacingToAllSameType();
+      applyGap();
     }
   
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const newVal = Math.round((x / rect.width) * maxGap);
-      updateFromValue(newVal);
-    }
-  
-    bullet.addEventListener("mousedown", (e) => {
+    bullet.addEventListener("mousedown", e => {
       e.preventDefault();
-      const move = (eMove) => updateUI(eMove.clientX);
+      const move = eMove => {
+        const rect = field.getBoundingClientRect();
+        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+        updateUI(Math.round((x / rect.width) * maxGap));
+      };
       const up = () => {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
@@ -375,11 +374,10 @@
       document.addEventListener("mouseup", up);
     });
   
-    const resetBtn = document.querySelector('#buttoniconSpacingradiousCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
-    resetBtn?.addEventListener("click", () => updateFromValue(8));
-  
-    updateFromValue(spacingValue);
-  }  
+    resetBtn?.addEventListener("click", () => updateUI(8));
+    updateUI(gapValue);
+  }
+    
   
   
   
