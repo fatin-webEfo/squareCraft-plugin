@@ -434,13 +434,11 @@
       types.forEach(type => {
         sides.forEach(side => {
           const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
-          let rule = "border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important;";
-          if (side === "all") {
-            rule += ` border-width: var(--sc-border-width-${type}, 0px) !important;`;
-          } else {
-            rule += ` border-top-width: 0px !important; border-right-width: 0px !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-${side}-width: var(--sc-border-width-${type}, 0px) !important;`;
-          }
-          css += `${base} { ${rule} }\n`;
+          const resetAll = ["top", "right", "bottom", "left"].map(s => `border-${s}-width: 0px !important;`).join(" ");
+          const rule = side === "all"
+            ? `border-width: var(--sc-border-width, 0px) !important;`
+            : `${resetAll} border-${side}-width: var(--sc-border-width, 0px) !important;`;
+          css += `${base} { ${rule} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
         });
       });
       style.textContent = css;
@@ -486,18 +484,27 @@
           `${classPrefix}-bottom`,
           `${classPrefix}-left`
         );
-  
         const targetClass = `${classPrefix}-${side}`;
         btn.classList.add(targetClass);
         btn.classList.add(typeClass);
   
-        btn.style.removeProperty("--sc-border-width-primary");
-        btn.style.removeProperty("--sc-border-width-secondary");
-        btn.style.removeProperty("--sc-border-width-tertiary");
-        btn.style.setProperty(`--sc-border-width-${type}`, value);
-        btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
-        btn.style.setProperty("--sc-border-color", "black");
+        btn.removeAttribute("style");
       });
+  
+      const style = document.getElementById("sc-dynamic-border-values");
+      if (style) style.remove();
+  
+      const newStyle = document.createElement("style");
+      newStyle.id = "sc-dynamic-border-values";
+      newStyle.innerHTML = `
+        :root {
+          --sc-border-width: ${value};
+          --sc-border-style: ${window.__squareCraftBorderStyle || "solid"};
+          --sc-border-color: black;
+        }
+      `;
+      document.head.appendChild(newStyle);
+  
       console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
     }
   
@@ -536,6 +543,7 @@
       console.warn("⚠️ Reset button not found for border control");
     }
   }
+  
   
   
   
