@@ -415,58 +415,34 @@
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-    
+  
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!sample) return;
-    
+  
       const typeClass = [...sample.classList].find(cls =>
         cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
-    
-      const styleId = "sc-button-border-style-global";
-      let styleTag = document.getElementById(styleId);
-    
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-    
+  
       const value = `${borderState.value}px`;
       const style = window.__squareCraftBorderStyle || "solid";
       const color = "black";
-    
+  
       const sides = ["top", "right", "bottom", "left"];
       const activeSide = borderState.side.toLowerCase();
-    
-      let css = `
-    .${typeClass} {
-      border-style: ${style} !important;
-      border-color: ${color} !important;
-    `;
-    
-      if (activeSide === "all") {
-        sides.forEach(side => {
-          css += `  border-${side}-width: ${value} !important;\n`;
-        });
-      } else {
-        sides.forEach(side => {
-          if (side === activeSide) {
-            css += `  border-${side}-width: ${value} !important;\n`;
-          } else {
-            css += `  border-${side}-width: 0px !important;\n`;
-          }
-        });
-      }
-    
-      css += `}`;
-      styleTag.textContent = css;
-    
+  
       const allButtons = document.querySelectorAll(`a.${typeClass}`);
       allButtons.forEach((btn, index) => {
+        btn.style.setProperty("border-style", style, "important");
+        btn.style.setProperty("border-color", color, "important");
+  
+        sides.forEach(side => {
+          const width = (activeSide === "all" || side === activeSide) ? value : "0px";
+          btn.style.setProperty(`border-${side}-width`, width, "important");
+        });
+  
         const computed = window.getComputedStyle(btn);
         console.log(`🔍 ${typeClass} [${index}]:`, {
           top: computed.borderTopWidth,
@@ -478,8 +454,6 @@
         });
       });
     }
-    
-    
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -511,6 +485,7 @@
       applyBorder();
     });
   }
+  
   
   
    
