@@ -325,7 +325,7 @@
   
 
   export function initButtonIconSpacingControl(getSelectedElement) {
-    let spacingValue = 8; // Default 8px
+    let spacingValue = 8;
     const fill = document.getElementById("buttonIconSpacingradiousFill");
     const bullet = document.getElementById("buttonIconSpacingradiousBullet");
     const field = document.getElementById("buttonIconSpacingradiousField");
@@ -333,8 +333,7 @@
   
     function getIconElement() {
       const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-      const icon = selectedElement?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-      return icon || window.selectedIconElement || null;
+      return selectedElement?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon") || window.selectedIconElement || null;
     }
   
     function applySpacing() {
@@ -361,13 +360,13 @@
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const onMouseMove = (eMove) => updateUI(eMove.clientX);
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
+      const move = (eMove) => updateUI(eMove.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
       };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     });
   
     const resetBtn = document.querySelector('#buttoniconSpacingradiousCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
@@ -379,9 +378,9 @@
       applySpacing();
     });
   
-    // Initial application for default value
     applySpacing();
   }
+  
   
 
 
