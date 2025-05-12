@@ -391,13 +391,14 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
-    let borderState = {
-      value: 0,
-      side: "All"
-    };
+    let borderState = { value: 0, side: "All" };
   
     const sideButtons = [
-      "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom", "buttonBorderLeft", "buttonBorderRight"
+      "buttonBorderAll",
+      "buttonBorderTop",
+      "buttonBorderBottom",
+      "buttonBorderLeft",
+      "buttonBorderRight",
     ];
   
     sideButtons.forEach((id) => {
@@ -421,37 +422,28 @@
       );
       if (!sample) return;
   
-      const typeClass = [...sample.classList].find(cls =>
+      const typeClass = [...sample.classList].find((cls) =>
         cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
   
+      const type = typeClass.split("--")[1];
+      const classPrefix = `sc-button-border-${type}`;
       const value = `${borderState.value}px`;
-      const style = window.__squareCraftBorderStyle || "solid";
-      const color = "black";
-  
-      const sides = ["top", "right", "bottom", "left"];
-      const activeSide = borderState.side.toLowerCase();
-  
       const allButtons = document.querySelectorAll(`a.${typeClass}`);
-      allButtons.forEach((btn, index) => {
-        btn.style.setProperty("border-style", style, "important");
-        btn.style.setProperty("border-color", color, "important");
   
-        sides.forEach(side => {
-          const width = (activeSide === "all" || side === activeSide) ? value : "0px";
-          btn.style.setProperty(`border-${side}-width`, width, "important");
-        });
+      allButtons.forEach((btn) => {
+        btn.style.setProperty("--sc-border-width", value);
+        btn.classList.remove(
+          `${classPrefix}-all`,
+          `${classPrefix}-top`,
+          `${classPrefix}-right`,
+          `${classPrefix}-bottom`,
+          `${classPrefix}-left`
+        );
   
-        const computed = window.getComputedStyle(btn);
-        console.log(`🔍 ${typeClass} [${index}]:`, {
-          top: computed.borderTopWidth,
-          right: computed.borderRightWidth,
-          bottom: computed.borderBottomWidth,
-          left: computed.borderLeftWidth,
-          color: computed.borderColor,
-          style: computed.borderStyle
-        });
+        const targetClass = `${classPrefix}-${borderState.side.toLowerCase()}`;
+        btn.classList.add(targetClass);
       });
     }
   
@@ -477,13 +469,15 @@
       applyBorder();
     }
   
-    document.querySelector('.sc-bg-454545 img[alt="reset"]')?.addEventListener("click", () => {
-      borderState.value = 0;
-      fill.style.width = "0%";
-      bullet.style.left = "0%";
-      valueText.textContent = "0px";
-      applyBorder();
-    });
+    document
+      .querySelector('.sc-bg-454545 img[alt="reset"]')
+      ?.addEventListener("click", () => {
+        borderState.value = 0;
+        fill.style.width = "0%";
+        bullet.style.left = "0%";
+        valueText.textContent = "0px";
+        applyBorder();
+      });
   }
   
   
