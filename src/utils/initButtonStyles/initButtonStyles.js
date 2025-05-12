@@ -391,6 +391,11 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
+    if (!fill || !bullet || !field || !valueText) {
+      console.error("❌ Border UI elements missing");
+      return;
+    }
+  
     let borderState = { value: 0, side: "All" };
   
     const sideButtons = [
@@ -403,9 +408,14 @@
   
     sideButtons.forEach((id) => {
       const el = document.getElementById(id);
+      if (!el) {
+        console.warn(`⚠️ Side button ${id} not found`);
+        return;
+      }
       el.addEventListener("click", () => {
         sideButtons.forEach((otherId) => {
-          document.getElementById(otherId).classList.remove("sc-bg-454545");
+          const otherEl = document.getElementById(otherId);
+          if (otherEl) otherEl.classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
         borderState.side = id.replace("buttonBorder", "");
@@ -413,24 +423,57 @@
       });
     });
   
+    function ensureStyleInjected() {
+      if (document.getElementById("sc-dynamic-border-style")) return;
+      const style = document.createElement("style");
+      style.id = "sc-dynamic-border-style";
+      const types = ["primary", "secondary", "tertiary"];
+      const sides = ["all", "top", "right", "bottom", "left"];
+      let css = "";
+      types.forEach(type => {
+        sides.forEach(side => {
+          const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
+          if (side === "all") {
+            css += `${base} { border-width: var(--sc-border-width, 0px); border-style: solid; border-color: black; }\n`;
+          } else {
+            const resets = ["top", "right", "bottom", "left"].filter(s => s !== side).map(s => `border-${s}-width: 0px;`).join(" ");
+            css += `${base} { border-${side}-width: var(--sc-border-width, 0px); ${resets} border-style: solid; border-color: black; }\n`;
+          }
+        });
+      });
+      style.textContent = css;
+      document.head.appendChild(style);
+      console.log("✅ Dynamic border CSS injected");
+    }
+  
     function applyBorder() {
+      ensureStyleInjected();
       const selectedElement = getSelectedElement?.();
-      if (!selectedElement) return;
+      if (!selectedElement) {
+        console.warn("⚠️ No selected element");
+        return;
+      }
   
       const sample = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      if (!sample) return;
+      if (!sample) {
+        console.warn("⚠️ No button found in selected element");
+        return;
+      }
   
       const typeClass = [...sample.classList].find((cls) =>
         cls.startsWith("sqs-button-element--")
       );
-      if (!typeClass) return;
+      if (!typeClass) {
+        console.warn("⚠️ Button type class not found");
+        return;
+      }
   
       const type = typeClass.split("--")[1];
       const classPrefix = `sc-button-border-${type}`;
       const value = `${borderState.value}px`;
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
   
       allButtons.forEach((btn) => {
         btn.style.setProperty("--sc-border-width", value);
@@ -441,10 +484,10 @@
           `${classPrefix}-bottom`,
           `${classPrefix}-left`
         );
-  
         const targetClass = `${classPrefix}-${borderState.side.toLowerCase()}`;
         btn.classList.add(targetClass);
       });
+      console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -469,16 +512,20 @@
       applyBorder();
     }
   
-    document
-      .querySelector('.sc-bg-454545 img[alt="reset"]')
-      ?.addEventListener("click", () => {
+    const resetBtn = document.querySelector('#buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
         borderState.value = 0;
         fill.style.width = "0%";
         bullet.style.left = "0%";
         valueText.textContent = "0px";
         applyBorder();
       });
+    } else {
+      console.warn("⚠️ Reset button not found for border control");
+    }
   }
+  
   
   
   
