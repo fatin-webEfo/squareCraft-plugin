@@ -407,7 +407,11 @@
           document.getElementById(otherId).classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
+  
+        // ✅ Update side state
         borderState.side = id.replace("buttonBorder", "");
+        console.log("🟢 Border side selected:", borderState.side); // ✅ log last clicked tab
+  
         applyBorder();
       });
     });
@@ -415,55 +419,53 @@
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-    
+  
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!sample) return;
-    
+  
       const typeClass = [...sample.classList].find(cls =>
         cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
-    
+  
       const styleId = "sc-button-border-style-global";
       let styleTag = document.getElementById(styleId);
-    
+  
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
         document.head.appendChild(styleTag);
       }
-    
+  
       const value = `${borderState.value}px`;
       const style = window.__squareCraftBorderStyle || "solid";
       const color = "black";
-    
-      let css = `
-    .${typeClass} {
-      border-style: ${style} !important;
-      border-color: ${color} !important;
-    `;
-    
-      // ✅ Only apply to one side — reset others to 0
+  
       const sides = ["top", "right", "bottom", "left"];
-    
-      if (borderState.side === "All") {
+      let css = `
+  .${typeClass} {
+    border-style: ${style} !important;
+    border-color: ${color} !important;
+  `;
+  
+      const activeSide = borderState.side.toLowerCase(); // ✅ make sure comparison is lowercase
+  
+      if (activeSide === "all") {
         sides.forEach(side => {
           css += `  border-${side}-width: ${value} !important;\n`;
         });
       } else {
         sides.forEach(side => {
-          const isActive = side === borderState.side.toLowerCase();
-          css += `  border-${side}-width: ${isActive ? value : "0"} !important;\n`;
+          css += `  border-${side}-width: ${side === activeSide ? value : "0"} !important;\n`;
         });
       }
-    
+  
       css += `}`;
-    
+  
       styleTag.textContent = css;
     }
-    
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -493,8 +495,7 @@
       bullet.style.left = "0%";
       valueText.textContent = "0px";
       applyBorder();
-    });
-  }  
+   
   
   
   
