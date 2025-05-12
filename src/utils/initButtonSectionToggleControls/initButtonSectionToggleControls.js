@@ -188,12 +188,21 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
     }
     
     const iconLibraryButton = document.getElementById("iconLibraryButton");
-const buttonIconOutlineoptions = document.getElementById("buttonIconOutlineoptions");
-
-if (iconLibraryButton && buttonIconOutlineoptions) {
-  iconLibraryButton.addEventListener("click", (e) => {
-    buttonIconOutlineoptions.classList.toggle("sc-hidden");
-  });
-}
+    const buttonIconOutlineoptions = document.getElementById("buttonIconOutlineoptions");
+    
+    if (iconLibraryButton && buttonIconOutlineoptions) {
+      let isVisible = false;
+    
+      iconLibraryButton.addEventListener("click", () => {
+        if (!isVisible) {
+          buttonIconOutlineoptions.classList.remove("sc-hidden");
+          isVisible = true;
+        } else {
+          buttonIconOutlineoptions.classList.add("sc-hidden");
+          isVisible = false;
+        }
+      });
+    }
+    
 
 }
