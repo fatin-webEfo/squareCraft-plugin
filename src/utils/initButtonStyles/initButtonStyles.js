@@ -446,24 +446,19 @@
         return;
       }
   
-      const type = typeClass.split("--")[1];
       const side = borderState.side.toLowerCase();
       const value = `${borderState.value}px`;
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
   
       allButtons.forEach((btn) => {
-        btn.style.removeProperty("border-top-width");
-        btn.style.removeProperty("border-right-width");
-        btn.style.removeProperty("border-bottom-width");
-        btn.style.removeProperty("border-left-width");
+        const sides = ["Top", "Right", "Bottom", "Left"];
+        sides.forEach(s => btn.style[`border${s}Width`] = "0px");
   
         if (side === "all") {
-          btn.style.borderTopWidth = value;
-          btn.style.borderRightWidth = value;
-          btn.style.borderBottomWidth = value;
-          btn.style.borderLeftWidth = value;
+          sides.forEach(s => btn.style[`border${s}Width`] = value);
         } else {
-          btn.style[`border${side.charAt(0).toUpperCase() + side.slice(1)}Width`] = value;
+          const s = side.charAt(0).toUpperCase() + side.slice(1);
+          btn.style[`border${s}Width`] = value;
         }
   
         btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
@@ -507,7 +502,8 @@
     } else {
       console.warn("⚠️ Reset button not found for border control");
     }
-  }  
+  }
+  
   
   
   
