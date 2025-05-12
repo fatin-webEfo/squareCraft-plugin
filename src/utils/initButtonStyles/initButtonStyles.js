@@ -335,7 +335,7 @@
   
     const maxGap = 30;
   
-    let gapValue = 8; // fallback default
+    let gapValue = 0; 
   
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
