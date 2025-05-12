@@ -391,102 +391,58 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
-    if (!fill || !bullet || !field || !valueText) {
-      console.error("❌ Border UI elements missing");
-      return;
-    }
+    if (!fill || !bullet || !field || !valueText) return;
   
     let borderState = { value: 0, side: "All" };
+    const sides = ["Top", "Right", "Bottom", "Left"];
   
-    const sideButtons = [
-      "buttonBorderAll",
-      "buttonBorderTop",
-      "buttonBorderBottom",
-      "buttonBorderLeft",
-      "buttonBorderRight",
-    ];
-  
-    sideButtons.forEach((id) => {
+    ["All", ...sides].forEach((side) => {
+      const id = `buttonBorder${side}`;
       const el = document.getElementById(id);
-      if (!el) {
-        console.warn(`⚠️ Side button ${id} not found`);
-        return;
-      }
+      if (!el) return;
       el.addEventListener("click", () => {
-        sideButtons.forEach((otherId) => {
-          const otherEl = document.getElementById(otherId);
+        ["All", ...sides].forEach((other) => {
+          const otherEl = document.getElementById(`buttonBorder${other}`);
           if (otherEl) otherEl.classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
-        borderState.side = id.replace("buttonBorder", "");
+        borderState.side = side;
         applyBorder();
       });
     });
   
     function applyBorder() {
       const selectedElement = getSelectedElement?.();
-      if (!selectedElement) {
-        console.warn("⚠️ No selected element");
-        return;
-      }
+      if (!selectedElement) return;
   
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      if (!sample) {
-        console.warn("⚠️ No button found in selected element");
-        return;
-      }
+      if (!sample) return;
   
-      const typeClass = [...sample.classList].find((cls) =>
-        cls.startsWith("sqs-button-element--")
-      );
-      if (!typeClass) {
-        console.warn("⚠️ Button type class not found");
-        return;
-      }
+      const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
   
-      const side = borderState.side.toLowerCase();
       const value = `${borderState.value}px`;
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-  
       allButtons.forEach((btn) => {
-        btn.style.borderTopWidth = "0px";
-        btn.style.borderRightWidth = "0px";
-        btn.style.borderBottomWidth = "0px";
-        btn.style.borderLeftWidth = "0px";
-  
-        if (side === "all") {
-          btn.style.borderTopWidth = value;
-          btn.style.borderRightWidth = value;
-          btn.style.borderBottomWidth = value;
-          btn.style.borderLeftWidth = value;
-        } else if (side === "top") {
-          btn.style.borderTopWidth = value;
-        } else if (side === "right") {
-          btn.style.borderRightWidth = value;
-        } else if (side === "bottom") {
-          btn.style.borderBottomWidth = value;
-        } else if (side === "left") {
-          btn.style.borderLeftWidth = value;
-        }
-  
+        sides.forEach(s => btn.style[`border${s}Width`] = "0px");
+        if (borderState.side === "All") sides.forEach(s => btn.style[`border${s}Width`] = value);
+        else if (sides.includes(borderState.side)) btn.style[`border${borderState.side}Width`] = value;
         btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
         btn.style.borderColor = "black";
       });
-  
-      console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
     }
   
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const onMouseMove = (eMove) => updateUI(eMove.clientX);
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
+      const move = (eMove) => updateUI(eMove.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
       };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
     });
   
     function updateUI(clientX) {
@@ -509,11 +465,8 @@
         valueText.textContent = "0px";
         applyBorder();
       });
-    } else {
-      console.warn("⚠️ Reset button not found for border control");
     }
   }
-  
   
   
   
