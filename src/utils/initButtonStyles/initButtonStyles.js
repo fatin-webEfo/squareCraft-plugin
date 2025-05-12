@@ -426,9 +426,28 @@
       const value = `${borderState.value}px`;
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
       allButtons.forEach((btn) => {
-        sides.forEach(s => btn.style[`border${s}Width`] = "0px");
-        if (borderState.side === "All") sides.forEach(s => btn.style[`border${s}Width`] = value);
-        else if (sides.includes(borderState.side)) btn.style[`border${borderState.side}Width`] = value;
+        const borders = {
+          top: "0px",
+          right: "0px",
+          bottom: "0px",
+          left: "0px"
+        };
+  
+        if (borderState.side === "All") {
+          borders.top = value;
+          borders.right = value;
+          borders.bottom = value;
+          borders.left = value;
+        } else {
+          const sideKey = borderState.side.toLowerCase();
+          borders[sideKey] = value;
+        }
+  
+        btn.style.borderTopWidth = borders.top;
+        btn.style.borderRightWidth = borders.right;
+        btn.style.borderBottomWidth = borders.bottom;
+        btn.style.borderLeftWidth = borders.left;
+  
         btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
         btn.style.borderColor = "black";
       });
@@ -467,6 +486,7 @@
       });
     }
   }
+  
   
   
   
