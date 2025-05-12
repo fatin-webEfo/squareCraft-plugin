@@ -434,14 +434,13 @@
       types.forEach(type => {
         sides.forEach(side => {
           const base = `.sqs-button-element--${type}.sc-button-border-${type}-${side}, button.sqs-button-element--${type}.sc-button-border-${type}-${side}`;
-          const allReset = `border-top-width: 0px !important; border-right-width: 0px !important; border-bottom-width: 0px !important; border-left-width: 0px !important;`;
-          let rule = "";
+          let rule = "border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important;";
           if (side === "all") {
-            rule = `border-width: var(--sc-border-width-${type}-all, 0px) !important;`;
+            rule += ` border-width: var(--sc-border-width-${type}, 0px) !important;`;
           } else {
-            rule = `${allReset} border-${side}-width: var(--sc-border-width-${type}-${side}, 0px) !important;`;
+            rule += ` border-top-width: 0px !important; border-right-width: 0px !important; border-bottom-width: 0px !important; border-left-width: 0px !important; border-${side}-width: var(--sc-border-width-${type}, 0px) !important;`;
           }
-          css += `${base} { ${rule} border-style: var(--sc-border-style, solid) !important; border-color: var(--sc-border-color, black) !important; }\n`;
+          css += `${base} { ${rule} }\n`;
         });
       });
       style.textContent = css;
@@ -480,21 +479,6 @@
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
   
       allButtons.forEach((btn) => {
-        const varName = `--sc-border-width-${type}-${side}`;
-        btn.style.removeProperty(`--sc-border-width-${type}-top`);
-        btn.style.removeProperty(`--sc-border-width-${type}-right`);
-        btn.style.removeProperty(`--sc-border-width-${type}-bottom`);
-        btn.style.removeProperty(`--sc-border-width-${type}-left`);
-        btn.style.removeProperty(`--sc-border-width-${type}-all`);
-  
-        if (side === "all") {
-          btn.style.setProperty(`--sc-border-width-${type}-all`, value);
-        } else {
-          btn.style.setProperty(varName, value);
-        }
-  
-        btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
-        btn.style.setProperty("--sc-border-color", "black");
         btn.classList.remove(
           `${classPrefix}-all`,
           `${classPrefix}-top`,
@@ -502,8 +486,17 @@
           `${classPrefix}-bottom`,
           `${classPrefix}-left`
         );
+  
         const targetClass = `${classPrefix}-${side}`;
         btn.classList.add(targetClass);
+        btn.classList.add(typeClass);
+  
+        btn.style.removeProperty("--sc-border-width-primary");
+        btn.style.removeProperty("--sc-border-width-secondary");
+        btn.style.removeProperty("--sc-border-width-tertiary");
+        btn.style.setProperty(`--sc-border-width-${type}`, value);
+        btn.style.setProperty("--sc-border-style", window.__squareCraftBorderStyle || "solid");
+        btn.style.setProperty("--sc-border-color", "black");
       });
       console.log(`🎯 Applied ${borderState.side} border with width ${value} to .${typeClass}`);
     }
