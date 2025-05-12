@@ -386,7 +386,6 @@
 
 
   export function initButtonBorderControl(getSelectedElement) {
-    console.log("selected Element" ,getSelectedElement)
     const fill = document.getElementById("buttonBorderFill");
     const bullet = document.getElementById("buttonBorderBullet");
     const field = document.getElementById("buttonBorderField");
@@ -423,36 +422,48 @@
       if (!sample) return;
   
       const typeClass = [...sample.classList].find(cls =>
-        cls.includes("sqs-button-element--")
+        cls.startsWith("sqs-button-element--")
       );
       if (!typeClass) return;
   
-      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      const styleId = "sc-button-border-style-global";
+      let styleTag = document.getElementById(styleId);
+  
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+  
       const value = `${borderState.value}px`;
-      const color = "black";
       const style = window.__squareCraftBorderStyle || "solid";
+      const color = "black";
   
-      allSameTypeButtons.forEach(btn => {
-        // ✅ First reset individual side widths
-        btn.style.setProperty("border-top-width", "0", "important");
-        btn.style.setProperty("border-right-width", "0", "important");
-        btn.style.setProperty("border-bottom-width", "0", "important");
-        btn.style.setProperty("border-left-width", "0", "important");
+      let css = `
+  .${typeClass} {
+    border-style: ${style} !important;
+    border-color: ${color} !important;
+  `;
   
-        btn.style.setProperty("border-style", style, "important");
+      if (borderState.side === "All") {
+        css += `
+    border-top-width: ${value} !important;
+    border-right-width: ${value} !important;
+    border-bottom-width: ${value} !important;
+    border-left-width: ${value} !important;
+  }`;
+      } else {
+        const side = borderState.side.toLowerCase();
+        css += `
+    border-top-width: 0 !important;
+    border-right-width: 0 !important;
+    border-bottom-width: 0 !important;
+    border-left-width: 0 !important;
+    border-${side}-width: ${value} !important;
+  }`;
+      }
   
-        if (borderState.side === "All") {
-          btn.style.setProperty("border-color", color, "important");
-          btn.style.setProperty("border-top-width", value, "important");
-          btn.style.setProperty("border-right-width", value, "important");
-          btn.style.setProperty("border-bottom-width", value, "important");
-          btn.style.setProperty("border-left-width", value, "important");
-        } else {
-          const side = borderState.side.toLowerCase();
-          btn.style.setProperty(`border-${side}-width`, value, "important");
-          btn.style.setProperty(`border-${side}-color`, color, "important");
-        }
-      });
+      styleTag.textContent = css;
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -485,6 +496,7 @@
       applyBorder();
     });
   }
+  
   
   
   
