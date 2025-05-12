@@ -389,100 +389,80 @@
     const field = document.getElementById("buttonBorderField");
     const valueText = document.getElementById("buttonBorderCount");
   
-    let selectedBorderSide = "All";
-    let currentValue = 0;
+    const sideButtons = {
+      All: document.getElementById("buttonBorderAll"),
+      Top: document.getElementById("buttonBorderTop"),
+      Right: document.getElementById("buttonBorderRight"),
+      Bottom: document.getElementById("buttonBorderBottom"),
+      Left: document.getElementById("buttonBorderLeft")
+    };
   
-    const sideButtons = [
-      "buttonBorderAll", "buttonBorderTop", "buttonBorderBottom",
-      "buttonBorderLeft", "buttonBorderRight"
-    ];
+    let selectedSide = "All";
+    let currentWidth = 0;
   
-    sideButtons.forEach(id => {
-      const el = document.getElementById(id);
+    Object.entries(sideButtons).forEach(([side, el]) => {
       el.addEventListener("click", () => {
-        sideButtons.forEach(otherId =>
-          document.getElementById(otherId).classList.remove("sc-bg-454545")
-        );
+        Object.values(sideButtons).forEach(btn => btn.classList.remove("sc-bg-454545"));
         el.classList.add("sc-bg-454545");
-        selectedBorderSide = id.replace("buttonBorder", "");
+        selectedSide = side;
         applyBorder();
       });
     });
   
     function applyBorder() {
-      const selectedElement = getSelectedElement?.();
-      if (!selectedElement) return;
+      const selected = getSelectedElement?.();
+      if (!selected) return;
   
-      const btn = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
+      const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
   
-      const typeClass = [...btn.classList].find(cls =>
-        cls.includes("sqs-button-element--")
-      );
-      if (!typeClass) return;
-  
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
-  
-      allButtons.forEach(button => {
-        // Reset all first
-        button.style.setProperty("border-top-width", "0px", "important");
-        button.style.setProperty("border-right-width", "0px", "important");
-        button.style.setProperty("border-bottom-width", "0px", "important");
-        button.style.setProperty("border-left-width", "0px", "important");
-  
-        button.style.setProperty("border-style", window.__squareCraftBorderStyle || "solid", "important");
-        button.style.setProperty("border-color", "black", "important");
-  
-        if (selectedBorderSide === "All") {
-          button.style.setProperty("border-width", `${currentValue}px`, "important");
-        } else {
-          button.style.setProperty("border-width", "0px", "important");
-          const map = {
-            Top: "border-top-width",
-            Right: "border-right-width",
-            Bottom: "border-bottom-width",
-            Left: "border-left-width",
-          };
-          const prop = map[selectedBorderSide];
-          if (prop) {
-            button.style.setProperty(prop, `${currentValue}px`, "important");
-          }
-        }
+      // Reset all individual borders first
+      ["top", "right", "bottom", "left"].forEach(side => {
+        btn.style.removeProperty(`border-${side}-width`);
       });
+  
+      const color = "black";
+      const style = window.__squareCraftBorderStyle || "solid";
+  
+      btn.style.setProperty("border-style", style, "important");
+      btn.style.setProperty("border-color", color, "important");
+  
+      if (selectedSide === "All") {
+        btn.style.setProperty("border-width", `${currentWidth}px`, "important");
+      } else {
+        btn.style.setProperty("border-width", "0", "important"); // reset main width
+        btn.style.setProperty(`border-${selectedSide.toLowerCase()}-width`, `${currentWidth}px`, "important");
+      }
     }
   
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      currentValue = Math.round((x / rect.width) * 10);
-  
-      fill.style.width = `${percent}%`;
+    function updateSlider(px) {
+      const percent = (px / field.offsetWidth) * 100;
       bullet.style.left = `${percent}%`;
-      valueText.textContent = `${currentValue}px`;
-  
+      fill.style.width = `${percent}%`;
+      valueText.textContent = `${px}px`;
+      currentWidth = px;
       applyBorder();
     }
   
-    bullet.addEventListener("mousedown", e => {
+    bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = eMove => updateUI(eMove.clientX);
+      const onMove = (eMove) => {
+        const rect = field.getBoundingClientRect();
+        const clientX = eMove.clientX || eMove.touches?.[0]?.clientX;
+        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        const px = Math.round((x / rect.width) * 10);
+        updateSlider(px);
+      };
       const stop = () => {
-        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mousemove", onMove);
         document.removeEventListener("mouseup", stop);
       };
-      document.addEventListener("mousemove", move);
+      document.addEventListener("mousemove", onMove);
       document.addEventListener("mouseup", stop);
     });
   
     document.querySelector('#bordersSection img[alt="reset"]')?.addEventListener("click", () => {
-      currentValue = 0;
-      fill.style.width = "0%";
-      bullet.style.left = "0%";
-      valueText.textContent = "0px";
-      applyBorder();
+      updateSlider(0);
     });
   }
   
