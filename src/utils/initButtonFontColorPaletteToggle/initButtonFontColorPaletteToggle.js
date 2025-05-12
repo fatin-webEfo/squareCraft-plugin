@@ -411,6 +411,23 @@ if (allColorField && allColorBullet) {
     requestAnimationFrame(() => {
       updateSelectorField(firstSwatchColor);
   
+      if (selectorField && bullet) {
+        const rect = selectorField.getBoundingClientRect();
+        const defaultX = Math.round(rect.width * 0.5);
+        const defaultY = Math.round(rect.height * 0.5);
+        bullet.style.left = `${defaultX}px`;
+        bullet.style.top = `${defaultY}px`;
+  
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas?.getContext("2d");
+        if (ctx) {
+          const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
+          const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+          colorCode.textContent = rgb;
+          applyButtonBackgroundColor(rgb, 1);
+        }
+      }
+  
       if (transparencyBullet && transparencyField) {
         transparencyBullet.style.top = `0px`;
       }
@@ -420,6 +437,7 @@ if (allColorField && allColorBullet) {
       }
     });
   }
+  
   
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
