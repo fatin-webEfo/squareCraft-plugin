@@ -49,8 +49,7 @@ export function initImageUploadPreview(getSelectedElement) {
         btn.querySelector(".sqscraft-button-icon")?.remove();
         btn.insertBefore(svg.cloneNode(true), btn.querySelector(".sqs-html") || btn.firstChild);
 
-        // Ensure flex + spacing via classes only
-        btn.classList.add("sc-flex", "sc-items-center", "sc-gap-8");
+        btn.classList.add("sc-flex", "sc-items-center", "sc-gap-1");
       });
 
       input.value = "";
