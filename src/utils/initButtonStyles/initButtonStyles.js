@@ -345,15 +345,22 @@
     }
   
     function applyGap() {
+      const selected = getSelectedElement?.();
+      const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
       if (!btn) return;
+    
       const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
       if (!btnClass) return;
-  
+    
       document.querySelectorAll(`a.${btnClass}`).forEach(el => {
+        const hasIcon = el.querySelector(".sqscraft-button-icon");
+        if (!hasIcon) return;
+    
         el.classList.add("sc-flex", "sc-items-center");
         el.style.gap = `${gapValue}px`;
       });
     }
+    
   
     function updateUI(val) {
       gapValue = val;
