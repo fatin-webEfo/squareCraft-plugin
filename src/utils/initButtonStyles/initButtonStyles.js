@@ -407,11 +407,7 @@
           document.getElementById(otherId).classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
-  
-        // ✅ Update side state
         borderState.side = id.replace("buttonBorder", "");
-        console.log("🟢 Border side selected:", borderState.side); // ✅ log last clicked tab
-  
         applyBorder();
       });
     });
@@ -444,13 +440,17 @@
       const color = "black";
   
       const sides = ["top", "right", "bottom", "left"];
+      const activeSide = borderState.side.toLowerCase();
+  
       let css = `
   .${typeClass} {
+    border-top-width: 0 !important;
+    border-right-width: 0 !important;
+    border-bottom-width: 0 !important;
+    border-left-width: 0 !important;
     border-style: ${style} !important;
     border-color: ${color} !important;
   `;
-  
-      const activeSide = borderState.side.toLowerCase(); // ✅ make sure comparison is lowercase
   
       if (activeSide === "all") {
         sides.forEach(side => {
@@ -463,7 +463,6 @@
       }
   
       css += `}`;
-  
       styleTag.textContent = css;
     }
   
@@ -497,6 +496,7 @@
       applyBorder();
     });
   }
+  
    
   
   
