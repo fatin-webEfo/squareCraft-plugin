@@ -258,8 +258,8 @@ export function WidgetButtonNormalState(){
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                               class=" alignment-icon   sc-mx-auto" alt="center">
                         </div>
-                        <div id="iconLibraryButton"
-                           class="sc-pt-1_5 sc-pb-1 sc-relative sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                        <div class="sc-relative"><div id="iconLibraryButton"
+                           class="sc-pt-1_5 sc-pb-1  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
 
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
@@ -317,7 +317,7 @@ export function WidgetButtonNormalState(){
                                 .join("")}
                             </div>
                               </div>
-                        </div>
+                        </div></div>
 
                      </div>
                   </div>
