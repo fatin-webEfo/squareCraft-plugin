@@ -183,13 +183,12 @@ export function initButtonSectionToggleControls() {
   }
 
 
-
   const solidTab = document.getElementById("buttonIconSolidClick");
   const outlineTab = document.getElementById("buttonIconOutlineClick");
-  const solidOption = document.getElementById("buttonIconSolidoptions");
-  const outlineOption = document.getElementById("buttonIconOutlineList");
+  const solidOption = document.querySelector("#buttonIconLibraryOptions #buttonIconSolidoptions");
+  const outlineOption = document.querySelector("#buttonIconLibraryOptions #buttonIconOutlineoptions.sc-hidden ~ #buttonIconOutlineoptions");
   const iconLibraryButton = document.getElementById("iconLibraryButton");
-  const iconLibraryDropdown = document.getElementById("buttonIconOutlineoptions");
+  const iconLibraryDropdown = document.getElementById("buttonIconLibraryOptions");
 
   let isLibraryVisible = false;
 
@@ -227,6 +226,5 @@ export function initButtonSectionToggleControls() {
       }
     });
   }
-  
 
 }
