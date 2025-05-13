@@ -5,71 +5,78 @@ export function WidgetButtonNormalState(){
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
 
    const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
-let fontsList = [];
-let fontIndex = 0;
-const fontsPerPage = 20;
-
-async function fetchGoogleFonts() {
-  try {
-    const res = await fetch(GOOGLE_FONTS_API);
-    const data = await res.json();
-    fontsList = data.items.map(item => item.family);
-    console.log("✅ Fonts fetched:", fontsList); // <-- ✅ console the families
-    renderFontBatch();
-  } catch (err) {
-    console.error("❌ Failed to fetch Google Fonts:", err);
-  }
-}
-
-function renderFontBatch() {
-  const container = document.getElementById("buttonFontFamilyOptions");
-  if (!container) return;
-
-  const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
-  slice.forEach(family => {
-    const div = document.createElement("div");
-    div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
-    div.style.fontFamily = family;
-    div.textContent = family;
-    div.addEventListener("click", () => {
-      const label = document.querySelector("#buttonFontFamilyButton p");
-      if (label) {
-        label.innerText = family;
-        label.style.fontFamily = family;
-      }
-      container.classList.add("sc-hidden");
-    });
-    container.appendChild(div);
-  });
-
-  fontIndex += fontsPerPage;
-}
-
-function setupFontScrollLoader() {
-  const container = document.getElementById("buttonFontFamilyOptions");
-  if (!container) return;
-
-  container.addEventListener("scroll", () => {
-    if (container.scrollTop + container.clientHeight >= container.scrollHeight - 5) {
-      renderFontBatch();
-    }
-  });
-}
-
-document.getElementById("buttonFontFamilyButton")?.addEventListener("click", () => {
-  const options = document.getElementById("buttonFontFamilyOptions");
-  if (options?.classList.contains("sc-hidden")) {
-    options.classList.remove("sc-hidden");
-
-    if (fontsList.length === 0) {
-      fetchGoogleFonts();
-      setupFontScrollLoader();
-    }
-  } else {
-    options?.classList.add("sc-hidden");
-  }
-});
-
+   let fontsList = [];
+   let fontIndex = 0;
+   const fontsPerPage = 20;
+   
+   async function fetchGoogleFonts() {
+     try {
+       const res = await fetch(GOOGLE_FONTS_API);
+       const data = await res.json();
+       fontsList = data.items.map(item => item.family);
+       console.log("✅ Fonts fetched:", fontsList);
+       renderFontBatch();
+     } catch (err) {
+       console.error("❌ Failed to fetch Google Fonts:", err);
+     }
+   }
+   
+   function renderFontBatch() {
+     const container = document.getElementById("buttonFontFamilyOptions");
+     if (!container) return;
+   
+     const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
+     slice.forEach(family => {
+       const div = document.createElement("div");
+       div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
+       div.style.fontFamily = family;
+       div.textContent = family;
+       div.addEventListener("click", () => {
+         const label = document.querySelector("#buttonFontFamilyButton p");
+         if (label) {
+           label.innerText = family;
+           label.style.fontFamily = family;
+         }
+         container.classList.add("sc-hidden");
+       });
+       container.appendChild(div);
+     });
+   
+     fontIndex += fontsPerPage;
+   }
+   
+   function setupFontScrollLoader() {
+     const container = document.getElementById("buttonFontFamilyOptions");
+     if (!container) return;
+   
+     container.addEventListener("scroll", () => {
+       if (container.scrollTop + container.clientHeight >= container.scrollHeight - 5) {
+         renderFontBatch();
+       }
+     });
+   }
+   
+   const fontFamilyButton = document.getElementById("buttonFontFamilyButton");
+   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+   
+   if (fontFamilyButton && fontFamilyOptions) {
+     fontFamilyButton.addEventListener("click", (event) => {
+       event.stopPropagation();
+       fontFamilyOptions.classList.toggle("sc-hidden");
+   
+       if (fontsList.length === 0) {
+         fetchGoogleFonts();
+         setupFontScrollLoader();
+       }
+     });
+   
+     document.addEventListener("click", (event) => {
+       if (!fontFamilyButton.contains(event.target)) {
+         fontFamilyOptions.classList.add("sc-hidden");
+       }
+     });
+   }
+   
     return `
     <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
             <div class="sc-flex ">
