@@ -457,6 +457,10 @@ width: 240px !important;
   gap: 0.25rem !important;
   /* 4px */
 }
+.sc-gap-8px {
+ gap: 0.5rem !important;
+  /* 8px */
+}
 
 .sc-gap-5 {
   gap: 2rem !important;
