@@ -87,7 +87,7 @@
          initButtonBorderTypeToggle,
          initButtonBorderRadiusControl,
          initButtonShadowControls,initButtonFontFamilyControls,initHoverButtonIconSizeControl } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-         const {initHoverButtonShadowControls,initHoverButtonIconRotationControl} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
+         const {initHoverButtonShadowControls,initHoverButtonIconRotationControl,initHoverButtonIconSpacingControl} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -140,6 +140,7 @@
       initHoverButtonShadowControls(() => selectedElement);
       initButtonIconRotationControl(() => selectedElement);
       initHoverButtonIconSizeControl(() => selectedElement);
+      initHoverButtonIconSpacingControl(() => selectedElement);
       initHoverButtonIconRotationControl(() => selectedElement);
       initButtonIconSizeControl(() => selectedElement);
       initButtonIconSpacingControl(() => selectedElement);

@@ -211,4 +211,55 @@ const hoverShadowState = {
   }
   
   
+  export function initHoverButtonIconSpacingControl(getSelectedElement) {
+    const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
+    const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
+    const field = document.getElementById("hover-buttonIconSpacingradiousField");
+    const label = document.getElementById("hover-buttoniconSpacingradiousCount");
+  
+    if (!bullet || !fill || !field || !label) return;
+  
+    const maxGap = 30;
+  
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      const value = Math.round((x / rect.width) * maxGap);
+  
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      label.textContent = `${value}px`;
+  
+      const selectedElement = getSelectedElement?.();
+      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!btn) return;
+  
+      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const styleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+  
+      styleTag.innerHTML = `a.${typeClass}:hover { gap: ${value}px !important; }`;
+    }
+  
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (e) => updateUI(e.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
+  
+    field.addEventListener("click", (e) => updateUI(e.clientX));
+  }
   
