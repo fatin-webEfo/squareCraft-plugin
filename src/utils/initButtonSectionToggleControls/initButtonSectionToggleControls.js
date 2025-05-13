@@ -217,13 +217,15 @@ export function initButtonSectionToggleControls() {
       div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
       div.textContent = family;
       div.style.fontFamily = `"${family}", sans-serif`;
-
+      
       div.addEventListener("click", async () => {
         const label = document.getElementById("font-name");
         const fontFace = `"${family}", sans-serif`;
 
         try {
           await document.fonts.load(`1em ${fontFace}`);
+          await new Promise(resolve => setTimeout(resolve, 50));
+
         } catch (e) {
           console.warn("Font preload failed:", family);
         }
