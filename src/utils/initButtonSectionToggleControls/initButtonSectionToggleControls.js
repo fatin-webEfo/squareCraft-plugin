@@ -210,10 +210,15 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
     const fontsPerPage = 20;
     
     async function fetchGoogleFonts() {
-      const res = await fetch(GOOGLE_FONTS_API);
-      const data = await res.json();
-      fontsList = data.items.map(f => f.family);
-      renderFontBatch();
+      try {
+        const res = await fetch(GOOGLE_FONTS_API);
+        const data = await res.json();
+        fontsList = data.items.map(item => item.family);
+        console.log("✅ Fonts fetched:", fontsList); 
+        renderFontBatch();
+      } catch (err) {
+        console.error("❌ Failed to fetch Google Fonts:", err);
+      }
     }
     
     function renderFontBatch() {
@@ -227,12 +232,16 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
         div.style.fontFamily = family;
         div.textContent = family;
         div.addEventListener("click", () => {
-          document.querySelector("#buttonFontFamilyButton p").innerText = family;
-          document.querySelector("#buttonFontFamilyButton p").style.fontFamily = family;
+          const label = document.querySelector("#buttonFontFamilyButton p");
+          if (label) {
+            label.innerText = family;
+            label.style.fontFamily = family;
+          }
           container.classList.add("sc-hidden");
         });
         container.appendChild(div);
       });
+    
       fontIndex += fontsPerPage;
     }
     
@@ -249,10 +258,15 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
     
     document.getElementById("buttonFontFamilyButton")?.addEventListener("click", () => {
       const options = document.getElementById("buttonFontFamilyOptions");
-      options?.classList.toggle("sc-hidden");
-      if (fontsList.length === 0) {
-        fetchGoogleFonts();
-        setupFontScrollLoader();
+      if (options?.classList.contains("sc-hidden")) {
+        options.classList.remove("sc-hidden");
+    
+        if (fontsList.length === 0) {
+          fetchGoogleFonts();
+          setupFontScrollLoader();
+        }
+      } else {
+        options?.classList.add("sc-hidden");
       }
     });
      
