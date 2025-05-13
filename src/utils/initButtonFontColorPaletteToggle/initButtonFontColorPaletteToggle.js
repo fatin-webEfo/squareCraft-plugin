@@ -407,6 +407,10 @@ if (allColorField && allColorBullet) {
 
   if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
+    
+    // Apply background color immediately on widget load
+    applyButtonBackgroundColor(firstSwatchColor, currentTransparency / 100);
+  
     requestAnimationFrame(() => {
       setTimeout(() => {
         updateSelectorField(firstSwatchColor);
