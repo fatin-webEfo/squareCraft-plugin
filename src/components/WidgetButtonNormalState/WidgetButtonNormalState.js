@@ -281,10 +281,10 @@ export function WidgetButtonNormalState(){
                             "
                           ></div>
                          <div class="sc-absolute sc-flex sc-items-center sc-gap-3">
-                         <div id="buttonIconSolidClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
+                         <div id="buttonIconSolidClick" class="sc-px-6 sc-cursor-pointer sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
                            <div  class="sc-roboto   sc-text-xs sc-font-light sc-text-EF7C2F" >Solid</div>
                          </div>
-                         <div id="buttonIconOutlineClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
+                         <div id="buttonIconOutlineClick" class="sc-px-6 sc-cursor-pointer sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
                            <div class="sc-roboto   sc-text-xs sc-font-light " >Outline</div>
                          </div>
                          </div>
