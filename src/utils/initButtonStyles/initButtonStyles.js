@@ -1,132 +1,123 @@
  
  
  
- export function initButtonStyles(selectedButtonElement) {
-    if (!selectedButtonElement) return;
+export function initButtonStyles(selectedButtonElement) {
+  if (!selectedButtonElement) return;
 
-    const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
-    const fontSizeInput = document.getElementById("scButtonFontSizeInput");
-    const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
-    const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
-    const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
+  const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+  const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
+  const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
+  const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
-    const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
-    if (!buttonContainer) return;
+  const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
+  if (!buttonContainer) return;
 
-    let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element") ||
-      buttonContainer.querySelector("button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (!buttonElement) return;
+  let buttonElement = buttonContainer.querySelector("a.sqs-block-button-element") ||
+    buttonContainer.querySelector("button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
+  if (!buttonElement) return;
 
-    let currentButtonTypeClass = "sqs-button-element--primary";
-    if (buttonElement.classList.contains("sqs-button-element--secondary")) {
-      currentButtonTypeClass = "sqs-button-element--secondary";
-    } else if (buttonElement.classList.contains("sqs-button-element--tertiary")) {
-      currentButtonTypeClass = "sqs-button-element--tertiary";
+  let currentButtonTypeClass = "sqs-button-element--primary";
+  if (buttonElement.classList.contains("sqs-button-element--secondary")) {
+    currentButtonTypeClass = "sqs-button-element--secondary";
+  } else if (buttonElement.classList.contains("sqs-button-element--tertiary")) {
+    currentButtonTypeClass = "sqs-button-element--tertiary";
+  }
+
+  function updateExternalStyles(property, value) {
+    const styleId = `sc-button-style-${currentButtonTypeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
     }
 
-    function updateExternalStyles(property, value) {
-      const styleId = `sc-button-style-${currentButtonTypeClass.replace(/--/g, "-")}`;
-      let styleTag = document.getElementById(styleId);
+    const textSelectors = `
+      a.${currentButtonTypeClass} .sqs-html span,
+      button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner,
+      button.${currentButtonTypeClass} span
+    `.trim();
 
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);  
-      }
+    let rules = styleTag.innerHTML.split("}").filter(Boolean).map(rule => rule + "}");
+    let existingRuleIndex = rules.findIndex(r => r.includes(textSelectors));
+    const newRule = `${textSelectors} { ${property}: ${value} !important; }`;
 
-      const textSelectors = `
-        a.${currentButtonTypeClass} .sqs-html span,
-        button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner,
-        button.${currentButtonTypeClass} span
-      `.trim();
-
-      let rules = styleTag.innerHTML.split("}").filter(Boolean).map(rule => rule + "}");
-      let existingRuleIndex = rules.findIndex(r => r.includes(textSelectors));
-      const newRule = `${textSelectors} { ${property}: ${value} !important; }`;
-
-      if (existingRuleIndex !== -1) {
-        rules[existingRuleIndex] = rules[existingRuleIndex]
-          .replace(new RegExp(`${property}:.*?;`, "g"), "")
-          .replace("}", ` ${property}: ${value} !important; }`);
-      } else {
-        rules.push(newRule);
-      }
-
-      styleTag.innerHTML = rules.join("\n");
+    if (existingRuleIndex !== -1) {
+      rules[existingRuleIndex] = rules[existingRuleIndex]
+        .replace(new RegExp(`${property}:.*?;`, "g"), "")
+        .replace("}", ` ${property}: ${value} !important; }`);
+    } else {
+      rules.push(newRule);
     }
 
-    if (fontFamilyOptions) {
-      fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-        item.onclick = null;
-        item.onclick = () => {
-          const fontFamily = item.style.fontFamily;
-          updateExternalStyles("font-family", fontFamily);
-        };
-      });
-    }
+    styleTag.innerHTML = rules.join("\n");
+  }
 
-    if (fontSizeOptions && fontSizeInput) {
-      fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-        item.onclick = null;
-        item.onclick = () => {
-          const selectedSize = item.getAttribute("data-value");
-          fontSizeInput.value = selectedSize;
-          fontSizeInput.dispatchEvent(new Event("input"));
-        };
-      });
-      fontSizeInput.oninput = null;
-      fontSizeInput.oninput = (e) => {
-        const fontSize = e.target.value;
-        updateExternalStyles("font-size", `${fontSize}px`);
+  if (fontSizeOptions && fontSizeInput) {
+    fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
+      item.onclick = () => {
+        const selectedSize = item.getAttribute("data-value");
+        fontSizeInput.value = selectedSize;
+        fontSizeInput.dispatchEvent(new Event("input"));
       };
-    }
+    });
 
-    if (fontWeightOptions) {
-      fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-        item.onclick = null;
-        item.onclick = () => {
-          const fontWeight = item.innerText.trim();
-          updateExternalStyles("font-weight", fontWeight);
-        };
-      });
-    }
+    fontSizeInput.oninput = null;
+    fontSizeInput.oninput = (e) => {
+      const fontSize = e.target.value;
+      updateExternalStyles("font-size", `${fontSize}px`);
+    };
+  }
 
-    if (letterSpacingInput) {
-      letterSpacingInput.oninput = null;
-      letterSpacingInput.oninput = (e) => {
-        const spacing = e.target.value;
-        updateExternalStyles("letter-spacing", `${spacing}px`);
+  if (fontWeightOptions) {
+    fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
+      item.onclick = () => {
+        const fontWeight = item.innerText.trim();
+        updateExternalStyles("font-weight", fontWeight);
       };
-    }
-
-    ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
-      const transformButton = document.getElementById(id);
-      if (transformButton) {
-        transformButton.onclick = null;
-        transformButton.onclick = () => {
-          const transformClassMap = {
-            scButtonAllCapital: "sc-text-upper",
-            scButtonAllSmall: "sc-text-lower",
-            scButtonFirstCapital: "sc-text-capitalize",
-          };
-          const newClass = transformClassMap[id];
-
-          const spans = Array.from(
-            document.querySelectorAll(
-              `a.${currentButtonTypeClass} .sqs-html span, 
-              button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner, 
-              button.${currentButtonTypeClass} span`
-            )
-          );
-
-          spans.forEach((span) => {
-            span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-            span.classList.add(newClass);
-          });
-        };
-      }
     });
   }
+
+  if (letterSpacingInput) {
+    letterSpacingInput.oninput = null;
+    letterSpacingInput.oninput = (e) => {
+      const spacing = e.target.value;
+      updateExternalStyles("letter-spacing", `${spacing}px`);
+    };
+  }
+
+  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
+    const transformButton = document.getElementById(id);
+    if (transformButton) {
+      transformButton.onclick = null;
+      transformButton.onclick = () => {
+        const transformClassMap = {
+          scButtonAllCapital: "sc-text-upper",
+          scButtonAllSmall: "sc-text-lower",
+          scButtonFirstCapital: "sc-text-capitalize",
+        };
+        const newClass = transformClassMap[id];
+
+        const spans = Array.from(
+          document.querySelectorAll(
+            `a.${currentButtonTypeClass} .sqs-html span, 
+            button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner, 
+            button.${currentButtonTypeClass} span`
+          )
+        );
+
+        spans.forEach((span) => {
+          span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+          span.classList.add(newClass);
+        });
+      };
+    }
+  });
+}
+
 
   export function initButtonIconPositionToggle(getSelectedElement) {
     document.getElementById("buttoniconPositionSection").onclick = () => {
