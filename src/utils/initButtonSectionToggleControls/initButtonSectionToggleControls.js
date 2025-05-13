@@ -203,20 +203,23 @@ export function initButtonSectionToggleControls() {
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
   const outlineOption = document.getElementById("buttonIconOutlineoptions");
-  if (buttonIconLibraryDropdown) {
-    buttonIconLibraryDropdown.addEventListener("click", (event) => {
-      event.stopPropagation(); 
-    });
+  const iconLibraryDropdown = document.getElementById("buttonIconOutlineoptions")?.closest("#buttonIconOutlineoptions");
+
+  if (iconLibraryDropdown) {
+    iconLibraryDropdown.addEventListener("click", (e) => e.stopPropagation());
   }
+
   if (solidTab && outlineTab && solidOption && outlineOption) {
-    solidTab.addEventListener("click", () => {
+    solidTab.addEventListener("click", (e) => {
+      e.stopPropagation();
       solidTab.querySelector("div").classList.add("sc-text-EF7C2F");
       outlineTab.querySelector("div").classList.remove("sc-text-EF7C2F");
       solidOption.classList.remove("sc-hidden");
       outlineOption.classList.add("sc-hidden");
     });
 
-    outlineTab.addEventListener("click", () => {
+    outlineTab.addEventListener("click", (e) => {
+      e.stopPropagation();
       outlineTab.querySelector("div").classList.add("sc-text-EF7C2F");
       solidTab.querySelector("div").classList.remove("sc-text-EF7C2F");
       outlineOption.classList.remove("sc-hidden");
