@@ -219,24 +219,24 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
         div.style.fontFamily = `"${family}", sans-serif`;
     
         div.addEventListener("click", () => {
-          const label = document.querySelector("#buttonFontFamilyButton p");
+          const label = document.getElementById("font-name");
           if (label) {
             label.innerText = family;
             label.style.fontFamily = `"${family}", sans-serif`;
           }
-    
+        
           const selectedElement = document.querySelector("[id^='block-'].selected");
           if (!selectedElement) return;
-    
+        
           const btn = selectedElement.querySelector(
             "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
             "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           );
           if (!btn) return;
-    
+        
           const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
           if (!typeClass) return;
-    
+        
           let cssVar = "";
           if (typeClass.includes("primary")) {
             cssVar = "--primary-button-font-font-family";
@@ -245,13 +245,14 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           } else if (typeClass.includes("tertiary")) {
             cssVar = "--tertiary-button-font-font-family";
           }
-    
+        
           if (cssVar) {
             document.documentElement.style.setProperty(cssVar, `"${family}", sans-serif`);
           }
-    
+        
           container.classList.add("sc-hidden");
         });
+        
     
         container.appendChild(div);
       });

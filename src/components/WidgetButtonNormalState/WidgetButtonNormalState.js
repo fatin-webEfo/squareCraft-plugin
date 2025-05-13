@@ -23,7 +23,7 @@ export function WidgetButtonNormalState(){
             <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
 
                <div id="buttonFontFamilyButton" class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
-                  <p class="sc-text-sm sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
+                  <p id="font-name" class="sc-text-sm sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
                   Select Font
                   </p>
                   <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
