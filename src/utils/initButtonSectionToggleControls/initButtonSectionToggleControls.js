@@ -219,21 +219,22 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
         div.style.fontFamily = `"${family}", sans-serif`;
     
         div.addEventListener("click", async () => {
-          const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
           const label = document.getElementById("font-name");
+          const fontFace = `"${family}", sans-serif`;
         
-          // Apply font name label update
+     
+          try {
+            label.style.setProperty("font-family", fontFace, "important");
+
+          } catch (e) {
+            console.warn("⚠️ Font failed to preload via document.fonts API:", family);
+          }
+        
           if (label) {
             label.innerText = family;
             label.classList.remove("sc-roboto");
-            [...label.classList].forEach(cls => {
-              if (cls.startsWith("sc-font-family-")) label.classList.remove(cls);
-            });
-            label.classList.add(fontClass);
+            label.style.setProperty("font-family", fontFace, "important");
           }
-        
-          // Make sure font is loaded before applying to buttons
-          await document.fonts.load(`14px "${family}"`);
         
           const selectedElement = document.querySelector("[id^='block-'].selected");
           if (!selectedElement) return;
@@ -247,21 +248,27 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
           if (!typeClass) return;
         
-          const allButtons = document.querySelectorAll(`.${typeClass}`);
-          allButtons.forEach(button => {
-            const spans = button.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-            spans.forEach(span => {
-              // Remove existing sc-font-family-* classes
-              [...span.classList].forEach(cls => {
-                if (cls.startsWith("sc-font-family-")) span.classList.remove(cls);
-              });
-              span.classList.add(fontClass);
-            });
-          });
+          let cssVar = "";
+          if (typeClass.includes("primary")) {
+            cssVar = "--primary-button-font-font-family";
+          } else if (typeClass.includes("secondary")) {
+            cssVar = "--secondary-button-font-font-family";
+          } else if (typeClass.includes("tertiary")) {
+            cssVar = "--tertiary-button-font-font-family";
+          }
+        
+          try {
+            await document.fonts.load(`14px ${fontFace}`);
+            if (cssVar) {
+              document.documentElement.style.setProperty(cssVar, fontFace);
+            }
+          } catch (e) {
+            console.warn("Font load failed:", family);
+          }
+          
         
           container.classList.add("sc-hidden");
         });
-        
         
         
     
