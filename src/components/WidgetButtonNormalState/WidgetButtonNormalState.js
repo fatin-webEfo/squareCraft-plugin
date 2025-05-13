@@ -14,7 +14,6 @@ export function WidgetButtonNormalState(){
        const res = await fetch(GOOGLE_FONTS_API);
        const data = await res.json();
        fontsList = data.items.map(item => item.family);
-       console.log("✅ Fonts fetched:", fontsList);
        renderFontBatch();
      } catch (err) {
        console.error("❌ Failed to fetch Google Fonts:", err);
@@ -31,14 +30,34 @@ export function WidgetButtonNormalState(){
        div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
        div.style.fontFamily = family;
        div.textContent = family;
+   
        div.addEventListener("click", () => {
          const label = document.querySelector("#buttonFontFamilyButton p");
          if (label) {
            label.innerText = family;
            label.style.fontFamily = family;
          }
+   
+         const selectedElement = document.querySelector("[id^='block-'].selected");
+         if (!selectedElement) return;
+   
+         const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
+         if (!btn) return;
+   
+         const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+         if (!typeClass) return;
+   
+         const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
+         allButtons.forEach(button => {
+           const spans = button.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+           spans.forEach(span => {
+             span.style.fontFamily = family;
+           });
+         });
+   
          container.classList.add("sc-hidden");
        });
+   
        container.appendChild(div);
      });
    
@@ -76,6 +95,7 @@ export function WidgetButtonNormalState(){
        }
      });
    }
+   
    
     return `
     <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
