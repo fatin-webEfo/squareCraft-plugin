@@ -196,6 +196,29 @@ export function initButtonSectionToggleControls() {
       }
     });
   }
+
+
+
+  const solidTab = document.getElementById("buttonIconSolidClick");
+  const outlineTab = document.getElementById("buttonIconOutlineClick");
+  const solidOption = document.getElementById("buttonIconSolidoptions");
+  const outlineOption = document.getElementById("buttonIconOutlineoptions");
+
+  if (solidTab && outlineTab && solidOption && outlineOption) {
+    solidTab.addEventListener("click", () => {
+      solidTab.querySelector("div").classList.add("sc-text-EF7C2F");
+      outlineTab.querySelector("div").classList.remove("sc-text-EF7C2F");
+      solidOption.classList.remove("sc-hidden");
+      outlineOption.classList.add("sc-hidden");
+    });
+
+    outlineTab.addEventListener("click", () => {
+      outlineTab.querySelector("div").classList.add("sc-text-EF7C2F");
+      solidTab.querySelector("div").classList.remove("sc-text-EF7C2F");
+      outlineOption.classList.remove("sc-hidden");
+      solidOption.classList.add("sc-hidden");
+    });
+  }
   
 
 }
