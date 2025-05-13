@@ -6,7 +6,7 @@ export function WidgetButtonNormalState(){
 
 
    const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
-   const outlineIcons = Array.from({ length: 116 }, (_, i) => i + 1);
+   const outlineIcons = Array.from({ length: 115 }, (_, i) => i + 1);
 
   
    
