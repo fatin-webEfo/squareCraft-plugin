@@ -222,8 +222,10 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           const label = document.getElementById("font-name");
           if (label) {
             label.innerText = family;
-            label.style.fontFamily = `"${family}", sans-serif`;
+            label.classList.remove("sc-roboto");
+            label.style.setProperty("font-family", `"${family}", sans-serif`, "important");
           }
+          
         
           const selectedElement = document.querySelector("[id^='block-'].selected");
           if (!selectedElement) return;
