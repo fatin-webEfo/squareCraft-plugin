@@ -5,7 +5,8 @@ export function WidgetButtonNormalState(){
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
 
 
-   const iconList = Array.from({ length: 116 }, (_, i) => i + 1);
+   const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
+   const outlineIcons = Array.from({ length: 116 }, (_, i) => i + 1);
 
   
    
@@ -37,9 +38,6 @@ export function WidgetButtonNormalState(){
 
                </div>
                
-
-
-
             <div 
                class="sc-flex sc-bg-transparent  sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
                <div class="sc-flex sc-text-color-white sc-items-center ">
@@ -289,8 +287,8 @@ export function WidgetButtonNormalState(){
                             </div>
                             </div>
 
-                           <div class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                            ${iconList
+                           <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
+                            ${solidIconList
                                 .map(
                                 (i) => `
                                 <img 
@@ -304,7 +302,20 @@ export function WidgetButtonNormalState(){
                                 .join("")}
                             </div>
 
-                            <div class="buttonIconSolidoptions"></div>
+                            <div id="buttonIconOutlineoptions" class="sc-hidden sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
+                             ${outlineIcons
+                                .map(
+                                (i) => `
+                                <img 
+                                src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
+                                class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
+                                width="20" 
+                                height="20" 
+                                alt="">
+                            `
+                                )
+                                .join("")}
+                            </div>
                               </div>
                         </div>
 
