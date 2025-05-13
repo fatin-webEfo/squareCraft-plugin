@@ -106,9 +106,9 @@ const hoverShadowState = {
 
   export function initHoverButtonIconControls(getSelectedElement) {
     const controls = [
-      { type: "Rotation", property: "transform", id: "hover-buttonIconRotationradious" },
-      { type: "Size", property: ["width", "height"], id: "hover-buttonIconSizeradious" },
-      { type: "Spacing", property: "margin-right", id: "hover-buttonIconSpacingradious" }
+      { type: "Rotation", property: "transform", id: "hover-buttonIconRotationradious", max: 360 },
+      { type: "Size", property: ["width", "height"], id: "hover-buttonIconSizeradious", max: 50 },
+      { type: "Spacing", property: "margin-right", id: "hover-buttonIconSpacingradious", max: 30 }
     ];
   
     controls.forEach(ctrl => {
@@ -119,80 +119,70 @@ const hoverShadowState = {
   
       if (!bullet || !fill || !field || !label) return;
   
-      bullet.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        const move = (e) => {
-          const rect = field.getBoundingClientRect();
-          const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-          const percent = (x / rect.width) * 100;
-          bullet.style.left = `${percent}%`;
+      let value = 0;
   
+      function updateUI(clientX) {
+        const rect = field.getBoundingClientRect();
+        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        const percent = (x / rect.width) * 100;
+  
+        bullet.style.left = `${percent}%`;
+        fill.style.width = `${percent}%`;
+  
+        const selectedElement = getSelectedElement?.();
+        const btn = selectedElement?.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const styleId = `sc-hover-style-${ctrl.property.toString().replace(/,/g, '-')}-${typeClass.replace(/--/g, '-')}`;
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+  
+        const selector = `a.${typeClass}:hover .sqscraft-button-icon`;
+  
+        let cssValue;
+        if (ctrl.property === "transform") {
           const centerX = rect.width / 2;
           const deltaX = x - centerX;
+          value = Math.round((deltaX / centerX) * 180);
+          cssValue = `rotate(${value}deg)`;
+          label.textContent = `${value}deg`;
+        } else {
+          value = Math.round((x / rect.width) * ctrl.max);
+          cssValue = `${value}px`;
+          label.textContent = `${value}px`;
+        }
   
-          let value;
-          let cssValue;
+        if (Array.isArray(ctrl.property)) {
+          styleTag.innerHTML = `${selector} { ${ctrl.property.map(p => `${p}: ${cssValue} !important`).join('; ')}; }`;
+        } else {
+          styleTag.innerHTML = `${selector} { ${ctrl.property}: ${cssValue} !important; }`;
+        }
+      }
   
-          if (ctrl.property === "transform") {
-            value = Math.round((deltaX / centerX) * 180);
-            cssValue = `rotate(${value}deg)`;
-            label.textContent = `${value}deg`;
-          } else if (Array.isArray(ctrl.property)) {
-            value = Math.floor((x / rect.width) * 100);
-            cssValue = `${value}px`;
-            label.textContent = `${value}px`;
-          } else {
-            value = Math.round((deltaX / centerX) * 50);
-            cssValue = `${value}px`;
-            label.textContent = `${value}px`;
-          }
-  
-          fill.style.left = `${Math.min(percent, 50)}%`;
-          fill.style.width = `${Math.abs(percent - 50)}%`;
-  
-          const selectedElement = getSelectedElement?.();
-          const btn = selectedElement?.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-          );
-          if (!btn) return;
-  
-          const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-          if (!typeClass) return;
-  
-          const styleId = `sc-hover-style-${ctrl.property.toString().replace(/,/g, '-')}-${typeClass.replace(/--/g, '-')}`;
-          let styleTag = document.getElementById(styleId);
-          if (!styleTag) {
-            styleTag = document.createElement("style");
-            styleTag.id = styleId;
-            document.head.appendChild(styleTag);
-          }
-  
-          const selector = `a.${typeClass}:hover .sqscraft-button-icon`;
-  
-          if (Array.isArray(ctrl.property)) {
-            styleTag.innerHTML = `${selector} { ${ctrl.property.map(p => `${p}: ${cssValue} !important`).join('; ')}; }`;
-          } else {
-            styleTag.innerHTML = `${selector} { ${ctrl.property}: ${cssValue} !important; }`;
-          }
-        };
-  
+      bullet.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        const move = (eMove) => updateUI(eMove.clientX);
         const up = () => {
           document.removeEventListener("mousemove", move);
           document.removeEventListener("mouseup", up);
         };
-  
         document.addEventListener("mousemove", move);
         document.addEventListener("mouseup", up);
       });
   
-      field.addEventListener("click", (e) => {
-        const rect = field.getBoundingClientRect();
-        const clientX = e.clientX;
-        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-        bullet.dispatchEvent(new MouseEvent("mousedown", { clientX: clientX, bubbles: true }));
-      });
+      field.addEventListener("click", (e) => updateUI(e.clientX));
     });
   }
+  
   
   
   
