@@ -47,8 +47,8 @@ export function WidgetButtonSection() {
             <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">Button</p>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
          </div>
-         ${WidgetButtonNormalState}
-         ${WidgetButtonHoverState}
+         ${WidgetButtonNormalState()}
+         ${WidgetButtonHoverState()}
 
          <div class="sc-mt-4">
          </div>
