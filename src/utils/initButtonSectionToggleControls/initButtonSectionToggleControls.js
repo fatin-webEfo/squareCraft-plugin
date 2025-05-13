@@ -35,30 +35,7 @@ export function initButtonSectionToggleControls() {
     }
   });
 
-  const fontFamilyButton = document.getElementById("buttonFontFamilyButton");
-  const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
 
-  if (fontFamilyButton && fontFamilyOptions) {
-    fontFamilyButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      fontFamilyOptions.classList.toggle("sc-hidden");
-    });
-
-    document.addEventListener("click", (event) => {
-      if (!fontFamilyButton.contains(event.target)) {
-        fontFamilyOptions.classList.add("sc-hidden");
-      }
-    });
-
-    fontFamilyOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        const selectedFont = item.innerText;
-        fontFamilyButton.querySelector("p").innerText = selectedFont;
-        fontFamilyButton.querySelector("p").style.fontFamily = item.style.fontFamily;
-        fontFamilyOptions.classList.add("sc-hidden");
-      });
-    });
-  }
 
 
   const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");
