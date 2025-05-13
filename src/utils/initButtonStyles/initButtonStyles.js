@@ -5,29 +5,11 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   let fontIndex = 0;
   const fontsPerPage = 20;
 
-  const fontFamilyButton = document.getElementById("buttonFontFamilyButton");
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+  if (!fontFamilyOptions) return;
 
-  if (!fontFamilyButton || !fontFamilyOptions) return;
-
-  fontFamilyButton.addEventListener("click", (event) => {
-    event.stopPropagation();
-    fontFamilyOptions.classList.toggle("sc-hidden");
-
-    if (fontsList.length === 0) {
-      fetchGoogleFonts();
-      setupFontScrollLoader();
-    }
-  });
-
-  document.addEventListener("click", (event) => {
-    if (
-      !fontFamilyButton.contains(event.target) &&
-      !fontFamilyOptions.contains(event.target)
-    ) {
-      fontFamilyOptions.classList.add("sc-hidden");
-    }
-  });
+  fetchGoogleFonts();
+  setupFontScrollLoader();
 
   async function fetchGoogleFonts() {
     try {
@@ -132,6 +114,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
  

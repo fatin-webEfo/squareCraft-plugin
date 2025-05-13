@@ -181,6 +181,21 @@ export function initButtonSectionToggleControls() {
     });
   }
 
-
+  const buttonFontFamilySelect = document.getElementById("buttonFontFamilyButton");
+  const buttonFontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+  
+  if (buttonFontFamilySelect && buttonFontFamilyOptions) {
+    buttonFontFamilySelect.addEventListener("click", (event) => {
+      event.stopPropagation();
+      buttonFontFamilyOptions.classList.toggle("sc-hidden");
+    });
+  
+    document.addEventListener("click", (event) => {
+      if (!buttonFontFamilySelect.contains(event.target)) {
+        buttonFontFamilyOptions.classList.add("sc-hidden");
+      }
+    });
+  }
+  
 
 }
