@@ -203,7 +203,11 @@ export function initButtonSectionToggleControls() {
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
   const outlineOption = document.getElementById("buttonIconOutlineoptions");
-
+  if (buttonIconLibraryDropdown) {
+    buttonIconLibraryDropdown.addEventListener("click", (event) => {
+      event.stopPropagation(); 
+    });
+  }
   if (solidTab && outlineTab && solidOption && outlineOption) {
     solidTab.addEventListener("click", () => {
       solidTab.querySelector("div").classList.add("sc-text-EF7C2F");
