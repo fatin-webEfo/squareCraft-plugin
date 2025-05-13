@@ -187,9 +187,9 @@ export function initButtonSectionToggleControls() {
   const solidTab = document.getElementById("buttonIconSolidClick");
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
-  const outlineOption = document.getElementById("buttonIconOutlineoptions");
+  const outlineOption = document.getElementById("buttonIconOutlineList");
   const iconLibraryButton = document.getElementById("iconLibraryButton");
-  const iconLibraryDropdown = document.getElementById("iconLibraryDropdownWrapper");
+  const iconLibraryDropdown = document.getElementById("buttonIconOutlineoptions");
 
   let isLibraryVisible = false;
 
