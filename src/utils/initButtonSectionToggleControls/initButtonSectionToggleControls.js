@@ -298,10 +298,14 @@ export function initButtonSectionToggleControls() {
     });
 
     document.addEventListener("click", (event) => {
-      if (!fontFamilyButton.contains(event.target)) {
+      if (
+        !fontFamilyButton.contains(event.target) &&
+        !fontFamilyOptions.contains(event.target)
+      ) {
         fontFamilyOptions.classList.add("sc-hidden");
       }
     });
+    
   }
 
 
