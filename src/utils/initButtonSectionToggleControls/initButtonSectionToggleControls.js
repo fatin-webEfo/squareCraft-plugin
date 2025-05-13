@@ -164,6 +164,8 @@ export function initButtonSectionToggleControls() {
     });
   }
 
+ 
+
   const buttonFontFamilySelect = document.getElementById("buttonFontFamilyButton");
   const buttonFontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
   
@@ -186,22 +188,43 @@ export function initButtonSectionToggleControls() {
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
   const outlineOption = document.getElementById("buttonIconOutlineoptions");
+  const iconLibraryButton = document.getElementById("iconLibraryButton");
+  const iconLibraryDropdown = document.getElementById("iconLibraryDropdownWrapper");
+
+  let isLibraryVisible = false;
+
+  const toggleIconTabs = (activeTab, inactiveTab, showOption, hideOption) => {
+    activeTab?.querySelector("div")?.classList.add("sc-text-EF7C2F");
+    inactiveTab?.querySelector("div")?.classList.remove("sc-text-EF7C2F");
+    showOption?.classList.remove("sc-hidden");
+    hideOption?.classList.add("sc-hidden");
+    iconLibraryDropdown?.classList.remove("sc-hidden");
+    isLibraryVisible = true;
+  };
 
   if (solidTab && outlineTab && solidOption && outlineOption) {
     solidTab.addEventListener("click", (e) => {
       e.stopPropagation();
-      solidTab.querySelector("div").classList.add("sc-text-EF7C2F");
-      outlineTab.querySelector("div").classList.remove("sc-text-EF7C2F");
-      solidOption.classList.remove("sc-hidden");
-      outlineOption.classList.add("sc-hidden");
+      toggleIconTabs(solidTab, outlineTab, solidOption, outlineOption);
     });
-
     outlineTab.addEventListener("click", (e) => {
       e.stopPropagation();
-      outlineTab.querySelector("div").classList.add("sc-text-EF7C2F");
-      solidTab.querySelector("div").classList.remove("sc-text-EF7C2F");
-      outlineOption.classList.remove("sc-hidden");
-      solidOption.classList.add("sc-hidden");
+      toggleIconTabs(outlineTab, solidTab, outlineOption, solidOption);
+    });
+  }
+
+  if (iconLibraryButton && iconLibraryDropdown) {
+    iconLibraryButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      isLibraryVisible = !isLibraryVisible;
+      iconLibraryDropdown.classList.toggle("sc-hidden", !isLibraryVisible);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!iconLibraryButton.contains(e.target) && !iconLibraryDropdown.contains(e.target)) {
+        iconLibraryDropdown.classList.add("sc-hidden");
+        isLibraryVisible = false;
+      }
     });
   }
   
