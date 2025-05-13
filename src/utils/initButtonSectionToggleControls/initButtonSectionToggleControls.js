@@ -218,14 +218,23 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
         div.textContent = family;
         div.style.fontFamily = `"${family}", sans-serif`;
     
-        div.addEventListener("click", () => {
+        div.addEventListener("click", async () => {
           const label = document.getElementById("font-name");
+          const fontFace = `"${family}", sans-serif`;
+        
+     
+          try {
+            label.style.setProperty("font-family", fontFace, "important");
+
+          } catch (e) {
+            console.warn("⚠️ Font failed to preload via document.fonts API:", family);
+          }
+        
           if (label) {
             label.innerText = family;
             label.classList.remove("sc-roboto");
-            label.style.setProperty("font-family", `"${family}", sans-serif`, "important");
+            label.style.setProperty("font-family", fontFace, "important");
           }
-          
         
           const selectedElement = document.querySelector("[id^='block-'].selected");
           if (!selectedElement) return;
@@ -249,11 +258,12 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           }
         
           if (cssVar) {
-            document.documentElement.style.setProperty(cssVar, `"${family}", sans-serif`);
+            document.documentElement.style.setProperty(cssVar, fontFace);
           }
         
           container.classList.add("sc-hidden");
         });
+        
         
     
         container.appendChild(div);
