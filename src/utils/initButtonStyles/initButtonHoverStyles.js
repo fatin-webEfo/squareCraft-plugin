@@ -104,69 +104,94 @@ const hoverShadowState = {
   }
 
 
-  export function initHoverButtonIconPositionToggle(getSelectedElement) {
-    const dropdownTrigger = document.getElementById("hover-buttoniconPositionSection");
-    const dropdown = document.getElementById("hover-iconPositionDropdown");
-    const label = document.getElementById("hover-iconPositionLabel");
+  export function initHoverButtonIconControls(getSelectedElement) {
+    const controls = [
+      { type: "Rotation", property: "transform", id: "hover-buttonIconRotationradious" },
+      { type: "Size", property: ["width", "height"], id: "hover-buttonIconSizeradious" },
+      { type: "Spacing", property: "margin-right", id: "hover-buttonIconSpacingradious" }
+    ];
   
-    if (!dropdownTrigger || !dropdown || !label) return;
+    controls.forEach(ctrl => {
+      const bullet = document.getElementById(`${ctrl.id}Bullet`);
+      const fill = document.getElementById(`${ctrl.id}Fill`);
+      const field = document.getElementById(`${ctrl.id}Field`);
+      const label = document.getElementById(`hover-buttonicon${ctrl.type}Count`);
   
-    dropdownTrigger.onclick = () => {
-      dropdown.classList.toggle("sc-hidden");
-    };
+      if (!bullet || !fill || !field || !label) return;
   
-    dropdown.querySelectorAll("[data-value]").forEach(option => {
-      option.onclick = () => {
-        const value = option.dataset.value;
-        label.innerHTML = `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
-        dropdown.classList.add("sc-hidden");
+      bullet.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        const move = (e) => {
+          const rect = field.getBoundingClientRect();
+          const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+          const percent = (x / rect.width) * 100;
+          bullet.style.left = `${percent}%`;
   
-        const selectedElement = getSelectedElement?.();
-        if (!selectedElement) return;
+          const centerX = rect.width / 2;
+          const deltaX = x - centerX;
   
-        const btn = selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-        );
-        if (!btn) return;
+          let value;
+          let cssValue;
   
-        const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-        if (!typeClass) return;
-  
-        const hoverStyleId = `sc-hover-style-${typeClass.replace(/--/g, "-")}`;
-        let styleTag = document.getElementById(hoverStyleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = hoverStyleId;
-          document.head.appendChild(styleTag);
-        }
-  
-        let iconSelector = `a.${typeClass}:hover .sqscraft-button-icon`;
-        let marginCSS =
-          value === "after"
-            ? `margin-left: 8px !important; margin-right: 0 !important;`
-            : `margin-right: 8px !important; margin-left: 0 !important;`;
-  
-        styleTag.innerHTML = `
-          ${iconSelector} { ${marginCSS} }
-        `;
-  
-        const allButtons = document.querySelectorAll(`a.${typeClass}`);
-        allButtons.forEach(button => {
-          const icon = button.querySelector(".sqscraft-button-icon");
-          const textDiv = button.querySelector(".sqs-html");
-  
-          if (!icon || !textDiv) return;
-  
-          icon.style.marginLeft = "";
-          icon.style.marginRight = "";
-  
-          if (value === "after") {
-            button.insertBefore(icon, textDiv.nextSibling);
+          if (ctrl.property === "transform") {
+            value = Math.round((deltaX / centerX) * 180);
+            cssValue = `rotate(${value}deg)`;
+            label.textContent = `${value}deg`;
+          } else if (Array.isArray(ctrl.property)) {
+            value = Math.floor((x / rect.width) * 100);
+            cssValue = `${value}px`;
+            label.textContent = `${value}px`;
           } else {
-            button.insertBefore(icon, textDiv);
+            value = Math.round((deltaX / centerX) * 50);
+            cssValue = `${value}px`;
+            label.textContent = `${value}px`;
           }
-        });
-      };
+  
+          fill.style.left = `${Math.min(percent, 50)}%`;
+          fill.style.width = `${Math.abs(percent - 50)}%`;
+  
+          const selectedElement = getSelectedElement?.();
+          const btn = selectedElement?.querySelector(
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+          );
+          if (!btn) return;
+  
+          const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+          if (!typeClass) return;
+  
+          const styleId = `sc-hover-style-${ctrl.property.toString().replace(/,/g, '-')}-${typeClass.replace(/--/g, '-')}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
+          }
+  
+          const selector = `a.${typeClass}:hover .sqscraft-button-icon`;
+  
+          if (Array.isArray(ctrl.property)) {
+            styleTag.innerHTML = `${selector} { ${ctrl.property.map(p => `${p}: ${cssValue} !important`).join('; ')}; }`;
+          } else {
+            styleTag.innerHTML = `${selector} { ${ctrl.property}: ${cssValue} !important; }`;
+          }
+        };
+  
+        const up = () => {
+          document.removeEventListener("mousemove", move);
+          document.removeEventListener("mouseup", up);
+        };
+  
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", up);
+      });
+  
+      field.addEventListener("click", (e) => {
+        const rect = field.getBoundingClientRect();
+        const clientX = e.clientX;
+        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        bullet.dispatchEvent(new MouseEvent("mousedown", { clientX: clientX, bubbles: true }));
+      });
     });
   }
+  
   
