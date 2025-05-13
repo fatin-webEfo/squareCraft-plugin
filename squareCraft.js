@@ -87,7 +87,7 @@
          initButtonBorderTypeToggle,
          initButtonBorderRadiusControl,
          initButtonShadowControls,initButtonFontFamilyControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-         const {initHoverButtonShadowControls} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
+         const {initHoverButtonShadowControls, initHoverButtonIconPositionToggle} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -99,6 +99,7 @@
     }
     if (selectedElement) {
       initHoverButtonShadowControls(() => selectedElement);
+      initHoverButtonIconPositionToggle(() => selectedElement);
 
     }
     const trigger = event.target.closest("#border-color-select");

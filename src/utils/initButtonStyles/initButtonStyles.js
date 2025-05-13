@@ -115,9 +115,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   }
 }
 
-
-
- 
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
@@ -366,9 +363,6 @@ export function initButtonStyles(selectedButtonElement) {
   }
   
 
-   
-    
-   
 
   export function initButtonIconSizeControl(getSelectedElement) {
     const bullet = document.getElementById("buttonIconSizeradiousBullet");
@@ -502,11 +496,6 @@ export function initButtonStyles(selectedButtonElement) {
     updateUI(gapValue);
   }
   
-    
-  
-  
-  
-  
 
 
   export function initButtonBorderControl(getSelectedElement) {
@@ -611,12 +600,7 @@ export function initButtonStyles(selectedButtonElement) {
     }
   }  
   
-  
-  
-  
-  
-  
-  
+
 
   export function initButtonBorderTypeToggle(getSelectedElement) {
     const typeButtons = [

@@ -102,4 +102,71 @@ const hoverShadowState = {
     setupHoverShadowControl("Blur", 50);
     setupHoverShadowControl("Spread", 30);
   }
+
+
+  export function initHoverButtonIconPositionToggle(getSelectedElement) {
+    const dropdownTrigger = document.getElementById("hover-buttoniconPositionSection");
+    const dropdown = document.getElementById("hover-iconPositionDropdown");
+    const label = document.getElementById("hover-iconPositionLabel");
+  
+    if (!dropdownTrigger || !dropdown || !label) return;
+  
+    dropdownTrigger.onclick = () => {
+      dropdown.classList.toggle("sc-hidden");
+    };
+  
+    dropdown.querySelectorAll("[data-value]").forEach(option => {
+      option.onclick = () => {
+        const value = option.dataset.value;
+        label.innerHTML = `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
+        dropdown.classList.add("sc-hidden");
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+  
+        const btn = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const hoverStyleId = `sc-hover-style-${typeClass.replace(/--/g, "-")}`;
+        let styleTag = document.getElementById(hoverStyleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = hoverStyleId;
+          document.head.appendChild(styleTag);
+        }
+  
+        let iconSelector = `a.${typeClass}:hover .sqscraft-button-icon`;
+        let marginCSS =
+          value === "after"
+            ? `margin-left: 8px !important; margin-right: 0 !important;`
+            : `margin-right: 8px !important; margin-left: 0 !important;`;
+  
+        styleTag.innerHTML = `
+          ${iconSelector} { ${marginCSS} }
+        `;
+  
+        const allButtons = document.querySelectorAll(`a.${typeClass}`);
+        allButtons.forEach(button => {
+          const icon = button.querySelector(".sqscraft-button-icon");
+          const textDiv = button.querySelector(".sqs-html");
+  
+          if (!icon || !textDiv) return;
+  
+          icon.style.marginLeft = "";
+          icon.style.marginRight = "";
+  
+          if (value === "after") {
+            button.insertBefore(icon, textDiv.nextSibling);
+          } else {
+            button.insertBefore(icon, textDiv);
+          }
+        });
+      };
+    });
+  }
   
