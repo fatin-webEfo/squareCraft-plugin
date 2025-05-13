@@ -204,11 +204,10 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
     
       slice.forEach(family => {
-        // Load Google Font dynamically if not already loaded
-        const linkId = `font-${family.replace(/\s+/g, "-")}`;
-        if (!document.getElementById(linkId)) {
+        const fontId = `font-${family.replace(/\s+/g, "-")}`;
+        if (!document.getElementById(fontId)) {
           const link = document.createElement("link");
-          link.id = linkId;
+          link.id = fontId;
           link.rel = "stylesheet";
           link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}&display=swap`;
           document.head.appendChild(link);
@@ -229,19 +228,27 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           const selectedElement = document.querySelector("[id^='block-'].selected");
           if (!selectedElement) return;
     
-          const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
+          const btn = selectedElement.querySelector(
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          );
           if (!btn) return;
     
           const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
           if (!typeClass) return;
     
-          const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-          allButtons.forEach(button => {
-            const spans = button.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-            spans.forEach(span => {
-              span.style.setProperty("font-family", `"${family}", sans-serif`, "important");
-            });
-          });
+          let cssVar = "";
+          if (typeClass.includes("primary")) {
+            cssVar = "--primary-button-font-font-family";
+          } else if (typeClass.includes("secondary")) {
+            cssVar = "--secondary-button-font-font-family";
+          } else if (typeClass.includes("tertiary")) {
+            cssVar = "--tertiary-button-font-font-family";
+          }
+    
+          if (cssVar) {
+            document.documentElement.style.setProperty(cssVar, `"${family}", sans-serif`);
+          }
     
           container.classList.add("sc-hidden");
         });
@@ -251,7 +258,6 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
     
       fontIndex += fontsPerPage;
     }
-    
     
     function setupFontScrollLoader() {
       const container = document.getElementById("buttonFontFamilyOptions");
@@ -284,6 +290,7 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
         }
       });
     }
+    
     
 
 }
