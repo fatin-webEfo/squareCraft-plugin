@@ -86,7 +86,7 @@
          initButtonBorderControl,
          initButtonBorderTypeToggle,
          initButtonBorderRadiusControl,
-         initButtonShadowControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+         initButtonShadowControls,initButtonFontFamilyControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
          const {initHoverButtonShadowControls} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
@@ -144,6 +144,7 @@
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
       initButtonShadowControls(() => selectedElement);
+      initButtonFontFamilyControls(() => selectedElement);
       initButtonBorderTypeToggle(() => selectedElement, ( selected) => {
         if (selected) {
           const event = new Event("reapplyBorder");
