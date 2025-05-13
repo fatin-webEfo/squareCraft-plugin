@@ -164,11 +164,28 @@ export function initButtonSectionToggleControls() {
     });
   }
 
+  const buttonFontFamilySelect = document.getElementById("buttonFontFamilyButton");
+  const buttonFontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+  
+  if (buttonFontFamilySelect && buttonFontFamilyOptions) {
+    buttonFontFamilySelect.addEventListener("click", (event) => {
+      event.stopPropagation();
+      buttonFontFamilyOptions.classList.toggle("sc-hidden");
+    });
+  
+    document.addEventListener("click", (event) => {
+      if (!buttonFontFamilySelect.contains(event.target)) {
+        buttonFontFamilyOptions.classList.add("sc-hidden");
+      }
+    });
+  }
+
+
+
   const solidTab = document.getElementById("buttonIconSolidClick");
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
   const outlineOption = document.getElementById("buttonIconOutlineoptions");
-  const iconLibraryWrapper = document.getElementById("iconLibraryButton")?.querySelector("div[id^='buttonIconOutlineoptions']")?.parentElement;
 
   if (solidTab && outlineTab && solidOption && outlineOption) {
     solidTab.addEventListener("click", (e) => {
@@ -177,7 +194,6 @@ export function initButtonSectionToggleControls() {
       outlineTab.querySelector("div").classList.remove("sc-text-EF7C2F");
       solidOption.classList.remove("sc-hidden");
       outlineOption.classList.add("sc-hidden");
-      if (iconLibraryWrapper) iconLibraryWrapper.classList.remove("sc-hidden");
     });
 
     outlineTab.addEventListener("click", (e) => {
@@ -186,26 +202,6 @@ export function initButtonSectionToggleControls() {
       solidTab.querySelector("div").classList.remove("sc-text-EF7C2F");
       outlineOption.classList.remove("sc-hidden");
       solidOption.classList.add("sc-hidden");
-      if (iconLibraryWrapper) iconLibraryWrapper.classList.remove("sc-hidden");
-    });
-  }
-
-  const iconLibraryButton = document.getElementById("iconLibraryButton");
-  const dropdownWrapper = iconLibraryButton?.querySelector("div[id^='buttonIconOutlineoptions']")?.parentElement;
-  let isLibraryVisible = false;
-
-  if (iconLibraryButton && dropdownWrapper) {
-    iconLibraryButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      isLibraryVisible = !isLibraryVisible;
-      dropdownWrapper.classList.toggle("sc-hidden", !isLibraryVisible);
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!iconLibraryButton.contains(e.target) && !dropdownWrapper.contains(e.target)) {
-        dropdownWrapper.classList.add("sc-hidden");
-        isLibraryVisible = false;
-      }
     });
   }
   
