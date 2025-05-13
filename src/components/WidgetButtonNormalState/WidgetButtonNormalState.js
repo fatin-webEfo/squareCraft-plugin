@@ -28,11 +28,7 @@ export function WidgetButtonNormalState(){
                
                </div>
                <div id="buttonFontFamilyOptions" class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-w-190px sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px  sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
-               <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: Arial, sans-serif;">Arial</div>
-               <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Times New Roman', serif;">Times New Roman</div>
-               <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Courier New', monospace;">Courier New</div>
-               <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Georgia', serif;">Georgia</div>
-               <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-cursor-pointer" style="font-family: 'Verdana', sans-serif;">Verdana</div>
+
                </div>
                
 
