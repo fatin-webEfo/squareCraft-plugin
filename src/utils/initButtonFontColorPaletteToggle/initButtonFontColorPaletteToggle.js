@@ -407,17 +407,16 @@ if (allColorField && allColorBullet) {
 
   if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
-  
     requestAnimationFrame(() => {
-      updateSelectorField(firstSwatchColor);
-    
-      if (selectorField && bullet) {
+      setTimeout(() => {
+        updateSelectorField(firstSwatchColor);
+  
         const rect = selectorField.getBoundingClientRect();
         const defaultX = Math.round(rect.width * 0.5);
         const defaultY = Math.round(rect.height * 0.5);
         bullet.style.left = `${defaultX}px`;
         bullet.style.top = `${defaultY}px`;
-    
+  
         const canvas = selectorField.querySelector("canvas");
         const ctx = canvas?.getContext("2d");
         if (ctx) {
@@ -425,18 +424,14 @@ if (allColorField && allColorBullet) {
           const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
           colorCode.textContent = rgb;
         }
-      }
-    
-      if (transparencyBullet && transparencyField) {
+  
         transparencyBullet.style.top = `0px`;
-      }
-      currentTransparency = 100;
-      if (transparencyCount) {
+        currentTransparency = 100;
         transparencyCount.textContent = `100%`;
-      }
+      }, 50);
     });
+  }
     
-  }  
   
   
   if (container.children.length === 0) {
