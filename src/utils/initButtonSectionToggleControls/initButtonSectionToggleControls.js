@@ -221,48 +221,63 @@ export function initButtonSectionToggleControls() {
       div.addEventListener("click", async () => {
         const label = document.getElementById("font-name");
         const fontFace = `"${family}", sans-serif`;
-      
+
         try {
           await document.fonts.load(`1em ${fontFace}`);
         } catch (e) {
           console.warn("Font preload failed:", family);
         }
-      
+
         if (label) {
           label.innerText = family;
           label.classList.remove("sc-roboto");
           label.style.setProperty("font-family", fontFace, "important");
         }
-      
+
         const selectedElement = document.querySelector("[id^='block-'].selected");
         if (!selectedElement) return;
-      
+
         const btn = selectedElement.querySelector(
           "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
           "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
         if (!btn) return;
-      
+
         const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
         if (!typeClass) return;
-      
+
         let cssVar = "";
         if (typeClass.includes("primary")) cssVar = "--primary-button-font-font-family";
         if (typeClass.includes("secondary")) cssVar = "--secondary-button-font-font-family";
         if (typeClass.includes("tertiary")) cssVar = "--tertiary-button-font-font-family";
-      
+
         if (cssVar) {
           document.documentElement.style.setProperty(cssVar, fontFace);
-      
+        
+          const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
           const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+        
+          if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
+            const style = document.createElement("style");
+            style.dataset.font = fontClass;
+            style.innerHTML = `.${fontClass} { --sc-font-family: "${family}"; }`;
+            document.head.appendChild(style);
+          }
+        
           spans.forEach(span => {
+            [...span.classList].forEach(cls => {
+              if (cls.startsWith("sc-font-family-")) span.classList.remove(cls);
+            });
+            span.classList.add(fontClass);
+        
             span.classList.add("sc-force-repaint");
-            void span.offsetHeight; // trigger reflow
+            void span.offsetHeight;
             span.classList.remove("sc-force-repaint");
           });
         }
+        
       });
-      
+
 
 
 
@@ -305,7 +320,7 @@ export function initButtonSectionToggleControls() {
         fontFamilyOptions.classList.add("sc-hidden");
       }
     });
-    
+
   }
 
 
