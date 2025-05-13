@@ -257,9 +257,15 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
             cssVar = "--tertiary-button-font-font-family";
           }
         
-          if (cssVar) {
-            document.documentElement.style.setProperty(cssVar, fontFace);
+          try {
+            await document.fonts.load(`14px ${fontFace}`);
+            if (cssVar) {
+              document.documentElement.style.setProperty(cssVar, fontFace);
+            }
+          } catch (e) {
+            console.warn("Font load failed:", family);
           }
+          
         
           container.classList.add("sc-hidden");
         });
