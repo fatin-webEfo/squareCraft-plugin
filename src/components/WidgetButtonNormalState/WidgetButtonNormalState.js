@@ -287,7 +287,7 @@ export function WidgetButtonNormalState(){
                             </div>
                             </div>
 
-                           <div id="buttonIconSolidoptions" class="sc-mt-8 sc-hidden sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
+                           <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
                             ${solidIconList
                                 .map(
                                 (i) => `
@@ -302,7 +302,7 @@ export function WidgetButtonNormalState(){
                                 .join("")}
                             </div>
 
-                            <div id="buttonIconOutlineoptions" class=" sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
+                            <div id="buttonIconOutlineoptions" class="sc-hidden sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
                              ${outlineIcons
                                 .map(
                                 (i) => `
