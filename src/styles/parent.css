@@ -2111,3 +2111,11 @@ width: 240px !important;
 .sc-font-bold {
   font-weight: bold;
 }
+
+[class*="sc-font-family-"] {
+  font-family: var(--sc-font-family), sans-serif !important;
+}
+
+.sc-font-family-Roboto { --sc-font-family: "Roboto"; }
+.sc-font-family-Poppins { --sc-font-family: "Poppins"; }
+
