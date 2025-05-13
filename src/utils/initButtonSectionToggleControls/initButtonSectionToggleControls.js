@@ -203,11 +203,6 @@ export function initButtonSectionToggleControls() {
   const outlineTab = document.getElementById("buttonIconOutlineClick");
   const solidOption = document.getElementById("buttonIconSolidoptions");
   const outlineOption = document.getElementById("buttonIconOutlineoptions");
-  const iconLibraryDropdown = document.getElementById("buttonIconOutlineoptions")?.closest("#buttonIconOutlineoptions");
-
-  if (iconLibraryDropdown) {
-    iconLibraryDropdown.addEventListener("click", (e) => e.stopPropagation());
-  }
 
   if (solidTab && outlineTab && solidOption && outlineOption) {
     solidTab.addEventListener("click", (e) => {
