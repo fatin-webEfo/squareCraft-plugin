@@ -202,17 +202,28 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       if (!container) return;
     
       const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
+    
       slice.forEach(family => {
+        // Load Google Font dynamically if not already loaded
+        const linkId = `font-${family.replace(/\s+/g, "-")}`;
+        if (!document.getElementById(linkId)) {
+          const link = document.createElement("link");
+          link.id = linkId;
+          link.rel = "stylesheet";
+          link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}&display=swap`;
+          document.head.appendChild(link);
+        }
+    
         const div = document.createElement("div");
         div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
-        div.style.setProperty("font-family", family, "important");
         div.textContent = family;
+        div.style.fontFamily = `"${family}", sans-serif`;
     
         div.addEventListener("click", () => {
           const label = document.querySelector("#buttonFontFamilyButton p");
           if (label) {
             label.innerText = family;
-            label.style.setProperty("font-family", family, "important");
+            label.style.fontFamily = `"${family}", sans-serif`;
           }
     
           const selectedElement = document.querySelector("[id^='block-'].selected");
@@ -228,7 +239,7 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           allButtons.forEach(button => {
             const spans = button.querySelectorAll("span, .sqs-add-to-cart-button-inner");
             spans.forEach(span => {
-              span.style.setProperty("font-family", family, "important");
+              span.style.setProperty("font-family", `"${family}", sans-serif`, "important");
             });
           });
     
@@ -240,6 +251,7 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
     
       fontIndex += fontsPerPage;
     }
+    
     
     function setupFontScrollLoader() {
       const container = document.getElementById("buttonFontFamilyOptions");
