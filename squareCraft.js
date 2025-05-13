@@ -86,8 +86,8 @@
          initButtonBorderControl,
          initButtonBorderTypeToggle,
          initButtonBorderRadiusControl,
-         initButtonShadowControls,initButtonFontFamilyControls,initHoverButtonIconSizeControl } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-         const {initHoverButtonShadowControls,initHoverButtonIconRotationControl,initHoverButtonIconSpacingControl} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
+         initButtonShadowControls,initButtonFontFamilyControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
+         const {initHoverButtonShadowControls,initHoverButtonIconRotationControl,initHoverButtonIconSizeControl,initHoverButtonIconSpacingControl} = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 
 
@@ -98,7 +98,15 @@
       initButtonStyles(selectedElement);
     }
    
-
+    if (selectedElement) {
+      initHoverButtonIconRotationControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonIconSizeControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonIconSpacingControl(() => selectedElement);
+    }
     const trigger = event.target.closest("#border-color-select");
 
 
@@ -139,9 +147,6 @@
       initButtonIconPositionToggle(() => selectedElement);
       initHoverButtonShadowControls(() => selectedElement);
       initButtonIconRotationControl(() => selectedElement);
-      initHoverButtonIconSizeControl(() => selectedElement);
-      initHoverButtonIconSpacingControl(() => selectedElement);
-      initHoverButtonIconRotationControl(() => selectedElement);
       initButtonIconSizeControl(() => selectedElement);
       initButtonIconSpacingControl(() => selectedElement);
       initButtonBorderControl(() => selectedElement);
