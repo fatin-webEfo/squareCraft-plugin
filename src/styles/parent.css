@@ -2119,3 +2119,6 @@ width: 240px !important;
 .sc-font-family-Roboto { --sc-font-family: "Roboto"; }
 .sc-font-family-Poppins { --sc-font-family: "Poppins"; }
 
+.sc-force-repaint {
+  transform: scale(1); /* doesn't affect layout but triggers reflow */
+}
