@@ -1,3 +1,6 @@
+import {WidgetButtonNormalState} from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonNormalState/WidgetButtonNormalState.js'
+import {WidgetButtonHoverState} from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonHoverState/WidgetButtonHoverState.js'
+
 export function WidgetButtonSection() {
    const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());

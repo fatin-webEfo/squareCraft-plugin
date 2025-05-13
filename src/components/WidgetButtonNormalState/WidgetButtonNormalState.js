@@ -1,6 +1,8 @@
 
 
 export function WidgetButtonNormalState(){
+    const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
+   const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
     return `
     <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
             <div class="sc-flex ">
