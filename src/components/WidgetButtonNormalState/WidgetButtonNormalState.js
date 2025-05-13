@@ -5,7 +5,7 @@ export function WidgetButtonNormalState(){
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
 
 
-   const iconList = Array.from({ length: 115 }, (_, i) => i + 1);
+   const iconList = Array.from({ length: 116 }, (_, i) => i + 1);
 
   
    

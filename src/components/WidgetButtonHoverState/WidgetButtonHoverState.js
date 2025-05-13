@@ -565,7 +565,7 @@ export function WidgetButtonHoverState(){
             </div>
 
            <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
-            <div class="sc-flex sc-items-center sc-gap-5 "> 
+            <div class="sc-flex sc-items-center sc-gap-4"> 
                <div >
                <p class="sc-universal sc-roboto sc-text-sm">Button Effect</p>
    
