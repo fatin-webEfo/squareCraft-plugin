@@ -181,7 +181,6 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       });
     }
     
-
     const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
     let fontsList = [];
     let fontIndex = 0;
@@ -206,14 +205,14 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
       slice.forEach(family => {
         const div = document.createElement("div");
         div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
-        div.style.fontFamily = family;
+        div.style.setProperty("font-family", family, "important");
         div.textContent = family;
     
         div.addEventListener("click", () => {
           const label = document.querySelector("#buttonFontFamilyButton p");
           if (label) {
             label.innerText = family;
-            label.style.fontFamily = family;
+            label.style.setProperty("font-family", family, "important");
           }
     
           const selectedElement = document.querySelector("[id^='block-'].selected");
@@ -229,7 +228,7 @@ if (buttonFontWeightSelect && buttonFontWeightOptions) {
           allButtons.forEach(button => {
             const spans = button.querySelectorAll("span, .sqs-add-to-cart-button-inner");
             spans.forEach(span => {
-              span.style.fontFamily = family;
+              span.style.setProperty("font-family", family, "important");
             });
           });
     
