@@ -1497,7 +1497,7 @@ export function WidgetButtonSection() {
             </div>
 
            <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
-            <div class="sc-flex sc-items-center sc-gap-3 "> 
+            <div class="sc-flex sc-items-center sc-gap-5 "> 
                <div >
                <p class="sc-universal sc-roboto sc-text-sm">Button Effect</p>
    
