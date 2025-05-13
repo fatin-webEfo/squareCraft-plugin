@@ -115,7 +115,7 @@ const hoverShadowState = {
       const bullet = document.getElementById(`${ctrl.id}Bullet`);
       const fill = document.getElementById(`${ctrl.id}Fill`);
       const field = document.getElementById(`${ctrl.id}Field`);
-      const label = document.getElementById(`hover-buttonicon${ctrl.type}Count`);
+      const label = document.getElementById(`${ctrl.id}Count`);
   
       if (!bullet || !fill || !field || !label) return;
   
@@ -193,6 +193,7 @@ const hoverShadowState = {
       });
     });
   }
+  
   
   
   
