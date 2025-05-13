@@ -286,7 +286,7 @@ export function WidgetButtonNormalState(){
                               <div class="sc-roboto   sc-text-xs sc-font-light " >Outline</div>
                             </div>
                             </div>
-
+   </div>
                            <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
                             ${solidIconList
                                 .map(
@@ -317,7 +317,7 @@ export function WidgetButtonNormalState(){
                                 .join("")}
                             </div>
                               </div>
-                        </div>
+                     
 
                      </div>
                   </div>
