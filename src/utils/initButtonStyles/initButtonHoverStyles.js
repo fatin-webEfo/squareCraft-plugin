@@ -563,6 +563,38 @@ const hoverShadowState = {
       const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
   
+      const transitionRule = `transition: all ${duration}ms ${transition} ${delay}ms !important;`;
+  
+      const iconStyleId = `sc-hover-style-size-${typeClass.replace(/--/g, '-')}`;
+      const iconStyleTag = document.getElementById(iconStyleId);
+      if (iconStyleTag) {
+        iconStyleTag.innerHTML = iconStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
+      const iconSpacingStyleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
+      const iconSpacingStyleTag = document.getElementById(iconSpacingStyleId);
+      if (iconSpacingStyleTag) {
+        iconSpacingStyleTag.innerHTML = iconSpacingStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
+      const radiusStyleId = `sc-hover-radius-${typeClass.replace(/--/g, '-')}`;
+      const radiusStyleTag = document.getElementById(radiusStyleId);
+      if (radiusStyleTag) {
+        radiusStyleTag.innerHTML = radiusStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
+      const borderStyleId = `hover-border-style-${typeClass.replace(/--/g, '-')}`;
+      const borderStyleTag = document.getElementById(borderStyleId);
+      if (borderStyleTag) {
+        borderStyleTag.innerHTML = borderStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
+      const shadowStyleId = `sc-hover-shadow-${typeClass.replace(/--/g, '-')}`;
+      const shadowStyleTag = document.getElementById(shadowStyleId);
+      if (shadowStyleTag) {
+        shadowStyleTag.innerHTML = shadowStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
       const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
       let styleTag = document.getElementById(styleId);
       if (!styleTag) {
@@ -580,7 +612,7 @@ const hoverShadowState = {
   
       styleTag.innerHTML = `
         a.${typeClass}:hover {
-          transition: all ${duration}ms ${transition} ${delay}ms !important;
+          ${transitionRule}
           transform: ${transformRule} !important;
         }
       `;
@@ -588,6 +620,7 @@ const hoverShadowState = {
   
     applyHoverStyles();
   }
+  
   
   
   
