@@ -537,22 +537,37 @@ export function initButtonStyles(selectedButtonElement) {
   
       const value = `${borderState.value}px`;
       const blockId = selectedElement.id || "block-id";
-      const buttons = document.querySelectorAll(`#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`);
+      const styleId = `sc-button-border-${blockId}-${typeClass}`;
+      let styleTag = document.getElementById(styleId);
   
-      buttons.forEach((btn) => {
-        btn.style.setProperty("box-sizing", "border-box", "important");
-        btn.style.setProperty("border-style", window.__squareCraftBorderStyle || "solid", "important");
-        btn.style.setProperty("border-color", "black", "important");
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
   
-        if (borderState.side === "All") {
-          btn.style.setProperty("border-width", value, "important");
-        } else {
-          btn.style.setProperty("border-top-width", borderState.side === "Top" ? value : "0px", "important");
-          btn.style.setProperty("border-right-width", borderState.side === "Right" ? value : "0px", "important");
-          btn.style.setProperty("border-bottom-width", borderState.side === "Bottom" ? value : "0px", "important");
-          btn.style.setProperty("border-left-width", borderState.side === "Left" ? value : "0px", "important");
-        }
-      });
+      const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
+  
+      let rules = `
+        ${selector} {
+          box-sizing: border-box !important;
+          border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+          border-color: black !important;
+      `;
+  
+      if (borderState.side === "All") {
+        rules += `border-width: ${value} !important;`;
+      } else {
+        rules += `
+          border-top-width: ${borderState.side === "Top" ? value : "0px"} !important;
+          border-right-width: ${borderState.side === "Right" ? value : "0px"} !important;
+          border-bottom-width: ${borderState.side === "Bottom" ? value : "0px"} !important;
+          border-left-width: ${borderState.side === "Left" ? value : "0px"} !important;
+        `;
+      }
+  
+      rules += `}`;
+      styleTag.innerHTML = rules;
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -588,6 +603,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
   
    
