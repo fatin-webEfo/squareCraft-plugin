@@ -642,10 +642,10 @@ export function WidgetButtonHoverState(){
                </div>
             </div>
          </div>
-         <div id="hover-buttonEffectSection" class="sc-mt-3">
+         <div id="hover-buttonEffectSection" class="sc-mt-3 sc-z-[99999]">
             <p class="sc-universal sc-roboto sc-text-sm">Transform</p>
    
-            <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
+            <div class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
                <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
                <p id="hover-buttonTransformTypeLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                </div>   
