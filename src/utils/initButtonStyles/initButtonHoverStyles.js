@@ -425,15 +425,15 @@ const hoverShadowState = {
     function applyHoverBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-  
+    
       const btn = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!btn) return;
-  
+    
       const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
-  
+    
       const cssId = `hover-border-style-${typeClass.replace(/--/g, "-")}`;
       let styleTag = document.getElementById(cssId);
       if (!styleTag) {
@@ -441,41 +441,38 @@ const hoverShadowState = {
         styleTag.id = cssId;
         document.head.appendChild(styleTag);
       }
-  
+    
       const v = `${borderState.value}px`;
-      const map = {
-        Top: `border-top-width: ${v}`,
-        Right: `border-right-width: ${v}`,
-        Bottom: `border-bottom-width: ${v}`,
-        Left: `border-left-width: ${v}`
-      };
-  
       let rules = "";
+    
       if (borderState.side === "All") {
         rules = `
-          border-top-width: ${v};
-          border-right-width: ${v};
-          border-bottom-width: ${v};
-          border-left-width: ${v};
+          border-top-width: ${v} !important;
+          border-right-width: ${v} !important;
+          border-bottom-width: ${v} !important;
+          border-left-width: ${v} !important;
         `;
       } else {
         rules = `
-          border-top-width: ${borderState.side === "Top" ? v : "0px"};
-          border-right-width: ${borderState.side === "Right" ? v : "0px"};
-          border-bottom-width: ${borderState.side === "Bottom" ? v : "0px"};
-          border-left-width: ${borderState.side === "Left" ? v : "0px"};
+          border-top-width: ${borderState.side === "Top" ? v : "0px"} !important;
+          border-right-width: ${borderState.side === "Right" ? v : "0px"} !important;
+          border-bottom-width: ${borderState.side === "Bottom" ? v : "0px"} !important;
+          border-left-width: ${borderState.side === "Left" ? v : "0px"} !important;
         `;
       }
-  
+    
       styleTag.innerHTML = `
         a.${typeClass}:hover {
           ${rules}
           border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-          border-color: black !important;
+          border-color: ${window.__squareCraftHoverBorderColor || "black"} !important;
           border-radius: ${window.__squareCraftHoverRadius || 0}px !important;
         }
       `;
     }
+    
+    
+    
   
     function updateUI(clientX) {
       const rect = field.getBoundingClientRect();
