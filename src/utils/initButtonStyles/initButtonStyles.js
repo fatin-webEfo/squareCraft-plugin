@@ -505,7 +505,7 @@ export function initButtonStyles(selectedButtonElement) {
   
     if (!fill || !bullet || !field || !valueText) return;
   
-    let borderState = { value: 0, side: "All" };
+    if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
     const sides = ["Top", "Right", "Bottom", "Left"];
   
     ["All", ...sides].forEach((side) => {
@@ -518,7 +518,23 @@ export function initButtonStyles(selectedButtonElement) {
           if (otherEl) otherEl.classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const sample = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        );
+        if (!sample) return;
+  
+        const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+        let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
         borderState.side = side;
+        window.__squareCraftBorderStateMap.set(key, borderState);
+  
+        console.log("🟠 Active Border Tab Selected:", side);
         applyBorder();
       });
     });
@@ -535,8 +551,12 @@ export function initButtonStyles(selectedButtonElement) {
       const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
   
-      const value = `${borderState.value}px`;
       const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+      window.__squareCraftBorderStateMap.set(key, borderState);
+  
+      const value = `${borderState.value}px`;
       const styleId = `sc-button-border-${blockId}-${typeClass}`;
       let styleTag = document.getElementById(styleId);
   
@@ -580,6 +600,19 @@ export function initButtonStyles(selectedButtonElement) {
     });
   
     function updateUI(clientX) {
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
+      const sample = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      );
+      if (!sample) return;
+  
+      const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+  
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
@@ -587,13 +620,27 @@ export function initButtonStyles(selectedButtonElement) {
       fill.style.width = `${percent}%`;
       bullet.style.left = `${percent}%`;
       valueText.textContent = `${borderState.value}px`;
+      window.__squareCraftBorderStateMap.set(key, borderState);
       applyBorder();
     }
   
     const resetBtn = document.querySelector('#buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
-        borderState.value = 0;
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const sample = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        );
+        if (!sample) return;
+  
+        const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+  
+        const borderState = { value: 0, side: "All" };
+        window.__squareCraftBorderStateMap.set(key, borderState);
         fill.style.width = "0%";
         bullet.style.left = "0%";
         valueText.textContent = "0px";
@@ -603,14 +650,8 @@ export function initButtonStyles(selectedButtonElement) {
   }
   
   
-   
   
-  
-  
-  
-  
-  
-   
+
   
 
 
