@@ -340,4 +340,48 @@ const hoverShadowState = {
       applyBorderRadius();
     });
   }
+  export function initHoverButtonBorderTypeToggle(getSelectedElement) {
+    const typeButtons = [
+      { id: "hover-buttonBorderTypeSolid", type: "solid" },
+      { id: "hover-buttonBorderTypeDashed", type: "dashed" },
+      { id: "hover-buttonBorderTypeDotted", type: "dotted" }
+    ];
+  
+    typeButtons.forEach(({ id, type }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+  
+      el.onclick = () => {
+        typeButtons.forEach(({ id }) => {
+          const btn = document.getElementById(id);
+          btn?.classList.remove("sc-bg-454545");
+        });
+  
+        el.classList.add("sc-bg-454545");
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+  
+        const sample = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!sample) return;
+  
+        const typeClass = [...sample.classList].find(cls =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (!typeClass) return;
+  
+        const styleId = `sc-hover-border-style-${typeClass.replace(/--/g, "-")}`;
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+  
+        styleTag.innerHTML = `a.${typeClass}:hover { border-style: ${type} !important; }`;
+      };
+    });
+  }
   
