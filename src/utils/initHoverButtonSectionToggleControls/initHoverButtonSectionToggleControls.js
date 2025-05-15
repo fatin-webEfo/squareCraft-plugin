@@ -68,10 +68,10 @@ export function initHoverButtonEffectDropdowns() {
   let lastOpenedDropdown = null;
 
   const dropdownMap = [
-    { key: "TransitionType" },
+    { key: "TransitionType" }, // all IDs match HTML
     { key: "Duration" },
-    { key: "DelayType", label: "DelayLabel", dropdown: "DelayDropdown", select: "DelayTypeSelect" },
-    { key: "TransformType" }
+    { key: "Delay", label: "DelayLabel", dropdown: "DelayDropdown", select: "DelayTypeSelect" }, // special case
+    { key: "Transform", label: "TransformTypeLabel", dropdown: "TransformDropdown", select: "TransformTypeSelect" } // fixed
   ];
 
   dropdownMap.forEach(({ key, label, dropdown, select }) => {
@@ -118,5 +118,6 @@ export function initHoverButtonEffectDropdowns() {
     lastOpenedDropdown = null;
   });
 }
+
 
 
