@@ -520,36 +520,74 @@ const hoverShadowState = {
     const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
     const transformType = document.getElementById("hover-buttonTransformTypeLabel")?.textContent?.trim() || "none";
   
-    const selected = getSelectedElement?.();
-    if (!selected) return;
+    const bullet = document.getElementById("hover-buttonIconTransformPositionBullet");
+    const fill = document.getElementById("hover-buttonIconTransformPositionFill");
+    const field = document.getElementById("hover-buttonIconTransformPositionField");
+    const label = document.getElementById("hover-buttoniconTransformPositionCount");
   
-    const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!button) return;
+    if (!bullet || !fill || !field || !label) return;
   
-    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-  
-    const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      const value = Math.round((x / rect.width) * 50);
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      label.textContent = `${value}px`;
+      window.__squareCraftTransformDistance = value;
+      applyHoverStyles();
     }
   
-    let transformRule = "";
-    if (transformType === "TranslateX") transformRule = "translateX(10px)";
-    else if (transformType === "TranslateY") transformRule = "translateY(10px)";
-    else if (transformType === "RotateX") transformRule = "rotateX(10deg)";
-    else if (transformType === "RotateY") transformRule = "rotateY(10deg)";
-    else if (transformType === "Scale") transformRule = "scale(1.05)";
-    else transformRule = "none";
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (e) => updateUI(e.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
   
-    styleTag.innerHTML = `
-      a.${typeClass}:hover {
-        transition: all ${duration}ms ${transition} ${delay}ms !important;
-        transform: ${transformRule} !important;
+    field.addEventListener("click", (e) => updateUI(e.clientX));
+  
+    function applyHoverStyles() {
+      const distance = window.__squareCraftTransformDistance || 10;
+      const selected = getSelectedElement?.();
+      if (!selected) return;
+  
+      const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!button) return;
+  
+      const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
       }
-    `;
+  
+      let transformRule = "";
+      if (transformType === "TranslateX") transformRule = `translateX(${distance}px)`;
+      else if (transformType === "TranslateY") transformRule = `translateY(${distance}px)`;
+      else if (transformType === "RotateX") transformRule = `rotateX(${distance}deg)`;
+      else if (transformType === "RotateY") transformRule = `rotateY(${distance}deg)`;
+      else if (transformType === "Scale") transformRule = `scale(${1 + distance / 100})`;
+      else transformRule = "none";
+  
+      styleTag.innerHTML = `
+        a.${typeClass}:hover {
+          transition: all ${duration}ms ${transition} ${delay}ms !important;
+          transform: ${transformRule} !important;
+        }
+      `;
+    }
+  
+    applyHoverStyles();
   }
+  
   
