@@ -66,6 +66,7 @@ export function initHoverButtonSectionToggleControls() {
 
 export function initHoverButtonEffectDropdowns() {
   const types = ["TransitionType", "Duration", "Delay", "TransformType"];
+  let lastOpenedDropdown = null;
 
   types.forEach(type => {
     const labelId = `hover-button${type}Label`;
@@ -79,22 +80,39 @@ export function initHoverButtonEffectDropdowns() {
     if (labelEl && dropdownEl && selectEl) {
       selectEl.addEventListener("click", (e) => {
         e.stopPropagation();
-        dropdownEl.classList.toggle("sc-hidden");
+
+        if (lastOpenedDropdown && lastOpenedDropdown !== dropdownEl) {
+          lastOpenedDropdown.classList.add("sc-hidden");
+        }
+
+        const isHidden = dropdownEl.classList.contains("sc-hidden");
+        dropdownEl.classList.toggle("sc-hidden", !isHidden);
+
+        lastOpenedDropdown = isHidden ? dropdownEl : null;
       });
 
       dropdownEl.querySelectorAll("[data-value]").forEach(item => {
         item.addEventListener("click", () => {
-          labelEl.textContent = item.getAttribute("data-value");
+          const value = item.getAttribute("data-value");
+          labelEl.textContent = value;
           dropdownEl.classList.add("sc-hidden");
+          lastOpenedDropdown = null;
         });
-      });
-
-      document.addEventListener("click", (e) => {
-        if (!dropdownEl.contains(e.target) && !selectEl.contains(e.target)) {
-          dropdownEl.classList.add("sc-hidden");
-        }
       });
     }
   });
+
+  document.addEventListener("click", (e) => {
+    types.forEach(type => {
+      const dropdownEl = document.getElementById(`hover-button${type}Dropdown`);
+      const selectEl = document.getElementById(`hover-button${type}Select`);
+
+      if (dropdownEl && !dropdownEl.contains(e.target) && !selectEl.contains(e.target)) {
+        dropdownEl.classList.add("sc-hidden");
+      }
+    });
+    lastOpenedDropdown = null;
+  });
 }
+
 
