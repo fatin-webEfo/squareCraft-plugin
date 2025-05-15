@@ -100,18 +100,27 @@
 
 
     if (selectedElement) {
-      [
-        initButtonStyles,
-        initHoverButtonIconRotationControl,
-        initHoverButtonIconSizeControl,
-        initHoverButtonIconSpacingControl,
-        initHoverButtonBorderRadiusControl,
-        initHoverButtonBorderTypeToggle,
-        initHoverButtonBorderControl,
-        
-      ].forEach(fn => fn(() => selectedElement));
+      initButtonStyles(selectedElement);
     }
-    
+   
+    if (selectedElement) {
+      initHoverButtonIconRotationControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonIconSizeControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonIconSpacingControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonBorderRadiusControl(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonBorderTypeToggle(() => selectedElement);
+    }
+    if (selectedElement) {
+      initHoverButtonBorderControl(() => selectedElement);
+    }
     const trigger = event.target.closest("#border-color-select");
 
 
