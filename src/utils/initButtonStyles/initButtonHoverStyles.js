@@ -405,19 +405,36 @@ const hoverShadowState = {
   
     if (!fill || !bullet || !field || !valueText) return;
   
-    const sides = ["All", "Top", "Right", "Bottom", "Left"];
-    let borderState = { value: 0, side: "All" };
+    if (!window.__squareCraftHoverBorderStateMap) window.__squareCraftHoverBorderStateMap = new Map();
+    const sides = ["Top", "Right", "Bottom", "Left"];
   
-    sides.forEach(side => {
-      const el = document.getElementById(`hover-buttonBorder${side}`);
+    ["All", ...sides].forEach((side) => {
+      const id = `hover-buttonBorder${side}`;
+      const el = document.getElementById(id);
       if (!el) return;
       el.addEventListener("click", () => {
-        sides.forEach(s => {
-          const btn = document.getElementById(`hover-buttonBorder${s}`);
-          btn?.classList.remove("sc-bg-454545");
+        ["All", ...sides].forEach((other) => {
+          const otherEl = document.getElementById(`hover-buttonBorder${other}`);
+          if (otherEl) otherEl.classList.remove("sc-bg-454545");
         });
         el.classList.add("sc-bg-454545");
-        borderState.side = side;
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const btn = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+        let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+        state.side = side;
+        window.__squareCraftHoverBorderStateMap.set(key, state);
+  
         applyHoverBorder();
       });
     });
@@ -425,67 +442,45 @@ const hoverShadowState = {
     function applyHoverBorder() {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-    
+  
       const btn = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!btn) return;
-    
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+  
+      const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
-    
-      const cssId = `hover-border-style-${typeClass.replace(/--/g, "-")}`;
-      let styleTag = document.getElementById(cssId);
+  
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      const state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+      const value = `${state.value}px`;
+  
+      const top = state.side === "Top" || state.side === "All" ? value : "0px";
+      const right = state.side === "Right" || state.side === "All" ? value : "0px";
+      const bottom = state.side === "Bottom" || state.side === "All" ? value : "0px";
+      const left = state.side === "Left" || state.side === "All" ? value : "0px";
+  
+      const styleId = `hover-button-border-${blockId}-${typeClass}`;
+      let styleTag = document.getElementById(styleId);
       if (!styleTag) {
         styleTag = document.createElement("style");
-        styleTag.id = cssId;
+        styleTag.id = styleId;
         document.head.appendChild(styleTag);
       }
-    
-      const v = `${borderState.value}px`;
-      let rules = "";
-    
-      if (borderState.side === "All") {
-        rules = `
-          border-top-width: ${v} !important;
-          border-right-width: ${v} !important;
-          border-bottom-width: ${v} !important;
-          border-left-width: ${v} !important;
-        `;
-      } else {
-        rules = `
-          border-top-width: ${borderState.side === "Top" ? v : "0px"} !important;
-          border-right-width: ${borderState.side === "Right" ? v : "0px"} !important;
-          border-bottom-width: ${borderState.side === "Bottom" ? v : "0px"} !important;
-          border-left-width: ${borderState.side === "Left" ? v : "0px"} !important;
-        `;
-      }
-    
-      styleTag.innerHTML = `
-        a.${typeClass}:hover {
-          ${rules}
-          border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-          border-color: ${window.__squareCraftHoverBorderColor || "black"} !important;
-          border-radius: ${window.__squareCraftHoverRadius || 0}px !important;
-        }
-      `;
-    }
-    
-    
-    
   
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      borderState.value = Math.round((x / rect.width) * 10);
+      const rules = `a.${typeClass}:hover {
+    border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+    border-color: ${window.__squareCraftHoverBorderColor || "black"} !important;
+    border-radius: ${window.__squareCraftHoverRadius || 0}px !important;
+    border-top-width: ${top} !important;
+    border-right-width: ${right} !important;
+    border-bottom-width: ${bottom} !important;
+    border-left-width: ${left} !important;
+  }`;
   
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      valueText.textContent = `${borderState.value}px`;
-  
-      applyHoverBorder();
-      window.__squareCraftHoverBorderWidth = borderState.value;
+      styleTag.innerHTML = rules;
+      console.log("🟣 Applied Hover Border CSS:", rules);
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -499,19 +494,61 @@ const hoverShadowState = {
       document.addEventListener("mouseup", up);
     });
   
-    field.addEventListener("click", (e) => updateUI(e.clientX));
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      const value = Math.round((x / rect.width) * 10);
+  
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      valueText.textContent = `${value}px`;
+  
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
+      const btn = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+  
+      const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+      state.value = value;
+      window.__squareCraftHoverBorderStateMap.set(key, state);
+  
+      applyHoverBorder();
+    }
   
     const resetBtn = document.querySelector('#hover-buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
-        borderState.value = 0;
         bullet.style.left = "0%";
         fill.style.width = "0%";
         valueText.textContent = "0px";
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const btn = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+  
+        window.__squareCraftHoverBorderStateMap.set(key, { value: 0, side: "All" });
         applyHoverBorder();
       });
     }
   }
+  
   
 
   export function applyHoverButtonEffects(getSelectedElement) {
