@@ -513,3 +513,43 @@ const hoverShadowState = {
     }
   }
   
+
+  export function applyHoverButtonEffects(getSelectedElement) {
+    const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
+    const duration = document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() || "0";
+    const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
+    const transformType = document.getElementById("hover-buttonTransformTypeLabel")?.textContent?.trim() || "none";
+  
+    const selected = getSelectedElement?.();
+    if (!selected) return;
+  
+    const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!button) return;
+  
+    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+  
+    const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+  
+    let transformRule = "";
+    if (transformType === "TranslateX") transformRule = "translateX(10px)";
+    else if (transformType === "TranslateY") transformRule = "translateY(10px)";
+    else if (transformType === "RotateX") transformRule = "rotateX(10deg)";
+    else if (transformType === "RotateY") transformRule = "rotateY(10deg)";
+    else if (transformType === "Scale") transformRule = "scale(1.05)";
+    else transformRule = "none";
+  
+    styleTag.innerHTML = `
+      a.${typeClass}:hover {
+        transition: all ${duration}ms ${transition} ${delay}ms !important;
+        transform: ${transformRule} !important;
+      }
+    `;
+  }
+  
