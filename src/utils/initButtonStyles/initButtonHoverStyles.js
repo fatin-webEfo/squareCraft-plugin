@@ -531,7 +531,7 @@ const hoverShadowState = {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
       const percent = (x / rect.width) * 100;
-      const value = Math.round((x / rect.width) * 50);
+      const value = Math.round((x / rect.width) * 180 - 90);
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
       label.textContent = `${value}px`;
@@ -553,7 +553,7 @@ const hoverShadowState = {
     field.addEventListener("click", (e) => updateUI(e.clientX));
   
     function applyHoverStyles() {
-      const distance = window.__squareCraftTransformDistance || 10;
+      const distance = window.__squareCraftTransformDistance ?? 0;
       const selected = getSelectedElement?.();
       if (!selected) return;
   
@@ -571,13 +571,12 @@ const hoverShadowState = {
         document.head.appendChild(styleTag);
       }
   
-      let transformRule = "";
+      let transformRule = "none";
       if (transformType === "TranslateX") transformRule = `translateX(${distance}px)`;
       else if (transformType === "TranslateY") transformRule = `translateY(${distance}px)`;
       else if (transformType === "RotateX") transformRule = `rotateX(${distance}deg)`;
       else if (transformType === "RotateY") transformRule = `rotateY(${distance}deg)`;
       else if (transformType === "Scale") transformRule = `scale(${1 + distance / 100})`;
-      else transformRule = "none";
   
       styleTag.innerHTML = `
         a.${typeClass}:hover {
@@ -589,5 +588,7 @@ const hoverShadowState = {
   
     applyHoverStyles();
   }
+  
+  
   
   
