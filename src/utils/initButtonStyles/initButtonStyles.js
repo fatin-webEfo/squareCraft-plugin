@@ -536,30 +536,22 @@ export function initButtonStyles(selectedButtonElement) {
       if (!typeClass) return;
   
       const value = `${borderState.value}px`;
-      const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-      allButtons.forEach((btn) => {
-        const resetSides = {
-          top: "0px",
-          right: "0px",
-          bottom: "0px",
-          left: "0px"
-        };
+      const blockId = selectedElement.id || "block-id";
+      const buttons = document.querySelectorAll(`#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}`);
   
-        if (borderState.side === "All") {
-          btn.style.borderTopWidth = value;
-          btn.style.borderRightWidth = value;
-          btn.style.borderBottomWidth = value;
-          btn.style.borderLeftWidth = value;
-        } else {
-          const sideKey = borderState.side.toLowerCase();
-          btn.style.borderTopWidth = sideKey === "top" ? value : "0px";
-          btn.style.borderRightWidth = sideKey === "right" ? value : "0px";
-          btn.style.borderBottomWidth = sideKey === "bottom" ? value : "0px";
-          btn.style.borderLeftWidth = sideKey === "left" ? value : "0px";
-        }
-  
+      buttons.forEach((btn) => {
+        btn.style.boxSizing = "border-box";
         btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
         btn.style.borderColor = "black";
+  
+        if (borderState.side === "All") {
+          btn.style.borderWidth = value;
+        } else {
+          btn.style.borderTopWidth = borderState.side === "Top" ? value : "0px";
+          btn.style.borderRightWidth = borderState.side === "Right" ? value : "0px";
+          btn.style.borderBottomWidth = borderState.side === "Bottom" ? value : "0px";
+          btn.style.borderLeftWidth = borderState.side === "Left" ? value : "0px";
+        }
       });
     }
   
@@ -596,6 +588,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
    
   
 
