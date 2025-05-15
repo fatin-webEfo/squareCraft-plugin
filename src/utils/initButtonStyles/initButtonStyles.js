@@ -594,7 +594,7 @@ export function initButtonStyles(selectedButtonElement) {
         applyBorder();
       });
     }
-  }
+  }  
   
   
   
