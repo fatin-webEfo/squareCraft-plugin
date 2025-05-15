@@ -554,7 +554,10 @@ export function initButtonStyles(selectedButtonElement) {
         `  border-color: black !important;\n`;
   
       if (borderState.side === "All") {
-        rules += `  border-width: ${value} !important;\n`;
+        rules += `  border-top-width: ${value} !important;\n`;
+        rules += `  border-right-width: ${value} !important;\n`;
+        rules += `  border-bottom-width: ${value} !important;\n`;
+        rules += `  border-left-width: ${value} !important;\n`;
       } else {
         rules += `  border-top-width: ${borderState.side === "Top" ? value : "0px"} !important;\n`;
         rules += `  border-right-width: ${borderState.side === "Right" ? value : "0px"} !important;\n`;
@@ -599,6 +602,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
   
   
