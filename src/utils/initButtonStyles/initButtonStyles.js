@@ -670,17 +670,39 @@ export function initButtonStyles(selectedButtonElement) {
     function applyBorderRadius() {
       const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
       if (!selectedElement) return;
-  
+    
       const sampleButton = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
       if (!sampleButton) return;
-  
+    
       const typeClass = getButtonTypeClass(sampleButton);
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
-      allButtons.forEach(btn => {
-        btn.style.setProperty("border-radius", `${radiusValue}px`, "important");
-      });
+      const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+    
+      styleTag.innerHTML = `
+        a.${typeClass} {
+          border-radius: ${radiusValue}px !important;
+          overflow: hidden !important;
+        }
+        a.${typeClass} span,
+        a.${typeClass} .sqs-add-to-cart-button-inner {
+          border-radius: ${radiusValue}px !important;
+        }
+        a.${typeClass}:hover {
+          border-radius: ${radiusValue}px !important;
+          overflow: hidden !important;
+        }
+        a.${typeClass}:hover span,
+        a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+          border-radius: ${radiusValue}px !important;
+        }
+      `;
     }
   
     function updateUI(clientX) {
