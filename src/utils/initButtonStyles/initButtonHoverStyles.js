@@ -550,6 +550,7 @@ const hoverShadowState = {
   }
   
   
+  
 
   export function applyHoverButtonEffects(getSelectedElement) {
     const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
