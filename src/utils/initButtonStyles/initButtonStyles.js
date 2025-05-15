@@ -539,7 +539,7 @@ export function initButtonStyles(selectedButtonElement) {
       const value = `${borderState.value}px`;
       const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
       allButtons.forEach((btn) => {
-        const borders = {
+        const resetSides = {
           top: "0px",
           right: "0px",
           bottom: "0px",
@@ -547,19 +547,17 @@ export function initButtonStyles(selectedButtonElement) {
         };
   
         if (borderState.side === "All") {
-          borders.top = value;
-          borders.right = value;
-          borders.bottom = value;
-          borders.left = value;
+          btn.style.borderTopWidth = value;
+          btn.style.borderRightWidth = value;
+          btn.style.borderBottomWidth = value;
+          btn.style.borderLeftWidth = value;
         } else {
           const sideKey = borderState.side.toLowerCase();
-          borders[sideKey] = value;
+          btn.style.borderTopWidth = sideKey === "top" ? value : "0px";
+          btn.style.borderRightWidth = sideKey === "right" ? value : "0px";
+          btn.style.borderBottomWidth = sideKey === "bottom" ? value : "0px";
+          btn.style.borderLeftWidth = sideKey === "left" ? value : "0px";
         }
-  
-        btn.style.borderTopWidth = borders.top;
-        btn.style.borderRightWidth = borders.right;
-        btn.style.borderBottomWidth = borders.bottom;
-        btn.style.borderLeftWidth = borders.left;
   
         btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
         btn.style.borderColor = "black";
@@ -598,7 +596,8 @@ export function initButtonStyles(selectedButtonElement) {
         applyBorder();
       });
     }
-  }  
+  }
+   
   
 
 
