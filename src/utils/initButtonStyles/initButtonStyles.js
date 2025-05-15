@@ -560,6 +560,7 @@ export function initButtonStyles(selectedButtonElement) {
         `}`;
   
       styleTag.innerHTML = rules;
+      console.log("🧾 Applied Border CSS:", rules);
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -594,7 +595,9 @@ export function initButtonStyles(selectedButtonElement) {
         applyBorder();
       });
     }
-  }  
+  }
+  
+   
   
   
   
