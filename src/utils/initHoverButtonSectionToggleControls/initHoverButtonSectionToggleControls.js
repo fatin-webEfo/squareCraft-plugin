@@ -65,13 +65,19 @@ export function initHoverButtonSectionToggleControls() {
 
 
 export function initHoverButtonEffectDropdowns() {
-  const types = ["TransitionType", "Duration", "Delay", "TransformType"];
   let lastOpenedDropdown = null;
 
-  types.forEach(type => {
-    const labelId = `hover-button${type}Label`;
-    const dropdownId = `hover-button${type}Dropdown`;
-    const selectId = `hover-button${type}Select`;
+  const dropdownMap = [
+    { key: "TransitionType" },
+    { key: "Duration" },
+    { key: "DelayType", label: "DelayLabel", dropdown: "DelayDropdown", select: "DelayTypeSelect" },
+    { key: "TransformType" }
+  ];
+
+  dropdownMap.forEach(({ key, label, dropdown, select }) => {
+    const labelId = `hover-button${label || key + "Label"}`;
+    const dropdownId = `hover-button${dropdown || key + "Dropdown"}`;
+    const selectId = `hover-button${select || key + "Select"}`;
 
     const labelEl = document.getElementById(labelId);
     const dropdownEl = document.getElementById(dropdownId);
@@ -87,14 +93,12 @@ export function initHoverButtonEffectDropdowns() {
 
         const isHidden = dropdownEl.classList.contains("sc-hidden");
         dropdownEl.classList.toggle("sc-hidden", !isHidden);
-
         lastOpenedDropdown = isHidden ? dropdownEl : null;
       });
 
       dropdownEl.querySelectorAll("[data-value]").forEach(item => {
         item.addEventListener("click", () => {
-          const value = item.getAttribute("data-value");
-          labelEl.textContent = value;
+          labelEl.textContent = item.getAttribute("data-value");
           dropdownEl.classList.add("sc-hidden");
           lastOpenedDropdown = null;
         });
@@ -103,9 +107,9 @@ export function initHoverButtonEffectDropdowns() {
   });
 
   document.addEventListener("click", (e) => {
-    types.forEach(type => {
-      const dropdownEl = document.getElementById(`hover-button${type}Dropdown`);
-      const selectEl = document.getElementById(`hover-button${type}Select`);
+    dropdownMap.forEach(({ key, dropdown, select }) => {
+      const dropdownEl = document.getElementById(`hover-button${dropdown || key + "Dropdown"}`);
+      const selectEl = document.getElementById(`hover-button${select || key + "Select"}`);
 
       if (dropdownEl && !dropdownEl.contains(e.target) && !selectEl.contains(e.target)) {
         dropdownEl.classList.add("sc-hidden");
