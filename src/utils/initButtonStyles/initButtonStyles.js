@@ -553,16 +553,17 @@ export function initButtonStyles(selectedButtonElement) {
         `  border-style: ${window.__squareCraftBorderStyle || "solid"} !important;\n` +
         `  border-color: black !important;\n`;
   
+      const zero = "0px";
       if (borderState.side === "All") {
         rules += `  border-top-width: ${value} !important;\n`;
         rules += `  border-right-width: ${value} !important;\n`;
         rules += `  border-bottom-width: ${value} !important;\n`;
         rules += `  border-left-width: ${value} !important;\n`;
       } else {
-        rules += `  border-top-width: ${borderState.side === "Top" ? value : "0px"} !important;\n`;
-        rules += `  border-right-width: ${borderState.side === "Right" ? value : "0px"} !important;\n`;
-        rules += `  border-bottom-width: ${borderState.side === "Bottom" ? value : "0px"} !important;\n`;
-        rules += `  border-left-width: ${borderState.side === "Left" ? value : "0px"} !important;\n`;
+        rules += `  border-top-width: ${borderState.side === "Top" ? value : zero} !important;\n`;
+        rules += `  border-right-width: ${borderState.side === "Right" ? value : zero} !important;\n`;
+        rules += `  border-bottom-width: ${borderState.side === "Bottom" ? value : zero} !important;\n`;
+        rules += `  border-left-width: ${borderState.side === "Left" ? value : zero} !important;\n`;
       }
   
       rules += `}`;
@@ -602,6 +603,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
   
   
