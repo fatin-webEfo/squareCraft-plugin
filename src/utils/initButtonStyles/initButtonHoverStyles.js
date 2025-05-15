@@ -667,6 +667,87 @@ const hoverShadowState = {
   
   
   
+  window.syncHoverButtonStylesFromElement = function (selectedElement) {
+    if (!selectedElement) return;
+  
+    const sampleButton = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+    if (!sampleButton) return;
+  
+    const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    const getPercent = (val, max) => `${(val / max) * 100}%`;
+  
+    const set = (id, value, max) => {
+      const count = document.getElementById(id + "Count");
+      const fill = document.getElementById(id + "Fill");
+      const bullet = document.getElementById(id + "Bullet");
+      if (!count || !fill || !bullet) return;
+      count.textContent = `${value}px`;
+      fill.style.width = getPercent(value, max);
+      bullet.style.left = getPercent(value, max);
+    };
+  
+    const typeClass = [...sampleButton.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+  
+    const hoverKey = `hover--${typeClass}`;
+    const hoverBorderState = window.__squareCraftHoverBorderStateMap?.get(hoverKey) || { value: 0, side: "All" };
+  
+    set("hover-buttonBorder", hoverBorderState.value, 10);
+    set("hover-buttonBorderRadious", parseInt(window.__squareCraftHoverRadius || 0), 50);
+  
+    ["hover-buttonBorderTypeSolid", "hover-buttonBorderTypeDashed", "hover-buttonBorderTypeDotted"].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle || "solid"));
+    });
+  
+    const iconSize = parseInt(icon?.style.width || "0");
+    set("hover-buttonIconSizeradious", iconSize, 50);
+  
+    if (icon?.style.transform) {
+      const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+      if (match) {
+        const rotation = parseFloat(match[1]);
+        const percent = ((rotation + 180) / 360) * 100;
+        document.getElementById("hover-buttoniconRotationradiousCount").textContent = `${rotation}deg`;
+        document.getElementById("hover-buttonIconRotationradiousBullet").style.left = `${percent}%`;
+        document.getElementById("hover-buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
+        document.getElementById("hover-buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
+      }
+    }
+  
+    const spacing = {
+      top: parseInt(icon?.style.marginTop || "0"),
+      bottom: parseInt(icon?.style.marginBottom || "0"),
+      left: parseInt(icon?.style.marginLeft || "0"),
+      right: parseInt(icon?.style.marginRight || "0")
+    };
+    const spacingValue = Math.max(...Object.values(spacing));
+    const spacingPercent = getPercent(spacingValue, 30);
+    document.getElementById("hover-buttoniconSpacingradiousCount").textContent = `${spacingValue}px`;
+    document.getElementById("hover-buttonIconSpacingradiousFill").style.width = spacingPercent;
+    document.getElementById("hover-buttonIconSpacingradiousBullet").style.left = spacingPercent;
+  
+    ["Top", "Bottom", "Left", "Right"].forEach(dir => {
+      const el = document.getElementById(`hover-buttonIconSpacing${dir}`);
+      if (el) el.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);
+    });
+  
+    const match = (sampleButton.style.boxShadow || "").match(/(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(\d+)px/);
+    if (match) {
+      const [x, y, blur, spread] = match.slice(1).map(Number);
+      const props = { Xaxis: [x, 30], Yaxis: [y, 30], Blur: [blur, 50], Spread: [spread, 30] };
+      Object.entries(props).forEach(([type, [val, max]]) => {
+        const count = document.getElementById(`hover-buttonShadow${type}Count`);
+        const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
+        const fill = document.querySelector(`#hover-buttonShadow${type}Field .sc-shadow-fill`);
+        if (count) count.textContent = `${val}px`;
+        if (bullet) bullet.style.left = getPercent(val, max);
+        if (fill) fill.style.width = getPercent(val, max);
+      });
+    }
+  };
   
   
   
