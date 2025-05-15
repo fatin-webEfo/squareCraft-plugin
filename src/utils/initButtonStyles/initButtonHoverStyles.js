@@ -595,6 +595,12 @@ const hoverShadowState = {
         shadowStyleTag.innerHTML = shadowStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
       }
   
+      const iconRotateStyleId = `sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`;
+      const iconRotateStyleTag = document.getElementById(iconRotateStyleId);
+      if (iconRotateStyleTag) {
+        iconRotateStyleTag.innerHTML = iconRotateStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+      }
+  
       const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
       let styleTag = document.getElementById(styleId);
       if (!styleTag) {
@@ -620,6 +626,7 @@ const hoverShadowState = {
   
     applyHoverStyles();
   }
+  
   
   
   
