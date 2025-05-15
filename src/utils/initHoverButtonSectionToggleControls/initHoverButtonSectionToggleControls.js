@@ -68,12 +68,11 @@ export function initHoverButtonEffectDropdowns() {
   let lastOpenedDropdown = null;
 
   const dropdownMap = [
-    { key: "TransitionType" },
-    { key: "Duration" },       
-    { key: "Delay" },          
-    { key: "TransformType" }   
+    { key: "TransitionType", select: "TransitionTypeSelect" }, 
+    { key: "Duration" },
+    { key: "Delay", label: "DelayLabel", dropdown: "DelayDropdown", select: "DelayTypeSelect" }, // special case
+    { key: "Transform", label: "TransformTypeLabel", dropdown: "TransformDropdown", select: "TransformTypeSelect" } // fixed
   ];
-  
 
   dropdownMap.forEach(({ key, label, dropdown, select }) => {
     const labelId = `hover-button${label || key + "Label"}`;
