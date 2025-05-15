@@ -423,8 +423,7 @@ export function initButtonStyles(selectedButtonElement) {
   
     field.addEventListener("click", (e) => updateUI(e.clientX));
   }
-  
-  
+
 
   export function initButtonIconSpacingControl(getSelectedElement) {
     const fill = document.getElementById("buttonIconSpacingradiousFill");
