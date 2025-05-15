@@ -34,30 +34,7 @@ export function initHoverButtonSectionToggleControls() {
       });
     }
   });
-  
-  const effectTypeDropdown = document.getElementById("hover-buttonTransitionDropdown");
-  const effectTypeSelect = document.getElementById("hover-buttonTransitionTypeSelect");
-  const effectTypeLabel = document.getElementById("hover-buttonTransitionTypeLabel");
 
-  if (effectTypeSelect && effectTypeDropdown && effectTypeLabel) {
-    effectTypeSelect.addEventListener("click", (e) => {
-      e.stopPropagation();
-      effectTypeDropdown.classList.toggle("sc-hidden");
-    });
-
-    effectTypeDropdown.querySelectorAll("[data-value]").forEach(item => {
-      item.addEventListener("click", () => {
-        effectTypeLabel.textContent = item.getAttribute("data-value");
-        effectTypeDropdown.classList.add("sc-hidden");
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!effectTypeDropdown.contains(e.target) && !effectTypeSelect.contains(e.target)) {
-        effectTypeDropdown.classList.add("sc-hidden");
-      }
-    });
-  }
 
   const durationDropdown = document.getElementById("hover-all-color-selction-bar");
   const durationSelect = document.getElementById("hover-buttonDuration Select");
@@ -83,30 +60,41 @@ export function initHoverButtonSectionToggleControls() {
     });
   }
 
-  const delayDropdown = document.getElementById("hover-buttonDelayDropdown");
-  const delaySelect = document.getElementById("hover-buttonDelayTypeSelect");
-  const delayLabel = document.getElementById("hover-buttonDelayLabel");
 
-  if (delayDropdown && delaySelect && delayLabel) {
-    delaySelect.addEventListener("click", (e) => {
-      e.stopPropagation();
-      delayDropdown.classList.toggle("sc-hidden");
-    });
-
-    delayDropdown.querySelectorAll("[data-value]").forEach(item => {
-      item.addEventListener("click", () => {
-        delayLabel.textContent = item.getAttribute("data-value");
-        delayDropdown.classList.add("sc-hidden");
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!delayDropdown.contains(e.target) && !delaySelect.contains(e.target)) {
-        delayDropdown.classList.add("sc-hidden");
-      }
-    });
-  }
 }
 
 
+export function initHoverButtonEffectDropdowns() {
+  const types = ["TransitionType", "Duration", "Delay", "TransformType"];
+
+  types.forEach(type => {
+    const labelId = `hover-button${type}Label`;
+    const dropdownId = `hover-button${type}Dropdown`;
+    const selectId = `hover-button${type}Select`;
+
+    const labelEl = document.getElementById(labelId);
+    const dropdownEl = document.getElementById(dropdownId);
+    const selectEl = document.getElementById(selectId);
+
+    if (labelEl && dropdownEl && selectEl) {
+      selectEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownEl.classList.toggle("sc-hidden");
+      });
+
+      dropdownEl.querySelectorAll("[data-value]").forEach(item => {
+        item.addEventListener("click", () => {
+          labelEl.textContent = item.getAttribute("data-value");
+          dropdownEl.classList.add("sc-hidden");
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!dropdownEl.contains(e.target) && !selectEl.contains(e.target)) {
+          dropdownEl.classList.add("sc-hidden");
+        }
+      });
+    }
+  });
+}
 
