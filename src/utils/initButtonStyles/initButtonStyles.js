@@ -537,20 +537,20 @@ export function initButtonStyles(selectedButtonElement) {
   
       const value = `${borderState.value}px`;
       const blockId = selectedElement.id || "block-id";
-      const buttons = document.querySelectorAll(`#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}`);
+      const buttons = document.querySelectorAll(`#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`);
   
       buttons.forEach((btn) => {
-        btn.style.boxSizing = "border-box";
-        btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
-        btn.style.borderColor = "black";
+        btn.style.setProperty("box-sizing", "border-box", "important");
+        btn.style.setProperty("border-style", window.__squareCraftBorderStyle || "solid", "important");
+        btn.style.setProperty("border-color", "black", "important");
   
         if (borderState.side === "All") {
-          btn.style.borderWidth = value;
+          btn.style.setProperty("border-width", value, "important");
         } else {
-          btn.style.borderTopWidth = borderState.side === "Top" ? value : "0px";
-          btn.style.borderRightWidth = borderState.side === "Right" ? value : "0px";
-          btn.style.borderBottomWidth = borderState.side === "Bottom" ? value : "0px";
-          btn.style.borderLeftWidth = borderState.side === "Left" ? value : "0px";
+          btn.style.setProperty("border-top-width", borderState.side === "Top" ? value : "0px", "important");
+          btn.style.setProperty("border-right-width", borderState.side === "Right" ? value : "0px", "important");
+          btn.style.setProperty("border-bottom-width", borderState.side === "Bottom" ? value : "0px", "important");
+          btn.style.setProperty("border-left-width", borderState.side === "Left" ? value : "0px", "important");
         }
       });
     }
@@ -588,6 +588,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
    
   
