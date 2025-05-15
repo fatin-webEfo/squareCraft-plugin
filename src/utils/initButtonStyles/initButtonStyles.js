@@ -549,15 +549,20 @@ export function initButtonStyles(selectedButtonElement) {
       const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
   
       const zero = "0px";
-      let rules = `${selector} {\n` +
-        `  box-sizing: border-box !important;\n` +
-        `  border-style: ${window.__squareCraftBorderStyle || "solid"} !important;\n` +
-        `  border-color: black !important;\n` +
-        `  border-top-width: ${borderState.side === "Top" || borderState.side === "All" ? value : zero} !important;\n` +
-        `  border-right-width: ${borderState.side === "Right" || borderState.side === "All" ? value : zero} !important;\n` +
-        `  border-bottom-width: ${borderState.side === "Bottom" || borderState.side === "All" ? value : zero} !important;\n` +
-        `  border-left-width: ${borderState.side === "Left" || borderState.side === "All" ? value : zero} !important;\n` +
-        `}`;
+      const top = borderState.side === "Top" || borderState.side === "All" ? value : zero;
+      const right = borderState.side === "Right" || borderState.side === "All" ? value : zero;
+      const bottom = borderState.side === "Bottom" || borderState.side === "All" ? value : zero;
+      const left = borderState.side === "Left" || borderState.side === "All" ? value : zero;
+  
+      const rules = `${selector} {
+    box-sizing: border-box !important;
+    border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+    border-color: black !important;
+    border-top-width: ${top} !important;
+    border-right-width: ${right} !important;
+    border-bottom-width: ${bottom} !important;
+    border-left-width: ${left} !important;
+  }`;
   
       styleTag.innerHTML = rules;
       console.log("🧾 Applied Border CSS:", rules);
@@ -596,6 +601,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
    
   
