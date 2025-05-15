@@ -1,6 +1,6 @@
 export function WidgetButtonHoverState(){
     return`
-    <div id="ButtonHoverState" class="sc-mt-4  sc-roboto sc-font-light  sc-px-2">
+    <div id="ButtonHoverState" class="sc-mt-4 sc-hidden sc-roboto sc-font-light  sc-px-2">
             <div id="hover-colorButton"
                class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal ">Color</p>
@@ -413,7 +413,7 @@ export function WidgetButtonHoverState(){
           
           
             <div id="hover-shadowsButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal ">Shadow</p>
                   <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -558,13 +558,13 @@ export function WidgetButtonHoverState(){
                   </div>
                </div>
                <div id="hover-buttonEffect"
-               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal ">Button Effect</p>
                <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
 
-           <div id="hover-buttonEffectSection" class="sc-mt-4 ">
+           <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
             <div class="sc-flex sc-items-center sc-gap-8px"> 
                <div >
                <p class="sc-universal sc-roboto sc-text-sm">Transition Type</p>
@@ -574,7 +574,7 @@ export function WidgetButtonHoverState(){
                   <p id="hover-buttonTransitionTypeLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                   </div>   
                
-                  <div id="hover-buttonTransitionDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-99999">
+                  <div id="hover-buttonTransitionDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-99999">
                   <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
@@ -590,21 +590,21 @@ export function WidgetButtonHoverState(){
                </div>
             </div>
                <div id="hover-buttonEffectDurationSection">
-               <p class="sc-universal sc-roboto sc-text-sm">Duration</p>
+               <p class="sc-universal sc-roboto sc-text-sm">Duration(ms)</p>
    
-               <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
+               <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
                   <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
                   <p id="hover-buttonDurationLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                   </div>   
                
-                  <div id="hover-buttonDurationDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-toogle sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100ms">100ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300ms">300ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500ms">500ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700ms">700ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000ms">1000ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200ms">1200ms</div>
+                  <div id="hover-buttonDurationDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-[99999]">
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-toogle  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
                   </div>
                
                   <div id="hover-buttonDurationSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
@@ -616,21 +616,21 @@ export function WidgetButtonHoverState(){
                </div>
             </div>
                <div id="hover-buttonEffectDelaySection">
-               <p class="sc-universal sc-roboto sc-text-sm">Delay</p>
+               <p class="sc-universal sc-roboto sc-text-sm">Delay(ms)</p>
    
                <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
                   <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
                   <p id="hover-buttonDelayLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                   </div>   
                
-                  <div id="hover-buttonDelayDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-toogle sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100ms">100ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300ms">300ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500ms">500ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700ms">700ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000ms">1000ms</div>
-                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200ms">1200ms</div>
+                  <div id="hover-buttonDelayDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-50">
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-toogle sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
+                  <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
                   </div>
                
                   <div id="hover-buttonDelayTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
@@ -650,8 +650,8 @@ export function WidgetButtonHoverState(){
                <p id="hover-buttonTransformTypeLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                </div>   
             
-               <div id="hover-buttonTransformDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
-               <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16 sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+               <div id="hover-buttonTransformDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-50">
+               <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-out">ease-out</div>
@@ -693,6 +693,8 @@ export function WidgetButtonHoverState(){
             </div>
          </div>
            </div>
+
+           
           </div>
     `
 }
