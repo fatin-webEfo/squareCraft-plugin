@@ -1,6 +1,6 @@
 export function WidgetButtonHoverState(){
     return`
-     <div id="ButtonHoverState" class="sc-mt-4 sc-hidden sc-roboto sc-font-light  sc-px-2">
+    <div id="ButtonHoverState" class="sc-mt-4  sc-roboto sc-font-light  sc-px-2">
             <div id="hover-colorButton"
                class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal ">Color</p>
@@ -564,10 +564,10 @@ export function WidgetButtonHoverState(){
                   class="sc-rotate-180" alt="">
             </div>
 
-           <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
+           <div id="hover-buttonEffectSection" class="sc-mt-4 ">
             <div class="sc-flex sc-items-center sc-gap-8px"> 
                <div >
-               <p class="sc-universal sc-roboto sc-text-sm">Button Effect</p>
+               <p class="sc-universal sc-roboto sc-text-sm">Transition Type</p>
    
                <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
                   <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
@@ -597,7 +597,7 @@ export function WidgetButtonHoverState(){
                   <p id="hover-buttonDurationLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                   </div>   
                
-                  <div id="hover-all-color-selction-bar" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
+                  <div id="hover-buttonDurationDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
                   <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-toogle sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100ms">100ms</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300ms">300ms</div>
@@ -607,7 +607,7 @@ export function WidgetButtonHoverState(){
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200ms">1200ms</div>
                   </div>
                
-                  <div id="hover-buttonDuration Select" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+                  <div id="hover-buttonDurationSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
@@ -643,21 +643,21 @@ export function WidgetButtonHoverState(){
             </div>
          </div>
          <div id="hover-buttonEffectSection" class="sc-mt-3">
-            <p class="sc-universal sc-roboto sc-text-sm">Button Effect</p>
+            <p class="sc-universal sc-roboto sc-text-sm">Transform</p>
    
             <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
                <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
-               <p id="hover-buttonTransitionTypeLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
+               <p id="hover-buttonTransformTypeLabel" class="sc-universal sc-roboto sc-text-sm">None</p>
                </div>   
             
-               <div id="hover-buttonTransitionDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
+               <div id="hover-buttonTransformDropdown" class="sc-absolute sc-rounded-6px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
                <div class="sc-bg-3f3f3f sc-py-1 sc-text-sm sc-px-2 sc-w-16 sc-border-b sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-text-sm sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-out">ease-out</div>
                </div>
             
-               <div id="hover-buttonTransitionTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+               <div id="hover-buttonTransformTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
@@ -678,7 +678,7 @@ export function WidgetButtonHoverState(){
             </div>
             <div
                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-               <p id="buttoniconTransformPositionCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
+               <p id="hover-buttoniconTransformPositionCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
@@ -686,15 +686,13 @@ export function WidgetButtonHoverState(){
                </div>
             </div>
          </div>
-         <div id="buttonIconTransformPositionField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-            <div id="buttonIconTransformPositionFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-            <div id="buttonIconTransformPositionBullet"
+         <div id="hover-buttonIconTransformPositionField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+            <div id="hover-buttonIconTransformPositionFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+            <div id="hover-buttonIconTransformPositionBullet"
                class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
             </div>
          </div>
            </div>
-
-           
           </div>
     `
 }
