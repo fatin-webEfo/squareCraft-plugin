@@ -32,6 +32,7 @@ export async function handleBlockClick(event, context) {
     window.syncHoverButtonStylesFromElement(block);
   }
   
+  
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
 
