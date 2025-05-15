@@ -551,12 +551,8 @@ export function initButtonStyles(selectedButtonElement) {
       const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
   
+      const value = `${getBorderValue(typeClass, selectedElement)}px`;
       const blockId = selectedElement.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-      window.__squareCraftBorderStateMap.set(key, borderState);
-  
-      const value = `${borderState.value}px`;
       const styleId = `sc-button-border-${blockId}-${typeClass}`;
       let styleTag = document.getElementById(styleId);
   
@@ -567,14 +563,15 @@ export function initButtonStyles(selectedButtonElement) {
       }
   
       const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
+      const state = window.__squareCraftBorderStateMap.get(`${blockId}--${typeClass}`);
   
       const zero = "0px";
-      const top = borderState.side === "Top" || borderState.side === "All" ? value : zero;
-      const right = borderState.side === "Right" || borderState.side === "All" ? value : zero;
-      const bottom = borderState.side === "Bottom" || borderState.side === "All" ? value : zero;
-      const left = borderState.side === "Left" || borderState.side === "All" ? value : zero;
+      const top = state.side === "Top" || state.side === "All" ? value : zero;
+      const right = state.side === "Right" || state.side === "All" ? value : zero;
+      const bottom = state.side === "Bottom" || state.side === "All" ? value : zero;
+      const left = state.side === "Left" || state.side === "All" ? value : zero;
   
-      const rules = `${selector} {
+      const rules = `${selector}, .${typeClass} {
     box-sizing: border-box !important;
     border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
     border-color: black !important;
@@ -585,7 +582,23 @@ export function initButtonStyles(selectedButtonElement) {
   }`;
   
       styleTag.innerHTML = rules;
+      document.querySelectorAll(`.${typeClass}`).forEach((btn) => {
+        btn.style.borderTopWidth = top;
+        btn.style.borderRightWidth = right;
+        btn.style.borderBottomWidth = bottom;
+        btn.style.borderLeftWidth = left;
+        btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
+        btn.style.borderColor = "black";
+      });
+  
       console.log("🧾 Applied Border CSS:", rules);
+    }
+  
+    function getBorderValue(typeClass, selectedElement) {
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      const state = window.__squareCraftBorderStateMap.get(key);
+      return state?.value || 0;
     }
   
     bullet.addEventListener("mousedown", (e) => {
@@ -648,6 +661,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
   
   
