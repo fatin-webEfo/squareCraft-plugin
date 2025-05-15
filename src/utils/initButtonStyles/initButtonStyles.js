@@ -548,22 +548,18 @@ export function initButtonStyles(selectedButtonElement) {
   
       const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
   
-      let rules = `
-        ${selector} {
-          box-sizing: border-box !important;
-          border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-          border-color: black !important;
-      `;
+      let rules = `${selector} {\n` +
+        `  box-sizing: border-box !important;\n` +
+        `  border-style: ${window.__squareCraftBorderStyle || "solid"} !important;\n` +
+        `  border-color: black !important;\n`;
   
       if (borderState.side === "All") {
-        rules += `border-width: ${value} !important;`;
+        rules += `  border-width: ${value} !important;\n`;
       } else {
-        rules += `
-          border-top-width: ${borderState.side === "Top" ? value : "0px"} !important;
-          border-right-width: ${borderState.side === "Right" ? value : "0px"} !important;
-          border-bottom-width: ${borderState.side === "Bottom" ? value : "0px"} !important;
-          border-left-width: ${borderState.side === "Left" ? value : "0px"} !important;
-        `;
+        rules += `  border-top-width: ${borderState.side === "Top" ? value : "0px"} !important;\n`;
+        rules += `  border-right-width: ${borderState.side === "Right" ? value : "0px"} !important;\n`;
+        rules += `  border-bottom-width: ${borderState.side === "Bottom" ? value : "0px"} !important;\n`;
+        rules += `  border-left-width: ${borderState.side === "Left" ? value : "0px"} !important;\n`;
       }
   
       rules += `}`;
@@ -603,6 +599,7 @@ export function initButtonStyles(selectedButtonElement) {
       });
     }
   }
+  
   
   
   
