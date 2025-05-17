@@ -193,7 +193,9 @@ width: 240px !important;
 .sc-bg-F6F6F6 {
   background: #F6F6F6 !important;
 }
-
+.sc-w-190px{
+  width: 190px !important;
+}
 .sc-py-0 {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
