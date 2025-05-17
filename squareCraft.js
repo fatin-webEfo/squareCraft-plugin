@@ -1,5 +1,6 @@
 (async function squareCraft() {
 
+  let isSameOrigin = true;
   const Url = isSameOrigin ? parent.document.location.href : document.location.href;
   console.log("parent", Url)
   const widgetScript = document.getElementById("sc-script");
@@ -10,7 +11,6 @@
     );
     return;
   }
-  let isSameOrigin = true;
   try {
     void parent.document; 
   } catch (e) {
