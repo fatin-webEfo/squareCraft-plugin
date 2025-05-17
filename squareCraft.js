@@ -12,7 +12,7 @@
       function safeQuerySelector(selector) {
         try {
           if (parent && parent !== window && parent.document !== document) {
-            return safeQuerySelector(selector);
+            return parent.document.querySelector(selector);
           }
         } catch (err) {
           if (err.name === "SecurityError") {
@@ -27,7 +27,7 @@
       function safeQuerySelectorAll(selector) {
         try {
           if (parent && parent !== window && parent.document !== document) {
-            return safeQuerySelectorAll(selector);
+            return parent.document.querySelectorAll(selector);
           }
         } catch (err) {
           if (err.name === "SecurityError") {
