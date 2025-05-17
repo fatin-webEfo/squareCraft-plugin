@@ -29,7 +29,7 @@ export function WidgetButtonNormalState(){
                   <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
                   Select Font
                   </p>
-                  <div class="sc-bg-3f3f3f sc-px-2 sc-mb-5" style="height: 27px; padding: 0 3px; pointer-events: none;">
+                  <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
                   <img class="sc-rotate-180 sc-mt-3" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                   </div>
                
@@ -83,8 +83,8 @@ export function WidgetButtonNormalState(){
                   400
                </p>
                </div>
-               <div class="sc-bg-3f3f3f sc-px-2 sc-mb-5" style="height: 27px; padding: 0 8px;">
-               <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+               <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
+               <img class="sc-mx-auto sc-rotate-180 sc-mb-5" width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                </div>
             </div>
             
