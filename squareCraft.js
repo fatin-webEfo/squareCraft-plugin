@@ -764,15 +764,13 @@ try {
           head.appendChild(el);
           return el;
         }
-        
+      
         const link = createAndAppendToHead("link");
-        const head = isSameOrigin ? parent.document.head : document.head;
         link.rel = "stylesheet";
         link.type = "text/css";
-        link.href =
-          "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-          head.appendChild(link);
+        link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
       }
+      
 
       mobileContainer.classList.add("sc-relative");
 
