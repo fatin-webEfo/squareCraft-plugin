@@ -23,7 +23,7 @@ export function WidgetButtonSection() {
             </div>
             <div
                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
-               <p class="sc-font-light sc-universal sc-font-size-12 sc-font-size-11">Reset</p>
+               <p class="sc-font-light sc-universal sc-font-size-11">Reset</p>
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
             </div>
          </div>
