@@ -17,7 +17,7 @@ export function WidgetButtonNormalState(){
                <div id="fontButton"
                   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                   <div class="sc-active-bar sc-rounded-l"></div>
-                  <p class="sc-roboto  sc-universal ">Font</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-12">Font</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
