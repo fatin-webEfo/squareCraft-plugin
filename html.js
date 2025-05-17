@@ -15,7 +15,7 @@ export  function html() {
          <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
             width="140px" />
       </div>
-      <p class="sc-text-sm sc-mt-6 sc-roboto sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
+      <p class="sc-font-size-12 sc-mt-6 sc-roboto sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
       </p>
    </div>
    <div class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
