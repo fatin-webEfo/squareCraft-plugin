@@ -512,6 +512,7 @@
               console.error(error.message);
             });
         }
+        console.log("✅ Widget loaded successfully", widgetContainer);
       }
     }
 
