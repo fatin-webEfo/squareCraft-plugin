@@ -9,7 +9,7 @@ export function WidgetButtonSection() {
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/buttonicon.png"
                   alt="">
-               <p id="buttonTypeDisplay" class="sc-universal sc-roboto">Button</p>
+               <p id="buttonTypeDisplay" class="sc-universal sc-font-size-16 sc-roboto">Button</p>
             </div>
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
