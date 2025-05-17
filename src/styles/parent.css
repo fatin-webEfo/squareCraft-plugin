@@ -162,7 +162,9 @@ width: 240px !important;
 
 .sc-h-9 {
   height: 28px !important;
-  /* 36px */
+}
+.sc-h-12{
+  height: 44px !important;
 }
 
 .sc-h-44 {

@@ -14,7 +14,7 @@ export function WidgetButtonSection() {
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
          </div>
          <div class="sc-h-1px sc-bg-3f3f3f"></div>
-         <div class="sc-flex sc-px-2 sc-items-center sc-justify-between">
+         <div class="sc-flex sc-px-2 sc-items-center sc-justify-between sc-h-12">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <div class="toggle-container" id="toggleSwitch">
                   <div class="toggle-bullet"></div> 
