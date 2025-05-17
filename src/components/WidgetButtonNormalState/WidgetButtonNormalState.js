@@ -160,7 +160,7 @@ export function WidgetButtonNormalState(){
 
             <div id="colorButton"
                class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-               <p class="sc-roboto  sc-universal ">Color</p>
+               <p class="sc-roboto  sc-universal sc-font-size-16">Color</p>
                <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
@@ -234,7 +234,7 @@ export function WidgetButtonNormalState(){
 
                <div id="iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Icon</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-16">Icon</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -457,7 +457,7 @@ export function WidgetButtonNormalState(){
             <div>
                <div id="bordersButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Border</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-16">Border</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
@@ -664,7 +664,7 @@ export function WidgetButtonNormalState(){
 
             <div id="shadowsButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Shadow</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-16">Shadow</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
