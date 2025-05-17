@@ -99,7 +99,6 @@ width: 240px !important;
 
 .sc-pl-2 {
   padding-left: 8px !important;
-  /* 8px */
 }
 
 .sc-active-bar {
@@ -131,12 +130,10 @@ width: 240px !important;
 
 .sc-pt-1 {
   padding-top: 5px !important;
-  /* 4px */
 }
 
 .sc-pb-1 {
   padding-bottom: 4px !important;
-  /* 4px */
 }
 
 .sc-border {
@@ -257,12 +254,10 @@ width: 240px !important;
 
 .sc-text-sm {
   font-size: 12px !important;
-  /* 14px */
 }
 
 .sc-p-4 {
   padding: 16px !important;
-  /* 16px */
 }
 
 .sc-mx-auto {
@@ -300,12 +295,10 @@ width: 240px !important;
 
 .sc-mt-2 {
   margin-top: 8px !important;
-  /* 8px */
 }
 
 .sc-mt-1 {
   margin-top: 3px !important;
-  /* 4px */
 }
 
 .sc-items-center {
