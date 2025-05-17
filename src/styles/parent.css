@@ -1962,6 +1962,14 @@ width: 240px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
+.sc-reset-font, .sc-reset-font * {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: normal !important;
+  line-height: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
 
 .sc-widget-position {
   position: absolute;
