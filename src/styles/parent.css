@@ -2126,14 +2126,14 @@ width: 240px !important;
   transform: scale(1); /* doesn't affect layout but triggers reflow */
 }
 #sc-widget-container, #sc-widget-container * {
-  all: revert !important;
   font-family: 'Roboto', sans-serif !important;
   font-size: 14px !important;
   font-weight: normal !important;
   letter-spacing: normal !important;
-  line-height: normal !important;
-  color: white !important;
+  line-height: 1.4 !important;
   text-transform: none !important;
-  box-sizing: border-box !important;
   text-align: left !important;
+  box-sizing: border-box !important;
+  color: white !important;
 }
+
