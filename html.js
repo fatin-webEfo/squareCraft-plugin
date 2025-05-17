@@ -20,7 +20,7 @@ export function html() {
    </div>
    <div class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
    </div>
-   <div class="sc-mt-6 sc-roboto sc-flex  sc-items-center sc-universal">
+   <div class="sc-mt-6 sc-h-12 sc-roboto sc-flex  sc-items-center sc-universal">
       <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
       <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
       <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
