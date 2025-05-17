@@ -1,20 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-:host {
-  all: initial;
-}
-.sc-roboto {
-  font-family: 'Roboto', sans-serif !important;
-}
-
-.sc-margin-0 {
-  margin: 0 !important;
-}
-
-.sc-w-300px {
-  width: 370px !important;
-  box-sizing: border-box !important;
-  flex-shrink: 0 !important;
-}
+:host {all: initial;}
+.sc-roboto {font-family: 'Roboto', sans-serif !important;}
+.sc-margin-0 {margin: 0 !important;}
+.sc-w-300px {width: 370px !important;box-sizing: border-box !important;flex-shrink: 0 !important;}
 .sc-text-upper {
   text-transform: uppercase !important;
 }
