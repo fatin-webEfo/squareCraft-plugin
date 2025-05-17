@@ -422,8 +422,8 @@
         const htmlString = module.html();
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          loadWidgetFromString(htmlString, clickedBlock);
           injectWidgetIsolationStyles();
+          loadWidgetFromString(htmlString, clickedBlock);
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
