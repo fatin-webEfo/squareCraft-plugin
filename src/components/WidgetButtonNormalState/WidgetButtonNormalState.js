@@ -30,7 +30,7 @@ export function WidgetButtonNormalState(){
                   Select Font
                   </p>
                   <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
-                  <img class="sc-rotate-180 sc-mt-3" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                  <img class="sc-rotate-180 sc-mb-5" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                   </div>
                
                </div>
