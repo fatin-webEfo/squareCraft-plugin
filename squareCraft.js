@@ -58,10 +58,7 @@
 
       styleTag.innerHTML = cssText;
     }
-    const { injectWidgetIsolationStyles } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/injectWidgetIsolationStyles/injectWidgetIsolationStyles.js"
-    );
-    
+
     const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
     const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
     const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -425,7 +422,6 @@
         const htmlString = module.html();
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-          await injectWidgetIsolationStyles(); 
           loadWidgetFromString(htmlString, clickedBlock);
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
@@ -512,7 +508,6 @@
               console.error(error.message);
             });
         }
-        console.log("✅ Widget loaded successfully", widgetContainer);
       }
     }
 
