@@ -1,4 +1,4 @@
-function injectWidgetIsolationStyles() {
+export function injectWidgetIsolationStyles() {
   if (document.getElementById("sc-style-isolation")) return;
 
   const style = document.createElement("style");
