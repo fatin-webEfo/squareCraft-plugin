@@ -1,5 +1,6 @@
 (async function squareCraft() {
 
+  const Url = isSameOrigin ? parent.document.location.href : document.location.href;
   console.log("parent", Url)
   const widgetScript = document.getElementById("sc-script");
 
@@ -36,7 +37,6 @@
     return document.querySelectorAll(selector);
   }
  
-  const Url = isSameOrigin ? parent.document.location.href : document.location.href;
 
   let selectedElement = null;
   let widgetContainer = null;
