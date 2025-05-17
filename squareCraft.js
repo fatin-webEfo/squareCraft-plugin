@@ -58,7 +58,7 @@
 
       styleTag.innerHTML = cssText;
     }
-
+ const {injectWidgetIsolationStyles} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/styles/injectWidgetIsolationStyles/injectWidgetIsolationStyles.js");
     const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
     const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
     const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -423,6 +423,7 @@
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
           loadWidgetFromString(htmlString, clickedBlock);
+          injectWidgetIsolationStyles();
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
