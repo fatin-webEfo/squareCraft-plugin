@@ -1,4 +1,4 @@
- 
+
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
   let fontsList = [];
@@ -233,345 +233,345 @@ export function initButtonStyles(selectedButtonElement) {
 }
 
 
-  export function initButtonIconPositionToggle(getSelectedElement) {
-    document.getElementById("buttoniconPositionSection").onclick = () => {
-      document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
-    };
+export function initButtonIconPositionToggle(getSelectedElement) {
+  document.getElementById("buttoniconPositionSection").onclick = () => {
+    document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
+  };
 
-    document.querySelectorAll("#iconPositionDropdown [data-value]").forEach((option) => {
-      option.onclick = () => {
-        const value = option.dataset.value;
-        document.getElementById("iconPositionLabel").innerHTML =
-          `<p class="sc-universal sc-roboto sc-text-sm">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
-        document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
+  document.querySelectorAll("#iconPositionDropdown [data-value]").forEach((option) => {
+    option.onclick = () => {
+      const value = option.dataset.value;
+      document.getElementById("iconPositionLabel").innerHTML =
+        `<p class="sc-universal sc-roboto sc-font-size-12">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
+      document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
 
-        const selectedElement = getSelectedElement();
-        const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-        if (!sampleButton) return;
+      const selectedElement = getSelectedElement();
+      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (!sampleButton) return;
 
-        let typeClass = "sqs-button-element--primary";
-        if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
-        else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+      let typeClass = "sqs-button-element--primary";
+      if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
+      else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
 
-        const allButtons = document.querySelectorAll(`a.${typeClass}`);
-        allButtons.forEach(buttonLink => {
-          const icon = buttonLink.querySelector(".sqscraft-button-icon");
-          const textDiv = buttonLink.querySelector(".sqs-html");
+      const allButtons = document.querySelectorAll(`a.${typeClass}`);
+      allButtons.forEach(buttonLink => {
+        const icon = buttonLink.querySelector(".sqscraft-button-icon");
+        const textDiv = buttonLink.querySelector(".sqs-html");
 
-          if (!icon || !textDiv) return;
+        if (!icon || !textDiv) return;
 
-          icon.style.marginLeft = "";
-          icon.style.marginRight = "";
+        icon.style.marginLeft = "";
+        icon.style.marginRight = "";
 
-          if (value === "after") {
-            icon.style.marginLeft = "8px";
-            buttonLink.insertBefore(icon, textDiv.nextSibling);
-          } else {
-            icon.style.marginRight = "8px";
-            buttonLink.insertBefore(icon, textDiv);
-          }
-        });
-      };
-    });
-  }
-
-  export function initButtonIconRotationControl(getSelectedElement) {
-    const bullet = document.getElementById("buttonIconRotationradiousBullet");
-    const fill = document.getElementById("buttonIconRotationradiousFill");
-    const field = document.getElementById("buttonIconRotationradiousField");
-    const label = document.getElementById("buttoniconRotationradiousCount");
-  
-    let currentRotation = 0;
-  
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-  
-      const centerX = rect.width / 2;
-      const deltaX = x - centerX;
-      const percentFromCenter = (deltaX / centerX) * 50;
-  
-      const bulletPercent = (x / rect.width) * 100;
-      bullet.style.left = `${bulletPercent}%`;
-  
-      const fillLeft = 50 + Math.min(percentFromCenter, 0);
-      const fillWidth = Math.abs(percentFromCenter);
-  
-      fill.style.left = `${fillLeft}%`;
-      fill.style.width = `${fillWidth}%`;
-  
-      currentRotation = Math.round((deltaX / centerX) * 180);
-      label.textContent = `${currentRotation}deg`;
-  
-      const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
-      if (!btn) return;
-  
-      const typeClass = [...btn.classList].find(cls =>
-        cls.startsWith("sqs-button-element--")
-      );
-      if (!typeClass) return;
-  
-      const buttons = document.querySelectorAll(`a.${typeClass}`);
-      buttons.forEach(button => {
-        const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-        if (icon) {
-          icon.style.transform = `rotate(${currentRotation}deg)`;
+        if (value === "after") {
+          icon.style.marginLeft = "8px";
+          buttonLink.insertBefore(icon, textDiv.nextSibling);
+        } else {
+          icon.style.marginRight = "8px";
+          buttonLink.insertBefore(icon, textDiv);
         }
       });
-    }
-  
-    function syncFromIconRotation() {
-      const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-      );
-      if (!btn) return;
-  
-      const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-      if (!icon || !icon.style.transform) return;
-  
-      const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-      if (!match) return;
-  
-      const rotation = parseFloat(match[1]);
-      const percent = ((rotation + 180) / 360) * 100;
-  
-      bullet.style.left = `${percent}%`;
-      fill.style.left = `${Math.min(percent, 50)}%`;
-      fill.style.width = `${Math.abs(percent - 50)}%`;
-      label.textContent = `${rotation}deg`;
-      currentRotation = rotation;
-    }
-  
-    setTimeout(syncFromIconRotation, 50);
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
+    };
+  });
+}
+
+export function initButtonIconRotationControl(getSelectedElement) {
+  const bullet = document.getElementById("buttonIconRotationradiousBullet");
+  const fill = document.getElementById("buttonIconRotationradiousFill");
+  const field = document.getElementById("buttonIconRotationradiousField");
+  const label = document.getElementById("buttoniconRotationradiousCount");
+
+  let currentRotation = 0;
+
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+
+    const centerX = rect.width / 2;
+    const deltaX = x - centerX;
+    const percentFromCenter = (deltaX / centerX) * 50;
+
+    const bulletPercent = (x / rect.width) * 100;
+    bullet.style.left = `${bulletPercent}%`;
+
+    const fillLeft = 50 + Math.min(percentFromCenter, 0);
+    const fillWidth = Math.abs(percentFromCenter);
+
+    fill.style.left = `${fillLeft}%`;
+    fill.style.width = `${fillWidth}%`;
+
+    currentRotation = Math.round((deltaX / centerX) * 180);
+    label.textContent = `${currentRotation}deg`;
+
+    const selectedElement = getSelectedElement?.();
+    const btn = selectedElement?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(cls =>
+      cls.startsWith("sqs-button-element--")
+    );
+    if (!typeClass) return;
+
+    const buttons = document.querySelectorAll(`a.${typeClass}`);
+    buttons.forEach(button => {
+      const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+      if (icon) {
+        icon.style.transform = `rotate(${currentRotation}deg)`;
+      }
     });
-  
-    field.addEventListener("click", (e) => updateUI(e.clientX));
   }
-  
+
+  function syncFromIconRotation() {
+    const selectedElement = getSelectedElement?.();
+    const btn = selectedElement?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.transform) return;
+
+    const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+    if (!match) return;
+
+    const rotation = parseFloat(match[1]);
+    const percent = ((rotation + 180) / 360) * 100;
+
+    bullet.style.left = `${percent}%`;
+    fill.style.left = `${Math.min(percent, 50)}%`;
+    fill.style.width = `${Math.abs(percent - 50)}%`;
+    label.textContent = `${rotation}deg`;
+    currentRotation = rotation;
+  }
+
+  setTimeout(syncFromIconRotation, 50);
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (e) => updateUI(e.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  field.addEventListener("click", (e) => updateUI(e.clientX));
+}
 
 
-  export function initButtonIconSizeControl(getSelectedElement) {
-    const bullet = document.getElementById("buttonIconSizeradiousBullet");
-    const fill = document.getElementById("buttonIconSizeradiousFill");
-    const field = document.getElementById("buttonIconSizeradiousField");
-    const label = document.getElementById("buttoniconSizeradiousCount");
-  
-    let iconSize = 0;
-  
-    function applySize() {
-      const selectedElement = getSelectedElement?.();
-      if (!selectedElement) return;
-    
-      const btn = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
-      if (!btn) return;
-    
-      const typeClass = [...btn.classList].find(cls =>
-        cls.startsWith("sqs-button-element--")
-      );
-      if (!typeClass) return;
-    
-      const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-      allButtons.forEach(button => {
-        const icons = button.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
-        icons.forEach(icon => {
-          icon.style.width = `${iconSize}px`;
-          icon.style.height = "auto";
-        });
+
+export function initButtonIconSizeControl(getSelectedElement) {
+  const bullet = document.getElementById("buttonIconSizeradiousBullet");
+  const fill = document.getElementById("buttonIconSizeradiousFill");
+  const field = document.getElementById("buttonIconSizeradiousField");
+  const label = document.getElementById("buttoniconSizeradiousCount");
+
+  let iconSize = 0;
+
+  function applySize() {
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
+
+    const btn = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(cls =>
+      cls.startsWith("sqs-button-element--")
+    );
+    if (!typeClass) return;
+
+    const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
+    allButtons.forEach(button => {
+      const icons = button.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
+      icons.forEach(icon => {
+        icon.style.width = `${iconSize}px`;
+        icon.style.height = "auto";
       });
-    }
-    
-  
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      iconSize = Math.round((x / rect.width) * 50);
-  
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${iconSize}px`;
-  
-      applySize();
-    }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
     });
-  
-    field.addEventListener("click", (e) => updateUI(e.clientX));
   }
 
 
-  export function initButtonIconSpacingControl(getSelectedElement) {
-    const fill = document.getElementById("buttonIconSpacingradiousFill");
-    const bullet = document.getElementById("buttonIconSpacingradiousBullet");
-    const field = document.getElementById("buttonIconSpacingradiousField");
-    const valueText = document.getElementById("buttoniconSpacingradiousCount");
-    const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
-  
-    if (!fill || !bullet || !field || !valueText) return;
-  
-    const maxGap = 30;
-  
-    let gapValue = 0; 
-  
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    iconSize = Math.round((x / rect.width) * 50);
+
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${iconSize}px`;
+
+    applySize();
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (e) => updateUI(e.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  field.addEventListener("click", (e) => updateUI(e.clientX));
+}
+
+
+export function initButtonIconSpacingControl(getSelectedElement) {
+  const fill = document.getElementById("buttonIconSpacingradiousFill");
+  const bullet = document.getElementById("buttonIconSpacingradiousBullet");
+  const field = document.getElementById("buttonIconSpacingradiousField");
+  const valueText = document.getElementById("buttoniconSpacingradiousCount");
+  const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
+
+  if (!fill || !bullet || !field || !valueText) return;
+
+  const maxGap = 30;
+
+  let gapValue = 0;
+
+  const selected = getSelectedElement?.();
+  const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+  if (btn) {
+    const computedGap = parseInt(window.getComputedStyle(btn).gap);
+    if (!isNaN(computedGap)) gapValue = computedGap;
+  }
+
+  function applyGap() {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (btn) {
-      const computedGap = parseInt(window.getComputedStyle(btn).gap);
-      if (!isNaN(computedGap)) gapValue = computedGap;
-    }
-  
-    function applyGap() {
-      const selected = getSelectedElement?.();
-      const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!btn) return;
-    
-      const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-      if (!btnClass) return;
-    
-      document.querySelectorAll(`a.${btnClass}`).forEach(el => {
-        const hasIcon = el.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-        if (hasIcon) {
-          el.classList.add("sc-flex", "sc-items-center");
-          el.style.gap = `${gapValue}px`;
-        } else {
-          el.classList.remove("sc-flex", "sc-items-center");
-          el.style.gap = ""; // Clear inline gap if no icon
-        }
-      });
-    }
-    
-    
-  
-    function updateUI(val) {
-      gapValue = val;
-      const percent = (val / maxGap) * 100;
-      fill.style.width = `${percent}%`;
-      bullet.style.left = `${percent}%`;
-      valueText.textContent = `${val}px`;
-      applyGap();
-    }
-  
-    bullet.addEventListener("mousedown", e => {
-      e.preventDefault();
-      const move = eMove => {
-        const rect = field.getBoundingClientRect();
-        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-        updateUI(Math.round((x / rect.width) * maxGap));
-      };
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
+    if (!btn) return;
+
+    const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!btnClass) return;
+
+    document.querySelectorAll(`a.${btnClass}`).forEach(el => {
+      const hasIcon = el.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+      if (hasIcon) {
+        el.classList.add("sc-flex", "sc-items-center");
+        el.style.gap = `${gapValue}px`;
+      } else {
+        el.classList.remove("sc-flex", "sc-items-center");
+        el.style.gap = ""; // Clear inline gap if no icon
+      }
     });
-  
-    resetBtn?.addEventListener("click", () => updateUI(8));
-    updateUI(gapValue);
   }
-  
 
 
-  export function initButtonBorderControl(getSelectedElement) {
-    const fill = document.getElementById("buttonBorderFill");
-    const bullet = document.getElementById("buttonBorderBullet");
-    const field = document.getElementById("buttonBorderField");
-    const valueText = document.getElementById("buttonBorderCount");
-  
-    if (!fill || !bullet || !field || !valueText) return;
-  
-    if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
-    const sides = ["Top", "Right", "Bottom", "Left"];
-  
-    ["All", ...sides].forEach((side) => {
-      const id = `buttonBorder${side}`;
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener("click", () => {
-        ["All", ...sides].forEach((other) => {
-          const otherEl = document.getElementById(`buttonBorder${other}`);
-          if (otherEl) otherEl.classList.remove("sc-bg-454545");
-        });
-        el.classList.add("sc-bg-454545");
-  
-        const selectedElement = getSelectedElement?.();
-        if (!selectedElement) return;
-        const sample = selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        );
-        if (!sample) return;
-  
-        const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-        if (!typeClass) return;
-        const blockId = selectedElement.id || "block-id";
-        const key = `${blockId}--${typeClass}`;
-        let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-        borderState.side = side;
-        window.__squareCraftBorderStateMap.set(key, borderState);
-  
-        console.log("🟠 Active Border Tab Selected:", side);
-        applyBorder();
+
+  function updateUI(val) {
+    gapValue = val;
+    const percent = (val / maxGap) * 100;
+    fill.style.width = `${percent}%`;
+    bullet.style.left = `${percent}%`;
+    valueText.textContent = `${val}px`;
+    applyGap();
+  }
+
+  bullet.addEventListener("mousedown", e => {
+    e.preventDefault();
+    const move = eMove => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      updateUI(Math.round((x / rect.width) * maxGap));
+    };
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  resetBtn?.addEventListener("click", () => updateUI(8));
+  updateUI(gapValue);
+}
+
+
+
+export function initButtonBorderControl(getSelectedElement) {
+  const fill = document.getElementById("buttonBorderFill");
+  const bullet = document.getElementById("buttonBorderBullet");
+  const field = document.getElementById("buttonBorderField");
+  const valueText = document.getElementById("buttonBorderCount");
+
+  if (!fill || !bullet || !field || !valueText) return;
+
+  if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
+  const sides = ["Top", "Right", "Bottom", "Left"];
+
+  ["All", ...sides].forEach((side) => {
+    const id = `buttonBorder${side}`;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("click", () => {
+      ["All", ...sides].forEach((other) => {
+        const otherEl = document.getElementById(`buttonBorder${other}`);
+        if (otherEl) otherEl.classList.remove("sc-bg-454545");
       });
-    });
-  
-    function applyBorder() {
+      el.classList.add("sc-bg-454545");
+
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-  
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (!sample) return;
-  
+
       const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
-  
-      const value = `${getBorderValue(typeClass, selectedElement)}px`;
       const blockId = selectedElement.id || "block-id";
-      const styleId = `sc-button-border-${blockId}-${typeClass}`;
-      let styleTag = document.getElementById(styleId);
-  
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-  
-      const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(`${blockId}--${typeClass}`);
-  
-      const zero = "0px";
-      const top = state.side === "Top" || state.side === "All" ? value : zero;
-      const right = state.side === "Right" || state.side === "All" ? value : zero;
-      const bottom = state.side === "Bottom" || state.side === "All" ? value : zero;
-      const left = state.side === "Left" || state.side === "All" ? value : zero;
-  
-      const rules = `${selector}, .${typeClass} {
+      const key = `${blockId}--${typeClass}`;
+      let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+      borderState.side = side;
+      window.__squareCraftBorderStateMap.set(key, borderState);
+
+      console.log("🟠 Active Border Tab Selected:", side);
+      applyBorder();
+    });
+  });
+
+  function applyBorder() {
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
+
+    const sample = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!sample) return;
+
+    const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const value = `${getBorderValue(typeClass, selectedElement)}px`;
+    const blockId = selectedElement.id || "block-id";
+    const styleId = `sc-button-border-${blockId}-${typeClass}`;
+    let styleTag = document.getElementById(styleId);
+
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
+    const state = window.__squareCraftBorderStateMap.get(`${blockId}--${typeClass}`);
+
+    const zero = "0px";
+    const top = state.side === "Top" || state.side === "All" ? value : zero;
+    const right = state.side === "Right" || state.side === "All" ? value : zero;
+    const bottom = state.side === "Bottom" || state.side === "All" ? value : zero;
+    const left = state.side === "Left" || state.side === "All" ? value : zero;
+
+    const rules = `${selector}, .${typeClass} {
     box-sizing: border-box !important;
     border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
     border-color: black !important;
@@ -580,179 +580,179 @@ export function initButtonStyles(selectedButtonElement) {
     border-bottom-width: ${bottom} !important;
     border-left-width: ${left} !important;
   }`;
-  
-      styleTag.innerHTML = rules;
-      document.querySelectorAll(`.${typeClass}`).forEach((btn) => {
-        btn.style.borderTopWidth = top;
-        btn.style.borderRightWidth = right;
-        btn.style.borderBottomWidth = bottom;
-        btn.style.borderLeftWidth = left;
-        btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
-        btn.style.borderColor = "black";
-      });
-  
-      console.log("🧾 Applied Border CSS:", rules);
-    }
-  
-    function getBorderValue(typeClass, selectedElement) {
-      const blockId = selectedElement.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(key);
-      return state?.value || 0;
-    }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (eMove) => updateUI(eMove.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
+
+    styleTag.innerHTML = rules;
+    document.querySelectorAll(`.${typeClass}`).forEach((btn) => {
+      btn.style.borderTopWidth = top;
+      btn.style.borderRightWidth = right;
+      btn.style.borderBottomWidth = bottom;
+      btn.style.borderLeftWidth = left;
+      btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
+      btn.style.borderColor = "black";
     });
-  
-    function updateUI(clientX) {
+
+    console.log("🧾 Applied Border CSS:", rules);
+  }
+
+  function getBorderValue(typeClass, selectedElement) {
+    const blockId = selectedElement.id || "block-id";
+    const key = `${blockId}--${typeClass}`;
+    const state = window.__squareCraftBorderStateMap.get(key);
+    return state?.value || 0;
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (eMove) => updateUI(eMove.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  function updateUI(clientX) {
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
+    const sample = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!sample) return;
+
+    const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+    const blockId = selectedElement.id || "block-id";
+    const key = `${blockId}--${typeClass}`;
+    let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    borderState.value = Math.round((x / rect.width) * 10);
+    fill.style.width = `${percent}%`;
+    bullet.style.left = `${percent}%`;
+    valueText.textContent = `${borderState.value}px`;
+    window.__squareCraftBorderStateMap.set(key, borderState);
+    applyBorder();
+  }
+
+  const resetBtn = document.querySelector('#buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
       const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (!sample) return;
-  
+
       const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
       const blockId = selectedElement.id || "block-id";
       const key = `${blockId}--${typeClass}`;
-      let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-  
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      borderState.value = Math.round((x / rect.width) * 10);
-      fill.style.width = `${percent}%`;
-      bullet.style.left = `${percent}%`;
-      valueText.textContent = `${borderState.value}px`;
+
+      const borderState = { value: 0, side: "All" };
       window.__squareCraftBorderStateMap.set(key, borderState);
+      fill.style.width = "0%";
+      bullet.style.left = "0%";
+      valueText.textContent = "0px";
       applyBorder();
-    }
-  
-    const resetBtn = document.querySelector('#buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        const selectedElement = getSelectedElement?.();
-        if (!selectedElement) return;
-        const sample = selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        );
-        if (!sample) return;
-  
-        const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-        if (!typeClass) return;
-        const blockId = selectedElement.id || "block-id";
-        const key = `${blockId}--${typeClass}`;
-  
-        const borderState = { value: 0, side: "All" };
-        window.__squareCraftBorderStateMap.set(key, borderState);
-        fill.style.width = "0%";
-        bullet.style.left = "0%";
-        valueText.textContent = "0px";
-        applyBorder();
-      });
-    }
-  }
-  
-  
-  
-  
-
-  
-
-
-  export function initButtonBorderTypeToggle(getSelectedElement) {
-    const typeButtons = [
-      { id: "buttonBorderTypeSolid", type: "solid" },
-      { id: "buttonBorderTypeDashed", type: "dashed" },
-      { id: "buttonBorderTypeDotted", type: "dotted" }
-    ];
-
-    typeButtons.forEach(({ id, type }) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      el.onclick = () => {
-        typeButtons.forEach(({ id }) => {
-          const btn = document.getElementById(id);
-          btn?.classList.remove("sc-bg-454545");
-        });
-      
-        el.classList.add("sc-bg-454545");
-      
-        window.__squareCraftBorderStyle = type;
-      
-        const selectedElement = getSelectedElement?.();
-        if (!selectedElement) return;
-      
-        const sample = selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-        );
-        if (!sample) return;
-      
-        const typeClass = [...sample.classList].find(cls =>
-          cls.includes("sqs-button-element--")
-        );
-        if (!typeClass) return;
-      
-        const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
-        allSameTypeButtons.forEach(btn => {
-          btn.style.setProperty("border-style", type, "important");
-        });
-      };
-      
     });
   }
+}
 
 
 
-  export function initButtonBorderRadiusControl(getSelectedElement) {
-    const fillField = document.getElementById("buttonBorderRadiousField");
-    const bullet = document.getElementById("buttonBorderRadiousBullet");
-    const fill = document.getElementById("buttonBorderRadiousFill");
-    const valueText = document.getElementById("buttonBorderRadiousCount");
-    const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
-  
-    if (!fillField || !bullet || !fill || !valueText) return;
-  
-    bullet.style.transition = "left 0.15s ease";
-    fill.style.transition = "width 0.15s ease";
-  
-    let radiusValue = 0;
-  
-    function getButtonTypeClass(sample) {
-      if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-      if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-      return "sqs-button-element--primary";
-    }
-  
-    function applyBorderRadius() {
-      const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+
+
+
+
+
+export function initButtonBorderTypeToggle(getSelectedElement) {
+  const typeButtons = [
+    { id: "buttonBorderTypeSolid", type: "solid" },
+    { id: "buttonBorderTypeDashed", type: "dashed" },
+    { id: "buttonBorderTypeDotted", type: "dotted" }
+  ];
+
+  typeButtons.forEach(({ id, type }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.onclick = () => {
+      typeButtons.forEach(({ id }) => {
+        const btn = document.getElementById(id);
+        btn?.classList.remove("sc-bg-454545");
+      });
+
+      el.classList.add("sc-bg-454545");
+
+      window.__squareCraftBorderStyle = type;
+
+      const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
-    
-      const sampleButton = selectedElement.querySelector(
+
+      const sample = selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
       );
-      if (!sampleButton) return;
-    
-      const typeClass = getButtonTypeClass(sampleButton);
-      const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-    
-      styleTag.innerHTML = `
+      if (!sample) return;
+
+      const typeClass = [...sample.classList].find(cls =>
+        cls.includes("sqs-button-element--")
+      );
+      if (!typeClass) return;
+
+      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      allSameTypeButtons.forEach(btn => {
+        btn.style.setProperty("border-style", type, "important");
+      });
+    };
+
+  });
+}
+
+
+
+export function initButtonBorderRadiusControl(getSelectedElement) {
+  const fillField = document.getElementById("buttonBorderRadiousField");
+  const bullet = document.getElementById("buttonBorderRadiousBullet");
+  const fill = document.getElementById("buttonBorderRadiousFill");
+  const valueText = document.getElementById("buttonBorderRadiousCount");
+  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
+
+  if (!fillField || !bullet || !fill || !valueText) return;
+
+  bullet.style.transition = "left 0.15s ease";
+  fill.style.transition = "width 0.15s ease";
+
+  let radiusValue = 0;
+
+  function getButtonTypeClass(sample) {
+    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
+
+  function applyBorderRadius() {
+    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    if (!selectedElement) return;
+
+    const sampleButton = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+    if (!sampleButton) return;
+
+    const typeClass = getButtonTypeClass(sampleButton);
+    const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    styleTag.innerHTML = `
         a.${typeClass} {
           border-radius: ${radiusValue}px !important;
           overflow: hidden !important;
@@ -770,47 +770,47 @@ export function initButtonStyles(selectedButtonElement) {
           border-radius: ${radiusValue}px !important;
         }
       `;
-    }
-  
-    function updateUI(clientX) {
-      const rect = fillField.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      radiusValue = Math.round((x / rect.width) * 50);
-  
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      valueText.textContent = `${radiusValue}px`;
-  
-      applyBorderRadius();
-    }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const onMouseMove = (eMove) => updateUI(eMove.clientX);
-      const onMouseUp = () => {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", onMouseUp);
-    });
-  
-    fillField.addEventListener("click", (e) => {
-      updateUI(e.clientX);
-    });
-  
-    resetBtn?.addEventListener("click", () => {
-      radiusValue = 0;
-      bullet.style.left = "0%";
-      fill.style.width = "0%";
-      valueText.textContent = "0px";
-      applyBorderRadius();
-    });
   }
-  
 
-  
+  function updateUI(clientX) {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    radiusValue = Math.round((x / rect.width) * 50);
+
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${radiusValue}px`;
+
+    applyBorderRadius();
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const onMouseMove = (eMove) => updateUI(eMove.clientX);
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+    };
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  });
+
+  fillField.addEventListener("click", (e) => {
+    updateUI(e.clientX);
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    radiusValue = 0;
+    bullet.style.left = "0%";
+    fill.style.width = "0%";
+    valueText.textContent = "0px";
+    applyBorderRadius();
+  });
+}
+
+
+
 const shadowState = {
   Xaxis: 0,
   Yaxis: 0,
@@ -989,5 +989,4 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
 
 
-  
-  
+

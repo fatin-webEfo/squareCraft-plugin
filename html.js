@@ -5,7 +5,7 @@ import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-p
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
 
 
-export  function html() {
+export function html() {
 
    const htmlString = `
      <div 
@@ -21,9 +21,9 @@ export  function html() {
    <div class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949  sc-w-full">
    </div>
    <div class="sc-mt-6 sc-roboto sc-flex  sc-items-center sc-universal">
-      <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
-      <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
-      <p class="sc-text-sm sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
+      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
+      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
+      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
    </div>
    <div class="sc-border-t sc-border-solid sc-relative  sc-border-color-494949 sc-w-full">
       <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px">
@@ -40,11 +40,11 @@ export  function html() {
    <div class="sc-mt-4">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
          <div id="publish"
-            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
             Publish
          </div>
          <div
-            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-text-sm sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
             Reset
          </div>
       </div>
