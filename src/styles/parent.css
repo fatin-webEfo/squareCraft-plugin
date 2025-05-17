@@ -382,13 +382,14 @@ to{transform: rotate(360deg);}
 [class*="sc-font-family-Georgia"]{font-family: Georgia, serif !important;}
 [class*="sc-font-family-Verdana"]{font-family: Verdana, sans-serif !important;}
 [class*="sc-font-size-"]{font-size: var(--sc-font-size, 16px) !important;}
-.sc-font-size-12{--sc-font-size: 12px;}
-.sc-font-size-14{--sc-font-size: 14px;}
-.sc-font-size-16{--sc-font-size: 16px;}
-.sc-font-size-18{--sc-font-size: 18px;}
-.sc-font-size-20{--sc-font-size: 20px;}
-.sc-font-size-24{--sc-font-size: 24px;}
-.sc-font-size-30{--sc-font-size: 30px;}
+.sc-font-size-11{--sc-font-size: 11px; }
+.sc-font-size-12{--sc-font-size: 12px; }
+.sc-font-size-14{--sc-font-size: 14px; }
+.sc-font-size-16{--sc-font-size: 16px; }
+.sc-font-size-18{--sc-font-size: 18px; }
+.sc-font-size-20{--sc-font-size: 20px; }
+.sc-font-size-24{--sc-font-size: 24px; }
+.sc-font-size-30{--sc-font-size: 30px; }
 [class*="sc-font-weight-"]{font-weight: var(--sc-font-weight, 400) !important;}
 .sc-font-weight-300{--sc-font-weight: 300;}
 .sc-font-weight-400{--sc-font-weight: 400;}
