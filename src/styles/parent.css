@@ -2127,3 +2127,9 @@ width: 240px !important;
 }
 
 
+#sc-widget-container {
+  all: initial;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.4;
+}
