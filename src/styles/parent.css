@@ -2589,21 +2589,24 @@
   background-color: #222 !important;
   color: #b4b4b4 !important;
   font-size: 11px !important;
-  padding: 8px 10px 6px !important; /* extra top padding for arrow space */
+  line-height: 1 !important;
+  padding: 6px 10px 4px !important; /* Top padding adjusted for arrow */
   border-radius: 4px !important;
   white-space: nowrap !important;
   width: max-content !important;
+  box-sizing: border-box !important;
   z-index: 99999 !important;
   border: 1px solid #f0650841 !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
   font-family: sans-serif !important;
-  line-height: 1.3 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
 }
 
 .sc-tooltip::after {
   content: "" !important;
   position: absolute !important;
-  top: -6px !important; /* above tooltip box */
+  top: -6px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   border-width: 6px !important;
