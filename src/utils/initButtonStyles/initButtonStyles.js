@@ -121,6 +121,7 @@ export function initButtonStyles(selectedButtonElement) {
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
   const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
   const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
+  const fontWeightSelectedLabel = document.getElementById("scButtonFontWeightSelected");
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
   const buttonContainer = selectedButtonElement.querySelector(".sqs-block-button-container");
@@ -190,6 +191,7 @@ export function initButtonStyles(selectedButtonElement) {
       item.onclick = null;
       item.onclick = () => {
         const fontWeight = item.innerText.trim();
+        fontWeightSelectedLabel.innerText = fontWeight;
         updateExternalStyles("font-weight", fontWeight);
       };
     });
@@ -231,6 +233,7 @@ export function initButtonStyles(selectedButtonElement) {
     }
   });
 }
+
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
