@@ -70,13 +70,14 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         if (label) {
           label.innerText = family;
           label.classList.remove("sc-roboto");
+          label.style.setProperty("font-family", fontFace, "important");
         }
 
         const selectedElement = getSelectedElement?.();
         if (!selectedElement) return;
 
         const btn = selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
             "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
         if (!btn) return;
@@ -91,25 +92,15 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         );
 
         const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
-        const existingStyle = document.querySelector(
-          `style[data-font="${fontClass}"]`
-        );
-
-        if (!existingStyle) {
+        if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
           const style = document.createElement("style");
           style.dataset.font = fontClass;
-          style.innerHTML = `
-            .${fontClass} {
-              font-family: ${fontFace} !important;
-            }
-          `;
+          style.innerHTML = `.${fontClass} { font-family: ${fontFace} !important; }`;
           document.head.appendChild(style);
         }
 
-        allSameTypeButtons.forEach((button) => {
-          const spans = button.querySelectorAll(
-            "span, .sqs-add-to-cart-button-inner"
-          );
+        allSameTypeButtons.forEach((btn) => {
+          const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
           spans.forEach((span) => {
             [...span.classList].forEach((cls) => {
               if (cls.startsWith("sc-font-family-")) span.classList.remove(cls);
@@ -128,6 +119,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
 export function initButtonStyles(selectedButtonElement) {
