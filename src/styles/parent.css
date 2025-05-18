@@ -2583,13 +2583,13 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: calc(100% + 10px) !important; /* push down so arrow clears the icon */
+  top: 100% !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
   color: #b4b4b4 !important;
   font-size: 11px !important;
-  padding: 6px 10px !important;
+  padding: 8px 10px 6px !important; /* extra top padding for arrow space */
   border-radius: 4px !important;
   white-space: nowrap !important;
   width: max-content !important;
@@ -2603,14 +2603,14 @@
 .sc-tooltip::after {
   content: "" !important;
   position: absolute !important;
-  top: -6px !important; /* sits above the tooltip box */
+  top: -6px !important; /* above tooltip box */
   left: 50% !important;
   transform: translateX(-50%) !important;
   border-width: 6px !important;
   border-style: solid !important;
   border-color: transparent transparent #222 transparent !important;
-  z-index: 99998 !important;
 }
+
 
 
 
