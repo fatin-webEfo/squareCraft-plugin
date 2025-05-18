@@ -5,6 +5,7 @@ export function createTooltip(el) {
     const tooltip = document.createElement('div');
     tooltip.className = 'sc-tooltip';
     tooltip.innerText = tooltipText;
+  
     el.style.position = 'relative';
     el.appendChild(tooltip);
   }
