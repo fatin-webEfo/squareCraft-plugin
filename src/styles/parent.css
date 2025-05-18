@@ -2602,6 +2602,7 @@
   display: inline-block !important;
   vertical-align: middle !important;
   opacity: 0 !important;
+  width: auto !important;
   visibility: hidden !important;
   transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
   pointer-events: none !important;
