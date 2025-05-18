@@ -127,12 +127,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
               fontWeightSelectedLabel.innerText = weight;
               fontWeightOptions.classList.add("sc-hidden");
 
-              const btn = selectedElement.querySelector(
-                "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-                "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-              );
-              if (!btn) return;
-
               const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
               spans.forEach(span => {
                 span.style.fontWeight = weight;
@@ -151,6 +145,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
 export function initButtonStyles(selectedButtonElement) {
