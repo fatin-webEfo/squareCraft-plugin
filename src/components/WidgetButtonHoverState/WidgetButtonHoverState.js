@@ -288,7 +288,7 @@ export function WidgetButtonHoverState() {
                         </p>
           
                         <div
-                           class="sc-py-4px sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                           class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                            <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
                            </div>
@@ -353,7 +353,7 @@ export function WidgetButtonHoverState() {
           
           
                            <div id="hover-buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
-                              <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
+                              <p style="padding: 3px 0px;" class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
                                  Solid
                               </p>
                            </div>
