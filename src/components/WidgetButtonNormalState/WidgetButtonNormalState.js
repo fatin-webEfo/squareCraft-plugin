@@ -1,3 +1,4 @@
+const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
 
 
 export function WidgetButtonNormalState() {
@@ -253,10 +254,13 @@ export function WidgetButtonNormalState() {
                               class=" alignment-icon   sc-mx-auto" alt="left">
                         </div>
                         <div id="imageupload" 
+                        data-sc-tooltip
                            class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                               class=" alignment-icon   sc-mx-auto" alt="center">
+                                ${createTooltip("Choose icon")}
+
                         </div>
                         <div class="sc-relative">
                            <div id="iconLibraryButton"

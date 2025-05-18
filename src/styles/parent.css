@@ -1969,6 +1969,28 @@
   border-radius: 6px !important;
 }
 
+.sc-tooltip {
+  position: absolute !important;
+  top: -30px !important;
+  border: 0.5px #f0640834 solid !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: #000 !important;
+  color: white !important;
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  white-space: nowrap !important;
+  z-index: 999999 !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+
+[data-sc-tooltip]:hover .sc-tooltip {
+  opacity: 1;
+}
 
 .sc-custom-dropdown {
   position: absolute;
