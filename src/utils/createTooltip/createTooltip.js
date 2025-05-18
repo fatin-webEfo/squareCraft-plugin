@@ -6,29 +6,30 @@ export function createTooltip(el) {
     tooltip.className = 'sc-tooltip';
     tooltip.innerText = tooltipText;
   
-    tooltip.style.cssText = `
-      position: absolute !important;
-      top: -30px !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      background-color: #000 !important;
-      color: white !important;
-      font-size: 10px !important;
-      padding: 4px 8px !important;
-      border-radius: 6px !important;
-      white-space: nowrap !important;
-      z-index: 999999 !important;
-      transition: opacity 0.2s ease !important;
-      pointer-events: none !important;
-      border: 0.5px solid #f0640834 !important;
-      opacity: 0 !important;
-      display: none !important;
-    `;
+    Object.assign(tooltip.style, {
+      position: 'absolute',
+      top: '-30px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: '#000',
+      color: 'white',
+      fontSize: '10px',
+      padding: '4px 8px',
+      borderRadius: '6px',
+      whiteSpace: 'nowrap',
+      zIndex: '999999',
+      pointerEvents: 'none',
+      opacity: '0',
+      transition: 'opacity 0.2s ease',
+      border: '0.5px solid #f0640834'
+    });
   
-    el.style.position = 'relative';
-    el.appendChild(tooltip);
+    document.body.appendChild(tooltip);
   
     el.addEventListener('mouseenter', () => {
+      const rect = el.getBoundingClientRect();
+      tooltip.style.top = `${rect.top - 30}px`;
+      tooltip.style.left = `${rect.left + rect.width / 2}px`;
       tooltip.style.opacity = '1';
       tooltip.style.display = 'block';
     });
