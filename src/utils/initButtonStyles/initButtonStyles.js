@@ -42,7 +42,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         const link = document.createElement("link");
         link.id = fontId;
         link.rel = "stylesheet";
-        link.href = fontUrl;
+        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/\s+/g, "+")}&display=swap`;
         document.head.appendChild(link);
       }
 
@@ -94,7 +94,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
           if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
             const style = document.createElement("style");
             style.dataset.font = fontClass;
-            style.innerHTML = `.${fontClass} { --sc-font-family: "${family}"; }`;
+            style.innerHTML = `.${fontClass} { font-family: ${fontFace} !important; }`;
             document.head.appendChild(style);
           }
 
@@ -127,9 +127,12 @@ export function initButtonFontFamilyControls(getSelectedElement) {
               fontWeightSelectedLabel.innerText = weight;
               fontWeightOptions.classList.add("sc-hidden");
 
-              const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-              spans.forEach(span => {
-                span.style.fontWeight = weight;
+              const buttons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
+              buttons.forEach(btn => {
+                const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+                spans.forEach(span => {
+                  span.style.fontWeight = weight;
+                });
               });
             };
             fontWeightOptions.appendChild(item);
@@ -145,6 +148,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
 export function initButtonStyles(selectedButtonElement) {
