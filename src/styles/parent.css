@@ -2601,6 +2601,10 @@
   line-height: 1.2 !important;
 }
 
+.sc-tooltip::after {
+  content: none !important;
+  display: none !important;
+}
 
 
 .sc-inline-block {
