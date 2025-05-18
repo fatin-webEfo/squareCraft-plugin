@@ -37,7 +37,7 @@ setTimeout(() => {
                </div>
             </div>
          <div id="fontSection">
-            <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
+            <div class=" sc-relative sc-grid sc-mt-2 sc-grid-cols-12 sc-gap-2 ">
 
                <div id="buttonFontFamilyButton" class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
                   <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
@@ -68,7 +68,7 @@ setTimeout(() => {
                         </div>
                         <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
                            style="height: 28px;  margin-left: 12px;   border-radius: 0px 5px 5px 0px;">
-                           <img class=" sc-rotate-180 sc-mt-3" width="12px"
+                           <img class=" sc-rotate-180 sc-mt-2" width="12px"
                               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                         </div>
                      </div>
@@ -178,7 +178,7 @@ setTimeout(() => {
                <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
-            <div id="colorSection" class="sc-mt-3 sc-hidden">
+            <div id="colorSection" class="sc-mt-2 sc-hidden">
             <div class="sc-items-center sc-gap-2  sc-flex">
                <div id="bgColorSection" class=" ">
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
@@ -226,7 +226,7 @@ setTimeout(() => {
                         </div>
                      </div>
                   
-                     <div class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                     <div class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
                         <p id="button-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                         <p id="button-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
                      </div>
@@ -247,13 +247,13 @@ setTimeout(() => {
 
 
                <div id="iconButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
       
-            <div id="iconSection" class="sc-mt-3  sc-hidden">
+            <div id="iconSection" class="sc-mt-2  sc-hidden">
             <div class="">
                <div class="sc-flex sc-items-center sc-gap-2">
                   <div>
@@ -368,7 +368,7 @@ setTimeout(() => {
             <div class="sc-mt-4 sc-flex sc-items-center sc-gap-2">
              
                  <div class="sc-w-full">
-                  <div class=" sc-mt-3 sc-flex sc-w-full sc-items-center sc-justify-between">
+                  <div class=" sc-mt-2 sc-flex sc-w-full sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Rotation
                         </p>
@@ -389,7 +389,7 @@ setTimeout(() => {
                         </div>
                      </div>
                   </div>
-                  <div id="buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                      <div id="buttonIconRotationradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonIconRotationradiousBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -403,7 +403,7 @@ setTimeout(() => {
             </div>
 
             <div class="sc-w-full sc-mt-4">
-               <div class=" sc-mt-3 sc-flex sc-w-full sc-items-center sc-justify-between">
+               <div class=" sc-mt-2 sc-flex sc-w-full sc-items-center sc-justify-between">
                   <div class="sc-flex sc-gap-2 sc-items-center">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> icon Size
                      </p>
@@ -424,7 +424,7 @@ setTimeout(() => {
                      </div>
                   </div>
                </div>
-               <div id="buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                   <div id="buttonIconSizeradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                   <div id="buttonIconSizeradiousBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -442,7 +442,7 @@ setTimeout(() => {
                </div>
             </div>
 
-            <div class=" sc-mt-3 sc-flex sc-items-center sc-justify-between">
+            <div class=" sc-mt-2 sc-flex sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Icon Spacing
                   </p>
@@ -463,7 +463,7 @@ setTimeout(() => {
                   </div>
                </div>
             </div>
-            <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+            <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                <div id="buttonIconSpacingradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                <div id="buttonIconSpacingradiousBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -473,13 +473,13 @@ setTimeout(() => {
 
             <div>
                <div id="bordersButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
 
-               <div id="bordersSection" class=" sc-mt-3 sc-hidden">
+               <div id="bordersSection" class=" sc-mt-2 sc-hidden">
                   <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
@@ -504,13 +504,13 @@ setTimeout(() => {
                      </div>
                   </div>
 
-                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                      <div id="buttonBorderFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonBorderBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                      </div>
                   </div>
-                  <div class="sc-grid sc-grid-cols-12 sc-mt-3">
+                  <div class="sc-grid sc-grid-cols-12 sc-mt-2">
                      <div></div>
                      <div style="padding: 2px 0px;"
                         class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
@@ -555,7 +555,7 @@ setTimeout(() => {
                         </p>
 
                         <div
-                           class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                           class="sc-py-0_5 sc-relative sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                            <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
                            </div>
@@ -600,7 +600,7 @@ setTimeout(() => {
                                  </div>
                               </div>
                               <div
-                                 class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                                 class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
                                  <p id="color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select
                                  </p>
                                  <p id="color-transparency-count"
@@ -616,7 +616,7 @@ setTimeout(() => {
                            Style
                         </p>
                         <div style="padding: 2px 0px;"
-                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
+                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-2 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
 
 
                            <div id="buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
@@ -666,7 +666,7 @@ setTimeout(() => {
                            </div>
                         </div>
                      </div>
-                    <div id="buttonBorderRadiousField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    <div id="buttonBorderRadiousField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
 <div id="buttonBorderRadiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
 <div id="buttonBorderRadiousBullet"
     class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -680,13 +680,13 @@ setTimeout(() => {
 
 
             <div id="shadowsButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
                <div id="shadowsSection" class="sc-hidden">
-                  <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
+                  <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow
                      </p>
                      <div
@@ -696,7 +696,7 @@ setTimeout(() => {
                            alt="reset">
                      </div>
                   </div>
-                  <div class="mt-3 sc-flex sc-mt-4 sc-items-center sc-gap-3">
+                  <div class="mt-2 sc-flex sc-mt-4 sc-items-center sc-gap-3">
                      <div class="sc-w-full">
                         <div class="sc-flex sc-gap-2 sc-items-center sc-justify-between">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
@@ -715,7 +715,7 @@ setTimeout(() => {
                            </div>
 
                         </div>
-                        <div id="buttonShadowXaxisField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                        <div id="buttonShadowXaxisField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                            <div id="buttonShadowXaxisBullet"
                               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                            </div>
@@ -739,7 +739,7 @@ setTimeout(() => {
                            </div>
 
                         </div>
-                        <div id="buttonShadowYaxisField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                        <div id="buttonShadowYaxisField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                            <div id="buttonShadowYaxisBullet"
                               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                            </div>
@@ -783,7 +783,7 @@ setTimeout(() => {
                            </div>
                         </div>
                      </div>
-                     <div id="buttonShadowBlurField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonShadowBlurField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                         <div id="buttonShadowBlurBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
@@ -816,7 +816,7 @@ setTimeout(() => {
                            </div>
                         </div>
                      </div>
-                     <div id="buttonShadowSpreadField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonShadowSpreadField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                         <div id="buttonShadowSpreadBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
