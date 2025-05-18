@@ -1,7 +1,7 @@
 export function createTooltip(el) {
     const tooltipText = el.getAttribute('data-sc-tooltip');
     if (!tooltipText) return;
-  
+    el.removeAttribute('title');
     const tooltip = document.createElement('div');
     tooltip.className = 'sc-tooltip';
     tooltip.innerText = tooltipText;
