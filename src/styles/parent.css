@@ -1970,21 +1970,20 @@
 }
 
 .sc-tooltip {
-  position: absolute !important;
-  top: -30px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  background-color: #000 !important;
-  color: white !important;
-  font-size: 10px !important;
-  padding: 4px 8px !important;
-  border-radius: 6px !important;
-  white-space: nowrap !important;
-  z-index: 999999 !important;
-  pointer-events: none !important;
-  opacity: 0 !important;
-  transition: opacity 0.2s ease !important;
-  border: 0.5px solid #f0640834 !important;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #000;
+  color: white;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 999999;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  border: 0.5px solid #f0640834;
 }
 
 

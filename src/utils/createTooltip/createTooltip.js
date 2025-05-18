@@ -6,17 +6,19 @@ export function createTooltip(el) {
     tooltip.className = 'sc-tooltip';
     tooltip.innerText = tooltipText;
   
+    tooltip.style.opacity = '0';
+    tooltip.style.pointerEvents = 'none';
+  
     el.style.position = 'relative';
     el.appendChild(tooltip);
-    el.onmouseenter = () => console.log('Hovered via onmouseenter');
-
-  
-    tooltip.style.display = 'block';
-    tooltip.style.background = 'red';
-    tooltip.style.color = 'white';
   
     el.addEventListener('mouseenter', () => {
-      console.log('🎯 Hovered on tooltip element:', el);
+      console.log('🎯 Hovered on:', el);
+      tooltip.style.opacity = '1';
+    });
+  
+    el.addEventListener('mouseleave', () => {
+      tooltip.style.opacity = '0';
     });
   }
   
