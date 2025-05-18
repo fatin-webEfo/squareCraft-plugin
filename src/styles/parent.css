@@ -2589,11 +2589,13 @@
   background-color: #222 !important;
   color: #b4b4b4 !important;
   font-size: 11px !important;
-  line-height: 1 !important;
-  padding: 6px 10px 4px !important;
+  font-weight: normal !important;
+  line-height: 1.2 !important;
+  padding: 4px 6px !important; /* Tighter padding */
   border-radius: 4px !important;
   white-space: nowrap !important;
-  width: max-content !important;
+  width: fit-content !important;
+  height: auto !important;
   box-sizing: border-box !important;
   z-index: 99999 !important;
   border: 1px solid #f0650841 !important;
@@ -2623,6 +2625,7 @@
   border-color: transparent transparent #222 transparent !important;
   z-index: 99998 !important;
 }
+
 
 
 
