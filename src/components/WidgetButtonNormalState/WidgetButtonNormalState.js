@@ -326,7 +326,7 @@ export function WidgetButtonNormalState(){
                   <div>
                      <p class="sc-roboto sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Icon Position</p>
                      <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                        <div id="iconPositionLabel" class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+                        <div id="iconPositionLabel" class="sc-bg-3f3f3f sc-relative sc-py-0_5 sc-rounded-l sc-px-2 sc-w-16">
                         <p class="sc-universal sc-roboto sc-font-size-12">Before</p>
                         </div>
                      
