@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: 100% !important;
+  top: calc(100% +2px) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
