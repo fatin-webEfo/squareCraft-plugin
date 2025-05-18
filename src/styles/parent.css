@@ -2153,10 +2153,7 @@
   position: relative !important;
 }
 
-/* Dropdown Styles */
-.sc-hidden {
-  display: none !important;
-}
+
 
 .sc-dropdown-item:hover {
   background: #EF7C2F !important;
@@ -2409,9 +2406,6 @@
   z-index: 99999 !important;
 }
 
-.sc-hidden {
-  display: none !important;
-}
 
 .sc-z-9999 {
   z-index: 9999 !important;
@@ -2521,9 +2515,7 @@
   background-color: #EF7C2F !important;
 }
 
-.sc-hidden {
-  display: none !important;
-}
+
 
 .sc-scroll {
   max-height: 200px !important;
@@ -2590,21 +2582,31 @@
 }
 
 .sc-tooltip {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  background-color: #2c2c2c;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  z-index: 99999;
-  opacity: 0.9;
-  transition: opacity 0.3s ease-in-out;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 99;
+  border: 1px solid #f06408;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-family: sans-serif;
 }
 
-.sc-relative {
-  position: relative;
+.sc-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #222 transparent transparent transparent;
 }
 
 .sc-inline-block {
