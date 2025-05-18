@@ -102,6 +102,7 @@
   const { initImageUploadPreview } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonSectionToggleControls/initImageUploadPreview.js");
   const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js");
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
+  const { initSimpleTooltipHover } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/buttonTooltipControls/buttonTooltipControls.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
   const { initButtonFontColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
@@ -517,6 +518,7 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       makeWidgetDraggable();
       widgetLoaded = true;
       initImageSectionToggleControls();
+      initSimpleTooltipHover();
       initButtonSectionToggleControls();
       initHoverButtonSectionToggleControls();
       initHoverButtonEffectDropdowns();
