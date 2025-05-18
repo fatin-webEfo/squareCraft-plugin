@@ -1,17 +1,17 @@
-
-
-
 const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
+console.log('✅ Tooltip module loaded');
 
 setTimeout(() => {
-  const tooltipElements = document.querySelectorAll('[data-sc-tooltip]');
-  tooltipElements.forEach(el => createTooltip(el));
-}, 500); 
-
+   const tooltipElements = document.querySelectorAll('[data-sc-tooltip]');
+   console.log('Tooltip targets found:', tooltipElements.length);
+ 
+   tooltipElements.forEach(el => {
+     console.log('Attaching tooltip to:', el);
+     createTooltip(el);
+   });
+ }, 500);
  
  
- 
-
 
 
    export function WidgetButtonNormalState() {
