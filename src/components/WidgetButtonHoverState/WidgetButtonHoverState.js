@@ -570,7 +570,7 @@ export function WidgetButtonHoverState() {
                <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
    
                <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                  <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+                  <div  class="sc-bg-3f3f3f sc-relative sc-py-4px sc-rounded-l sc-px-2 sc-w-16">
                   <p id="hover-buttonTransitionTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
@@ -593,7 +593,7 @@ export function WidgetButtonHoverState() {
                <p class="sc-universal sc-roboto sc-font-size-12">Duration(ms)</p>
    
                <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
-                  <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
+                  <div  class="sc-bg-3f3f3f sc-relative sc-py-4px sc-rounded-l sc-px-2 sc-w-toogle">
                   <p id="hover-buttonDurationLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
@@ -619,7 +619,7 @@ export function WidgetButtonHoverState() {
                <p class="sc-universal sc-roboto sc-font-size-12">Delay(ms)</p>
    
                <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                  <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
+                  <div  class="sc-bg-3f3f3f sc-relative sc-py-4px sc-rounded-l sc-px-2 sc-w-toogle">
                   <p id="hover-buttonDelayLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
@@ -646,7 +646,7 @@ export function WidgetButtonHoverState() {
             <p class="sc-universal sc-roboto sc-font-size-12">Transform</p>
    
             <div class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
-               <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+               <div  class="sc-bg-3f3f3f sc-relative sc-py-4px sc-rounded-l sc-px-2 sc-w-16">
                <p id="hover-buttonTransformTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                </div>   
             
