@@ -5,8 +5,18 @@ export function initSimpleTooltipHover() {
       const tooltip = el.querySelector('.sc-tooltip');
       if (!tooltip) return;
   
-      el.addEventListener('mouseenter', () => tooltip.classList.remove('sc-hidden'));
-      el.addEventListener('mouseleave', () => tooltip.classList.add('sc-hidden'));
+      let showTimeout;
+  
+      el.addEventListener('mouseenter', () => {
+        showTimeout = setTimeout(() => {
+          tooltip.classList.add('sc-visible');
+        }, 1000); // 1 second delay
+      });
+  
+      el.addEventListener('mouseleave', () => {
+        clearTimeout(showTimeout);
+        tooltip.classList.remove('sc-visible');
+      });
     });
   }
   

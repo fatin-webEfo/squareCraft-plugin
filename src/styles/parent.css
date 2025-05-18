@@ -2590,7 +2590,7 @@
   color: #b4b4b4 !important;
   font-size: 11px !important;
   line-height: 1 !important;
-  padding: 6px 10px 4px !important; /* Top padding adjusted for arrow */
+  padding: 6px 10px 4px !important;
   border-radius: 4px !important;
   white-space: nowrap !important;
   width: max-content !important;
@@ -2601,6 +2601,15 @@
   font-family: sans-serif !important;
   display: inline-block !important;
   vertical-align: middle !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+  pointer-events: none !important;
+}
+
+.sc-tooltip.sc-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .sc-tooltip::after {
@@ -2612,7 +2621,9 @@
   border-width: 6px !important;
   border-style: solid !important;
   border-color: transparent transparent #222 transparent !important;
+  z-index: 99998 !important;
 }
+
 
 
 
