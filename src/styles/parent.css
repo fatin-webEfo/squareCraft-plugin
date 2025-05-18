@@ -2587,8 +2587,9 @@
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
-  color: #fff !important;
-  font-size: 11px !important;
+  color: #bdbdbd !important;
+  font-size: 10px !important;
+  font-weight: 200 !important;
   padding: 3px 8px !important;
   border-radius: 12px !important;
   white-space: nowrap !important;
