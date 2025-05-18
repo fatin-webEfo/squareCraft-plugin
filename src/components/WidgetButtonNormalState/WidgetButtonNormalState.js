@@ -1,21 +1,21 @@
 
 
-export function WidgetButtonNormalState(){
-    const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
+export function WidgetButtonNormalState() {
+   const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
 
 
    const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
    const outlineIcons = Array.from({ length: 112 }, (_, i) => i + 1);
 
-  
-   
-    return `
+
+
+   return `
    <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
             <div class="sc-flex ">
 
                <div id="fontButton"
-                  class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                   <div class="sc-active-bar sc-rounded-l"></div>
                   <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
@@ -62,13 +62,13 @@ export function WidgetButtonNormalState(){
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
                         ${fontSizes
-                        ?.map(
-                           (size) => `
+         ?.map(
+            (size) => `
                         <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${size}">
                            ${size}</div>
                         `
-                        )
-                        .join("")}
+         )
+         .join("")}
                      </div>
                   </div>
                </div>
@@ -118,11 +118,11 @@ export function WidgetButtonNormalState(){
                sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                sc-mt-1">
                   ${ButtonLetterSpacing?.map(
-                     (gap) => `
+            (gap) => `
                   <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${gap}">${gap}
                   </div>
                   `
-                  ).join("")}
+         ).join("")}
                </div>
             </div>
 
@@ -159,7 +159,7 @@ export function WidgetButtonNormalState(){
 
 
             <div id="colorButton"
-               class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
                <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
@@ -233,7 +233,7 @@ export function WidgetButtonNormalState(){
 
 
                <div id="iconButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -291,8 +291,8 @@ export function WidgetButtonNormalState(){
 
                         <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
                          ${solidIconList
-                             .map(
-                             (i) => `
+         .map(
+            (i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
@@ -300,14 +300,14 @@ export function WidgetButtonNormalState(){
                              height="20" 
                              alt="">
                          `
-                             )
-                             .join("")}
+         )
+         .join("")}
                          </div>
 
                          <div id="buttonIconOutlineoptions" class="sc-hidden sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
                           ${outlineIcons
-                             .map(
-                             (i) => `
+         .map(
+            (i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
@@ -315,8 +315,8 @@ export function WidgetButtonNormalState(){
                              height="20" 
                              alt="">
                          `
-                             )
-                             .join("")}
+         )
+         .join("")}
                          </div>
                            </div>
                      </div>
@@ -456,7 +456,7 @@ export function WidgetButtonNormalState(){
 
             <div>
                <div id="bordersButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -663,7 +663,7 @@ export function WidgetButtonNormalState(){
 
 
             <div id="shadowsButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">

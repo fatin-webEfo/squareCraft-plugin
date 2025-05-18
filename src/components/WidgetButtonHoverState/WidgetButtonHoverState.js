@@ -2,7 +2,7 @@ export function WidgetButtonHoverState() {
    return `
      <div id="ButtonHoverState" class="sc-mt-4 sc-hidden  sc-roboto sc-font-light  sc-px-2">
             <div id="hover-colorButton"
-               class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
                <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
@@ -76,7 +76,7 @@ export function WidgetButtonHoverState() {
           
           
                <div id="hover-iconButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
                   <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -206,7 +206,7 @@ export function WidgetButtonHoverState() {
           
             <div>
                <div id="hover-bordersButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                   <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -413,7 +413,7 @@ export function WidgetButtonHoverState() {
           
           
             <div id="hover-shadowsButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
                   <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
@@ -558,7 +558,7 @@ export function WidgetButtonHoverState() {
                   </div>
                </div>
                <div id="hover-buttonEffect"
-               class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Button Effect</p>
                <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">

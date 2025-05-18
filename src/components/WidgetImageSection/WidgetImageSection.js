@@ -47,7 +47,7 @@ export function WidgetImageSection(id) {
 
                <div class="sc-flex sc-mt-4 sc-px-2">
                   <div id="borderButton"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                      <h5 class="sc-roboto sc-font-thin sc-universal  sc-text-color-white">Border</h5>
                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -239,7 +239,7 @@ export function WidgetImageSection(id) {
 
                <div class="sc-mt-4 sc-px-2">
                   <div id="overLayButton"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-6px">
                      <h5 class="sc-roboto sc-font-thin sc-universal  sc-text-color-white">Overlay</h5>
                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -398,7 +398,7 @@ export function WidgetImageSection(id) {
 
                <div class="sc-px-2">
                   <div id="shadowButton"
-                     class="sc-bg-3f3f3f sc-mt-4 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-mt-4 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-6px">
                      <h5 class="sc-roboto sc-font-thin sc-universal  sc-text-color-white">Shadow</h5>
                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
