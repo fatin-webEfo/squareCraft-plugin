@@ -5,13 +5,8 @@ export function initSimpleTooltipHover() {
       const tooltip = el.querySelector('.sc-tooltip');
       if (!tooltip) return;
   
-      el.addEventListener('mouseenter', () => {
-        tooltip.classList.remove('sc-hidden');
-      });
-  
-      el.addEventListener('mouseleave', () => {
-        tooltip.classList.add('sc-hidden');
-      });
+      el.addEventListener('mouseenter', () => tooltip.classList.remove('sc-hidden'));
+      el.addEventListener('mouseleave', () => tooltip.classList.add('sc-hidden'));
     });
   }
   
