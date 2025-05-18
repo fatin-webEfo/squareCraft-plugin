@@ -9,7 +9,7 @@ setTimeout(async () => {
      console.log('Attaching tooltip to:', el);
      createTooltip(el);
    });
- }, 100);
+ }, 300);
  
  
  
