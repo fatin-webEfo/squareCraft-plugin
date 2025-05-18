@@ -264,7 +264,7 @@ setTimeout(() => {
                         </div>
                         <div id="imageupload" 
                         data-sc-tooltip="Upload icon"
-                           class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+                           class="sc-h-9 sc-flex sc-relative sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                               class=" alignment-icon   sc-mx-auto" alt="center">
