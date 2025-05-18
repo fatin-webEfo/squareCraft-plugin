@@ -8,5 +8,10 @@ export function createTooltip(el) {
   
     el.style.position = 'relative';
     el.appendChild(tooltip);
+  
+    el.addEventListener('mouseenter', () => {
+      console.log('Hovered tooltip element:', el);
+      console.log('Tooltip text:', tooltipText);
+    });
   }
   
