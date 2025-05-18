@@ -1,15 +1,22 @@
-setTimeout(async () => {
+(async () => {
    const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
-   console.log('✅ Tooltip module loaded');
+   console.log("✅ Tooltip module loaded");
  
-   const tooltipElements = widgetContainer.querySelectorAll('[data-sc-tooltip]');
-   console.log('Tooltip targets found:', tooltipElements.length);
+   const observer = new MutationObserver(() => {
+     const tooltipElements = document.querySelectorAll('[data-sc-tooltip]:not([data-sc-tooltip-init])');
  
-   tooltipElements.forEach(el => {
-     console.log('Attaching tooltip to:', el);
-     createTooltip(el);
+     tooltipElements.forEach(el => {
+       el.setAttribute('data-sc-tooltip-init', 'true'); // Prevent re-binding
+       createTooltip(el);
+     });
    });
- }, 300);
+ 
+   observer.observe(document.body, {
+     childList: true,
+     subtree: true,
+   });
+ })();
+ 
  
  
  
