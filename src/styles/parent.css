@@ -884,6 +884,10 @@ width: 240px !important;
   height: 140px !important;
   overflow-y: auto !important;
 }
+.sc-max-h-140px {
+  max-height: 140px !important;
+  overflow-y: auto !important;
+}
 
 .sc-h-350 {
   height: 380px !important;

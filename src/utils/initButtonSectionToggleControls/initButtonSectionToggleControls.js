@@ -17,26 +17,18 @@ export function initButtonSectionToggleControls() {
           const otherSectionId = sections[otherButtonId];
           const otherSection = document.getElementById(otherSectionId);
 
-          if (otherSection) {
-            if (otherButtonId === buttonId) {
-              otherSection.classList.remove("sc-hidden");
-              otherSection.classList.add("sc-visible");
-              otherSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-            } else {
-              otherSection.classList.add("sc-hidden");
-              otherSection.classList.remove("sc-visible");
-            }
+          if (otherSectionId === sectionId) {
+            otherSection.classList.remove("sc-hidden");
+            otherSection.classList.add("sc-visible");
+            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else if (otherSection) {
+            otherSection.classList.add("sc-hidden");
+            otherSection.classList.remove("sc-visible");
           }
         });
       });
     }
   });
-
-
-
 
   const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");
   const buttonFontSizeOptions = document.getElementById("scButtonFontSizeOptions");
@@ -46,7 +38,6 @@ export function initButtonSectionToggleControls() {
       buttonFontSizeOptions.classList.toggle("sc-hidden");
     });
   }
-
 
   const buttonFontWeightSelect = document.getElementById("scButtonFontWeightSelect");
   const buttonFontWeightOptions = document.getElementById("scButtonFontWeightOptions");
@@ -73,15 +64,9 @@ export function initButtonSectionToggleControls() {
     });
   }
 
-  const buttonLetterSpacingSelect = document.getElementById(
-    "scButtonLetterSpacingSelect"
-  );
-  const buttonLetterSpacingOptions = document.getElementById(
-    "scButtonLetterSpacingOptions"
-  );
-  const buttonLetterSpacingInput = document.getElementById(
-    "scButtonLetterSpacingInput"
-  );
+  const buttonLetterSpacingSelect = document.getElementById("scButtonLetterSpacingSelect");
+  const buttonLetterSpacingOptions = document.getElementById("scButtonLetterSpacingOptions");
+  const buttonLetterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
 
   if (buttonLetterSpacingSelect && buttonLetterSpacingOptions) {
     buttonLetterSpacingSelect.addEventListener("click", (event) => {
@@ -95,24 +80,18 @@ export function initButtonSectionToggleControls() {
       }
     });
 
-    buttonLetterSpacingOptions
-      .querySelectorAll(".sc-dropdown-item")
-      .forEach((item) => {
-        item.addEventListener("click", () => {
-          const selectedSpacing = item.getAttribute("data-value");
-          buttonLetterSpacingInput.value = selectedSpacing;
-          buttonLetterSpacingOptions.classList.add("sc-hidden");
-          buttonLetterSpacingInput.dispatchEvent(new Event("input"));
-        });
+    buttonLetterSpacingOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const selectedSpacing = item.getAttribute("data-value");
+        buttonLetterSpacingInput.value = selectedSpacing;
+        buttonLetterSpacingOptions.classList.add("sc-hidden");
+        buttonLetterSpacingInput.dispatchEvent(new Event("input"));
       });
+    });
   }
 
-  const buttonFontColorTrigger = document.getElementById(
-    "buttonFontColorPalate"
-  );
-  const buttonFontColorPalette = document.getElementById(
-    "button-font-color-palette"
-  );
+  const buttonFontColorTrigger = document.getElementById("buttonFontColorPalate");
+  const buttonFontColorPalette = document.getElementById("button-font-color-palette");
 
   if (buttonFontColorTrigger && buttonFontColorPalette) {
     buttonFontColorTrigger.addEventListener("click", (event) => {
@@ -121,10 +100,7 @@ export function initButtonSectionToggleControls() {
     });
 
     document.addEventListener("click", (event) => {
-      if (
-        !buttonFontColorTrigger.contains(event.target) &&
-        !buttonFontColorPalette.contains(event.target)
-      ) {
+      if (!buttonFontColorTrigger.contains(event.target) && !buttonFontColorPalette.contains(event.target)) {
         buttonFontColorPalette.classList.add("sc-hidden");
       }
     });
@@ -135,19 +111,12 @@ export function initButtonSectionToggleControls() {
   const buttonNormalState = document.getElementById("ButtonNormalState");
   const buttonHoverState = document.getElementById("ButtonHoverState");
 
-  if (
-    buttonNormalStateClick &&
-    buttonHoverStateClick &&
-    buttonNormalState &&
-    buttonHoverState
-  ) {
+  if (buttonNormalStateClick && buttonHoverStateClick && buttonNormalState && buttonHoverState) {
     buttonHoverStateClick.addEventListener("click", () => {
       buttonNormalState.classList.add("sc-hidden");
       buttonHoverState.classList.remove("sc-hidden");
-
       buttonNormalStateClick.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
       buttonNormalStateClick.classList.add("sc-bg-3f3f3f");
-
       buttonHoverStateClick.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
       buttonHoverStateClick.classList.remove("sc-bg-3f3f3f");
     });
@@ -155,26 +124,22 @@ export function initButtonSectionToggleControls() {
     buttonNormalStateClick.addEventListener("click", () => {
       buttonHoverState.classList.add("sc-hidden");
       buttonNormalState.classList.remove("sc-hidden");
-
       buttonHoverStateClick.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
       buttonHoverStateClick.classList.add("sc-bg-3f3f3f");
-
       buttonNormalStateClick.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
       buttonNormalStateClick.classList.remove("sc-bg-3f3f3f");
     });
   }
 
- 
-
   const buttonFontFamilySelect = document.getElementById("buttonFontFamilyButton");
   const buttonFontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
-  
+
   if (buttonFontFamilySelect && buttonFontFamilyOptions) {
     buttonFontFamilySelect.addEventListener("click", (event) => {
       event.stopPropagation();
       buttonFontFamilyOptions.classList.toggle("sc-hidden");
     });
-  
+
     document.addEventListener("click", (event) => {
       if (!buttonFontFamilySelect.contains(event.target)) {
         buttonFontFamilyOptions.classList.add("sc-hidden");
@@ -205,6 +170,7 @@ export function initButtonSectionToggleControls() {
       e.stopPropagation();
       toggleIconTabs(solidTab, outlineTab, solidOption, outlineOption);
     });
+
     outlineTab.addEventListener("click", (e) => {
       e.stopPropagation();
       toggleIconTabs(outlineTab, solidTab, outlineOption, solidOption);
