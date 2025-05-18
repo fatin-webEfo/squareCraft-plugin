@@ -4,9 +4,8 @@ const { createTooltip } = await import('https://fatin-webefo.github.io/squareCra
 setTimeout(() => {
    const tooltipElements = document.querySelectorAll('[data-sc-tooltip]');
    tooltipElements.forEach(el => createTooltip(el));
- }, 100);
+ }, 300);
  
-
 
 
 

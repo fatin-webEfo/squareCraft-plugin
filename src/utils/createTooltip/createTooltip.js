@@ -1,21 +1,11 @@
-export function createTooltip(targetEl) {
-    if (!targetEl) return;
-  
-    const tooltipText = targetEl.getAttribute('data-sc-tooltip');
+export function createTooltip(el) {
+    const tooltipText = el.getAttribute('data-sc-tooltip');
     if (!tooltipText) return;
   
-    const tooltip = document.createElement("div");
-    tooltip.className = "sc-tooltip";
+    const tooltip = document.createElement('div');
+    tooltip.className = 'sc-tooltip';
     tooltip.innerText = tooltipText;
-  
-    targetEl.appendChild(tooltip);
-  
-    targetEl.addEventListener("mouseenter", () => {
-      tooltip.style.opacity = "1";
-    });
-  
-    targetEl.addEventListener("mouseleave", () => {
-      tooltip.style.opacity = "0";
-    });
+    el.style.position = 'relative';
+    el.appendChild(tooltip);
   }
   
