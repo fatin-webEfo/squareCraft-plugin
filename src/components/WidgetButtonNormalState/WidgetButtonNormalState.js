@@ -165,7 +165,7 @@ export function WidgetButtonNormalState(){
                   class="sc-rotate-180" alt="">
             </div>
             <div id="colorSection" class="sc-mt-3 sc-hidden">
-            <div class="sc-items-center sc-gap-3  sc-flex">
+            <div class="sc-items-center sc-gap-2  sc-flex">
                <div id="bgColorSection" class=" ">
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                   </p>
