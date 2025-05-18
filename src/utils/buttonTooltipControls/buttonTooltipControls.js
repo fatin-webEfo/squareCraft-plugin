@@ -1,5 +1,7 @@
 export function initSimpleTooltipHover() {
-    document.querySelectorAll('[id="imageupload"]').forEach(el => {
+    const tooltipTargets = document.querySelectorAll('.sc-tooltip-target');
+  
+    tooltipTargets.forEach(el => {
       const tooltip = el.querySelector('.sc-tooltip');
       if (!tooltip) return;
   

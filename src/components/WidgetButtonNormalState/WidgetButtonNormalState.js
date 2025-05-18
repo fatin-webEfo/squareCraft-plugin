@@ -258,11 +258,12 @@
                               class=" alignment-icon   sc-mx-auto" alt="left">
                         </div>
                        <div id="imageupload"
-     class="sc-h-9 sc-flex sc-relative sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+     class="sc-tooltip-target sc-h-9 sc-flex sc-relative sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
        class="alignment-icon sc-mx-auto" alt="center">
   <div class="sc-tooltip sc-hidden">Upload icon</div>
 </div>
+
 
                         <div class="sc-relative">
                            <div id="iconLibraryButton"
