@@ -1965,7 +1965,7 @@
 }
 
 .sc-border-hover-3d3d3d:hover {
-  border: #f5914f34 solid thin !important;
+  border:0.5px #f0640834 solid  !important;
   border-radius: 6px !important;
 }
 
