@@ -1,10 +1,13 @@
 
-const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
 
-setTimeout(() => {
+
+document.addEventListener('DOMContentLoaded', async () => {
+   const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
+ 
    const tooltipElements = document.querySelectorAll('[data-sc-tooltip]');
    tooltipElements.forEach(el => createTooltip(el));
- }, 300);
+ });
+ 
  
  
 

@@ -10,7 +10,7 @@ export function createTooltip(el) {
     el.appendChild(tooltip);
   
     el.addEventListener('mouseenter', () => {
-      console.log('Hovered tooltip element:', el);
+      console.log('✅ Hovered:', el);
       console.log('Tooltip text:', tooltipText);
     });
   }
