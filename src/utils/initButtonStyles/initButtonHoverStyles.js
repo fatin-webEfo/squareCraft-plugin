@@ -87,7 +87,7 @@ const hoverShadowState = {
         e.preventDefault();
         const move = (e) => updateUI(e.clientX);
         const up = () => {
-          document.removeEventListener("mousemove", move);
+          document.phoveEventListener("mousemove", move);
           document.removeEventListener("mouseup", up);
         };
         document.addEventListener("mousemove", move);
