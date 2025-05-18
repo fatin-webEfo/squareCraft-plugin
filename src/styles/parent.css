@@ -1985,23 +1985,7 @@
   pointer-events: none !important;
   border: 0.5px solid #f0640834 !important;
 }
-.sc-tooltip::after {
-  content: "" !important;
-  position: absolute !important;
-  bottom: -5px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  border-width: 5px !important;
-  border-style: solid !important;
-  border-color: #000 transparent transparent transparent !important;
-}
 
-
-
-
-[data-sc-tooltip]:hover .sc-tooltip {
-  opacity: 1;
-}
 
 .sc-custom-dropdown {
   position: absolute;

@@ -1,21 +1,4 @@
-(async () => {
-   const { createTooltip } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createTooltip/createTooltip.js');
-   console.log("✅ Tooltip module loaded");
- 
-   const observer = new MutationObserver(() => {
-     const tooltipElements = document.querySelectorAll('[data-sc-tooltip]:not([data-sc-tooltip-init])');
- 
-     tooltipElements.forEach(el => {
-       el.setAttribute('data-sc-tooltip-init', 'true'); // Prevent re-binding
-       createTooltip(el);
-     });
-   });
- 
-   observer.observe(document.body, {
-     childList: true,
-     subtree: true,
-   });
- })();
+
  
  
  
@@ -274,15 +257,13 @@
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/redo.svg"
                               class=" alignment-icon   sc-mx-auto" alt="left">
                         </div>
-                        <div id="imageupload" 
-                        data-sc-tooltip="Upload icon" 
-                           class="sc-h-9 sc-flex sc-relative sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
+                       <div id="imageupload"
+     class="sc-h-9 sc-flex sc-relative sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
+       class="alignment-icon sc-mx-auto" alt="center">
+  <div class="sc-tooltip sc-hidden">Upload icon</div>
+</div>
 
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
-                              class=" alignment-icon   sc-mx-auto" alt="center">
-                          
-
-                        </div>
                         <div class="sc-relative">
                            <div id="iconLibraryButton"
                            class="sc-h-9 sc-flex sc-items-center sc-justify-center  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
