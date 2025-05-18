@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: calc(100% + 2px) !important;
+  top: 15px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
@@ -2591,8 +2591,8 @@
   font-size: 11px !important;
   font-weight: normal !important;
   line-height: 1.2 !important;
-  padding: 4px 6px !important; 
-  border-radius: 5px !important;
+  padding: 4px 6px !important; /* Tighter padding */
+  border-radius: 4px !important;
   white-space: nowrap !important;
   width: fit-content !important;
   height: auto !important;
