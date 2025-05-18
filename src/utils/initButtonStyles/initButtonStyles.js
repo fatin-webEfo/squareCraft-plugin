@@ -15,7 +15,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     try {
       const res = await fetch(GOOGLE_FONTS_API);
       const data = await res.json();
-      fontsList = data.items;
+      fontsList = data.items.map(item => item.family);
       renderFontBatch();
     } catch (err) {
       console.error("❌ Failed to fetch Google Fonts:", err);
@@ -33,16 +33,13 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   function renderFontBatch() {
     const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
 
-    slice.forEach(fontItem => {
-      const family = fontItem.family;
+    slice.forEach(family => {
       const fontId = `font-${family.replace(/\s+/g, "-")}`;
-      const fontUrl = fontItem.files?.regular;
-
-      if (fontUrl && !document.getElementById(fontId)) {
+      if (!document.getElementById(fontId)) {
         const link = document.createElement("link");
         link.id = fontId;
         link.rel = "stylesheet";
-        link.href = fontUrl;
+        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/ /g, "+")}&display=swap`;
         document.head.appendChild(link);
       }
 
@@ -103,39 +100,11 @@ export function initButtonFontFamilyControls(getSelectedElement) {
               if (cls.startsWith("sc-font-family-")) span.classList.remove(cls);
             });
             span.classList.add(fontClass);
+
             span.classList.add("sc-force-repaint");
             void span.offsetHeight;
             span.classList.remove("sc-force-repaint");
           });
-        }
-
-        const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
-        const fontWeightSelectedLabel = document.getElementById("scButtonFontWeightSelected");
-
-        if (fontWeightOptions && fontItem.variants) {
-          fontWeightOptions.innerHTML = "";
-
-          const variants = fontItem.variants
-            .filter(v => v !== "italic")
-            .map(v => (v === "regular" ? "400" : v));
-
-          variants.forEach(weight => {
-            const item = document.createElement("div");
-            item.className = "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
-            item.innerText = weight;
-            item.onclick = () => {
-              fontWeightSelectedLabel.innerText = weight;
-              fontWeightOptions.classList.add("sc-hidden");
-
-              const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-              spans.forEach(span => {
-                span.style.fontWeight = weight;
-              });
-            };
-            fontWeightOptions.appendChild(item);
-          });
-
-          fontWeightSelectedLabel.innerText = variants.includes("400") ? "400" : variants[0] || "";
         }
       });
 
@@ -146,12 +115,11 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   }
 }
 
-
-
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+  const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
   const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
@@ -217,6 +185,16 @@ export function initButtonStyles(selectedButtonElement) {
     };
   }
 
+  if (fontWeightOptions) {
+    fontWeightOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
+      item.onclick = null;
+      item.onclick = () => {
+        const fontWeight = item.innerText.trim();
+        updateExternalStyles("font-weight", fontWeight);
+      };
+    });
+  }
+
   if (letterSpacingInput) {
     letterSpacingInput.oninput = null;
     letterSpacingInput.oninput = (e) => {
@@ -253,8 +231,6 @@ export function initButtonStyles(selectedButtonElement) {
     }
   });
 }
-
-
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
