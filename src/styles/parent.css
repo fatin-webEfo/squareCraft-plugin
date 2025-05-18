@@ -1972,7 +1972,6 @@
 .sc-tooltip {
   position: absolute !important;
   top: -30px !important;
-  border: 0.5px #f0640834 solid !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #000 !important;
@@ -1985,7 +1984,9 @@
   pointer-events: none !important;
   opacity: 0 !important;
   transition: opacity 0.2s ease !important;
+  border: 0.5px solid #f0640834 !important;
 }
+
 
 
 [data-sc-tooltip]:hover .sc-tooltip {

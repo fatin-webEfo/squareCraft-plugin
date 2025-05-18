@@ -1,9 +1,12 @@
-export function createTooltip(targetEl, text) {
+export function createTooltip(targetEl) {
     if (!targetEl) return;
+  
+    const tooltipText = targetEl.getAttribute('data-sc-tooltip');
+    if (!tooltipText) return;
   
     const tooltip = document.createElement("div");
     tooltip.className = "sc-tooltip";
-    tooltip.innerText = text;
+    tooltip.innerText = tooltipText;
   
     targetEl.appendChild(tooltip);
   
