@@ -602,19 +602,19 @@ export function WidgetButtonNormalState(){
                            class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
 
 
-                           <div id="buttonBorderTypeSolid" class="sc-py-0_5  sc-w-full sc-rounded-6px ">
+                           <div id="buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
                               <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
                                  Solid
                               </p>
                            </div>
 
 
-                           <div id="buttonBorderTypeDashed" class="sc-py-0_5  sc-w-full sc-rounded-6px ">
+                           <div id="buttonBorderTypeDashed" class="sc-py-4px  sc-w-full sc-rounded-6px ">
                               <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  ">
                                  Dashed
                               </p>
                            </div>
-                           <div id="buttonBorderTypeDotted" class="sc-py-0_5  sc-w-full sc-rounded-6px">
+                           <div id="buttonBorderTypeDotted" class="sc-py-4px  sc-w-full sc-rounded-6px">
 
                               <p 
                                  class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-6px">
