@@ -2587,11 +2587,11 @@
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
-  color: #b4b4b4 !important;
-  font-size: 11px !important;
+  color: #979797 !important;
+  font-size: 10px !important;
   line-height: 1.1 !important;
   padding: 3px 7px !important;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
   white-space: nowrap !important;
   width: fit-content !important;
   height: auto !important;
