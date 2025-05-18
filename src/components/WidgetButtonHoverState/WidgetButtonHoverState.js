@@ -353,7 +353,7 @@ export function WidgetButtonHoverState() {
           
           
                            <div id="hover-buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
-                              <p style="padding: 3px 0px;" class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
+                              <p style="padding: 2px 0px;" class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
                                  Solid
                               </p>
                            </div>

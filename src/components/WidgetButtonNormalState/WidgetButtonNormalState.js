@@ -598,7 +598,7 @@ export function WidgetButtonNormalState(){
                            Border
                            Style
                         </p>
-                        <div style="padding: 3px 0px;"
+                        <div style="padding: 2px 0px;"
                            class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
 
 
