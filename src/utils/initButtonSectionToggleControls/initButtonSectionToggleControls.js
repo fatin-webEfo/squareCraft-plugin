@@ -14,6 +14,7 @@ export function initButtonSectionToggleControls() {
     if (button && document.getElementById(sectionId)) {
       button.addEventListener("click", () => {
         Object.keys(sections).forEach((otherButtonId) => {
+          const otherButton = document.getElementById(otherButtonId);
           const otherSectionId = sections[otherButtonId];
           const otherSection = document.getElementById(otherSectionId);
 
@@ -25,7 +26,37 @@ export function initButtonSectionToggleControls() {
             otherSection.classList.add("sc-hidden");
             otherSection.classList.remove("sc-visible");
           }
+
+          const existingBar = otherButton.querySelector(".sc-active-bar");
+          if (existingBar) existingBar.remove();
         });
+
+        const styleElements = sectionId === "fontSection"
+          ? ["scButtonFontSizeInput", "scButtonFontWeightSelected", "scButtonLetterSpacingInput"]
+          : sectionId === "colorSection"
+            ? ["buttonFontColorCode"]
+            : sectionId === "iconSection"
+              ? ["buttoniconRotationradiousCount", "buttoniconSizeradiousCount", "buttoniconSpacingradiousCount"]
+              : sectionId === "bordersSection"
+                ? ["buttonBorderCount", "buttonBorderRadiousCount"]
+                : sectionId === "shadowsSection"
+                  ? ["buttonShadowXaxisCount", "buttonShadowYaxisCount", "buttonShadowBlurCount", "buttonShadowSpreadCount"]
+                  : [];
+
+        let hasActiveStyle = false;
+        for (const id of styleElements) {
+          const el = document.getElementById(id);
+          if (el && el.textContent && el.textContent !== "0px" && el.textContent.toLowerCase() !== "select") {
+            hasActiveStyle = true;
+            break;
+          }
+        }
+
+        if (hasActiveStyle) {
+          const activeBar = document.createElement("div");
+          activeBar.className = "sc-active-bar sc-rounded-l";
+          button.insertBefore(activeBar, button.firstChild);
+        }
       });
     }
   });
