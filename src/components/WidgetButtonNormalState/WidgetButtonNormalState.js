@@ -262,7 +262,7 @@
                       <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                         class="alignment-icon sc-mx-auto" alt="center">
                       <div class="sc-tooltip sc-hidden">
-                        <div class="tooltip-arrow"></div> <!-- ✅ triangle arrow -->
+                        <div class="tooltip-arrow"></div> 
                         Upload icon
                       </div>
                     </div>
