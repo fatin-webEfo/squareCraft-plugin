@@ -89,20 +89,20 @@
                <div id="fontButton"
                   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                   <div class="sc-active-bar sc-rounded-l"></div>
-                  <p class="sc-roboto sc-font-size-16 sc-universal ">Font</p>
+                  <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
             </div>
          <div id="fontSection">
-            <div class=" sc-relative sc-grid sc-mt-3 sc-grid-cols-12 sc-gap-2 ">
+            <div class=" sc-relative sc-grid sc-mt-2 sc-grid-cols-12 sc-gap-2 ">
 
                <div id="buttonFontFamilyButton" class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
                   <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
                   Select Font
                   </p>
-                  <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 3px; pointer-events: none;">
-                  <img class="sc-rotate-180 sc-mt-3" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                  <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-px-2 sc-h-9">
+                  <img class="sc-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                   </div>
                
                </div>
@@ -125,22 +125,17 @@
                               px
                         </div>
                         <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
-                           style="height: 28px;  margin-left: 0.85rem;   border-radius: 0px 5px 5px 0px;">
-                           <img class=" sc-rotate-180 sc-mt-3" width="12px"
+                           style="height: 28px;  margin-left: 12px;   border-radius: 0px 5px 5px 0px;">
+                           <img class=" sc-rotate-180 sc-mt-2" width="12px"
                               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                         </div>
                      </div>
                      <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
-                        ${fontSizes
-                        ?.map(
-                           (size) => `
+                        ${fontSizes?.map((size) => `
                         <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${size}">
-                           ${size}</div>
-                        `
-                        )
-                        .join("")}
+                           ${size}</div>`).join("")}
                      </div>
                   </div>
                </div>
@@ -155,12 +150,12 @@
                   400
                </p>
                </div>
-               <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-               <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+               <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-px-2 sc-h-9" >
+               <img class="sc-mx-auto sc-rotate-180 " width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                </div>
             </div>
             
-            <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-190px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-h-dropdown sc-rounded-6px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+            <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-140px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-max-h-140px sc-rounded-6px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">300</div>
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">400</div>
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">500</div>
@@ -171,32 +166,42 @@
             </div>
             
 
-            <div class="sc-flex sc-text-color-white sc-px-1 
-            sc-rounded-6px sc-relative sc-border sc-border-solid sc-border-585858 
-            sc-items-center ">
-               <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
-               sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
-               ">
-                  <input type="text" id="scButtonLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-font-size-12 sc-text-color-white 
-                  sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
-                  <div id="scButtonLetterSpacingSelect" class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+            <div class="sc-flex sc-text-color-white sc-rounded-6px sc-relative sc-border sc-border-solid sc-border-585858 sc-items-center">
+               <div class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center">
+                 <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-rounded-6px">
+                   
+                   <input type="text" id="scButtonLetterSpacingInput" value="15"
+                     class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
+             
+                   <div class="sc-v-line"></div>
+             
+                   <div class="sc-flex sc-items-center sc-justify-center sc-ml-2">
+                     <p class="sc-font-light sc-text-center sc-font-size-12 sc-universal">px</p>
+                   </div>
+             
+                   <div id="scButtonLetterSpacingSelect"
+                     class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-cursor-pointer sc-px-1_5 sc-tooltip-target"
+                     style="height: 28px; margin-left: 12px; border-radius: 0px 5px 5px 0px;">
+                     <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                       Letter spacing
+                     </div>
                      <img id="scButtonLetterSpacingDropdown" loading="lazy"
-                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
-                        style="width: 12px;"
-                        class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mt-1 sc-mx-auto sc-cursor-pointer">
-                  </div>
+                       src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
+                       style="width: 12px;" class=" sc-mx-auto sc-cursor-pointer">
+                   </div>
+                 </div>
+             
+                 <div id="scButtonLetterSpacingOptions"
+                   class="sc-absolute sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12 sc-rounded-6px sc-border-585858 sc-mt-1">
+                   ${ButtonLetterSpacing?.map((gap) => `
+                     <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12" data-value="${gap}">
+                       ${gap}
+                     </div>`).join("")}
+                 </div>
                </div>
-               <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
-               sc-rounded-6px sc-border sc-border-585858 sc-absolute 
-               sc-mt-1">
-                  ${ButtonLetterSpacing?.map(
-                     (gap) => `
-                  <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${gap}">${gap}
-                  </div>
-                  `
-                  ).join("")}
-               </div>
-            </div>
+             </div>
+             
 
          </div>
          <div class=" sc-flex sc-mt-2 sc-gap-2 ">
@@ -208,17 +213,17 @@
             <div class="sc-flex sc-items-center  ">
 
                <div id="scButtonAllCapital" 
-                  class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                  class=" sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">AG</p>
                </div>
                <div id="scButtonAllSmall" 
-                  class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-cursor-pointer ">
+                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-cursor-pointer ">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">ag</p>
                </div>
                <div id="scButtonFirstCapital" 
-                  class="sc-pt-1_5 sc-pb-1 sc-px-2 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
+                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">Ag</p>
                </div>
@@ -231,13 +236,13 @@
 
 
             <div id="colorButton"
-               class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-               <p class="sc-roboto  sc-universal ">Color</p>
+               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
                <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
-            <div id="colorSection" class="sc-mt-3 sc-hidden">
-            <div class="sc-items-center sc-gap-3  sc-flex">
+            <div id="colorSection" class="sc-mt-2 sc-hidden">
+            <div class="sc-items-center sc-gap-2  sc-flex">
                <div id="bgColorSection" class=" ">
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                   </p>
@@ -284,7 +289,7 @@
                         </div>
                      </div>
                   
-                     <div class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                     <div class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
                         <p id="button-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                         <p id="button-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
                      </div>
@@ -306,12 +311,12 @@
 
                <div id="iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Icon</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
       
-            <div id="iconSection" class="sc-mt-3  sc-hidden">
+            <div id="iconSection" class="sc-mt-2  sc-hidden">
             <div class="">
                <div class="sc-flex sc-items-center sc-gap-2">
                   <div>
@@ -319,21 +324,36 @@
                      <div class="sc-flex sc-items-center  sc-mt-2">
 
                         <div 
-                           class="sc-pt-1_5 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
-
+                           class="sc-h-9 sc-flex sc-tooltip-target sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                           <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                       Remove icon
+                     </div>
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/redo.svg"
                               class=" alignment-icon   sc-mx-auto" alt="left">
                         </div>
-                        <div id="imageupload" 
-                           class="sc-pt-1_5 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
 
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
-                              class=" alignment-icon   sc-mx-auto" alt="center">
-                        </div>
+                <div id="imageupload"
+                     class="sc-tooltip-target sc-relative sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
+                       class="alignment-icon sc-mx-auto" alt="center">
+                       
+                     <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                       Upload icon
+                     </div>
+                   </div>
+                   
+
+
+
                         <div class="sc-relative">
                            <div id="iconLibraryButton"
-                           class="sc-pt-1_5 sc-pb-1  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
-
+                           class="sc-h-9 sc-flex sc-tooltip-target sc-items-center sc-justify-center  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                               <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                        Icon library
+                     </div>
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
@@ -362,33 +382,23 @@
                          </div>
 
                         <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                         ${solidIconList
-                             .map(
-                             (i) => `
+                         ${solidIconList.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
                              width="20" 
                              height="20" 
-                             alt="">
-                         `
-                             )
-                             .join("")}
+                             alt="">`).join("")}
                          </div>
 
                          <div id="buttonIconOutlineoptions" class="sc-hidden sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                          ${outlineIcons
-                             .map(
-                             (i) => `
+                          ${outlineIcons.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
                              width="20" 
                              height="20" 
-                             alt="">
-                         `
-                             )
-                             .join("")}
+                             alt="">`).join("")}
                          </div>
                            </div>
                      </div>
@@ -398,7 +408,7 @@
                   <div>
                      <p class="sc-roboto sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Icon Position</p>
                      <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                        <div id="iconPositionLabel" class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+                        <div id="iconPositionLabel" class="sc-bg-3f3f3f sc-relative sc-py-0_5 sc-rounded-l sc-px-2 sc-w-16">
                         <p class="sc-universal sc-roboto sc-font-size-12">Before</p>
                         </div>
                      
@@ -423,7 +433,7 @@
             <div class="sc-mt-4 sc-flex sc-items-center sc-gap-2">
              
                  <div class="sc-w-full">
-                  <div class=" sc-mt-3 sc-flex sc-w-full sc-items-center sc-justify-between">
+                  <div class=" sc-mt-2 sc-flex sc-w-full sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Rotation
                         </p>
@@ -444,7 +454,7 @@
                         </div>
                      </div>
                   </div>
-                  <div id="buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                      <div id="buttonIconRotationradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonIconRotationradiousBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -458,7 +468,7 @@
             </div>
 
             <div class="sc-w-full sc-mt-4">
-               <div class=" sc-mt-3 sc-flex sc-w-full sc-items-center sc-justify-between">
+               <div class=" sc-mt-2 sc-flex sc-w-full sc-items-center sc-justify-between">
                   <div class="sc-flex sc-gap-2 sc-items-center">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> icon Size
                      </p>
@@ -479,7 +489,7 @@
                      </div>
                   </div>
                </div>
-               <div id="buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                   <div id="buttonIconSizeradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                   <div id="buttonIconSizeradiousBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -491,13 +501,13 @@
                <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Icon Color
                </p>
                <div
-                  class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+                  class="sc-py-4px sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
                   <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">#363544</p>
                   <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                </div>
             </div>
 
-            <div class=" sc-mt-3 sc-flex sc-items-center sc-justify-between">
+            <div class=" sc-mt-2 sc-flex sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Icon Spacing
                   </p>
@@ -518,7 +528,7 @@
                   </div>
                </div>
             </div>
-            <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+            <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                <div id="buttonIconSpacingradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                <div id="buttonIconSpacingradiousBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -529,12 +539,12 @@
             <div>
                <div id="bordersButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Border</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
 
-               <div id="bordersSection" class=" sc-mt-3 sc-hidden">
+               <div id="bordersSection" class=" sc-mt-2 sc-hidden">
                   <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
@@ -559,42 +569,42 @@
                      </div>
                   </div>
 
-                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                      <div id="buttonBorderFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonBorderBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                      </div>
                   </div>
-                  <div class="sc-grid sc-grid-cols-12 sc-mt-3">
+                  <div class="sc-grid sc-grid-cols-12 sc-mt-2">
                      <div></div>
                      <div style="padding: 2px 0px;"
                         class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
                         <div id="buttonBorderAll"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
                               alt="all-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">All</p>
                         </div>
                         <div id="buttonBorderTop"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
                               alt="top-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
                         </div>
                         <div id="buttonBorderBottom"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg"
                               loading="lazy" alt="bottom-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Bottom</p>
                         </div>
                         <div id="buttonBorderLeft"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg"
                               loading="lazy" alt="left-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Left</p>
                         </div>
                         <div id="buttonBorderRight"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg"
                               loading="lazy" alt="right-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
@@ -610,7 +620,7 @@
                         </p>
 
                         <div
-                           class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                           class="sc-py-0_5 sc-relative sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                            <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
                            </div>
@@ -655,7 +665,7 @@
                                  </div>
                               </div>
                               <div
-                                 class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                                 class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
                                  <p id="color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select
                                  </p>
                                  <p id="color-transparency-count"
@@ -670,23 +680,23 @@
                            Border
                            Style
                         </p>
-                        <div style="padding: 3px 0px;"
-                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
+                        <div style="padding: 2px 0px;"
+                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-2 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
 
 
-                           <div id="buttonBorderTypeSolid" class="sc-py-0_5  sc-w-full sc-rounded-6px ">
+                           <div id="buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
                               <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
                                  Solid
                               </p>
                            </div>
 
 
-                           <div id="buttonBorderTypeDashed" class="sc-py-0_5  sc-w-full sc-rounded-6px ">
+                           <div id="buttonBorderTypeDashed" class="sc-py-4px  sc-w-full sc-rounded-6px ">
                               <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  ">
                                  Dashed
                               </p>
                            </div>
-                           <div id="buttonBorderTypeDotted" class="sc-py-0_5  sc-w-full sc-rounded-6px">
+                           <div id="buttonBorderTypeDotted" class="sc-py-4px  sc-w-full sc-rounded-6px">
 
                               <p 
                                  class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-6px">
@@ -721,7 +731,7 @@
                            </div>
                         </div>
                      </div>
-                    <div id="buttonBorderRadiousField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    <div id="buttonBorderRadiousField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
 <div id="buttonBorderRadiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
 <div id="buttonBorderRadiousBullet"
     class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -736,12 +746,12 @@
 
             <div id="shadowsButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
-                  <p class="sc-roboto  sc-universal ">Shadow</p>
+                  <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
                   <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
                <div id="shadowsSection" class="sc-hidden">
-                  <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
+                  <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow
                      </p>
                      <div
@@ -751,7 +761,7 @@
                            alt="reset">
                      </div>
                   </div>
-                  <div class="mt-3 sc-flex sc-mt-4 sc-items-center sc-gap-3">
+                  <div class="mt-2 sc-flex sc-mt-4 sc-items-center sc-gap-3">
                      <div class="sc-w-full">
                         <div class="sc-flex sc-gap-2 sc-items-center sc-justify-between">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
@@ -770,7 +780,7 @@
                            </div>
 
                         </div>
-                        <div id="buttonShadowXaxisField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                        <div id="buttonShadowXaxisField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                            <div id="buttonShadowXaxisBullet"
                               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                            </div>
@@ -794,7 +804,7 @@
                            </div>
 
                         </div>
-                        <div id="buttonShadowYaxisField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                        <div id="buttonShadowYaxisField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                            <div id="buttonShadowYaxisBullet"
                               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                            </div>
@@ -838,7 +848,7 @@
                            </div>
                         </div>
                      </div>
-                     <div id="buttonShadowBlurField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonShadowBlurField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                         <div id="buttonShadowBlurBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
@@ -871,7 +881,7 @@
                            </div>
                         </div>
                      </div>
-                     <div id="buttonShadowSpreadField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonShadowSpreadField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
                         <div id="buttonShadowSpreadBullet"
                            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                         </div>
