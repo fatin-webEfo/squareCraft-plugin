@@ -993,16 +993,14 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   const size = parseInt(icon?.style.width || "0");
   set("buttonIconSizeradious", size, 50);
 
-  if (icon?.style.transform) {
-    const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    if (match) {
-      const rotation = parseFloat(match[1]);
-      const percent = ((rotation + 180) / 360) * 100;
-      document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
-      document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
-      document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
-      document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
-    }
+  const transformMatch = icon?.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+  if (transformMatch) {
+    const rotation = parseFloat(transformMatch[1]);
+    const percent = ((rotation + 180) / 360) * 100;
+    document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
+    document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
+    document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
+    document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
   }
 
   const spacing = {
@@ -1035,7 +1033,10 @@ window.syncButtonStylesFromElement = function (selectedElement) {
       if (fill) fill.style.width = getPercent(val, max);
     });
   }
+
+  window.updateActiveButtonBars?.();
 };
+
 
 
 

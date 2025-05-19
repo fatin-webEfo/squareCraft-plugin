@@ -59,7 +59,7 @@ export function initButtonSectionToggleControls() {
         }
       });
     
-      updateActiveBars(); // ✅ Call the improved function
+      updateActiveBars(); 
     });
     
   });
