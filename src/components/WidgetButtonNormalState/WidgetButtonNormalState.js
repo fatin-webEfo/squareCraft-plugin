@@ -295,36 +295,36 @@
                               border-bottom: 7px solid #fd8905;
                               z-index: 99999;
                             "
-                          ></div>
+                          >
+                          </div>
                          <div class="sc-absolute sc-flex sc-items-center sc-gap-3">
-                         <div id="buttonIconSolidClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
-                           <div  class="sc-roboto   sc-font-size-11 sc-font-light sc-text-EF7C2F" >Solid</div>
-                         </div>
-                         <div id="buttonIconOutlineClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-bg-3f3f3f">
-                           <div class="sc-roboto   sc-font-size-11 sc-font-light " >Outline</div>
-                         </div>
-                         </div>
+  ${["Solid", "Outline"].map(type => `
+    <div id="buttonIcon${type}Click" class="sc-px-6 sc-py-4px sc-rounded-lg sc-cursor-pointer sc-bg-3f3f3f">
+      <div class="sc-roboto sc-font-size-11 sc-font-light ${type === "Solid" ? 'sc-text-EF7C2F' : ''}">${type}</div>
+    </div>
+  `).join("")}
+</div>
 
-                        <div class="sc-mt-8"><div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                         ${solidIconList.map((i) => `
-                             <img 
-                             src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
-                             class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                             width="20" 
-                             height="20" 
-                             alt="">`).join("")}
-                         </div>
+<div class="sc-mt-8">
+  ${["Solid", "Outline"].map(type => {
+    const icons = type === "Solid" ? solidIconList : outlineIcons;
+    const srcPath = type === "Solid"
+      ? "https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon"
+      : "https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon";
+    return `
+      <div id="buttonIcon${type}options" class="${type === "Outline" ? 'sc-hidden' : ''} sc-scrollBar sc-grid sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
+        ${icons.map(i => `
+          <img 
+            src="${srcPath} (${i}).svg"
+            class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px"
+            width="20" height="20" alt="">
+        `).join("")}
+      </div>
+    `;
+  }).join("")}
+</div>
 
-                         <div id="buttonIconOutlineoptions" class="sc-hidden sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                          ${outlineIcons.map((i) => `
-                             <img 
-                             src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
-                             class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                             width="20" 
-                             height="20" 
-                             alt="">`).join("")}
-                         </div>
-                         </div>
+
                            </div>
                      </div>
 
