@@ -112,7 +112,11 @@
                ">
                   <input type="text" id="scButtonLetterSpacingInput" value="15px" class="sc-Letter-spacing-input sc-font-light sc-font-size-12 sc-text-color-white 
                   sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
-                  <div id="scButtonLetterSpacingSelect" class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+                  <div id="scButtonLetterSpacingSelect" class="sc-mx-auto sc-tooltip-target sc-ml-1 sc-flex sc-items-center sc-justify-center">
+                    <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                       Letter spacing
+                     </div>
                      <img id="scButtonLetterSpacingDropdown" loading="lazy"
                         src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
                         style="width: 12px;"
