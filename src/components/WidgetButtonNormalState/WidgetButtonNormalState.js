@@ -252,8 +252,11 @@
                      <div class="sc-flex sc-items-center  sc-mt-2">
 
                         <div 
-                           class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
-
+                           class="sc-h-9 sc-flex sc-tooltip-target sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                           <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                       Remove icon
+                     </div>
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/redo.svg"
                               class=" alignment-icon   sc-mx-auto" alt="left">
                         </div>
@@ -277,7 +280,7 @@
                            class="sc-h-9 sc-flex sc-tooltip-target sc-items-center sc-justify-center  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
                                <div class="sc-tooltip sc-hidden">
                        <div class="tooltip-arrow"></div>
-                        icon library
+                        Icon library
                      </div>
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
