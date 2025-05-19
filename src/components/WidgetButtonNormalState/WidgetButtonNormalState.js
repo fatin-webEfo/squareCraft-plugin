@@ -314,7 +314,7 @@
 
     return `
       <div id="buttonIcon${type}options" 
-           class="sc-icon-options ${type === "Outline" ? 'sc-hidden' : ''}">
+           class="sc-icon-options sc-scrollBar${type === "Outline" ? 'sc-hidden' : ''}">
         ${icons.map(i => `
           <img 
             src="${srcPath} (${i}).svg"
