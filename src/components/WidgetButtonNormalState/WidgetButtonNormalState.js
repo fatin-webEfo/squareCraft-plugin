@@ -312,8 +312,8 @@
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                             width="20" 
-                             height="20" 
+                             width="22" 
+                             height="22" 
                              alt="">`).join("")}
                          </div>
 
@@ -322,8 +322,8 @@
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                             width="20" 
-                             height="20" 
+                             width="22" 
+                             height="22" 
                              alt="">`).join("")}
                          </div>
                          </div>
