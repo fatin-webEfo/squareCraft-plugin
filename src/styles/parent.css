@@ -2612,15 +2612,12 @@
 .sc-tooltip::before {
   content: "" !important;
   position: absolute !important;
-  top: -5px !important; 
+  top: -6px !important;
   left: 50% !important;
-  transform: translateX(-50%) rotate(45deg) !important;
-  width: 8px !important;
-  height: 8px !important;
-  background-color: #222 !important;
-  border-left: 1px solid #f0650841 !important;
-  border-top: 1px solid #f0650841 !important;
-  box-shadow: -1px -1px 1px rgba(0,0,0,0.1);
+  transform: translateX(-50%) !important;
+  border-width: 6px !important; /* Controls size */
+  border-style: solid !important;
+  border-color: transparent transparent #222 transparent !important;
   z-index: 99998 !important;
 }
 
