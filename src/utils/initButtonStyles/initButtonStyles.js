@@ -6,6 +6,12 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   const fontsPerPage = 20;
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+  const loader = document.createElement("div");
+  loader.id = "sc-font-loader";
+  loader.className = "sc-my-2 sc-text-center sc-font-size-12";
+  loader.innerHTML = `<div class='sc-spinner sc-my-2'></div>`;
+  fontFamilyOptions?.appendChild(loader);
+
   if (!fontFamilyOptions) return;
 
   fetchGoogleFonts();
@@ -16,8 +22,10 @@ export function initButtonFontFamilyControls(getSelectedElement) {
       const res = await fetch(GOOGLE_FONTS_API);
       const data = await res.json();
       fontsList = data.items;
+      loader.remove();
       renderFontBatch();
     } catch (err) {
+      loader.remove();
       console.error("❌ Failed to fetch Google Fonts:", err);
     }
   }
@@ -148,6 +156,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
 
