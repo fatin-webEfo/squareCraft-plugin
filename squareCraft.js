@@ -104,6 +104,7 @@
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
   const { initSimpleTooltipHover } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/buttonTooltipControls/buttonTooltipControls.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
+  const { createHoverableArrowSVG } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js');
   const { initButtonFontColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
   );
@@ -510,7 +511,14 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       const contentWrapper = document.createElement("div");
       contentWrapper.innerHTML = htmlString;
       widgetContainer.appendChild(contentWrapper);
-
+      setTimeout(() => {
+        const oldArrow = widgetContainer.querySelector('img[src*="arrow.svg"]');
+        if (oldArrow && typeof createHoverableArrowSVG === "function") {
+          const arrowSVG = createHoverableArrowSVG();
+          oldArrow.replaceWith(arrowSVG);
+        }
+      }, 100);
+      
       widgetContainer.style.display = "block";
       document.body.appendChild(widgetContainer);
 
