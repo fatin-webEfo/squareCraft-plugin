@@ -513,13 +513,17 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       const contentWrapper = document.createElement("div");
       contentWrapper.innerHTML = htmlString;
       widgetContainer.appendChild(contentWrapper);
+     
       setTimeout(() => {
-        const oldArrow = widgetContainer.querySelector('img[src*="arrow.svg"]');
-        if (oldArrow && typeof createHoverableArrowSVG === "function") {
-          const arrowSVG = createHoverableArrowSVG();
-          oldArrow.replaceWith(arrowSVG);
-        }
+        const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
+        placeholders.forEach(span => {
+          const svg = createHoverableArrowSVG();
+          if (span.classList.length > 0) svg.classList.add(...span.classList);
+          span.replaceWith(svg);
+        });
       }, 100);
+      
+      
       
       widgetContainer.style.display = "block";
       document.body.appendChild(widgetContainer);
