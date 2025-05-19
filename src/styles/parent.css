@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  bottom: calc(100% + 6px) !important;
+  top: calc(100% + 6px) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
@@ -2611,7 +2611,7 @@
 .sc-tooltip::before {
   content: "" !important;
   position: absolute !important;
-  bottom: -5px !important; /* attach to top edge */
+  bottom: -5px !important; 
   left: 50% !important;
   transform: translateX(-50%) rotate(45deg) !important;
   width: 8px !important;
