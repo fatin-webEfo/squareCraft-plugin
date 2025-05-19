@@ -177,7 +177,9 @@
   height: 200px !important;
   overflow-y: auto !important;
 }
-
+.sc-w-230{
+  width: 230px !important;
+}
 .sc-rotate-180 {
   transform: rotate(180deg) !important;
 }
@@ -439,9 +441,7 @@
   border-radius: 0px !important;
 }
 
-.sc-gap-1 {
-  gap: 1px !important;
-}
+
 
 .sc-radius-1 {
   border-radius: 1px !important;
@@ -1450,9 +1450,7 @@
   vertical-align: middle;
 }
 
-.sc-p-1 {
-  padding: 6px 8px !important;
-}
+
 
 .sc-border-EF7C2F {
   border-color: #ef7c2f41 !important;
