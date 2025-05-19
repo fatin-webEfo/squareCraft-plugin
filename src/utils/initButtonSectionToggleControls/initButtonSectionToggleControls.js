@@ -6,61 +6,62 @@ export function initButtonSectionToggleControls() {
     bordersButton: "bordersSection",
     shadowsButton: "shadowsSection"
   };
-
+  function updateActiveBars() {
+    Object.entries(sections).forEach(([buttonId, sectionId]) => {
+      const button = document.getElementById(buttonId);
+      if (!button) return;
+  
+      const styleElements = sectionId === "fontSection"
+        ? ["scButtonFontSizeInput", "scButtonFontWeightSelected", "scButtonLetterSpacingInput"]
+        : sectionId === "colorSection"
+          ? ["buttonFontColorCode"]
+          : sectionId === "iconSection"
+            ? ["buttoniconRotationradiousCount", "buttoniconSizeradiousCount", "buttoniconSpacingradiousCount"]
+            : sectionId === "bordersSection"
+              ? ["buttonBorderCount", "buttonBorderRadiousCount"]
+              : sectionId === "shadowsSection"
+                ? ["buttonShadowXaxisCount", "buttonShadowYaxisCount", "buttonShadowBlurCount", "buttonShadowSpreadCount"]
+                : [];
+  
+      const hasActiveStyle = styleElements.some((id) => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        const value = el.textContent?.trim();
+        return value && !["0px", "Select", "0deg", "", "0"].includes(value);
+      });
+  
+      const existingBar = button.querySelector(".sc-active-bar");
+      if (hasActiveStyle && !existingBar) {
+        const activeBar = document.createElement("div");
+        activeBar.className = "sc-active-bar sc-rounded-l";
+        button.insertBefore(activeBar, button.firstChild);
+      } else if (!hasActiveStyle && existingBar) {
+        existingBar.remove();
+      }
+    });
+  }
+  
   Object.keys(sections).forEach((buttonId) => {
     const button = document.getElementById(buttonId);
     const sectionId = sections[buttonId];
 
-    if (button && document.getElementById(sectionId)) {
-      button.addEventListener("click", () => {
-        Object.keys(sections).forEach((otherButtonId) => {
-          const otherButton = document.getElementById(otherButtonId);
-          const otherSectionId = sections[otherButtonId];
-          const otherSection = document.getElementById(otherSectionId);
-
-          if (otherSectionId === sectionId) {
-            otherSection.classList.remove("sc-hidden");
-            otherSection.classList.add("sc-visible");
-            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
-          } else if (otherSection) {
-            otherSection.classList.add("sc-hidden");
-            otherSection.classList.remove("sc-visible");
-          }
-
-          const existingBar = otherButton?.querySelector(".sc-active-bar");
-          if (existingBar) existingBar.remove();
-        });
-
-        const styleElements = sectionId === "fontSection"
-          ? ["scButtonFontSizeInput", "scButtonFontWeightSelected", "scButtonLetterSpacingInput"]
-          : sectionId === "colorSection"
-            ? ["buttonFontColorCode"]
-            : sectionId === "iconSection"
-              ? ["buttoniconRotationradiousCount", "buttoniconSizeradiousCount", "buttoniconSpacingradiousCount"]
-              : sectionId === "bordersSection"
-                ? ["buttonBorderCount", "buttonBorderRadiousCount"]
-                : sectionId === "shadowsSection"
-                  ? ["buttonShadowXaxisCount", "buttonShadowYaxisCount", "buttonShadowBlurCount", "buttonShadowSpreadCount"]
-                  : [];
-
-        let hasActiveStyle = false;
-        for (const id of styleElements) {
-          const el = document.getElementById(id);
-          if (!el) continue;
-          const value = el.textContent?.trim();
-          if (value && value !== "0px" && value !== "Select" && value !== "0deg") {
-            hasActiveStyle = true;
-            break;
-          }
-        }
-
-        if (hasActiveStyle) {
-          const activeBar = document.createElement("div");
-          activeBar.className = "sc-active-bar sc-rounded-l";
-          button.insertBefore(activeBar, button.firstChild);
+    button.addEventListener("click", () => {
+      Object.keys(sections).forEach((otherButtonId) => {
+        const otherSectionId = sections[otherButtonId];
+        const otherSection = document.getElementById(otherSectionId);
+        if (otherSectionId === sectionId) {
+          otherSection.classList.remove("sc-hidden");
+          otherSection.classList.add("sc-visible");
+          otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (otherSection) {
+          otherSection.classList.add("sc-hidden");
+          otherSection.classList.remove("sc-visible");
         }
       });
-    }
+    
+      updateActiveBars(); // ✅ Call the improved function
+    });
+    
   });
 
   const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");
