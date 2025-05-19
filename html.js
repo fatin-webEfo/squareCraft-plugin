@@ -37,7 +37,7 @@ export function html() {
       ${WidgetButtonSection("buttonSection")}
   
    </div>
-   <div class="sc-mt-4">
+   <div class="sc-mt-3">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
          <div id="publish"
             class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
