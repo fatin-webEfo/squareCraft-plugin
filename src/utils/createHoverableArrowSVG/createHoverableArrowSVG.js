@@ -4,7 +4,7 @@ export function createHoverableArrowSVG() {
     svg.setAttribute("height", "6");
     svg.setAttribute("viewBox", "0 0 13 6");
     svg.setAttribute("fill", "none");
-    svg.classList.add("sc-hover-arrow");
+    svg.classList.add("sc-hover-arrow", "sc-arrow-trigger");
   
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M11.5 5L6.5 1L1.5 5");
