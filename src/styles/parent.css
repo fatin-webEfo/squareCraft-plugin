@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: calc(100% + 6px) !important;
+  top: calc(100% + 8px) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
@@ -2608,10 +2608,11 @@
   transition: opacity 0.25s ease, visibility 0.25s ease !important;
 }
 
+
 .sc-tooltip::before {
   content: "" !important;
   position: absolute !important;
-  bottom: -5px !important; 
+  top: -5px !important; 
   left: 50% !important;
   transform: translateX(-50%) rotate(45deg) !important;
   width: 8px !important;
@@ -2622,7 +2623,6 @@
   box-shadow: -1px -1px 1px rgba(0,0,0,0.1);
   z-index: 99998 !important;
 }
-
 
 
 
