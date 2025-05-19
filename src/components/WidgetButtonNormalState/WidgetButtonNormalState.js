@@ -282,7 +282,7 @@ export function WidgetButtonNormalState() {
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
                            </div>
-                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-230 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-250 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
                             <div
                             style="
                               position: absolute;
@@ -307,7 +307,7 @@ export function WidgetButtonNormalState() {
                          </div>
 
                         <div class="sc-mt-8">
-                        <div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44   sc-grid-cols-6 sc-bg-color-2c2c2c">
+                        <div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-2  sc-grid-cols-6 sc-bg-color-2c2c2c">
                          ${solidIconList.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
