@@ -2615,7 +2615,7 @@
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 6px solid #222; /* same as tooltip background */
+  border-bottom: 6px solid #f55d0541; /* same as tooltip background */
   z-index: 99999;
 }
 
