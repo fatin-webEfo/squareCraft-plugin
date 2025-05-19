@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: calc(100% + 8px) !important;
+  bottom: calc(100% + 6px) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
@@ -2608,18 +2608,17 @@
   transition: opacity 0.25s ease, visibility 0.25s ease !important;
 }
 
-
 .sc-tooltip::before {
   content: "" !important;
   position: absolute !important;
-  top: -5px !important; /* tightly attached */
+  top: 100% !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   border-width: 5px !important;
   border-style: solid !important;
-  border-color: transparent transparent #222 transparent !important;
-  z-index: 99999 !important;
+  border-color: #222 transparent transparent transparent !important;
 }
+
 
 
 
