@@ -178,7 +178,9 @@
   overflow-y: auto !important;
 }
 
-
+.sc-p-8px{
+  padding: 8px !important;
+}
 
 .sc-rotate-180 {
   transform: rotate(180deg) !important;

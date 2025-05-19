@@ -307,7 +307,7 @@ export function WidgetButtonNormalState() {
                          </div>
 
                         <div class="sc-mt-8">
-                        <div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-2  sc-grid-cols-6 sc-bg-color-2c2c2c">
+                        <div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-8px  sc-grid-cols-6 sc-bg-color-2c2c2c">
                          ${solidIconList.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
