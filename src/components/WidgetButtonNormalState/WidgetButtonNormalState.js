@@ -305,21 +305,30 @@
                          </div>
                          </div>
 
-                       <div class="sc-mt-8 sc-relative">
-                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-w-full">
-                             <div id="buttonIconSolidoptions" class="sc-grid sc-scrollBar sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
-                               ${solidIconList.map(i => `
-                                 <img src="..." class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
-                               `).join("")}
-                             </div>
-                             <div id="buttonIconOutlineoptions" class="sc-hidden sc-grid sc-scrollBar sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
-                               ${outlineIcons.map(i => `
-                                 <img src="..." class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" width="20" height="20" alt="">
-                               `).join("")}
-                             </div>
-                           </div>
-                         </div>
-                         
+                     <div class="sc-mt-8 sc-relative">
+  <div id="buttonIconLibraryOptions" class="sc-absolute sc-w-full">
+    <div id="buttonIconSolidoptions" class="sc-grid sc-scrollBar sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
+      ${solidIconList.map((i) => `
+        <img 
+          src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
+          class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
+          width="20" 
+          height="20" 
+          alt="">`).join("")}
+    </div>
+
+    <div id="buttonIconOutlineoptions" class="sc-hidden sc-grid sc-scrollBar sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
+      ${outlineIcons.map((i) => `
+        <img 
+          src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
+          class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
+          width="20" 
+          height="20" 
+          alt="">`).join("")}
+    </div>
+  </div>
+</div>
+
                        </div>
                      </div>
 
