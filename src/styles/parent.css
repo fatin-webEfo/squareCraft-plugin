@@ -97,14 +97,14 @@
   transition: width 0.2s, left 0.2s !important;
 }
 
-.sc-hover-arrow {
+.sc-hover-arrow.sc-arrow-trigger {
   transition: transform 0.2s ease !important;
   cursor: pointer !important;
 }
-.sc-hover-arrow:hover {
+.sc-hover-arrow.sc-arrow-trigger:hover {
   transform: scale(1.15) !important;
 }
-.sc-hover-arrow:hover path {
+.sc-hover-arrow.sc-arrow-trigger:hover #Vector\ 175 {
   stroke: #EF7C2F !important;
 }
 

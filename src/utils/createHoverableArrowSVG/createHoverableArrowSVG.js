@@ -1,19 +1,12 @@
 export function createHoverableArrowSVG() {
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", "13");
-    svg.setAttribute("height", "6");
-    svg.setAttribute("viewBox", "0 0 13 6");
-    svg.setAttribute("fill", "none");
-    svg.classList.add("sc-hover-arrow", "sc-arrow-trigger");
-  
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", "M11.5 5L6.5 1L1.5 5");
-    path.setAttribute("stroke", "white");
-    path.setAttribute("stroke-width", "1.5");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-  
-    svg.appendChild(path);
-    return svg;
+    const parser = new DOMParser();
+    const svgString = `
+      <svg width="13" height="6" viewBox="0 0 13 6" fill="none" xmlns="http://www.w3.org/2000/svg"
+           class="sc-hover-arrow sc-arrow-trigger">
+        <path id="Vector 175" d="M11.5 5L6.5 1L1.5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+    const doc = parser.parseFromString(svgString, "image/svg+xml");
+    return doc.documentElement;
   }
   
