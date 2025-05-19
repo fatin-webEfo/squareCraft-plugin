@@ -1,5 +1,7 @@
 (async function squareCraft() {
-
+  const isSquarespaceEditor = !!document.querySelector(".sqs-edit-mode");
+  if (!isSquarespaceEditor) return;
+  
   let isSameOrigin = true;
   const Url = isSameOrigin ? parent.document.location.href : document.location.href;
   console.log("parent", Url)
