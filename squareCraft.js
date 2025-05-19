@@ -104,6 +104,7 @@
   const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
   const { initSimpleTooltipHover } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/buttonTooltipControls/buttonTooltipControls.js');
   const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
+  const { createHoverableArrowSVG } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js');
   const { initButtonFontColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
   );
@@ -516,6 +517,14 @@ observer.observe(obsTarget, { childList: true, subtree: true });
 
       initImageMaskControls(() => selectedElement);
       makeWidgetDraggable();
+      setTimeout(() => {
+        const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
+        placeholders.forEach(span => {
+          const svg = createHoverableArrowSVG();
+          if (span.classList.length > 0) svg.classList.add(...span.classList);
+          span.replaceWith(svg);
+        });
+      }, 100);
       widgetLoaded = true;
       initImageSectionToggleControls();
       initSimpleTooltipHover();
