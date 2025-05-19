@@ -2584,7 +2584,7 @@
 .sc-tooltip {
   position: absolute !important;
   top: calc(100% + 6px) !important;
-  left: 50% !important;
+  left: 60% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
   color: #979797 !important;
