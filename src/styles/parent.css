@@ -101,12 +101,19 @@
   transition: transform 0.2s ease !important;
   cursor: pointer !important;
 }
-.sc-hover-arrow.sc-arrow-trigger:hover {
-  transform: scale(1.15) !important;
+
+.sc-hover-arrow.sc-arrow-trigger:not(.sc-rotate-180):hover {
+  transform: scale(1.15) rotate(0deg) !important;
 }
+
+.sc-hover-arrow.sc-arrow-trigger.sc-rotate-180:hover {
+  transform: scale(1.15) rotate(180deg) !important;
+}
+
 .sc-hover-arrow.sc-arrow-trigger:hover #Vector\ 175 {
   stroke: #EF7C2F !important;
 }
+
 
 .sc-flex-col {
   display: flex !important;
