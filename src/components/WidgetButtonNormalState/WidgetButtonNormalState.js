@@ -297,7 +297,7 @@
                             "
                           >
                           </div>
-                         <div class="sc-absolute sc-flex sc-items-center sc-gap-3">
+                         <div class="sc-absolute sc-flex sc-mt-1 sc-items-center sc-gap-3">
                          <div id="buttonIconSolidClick" class="sc-px-6 sc-py-4px sc-rounded-lg sc-cursor-pointer sc-bg-3f3f3f">
                            <div  class="sc-roboto   sc-font-size-11 sc-font-light sc-text-EF7C2F" >Solid</div>
                          </div>
