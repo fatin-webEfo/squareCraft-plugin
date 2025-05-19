@@ -178,9 +178,7 @@
   overflow-y: auto !important;
 }
 
-.sc-w-250 {
-  width: 230px !important;
-}
+
 
 .sc-rotate-180 {
   transform: rotate(180deg) !important;
