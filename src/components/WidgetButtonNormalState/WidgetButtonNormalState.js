@@ -1,15 +1,6 @@
-
- 
- 
- 
- 
-
-
-   export function WidgetButtonNormalState() {
+ export function WidgetButtonNormalState() {
    const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
-
-
    const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
    const outlineIcons = Array.from({ length: 112 }, (_, i) => i + 1);
 
@@ -66,14 +57,9 @@
                      <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
-                        ${fontSizes
-         ?.map(
-            (size) => `
+                        ${fontSizes?.map((size) => `
                         <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${size}">
-                           ${size}</div>
-                        `
-         )
-         .join("")}
+                           ${size}</div>`).join("")}
                      </div>
                   </div>
                </div>
@@ -126,12 +112,9 @@
                <div id="scButtonLetterSpacingOptions" class="sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                sc-rounded-6px sc-border sc-border-585858 sc-absolute 
                sc-mt-1">
-                  ${ButtonLetterSpacing?.map(
-            (gap) => `
+                  ${ButtonLetterSpacing?.map((gap) => `
                   <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${gap}">${gap}
-                  </div>
-                  `
-         ).join("")}
+                  </div>`).join("")}
                </div>
             </div>
 
@@ -314,33 +297,23 @@
                          </div>
 
                         <div id="buttonIconSolidoptions" class="sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                         ${solidIconList
-         .map(
-            (i) => `
+                         ${solidIconList.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
                              width="20" 
                              height="20" 
-                             alt="">
-                         `
-         )
-         .join("")}
+                             alt="">`).join("")}
                          </div>
 
                          <div id="buttonIconOutlineoptions" class="sc-hidden sc-mt-8 sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-1 sc-grid-cols-6 sc-bg-color-2c2c2c">
-                          ${outlineIcons
-         .map(
-            (i) => `
+                          ${outlineIcons.map((i) => `
                              <img 
                              src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
                              class="sc-rounded-md sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
                              width="20" 
                              height="20" 
-                             alt="">
-                         `
-         )
-         .join("")}
+                             alt="">`).join("")}
                          </div>
                            </div>
                      </div>
