@@ -231,30 +231,54 @@ export function initButtonStyles(selectedButtonElement) {
   ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
     const transformButton = document.getElementById(id);
     if (transformButton) {
-      transformButton.onclick = null;
       transformButton.onclick = () => {
         const transformClassMap = {
           scButtonAllCapital: "sc-text-upper",
           scButtonAllSmall: "sc-text-lower",
           scButtonFirstCapital: "sc-text-capitalize",
         };
+  
         const newClass = transformClassMap[id];
-
+  
+        const isAlreadyActive = transformButton.classList.contains("sc-activeTab-border");
+        ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((btnId) => {
+          const btn = document.getElementById(btnId);
+          if (btn) {
+            btn.classList.remove("sc-activeTab-border");
+            btn.classList.add("sc-inActiveTab-border");
+          }
+        });
+  
         const spans = Array.from(
           document.querySelectorAll(
             `a.${currentButtonTypeClass} .sqs-html span, 
-            button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner, 
-            button.${currentButtonTypeClass} span`
+             button.${currentButtonTypeClass} .sqs-add-to-cart-button-inner, 
+             button.${currentButtonTypeClass} span`
           )
         );
-
-        spans.forEach((span) => {
-          span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-          span.classList.add(newClass);
-        });
+  
+        if (isAlreadyActive) {
+          transformButton.classList.remove("sc-activeTab-border");
+          transformButton.classList.add("sc-inActiveTab-border");
+  
+          spans.forEach(span => {
+            span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+          });
+  
+        } else {
+          transformButton.classList.remove("sc-inActiveTab-border");
+          transformButton.classList.add("sc-activeTab-border");
+  
+          spans.forEach(span => {
+            span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+            span.classList.add(newClass);
+          });
+        }
       };
     }
   });
+  
+  
 }
 
 
