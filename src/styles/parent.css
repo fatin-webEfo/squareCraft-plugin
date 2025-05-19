@@ -2406,7 +2406,9 @@
   z-index: 99999 !important;
 }
 
-
+.sc-z-999999{
+  z-index: 999999 !important;
+}
 .sc-z-9999 {
   z-index: 9999 !important;
 }
