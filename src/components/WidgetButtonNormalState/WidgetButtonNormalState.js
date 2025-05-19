@@ -1,4 +1,4 @@
- export function WidgetButtonNormalState() {
+export function WidgetButtonNormalState() {
    const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
    const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
    const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
@@ -282,7 +282,7 @@
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
                            </div>
-                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-2 sc-z-99999  sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-230 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
                             <div
                             style="
                               position: absolute;

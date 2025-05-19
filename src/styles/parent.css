@@ -84,8 +84,8 @@
   padding-right: 24px !important;
 }
 
-.sc-w-240 {
-  width: 240px !important;
+.sc-w-230 {
+  width: 230px !important;
 }
 
 #buttonIconRotationradiousFill {
@@ -177,9 +177,11 @@
   height: 200px !important;
   overflow-y: auto !important;
 }
-.sc-w-230{
+
+.sc-w-230 {
   width: 230px !important;
 }
+
 .sc-rotate-180 {
   transform: rotate(180deg) !important;
 }
@@ -1961,7 +1963,7 @@
 }
 
 .sc-border-hover-3d3d3d:hover {
-  border:0.5px #f0640834 solid  !important;
+  border: 0.5px #f0640834 solid !important;
   border-radius: 6px !important;
 }
 
@@ -2397,6 +2399,7 @@
 .sc-cursor-pointer {
   cursor: pointer !important;
 }
+
 .sc-icon-options {
   display: grid !important;
   grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
@@ -2414,9 +2417,10 @@
   z-index: 99999 !important;
 }
 
-.sc-z-999999{
+.sc-z-999999 {
   z-index: 999999 !important;
 }
+
 .sc-z-9999 {
   z-index: 9999 !important;
 }
