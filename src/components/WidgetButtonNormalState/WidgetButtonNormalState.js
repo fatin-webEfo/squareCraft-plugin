@@ -274,8 +274,11 @@
 
                         <div class="sc-relative">
                            <div id="iconLibraryButton"
-                           class="sc-h-9 sc-flex sc-items-center sc-justify-center  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
-
+                           class="sc-h-9 sc-flex sc-tooltip-target sc-items-center sc-justify-center  sc-roudned-r-md sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                               <div class="sc-tooltip sc-hidden">
+                       <div class="tooltip-arrow"></div>
+                        icon library
+                     </div>
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/iconLibrary.svg"
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
