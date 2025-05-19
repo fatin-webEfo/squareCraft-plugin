@@ -2401,12 +2401,18 @@
 .sc-cursor-pointer {
   cursor: pointer !important;
 }
-#buttonIconSolidoptions,
-#buttonIconOutlineoptions {
+.sc-icon-options {
   display: grid !important;
-  align-items: start !important;
-  margin-top: 0 !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  height: 176px !important;
+  padding: 4px !important;
+  background-color: #2c2c2c !important;
+  border-radius: 6px !important;
+  overflow-y: auto !important;
 }
+
+
 
 .sc-z-99999 {
   z-index: 99999 !important;

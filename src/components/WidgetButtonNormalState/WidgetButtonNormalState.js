@@ -311,8 +311,10 @@
     const srcPath = type === "Solid"
       ? "https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon"
       : "https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon";
+
     return `
-      <div id="buttonIcon${type}options" class="${type === "Outline" ? 'sc-hidden' : ''} sc-scrollBar sc-grid sc-grid-cols-6 sc-h-44 sc-gap-2 sc-p-1 sc-bg-color-2c2c2c sc-rounded-md">
+      <div id="buttonIcon${type}options" 
+           class="sc-icon-options ${type === "Outline" ? 'sc-hidden' : ''}">
         ${icons.map(i => `
           <img 
             src="${srcPath} (${i}).svg"
@@ -323,6 +325,7 @@
     `;
   }).join("")}
 </div>
+
 
 
                            </div>
