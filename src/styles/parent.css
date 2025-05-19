@@ -2583,7 +2583,7 @@
 
 .sc-tooltip {
   position: absolute !important;
-  top: calc(100% + 6px) !important; /* more spacing for arrow */
+  top: calc(100% + 8px) !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background-color: #222 !important;
@@ -2594,10 +2594,9 @@
   border-radius: 10px !important;
   white-space: nowrap !important;
   width: fit-content !important;
-  height: auto !important;
+  height: 20px !important;
   box-sizing: border-box !important;
   z-index: 99999 !important;
-  height: 20px !important;
   border: 1px solid #f0650841 !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
   font-family: sans-serif !important;
@@ -2614,16 +2613,17 @@
   visibility: visible !important;
 }
 
-.sc-tooltip::after {
+.sc-tooltip::before {
   content: "" !important;
   position: absolute !important;
-  top: -6px !important;
+  bottom: 100% !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   border-width: 6px !important;
   border-style: solid !important;
   border-color: transparent transparent #222 transparent !important;
 }
+
 
 
 
