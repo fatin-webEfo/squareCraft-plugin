@@ -27,7 +27,7 @@ export function initButtonSectionToggleControls() {
             otherSection.classList.remove("sc-visible");
           }
 
-          const existingBar = otherButton.querySelector(".sc-active-bar");
+          const existingBar = otherButton?.querySelector(".sc-active-bar");
           if (existingBar) existingBar.remove();
         });
 
@@ -46,7 +46,9 @@ export function initButtonSectionToggleControls() {
         let hasActiveStyle = false;
         for (const id of styleElements) {
           const el = document.getElementById(id);
-          if (el && el.textContent && el.textContent !== "0px" && el.textContent.toLowerCase() !== "select") {
+          if (!el) continue;
+          const value = el.textContent?.trim();
+          if (value && value !== "0px" && value !== "Select" && value !== "0deg") {
             hasActiveStyle = true;
             break;
           }
