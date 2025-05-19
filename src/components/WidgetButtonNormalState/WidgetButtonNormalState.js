@@ -282,7 +282,7 @@
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
                            </div>
-                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-2 sc-z-99999 sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1 sc-z-99999 sc-w-240 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
                             <div
                             style="
                               position: absolute;
