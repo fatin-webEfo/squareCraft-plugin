@@ -261,7 +261,7 @@
                             class="sc-tooltip-target sc-relative sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
                          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageupload.svg"
                               class="alignment-icon sc-mx-auto" alt="center">
-                         <div class="sc-tooltip sc-hidden">Upload icon</div>
+                         <div class="sc-tooltip sc-hidden"><div class="tooltip-icon up-arrow"></div> Upload icon</div>
                        </div>
 
 
