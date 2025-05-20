@@ -572,13 +572,6 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   let gapValue = 0;
   let userInteracted = false;
 
-  const selected = getSelectedElement?.();
-  const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-  if (btn) {
-    const computedGap = parseInt(window.getComputedStyle(btn).gap);
-    if (!isNaN(computedGap)) gapValue = computedGap;
-  }
-
   function applyGap() {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
@@ -594,7 +587,7 @@ export function initButtonIconSpacingControl(getSelectedElement) {
         el.style.gap = `${gapValue}px`;
       } else {
         el.classList.remove("sc-flex", "sc-items-center");
-        el.style.gap = ""; // Clear inline gap if no icon
+        el.style.gap = "";
       }
     });
   }
@@ -603,27 +596,24 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     userInteracted = true;
     gapValue = Math.max(0, Math.min(maxGap, value));
     const percent = (gapValue / maxGap) * 100;
-    fill.style.width = `${percent}%`;
+
     bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
     valueText.textContent = `${gapValue}px`;
+
     applyGap();
   }
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const newVal = Math.round((x / rect.width) * maxGap);
-    updateFromValue(newVal);
+    const value = Math.round((x / rect.width) * maxGap);
+    updateFromValue(value);
   }
 
-  bullet.addEventListener("mousedown", e => {
+  bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    userInteracted = true;
-    const move = eMove => {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      updateUI(x);
-    };
+    const move = (e) => updateUI(e.clientX);
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -632,32 +622,26 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", e => {
-    userInteracted = true;
-    updateUI(e.clientX);
-  });
+  field.addEventListener("click", (e) => updateUI(e.clientX));
 
-  if (incBtn) {
-    incBtn.addEventListener("click", () => {
-      userInteracted = true;
-      updateFromValue(gapValue + 1);
-    });
-  }
-
-  if (decBtn) {
-    decBtn.addEventListener("click", () => {
-      userInteracted = true;
-      updateFromValue(gapValue - 1);
-    });
-  }
+  incBtn?.addEventListener("click", () => updateFromValue(gapValue + 1));
+  decBtn?.addEventListener("click", () => updateFromValue(gapValue - 1));
 
   resetBtn?.addEventListener("click", () => updateFromValue(8));
 
-  // Only show default if user hasn't interacted
+  // Sync from current button if no user interaction
   setTimeout(() => {
-    if (!userInteracted) updateFromValue(gapValue);
+    if (!userInteracted) {
+      const selected = getSelectedElement?.();
+      const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+      if (btn) {
+        const computedGap = parseInt(window.getComputedStyle(btn).gap);
+        if (!isNaN(computedGap)) updateFromValue(computedGap);
+      }
+    }
   }, 50);
 }
+
 
 
 
