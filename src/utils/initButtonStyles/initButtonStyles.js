@@ -928,12 +928,17 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   const valueText = document.getElementById("buttonBorderRadiousCount");
   const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
 
+  const incBtn = document.getElementById("buttonBorderRadiousIncrease");
+  const decBtn = document.getElementById("buttonBorderRadiousDecrease");
+
   if (!fillField || !bullet || !fill || !valueText) return;
 
   bullet.style.transition = "left 0.15s ease";
   fill.style.transition = "width 0.15s ease";
 
   let radiusValue = 0;
+  const maxRadius = 50;
+  let userInteracted = false;
 
   function getButtonTypeClass(sample) {
     if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
@@ -960,30 +965,43 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     }
 
     styleTag.innerHTML = `
-        a.${typeClass} {
-          border-radius: ${radiusValue}px !important;
-          overflow: hidden !important;
-        }
-        a.${typeClass} span,
-        a.${typeClass} .sqs-add-to-cart-button-inner {
-          border-radius: ${radiusValue}px !important;
-        }
-        a.${typeClass}:hover {
-          border-radius: ${radiusValue}px !important;
-          overflow: hidden !important;
-        }
-        a.${typeClass}:hover span,
-        a.${typeClass}:hover .sqs-add-to-cart-button-inner {
-          border-radius: ${radiusValue}px !important;
-        }
-      `;
+      a.${typeClass} {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
+      }
+      a.${typeClass} span,
+      a.${typeClass} .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+      a.${typeClass}:hover {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
+      }
+      a.${typeClass}:hover span,
+      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+    `;
   }
 
   function updateUI(clientX) {
+    userInteracted = true;
     const rect = fillField.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * 50);
+    radiusValue = Math.round((x / rect.width) * maxRadius);
+
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${radiusValue}px`;
+
+    applyBorderRadius();
+  }
+
+  function updateFromValue(value) {
+    userInteracted = true;
+    radiusValue = Math.max(0, Math.min(maxRadius, value));
+    const percent = (radiusValue / maxRadius) * 100;
 
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
@@ -1003,18 +1021,21 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     document.addEventListener("mouseup", onMouseUp);
   });
 
-  fillField.addEventListener("click", (e) => {
-    updateUI(e.clientX);
-  });
+  fillField.addEventListener("click", (e) => updateUI(e.clientX));
 
   resetBtn?.addEventListener("click", () => {
-    radiusValue = 0;
-    bullet.style.left = "0%";
-    fill.style.width = "0%";
-    valueText.textContent = "0px";
-    applyBorderRadius();
+    updateFromValue(0);
+  });
+
+  incBtn?.addEventListener("click", () => {
+    updateFromValue(radiusValue + 1);
+  });
+
+  decBtn?.addEventListener("click", () => {
+    updateFromValue(radiusValue - 1);
   });
 }
+
 
 
 const shadowState = {
