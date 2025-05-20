@@ -6,13 +6,21 @@ export function initButtonSectionToggleControls() {
     bordersButton: "bordersSection",
     shadowsButton: "shadowsSection"
   };
+  
   function updateActiveBars() {
     Object.entries(sections).forEach(([buttonId, sectionId]) => {
       const button = document.getElementById(buttonId);
       if (!button) return;
   
       const styleElements = sectionId === "fontSection"
-        ? ["scButtonFontSizeInput", "scButtonFontWeightSelected", "scButtonLetterSpacingInput"]
+        ? [
+            "scButtonFontSizeInput",
+            "scButtonFontWeightSelected",
+            "scButtonLetterSpacingInput",
+            "scButtonAllCapital",
+            "scButtonAllSmall",
+            "scButtonFirstCapital"
+          ]
         : sectionId === "colorSection"
           ? ["buttonFontColorCode"]
           : sectionId === "iconSection"
@@ -26,13 +34,22 @@ export function initButtonSectionToggleControls() {
       const hasActiveStyle = styleElements.some((id) => {
         const el = document.getElementById(id);
         if (!el) return false;
+  
+        // Capitalization tab check (special case)
+        if (
+          id === "scButtonAllCapital" ||
+          id === "scButtonAllSmall" ||
+          id === "scButtonFirstCapital"
+        ) {
+          return el.classList.contains("sc-activeTab-border");
+        }
+  
+        // All other text-based value checks
         const value = el.tagName === "INPUT"
-           ? el.value?.trim()
-           : el.innerText?.trim();
-         
-         return value && !["0px", "Select", "0deg", "", "0", "400", "16", "15", "Select Font"].includes(value);
-         
-        
+          ? el.value?.trim()
+          : el.innerText?.trim();
+  
+        return value && !["0px", "Select", "0deg", "", "0", "400", "16", "15", "Select Font"].includes(value);
       });
   
       const existingBar = button.querySelector(".sc-active-bar");
@@ -45,6 +62,7 @@ export function initButtonSectionToggleControls() {
       }
     });
   }
+  
   
   Object.keys(sections).forEach((buttonId) => {
     const button = document.getElementById(buttonId);
