@@ -554,12 +554,10 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const valueText = document.getElementById("buttoniconSpacingradiousCount");
   const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
 
-  const incBtn = document.getElementById("buttoniconSpacingIncrease");
-  const decBtn = document.getElementById("buttoniconSpacingDecrease");
-
   if (!fill || !bullet || !field || !valueText) return;
 
   const maxGap = 30;
+
   let gapValue = 0;
 
   const selected = getSelectedElement?.();
@@ -584,17 +582,19 @@ export function initButtonIconSpacingControl(getSelectedElement) {
         el.style.gap = `${gapValue}px`;
       } else {
         el.classList.remove("sc-flex", "sc-items-center");
-        el.style.gap = "";
+        el.style.gap = ""; // Clear inline gap if no icon
       }
     });
   }
 
+
+
   function updateUI(val) {
-    gapValue = Math.max(0, Math.min(maxGap, val));
-    const percent = (gapValue / maxGap) * 100;
+    gapValue = val;
+    const percent = (val / maxGap) * 100;
     fill.style.width = `${percent}%`;
     bullet.style.left = `${percent}%`;
-    valueText.textContent = `${gapValue}px`;
+    valueText.textContent = `${val}px`;
     applyGap();
   }
 
@@ -613,23 +613,9 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", e => {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    const newValue = Math.round((x / rect.width) * maxGap);
-    updateUI(newValue);
-  });
-
-  incBtn?.addEventListener("click", () => updateUI(gapValue + 1));
-  decBtn?.addEventListener("click", () => updateUI(gapValue - 1));
   resetBtn?.addEventListener("click", () => updateUI(8));
-
-  setTimeout(() => {
-    const center = field.getBoundingClientRect().width / 2;
-    updateUI(Math.round((center / field.getBoundingClientRect().width) * maxGap));
-  }, 50);
+  updateUI(gapValue);
 }
-
 
 
 
