@@ -913,8 +913,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   resetBtn?.addEventListener("click", () => updateUI(fillField.getBoundingClientRect().left));
 }
 
-
-
 const shadowState = {
   Xaxis: 0,
   Yaxis: 0,
@@ -923,7 +921,6 @@ const shadowState = {
 };
 
 export function initButtonShadowControls(getSelectedElement) {
-
   function applyShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
@@ -961,10 +958,11 @@ export function initButtonShadowControls(getSelectedElement) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
+    const incBtn = document.getElementById(`buttonshadow${type}Increase`);
+    const decBtn = document.getElementById(`buttonshadow${type}Decrease`);
 
     if (!bullet || !field || !label) return;
 
-    // Create and insert active fill bar if not already
     let fill = field.querySelector(".sc-shadow-fill");
     if (!fill) {
       fill = document.createElement("div");
@@ -979,22 +977,28 @@ export function initButtonShadowControls(getSelectedElement) {
       field.insertBefore(fill, bullet);
     }
 
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      const value = Math.round((x / rect.width) * max);
-
+    function updateUIValue(val) {
+      const value = Math.max(0, Math.min(max, val));
       shadowState[type] = value;
+      const percent = (value / max) * 100;
+
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
       label.textContent = `${value}px`;
+
       applyShadow();
+    }
+
+    function updateFromClick(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const value = Math.round((x / rect.width) * max);
+      updateUIValue(value);
     }
 
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
+      const move = (e) => updateFromClick(e.clientX);
       const up = () => {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
@@ -1003,7 +1007,10 @@ export function initButtonShadowControls(getSelectedElement) {
       document.addEventListener("mouseup", up);
     });
 
-    field.addEventListener("click", (e) => updateUI(e.clientX));
+    field.addEventListener("click", (e) => updateFromClick(e.clientX));
+
+    incBtn?.addEventListener("click", () => updateUIValue(shadowState[type] + 1));
+    decBtn?.addEventListener("click", () => updateUIValue(shadowState[type] - 1));
   }
 
   setupShadowControl("Xaxis", 30);
@@ -1011,6 +1018,9 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
+
+
 
 
 window.syncButtonStylesFromElement = function (selectedElement) {
