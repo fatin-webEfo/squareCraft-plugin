@@ -650,6 +650,7 @@ export function initButtonBorderControl(getSelectedElement) {
   if (!fill || !bullet || !field || !valueText) return;
 
   const max = 10;
+  let currentValue = 0;
 
   if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
   const sides = ["Top", "Right", "Bottom", "Left"];
@@ -688,17 +689,19 @@ export function initButtonBorderControl(getSelectedElement) {
     const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     const blockId = selected.id || "block-id";
     const key = `${blockId}--${typeClass}`;
-    const styleId = `sc-button-border-${blockId}-${typeClass}`;
-    const val = `${getBorderValue(typeClass, selected)}px`;
+    const val = `${currentValue}px`;
 
-    let styleTag = document.getElementById(styleId);
+    let styleTag = document.getElementById(`sc-button-border-${blockId}-${typeClass}`);
     if (!styleTag) {
       styleTag = document.createElement("style");
-      styleTag.id = styleId;
+      styleTag.id = `sc-button-border-${blockId}-${typeClass}`;
       document.head.appendChild(styleTag);
     }
 
-    const state = window.__squareCraftBorderStateMap.get(key);
+    const state = window.__squareCraftBorderStateMap.get(key) || { value: currentValue, side: "All" };
+    state.value = currentValue;
+    window.__squareCraftBorderStateMap.set(key, state);
+
     const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
 
     const top = state.side === "Top" || state.side === "All" ? val : "0px";
@@ -726,31 +729,12 @@ export function initButtonBorderControl(getSelectedElement) {
     });
   }
 
-  function getBorderValue(typeClass, selectedElement) {
-    const blockId = selectedElement.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    return window.__squareCraftBorderStateMap.get(key)?.value || 0;
-  }
-
-  function updateUIFromValue(val) {
-    const value = Math.max(0, Math.min(max, val));
-    const percent = (value / max) * 100;
-
-    const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    const state = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-    state.value = value;
-    window.__squareCraftBorderStateMap.set(key, state);
-
+  function updateUIFromValue(value) {
+    currentValue = Math.max(0, Math.min(max, value));
+    const percent = (currentValue / max) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
-    valueText.textContent = `${value}px`;
-
+    valueText.textContent = `${currentValue}px`;
     applyBorder();
   }
 
@@ -777,18 +761,25 @@ export function initButtonBorderControl(getSelectedElement) {
     updateUIFromValue(value);
   });
 
-  incBtn?.addEventListener("click", () => {
-    const current = parseInt(valueText.textContent) || 0;
-    updateUIFromValue(current + 1);
-  });
-
-  decBtn?.addEventListener("click", () => {
-    const current = parseInt(valueText.textContent) || 0;
-    updateUIFromValue(current - 1);
-  });
-
+  incBtn?.addEventListener("click", () => updateUIFromValue(currentValue + 1));
+  decBtn?.addEventListener("click", () => updateUIFromValue(currentValue - 1));
   resetBtn?.addEventListener("click", () => updateUIFromValue(0));
+
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    const blockId = selected.id || "block-id";
+    const key = `${blockId}--${typeClass}`;
+    const stored = window.__squareCraftBorderStateMap.get(key);
+    if (stored?.value !== undefined) {
+      updateUIFromValue(stored.value);
+    }
+  }, 50);
 }
+
 
 
 
