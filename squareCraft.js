@@ -519,12 +519,18 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       makeWidgetDraggable();
       setTimeout(() => {
         const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
+
         placeholders.forEach(span => {
-          const svg = createHoverableArrowSVG();
-          if (span.classList.length > 0) svg.classList.add(...span.classList);
+          const isRotate = span.classList.contains("sc-rotate-180");
+          const cloneClassList = Array.from(span.classList);
+          const originalId = span.getAttribute("id") || "";
+          const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+        
+          const svg = createHoverableArrowSVG(id, isRotate);
+          cloneClassList.forEach(cls => svg.classList.add(cls));
           span.replaceWith(svg);
         });
-      }, 100);
+        
       widgetLoaded = true;
       initImageSectionToggleControls();
       initSimpleTooltipHover();
