@@ -443,10 +443,6 @@ export function initButtonIconRotationControl(getSelectedElement) {
 }
 
 
-
-
-
-
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiousBullet");
   const fill = document.getElementById("buttonIconSizeradiousFill");
@@ -549,10 +545,6 @@ export function initButtonIconSizeControl(getSelectedElement) {
   setTimeout(syncFromIcon, 50);
   console.log("🎯 initButtonIconSizeControl fully initialized");
 }
-
-
-
-
 
 
 export function initButtonIconSpacingControl(getSelectedElement) {
@@ -782,8 +774,6 @@ export function initButtonBorderControl(getSelectedElement) {
 
 
 
-
-
 export function initButtonBorderTypeToggle(getSelectedElement) {
   const typeButtons = [
     { id: "buttonBorderTypeSolid", type: "solid" },
@@ -942,32 +932,46 @@ const shadowState = {
 };
 
 export function initButtonShadowControls(getSelectedElement) {
+  if (!window.shadowState) {
+    window.shadowState = {
+      Xaxis: 0,
+      Yaxis: 0,
+      Blur: 0,
+      Spread: 0
+    };
+  }
+
   function applyShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
-    const typeSelectors = [
+
+    const selectors = [
       "a.sqs-button-element--primary",
       "a.sqs-button-element--secondary",
       "a.sqs-button-element--tertiary"
     ];
-    let selectedButton;
-    for (const selector of typeSelectors) {
-      const btn = el.querySelector(selector);
-      if (btn) {
-        selectedButton = btn;
+
+    let btn;
+    for (const sel of selectors) {
+      const found = el.querySelector(sel);
+      if (found) {
+        btn = found;
         break;
       }
     }
-    if (!selectedButton) return;
-    const buttonType = [...selectedButton.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!buttonType) return;
-    const shadowValue = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
-    document.querySelectorAll(`a.${buttonType}`).forEach(btn => {
-      btn.style.boxShadow = shadowValue;
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const shadow = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
+
+    document.querySelectorAll(`a.${typeClass}`).forEach(el => {
+      el.style.boxShadow = shadow;
     });
   }
 
-  function setupShadowControl(type, max = 50) {
+  function setupControl(type, max = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
@@ -990,26 +994,26 @@ export function initButtonShadowControls(getSelectedElement) {
       field.insertBefore(fill, bullet);
     }
 
-    function updateUI(value) {
-      value = Math.max(0, Math.min(max, value));
-      shadowState[type] = value;
-      const percent = (value / max) * 100;
+    function updateUI(val) {
+      val = Math.max(0, Math.min(max, val));
+      shadowState[type] = val;
+      const percent = (val / max) * 100;
+
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
-      label.textContent = `${value}px`;
-      applyShadow();
-    }
+      label.textContent = `${val}px`;
 
-    function updateFromClientX(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const value = Math.round((x / rect.width) * max);
-      updateUI(value);
+      applyShadow();
     }
 
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = (e) => updateFromClientX(e.clientX);
+      const move = (eMove) => {
+        const rect = field.getBoundingClientRect();
+        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+        const val = Math.round((x / rect.width) * max);
+        updateUI(val);
+      };
       const up = () => {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
@@ -1018,25 +1022,22 @@ export function initButtonShadowControls(getSelectedElement) {
       document.addEventListener("mouseup", up);
     });
 
-    field.addEventListener("click", (e) => updateFromClientX(e.clientX));
-
-    incBtn?.addEventListener("click", () => {
-      updateUI(shadowState[type] + 1);
+    field.addEventListener("click", (e) => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+      const val = Math.round((x / rect.width) * max);
+      updateUI(val);
     });
 
-    decBtn?.addEventListener("click", () => {
-      updateUI(shadowState[type] - 1);
-    });
+    incBtn?.addEventListener("click", () => updateUI(shadowState[type] + 1));
+    decBtn?.addEventListener("click", () => updateUI(shadowState[type] - 1));
   }
 
-  setupShadowControl("Xaxis", 30);
-  setupShadowControl("Yaxis", 30);
-  setupShadowControl("Blur", 50);
-  setupShadowControl("Spread", 30);
+  setupControl("Xaxis", 30);
+  setupControl("Yaxis", 30);
+  setupControl("Blur", 50);
+  setupControl("Spread", 30);
 }
-
-
-
 
 
 
