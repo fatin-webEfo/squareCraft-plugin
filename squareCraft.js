@@ -531,6 +531,7 @@ observer.observe(obsTarget, { childList: true, subtree: true });
           span.replaceWith(svg);
         });
         
+      }, 100);
       widgetLoaded = true;
       initImageSectionToggleControls();
       initSimpleTooltipHover();
