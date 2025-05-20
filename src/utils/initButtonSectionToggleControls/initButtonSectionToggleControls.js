@@ -27,7 +27,8 @@ export function initButtonSectionToggleControls() {
         const el = document.getElementById(id);
         if (!el) return false;
         const value = el.textContent?.trim();
-        return value && !["0px", "Select", "0deg", "", "0"].includes(value);
+        return value && !["0px", "Select", "0deg", "", "0", "400"].includes(value);
+        
       });
   
       const existingBar = button.querySelector(".sc-active-bar");
