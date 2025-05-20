@@ -443,13 +443,15 @@ export function initButtonIconSizeControl(getSelectedElement) {
   const decBtn = document.getElementById("buttoniconSizeDecrease");
 
   const maxSize = 50;
+  let currentSize = 0;
 
-  function applySize(size) {
+  function applySize() {
     const selectedElement = getSelectedElement?.();
     if (!selectedElement) return;
 
     const btn = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
     if (!btn) return;
 
@@ -462,30 +464,47 @@ export function initButtonIconSizeControl(getSelectedElement) {
     allButtons.forEach(button => {
       const icons = button.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
       icons.forEach(icon => {
-        icon.style.width = `${size}px`;
+        icon.style.width = `${currentSize}px`;
         icon.style.height = "auto";
       });
     });
 
-    console.log(`✅ Icon size applied: ${size}px`);
+    console.log(`✅ Icon size applied: ${currentSize}px`);
   }
 
-  function updateFromValue(value) {
-    const iconSize = Math.max(0, Math.min(maxSize, value));
-    const percent = (iconSize / maxSize) * 100;
+  function updateFromSizeValue(value) {
+    currentSize = Math.max(0, Math.min(maxSize, value));
+    const percent = (currentSize / maxSize) * 100;
 
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
-    label.textContent = `${iconSize}px`;
+    label.textContent = `${currentSize}px`;
 
-    applySize(iconSize);
+    applySize();
   }
 
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const newValue = Math.round((x / rect.width) * maxSize);
-    updateFromValue(newValue);
+    const newSize = Math.round((x / rect.width) * maxSize);
+    updateFromSizeValue(newSize);
+  }
+
+  function syncFromIcon() {
+    const selectedElement = getSelectedElement?.();
+    const btn = selectedElement?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.width) return;
+
+    const size = parseInt(icon.style.width, 10);
+    if (!isNaN(size)) {
+      updateFromSizeValue(size);
+    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -503,20 +522,20 @@ export function initButtonIconSizeControl(getSelectedElement) {
 
   if (incBtn) {
     incBtn.addEventListener("click", () => {
-      const current = parseInt(label.textContent.replace("px", ""), 10) || 0;
-      updateFromValue(current + 1);
+      updateFromSizeValue(currentSize + 1);
     });
   }
 
   if (decBtn) {
     decBtn.addEventListener("click", () => {
-      const current = parseInt(label.textContent.replace("px", ""), 10) || 0;
-      updateFromValue(current - 1);
+      updateFromSizeValue(currentSize - 1);
     });
   }
 
-  console.log("🎯 initButtonIconSizeControl initialized");
+  setTimeout(syncFromIcon, 50);
+  console.log("🎯 initButtonIconSizeControl fully initialized");
 }
+
 
 
 
