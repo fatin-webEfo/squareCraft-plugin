@@ -649,6 +649,8 @@ export function initButtonBorderControl(getSelectedElement) {
 
   if (!fill || !bullet || !field || !valueText) return;
 
+  const max = 10;
+
   if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
   const sides = ["Top", "Right", "Bottom", "Left"];
 
@@ -730,7 +732,10 @@ export function initButtonBorderControl(getSelectedElement) {
     return window.__squareCraftBorderStateMap.get(key)?.value || 0;
   }
 
-  function updateUI(clientX) {
+  function updateUIFromValue(val) {
+    const value = Math.max(0, Math.min(max, val));
+    const percent = (value / max) * 100;
+
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
     if (!btn) return;
@@ -738,17 +743,12 @@ export function initButtonBorderControl(getSelectedElement) {
     const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     const blockId = selected.id || "block-id";
     const key = `${blockId}--${typeClass}`;
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const value = Math.round((x / rect.width) * 10);
-    const percent = (x / rect.width) * 100;
-
     const state = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
     state.value = value;
     window.__squareCraftBorderStateMap.set(key, state);
 
-    fill.style.width = `${percent}%`;
     bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
     valueText.textContent = `${value}px`;
 
     applyBorder();
@@ -756,7 +756,12 @@ export function initButtonBorderControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (eMove) => updateUI(eMove.clientX);
+    const move = (eMove) => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      const value = Math.round((x / rect.width) * max);
+      updateUIFromValue(value);
+    };
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -765,16 +770,26 @@ export function initButtonBorderControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", (e) => updateUI(e.clientX));
-  incBtn?.addEventListener("click", () => updateUI(field.getBoundingClientRect().left + (field.clientWidth * (getCurrentValue() + 1) / 10)));
-  decBtn?.addEventListener("click", () => updateUI(field.getBoundingClientRect().left + (field.clientWidth * (getCurrentValue() - 1) / 10)));
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const value = Math.round((x / rect.width) * max);
+    updateUIFromValue(value);
+  });
 
-  function getCurrentValue() {
-    return parseInt(valueText.textContent) || 0;
-  }
+  incBtn?.addEventListener("click", () => {
+    const current = parseInt(valueText.textContent) || 0;
+    updateUIFromValue(current + 1);
+  });
 
-  resetBtn?.addEventListener("click", () => updateUI(field.getBoundingClientRect().left));
+  decBtn?.addEventListener("click", () => {
+    const current = parseInt(valueText.textContent) || 0;
+    updateUIFromValue(current - 1);
+  });
+
+  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 }
+
 
 
 
@@ -834,8 +849,8 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   if (!fillField || !bullet || !fill || !valueText) return;
 
+  const max = 50;
   let radiusValue = 0;
-  const maxRadius = 50;
 
   function getButtonTypeClass(btn) {
     if (btn.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
@@ -845,8 +860,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   function applyBorderRadius() {
     const selected = getSelectedElement?.();
-    if (!selected) return;
-    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
@@ -878,11 +892,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     `;
   }
 
-  function updateUI(clientX) {
-    const rect = fillField.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    radiusValue = Math.round((x / rect.width) * maxRadius);
+  function updateUIFromValue(value) {
+    radiusValue = Math.max(0, Math.min(max, value));
+    const percent = (radiusValue / max) * 100;
 
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
@@ -891,13 +903,14 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     applyBorderRadius();
   }
 
-  function getCurrentValue() {
-    return parseInt(valueText.textContent) || 0;
-  }
-
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (eMove) => updateUI(eMove.clientX);
+    const move = (eMove) => {
+      const rect = fillField.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      const value = Math.round((x / rect.width) * max);
+      updateUIFromValue(value);
+    };
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -906,12 +919,18 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  fillField.addEventListener("click", (e) => updateUI(e.clientX));
-  incBtn?.addEventListener("click", () => updateUI(fillField.getBoundingClientRect().left + (fillField.clientWidth * (getCurrentValue() + 1) / maxRadius)));
-  decBtn?.addEventListener("click", () => updateUI(fillField.getBoundingClientRect().left + (fillField.clientWidth * (getCurrentValue() - 1) / maxRadius)));
+  fillField.addEventListener("click", (e) => {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const value = Math.round((x / rect.width) * max);
+    updateUIFromValue(value);
+  });
 
-  resetBtn?.addEventListener("click", () => updateUI(fillField.getBoundingClientRect().left));
+  incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
+  decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
+  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 }
+
 
 const shadowState = {
   Xaxis: 0,
