@@ -439,7 +439,11 @@ export function initButtonIconSizeControl(getSelectedElement) {
   const field = document.getElementById("buttonIconSizeradiousField");
   const label = document.getElementById("buttoniconSizeradiousCount");
 
+  const incBtn = document.getElementById("buttoniconSizeIncrease");
+  const decBtn = document.getElementById("buttoniconSizeDecrease");
+
   let iconSize = 0;
+  const maxSize = 50;
 
   function applySize() {
     const selectedElement = getSelectedElement?.();
@@ -463,20 +467,27 @@ export function initButtonIconSizeControl(getSelectedElement) {
         icon.style.height = "auto";
       });
     });
+
+    console.log(`✅ Icon size applied: ${iconSize}px`);
   }
 
-
-  function updateUI(clientX) {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    iconSize = Math.round((x / rect.width) * 50);
+  function updateFromValue(value) {
+    iconSize = Math.max(0, Math.min(maxSize, value));
+    const percent = (iconSize / maxSize) * 100;
 
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     label.textContent = `${iconSize}px`;
 
     applySize();
+  }
+
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = (x / rect.width) * 100;
+    const newSize = Math.round((x / rect.width) * maxSize);
+    updateFromValue(newSize);
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -491,7 +502,24 @@ export function initButtonIconSizeControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => updateUI(e.clientX));
+
+  if (incBtn) {
+    incBtn.addEventListener("click", () => {
+      console.log("⬆️ Icon size increase clicked");
+      updateFromValue(iconSize + 1);
+    });
+  }
+
+  if (decBtn) {
+    decBtn.addEventListener("click", () => {
+      console.log("⬇️ Icon size decrease clicked");
+      updateFromValue(iconSize - 1);
+    });
+  }
+
+  console.log("🎯 initButtonIconSizeControl initialized");
 }
+
 
 
 export function initButtonIconSpacingControl(getSelectedElement) {
