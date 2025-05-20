@@ -920,7 +920,18 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
   resetBtn?.addEventListener("click", () => updateUIFromValue(0));
+
+  // ✅ Sync radius from DOM on load (like icon does)
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
+    if (!isNaN(computed)) updateUIFromValue(computed);
+  }, 50);
 }
+
 
 
 const shadowState = {
