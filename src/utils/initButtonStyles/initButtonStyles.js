@@ -342,6 +342,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   const decBtn = document.getElementById("buttoniconRotationDecrease");
 
   let currentRotation = 0;
+  let userInteracted = false;
 
   function applyRotation() {
     const selectedElement = getSelectedElement?.();
@@ -365,6 +366,8 @@ export function initButtonIconRotationControl(getSelectedElement) {
   }
 
   function updateFromRotationValue(value) {
+    userInteracted = true; // ✅ mark user started interaction
+
     currentRotation = Math.max(-180, Math.min(180, value));
     const percent = ((currentRotation + 180) / 360) * 100;
 
@@ -386,6 +389,8 @@ export function initButtonIconRotationControl(getSelectedElement) {
   }
 
   function syncFromIconRotation() {
+    if (userInteracted) return; // ✅ Don't sync if user already interacted
+
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
@@ -404,6 +409,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
+    userInteracted = true; // ✅
     const move = (e) => updateUI(e.clientX);
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -413,25 +419,29 @@ export function initButtonIconRotationControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", (e) => updateUI(e.clientX));
+  field.addEventListener("click", (e) => {
+    userInteracted = true; // ✅
+    updateUI(e.clientX);
+  });
 
   if (incBtn) {
     incBtn.addEventListener("click", () => {
+      userInteracted = true; // ✅
       updateFromRotationValue(currentRotation + 1);
     });
   }
 
   if (decBtn) {
     decBtn.addEventListener("click", () => {
+      userInteracted = true; // ✅
       updateFromRotationValue(currentRotation - 1);
     });
   }
 
-  setTimeout(() => {
-  syncFromIconRotation(); 
-}, 50);
-
+  // Only sync once after short delay
+  setTimeout(syncFromIconRotation, 50);
 }
+
 
 
 
