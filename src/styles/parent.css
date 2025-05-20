@@ -46,9 +46,7 @@
   color: #EF7C2F !important;
 }
 
-.sc-gap-3 {
-  gap: 3px !important;
-}
+
 
 .sc-gap-3 {
   gap: 11px !important;
@@ -483,10 +481,6 @@
 
 .sc-radius-2 {
   border-radius: 2px !important;
-}
-
-.sc-gap-3 {
-  gap: 3px !important;
 }
 
 .sc-radius-3 {
