@@ -31,6 +31,9 @@ export async function handleBlockClick(event, context) {
   if (typeof window.syncHoverButtonStylesFromElement === "function") {
     window.syncHoverButtonStylesFromElement(block);
   }
+  if (typeof window.updateActiveButtonBars === "function") {
+    window.updateActiveButtonBars();
+  }
   
   
   setLastClickedBlockId(block.id);

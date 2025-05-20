@@ -158,8 +158,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 }
 
 
-
-
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
@@ -722,12 +720,6 @@ export function initButtonBorderControl(getSelectedElement) {
 }
 
 
-
-
-
-
-
-
 export function initButtonBorderTypeToggle(getSelectedElement) {
   const typeButtons = [
     { id: "buttonBorderTypeSolid", type: "solid" },
@@ -867,7 +859,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     applyBorderRadius();
   });
 }
-
 
 
 const shadowState = {
@@ -1045,8 +1036,3 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   window.updateActiveButtonBars?.();
 };
-
-
-
-
-
