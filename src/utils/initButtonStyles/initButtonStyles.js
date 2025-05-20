@@ -428,11 +428,9 @@ export function initButtonIconRotationControl(getSelectedElement) {
   }
 
   setTimeout(() => {
-    const rect = field.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    updateUI(centerX);
-    syncFromIconRotation();
-  }, 50);
+  syncFromIconRotation(); 
+}, 50);
+
 }
 
 
