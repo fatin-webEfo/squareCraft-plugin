@@ -26,8 +26,12 @@ export function initButtonSectionToggleControls() {
       const hasActiveStyle = styleElements.some((id) => {
         const el = document.getElementById(id);
         if (!el) return false;
-        const value = el.textContent?.trim();
-        return value && !["0px", "Select", "0deg", "", "0", "400"].includes(value);
+        const value = el.tagName === "INPUT"
+  ? el.value?.trim()
+  : el.innerText?.trim();
+
+return value && !["0px", "Select", "0deg", "", "0", "400", "16", "15", "Select Font"].includes(value);
+
         
       });
   
