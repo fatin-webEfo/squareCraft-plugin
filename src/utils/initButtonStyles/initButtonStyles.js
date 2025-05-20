@@ -668,12 +668,12 @@ export function initButtonBorderControl(getSelectedElement) {
   const field = document.getElementById("buttonBorderField");
   const valueText = document.getElementById("buttonBorderCount");
   const incBtn = document.getElementById("buttonBorderIncrease");
-const decBtn = document.getElementById("buttonBorderDecrease");
-
-let userInteracted = false;
-
+  const decBtn = document.getElementById("buttonBorderDecrease");
 
   if (!fill || !bullet || !field || !valueText) return;
+
+  const max = 10;
+  let userInteracted = false;
 
   if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
   const sides = ["Top", "Right", "Bottom", "Left"];
@@ -696,7 +696,7 @@ let userInteracted = false;
       );
       if (!sample) return;
 
-      const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      const typeClass = [...sample.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
       const blockId = selectedElement.id || "block-id";
       const key = `${blockId}--${typeClass}`;
@@ -704,51 +704,9 @@ let userInteracted = false;
       borderState.side = side;
       window.__squareCraftBorderStateMap.set(key, borderState);
 
-      console.log("🟠 Active Border Tab Selected:", side);
       applyBorder();
     });
   });
-if (incBtn) {
-  incBtn.addEventListener("click", () => {
-    userInteracted = true;
-    const selectedElement = getSelectedElement?.();
-    if (!selectedElement) return;
-    const sample = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!sample) return;
-
-    const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-    const blockId = selectedElement.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-    borderState.value = Math.min(borderState.value + 1, 10);
-    window.__squareCraftBorderStateMap.set(key, borderState);
-    updateUI(field.getBoundingClientRect().left + (field.offsetWidth * borderState.value / 10));
-  });
-}
-
-if (decBtn) {
-  decBtn.addEventListener("click", () => {
-    userInteracted = true;
-    const selectedElement = getSelectedElement?.();
-    if (!selectedElement) return;
-    const sample = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!sample) return;
-
-    const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-    const blockId = selectedElement.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-    borderState.value = Math.max(borderState.value - 1, 0);
-    window.__squareCraftBorderStateMap.set(key, borderState);
-    updateUI(field.getBoundingClientRect().left + (field.offsetWidth * borderState.value / 10));
-  });
-}
 
   function applyBorder() {
     const selectedElement = getSelectedElement?.();
@@ -759,11 +717,14 @@ if (decBtn) {
     );
     if (!sample) return;
 
-    const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+    const typeClass = [...sample.classList].find(cls => cls.startsWith("sqs-button-element--"));
     if (!typeClass) return;
 
-    const value = `${getBorderValue(typeClass, selectedElement)}px`;
     const blockId = selectedElement.id || "block-id";
+    const key = `${blockId}--${typeClass}`;
+    const state = window.__squareCraftBorderStateMap.get(key);
+
+    const value = `${state?.value || 0}px`;
     const styleId = `sc-button-border-${blockId}-${typeClass}`;
     let styleTag = document.getElementById(styleId);
 
@@ -774,8 +735,6 @@ if (decBtn) {
     }
 
     const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
-    const state = window.__squareCraftBorderStateMap.get(`${blockId}--${typeClass}`);
-
     const zero = "0px";
     const top = state.side === "Top" || state.side === "All" ? value : zero;
     const right = state.side === "Right" || state.side === "All" ? value : zero;
@@ -783,17 +742,18 @@ if (decBtn) {
     const left = state.side === "Left" || state.side === "All" ? value : zero;
 
     const rules = `${selector}, .${typeClass} {
-    box-sizing: border-box !important;
-    border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-    border-color: black !important;
-    border-top-width: ${top} !important;
-    border-right-width: ${right} !important;
-    border-bottom-width: ${bottom} !important;
-    border-left-width: ${left} !important;
-  }`;
+      box-sizing: border-box !important;
+      border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+      border-color: black !important;
+      border-top-width: ${top} !important;
+      border-right-width: ${right} !important;
+      border-bottom-width: ${bottom} !important;
+      border-left-width: ${left} !important;
+    }`;
 
     styleTag.innerHTML = rules;
-    document.querySelectorAll(`.${typeClass}`).forEach((btn) => {
+
+    document.querySelectorAll(`.${typeClass}`).forEach(btn => {
       btn.style.borderTopWidth = top;
       btn.style.borderRightWidth = right;
       btn.style.borderBottomWidth = bottom;
@@ -801,20 +761,46 @@ if (decBtn) {
       btn.style.borderStyle = window.__squareCraftBorderStyle || "solid";
       btn.style.borderColor = "black";
     });
-
-    console.log("🧾 Applied Border CSS:", rules);
   }
 
-  function getBorderValue(typeClass, selectedElement) {
+  function updateFromValue(val) {
+    userInteracted = true;
+
+    const selectedElement = getSelectedElement?.();
+    if (!selectedElement) return;
+
+    const sample = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!sample) return;
+
+    const typeClass = [...sample.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
     const blockId = selectedElement.id || "block-id";
     const key = `${blockId}--${typeClass}`;
-    const state = window.__squareCraftBorderStateMap.get(key);
-    return state?.value || 0;
+    let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+
+    borderState.value = Math.max(0, Math.min(max, val));
+    window.__squareCraftBorderStateMap.set(key, borderState);
+
+    const percent = (borderState.value / max) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${borderState.value}px`;
+
+    applyBorder();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (eMove) => updateUI(eMove.clientX);
+    userInteracted = true;
+    const move = (eMove) => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      const value = Math.round((x / rect.width) * max);
+      updateFromValue(value);
+    };
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -823,57 +809,29 @@ if (decBtn) {
     document.addEventListener("mouseup", up);
   });
 
- function updateUI(clientX) {
-  userInteracted = true;
-  const selectedElement = getSelectedElement?.();
-  if (!selectedElement) return;
-  const sample = selectedElement.querySelector(
-    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-  );
-  if (!sample) return;
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const value = Math.round((x / rect.width) * max);
+    updateFromValue(value);
+  });
 
-  const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-  if (!typeClass) return;
-  const blockId = selectedElement.id || "block-id";
-  const key = `${blockId}--${typeClass}`;
-  let borderState = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
+  incBtn?.addEventListener("click", () => {
+    const current = parseInt(valueText.textContent.replace("px", ""), 10) || 0;
+    updateFromValue(current + 1);
+  });
 
-  const rect = field.getBoundingClientRect();
-  const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-  const percent = (x / rect.width) * 100;
-  borderState.value = Math.round((x / rect.width) * 10);
-  fill.style.width = `${percent}%`;
-  bullet.style.left = `${percent}%`;
-  valueText.textContent = `${borderState.value}px`;
-  window.__squareCraftBorderStateMap.set(key, borderState);
-  applyBorder();
-}
-
+  decBtn?.addEventListener("click", () => {
+    const current = parseInt(valueText.textContent.replace("px", ""), 10) || 0;
+    updateFromValue(current - 1);
+  });
 
   const resetBtn = document.querySelector('#buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      const selectedElement = getSelectedElement?.();
-      if (!selectedElement) return;
-      const sample = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
-      if (!sample) return;
-
-      const typeClass = [...sample.classList].find((cls) => cls.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
-      const blockId = selectedElement.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-
-      const borderState = { value: 0, side: "All" };
-      window.__squareCraftBorderStateMap.set(key, borderState);
-      fill.style.width = "0%";
-      bullet.style.left = "0%";
-      valueText.textContent = "0px";
-      applyBorder();
-    });
-  }
+  resetBtn?.addEventListener("click", () => {
+    updateFromValue(0);
+  });
 }
+
 
 
 export function initButtonBorderTypeToggle(getSelectedElement) {
