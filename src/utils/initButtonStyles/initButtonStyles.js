@@ -485,9 +485,8 @@ export function initButtonIconSizeControl(getSelectedElement) {
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const percent = (x / rect.width) * 100;
-    const newSize = Math.round((x / rect.width) * maxSize);
-    updateFromValue(newSize);
+    const newValue = Math.round((x / rect.width) * maxSize);
+    updateFromValue(newValue);
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -505,20 +504,22 @@ export function initButtonIconSizeControl(getSelectedElement) {
 
   if (incBtn) {
     incBtn.addEventListener("click", () => {
-      console.log("⬆️ Icon size increase clicked");
-      updateFromValue(iconSize + 1);
+      const current = parseInt(label.textContent.replace("px", "")) || 0;
+      updateFromValue(current + 1);
     });
   }
 
   if (decBtn) {
     decBtn.addEventListener("click", () => {
-      console.log("⬇️ Icon size decrease clicked");
-      updateFromValue(iconSize - 1);
+      const current = parseInt(label.textContent.replace("px", "")) || 0;
+      updateFromValue(current - 1);
     });
   }
 
   console.log("🎯 initButtonIconSizeControl initialized");
 }
+
+
 
 
 
