@@ -338,28 +338,12 @@ export function initButtonIconRotationControl(getSelectedElement) {
   const field = document.getElementById("buttonIconRotationradiousField");
   const label = document.getElementById("buttoniconRotationradiousCount");
 
+  const incBtn = document.getElementById("buttoniconRotationIncrease");
+  const decBtn = document.getElementById("buttoniconRotationDecrease");
+
   let currentRotation = 0;
 
-  function updateUI(clientX) {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-
-    const centerX = rect.width / 2;
-    const deltaX = x - centerX;
-    const percentFromCenter = (deltaX / centerX) * 50;
-
-    const bulletPercent = (x / rect.width) * 100;
-    bullet.style.left = `${bulletPercent}%`;
-
-    const fillLeft = 50 + Math.min(percentFromCenter, 0);
-    const fillWidth = Math.abs(percentFromCenter);
-
-    fill.style.left = `${fillLeft}%`;
-    fill.style.width = `${fillWidth}%`;
-
-    currentRotation = Math.round((deltaX / centerX) * 180);
-    label.textContent = `${currentRotation}deg`;
-
+  function applyRotation() {
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
@@ -380,6 +364,27 @@ export function initButtonIconRotationControl(getSelectedElement) {
     });
   }
 
+  function updateFromRotationValue(value) {
+    currentRotation = Math.max(-180, Math.min(180, value));
+    const percent = ((currentRotation + 180) / 360) * 100;
+
+    bullet.style.left = `${percent}%`;
+    fill.style.left = `${Math.min(percent, 50)}%`;
+    fill.style.width = `${Math.abs(percent - 50)}%`;
+    label.textContent = `${currentRotation}deg`;
+
+    applyRotation();
+  }
+
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const centerX = rect.width / 2;
+    const deltaX = x - centerX;
+    const newRotation = Math.round((deltaX / centerX) * 180);
+    updateFromRotationValue(newRotation);
+  }
+
   function syncFromIconRotation() {
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector(
@@ -394,16 +399,8 @@ export function initButtonIconRotationControl(getSelectedElement) {
     if (!match) return;
 
     const rotation = parseFloat(match[1]);
-    const percent = ((rotation + 180) / 360) * 100;
-
-    bullet.style.left = `${percent}%`;
-    fill.style.left = `${Math.min(percent, 50)}%`;
-    fill.style.width = `${Math.abs(percent - 50)}%`;
-    label.textContent = `${rotation}deg`;
-    currentRotation = rotation;
+    updateFromRotationValue(rotation);
   }
-
-  setTimeout(syncFromIconRotation, 50);
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
@@ -417,7 +414,22 @@ export function initButtonIconRotationControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => updateUI(e.clientX));
+
+  if (incBtn) {
+    incBtn.addEventListener("click", () => {
+      updateFromRotationValue(currentRotation + 1);
+    });
+  }
+
+  if (decBtn) {
+    decBtn.addEventListener("click", () => {
+      updateFromRotationValue(currentRotation - 1);
+    });
+  }
+
+  setTimeout(syncFromIconRotation, 50);
 }
+
 
 
 
