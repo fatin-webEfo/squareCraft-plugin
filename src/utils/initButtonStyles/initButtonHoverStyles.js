@@ -118,7 +118,9 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   function applyStyle() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
@@ -131,6 +133,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       style.id = id;
       document.head.appendChild(style);
     }
+
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
@@ -150,8 +153,8 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
+    const rect = field.getBoundingClientRect();
     const move = (eMove) => {
-      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
       setValue(Math.round(mapped));
