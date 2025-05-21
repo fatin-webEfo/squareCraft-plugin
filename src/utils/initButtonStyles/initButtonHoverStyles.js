@@ -109,61 +109,50 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   const fill = document.getElementById("hover-buttonIconRotationradiousFill");
   const field = document.getElementById("hover-buttonIconRotationradiousField");
   const label = document.getElementById("hover-buttoniconRotationradiousCount");
-  const increaseBtn = document.getElementById("hover-iconRotationIncrease");
-  const decreaseBtn = document.getElementById("hover-iconRotationDecrease");
-
-  if (!bullet || !fill || !field || !label) return;
+  const incBtn = document.getElementById("hover-iconRotationIncrease");
+  const decBtn = document.getElementById("hover-iconRotationDecrease");
 
   let value = 0;
   const min = -180;
   const max = 180;
 
-  function updateVisuals() {
-    const rect = field.getBoundingClientRect();
+  function updateUI() {
     const percent = ((value - min) / (max - min)) * 100;
-
     bullet.style.left = `${percent}%`;
 
-    if (value < 0) {
-      fill.style.left = `${percent}%`;
-      fill.style.width = `${50 - percent}%`;
-    } else {
-      fill.style.left = `50%`;
-      fill.style.width = `${percent - 50}%`;
-    }
-
+    fill.style.left = value < 0 ? `${percent}%` : `50%`;
+    fill.style.width = `${Math.abs(percent - 50)}%`;
     label.textContent = `${value}deg`;
 
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
+    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!cls) return;
 
-    const styleId = `sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    const id = `sc-hover-style-transform-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(id);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = id;
+      document.head.appendChild(style);
     }
-
-    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
+    style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
-  function setValue(newVal) {
+  function updateValue(newVal) {
     value = Math.max(min, Math.min(max, newVal));
-    updateVisuals();
+    updateUI();
   }
 
-  bullet.addEventListener("mousedown", (e) => {
+  bullet.addEventListener("mousedown", e => {
     e.preventDefault();
-    const rect = field.getBoundingClientRect();
-    const move = (e) => {
-      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const move = eMove => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
-      setValue(Math.round(mapped));
+      updateValue(Math.round(mapped));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -173,17 +162,16 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", (e) => {
+  field.addEventListener("click", e => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
-    setValue(Math.round(mapped));
+    updateValue(Math.round(mapped));
   });
 
-  increaseBtn?.addEventListener("click", () => setValue(value + 1));
-  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => updateValue(value + 1));
+  decBtn?.addEventListener("click", () => updateValue(value - 1));
 }
-
 
 
 
