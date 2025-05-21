@@ -927,6 +927,8 @@ const shadowState = {
   Spread: 0
 };
 
+
+
 export function initButtonShadowControls(getSelectedElement) {
   if (!window.shadowState) {
     window.shadowState = {
@@ -1023,23 +1025,23 @@ export function initButtonShadowControls(getSelectedElement) {
     });
 
     if (incBtn) {
-      incBtn.onclick = () => {
+      incBtn.addEventListener("click", () => {
         const current = window.shadowState[type] || 0;
-        const step = (type === "Blur" || type === "Spread") ? 7 : 1;
-        console.log(`[SHADOW] ${type} increase clicked, current: ${current}, step: ${step}`);
+        const step = 1;
+        console.log(`[SHADOW] Increase clicked for ${type}, current: ${current}, step: ${step}`);
         updateUI(current + step);
-      };
+      });
     } else {
       console.warn(`[SHADOW] Increase button missing for ${type}`);
     }
 
     if (decBtn) {
-      decBtn.onclick = () => {
+      decBtn.addEventListener("click", () => {
         const current = window.shadowState[type] || 0;
-        const step = (type === "Blur" || type === "Spread") ? 7 : 1;
-        console.log(`[SHADOW] ${type} decrease clicked, current: ${current}, step: ${step}`);
+        const step = 1;
+        console.log(`[SHADOW] Decrease clicked for ${type}, current: ${current}, step: ${step}`);
         updateUI(current - step);
-      };
+      });
     } else {
       console.warn(`[SHADOW] Decrease button missing for ${type}`);
     }
@@ -1052,6 +1054,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
