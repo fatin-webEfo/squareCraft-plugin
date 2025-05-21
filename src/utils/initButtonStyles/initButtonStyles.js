@@ -944,7 +944,7 @@ export function initButtonShadowControls(getSelectedElement) {
     if (!el) return;
 
     const btn = el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
     if (!btn) return;
 
@@ -953,7 +953,7 @@ export function initButtonShadowControls(getSelectedElement) {
 
     const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
 
-    document.querySelectorAll(`a.${typeClass}`).forEach(b => {
+    document.querySelectorAll(`a.${typeClass}, button.${typeClass}`).forEach(b => {
       b.style.boxShadow = value;
     });
   }
@@ -967,10 +967,7 @@ export function initButtonShadowControls(getSelectedElement) {
     const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${idPrefix}Increase`);
     const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${idPrefix}Decrease`);
 
-    if (!bullet || !field || !label) {
-      console.warn(`[SHADOW] Missing DOM elements for ${type}`);
-      return;
-    }
+    if (!bullet || !field || !label) return;
 
     let minValue = 0;
     if (type === "Xaxis" || type === "Yaxis") minValue = -range;
@@ -998,7 +995,6 @@ export function initButtonShadowControls(getSelectedElement) {
       fill.style.width = `${percent}%`;
       label.textContent = `${val}px`;
       applyShadow();
-      console.log(`[SHADOW] ${type} updated to ${val}px`);
     }
 
     bullet.addEventListener("mousedown", (e) => {
@@ -1030,22 +1026,16 @@ export function initButtonShadowControls(getSelectedElement) {
       incBtn.addEventListener("click", () => {
         const current = window.shadowState[type] || 0;
         const step = 1;
-        console.log(`[SHADOW] Increase clicked for ${type}, current: ${current}, step: ${step}`);
         updateUI(current + step);
       });
-    } else {
-      console.warn(`[SHADOW] Increase button missing for ${type}`);
     }
 
     if (decBtn) {
       decBtn.addEventListener("click", () => {
         const current = window.shadowState[type] || 0;
         const step = 1;
-        console.log(`[SHADOW] Decrease clicked for ${type}, current: ${current}, step: ${step}`);
         updateUI(current - step);
       });
-    } else {
-      console.warn(`[SHADOW] Decrease button missing for ${type}`);
     }
 
     updateUI(window.shadowState[type] || 0);
@@ -1056,6 +1046,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
