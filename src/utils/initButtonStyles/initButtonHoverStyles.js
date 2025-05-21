@@ -186,30 +186,26 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   
   
- export function initHoverButtonIconSizeControl(getSelectedElement) {
+export function initHoverButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("hover-buttonIconSizeradiousBullet");
   const fill = document.getElementById("hover-buttonIconSizeradiousFill");
   const field = document.getElementById("hover-buttonIconSizeradiousField");
   const label = document.getElementById("hover-buttoniconSizeradiousCount");
   const increaseBtn = document.getElementById("hover-iconSizeIncrease");
-  const decreaseBtn = document.getElementById("hover-iconRotationDecrease");
+  const decreaseBtn = document.getElementById("hover-iconSizeDecrease");
 
   if (!bullet || !fill || !field || !label) return;
 
   let value = 0;
   const maxSize = 50;
 
-  function updateVisuals(val) {
+  function updateUI() {
     const rect = field.getBoundingClientRect();
-    const x = (val / maxSize) * rect.width;
-    const percent = (x / rect.width) * 100;
-
+    const percent = (value / maxSize) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
-    label.textContent = `${val}px`;
-  }
+    label.textContent = `${value}px`;
 
-  function applyStyle(val) {
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
@@ -225,22 +221,15 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { width: ${val}px !important; height: auto !important; }`;
-  }
-
-  function setValue(newVal) {
-    value = Math.max(0, Math.min(maxSize, newVal));
-    updateVisuals(value);
-    applyStyle(value);
+    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
     const move = (e) => {
       const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      value = Math.round((x / rect.width) * maxSize);
-      setValue(value);
+      value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxSize);
+      updateUI();
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -252,68 +241,93 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    value = Math.round((x / rect.width) * maxSize);
-    setValue(value);
+    value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxSize);
+    updateUI();
   });
 
-  increaseBtn?.addEventListener("click", () => setValue(value + 1));
-  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
+  increaseBtn?.addEventListener("click", () => {
+    if (value < maxSize) value++;
+    updateUI();
+  });
+
+  decreaseBtn?.addEventListener("click", () => {
+    if (value > 0) value--;
+    updateUI();
+  });
 }
+
 
   
   
-  export function initHoverButtonIconSpacingControl(getSelectedElement) {
-    const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
-    const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
-    const field = document.getElementById("hover-buttonIconSpacingradiousField");
-    const label = document.getElementById("hover-buttoniconSpacingradiousCount");
-  
-    if (!bullet || !fill || !field || !label) return;
-  
-    const maxGap = 30;
-  
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      const value = Math.round((x / rect.width) * maxGap);
-  
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${value}px`;
-  
-      const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!btn) return;
-  
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
-  
-      const styleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-  
-      styleTag.innerHTML = `a.${typeClass}:hover { gap: ${value}px !important; }`;
+export function initHoverButtonIconSpacingControl(getSelectedElement) {
+  const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
+  const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
+  const field = document.getElementById("hover-buttonIconSpacingradiousField");
+  const label = document.getElementById("hover-buttoniconSpacingradiousCount");
+  const increaseBtn = document.getElementById("hover-iconSpacingIncrease");
+  const decreaseBtn = document.getElementById("hover-iconSpacingDecrease");
+
+  if (!bullet || !fill || !field || !label) return;
+
+  let value = 0;
+  const maxGap = 30;
+
+  function updateUI() {
+    const percent = (value / maxGap) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${value}px`;
+
+    const selectedElement = getSelectedElement?.();
+    const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const styleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
     }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
-    });
-  
-    field.addEventListener("click", (e) => updateUI(e.clientX));
+
+    styleTag.innerHTML = `a.${typeClass}:hover { gap: ${value}px !important; }`;
   }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (e) => {
+      const rect = field.getBoundingClientRect();
+      value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxGap);
+      updateUI();
+    };
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
+    value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxGap);
+    updateUI();
+  });
+
+  increaseBtn?.addEventListener("click", () => {
+    if (value < maxGap) value++;
+    updateUI();
+  });
+
+  decreaseBtn?.addEventListener("click", () => {
+    if (value > 0) value--;
+    updateUI();
+  });
+}
+
   
   export function initHoverButtonBorderRadiusControl(getSelectedElement) {
       const fillField = document.getElementById("hover-buttonBorderRadiousField");
