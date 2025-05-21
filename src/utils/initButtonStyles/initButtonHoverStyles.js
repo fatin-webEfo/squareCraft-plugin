@@ -173,10 +173,16 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => setValue(value + 1));
   decBtn?.addEventListener("click", () => setValue(value - 1));
+
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.transform) return;
+
+    const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+    if (match) setValue(parseFloat(match[1]));
+  }, 50);
 }
-
-
-
 
   
   
@@ -249,10 +255,6 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   decBtn?.addEventListener("click", () => setValue(value - 1));
 }
 
-
-
-
-  
   
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
   const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
