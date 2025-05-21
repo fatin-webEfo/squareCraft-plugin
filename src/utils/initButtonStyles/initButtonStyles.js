@@ -956,7 +956,7 @@ export function initButtonShadowControls(getSelectedElement) {
     });
   }
 
-  function setupShadowControl(type, range = 50) {
+  function setupShadowControl(type, max = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
@@ -979,17 +979,18 @@ export function initButtonShadowControls(getSelectedElement) {
       return el;
     })();
 
-    const minValue = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
-    const maxValue = range;
-
     function updateUI(value) {
-      const val = Math.max(minValue, Math.min(maxValue, value));
-      window.shadowState[type] = val;
-      const visualPercent = ((val - minValue) / (maxValue - minValue)) * 100;
-      bullet.style.left = `${visualPercent}%`;
-      fill.style.width = `${visualPercent}%`;
+      const val = Math.max(0, Math.min(max, value));
+      shadowState[type] = val;
+      const percent = (val / max) * 100;
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
       label.textContent = `${val}px`;
       applyShadow();
+    }
+
+    function getCurrentValue() {
+      return shadowState[type] || 0;
     }
 
     bullet.addEventListener("mousedown", (e) => {
@@ -997,8 +998,7 @@ export function initButtonShadowControls(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const move = (eMove) => {
         const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-        const percent = x / rect.width;
-        const val = Math.round(percent * (maxValue - minValue) + minValue);
+        const val = Math.round((x / rect.width) * max);
         updateUI(val);
       };
       const up = () => {
@@ -1012,22 +1012,12 @@ export function initButtonShadowControls(getSelectedElement) {
     field.addEventListener("click", (e) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      const percent = x / rect.width;
-      const val = Math.round(percent * (maxValue - minValue) + minValue);
+      const val = Math.round((x / rect.width) * max);
       updateUI(val);
     });
 
-    incBtn?.addEventListener("click", () => {
-      const val = window.shadowState[type] || 0;
-      updateUI(val + 1);
-    });
-
-    decBtn?.addEventListener("click", () => {
-      const val = window.shadowState[type] || 0;
-      updateUI(val - 1);
-    });
-
-    updateUI(window.shadowState[type] || 0);
+    incBtn?.addEventListener("click", () => updateUI(getCurrentValue() + 1));
+    decBtn?.addEventListener("click", () => updateUI(getCurrentValue() - 1));
   }
 
   setupShadowControl("Xaxis", 30);
@@ -1035,8 +1025,6 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
-
-
 
 
 window.syncButtonStylesFromElement = function (selectedElement) {
