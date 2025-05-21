@@ -216,7 +216,6 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   let value = 0;
   const max = 50;
-  let interacted = false;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
@@ -252,10 +251,8 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    interacted = true;
-
-    const rect = field.getBoundingClientRect();
     const move = (eMove) => {
+      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = (x / rect.width) * max;
       setValue(Math.round(mapped));
@@ -269,32 +266,26 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
-    interacted = true;
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = (x / rect.width) * max;
     setValue(Math.round(mapped));
   });
 
-  incBtn?.addEventListener("click", () => {
-    interacted = true;
-    setValue(value + 1);
-  });
-
-  decBtn?.addEventListener("click", () => {
-    interacted = true;
-    setValue(value - 1);
-  });
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 
   setTimeout(() => {
-    bullet.style.left = "50%";
-    fill.style.left = "50%";
-    fill.style.width = "0%";
-    label.textContent = `0px`;
+    const selected = getSelectedElement?.();
+    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.width) return;
+    const size = parseInt(icon.style.width);
+    if (!isNaN(size)) setValue(size);
   }, 50);
 }
 
 
+  
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
   const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
   const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
@@ -305,7 +296,6 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 
   let value = 0;
   const max = 30;
-  let interacted = false;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
@@ -341,10 +331,8 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    interacted = true;
-
-    const rect = field.getBoundingClientRect();
     const move = (eMove) => {
+      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = (x / rect.width) * max;
       setValue(Math.round(mapped));
@@ -358,30 +346,24 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
-    interacted = true;
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = (x / rect.width) * max;
     setValue(Math.round(mapped));
   });
 
-  incBtn?.addEventListener("click", () => {
-    interacted = true;
-    setValue(value + 1);
-  });
-
-  decBtn?.addEventListener("click", () => {
-    interacted = true;
-    setValue(value - 1);
-  });
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 
   setTimeout(() => {
-    bullet.style.left = "0%";
-    fill.style.width = "0%";
-    label.textContent = `0px`;
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (btn) {
+      const gap = parseInt(window.getComputedStyle(btn).gap);
+      if (!isNaN(gap)) setValue(gap);
+    }
   }, 50);
 }
-
 
 
 
