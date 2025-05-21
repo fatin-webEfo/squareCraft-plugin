@@ -984,14 +984,11 @@ export function initButtonShadowControls(getSelectedElement) {
 
     function updateUI(value) {
       const val = Math.max(minValue, Math.min(maxValue, value));
-      shadowState[type] = val;
-
-      const visualPercent = (val - minValue) / (maxValue - minValue) * 100;
-
+      window.shadowState[type] = val;
+      const visualPercent = ((val - minValue) / (maxValue - minValue)) * 100;
       bullet.style.left = `${visualPercent}%`;
       fill.style.width = `${visualPercent}%`;
       label.textContent = `${val}px`;
-
       applyShadow();
     }
 
@@ -1020,17 +1017,25 @@ export function initButtonShadowControls(getSelectedElement) {
       updateUI(val);
     });
 
-    incBtn?.addEventListener("click", () => updateUI(shadowState[type] + 1));
-    decBtn?.addEventListener("click", () => updateUI(shadowState[type] - 1));
+    incBtn?.addEventListener("click", () => {
+      const val = window.shadowState[type] || 0;
+      updateUI(val + 1);
+    });
 
-    updateUI(shadowState[type] || 0);
+    decBtn?.addEventListener("click", () => {
+      const val = window.shadowState[type] || 0;
+      updateUI(val - 1);
+    });
+
+    updateUI(window.shadowState[type] || 0);
   }
 
-  setupShadowControl("Xaxis", 30);  // -30 to +30
-  setupShadowControl("Yaxis", 30);  // -30 to +30
-  setupShadowControl("Blur", 50);   // 0 to 50
-  setupShadowControl("Spread", 30); // 0 to 30
+  setupShadowControl("Xaxis", 30);
+  setupShadowControl("Yaxis", 30);
+  setupShadowControl("Blur", 50);
+  setupShadowControl("Spread", 30);
 }
+
 
 
 
