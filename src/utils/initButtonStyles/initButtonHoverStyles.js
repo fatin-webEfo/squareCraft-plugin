@@ -194,7 +194,9 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   function applyStyle() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
@@ -211,17 +213,27 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
   }
 
-  function updateUI() {
+  function updateUI(prev) {
     const percent = (value / max) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     label.textContent = `${value}px`;
     applyStyle();
+
+    console.log(`📦 Hover Icon Size: ${value}px, Progress: ${percent}%`);
+
+    if (typeof prev === "number" && Math.abs(value - prev) !== 1) {
+      console.warn(`⚠️ Hover Icon Size not incremented/decremented correctly from ${prev} ➝ ${value}`);
+    }
   }
 
-  function setValue(val) {
-    value = Math.max(0, Math.min(max, val));
-    updateUI();
+  function setValue(newVal, debugFrom = null) {
+    const prev = value;
+    value = Math.max(0, Math.min(max, newVal));
+    updateUI(prev);
+    if (debugFrom) {
+      console.log(`🧭 ${debugFrom} set value: ${prev} ➝ ${value}`);
+    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -230,7 +242,7 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = (x / rect.width) * max;
-      setValue(Math.round(mapped));
+      setValue(Math.round(mapped), "mousedown drag");
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -244,12 +256,27 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = (x / rect.width) * max;
-    setValue(Math.round(mapped));
+    setValue(Math.round(mapped), "field click");
   });
 
-  incBtn?.addEventListener("click", () => setValue(value + 1));
-  decBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => {
+    setValue(value + 1, "arrow increase");
+  });
+
+  decBtn?.addEventListener("click", () => {
+    setValue(value - 1, "arrow decrease");
+  });
+
+  // Optional: set initial value from existing inline style
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.width) return;
+    const size = parseInt(icon.style.width);
+    if (!isNaN(size)) setValue(size, "initial load");
+  }, 50);
 }
+
 
 
   
