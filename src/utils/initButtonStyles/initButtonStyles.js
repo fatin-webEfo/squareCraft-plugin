@@ -962,12 +962,13 @@ export function initButtonShadowControls(getSelectedElement) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
-
     const idPrefix = type.replace("axis", "");
     const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${idPrefix}Increase`);
     const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${idPrefix}Decrease`);
 
     if (!bullet || !field || !label) return;
+
+    field.style.overflowX = "hidden";
 
     let minValue = 0;
     if (type === "Xaxis" || type === "Yaxis") minValue = -range;
@@ -980,7 +981,6 @@ export function initButtonShadowControls(getSelectedElement) {
       fill.style.position = "absolute";
       fill.style.top = "0";
       fill.style.left = "0";
-      field.style.overflowX = "hidden";
       fill.style.height = "100%";
       fill.style.width = "0%";
       fill.style.backgroundColor = "#EF7C2F";
@@ -992,7 +992,7 @@ export function initButtonShadowControls(getSelectedElement) {
       const val = Math.max(minValue, Math.min(maxValue, value));
       window.shadowState[type] = val;
       const percent = ((val - minValue) / (maxValue - minValue)) * 100;
-      bullet.style.left = `${percent}%`;
+      bullet.style.left = `calc(${percent}% - 6px)`;
       fill.style.width = `${percent}%`;
       label.textContent = `${val}px`;
       applyShadow();
@@ -1024,19 +1024,17 @@ export function initButtonShadowControls(getSelectedElement) {
     });
 
     if (incBtn) {
-      incBtn.addEventListener("click", () => {
+      incBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
-        const step = 1;
-        updateUI(current + step);
-      });
+        updateUI(current + 1);
+      };
     }
 
     if (decBtn) {
-      decBtn.addEventListener("click", () => {
+      decBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
-        const step = 1;
-        updateUI(current - step);
-      });
+        updateUI(current - 1);
+      };
     }
 
     updateUI(window.shadowState[type] || 0);
@@ -1047,6 +1045,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
