@@ -131,6 +131,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       style.id = id;
       document.head.appendChild(style);
     }
+
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
@@ -141,18 +142,26 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     fill.style.width = `${Math.abs(percent - 50)}%`;
     label.textContent = `${value}deg`;
     applyStyle();
+    console.log(`🎯 Rotation: ${value}deg`);
   }
 
   function setValue(newVal) {
-    value = Math.max(min, Math.min(max, newVal));
+    const newValClamped = Math.max(min, Math.min(max, newVal));
+    const oldVal = value;
+    value = newValClamped;
     updateUI();
+
+    if (value === oldVal) {
+      console.warn(`⚠️ No change. Stayed at ${value}`);
+    } else {
+      console.log(`🧭 Rotation changed: ${oldVal} ➝ ${value}`);
+    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    bullet.style.left = ""; // remove hardcoded default position
+    const rect = field.getBoundingClientRect();
     const move = (eMove) => {
-      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
       setValue(Math.round(mapped));
@@ -175,9 +184,19 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   incBtn?.addEventListener("click", () => setValue(value + 1));
   decBtn?.addEventListener("click", () => setValue(value - 1));
 
-  // Set initial position center
-  setValue(0);
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (icon) {
+      const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+      if (match) {
+        const rotation = parseFloat(match[1]);
+        if (!isNaN(rotation)) setValue(rotation);
+      }
+    }
+  }, 50);
 }
+
 
 
 
