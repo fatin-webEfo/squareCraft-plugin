@@ -181,7 +181,12 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
 
 
+let hoverSizeInitialized = false;
+
 export function initHoverButtonIconSizeControl(getSelectedElement) {
+  if (hoverSizeInitialized) return;
+  hoverSizeInitialized = true;
+
   const bullet = document.getElementById("hover-buttonIconSizeradiousBullet");
   const fill = document.getElementById("hover-buttonIconSizeradiousFill");
   const field = document.getElementById("hover-buttonIconSizeradiousField");
@@ -189,14 +194,14 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   const incBtn = document.getElementById("hover-iconSizeIncrease");
   const decBtn = document.getElementById("hover-iconSizeDecrease");
 
+  if (!bullet || !fill || !field || !label) return;
+
   let value = 0;
   const max = 50;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
@@ -213,26 +218,24 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
   }
 
-  function updateUI(prev) {
+  function updateUI() {
     const percent = (value / max) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     label.textContent = `${value}px`;
     applyStyle();
-
-    console.log(`📦 Hover Icon Size: ${value}px, Progress: ${percent}%`);
-
-    if (typeof prev === "number" && Math.abs(value - prev) !== 1) {
-      console.warn(`⚠️ Hover Icon Size not incremented/decremented correctly from ${prev} ➝ ${value}`);
-    }
+    console.log(`📦 Hover Icon Size: ${value}px, Progress: ${percent.toFixed(2)}%`);
   }
 
-  function setValue(newVal, debugFrom = null) {
-    const prev = value;
+  function setValue(newVal, reason = "") {
+    const oldValue = value;
     value = Math.max(0, Math.min(max, newVal));
-    updateUI(prev);
-    if (debugFrom) {
-      console.log(`🧭 ${debugFrom} set value: ${prev} ➝ ${value}`);
+    updateUI();
+
+    if (value === oldValue && reason !== "initial sync") {
+      console.warn(`⚠️ setValue() failed to increase from ${oldValue} ➝ ${newVal}`);
+    } else {
+      console.log(`🧭 arrow ${reason || 'set'} set value: ${oldValue} ➝ ${value}`);
     }
   }
 
@@ -242,7 +245,7 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = (x / rect.width) * max;
-      setValue(Math.round(mapped), "mousedown drag");
+      setValue(Math.round(mapped), "drag");
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -256,26 +259,24 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = (x / rect.width) * max;
-    setValue(Math.round(mapped), "field click");
+    setValue(Math.round(mapped), "click");
   });
 
-  incBtn?.addEventListener("click", () => {
-    setValue(value + 1, "arrow increase");
-  });
+  incBtn?.addEventListener("click", () => setValue(value + 1, "increase"));
+  decBtn?.addEventListener("click", () => setValue(value - 1, "decrease"));
 
-  decBtn?.addEventListener("click", () => {
-    setValue(value - 1, "arrow decrease");
-  });
-
-  // Optional: set initial value from existing inline style
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
     if (!icon || !icon.style.width) return;
     const size = parseInt(icon.style.width);
-    if (!isNaN(size)) setValue(size, "initial load");
+    if (!isNaN(size)) {
+      console.log("🧲 One-time initial sync from icon width:", size);
+      setValue(size, "initial sync");
+    }
   }, 50);
 }
+
 
 
 
