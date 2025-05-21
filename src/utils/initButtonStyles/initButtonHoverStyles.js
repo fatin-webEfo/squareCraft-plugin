@@ -115,7 +115,6 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   let value = 0;
   const min = -180;
   const max = 180;
-  let userInteracted = false;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
@@ -132,7 +131,6 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       style.id = id;
       document.head.appendChild(style);
     }
-
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
@@ -152,10 +150,9 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    userInteracted = true;
-
-    const rect = field.getBoundingClientRect();
+    bullet.style.left = ""; // remove hardcoded default position
     const move = (eMove) => {
+      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
       setValue(Math.round(mapped));
@@ -169,38 +166,19 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
-    userInteracted = true;
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
     setValue(Math.round(mapped));
   });
 
-  incBtn?.addEventListener("click", () => {
-    userInteracted = true;
-    setValue(value + 1);
-  });
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 
-  decBtn?.addEventListener("click", () => {
-    userInteracted = true;
-    setValue(value - 1);
-  });
-
-  setTimeout(() => {
-    const selected = getSelectedElement?.();
-    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-    if (!icon) return;
-
-    const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    const initial = match ? parseFloat(match[1]) : 0;
-
-    value = initial;
-    bullet.style.left = "50%"; // default center
-    fill.style.left = "50%";
-    fill.style.width = "0%";
-    label.textContent = `${value}deg`;
-  }, 50);
+  // Set initial position center
+  setValue(0);
 }
+
 
 
 
