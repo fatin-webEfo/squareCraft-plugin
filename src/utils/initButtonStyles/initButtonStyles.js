@@ -980,6 +980,7 @@ export function initButtonShadowControls(getSelectedElement) {
       fill.style.position = "absolute";
       fill.style.top = "0";
       fill.style.left = "0";
+      field.style.overflowX = "hidden";
       fill.style.height = "100%";
       fill.style.width = "0%";
       fill.style.backgroundColor = "#EF7C2F";
