@@ -181,9 +181,6 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
 
 
-
-  
-  
 export function initHoverButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("hover-buttonIconSizeradiousBullet");
   const fill = document.getElementById("hover-buttonIconSizeradiousFill");
@@ -222,8 +219,8 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     applyStyle();
   }
 
-  function setValue(newVal) {
-    value = Math.max(0, Math.min(max, newVal));
+  function setValue(val) {
+    value = Math.max(0, Math.min(max, val));
     updateUI();
   }
 
@@ -252,14 +249,6 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => setValue(value + 1));
   decBtn?.addEventListener("click", () => setValue(value - 1));
-
-  setTimeout(() => {
-    const selected = getSelectedElement?.();
-    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-    if (!icon || !icon.style.width) return;
-    const size = parseInt(icon.style.width);
-    if (!isNaN(size)) setValue(size);
-  }, 50);
 }
 
 
