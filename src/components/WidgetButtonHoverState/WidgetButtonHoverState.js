@@ -75,7 +75,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
-                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                  <span width="16" class="sc-arrow-placeholder sc-flex sc-items-center sc-justify-center sc-rotate-180"></span>
                </div>
           
             <div id="hover-iconSection" class="sc-mt-3  sc-hidden">
