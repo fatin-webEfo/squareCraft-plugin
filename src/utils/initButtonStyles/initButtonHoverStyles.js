@@ -212,6 +212,7 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
       style.id = id;
       document.head.appendChild(style);
     }
+
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
   }
 
@@ -253,7 +254,16 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => setValue(value + 1));
   decBtn?.addEventListener("click", () => setValue(value - 1));
+
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    if (!icon || !icon.style.width) return;
+    const size = parseInt(icon.style.width);
+    if (!isNaN(size)) setValue(size);
+  }, 50);
 }
+
 
   
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
@@ -282,6 +292,7 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
       style.id = id;
       document.head.appendChild(style);
     }
+
     style.innerHTML = `a.${cls}:hover { gap: ${value}px !important; }`;
   }
 
@@ -323,7 +334,17 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => setValue(value + 1));
   decBtn?.addEventListener("click", () => setValue(value - 1));
+
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (btn) {
+      const gap = parseInt(window.getComputedStyle(btn).gap);
+      if (!isNaN(gap)) setValue(gap);
+    }
+  }, 50);
 }
+
 
 
 
