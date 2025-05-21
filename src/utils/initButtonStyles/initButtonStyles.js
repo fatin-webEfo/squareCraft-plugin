@@ -969,6 +969,7 @@ export function initButtonShadowControls(getSelectedElement) {
     if (!bullet || !field || !label) return;
 
     field.style.overflowX = "hidden";
+    field.style.position = "relative";
 
     let minValue = 0;
     if (type === "Xaxis" || type === "Yaxis") minValue = -range;
@@ -985,14 +986,18 @@ export function initButtonShadowControls(getSelectedElement) {
       fill.style.width = "0%";
       fill.style.backgroundColor = "#EF7C2F";
       fill.style.zIndex = "0";
-      field.insertBefore(fill, bullet);
+      field.appendChild(fill);
     }
+
+    bullet.style.position = "absolute";
+    bullet.style.transform = "translateX(-50%)";
+    bullet.style.zIndex = "1";
 
     function updateUI(value) {
       const val = Math.max(minValue, Math.min(maxValue, value));
       window.shadowState[type] = val;
       const percent = ((val - minValue) / (maxValue - minValue)) * 100;
-      bullet.style.left = `calc(${percent}% - 6px)`;
+      bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
       label.textContent = `${val}px`;
       applyShadow();
