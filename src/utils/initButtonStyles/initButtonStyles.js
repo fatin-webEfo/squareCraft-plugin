@@ -963,7 +963,10 @@ export function initButtonShadowControls(getSelectedElement) {
     const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${type.toLowerCase()}Increase`);
     const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${type.toLowerCase()}Decrease`);
 
-    if (!bullet || !field || !label) return;
+    if (!bullet || !field || !label) {
+      console.warn(`[SHADOW] Missing DOM elements for ${type}`);
+      return;
+    }
 
     let minValue = 0;
     if (type === "Xaxis" || type === "Yaxis") minValue = -range;
@@ -991,6 +994,7 @@ export function initButtonShadowControls(getSelectedElement) {
       fill.style.width = `${percent}%`;
       label.textContent = `${val}px`;
       applyShadow();
+      console.log(`[SHADOW] ${type} updated to ${val}px`);
     }
 
     bullet.addEventListener("mousedown", (e) => {
@@ -1022,16 +1026,22 @@ export function initButtonShadowControls(getSelectedElement) {
       incBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
         const step = (type === "Blur" || type === "Spread") ? 7 : 1;
+        console.log(`[SHADOW] ${type} increase clicked, current: ${current}, step: ${step}`);
         updateUI(current + step);
       };
+    } else {
+      console.warn(`[SHADOW] Increase button missing for ${type}`);
     }
 
     if (decBtn) {
       decBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
         const step = (type === "Blur" || type === "Spread") ? 7 : 1;
+        console.log(`[SHADOW] ${type} decrease clicked, current: ${current}, step: ${step}`);
         updateUI(current - step);
       };
+    } else {
+      console.warn(`[SHADOW] Decrease button missing for ${type}`);
     }
 
     updateUI(window.shadowState[type] || 0);
@@ -1042,6 +1052,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
