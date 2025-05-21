@@ -960,8 +960,8 @@ export function initButtonShadowControls(getSelectedElement) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
-    const incBtn = document.getElementById(`buttonshadow${type}Increase`);
-    const decBtn = document.getElementById(`buttonshadow${type}Decrease`);
+    const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${type.toLowerCase()}Increase`);
+    const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${type.toLowerCase()}Decrease`);
 
     if (!bullet || !field || !label || !incBtn || !decBtn) return;
 
@@ -1036,6 +1036,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
