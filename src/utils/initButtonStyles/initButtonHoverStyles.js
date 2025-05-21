@@ -191,36 +191,40 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   const maxSize = 50;
 
   function updateUI() {
-    const rect = field.getBoundingClientRect();
     const percent = (value / maxSize) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     label.textContent = `${value}px`;
 
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
+    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!cls) return;
 
-    const styleId = `sc-hover-style-size-${typeClass.replace(/--/g, '-')}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    const styleId = `sc-hover-style-size-${cls.replace(/--/g, '-')}`;
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
 
-    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
+    style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
+  }
+
+  function setValue(newVal) {
+    value = Math.max(0, Math.min(maxSize, newVal));
+    updateUI();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (e) => {
+    const move = (eMove) => {
       const rect = field.getBoundingClientRect();
-      value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxSize);
-      updateUI();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      setValue(Math.round((x / rect.width) * maxSize));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -232,20 +236,14 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
-    value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxSize);
-    updateUI();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    setValue(Math.round((x / rect.width) * maxSize));
   });
 
-  increaseBtn?.addEventListener("click", () => {
-    if (value < maxSize) value++;
-    updateUI();
-  });
-
-  decreaseBtn?.addEventListener("click", () => {
-    if (value > 0) value--;
-    updateUI();
-  });
+  increaseBtn?.addEventListener("click", () => setValue(value + 1));
+  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
 
   
@@ -269,30 +267,35 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
     fill.style.width = `${percent}%`;
     label.textContent = `${value}px`;
 
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
+    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!cls) return;
 
-    const styleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    const styleId = `sc-hover-style-gap-${cls.replace(/--/g, '-')}`;
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
 
-    styleTag.innerHTML = `a.${typeClass}:hover { gap: ${value}px !important; }`;
+    style.innerHTML = `a.${cls}:hover { gap: ${value}px !important; }`;
+  }
+
+  function setValue(newVal) {
+    value = Math.max(0, Math.min(maxGap, newVal));
+    updateUI();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = (e) => {
+    const move = (eMove) => {
       const rect = field.getBoundingClientRect();
-      value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxGap);
-      updateUI();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      setValue(Math.round((x / rect.width) * maxGap));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -304,20 +307,14 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
-    value = Math.round((Math.min(Math.max(e.clientX - rect.left, 0), rect.width) / rect.width) * maxGap);
-    updateUI();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    setValue(Math.round((x / rect.width) * maxGap));
   });
 
-  increaseBtn?.addEventListener("click", () => {
-    if (value < maxGap) value++;
-    updateUI();
-  });
-
-  decreaseBtn?.addEventListener("click", () => {
-    if (value > 0) value--;
-    updateUI();
-  });
+  increaseBtn?.addEventListener("click", () => setValue(value + 1));
+  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
   
   export function initHoverButtonBorderRadiusControl(getSelectedElement) {
