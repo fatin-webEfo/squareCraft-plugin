@@ -1019,17 +1019,19 @@ export function initButtonShadowControls(getSelectedElement) {
     });
 
     if (incBtn) {
-      incBtn.addEventListener("click", () => {
+      incBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
-        updateUI(current + 1);
-      });
+        const step = (type === "Blur" || type === "Spread") ? 7 : 1;
+        updateUI(current + step);
+      };
     }
 
     if (decBtn) {
-      decBtn.addEventListener("click", () => {
+      decBtn.onclick = () => {
         const current = window.shadowState[type] || 0;
-        updateUI(current - 1);
-      });
+        const step = (type === "Blur" || type === "Spread") ? 7 : 1;
+        updateUI(current - step);
+      };
     }
 
     updateUI(window.shadowState[type] || 0);
@@ -1040,6 +1042,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
