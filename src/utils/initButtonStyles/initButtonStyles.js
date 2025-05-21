@@ -962,8 +962,10 @@ export function initButtonShadowControls(getSelectedElement) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
-    const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${type.toLowerCase()}Increase`);
-    const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${type.toLowerCase()}Decrease`);
+
+    const idPrefix = type.replace("axis", "");
+    const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${idPrefix}Increase`);
+    const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${idPrefix}Decrease`);
 
     if (!bullet || !field || !label) {
       console.warn(`[SHADOW] Missing DOM elements for ${type}`);
