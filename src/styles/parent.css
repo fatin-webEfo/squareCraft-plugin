@@ -1059,12 +1059,6 @@
   /* 12px */
 }
 
-.sc-py-1 {
-  padding-top: 4px !important;
-  /* 4px */
-  padding-bottom: 4px !important;
-  /* 4px */
-}
 
 .sc-left-0 {
   left: 0 !important;
@@ -1414,8 +1408,8 @@
 }
 
 .sc-py-1 {
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
 }
 
 .sc-py-sm {
