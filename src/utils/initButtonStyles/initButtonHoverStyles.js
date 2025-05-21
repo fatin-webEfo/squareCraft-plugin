@@ -104,7 +104,12 @@ const hoverShadowState = {
   }
 
 
+let hoverRotationInitialized = false;
+
 export function initHoverButtonIconRotationControl(getSelectedElement) {
+  if (hoverRotationInitialized) return;
+  hoverRotationInitialized = true;
+
   const bullet = document.getElementById("hover-buttonIconRotationradiousBullet");
   const fill = document.getElementById("hover-buttonIconRotationradiousFill");
   const field = document.getElementById("hover-buttonIconRotationradiousField");
@@ -112,10 +117,12 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   const incBtn = document.getElementById("hover-iconRotationIncrease");
   const decBtn = document.getElementById("hover-iconRotationDecrease");
 
+  if (!bullet || !fill || !field || !label) return;
+
   let value = 0;
   const min = -180;
   const max = 180;
-  let hasInteracted = false; // 🧠 for removing center axis mode after first action
+  let hasInteracted = false;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
@@ -143,12 +150,19 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     fill.style.width = `${Math.abs(percent - 50)}%`;
     label.textContent = `${value}deg`;
     applyStyle();
+    console.log(`📦 Hover Icon Rotation: ${value}deg, Progress: ${percent.toFixed(2)}%`);
   }
 
-  function setValue(newVal) {
-    hasInteracted = true;
+  function setValue(newVal, reason = "") {
+    const oldValue = value;
     value = Math.max(min, Math.min(max, newVal));
     updateUI();
+
+    if (value === oldValue && reason !== "initial sync") {
+      console.warn(`⚠️ Hover rotation didn't change from ${oldValue} ➝ ${newVal}`);
+    } else {
+      console.log(`🧭 arrow ${reason || 'set'} set rotation: ${oldValue} ➝ ${value}`);
+    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -158,7 +172,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     const move = (eMove) => {
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
-      setValue(Math.round(mapped));
+      setValue(Math.round(mapped), "drag");
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -173,11 +187,18 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
-    setValue(Math.round(mapped));
+    setValue(Math.round(mapped), "click");
   });
 
-  incBtn?.addEventListener("click", () => setValue(value + 1));
-  decBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => {
+    hasInteracted = true;
+    setValue(value + 1, "increase");
+  });
+
+  decBtn?.addEventListener("click", () => {
+    hasInteracted = true;
+    setValue(value - 1, "decrease");
+  });
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
@@ -187,17 +208,15 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       if (match) {
         const rotation = parseFloat(match[1]);
         if (!isNaN(rotation)) {
-          value = rotation;
-          updateUI(); // Keep center on initial load
+          console.log("🧲 Hover Rotation synced from transform:", rotation);
+          setValue(rotation, "initial sync");
+          return;
         }
-      } else {
-        updateUI(); // Default 0
       }
     }
+    setValue(0, "initial sync");
   }, 50);
 }
-
-
 
 
 
