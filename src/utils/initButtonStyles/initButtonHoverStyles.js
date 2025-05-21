@@ -115,6 +115,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   let value = 0;
   const min = -180;
   const max = 180;
+  let hasInteracted = false; // 🧠 for removing center axis mode after first action
 
   function applyStyle() {
     const selected = getSelectedElement?.();
@@ -138,28 +139,21 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   function updateUI() {
     const percent = ((value - min) / (max - min)) * 100;
     bullet.style.left = `${percent}%`;
-    fill.style.left = value < 0 ? `${percent}%` : `50%`;
+    fill.style.left = hasInteracted ? `${Math.min(percent, 50)}%` : `50%`;
     fill.style.width = `${Math.abs(percent - 50)}%`;
     label.textContent = `${value}deg`;
     applyStyle();
-    console.log(`🎯 Rotation: ${value}deg`);
   }
 
   function setValue(newVal) {
-    const newValClamped = Math.max(min, Math.min(max, newVal));
-    const oldVal = value;
-    value = newValClamped;
+    hasInteracted = true;
+    value = Math.max(min, Math.min(max, newVal));
     updateUI();
-
-    if (value === oldVal) {
-      console.warn(`⚠️ No change. Stayed at ${value}`);
-    } else {
-      console.log(`🧭 Rotation changed: ${oldVal} ➝ ${value}`);
-    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
+    hasInteracted = true;
     const rect = field.getBoundingClientRect();
     const move = (eMove) => {
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
@@ -175,6 +169,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
+    hasInteracted = true;
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
@@ -191,11 +186,17 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
       if (match) {
         const rotation = parseFloat(match[1]);
-        if (!isNaN(rotation)) setValue(rotation);
+        if (!isNaN(rotation)) {
+          value = rotation;
+          updateUI(); // Keep center on initial load
+        }
+      } else {
+        updateUI(); // Default 0
       }
     }
   }, 50);
 }
+
 
 
 
