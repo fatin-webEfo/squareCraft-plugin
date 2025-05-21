@@ -104,7 +104,7 @@ const hoverShadowState = {
   }
 
 
- export function initHoverButtonIconRotationControl(getSelectedElement) {
+export function initHoverButtonIconRotationControl(getSelectedElement) {
   const bullet = document.getElementById("hover-buttonIconRotationradiousBullet");
   const fill = document.getElementById("hover-buttonIconRotationradiousFill");
   const field = document.getElementById("hover-buttonIconRotationradiousField");
@@ -115,19 +115,18 @@ const hoverShadowState = {
   if (!bullet || !fill || !field || !label) return;
 
   let value = 0;
+  const min = -180;
+  const max = 180;
 
   function updateVisuals(val) {
     const rect = field.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const deltaX = (val / 180) * centerX;
-    const x = centerX + deltaX;
-
-    const bulletPercent = (x / rect.width) * 100;
-    const percentFromCenter = (deltaX / centerX) * 50;
+    const percentFromCenter = ((val - min) / (max - min)) * 100;
+    const center = 50;
+    const bulletPercent = percentFromCenter;
 
     bullet.style.left = `${bulletPercent}%`;
-    fill.style.left = `${50 + Math.min(percentFromCenter, 0)}%`;
-    fill.style.width = `${Math.abs(percentFromCenter)}%`;
+    fill.style.left = val < 0 ? `${bulletPercent}%` : `${center}%`;
+    fill.style.width = `${Math.abs(bulletPercent - center)}%`;
     label.textContent = `${val}deg`;
   }
 
@@ -151,20 +150,18 @@ const hoverShadowState = {
   }
 
   function setValue(newVal) {
-    value = Math.max(-180, Math.min(180, newVal));
+    value = Math.max(min, Math.min(max, newVal));
     updateVisuals(value);
     applyStyle(value);
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
+    const rect = field.getBoundingClientRect();
     const move = (e) => {
-      const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      const centerX = rect.width / 2;
-      const deltaX = x - centerX;
-      value = Math.round((deltaX / centerX) * 180);
-      setValue(value);
+      const delta = (x / rect.width) * (max - min) + min;
+      setValue(Math.round(delta));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -177,15 +174,15 @@ const hoverShadowState = {
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    const centerX = rect.width / 2;
-    const deltaX = x - centerX;
-    value = Math.round((deltaX / centerX) * 180);
-    setValue(value);
+    const delta = (x / rect.width) * (max - min) + min;
+    setValue(Math.round(delta));
   });
 
-  increaseBtn?.addEventListener("click", () => setValue(value + 5));
-  decreaseBtn?.addEventListener("click", () => setValue(value - 5));
+  increaseBtn?.addEventListener("click", () => setValue(value + 1));
+  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
+
 
   
   
