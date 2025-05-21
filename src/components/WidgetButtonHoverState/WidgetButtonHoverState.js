@@ -4,8 +4,7 @@ export function WidgetButtonHoverState() {
             <div id="hover-colorButton"
                class="sc-bg-3f3f3f sc-mt-4 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
-               <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                  class="sc-rotate-180" alt="">
+               <span class="sc-arrow-placeholder sc-rotate-180"></span>
             </div>
             <div id="hover-colorSection" class="sc-mt-3">
             <div class="sc-items-center sc-gap-3  sc-flex">
@@ -27,9 +26,7 @@ export function WidgetButtonHoverState() {
                   
                         <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                            <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                           <img id="hover-buttonParagraph1Arrow" width="10"
-                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                           class="sc-rotate-180" alt="">
+                           <span class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   
@@ -78,8 +75,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
-                  <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                     class="sc-rotate-180" alt="">
+                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
                </div>
           
             <div id="hover-iconSection" class="sc-mt-3  sc-hidden">
@@ -112,9 +108,8 @@ export function WidgetButtonHoverState() {
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                         <p id="hover-buttoniconRotationradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                              class="sc-rotate-180" alt="">
+                           <span class="sc-arrow-placeholder"></span>
+                           <span class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
@@ -147,9 +142,8 @@ export function WidgetButtonHoverState() {
                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                      <p id="hover-buttoniconSizeradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                      <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
-                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                           class="sc-rotate-180" alt="">
+                        <span class="sc-arrow-placeholder "></span>
+                        <span class="sc-arrow-placeholder sc-rotate-180"></span>
                      </div>
                   </div>
                </div>
@@ -186,9 +180,8 @@ export function WidgetButtonHoverState() {
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                   <p id="hover-buttoniconSpacingradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                        class="sc-rotate-180" alt="">
+                    <span class="sc-arrow-placeholder"></span>
+                    <span class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
@@ -208,8 +201,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-bordersButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
-                  <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                     class="sc-rotate-180" alt="">
+                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
                </div>
           
                <div id="hover-bordersSection" class=" sc-mt-3 sc-hidden">
@@ -229,10 +221,8 @@ export function WidgetButtonHoverState() {
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                         <p id="hover-buttonBorderCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                              width="9">
-                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                              class="sc-rotate-180" alt="">
+                         <span class="sc-arrow-placeholder"></span>
+                         <span class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
@@ -305,9 +295,7 @@ export function WidgetButtonHoverState() {
           
                                  <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                                     <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                                    <img id="hover-paragraph1Arrow" width="10"
-                                       src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                                       class="sc-rotate-180" alt="">
+                                    <span class="sc-arrow-placeholder sc-rotate-180"></span>
           
                                  </div>
                               </div>
@@ -392,10 +380,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonBorderRadiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                 width="9">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                 class="sc-rotate-180" alt="">
+                              <span class="sc-arrow-placeholder"></span>
+                              <span class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
@@ -415,8 +401,7 @@ export function WidgetButtonHoverState() {
             <div id="hover-shadowsButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
-                  <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                     class="sc-rotate-180" alt="">
+                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
                </div>
                <div id="hover-shadowsSection" class="sc-hidden">
                   <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
@@ -439,10 +424,8 @@ export function WidgetButtonHoverState() {
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                               <p id="hover-buttonShadowXaxisCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                               <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                    width="9">
-                                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                    class="sc-rotate-180" alt="">
+                                <span class="sc-arrow-placeholder"></span>
+                                <span class="sc-arrow-placeholder sc-rotate-180"></span>
                               </div>
           
                            </div>
@@ -463,10 +446,8 @@ export function WidgetButtonHoverState() {
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                               <p id="hover-buttonShadowYaxisCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                               <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                    width="9">
-                                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                    class="sc-rotate-180" alt="">
+                                 <span class="sc-arrow-placeholder"></span>
+                                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
                               </div>
           
                            </div>
@@ -509,10 +490,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonShadowBlurCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                 width="9">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                 class="sc-rotate-180" alt="">
+                              <span class="sc-arrow-placeholder"></span>
+                              <span class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
@@ -542,10 +521,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonShadowSpreadCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                 width="9">
-                              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                 class="sc-rotate-180" alt="">
+                             <span class="sc-arrow-placeholder "></span>
+                             <span class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
@@ -560,8 +537,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-buttonEffect"
                class="sc-bg-3f3f3f sc-mt-3 sc-relative  sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Button Effect</p>
-               <img id="hover-heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                  class="sc-rotate-180" alt="">
+              <span class="sc-arrow-placeholder sc-rotate-180"></span>
             </div>
 
            <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
@@ -583,8 +559,8 @@ export function WidgetButtonHoverState() {
                
                   <div id="hover-buttonTransitionTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
+                     <span class="sc-arrow-placeholder"></span>
+                     <span class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                   </div>
                </div>
@@ -609,8 +585,8 @@ export function WidgetButtonHoverState() {
                
                   <div id="hover-buttonDurationSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
+                     <span class="sc-arrow-placeholder"></span>
+                     <span class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                   </div>
                </div>
@@ -635,8 +611,8 @@ export function WidgetButtonHoverState() {
                
                   <div id="hover-buttonDelayTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
-                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
+                   <span class="sc-arrow-placeholder"></span>
+                   <span class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                   </div>
                </div>
@@ -661,8 +637,8 @@ export function WidgetButtonHoverState() {
             
                <div id="hover-buttonTransformTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" alt="">
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10" class="sc-rotate-180" alt="">
+                  <span class="sc-arrow-placeholder"></span>
+                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
                </div>
                </div>
             </div>
@@ -682,9 +658,8 @@ export function WidgetButtonHoverState() {
                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                <p id="hover-buttoniconTransformPositionCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                     class="sc-rotate-180" alt="">
+                 <span class="sc-arrow-placeholder"></span>
+                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
                </div>
             </div>
          </div>

@@ -1052,8 +1052,6 @@ export function initButtonShadowControls(getSelectedElement) {
 
 
 
-
-
 window.syncButtonStylesFromElement = function (selectedElement) {
   if (!selectedElement) return;
 
