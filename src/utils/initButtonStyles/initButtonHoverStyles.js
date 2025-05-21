@@ -281,13 +281,20 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 
 
   
+let hoverSpacingInitialized = false;
+
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
+  if (hoverSpacingInitialized) return;
+  hoverSpacingInitialized = true;
+
   const bullet = document.getElementById("hover-buttonIconSpacingradiousBullet");
   const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
   const field = document.getElementById("hover-buttonIconSpacingradiousField");
   const label = document.getElementById("hover-buttoniconSpacingradiousCount");
   const incBtn = document.getElementById("hover-iconSpacingIncrease");
   const decBtn = document.getElementById("hover-iconSpacingDecrease");
+
+  if (!bullet || !fill || !field || !label) return;
 
   let value = 0;
   const max = 30;
@@ -317,11 +324,19 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
     fill.style.width = `${percent}%`;
     label.textContent = `${value}px`;
     applyStyle();
+    console.log(`📦 Hover Icon Spacing: ${value}px, Progress: ${percent.toFixed(2)}%`);
   }
 
-  function setValue(newVal) {
+  function setValue(newVal, reason = "") {
+    const oldValue = value;
     value = Math.max(0, Math.min(max, newVal));
     updateUI();
+
+    if (value === oldValue && reason !== "initial sync") {
+      console.warn(`⚠️ Hover spacing didn't change from ${oldValue} ➝ ${newVal}`);
+    } else {
+      console.log(`🧭 arrow ${reason || 'set'} set spacing: ${oldValue} ➝ ${value}`);
+    }
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -330,7 +345,7 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = (x / rect.width) * max;
-      setValue(Math.round(mapped));
+      setValue(Math.round(mapped), "drag");
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -344,21 +359,25 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = (x / rect.width) * max;
-    setValue(Math.round(mapped));
+    setValue(Math.round(mapped), "click");
   });
 
-  incBtn?.addEventListener("click", () => setValue(value + 1));
-  decBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => setValue(value + 1, "increase"));
+  decBtn?.addEventListener("click", () => setValue(value - 1, "decrease"));
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (btn) {
       const gap = parseInt(window.getComputedStyle(btn).gap);
-      if (!isNaN(gap)) setValue(gap);
+      if (!isNaN(gap)) {
+        console.log("🧲 Hover Spacing synced from gap:", gap);
+        setValue(gap, "initial sync");
+      }
     }
   }, 50);
 }
+
 
 
 
