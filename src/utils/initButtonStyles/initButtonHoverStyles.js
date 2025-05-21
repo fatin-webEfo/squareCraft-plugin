@@ -115,12 +115,11 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   let value = 0;
   const min = -180;
   const max = 180;
+  let userInteracted = false;
 
   function applyStyle() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
@@ -153,6 +152,8 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
+    userInteracted = true;
+
     const rect = field.getBoundingClientRect();
     const move = (eMove) => {
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
@@ -168,24 +169,40 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
+    userInteracted = true;
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
     setValue(Math.round(mapped));
   });
 
-  incBtn?.addEventListener("click", () => setValue(value + 1));
-  decBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => {
+    userInteracted = true;
+    setValue(value + 1);
+  });
+
+  decBtn?.addEventListener("click", () => {
+    userInteracted = true;
+    setValue(value - 1);
+  });
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const icon = selected?.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-    if (!icon || !icon.style.transform) return;
+    if (!icon) return;
 
-    const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    if (match) setValue(parseFloat(match[1]));
+    const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+    const initial = match ? parseFloat(match[1]) : 0;
+
+    value = initial;
+    bullet.style.left = "50%"; // default center
+    fill.style.left = "50%";
+    fill.style.width = "0%";
+    label.textContent = `${value}deg`;
   }, 50);
 }
+
+
 
   
   
