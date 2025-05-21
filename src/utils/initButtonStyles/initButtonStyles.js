@@ -963,25 +963,25 @@ export function initButtonShadowControls(getSelectedElement) {
     const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${type.toLowerCase()}Increase`);
     const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${type.toLowerCase()}Decrease`);
 
-    if (!bullet || !field || !label || !incBtn || !decBtn) return;
+    if (!bullet || !field || !label) return;
 
     let minValue = 0;
     if (type === "Xaxis" || type === "Yaxis") minValue = -range;
     const maxValue = range;
 
-    const fill = field.querySelector(".sc-shadow-fill") || (() => {
-      const el = document.createElement("div");
-      el.className = "sc-shadow-fill";
-      el.style.position = "absolute";
-      el.style.top = "0";
-      el.style.left = "0";
-      el.style.height = "100%";
-      el.style.width = "0%";
-      el.style.backgroundColor = "#EF7C2F";
-      el.style.zIndex = "0";
-      field.insertBefore(el, bullet);
-      return el;
-    })();
+    let fill = field.querySelector(".sc-shadow-fill");
+    if (!fill) {
+      fill = document.createElement("div");
+      fill.className = "sc-shadow-fill";
+      fill.style.position = "absolute";
+      fill.style.top = "0";
+      fill.style.left = "0";
+      fill.style.height = "100%";
+      fill.style.width = "0%";
+      fill.style.backgroundColor = "#EF7C2F";
+      fill.style.zIndex = "0";
+      field.insertBefore(fill, bullet);
+    }
 
     function updateUI(value) {
       const val = Math.max(minValue, Math.min(maxValue, value));
@@ -1018,15 +1018,19 @@ export function initButtonShadowControls(getSelectedElement) {
       updateUI(val);
     });
 
-    incBtn.addEventListener("click", () => {
-      const current = window.shadowState[type] || 0;
-      updateUI(current + 1);
-    });
+    if (incBtn) {
+      incBtn.addEventListener("click", () => {
+        const current = window.shadowState[type] || 0;
+        updateUI(current + 1);
+      });
+    }
 
-    decBtn.addEventListener("click", () => {
-      const current = window.shadowState[type] || 0;
-      updateUI(current - 1);
-    });
+    if (decBtn) {
+      decBtn.addEventListener("click", () => {
+        const current = window.shadowState[type] || 0;
+        updateUI(current - 1);
+      });
+    }
 
     updateUI(window.shadowState[type] || 0);
   }
@@ -1036,7 +1040,6 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
-
 
 
 
