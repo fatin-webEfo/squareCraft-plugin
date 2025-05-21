@@ -104,60 +104,89 @@ const hoverShadowState = {
   }
 
 
-  export function initHoverButtonIconRotationControl(getSelectedElement) {
-    const bullet = document.getElementById("hover-buttonIconRotationradiousBullet");
-    const fill = document.getElementById("hover-buttonIconRotationradiousFill");
-    const field = document.getElementById("hover-buttonIconRotationradiousField");
-    const label = document.getElementById("hover-buttoniconRotationradiousCount");
-  
-    if (!bullet || !fill || !field || !label) return;
-  
-    function updateUI(clientX) {
+ export function initHoverButtonIconRotationControl(getSelectedElement) {
+  const bullet = document.getElementById("hover-buttonIconRotationradiousBullet");
+  const fill = document.getElementById("hover-buttonIconRotationradiousFill");
+  const field = document.getElementById("hover-buttonIconRotationradiousField");
+  const label = document.getElementById("hover-buttoniconRotationradiousCount");
+  const increaseBtn = document.getElementById("hover-iconRotationIncrease");
+  const decreaseBtn = document.getElementById("hover-iconRotationDecrease");
+
+  if (!bullet || !fill || !field || !label) return;
+
+  let value = 0;
+
+  function updateVisuals(val) {
+    const rect = field.getBoundingClientRect();
+    const centerX = rect.width / 2;
+    const deltaX = (val / 180) * centerX;
+    const x = centerX + deltaX;
+
+    const bulletPercent = (x / rect.width) * 100;
+    const percentFromCenter = (deltaX / centerX) * 50;
+
+    bullet.style.left = `${bulletPercent}%`;
+    fill.style.left = `${50 + Math.min(percentFromCenter, 0)}%`;
+    fill.style.width = `${Math.abs(percentFromCenter)}%`;
+    label.textContent = `${val}deg`;
+  }
+
+  function applyStyle(val) {
+    const selectedElement = getSelectedElement?.();
+    const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const styleId = `sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { transform: rotate(${val}deg) !important; }`;
+  }
+
+  function setValue(newVal) {
+    value = Math.max(-180, Math.min(180, newVal));
+    updateVisuals(value);
+    applyStyle(value);
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (e) => {
       const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
       const centerX = rect.width / 2;
       const deltaX = x - centerX;
-      const percentFromCenter = (deltaX / centerX) * 50;
-      const bulletPercent = (x / rect.width) * 100;
-  
-      bullet.style.left = `${bulletPercent}%`;
-      fill.style.left = `${50 + Math.min(percentFromCenter, 0)}%`;
-      fill.style.width = `${Math.abs(percentFromCenter)}%`;
-  
-      const value = Math.round((deltaX / centerX) * 180);
-      label.textContent = `${value}deg`;
-  
-      const selectedElement = getSelectedElement?.();
-      const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!btn) return;
-  
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
-  
-      const styleId = `sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-  
-      styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
-    }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
-    });
-  
-    field.addEventListener("click", (e) => updateUI(e.clientX));
-  }
+      value = Math.round((deltaX / centerX) * 180);
+      setValue(value);
+    };
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const centerX = rect.width / 2;
+    const deltaX = x - centerX;
+    value = Math.round((deltaX / centerX) * 180);
+    setValue(value);
+  });
+
+  increaseBtn?.addEventListener("click", () => setValue(value + 5));
+  decreaseBtn?.addEventListener("click", () => setValue(value - 5));
+}
+
   
   
   export function initHoverButtonIconSizeControl(getSelectedElement) {
