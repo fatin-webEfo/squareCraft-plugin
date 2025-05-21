@@ -289,7 +289,6 @@ export function initButtonStyles(selectedButtonElement) {
 }
 
 
-
 export function initButtonIconPositionToggle(getSelectedElement) {
   document.getElementById("buttoniconPositionSection").onclick = () => {
     document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
@@ -629,7 +628,6 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
 
 
-
 export function initButtonBorderControl(getSelectedElement) {
   const fill = document.getElementById("buttonBorderFill");
   const bullet = document.getElementById("buttonBorderBullet");
@@ -818,7 +816,6 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 }
 
 
-
 export function initButtonBorderRadiusControl(getSelectedElement) {
   const fillField = document.getElementById("buttonBorderRadiousField");
   const bullet = document.getElementById("buttonBorderRadiousBullet");
@@ -923,7 +920,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 }
 
 
-
 const shadowState = {
   Xaxis: 0,
   Yaxis: 0,
@@ -960,7 +956,7 @@ export function initButtonShadowControls(getSelectedElement) {
     });
   }
 
-  function setupShadowControl(type, max = 50) {
+  function setupShadowControl(type, range = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
@@ -983,18 +979,20 @@ export function initButtonShadowControls(getSelectedElement) {
       return el;
     })();
 
-    function updateUI(value) {
-      const val = Math.max(0, Math.min(max, value));
-      shadowState[type] = val;
-      const percent = (val / max) * 100;
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${val}px`;
-      applyShadow();
-    }
+    const minValue = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
+    const maxValue = range;
 
-    function getCurrentValue() {
-      return shadowState[type] || 0;
+    function updateUI(value) {
+      const val = Math.max(minValue, Math.min(maxValue, value));
+      shadowState[type] = val;
+
+      const visualPercent = (val - minValue) / (maxValue - minValue) * 100;
+
+      bullet.style.left = `${visualPercent}%`;
+      fill.style.width = `${visualPercent}%`;
+      label.textContent = `${val}px`;
+
+      applyShadow();
     }
 
     bullet.addEventListener("mousedown", (e) => {
@@ -1002,7 +1000,8 @@ export function initButtonShadowControls(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const move = (eMove) => {
         const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-        const val = Math.round((x / rect.width) * max);
+        const percent = x / rect.width;
+        const val = Math.round(percent * (maxValue - minValue) + minValue);
         updateUI(val);
       };
       const up = () => {
@@ -1016,22 +1015,22 @@ export function initButtonShadowControls(getSelectedElement) {
     field.addEventListener("click", (e) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      const val = Math.round((x / rect.width) * max);
+      const percent = x / rect.width;
+      const val = Math.round(percent * (maxValue - minValue) + minValue);
       updateUI(val);
     });
 
-    incBtn?.addEventListener("click", () => updateUI(getCurrentValue() + 1));
-    decBtn?.addEventListener("click", () => updateUI(getCurrentValue() - 1));
+    incBtn?.addEventListener("click", () => updateUI(shadowState[type] + 1));
+    decBtn?.addEventListener("click", () => updateUI(shadowState[type] - 1));
+
+    updateUI(shadowState[type] || 0);
   }
 
-  setupShadowControl("Xaxis", 30);
-  setupShadowControl("Yaxis", 30);
-  setupShadowControl("Blur", 50);
-  setupShadowControl("Spread", 30);
+  setupShadowControl("Xaxis", 30);  // -30 to +30
+  setupShadowControl("Yaxis", 30);  // -30 to +30
+  setupShadowControl("Blur", 50);   // 0 to 50
+  setupShadowControl("Spread", 30); // 0 to 30
 }
-
-
-
 
 
 
