@@ -118,19 +118,22 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   const min = -180;
   const max = 180;
 
-  function updateVisuals(val) {
+  function updateVisuals() {
     const rect = field.getBoundingClientRect();
-    const percentFromCenter = ((val - min) / (max - min)) * 100;
-    const center = 50;
-    const bulletPercent = percentFromCenter;
+    const percent = ((value - min) / (max - min)) * 100;
 
-    bullet.style.left = `${bulletPercent}%`;
-    fill.style.left = val < 0 ? `${bulletPercent}%` : `${center}%`;
-    fill.style.width = `${Math.abs(bulletPercent - center)}%`;
-    label.textContent = `${val}deg`;
-  }
+    bullet.style.left = `${percent}%`;
 
-  function applyStyle(val) {
+    if (value < 0) {
+      fill.style.left = `${percent}%`;
+      fill.style.width = `${50 - percent}%`;
+    } else {
+      fill.style.left = `50%`;
+      fill.style.width = `${percent - 50}%`;
+    }
+
+    label.textContent = `${value}deg`;
+
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
@@ -146,13 +149,12 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { transform: rotate(${val}deg) !important; }`;
+    styleTag.innerHTML = `a.${typeClass}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
   function setValue(newVal) {
     value = Math.max(min, Math.min(max, newVal));
-    updateVisuals(value);
-    applyStyle(value);
+    updateVisuals();
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -160,8 +162,8 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     const rect = field.getBoundingClientRect();
     const move = (e) => {
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      const delta = (x / rect.width) * (max - min) + min;
-      setValue(Math.round(delta));
+      const mapped = min + ((x / rect.width) * (max - min));
+      setValue(Math.round(mapped));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -174,13 +176,14 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    const delta = (x / rect.width) * (max - min) + min;
-    setValue(Math.round(delta));
+    const mapped = min + ((x / rect.width) * (max - min));
+    setValue(Math.round(mapped));
   });
 
   increaseBtn?.addEventListener("click", () => setValue(value + 1));
   decreaseBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
 
 
