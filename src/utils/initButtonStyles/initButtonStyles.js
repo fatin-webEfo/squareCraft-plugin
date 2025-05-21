@@ -968,7 +968,6 @@ export function initButtonShadowControls(getSelectedElement) {
 
     if (!bullet || !field || !label) return;
 
-    field.style.overflowX = "hidden";
     field.style.position = "relative";
 
     let minValue = 0;
