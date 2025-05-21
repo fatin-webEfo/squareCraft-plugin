@@ -108,8 +108,8 @@ export function WidgetButtonHoverState() {
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                         <p id="hover-buttoniconRotationradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                           <span class="sc-arrow-placeholder"></span>
-                           <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                           <span id="hover-iconRotationIncrease" class="sc-arrow-placeholder"></span>
+                           <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
@@ -142,8 +142,8 @@ export function WidgetButtonHoverState() {
                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                      <p id="hover-buttoniconSizeradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                      <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                        <span class="sc-arrow-placeholder "></span>
-                        <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                        <span id="hover-iconSizeIncrease" class="sc-arrow-placeholder "></span>
+                        <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                      </div>
                   </div>
                </div>
@@ -180,8 +180,8 @@ export function WidgetButtonHoverState() {
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                   <p id="hover-buttoniconSpacingradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                    <span class="sc-arrow-placeholder"></span>
-                    <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                    <span id="hover-iconSpacingIncrease" class="sc-arrow-placeholder"></span>
+                    <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
@@ -221,8 +221,8 @@ export function WidgetButtonHoverState() {
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                         <p id="hover-buttonBorderCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                         <span class="sc-arrow-placeholder"></span>
-                         <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                         <span id="hover-BorderIncrease" class="sc-arrow-placeholder"></span>
+                         <span id="hover-BorderDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
@@ -380,8 +380,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonBorderRadiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <span class="sc-arrow-placeholder"></span>
-                              <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                              <span id="hover-ButtonBorderRadiousIncrease" class="sc-arrow-placeholder"></span>
+                              <span id="hover-ButtonBorderRadiousDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
@@ -424,8 +424,8 @@ export function WidgetButtonHoverState() {
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                               <p id="hover-buttonShadowXaxisCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                               <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                <span class="sc-arrow-placeholder"></span>
-                                <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                                <span id="hover-ButtonShadowXIncrease" class="sc-arrow-placeholder"></span>
+                                <span id="hover-ButtonShadowXDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                               </div>
           
                            </div>
@@ -446,8 +446,8 @@ export function WidgetButtonHoverState() {
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                               <p id="hover-buttonShadowYaxisCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                               <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                 <span class="sc-arrow-placeholder"></span>
-                                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                                  <span id="hover-ButtonShadowYIncrease" class="sc-arrow-placeholder"></span>
+                                <span id="hover-ButtonShadowYDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                               </div>
           
                            </div>
@@ -490,8 +490,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonShadowBlurCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <span class="sc-arrow-placeholder"></span>
-                              <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                              <span id="hover-ButtonShadowBlurIncrease" class="sc-arrow-placeholder"></span>
+                              <span id="hover-ButtonShadowBlurDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
@@ -521,8 +521,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonShadowSpreadCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                             <span class="sc-arrow-placeholder "></span>
-                             <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                             <span id="hover-ButtonShadowSpreadIncrease" class="sc-arrow-placeholder "></span>
+                             <span id="hover-ButtonShadowSpreadDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
