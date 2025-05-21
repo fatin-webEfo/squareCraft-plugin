@@ -116,14 +116,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
   const min = -180;
   const max = 180;
 
-  function updateUI() {
-    const percent = ((value - min) / (max - min)) * 100;
-    bullet.style.left = `${percent}%`;
-
-    fill.style.left = value < 0 ? `${percent}%` : `50%`;
-    fill.style.width = `${Math.abs(percent - 50)}%`;
-    label.textContent = `${value}deg`;
-
+  function applyStyle() {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
@@ -141,18 +134,27 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { transform: rotate(${value}deg) !important; }`;
   }
 
-  function updateValue(newVal) {
+  function updateUI() {
+    const percent = ((value - min) / (max - min)) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.left = value < 0 ? `${percent}%` : `50%`;
+    fill.style.width = `${Math.abs(percent - 50)}%`;
+    label.textContent = `${value}deg`;
+    applyStyle();
+  }
+
+  function setValue(newVal) {
     value = Math.max(min, Math.min(max, newVal));
     updateUI();
   }
 
-  bullet.addEventListener("mousedown", e => {
+  bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = eMove => {
+    const move = (eMove) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const mapped = min + ((x / rect.width) * (max - min));
-      updateValue(Math.round(mapped));
+      setValue(Math.round(mapped));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -162,16 +164,17 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", e => {
+  field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const mapped = min + ((x / rect.width) * (max - min));
-    updateValue(Math.round(mapped));
+    setValue(Math.round(mapped));
   });
 
-  incBtn?.addEventListener("click", () => updateValue(value + 1));
-  decBtn?.addEventListener("click", () => updateValue(value - 1));
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
 
 
@@ -182,20 +185,13 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   const fill = document.getElementById("hover-buttonIconSizeradiousFill");
   const field = document.getElementById("hover-buttonIconSizeradiousField");
   const label = document.getElementById("hover-buttoniconSizeradiousCount");
-  const increaseBtn = document.getElementById("hover-iconSizeIncrease");
-  const decreaseBtn = document.getElementById("hover-iconSizeDecrease");
-
-  if (!bullet || !fill || !field || !label) return;
+  const incBtn = document.getElementById("hover-iconSizeIncrease");
+  const decBtn = document.getElementById("hover-iconSizeDecrease");
 
   let value = 0;
-  const maxSize = 50;
+  const max = 50;
 
-  function updateUI() {
-    const percent = (value / maxSize) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    label.textContent = `${value}px`;
-
+  function applyStyle() {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
@@ -203,19 +199,26 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!cls) return;
 
-    const styleId = `sc-hover-style-size-${cls.replace(/--/g, '-')}`;
-    let style = document.getElementById(styleId);
+    const id = `sc-hover-style-size-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(id);
     if (!style) {
       style = document.createElement("style");
-      style.id = styleId;
+      style.id = id;
       document.head.appendChild(style);
     }
-
     style.innerHTML = `a.${cls}:hover .sqscraft-button-icon { width: ${value}px !important; height: auto !important; }`;
   }
 
+  function updateUI() {
+    const percent = (value / max) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${value}px`;
+    applyStyle();
+  }
+
   function setValue(newVal) {
-    value = Math.max(0, Math.min(maxSize, newVal));
+    value = Math.max(0, Math.min(max, newVal));
     updateUI();
   }
 
@@ -224,7 +227,8 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
     const move = (eMove) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      setValue(Math.round((x / rect.width) * maxSize));
+      const mapped = (x / rect.width) * max;
+      setValue(Math.round(mapped));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -237,12 +241,14 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    setValue(Math.round((x / rect.width) * maxSize));
+    const mapped = (x / rect.width) * max;
+    setValue(Math.round(mapped));
   });
 
-  increaseBtn?.addEventListener("click", () => setValue(value + 1));
-  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
 
 
@@ -253,20 +259,13 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
   const fill = document.getElementById("hover-buttonIconSpacingradiousFill");
   const field = document.getElementById("hover-buttonIconSpacingradiousField");
   const label = document.getElementById("hover-buttoniconSpacingradiousCount");
-  const increaseBtn = document.getElementById("hover-iconSpacingIncrease");
-  const decreaseBtn = document.getElementById("hover-iconSpacingDecrease");
-
-  if (!bullet || !fill || !field || !label) return;
+  const incBtn = document.getElementById("hover-iconSpacingIncrease");
+  const decBtn = document.getElementById("hover-iconSpacingDecrease");
 
   let value = 0;
-  const maxGap = 30;
+  const max = 30;
 
-  function updateUI() {
-    const percent = (value / maxGap) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    label.textContent = `${value}px`;
-
+  function applyStyle() {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
@@ -274,19 +273,26 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!cls) return;
 
-    const styleId = `sc-hover-style-gap-${cls.replace(/--/g, '-')}`;
-    let style = document.getElementById(styleId);
+    const id = `sc-hover-style-gap-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(id);
     if (!style) {
       style = document.createElement("style");
-      style.id = styleId;
+      style.id = id;
       document.head.appendChild(style);
     }
-
     style.innerHTML = `a.${cls}:hover { gap: ${value}px !important; }`;
   }
 
+  function updateUI() {
+    const percent = (value / max) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${value}px`;
+    applyStyle();
+  }
+
   function setValue(newVal) {
-    value = Math.max(0, Math.min(maxGap, newVal));
+    value = Math.max(0, Math.min(max, newVal));
     updateUI();
   }
 
@@ -295,7 +301,8 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
     const move = (eMove) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      setValue(Math.round((x / rect.width) * maxGap));
+      const mapped = (x / rect.width) * max;
+      setValue(Math.round(mapped));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -308,12 +315,14 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    setValue(Math.round((x / rect.width) * maxGap));
+    const mapped = (x / rect.width) * max;
+    setValue(Math.round(mapped));
   });
 
-  increaseBtn?.addEventListener("click", () => setValue(value + 1));
-  decreaseBtn?.addEventListener("click", () => setValue(value - 1));
+  incBtn?.addEventListener("click", () => setValue(value + 1));
+  decBtn?.addEventListener("click", () => setValue(value - 1));
 }
+
 
 
   
