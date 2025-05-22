@@ -5,7 +5,7 @@ const hoverShadowState = {
     Spread: 0
   };
   
-export function initHoverButtonShadowControls(getSelectedElement) {
+  export function initHoverButtonShadowControls(getSelectedElement) {
     function applyHoverShadow() {
       const el = getSelectedElement?.();
       if (!el) return;
@@ -219,6 +219,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 }
 
 
+
 let hoverSizeInitialized = false;
 
 export function initHoverButtonIconSizeControl(getSelectedElement) {
@@ -316,6 +317,9 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 }
 
 
+
+
+  
 let hoverSpacingInitialized = false;
 
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
@@ -414,92 +418,99 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 }
 
 
-let hoverRadiusInitialized = false;
 
-export function initHoverButtonBorderRadiusControl(getSelectedElement) {
-  if (hoverRadiusInitialized) return;
-  hoverRadiusInitialized = true;
 
-  const field = document.getElementById("hover-buttonBorderRadiousField");
-  const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
-  const fill = document.getElementById("hover-buttonBorderRadiousFill");
-  const valueText = document.getElementById("hover-buttonBorderRadiousCount");
-  const incBtn = document.getElementById("hover-ButtonBorderRadiousIncrease");
-  const decBtn = document.getElementById("hover-ButtonBorderRadiousDecrease");
-  const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  if (!field || !bullet || !fill || !valueText) return;
-
-  let value = 0;
-
-  function apply() {
-    const el = getSelectedElement?.();
-    const btn = el?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    const cls = btn ? [...btn.classList].find(c => c.startsWith("sqs-button-element--")) : null;
-    if (!btn || !cls) return;
-
-    const id = `sc-hover-radius-${cls.replace(/--/g, "-")}`;
-    let style = document.getElementById(id);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = id;
-      document.head.appendChild(style);
-    }
-
-    style.innerHTML = `
-      a.${cls}:hover {
-        border-radius: ${value}px !important;
-        overflow: hidden !important;
+  
+  export function initHoverButtonBorderRadiusControl(getSelectedElement) {
+      const fillField = document.getElementById("hover-buttonBorderRadiousField");
+      const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
+      const fill = document.getElementById("hover-buttonBorderRadiousFill");
+      const valueText = document.getElementById("hover-buttonBorderRadiousCount");
+      const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
+    
+      if (!fillField || !bullet || !fill || !valueText) return;
+    
+      bullet.style.transition = "left 0.15s ease";
+      fill.style.transition = "width 0.15s ease";
+    
+      let radiusValue = 0;
+    
+      function getButtonTypeClass(sample) {
+        if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+        if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+        return "sqs-button-element--primary";
       }
-      a.${cls}:hover span,
-      a.${cls}:hover .sqs-add-to-cart-button-inner {
-        border-radius: ${value}px !important;
-      }
-    `;
-
-    window.__squareCraftHoverRadius = value;
+    
+      function applyBorderRadius() {
+        const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
+        if (!selectedElement) return;
+    
+        const sampleButton = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!sampleButton) return;
+    
+        const typeClass = getButtonTypeClass(sampleButton);
+        const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+    
+        styleTag.innerHTML = `
+  a.${typeClass}:hover {
+    border-radius: ${radiusValue}px !important;
+    overflow: hidden !important;
   }
 
-  function update(val) {
-    value = Math.max(0, Math.min(50, val));
-    const percent = (value / 50) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    valueText.textContent = `${value}px`;
-    apply();
+  a.${typeClass}:hover span,
+  a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+    border-radius: ${radiusValue}px !important;
+  }
+`;
+      }
+    
+      function updateUI(clientX) {
+        const rect = fillField.getBoundingClientRect();
+        const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+        const percent = (x / rect.width) * 100;
+        radiusValue = Math.round((x / rect.width) * 50);
+    
+        bullet.style.left = `${percent}%`;
+        fill.style.width = `${percent}%`;
+        valueText.textContent = `${radiusValue}px`;
+    
+        applyBorderRadius();
+      }
+    
+      bullet.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        const onMouseMove = (eMove) => updateUI(eMove.clientX);
+        const onMouseUp = () => {
+          document.removeEventListener("mousemove", onMouseMove);
+          document.removeEventListener("mouseup", onMouseUp);
+        };
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+      });
+    
+      fillField.addEventListener("click", (e) => {
+        updateUI(e.clientX);
+      });
+    
+      resetBtn?.addEventListener("click", () => {
+        radiusValue = 0;
+        bullet.style.left = "0%";
+        fill.style.width = "0%";
+        valueText.textContent = "0px";
+        applyBorderRadius();
+      });
   }
 
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const rect = field.getBoundingClientRect();
-    const move = (eMove) => {
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      update(Math.round((x / rect.width) * 50));
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
-
-  field.addEventListener("click", (e) => {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    update(Math.round((x / rect.width) * 50));
-  });
-
-  incBtn?.addEventListener("click", () => update(value + 1));
-  decBtn?.addEventListener("click", () => update(value - 1));
-  resetBtn?.addEventListener("click", () => update(0));
-
-  update(value);
-}
-
-
-
-export function initHoverButtonBorderTypeToggle(getSelectedElement) {
+  export function initHoverButtonBorderTypeToggle(getSelectedElement) {
     const typeButtons = [
       { id: "hover-buttonBorderTypeSolid", type: "solid" },
       { id: "hover-buttonBorderTypeDashed", type: "dashed" },
@@ -545,132 +556,162 @@ export function initHoverButtonBorderTypeToggle(getSelectedElement) {
   }
   
 
-let hoverBorderInitialized = false;
-
-export function initHoverButtonBorderControl(getSelectedElement) {
-  if (hoverBorderInitialized) return;
-  hoverBorderInitialized = true;
-
-  const fill = document.getElementById("hover-buttonBorderFill");
-  const bullet = document.getElementById("hover-buttonBorderBullet");
-  const field = document.getElementById("hover-buttonBorderField");
-  const valueText = document.getElementById("hover-buttonBorderCount");
-  const incBtn = document.getElementById("hover-BorderIncrease");
-  const decBtn = document.getElementById("hover-BorderDecrease");
-  const resetBtn = valueText?.closest(".sc-flex")?.querySelector("img[alt='reset']");
-
-  if (!fill || !bullet || !field || !valueText) return;
-  if (!window.__squareCraftHoverBorderStateMap) window.__squareCraftHoverBorderStateMap = new Map();
-
-  const sides = ["Top", "Right", "Bottom", "Left"];
-  let currentSide = "All";
-  let value = 0;
-
-  function getKey() {
-    const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    return `${selected?.id || "block-id"}--${typeClass}`;
-  }
-
-  function applyStyle() {
-    const selected = getSelectedElement?.();
-    if (!selected) return;
-    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!btn) return;
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    const state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
-    const val = `${state.value}px`;
-    const t = state.side === "Top" || state.side === "All" ? val : "0px";
-    const r = state.side === "Right" || state.side === "All" ? val : "0px";
-    const b = state.side === "Bottom" || state.side === "All" ? val : "0px";
-    const l = state.side === "Left" || state.side === "All" ? val : "0px";
-
-    const styleId = `hover-button-border-${blockId}-${typeClass}`;
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = styleId;
-      document.head.appendChild(style);
-    }
-
-    style.innerHTML = `
-      a.${typeClass}:hover {
-        border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-        border-color: ${window.__squareCraftHoverBorderColor || "black"} !important;
-        border-radius: ${window.__squareCraftHoverRadius || 0}px !important;
-        border-top-width: ${t} !important;
-        border-right-width: ${r} !important;
-        border-bottom-width: ${b} !important;
-        border-left-width: ${l} !important;
-      }
-    `;
-  }
-
-  function update(val) {
-    value = Math.max(0, Math.min(10, val));
-    const percent = (value / 10) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    valueText.textContent = `${value}px`;
-
-    const key = getKey();
-    let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
-    state.value = value;
-    window.__squareCraftHoverBorderStateMap.set(key, state);
-    applyStyle();
-  }
-
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const rect = field.getBoundingClientRect();
-    const move = (eMove) => {
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      update(Math.round((x / rect.width) * 10));
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
-
-  field.addEventListener("click", (e) => {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    update(Math.round((x / rect.width) * 10));
-  });
-
-  incBtn?.addEventListener("click", () => update(value + 1));
-  decBtn?.addEventListener("click", () => update(value - 1));
-  resetBtn?.addEventListener("click", () => update(0));
-
-  ["All", ...sides].forEach((side) => {
-    const el = document.getElementById(`hover-buttonBorder${side}`);
-    if (!el) return;
-    el.addEventListener("click", () => {
-      ["All", ...sides].forEach((s) => document.getElementById(`hover-buttonBorder${s}`)?.classList.remove("sc-bg-454545"));
-      el.classList.add("sc-bg-454545");
-
-      const key = getKey();
-      let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
-      state.side = side;
-      currentSide = side;
-      window.__squareCraftHoverBorderStateMap.set(key, state);
-      applyStyle();
+  export function initHoverButtonBorderControl(getSelectedElement) {
+    const fill = document.getElementById("hover-buttonBorderFill");
+    const bullet = document.getElementById("hover-buttonBorderBullet");
+    const field = document.getElementById("hover-buttonBorderField");
+    const valueText = document.getElementById("hover-buttonBorderCount");
+  
+    if (!fill || !bullet || !field || !valueText) return;
+  
+    if (!window.__squareCraftHoverBorderStateMap) window.__squareCraftHoverBorderStateMap = new Map();
+    const sides = ["Top", "Right", "Bottom", "Left"];
+  
+    ["All", ...sides].forEach((side) => {
+      const id = `hover-buttonBorder${side}`;
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("click", () => {
+        ["All", ...sides].forEach((other) => {
+          const otherEl = document.getElementById(`hover-buttonBorder${other}`);
+          if (otherEl) otherEl.classList.remove("sc-bg-454545");
+        });
+        el.classList.add("sc-bg-454545");
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const btn = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+        let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+        state.side = side;
+        window.__squareCraftHoverBorderStateMap.set(key, state);
+  
+        applyHoverBorder();
+      });
     });
-  });
+  
+    function applyHoverBorder() {
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
+  
+      const btn = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+  
+      const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      const state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+      const value = `${state.value}px`;
+  
+      const top = state.side === "Top" || state.side === "All" ? value : "0px";
+      const right = state.side === "Right" || state.side === "All" ? value : "0px";
+      const bottom = state.side === "Bottom" || state.side === "All" ? value : "0px";
+      const left = state.side === "Left" || state.side === "All" ? value : "0px";
+  
+      const styleId = `hover-button-border-${blockId}-${typeClass}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+  
+      const rules = `a.${typeClass}:hover {
+    border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+    border-color: ${window.__squareCraftHoverBorderColor || "black"} !important;
+    border-radius: ${window.__squareCraftHoverRadius || 0}px !important;
+    border-top-width: ${top} !important;
+    border-right-width: ${right} !important;
+    border-bottom-width: ${bottom} !important;
+    border-left-width: ${left} !important;
+  }`;
+  
+      styleTag.innerHTML = rules;
+      console.log("🟣 Applied Hover Border CSS:", rules);
+    }
+  
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const move = (eMove) => updateUI(eMove.clientX);
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
+  
+    function updateUI(clientX) {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      const value = Math.round((x / rect.width) * 10);
+  
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      valueText.textContent = `${value}px`;
+  
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
+      const btn = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+  
+      const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+      if (!typeClass) return;
+  
+      const blockId = selectedElement.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      let state = window.__squareCraftHoverBorderStateMap.get(key) || { value: 0, side: "All" };
+      state.value = value;
+      window.__squareCraftHoverBorderStateMap.set(key, state);
+  
+      applyHoverBorder();
+    }
+  
+    const resetBtn = document.querySelector('#hover-buttonBorderCount')?.closest('.sc-flex')?.querySelector('img[alt="reset"]');
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        bullet.style.left = "0%";
+        fill.style.width = "0%";
+        valueText.textContent = "0px";
+  
+        const selectedElement = getSelectedElement?.();
+        if (!selectedElement) return;
+        const btn = selectedElement.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+  
+        const typeClass = [...btn.classList].find((cls) => cls.startsWith("sqs-button-element--"));
+        if (!typeClass) return;
+  
+        const blockId = selectedElement.id || "block-id";
+        const key = `${blockId}--${typeClass}`;
+  
+        window.__squareCraftHoverBorderStateMap.set(key, { value: 0, side: "All" });
+        applyHoverBorder();
+      });
+    }
+  }
+  
+  
+  
 
-  update(value);
-}
-
-
-
-
-export function applyHoverButtonEffects(getSelectedElement) {
+  export function applyHoverButtonEffects(getSelectedElement) {
     const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
     const duration = document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() || "0";
     const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
@@ -783,8 +824,9 @@ export function applyHoverButtonEffects(getSelectedElement) {
     applyHoverStyles();
   }  
   
-
-window.syncHoverButtonStylesFromElement = function (selectedElement) {
+  
+  
+  window.syncHoverButtonStylesFromElement = function (selectedElement) {
     if (!selectedElement) return;
   
     const sample = selectedElement.querySelector(
@@ -862,3 +904,7 @@ window.syncHoverButtonStylesFromElement = function (selectedElement) {
     // - hover spacing
     // - transform type and distance if needed
   };
+  
+  
+  
+  
