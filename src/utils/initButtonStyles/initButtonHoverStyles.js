@@ -435,28 +435,31 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   function apply() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!selected) return;
+
+    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
     const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!typeClass) return;
 
-    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    const blockId = selected.id || "block-id";
+    const styleId = `hover-radius-${blockId}-${typeClass.replace(/--/g, "-")}`;
+
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
 
-    styleTag.innerHTML = `
+    style.innerHTML = `
       a.${typeClass}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
       }
       a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner,
-      a.${typeClass}:hover .sqsrte-button-inner {
+      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
         border-radius: ${value}px !important;
       }
     `;
@@ -500,7 +503,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   update(value);
 }
-
 
 
 
