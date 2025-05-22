@@ -467,7 +467,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
     const selected = getSelectedElement?.();
     if (!selected) return;
-
     const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
@@ -499,20 +498,13 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     update(Math.round((x / rect.width) * max));
   });
 
-  incBtn?.addEventListener("click", () => {
-    const newValue = Math.min(value + 1, max);
-    update(newValue);
-  });
-
-  decBtn?.addEventListener("click", () => {
-    const newValue = Math.max(value - 1, 0);
-    update(newValue);
-  });
-
+  incBtn?.addEventListener("click", () => update(value + 1));
+  decBtn?.addEventListener("click", () => update(value - 1));
   resetBtn?.addEventListener("click", () => update(0));
 
   update(value);
 }
+
 
 
 
