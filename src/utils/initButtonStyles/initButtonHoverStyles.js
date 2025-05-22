@@ -1,59 +1,42 @@
-const hoverShadowState = {
-    Xaxis: 0,
-    Yaxis: 0,
-    Blur: 0,
-    Spread: 0
-  };
+
   
+const hoverShadowState = {
+  Xaxis: 0,
+  Yaxis: 0,
+  Blur: 0,
+  Spread: 0
+};
+
 export function initHoverButtonShadowControls(getSelectedElement) {
   function applyHoverShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
 
-    const typeSelectors = [
-      "a.sqs-button-element--primary",
-      "a.sqs-button-element--secondary",
-      "a.sqs-button-element--tertiary"
-    ];
+    const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
 
-    let selectedButton;
-    for (const selector of typeSelectors) {
-      const btn = el.querySelector(selector);
-      if (btn) {
-        selectedButton = btn;
-        break;
-      }
+    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!cls) return;
+
+    const id = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(id);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = id;
+      document.head.appendChild(style);
     }
 
-    if (!selectedButton) return;
-
-    const buttonType = [...selectedButton.classList].find(cls =>
-      cls.startsWith("sqs-button-element--")
-    );
-    if (!buttonType) return;
-
-    const styleId = `sc-hover-shadow-${buttonType.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-
-    const shadowValue = `${hoverShadowState.Xaxis}px ${hoverShadowState.Yaxis}px ${hoverShadowState.Blur}px ${hoverShadowState.Spread}px rgba(0,0,0,0.3)`;
-    styleTag.innerHTML = `
-      a.${buttonType}:hover {
-        box-shadow: ${shadowValue} !important;
-      }
-    `;
+    const value = `${hoverShadowState.Xaxis}px ${hoverShadowState.Yaxis}px ${hoverShadowState.Blur}px ${hoverShadowState.Spread}px rgba(0,0,0,0.3)`;
+    style.innerHTML = `a.${cls}:hover { box-shadow: ${value} !important; }`;
   }
 
-  function setupHoverShadowControl(type, max = 50) {
+  function setupControl(type, max = 50, min = 0) {
+    if (type === "Xaxis" || type === "Yaxis") min = -max;
     const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
     const field = document.getElementById(`hover-buttonShadow${type}Field`);
     const label = document.getElementById(`hover-buttonShadow${type}Count`);
-    const incBtn = document.getElementById(`hover-ButtonShadow${type}Increase`);
-    const decBtn = document.getElementById(`hover-ButtonShadow${type}Decrease`);
+    const inc = document.getElementById(`hover-ButtonShadow${type}Increase`);
+    const dec = document.getElementById(`hover-ButtonShadow${type}Decrease`);
 
     if (!bullet || !field || !label) return;
 
@@ -72,24 +55,24 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     }
 
     function update(val) {
-      hoverShadowState[type] = Math.max(0, Math.min(max, val));
-      const percent = (hoverShadowState[type] / max) * 100;
+      const v = Math.max(min, Math.min(max, val));
+      hoverShadowState[type] = v;
+      const percent = ((v - min) / (max - min)) * 100;
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
-      label.textContent = `${hoverShadowState[type]}px`;
+      label.textContent = `${v}px`;
       applyHoverShadow();
-    }
-
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const value = Math.round((x / rect.width) * max);
-      update(value);
     }
 
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
-      const move = (eMove) => updateUI(eMove.clientX);
+      const rect = field.getBoundingClientRect();
+      const move = (eMove) => {
+        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+        const percent = x / rect.width;
+        const value = Math.round(min + percent * (max - min));
+        update(value);
+      };
       const up = () => {
         document.removeEventListener("mousemove", move);
         document.removeEventListener("mouseup", up);
@@ -98,17 +81,25 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       document.addEventListener("mouseup", up);
     });
 
-    field.addEventListener("click", (e) => updateUI(e.clientX));
-    incBtn?.addEventListener("click", () => update(hoverShadowState[type] + 1));
-    decBtn?.addEventListener("click", () => update(hoverShadowState[type] - 1));
-    update(hoverShadowState[type] || 0);
+    field.addEventListener("click", (e) => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+      const percent = x / rect.width;
+      const value = Math.round(min + percent * (max - min));
+      update(value);
+    });
+
+    inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
+    dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
+    update(hoverShadowState[type]);
   }
 
-  setupHoverShadowControl("Xaxis", 30);
-  setupHoverShadowControl("Yaxis", 30);
-  setupHoverShadowControl("Blur", 50);
-  setupHoverShadowControl("Spread", 30);
+  setupControl("Xaxis", 30);
+  setupControl("Yaxis", 30);
+  setupControl("Blur", 50, 0);
+  setupControl("Spread", 30, 0);
 }
+
 
 
 
