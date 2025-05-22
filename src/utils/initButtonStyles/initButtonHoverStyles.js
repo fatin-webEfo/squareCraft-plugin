@@ -7,120 +7,108 @@ const hoverShadowState = {
   Spread: 0
 };
 
-
-
 export function initHoverButtonShadowControls(getSelectedElement) {
+  function applyHoverShadow() {
+    const el = getSelectedElement?.();
+    if (!el) return;
+    const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!cls) return;
 
-function applyHoverShadow() {
-  const el = getSelectedElement?.();
-  if (!el) return;
+    const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
+    }
 
-  const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-  if (!btn) return;
-
-  const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-  if (!cls) return;
-
-  const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
-  let style = document.getElementById(styleId);
-  if (!style) {
-    style = document.createElement("style");
-    style.id = styleId;
-    document.head.appendChild(style);
+    const v = hoverShadowState;
+    const boxShadowValue = `${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
+    style.innerHTML = `a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`;
+    console.log(`✅ Hover Shadow Applied: ${boxShadowValue}`);
   }
 
-  const v = hoverShadowState;
-  const boxShadowValue = `${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
-  style.innerHTML = `a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`;
+  function setup(type, range = 50) {
+    const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
+    const field = document.getElementById(`hover-buttonShadow${type}Field`);
+    const label = document.getElementById(`hover-buttonShadow${type}Count`);
+    const incBtn = document.getElementById(`hover-ButtonShadow${type}Increase`);
+    const decBtn = document.getElementById(`hover-ButtonShadow${type}Decrease`);
 
-  console.log(`🟧 Hover Shadow Applied → a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`);
-}
+    if (!bullet || !field || !label) return;
 
+    const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
+    const max = range;
 
-function setup(type, range = 50) {
-  const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
-  const field = document.getElementById(`hover-buttonShadow${type}Field`);
-  const label = document.getElementById(`hover-buttonShadow${type}Count`);
-  const idPrefix = type.replace("axis", "");
-  const inc = document.getElementById(`hover-ButtonShadow${idPrefix}Increase`);
-  const dec = document.getElementById(`hover-ButtonShadow${idPrefix}Decrease`);
+    let fill = field.querySelector(".sc-shadow-fill");
+    if (!fill) {
+      fill = document.createElement("div");
+      fill.className = "sc-shadow-fill";
+      fill.style.position = "absolute";
+      fill.style.top = "0";
+      fill.style.left = "0";
+      fill.style.height = "100%";
+      fill.style.width = "0%";
+      fill.style.backgroundColor = "#EF7C2F";
+      field.insertBefore(fill, bullet);
+    }
 
-  if (!bullet || !field || !label) return;
+    function update(val) {
+      const clamped = Math.max(min, Math.min(max, val));
+      hoverShadowState[type] = clamped;
+      const percent = ((clamped - min) / (max - min)) * 100;
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+      label.textContent = `${clamped}px`;
+      applyHoverShadow();
+    }
 
-  const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
-  const max = range;
+    incBtn?.addEventListener("click", () => {
+      const current = hoverShadowState[type] || 0;
+      update(current + 1);
+    });
 
-  let fill = field.querySelector(".sc-shadow-fill");
-  if (!fill) {
-    fill = document.createElement("div");
-    fill.className = "sc-shadow-fill";
-    fill.style.position = "absolute";
-    fill.style.top = "0";
-    fill.style.left = "0";
-    fill.style.height = "100%";
-    fill.style.width = "0%";
-    fill.style.backgroundColor = "#EF7C2F";
-    field.insertBefore(fill, bullet);
-  }
+    decBtn?.addEventListener("click", () => {
+      const current = hoverShadowState[type] || 0;
+      update(current - 1);
+    });
 
-  function update(val) {
-    const clamped = Math.max(min, Math.min(max, val));
-    hoverShadowState[type] = clamped;
-    const percent = ((clamped - min) / (max - min)) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    label.textContent = `${clamped}px`;
-    applyHoverShadow();
-  }
+    bullet.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      const rect = field.getBoundingClientRect();
+      const move = (eMove) => {
+        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+        const percent = x / rect.width;
+        const val = Math.round(min + percent * (max - min));
+        update(val);
+      };
+      const up = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", up);
+      };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", up);
+    });
 
-  // ☑️ Fix dragging only for bullet
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const rect = field.getBoundingClientRect();
-    const move = (eMove) => {
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+    field.addEventListener("click", (e) => {
+      const rect = field.getBoundingClientRect();
+      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
       const percent = x / rect.width;
       const val = Math.round(min + percent * (max - min));
       update(val);
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
+    });
 
-  // ☑️ Handle field click properly
-  field.addEventListener("click", (e) => {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    const percent = x / rect.width;
-    const val = Math.round(min + percent * (max - min));
-    update(val);
-  });
-
-  // ✅ These now increment/decrement correctly
-  inc?.addEventListener("click", (e) => {
-    e.preventDefault();
-    update(hoverShadowState[type] + 1);
-  });
-
-  dec?.addEventListener("click", (e) => {
-    e.preventDefault();
-    update(hoverShadowState[type] - 1);
-  });
-
-  update(hoverShadowState[type] ?? 0);
-}
-
-
+    update(hoverShadowState[type] ?? 0);
+  }
 
   setup("Xaxis", 30);
   setup("Yaxis", 30);
   setup("Blur", 50);
   setup("Spread", 30);
 }
+
 
 
 
