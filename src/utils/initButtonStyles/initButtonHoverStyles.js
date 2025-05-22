@@ -102,9 +102,8 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     update(value);
   }
 
-  // ✅ DOM key updated to match actual IDs in HTML
-  setup("X", "X", 30);
-  setup("Y", "Y", 30);
+   setup("X", "Xaxis", 30);
+  setup("Y", "Yaxis", 30);
   setup("Blur", "Blur", 50);
   setup("Spread", "Spread", 30);
 }
