@@ -420,6 +420,8 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 }
 
 
+
+
 export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   if (hoverRadiusInitialized) return;
   hoverRadiusInitialized = true;
@@ -432,30 +434,21 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   const decBtn = document.getElementById("hover-ButtonBorderRadiousDecrease");
   const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  if (!field || !bullet || !fill || !valueText || !incBtn || !decBtn || !resetBtn) return;
+  if (!field || !bullet || !fill || !valueText) return;
 
   let value = 0;
   const max = 50;
 
-  function applyStyle() {
-    const selected = getSelectedElement?.();
-    if (!selected) return;
-
-    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-
+  function applyRadiusToAllSameTypeButtons(typeClass) {
     const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = styleId;
-      document.head.appendChild(style);
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
     }
 
-    style.innerHTML = `
+    styleTag.innerHTML = `
       a.${typeClass}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
@@ -465,8 +458,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
         border-radius: ${value}px !important;
       }
     `;
-
-    window.__squareCraftHoverRadius = value;
   }
 
   function update(val) {
@@ -475,7 +466,19 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${value}px`;
-    applyStyle();
+
+    const selected = getSelectedElement?.();
+    if (!selected) return;
+
+    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    window.__squareCraftHoverRadius = value;
+
+    applyRadiusToAllSameTypeButtons(typeClass);
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -499,13 +502,12 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     update(Math.round((x / rect.width) * max));
   });
 
-  incBtn.addEventListener("click", () => update(value + 1));
-  decBtn.addEventListener("click", () => update(value - 1));
-  resetBtn.addEventListener("click", () => update(0));
+  incBtn?.addEventListener("click", () => update(value + 1));
+  decBtn?.addEventListener("click", () => update(value - 1));
+  resetBtn?.addEventListener("click", () => update(0));
 
   update(value);
 }
-
 
 
 
