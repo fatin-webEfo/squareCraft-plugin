@@ -423,23 +423,20 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   const field = document.getElementById("hover-buttonBorderRadiousField");
   const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
   const fill = document.getElementById("hover-buttonBorderRadiousFill");
-  const label = document.getElementById("hover-buttonBorderRadiousCount");
+  const valueText = document.getElementById("hover-buttonBorderRadiousCount");
   const incBtn = document.getElementById("hover-ButtonBorderRadiousIncrease");
   const decBtn = document.getElementById("hover-ButtonBorderRadiousDecrease");
   const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  if (!field || !bullet || !fill || !label) return;
+  if (!field || !bullet || !fill || !valueText) return;
 
   let value = 0;
 
-  function applyStyle() {
-    const selected = getSelectedElement?.();
-    if (!selected) return;
-    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!cls) return;
+  function apply() {
+    const el = getSelectedElement?.();
+    const btn = el?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const cls = btn ? [...btn.classList].find(c => c.startsWith("sqs-button-element--")) : null;
+    if (!btn || !cls) return;
 
     const id = `sc-hover-radius-${cls.replace(/--/g, "-")}`;
     let style = document.getElementById(id);
@@ -463,13 +460,13 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     window.__squareCraftHoverRadius = value;
   }
 
-  function update(newVal) {
-    value = Math.max(0, Math.min(50, newVal));
+  function update(val) {
+    value = Math.max(0, Math.min(50, val));
     const percent = (value / 50) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
-    label.textContent = `${value}px`;
-    applyStyle();
+    valueText.textContent = `${value}px`;
+    apply();
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -499,7 +496,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   update(value);
 }
-
 
 
 
