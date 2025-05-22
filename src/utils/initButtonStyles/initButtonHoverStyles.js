@@ -430,6 +430,8 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   if (!field || !bullet || !fill || !valueText) return;
 
+  if (!window.__squareCraftHoverRadiusMap) window.__squareCraftHoverRadiusMap = new Map();
+
   let value = 0;
   const max = 50;
 
@@ -461,6 +463,7 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     `;
 
     window.__squareCraftHoverRadius = value;
+    window.__squareCraftHoverRadiusMap.set(typeClass, value);
   }
 
   function update(val) {
