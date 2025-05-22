@@ -37,7 +37,7 @@ function applyHoverShadow() {
 }
 
 
-  function setup(type, range = 50) {
+function setup(type, range = 50) {
   const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
   const field = document.getElementById(`hover-buttonShadow${type}Field`);
   const label = document.getElementById(`hover-buttonShadow${type}Count`);
@@ -73,10 +73,7 @@ function applyHoverShadow() {
     applyHoverShadow();
   }
 
-  inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
-  dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
-  update(hoverShadowState[type] ?? 0);
-
+  // ☑️ Fix dragging only for bullet
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
     const rect = field.getBoundingClientRect();
@@ -94,6 +91,7 @@ function applyHoverShadow() {
     document.addEventListener("mouseup", up);
   });
 
+  // ☑️ Handle field click properly
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
@@ -101,7 +99,21 @@ function applyHoverShadow() {
     const val = Math.round(min + percent * (max - min));
     update(val);
   });
+
+  // ✅ These now increment/decrement correctly
+  inc?.addEventListener("click", (e) => {
+    e.preventDefault();
+    update(hoverShadowState[type] + 1);
+  });
+
+  dec?.addEventListener("click", (e) => {
+    e.preventDefault();
+    update(hoverShadowState[type] - 1);
+  });
+
+  update(hoverShadowState[type] ?? 0);
 }
+
 
 
   setup("Xaxis", 30);
