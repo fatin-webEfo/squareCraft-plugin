@@ -413,6 +413,7 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
   }, 50);
 }
 
+
 let hoverRadiusInitialized = false;
 
 export function initHoverButtonBorderRadiusControl(getSelectedElement) {
@@ -436,10 +437,12 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     const selected = getSelectedElement?.();
     if (!selected) return;
 
-    const buttons = selected.querySelectorAll("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!buttons.length) return;
+    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
 
-    const typeClass = [...buttons[0].classList].find(c => c.startsWith("sqs-button-element--"));
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
     const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
     let style = document.getElementById(styleId);
     if (!style) {
