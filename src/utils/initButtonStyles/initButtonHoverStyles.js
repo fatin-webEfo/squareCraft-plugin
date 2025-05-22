@@ -430,8 +430,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   if (!field || !bullet || !fill || !valueText) return;
 
-  if (!window.__squareCraftHoverRadiusMap) window.__squareCraftHoverRadiusMap = new Map();
-
   let value = 0;
   const max = 50;
 
@@ -441,29 +439,28 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     if (!btn) return;
 
     const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
+    const blockId = selected.id || "block-id";
+    const styleId = `hover-radius-${blockId}-${typeClass.replace(/--/g, "-")}`;
 
-    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
 
-    styleTag.innerHTML = `
-      a.${typeClass}:hover {
+    style.innerHTML = `
+      #${blockId} a.${typeClass}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
       }
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+      #${blockId} a.${typeClass}:hover span,
+      #${blockId} a.${typeClass}:hover .sqs-add-to-cart-button-inner {
         border-radius: ${value}px !important;
       }
     `;
 
     window.__squareCraftHoverRadius = value;
-    window.__squareCraftHoverRadiusMap.set(typeClass, value);
   }
 
   function update(val) {
