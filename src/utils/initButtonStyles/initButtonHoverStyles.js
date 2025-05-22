@@ -414,93 +414,92 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 }
 
 
+let hoverRadiusInitialized = false;
+
 export function initHoverButtonBorderRadiusControl(getSelectedElement) {
-  const fillField = document.getElementById("hover-buttonBorderRadiousField");
+  if (hoverRadiusInitialized) return;
+  hoverRadiusInitialized = true;
+
+  const field = document.getElementById("hover-buttonBorderRadiousField");
   const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
   const fill = document.getElementById("hover-buttonBorderRadiousFill");
   const valueText = document.getElementById("hover-buttonBorderRadiousCount");
   const incBtn = document.getElementById("hover-ButtonBorderRadiousIncrease");
   const decBtn = document.getElementById("hover-ButtonBorderRadiousDecrease");
-  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
+  const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  if (!fillField || !bullet || !fill || !valueText) return;
+  if (!field || !bullet || !fill || !valueText) return;
 
-  bullet.style.transition = "left 0.15s ease";
-  fill.style.transition = "width 0.15s ease";
-
-  let radiusValue = 0;
+  let value = 0;
   const max = 50;
 
-  function getButtonTypeClass(sample) {
-    if (sample.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (sample.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
-    return "sqs-button-element--primary";
-  }
+  function apply() {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
 
-  function applyBorderRadius() {
-    const selectedElement = typeof getSelectedElement === "function" ? getSelectedElement() : null;
-    if (!selectedElement) return;
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    const blockId = selected.id || "block-id";
+    const styleId = `hover-radius-${blockId}-${typeClass.replace(/--/g, "-")}`;
 
-    const sampleButton = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
-    if (!sampleButton) return;
-
-    const typeClass = getButtonTypeClass(sampleButton);
-    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
 
-    styleTag.innerHTML = `
-      a.${typeClass}:hover {
-        border-radius: ${radiusValue}px !important;
+    style.innerHTML = `
+      #${blockId} a.${typeClass}:hover {
+        border-radius: ${value}px !important;
         overflow: hidden !important;
       }
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
-        border-radius: ${radiusValue}px !important;
+      #${blockId} a.${typeClass}:hover span,
+      #${blockId} a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+        border-radius: ${value}px !important;
       }
     `;
 
-    window.__squareCraftHoverRadius = radiusValue;
+    window.__squareCraftHoverRadius = value;
   }
 
   function update(val) {
-    radiusValue = Math.max(0, Math.min(max, val));
-    const percent = (radiusValue / max) * 100;
+    value = Math.max(0, Math.min(max, val));
+    const percent = (value / max) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
-    valueText.textContent = `${radiusValue}px`;
-    applyBorderRadius();
+    valueText.textContent = `${value}px`;
+    apply();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const onMouseMove = (eMove) => update(eMove.clientX - fillField.getBoundingClientRect().left);
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+    const rect = field.getBoundingClientRect();
+    const move = (eMove) => {
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      update(Math.round((x / rect.width) * max));
     };
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
   });
 
-  fillField.addEventListener("click", (e) => {
-    const rect = fillField.getBoundingClientRect();
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     update(Math.round((x / rect.width) * max));
   });
 
-  incBtn?.addEventListener("click", () => update(radiusValue + 1));
-  decBtn?.addEventListener("click", () => update(radiusValue - 1));
+  incBtn?.addEventListener("click", () => update(value + 1));
+  decBtn?.addEventListener("click", () => update(value - 1));
   resetBtn?.addEventListener("click", () => update(0));
 
-  update(radiusValue);
+  update(value);
 }
+
 
 
 
