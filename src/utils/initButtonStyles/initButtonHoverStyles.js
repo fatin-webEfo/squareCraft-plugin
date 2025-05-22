@@ -7,32 +7,30 @@ const hoverShadowState = {
   Spread: 0
 };
 
+
+
 export function initHoverButtonShadowControls(getSelectedElement) {
   function applyHoverShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
-
     const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
-
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!cls) return;
 
-    const id = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
-    let style = document.getElementById(id);
+    const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(styleId);
     if (!style) {
       style = document.createElement("style");
-      style.id = id;
+      style.id = styleId;
       document.head.appendChild(style);
     }
 
-    const value = `${hoverShadowState.Xaxis}px ${hoverShadowState.Yaxis}px ${hoverShadowState.Blur}px ${hoverShadowState.Spread}px rgba(0,0,0,0.3)`;
-    style.innerHTML = `a.${cls}:hover { box-shadow: ${value} !important; }`;
+    const v = hoverShadowState;
+    style.innerHTML = `a.${cls}:hover { box-shadow: ${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3) !important; }`;
   }
 
-  function setupControl(type, max = 50, min = 0) {
-    if (type === "Xaxis" || type === "Yaxis") min = -max;
-
+  function setup(type, range = 50) {
     const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
     const field = document.getElementById(`hover-buttonShadow${type}Field`);
     const label = document.getElementById(`hover-buttonShadow${type}Count`);
@@ -40,6 +38,9 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     const dec = document.getElementById(`hover-ButtonShadow${type}Decrease`);
 
     if (!bullet || !field || !label) return;
+
+    const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
+    const max = range;
 
     let fill = field.querySelector(".sc-shadow-fill");
     if (!fill) {
@@ -51,7 +52,6 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       fill.style.height = "100%";
       fill.style.width = "0%";
       fill.style.backgroundColor = "#EF7C2F";
-      fill.style.zIndex = "0";
       field.insertBefore(fill, bullet);
     }
 
@@ -92,15 +92,15 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 
     inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
     dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
-
     update(hoverShadowState[type] ?? 0);
   }
 
-  setupControl("Xaxis", 30);
-  setupControl("Yaxis", 30);
-  setupControl("Blur", 50, 0);
-  setupControl("Spread", 30, 0);
+  setup("Xaxis", 30);
+  setup("Yaxis", 30);
+  setup("Blur", 50);
+  setup("Spread", 30);
 }
+
 
 
 

@@ -478,7 +478,6 @@ export function initButtonIconSizeControl(getSelectedElement) {
       });
     });
 
-    console.log(`✅ Icon size applied: ${currentSize}px`);
   }
 
   function updateFromSizeValue(value) {
@@ -542,7 +541,6 @@ export function initButtonIconSizeControl(getSelectedElement) {
   }
 
   setTimeout(syncFromIcon, 50);
-  console.log("🎯 initButtonIconSizeControl fully initialized");
 }
 
 
