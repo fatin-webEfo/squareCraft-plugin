@@ -433,17 +433,15 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   let value = 0;
   const max = 50;
 
-  function applyRadiusToSameTypeButtons() {
+  function apply() {
     const selected = getSelectedElement?.();
-    if (!selected) return;
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
 
-    const sample = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!sample) return;
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    const blockId = selected.id || "block-id";
+    const styleId = `hover-radius-${blockId}-${typeClass.replace(/--/g, "-")}`;
 
-    const typeClass = [...sample.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-
-    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
     let style = document.getElementById(styleId);
     if (!style) {
       style = document.createElement("style");
@@ -452,13 +450,12 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     }
 
     style.innerHTML = `
-      a.${typeClass}:hover {
+      #${blockId} a.${typeClass}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
       }
-
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+      #${blockId} a.${typeClass}:hover span,
+      #${blockId} a.${typeClass}:hover .sqs-add-to-cart-button-inner {
         border-radius: ${value}px !important;
       }
     `;
@@ -466,13 +463,13 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     window.__squareCraftHoverRadius = value;
   }
 
-  function update(newValue) {
-    value = Math.max(0, Math.min(max, newValue));
+  function update(val) {
+    value = Math.max(0, Math.min(max, val));
     const percent = (value / max) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${value}px`;
-    applyRadiusToSameTypeButtons();
+    apply();
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -502,8 +499,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   update(value);
 }
-
-
 
 
 
