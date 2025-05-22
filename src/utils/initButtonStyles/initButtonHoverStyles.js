@@ -46,8 +46,6 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     const min = (typeKey === "X" || typeKey === "Y") ? -range : 0;
     const max = range;
 
-    let value = hoverShadowState[typeKey] ?? 0;
-
     let fill = field.querySelector(".sc-shadow-fill");
     if (!fill) {
       fill = document.createElement("div");
@@ -62,7 +60,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     }
 
     function update(val) {
-      value = Math.max(min, Math.min(max, val));
+      const value = Math.max(min, Math.min(max, val));
       hoverShadowState[typeKey] = value;
       const percent = ((value - min) / (max - min)) * 100;
       bullet.style.left = `${percent}%`;
@@ -71,8 +69,8 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       applyHoverShadow();
     }
 
-    inc?.addEventListener("click", () => update(value + 1));
-    dec?.addEventListener("click", () => update(value - 1));
+    inc?.addEventListener("click", () => update(hoverShadowState[typeKey] + 1));
+    dec?.addEventListener("click", () => update(hoverShadowState[typeKey] - 1));
 
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -99,15 +97,16 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       update(val);
     });
 
-    update(value);
+    update(hoverShadowState[typeKey]);
   }
 
-  // ✅ DOM key updated to match actual IDs in HTML
+  // Make sure these match HTML
   setup("X", "X", 30);
   setup("Y", "Y", 30);
   setup("Blur", "Blur", 50);
   setup("Spread", "Spread", 30);
 }
+
 
 
 
