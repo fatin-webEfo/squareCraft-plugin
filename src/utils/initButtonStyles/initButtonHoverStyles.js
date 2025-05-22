@@ -4,13 +4,7 @@ const hoverShadowState = {
     Blur: 0,
     Spread: 0
   };
-let hoverRotationInitialized = false, 
-    hoverSizeInitialized = false, 
-    hoverSpacingInitialized = false, 
-    hoverRadiusInitialized = false, 
-    hoverBorderInitialized = false;
-
-
+  
 export function initHoverButtonShadowControls(getSelectedElement) {
     function applyHoverShadow() {
       const el = getSelectedElement?.();
@@ -110,7 +104,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   }
 
 
-
+let hoverRotationInitialized = false;
 
 export function initHoverButtonIconRotationControl(getSelectedElement) {
   if (hoverRotationInitialized) return;
@@ -225,7 +219,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 }
 
 
-
+let hoverSizeInitialized = false;
 
 export function initHoverButtonIconSizeControl(getSelectedElement) {
   if (hoverSizeInitialized) return;
@@ -322,7 +316,7 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 }
 
 
-
+let hoverSpacingInitialized = false;
 
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
   if (hoverSpacingInitialized) return;
@@ -420,73 +414,66 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 }
 
 
-
+let hoverRadiusInitialized = false;
 
 export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   if (hoverRadiusInitialized) return;
   hoverRadiusInitialized = true;
 
-  const field = document.getElementById("hover-buttonBorderRadiousField");
+  const fillField = document.getElementById("hover-buttonBorderRadiousField");
   const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
   const fill = document.getElementById("hover-buttonBorderRadiousFill");
   const valueText = document.getElementById("hover-buttonBorderRadiousCount");
-  const incBtn = document.getElementById("hover-ButtonBorderRadiousIncrease");
-  const decBtn = document.getElementById("hover-ButtonBorderRadiousDecrease");
-  const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
+  const incBtn = document.getElementById("hover-buttonBorderRadiousIncrease");
+  const decBtn = document.getElementById("hover-buttonBorderRadiousDecrease");
+  const resetBtn = fillField?.previousElementSibling?.querySelector("img[alt='reset']");
 
-  if (!field || !bullet || !fill || !valueText) return;
+  if (!fillField || !bullet || !fill || !valueText) return;
 
   let value = 0;
-  const max = 50;
 
-  function applyRadiusToAllSameTypeButtons(typeClass) {
-    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
+  function apply() {
+    const el = getSelectedElement?.();
+    if (!el) return;
+    const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+    const cls = btn.classList.contains("sqs-button-element--secondary") ? "sqs-button-element--secondary" :
+                btn.classList.contains("sqs-button-element--tertiary") ? "sqs-button-element--tertiary" :
+                "sqs-button-element--primary";
+    const id = `sc-hover-radius-${cls.replace(/--/g, "-")}`;
+    let style = document.getElementById(id);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = id;
+      document.head.appendChild(style);
     }
-
-    styleTag.innerHTML = `
-      a.${typeClass}:hover {
+    style.innerHTML = `
+      a.${cls}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
       }
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+      a.${cls}:hover span,
+      a.${cls}:hover .sqs-add-to-cart-button-inner {
         border-radius: ${value}px !important;
       }
     `;
   }
 
   function update(val) {
-    value = Math.max(0, Math.min(max, val));
-    const percent = (value / max) * 100;
+    value = Math.max(0, Math.min(50, val));
+    const percent = (value / 50) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${value}px`;
-
-    const selected = getSelectedElement?.();
-    if (!selected) return;
-
-    const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
-
-    window.__squareCraftHoverRadius = value;
-
-    applyRadiusToAllSameTypeButtons(typeClass);
+    apply();
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const rect = field.getBoundingClientRect();
     const move = (eMove) => {
+      const rect = fillField.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      update(Math.round((x / rect.width) * max));
+      update(Math.round((x / rect.width) * 50));
     };
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -496,19 +483,16 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", (e) => {
-    const rect = field.getBoundingClientRect();
+  fillField.addEventListener("click", (e) => {
+    const rect = fillField.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    update(Math.round((x / rect.width) * max));
+    update(Math.round((x / rect.width) * 50));
   });
 
   incBtn?.addEventListener("click", () => update(value + 1));
   decBtn?.addEventListener("click", () => update(value - 1));
   resetBtn?.addEventListener("click", () => update(0));
-
-  update(value);
 }
-
 
 
 export function initHoverButtonBorderTypeToggle(getSelectedElement) {
@@ -557,7 +541,7 @@ export function initHoverButtonBorderTypeToggle(getSelectedElement) {
   }
   
 
-
+let hoverBorderInitialized = false;
 
 export function initHoverButtonBorderControl(getSelectedElement) {
   if (hoverBorderInitialized) return;
