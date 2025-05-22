@@ -10,6 +10,7 @@ const hoverShadowState = {
 
 
 export function initHoverButtonShadowControls(getSelectedElement) {
+  
 function applyHoverShadow() {
   const el = getSelectedElement?.();
   if (!el) return;
