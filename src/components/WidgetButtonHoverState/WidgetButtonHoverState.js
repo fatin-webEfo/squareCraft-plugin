@@ -380,8 +380,8 @@ export function WidgetButtonHoverState() {
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                            <p id="hover-buttonBorderRadiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <span id="hover-ButtonBorderRadiousIncrease" class="sc-arrow-placeholder"></span>
-                              <span id="hover-ButtonBorderRadiousDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                              <span id="hover-buttonBorderRadiousIncrease" class="sc-arrow-placeholder"></span>
+                              <span id="hover-buttonBorderRadiousDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
