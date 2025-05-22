@@ -504,7 +504,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
 
 
-
 export function initHoverButtonBorderTypeToggle(getSelectedElement) {
     const typeButtons = [
       { id: "hover-buttonBorderTypeSolid", type: "solid" },
