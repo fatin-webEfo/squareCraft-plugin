@@ -666,117 +666,112 @@ export function initHoverButtonBorderControl(getSelectedElement) {
 
 
 export function applyHoverButtonEffects(getSelectedElement) {
-    const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
-    const duration = document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() || "0";
-    const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
-    const transformType = document.getElementById("hover-buttonTransformTypeLabel")?.textContent?.trim() || "none";
-  
-    const bullet = document.getElementById("hover-buttonIconTransformPositionBullet");
-    const fill = document.getElementById("hover-buttonIconTransformPositionFill");
-    const field = document.getElementById("hover-buttonIconTransformPositionField");
-    const label = document.getElementById("hover-buttoniconTransformPositionCount");
-  
-    if (!bullet || !fill || !field || !label) return;
-  
-    function updateUI(clientX) {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-      const percent = (x / rect.width) * 100;
-      const value = Math.round((x / rect.width) * 180 - 90);
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${value}px`;
-      window.__squareCraftTransformDistance = value;
-      applyHoverStyles();
+  const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
+  const duration = document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() || "0";
+  const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
+  const transformType = document.getElementById("hover-buttonTransformTypeLabel")?.textContent?.trim() || "none";
+
+  const bullet = document.getElementById("hover-buttonIconTransformPositionBullet");
+  const fill = document.getElementById("hover-buttonIconTransformPositionFill");
+  const field = document.getElementById("hover-buttonIconTransformPositionField");
+  const label = document.getElementById("hover-buttoniconTransformPositionCount");
+
+  const incBtn = document.getElementById("hover-buttonTransformPositionIncrease");
+  const decBtn = document.getElementById("hover-buttonTransformPositionDecrease");
+
+  if (!bullet || !fill || !field || !label) return;
+
+  const min = -90;
+  const max = 90;
+  let value = window.__squareCraftTransformDistance ?? 0;
+
+  function applyHoverStyles() {
+    const distance = value;
+    window.__squareCraftTransformDistance = distance;
+
+    const selected = getSelectedElement?.();
+    if (!selected) return;
+
+    const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!button) return;
+
+    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const transitionRule = `transition: all ${duration}ms ${transition} ${delay}ms !important;`;
+
+    const applyTransitionTo = (id) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = el.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+    };
+
+    applyTransitionTo(`sc-hover-style-size-${typeClass.replace(/--/g, '-')}`);
+    applyTransitionTo(`sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`);
+    applyTransitionTo(`sc-hover-radius-${typeClass.replace(/--/g, '-')}`);
+    applyTransitionTo(`hover-border-style-${typeClass.replace(/--/g, '-')}`);
+    applyTransitionTo(`sc-hover-shadow-${typeClass.replace(/--/g, '-')}`);
+    applyTransitionTo(`sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`);
+
+    let transformRule = "none";
+    if (transformType === "TranslateX") transformRule = `translateX(${distance}px)`;
+    else if (transformType === "TranslateY") transformRule = `translateY(${distance}px)`;
+    else if (transformType === "RotateX") transformRule = `rotateX(${distance}deg)`;
+    else if (transformType === "RotateY") transformRule = `rotateY(${distance}deg)`;
+    else if (transformType === "Scale") transformRule = `scale(${1 + distance / 100})`;
+
+    const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
     }
-  
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const move = (e) => updateUI(e.clientX);
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
-    });
-  
-    field.addEventListener("click", (e) => updateUI(e.clientX));
-  
-    function applyHoverStyles() {
-      const distance = window.__squareCraftTransformDistance ?? 0;
-      const selected = getSelectedElement?.();
-      if (!selected) return;
-  
-      const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!button) return;
-  
-      const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
-  
-      const transitionRule = `transition: all ${duration}ms ${transition} ${delay}ms !important;`;
-  
-      const iconStyleId = `sc-hover-style-size-${typeClass.replace(/--/g, '-')}`;
-      const iconStyleTag = document.getElementById(iconStyleId);
-      if (iconStyleTag) {
-        iconStyleTag.innerHTML = iconStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
+
+    styleTag.innerHTML = `
+      a.${typeClass}:hover {
+        ${transitionRule}
+        transform: ${transformRule} !important;
       }
-  
-      const iconSpacingStyleId = `sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`;
-      const iconSpacingStyleTag = document.getElementById(iconSpacingStyleId);
-      if (iconSpacingStyleTag) {
-        iconSpacingStyleTag.innerHTML = iconSpacingStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-      }
-  
-      const radiusStyleId = `sc-hover-radius-${typeClass.replace(/--/g, '-')}`;
-      const radiusStyleTag = document.getElementById(radiusStyleId);
-      if (radiusStyleTag) {
-        radiusStyleTag.innerHTML = radiusStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-      }
-  
-      const borderStyleId = `hover-border-style-${typeClass.replace(/--/g, '-')}`;
-      const borderStyleTag = document.getElementById(borderStyleId);
-      if (borderStyleTag) {
-        borderStyleTag.innerHTML = borderStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-      }
-  
-      const shadowStyleId = `sc-hover-shadow-${typeClass.replace(/--/g, '-')}`;
-      const shadowStyleTag = document.getElementById(shadowStyleId);
-      if (shadowStyleTag) {
-        shadowStyleTag.innerHTML = shadowStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-      }
-  
-      const iconRotateStyleId = `sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`;
-      const iconRotateStyleTag = document.getElementById(iconRotateStyleId);
-      if (iconRotateStyleTag) {
-        iconRotateStyleTag.innerHTML = iconRotateStyleTag.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-      }
-  
-      const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-  
-      let transformRule = "none";
-      if (transformType === "TranslateX") transformRule = `translateX(${distance}px)`;
-      else if (transformType === "TranslateY") transformRule = `translateY(${distance}px)`;
-      else if (transformType === "RotateX") transformRule = `rotateX(${distance}deg)`;
-      else if (transformType === "RotateY") transformRule = `rotateY(${distance}deg)`;
-      else if (transformType === "Scale") transformRule = `scale(${1 + distance / 100})`;
-  
-      styleTag.innerHTML = `
-        a.${typeClass}:hover {
-          ${transitionRule}
-          transform: ${transformRule} !important;
-        }
-      `;
-    }
-  
+    `;
+  }
+
+  function update(newVal) {
+    value = Math.max(min, Math.min(max, newVal));
+    const percent = ((value - min) / (max - min)) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${value}px`;
     applyHoverStyles();
-  }  
+  }
+
+  function updateFromClientX(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const val = Math.round(min + (x / rect.width) * (max - min));
+    update(val);
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (eMove) => updateFromClientX(eMove.clientX);
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+  field.addEventListener("click", (e) => updateFromClientX(e.clientX));
+
+  incBtn?.addEventListener("click", () => update(value + 1));
+  decBtn?.addEventListener("click", () => update(value - 1));
+
+  setTimeout(() => {
+    update(window.__squareCraftTransformDistance || 0);
+  }, 50);
+}
+ 
   
 
 window.syncHoverButtonStylesFromElement = function (selectedElement) {
