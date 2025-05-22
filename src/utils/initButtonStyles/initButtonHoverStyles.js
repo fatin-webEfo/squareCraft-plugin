@@ -100,10 +100,11 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     update(value);
   }
 
-  setup("X", "Xaxis", 30);
-  setup("Y", "Yaxis", 30);
-  setup("Blur", "Blur", 50);
-  setup("Spread", "Spread", 30);
+  setup("Xaxis", "Xaxis", 30);
+setup("Yaxis", "Yaxis", 30);
+setup("Blur", "Blur", 50);
+setup("Spread", "Spread", 30);
+
 }
 
 
