@@ -439,23 +439,23 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     if (!btn) return;
 
     const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const styleId = `hover-radius-${blockId}-${typeClass.replace(/--/g, "-")}`;
+    if (!typeClass) return;
 
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = styleId;
-      document.head.appendChild(style);
+    const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
     }
 
-    style.innerHTML = `
-      #${blockId} a.${typeClass}:hover {
+    styleTag.innerHTML = `
+      a.${typeClass}:hover {
         border-radius: ${value}px !important;
         overflow: hidden !important;
       }
-      #${blockId} a.${typeClass}:hover span,
-      #${blockId} a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+      a.${typeClass}:hover span,
+      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
         border-radius: ${value}px !important;
       }
     `;
@@ -499,6 +499,7 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
   update(value);
 }
+
 
 
 
