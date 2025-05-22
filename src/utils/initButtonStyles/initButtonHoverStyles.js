@@ -4,12 +4,13 @@ const hoverShadowState = {
     Blur: 0,
     Spread: 0
   };
-let hoverRotationInitialized = false;
-let hoverSizeInitialized = false;
-let hoverSpacingInitialized = false;
-let hoverRadiusInitialized = false;
-let hoverBorderInitialized = false;
-  
+let hoverRotationInitialized = false, 
+    hoverSizeInitialized = false, 
+    hoverSpacingInitialized = false, 
+    hoverRadiusInitialized = false, 
+    hoverBorderInitialized = false;
+
+
 export function initHoverButtonShadowControls(getSelectedElement) {
     function applyHoverShadow() {
       const el = getSelectedElement?.();
@@ -425,6 +426,9 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   if (hoverRadiusInitialized) return;
   hoverRadiusInitialized = true;
 
+  let value = 0;
+  const max = 50;
+
   const field = document.getElementById("hover-buttonBorderRadiousField");
   const bullet = document.getElementById("hover-buttonBorderRadiousBullet");
   const fill = document.getElementById("hover-buttonBorderRadiousFill");
@@ -434,9 +438,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   const resetBtn = field?.previousElementSibling?.querySelector("img[alt='reset']");
 
   if (!field || !bullet || !fill || !valueText) return;
-
-  let value = 0;
-  const max = 50;
 
   function applyRadiusToAllSameTypeButtons(typeClass) {
     const styleId = `sc-hover-radius-${typeClass.replace(/--/g, "-")}`;
@@ -468,7 +469,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
 
     const selected = getSelectedElement?.();
     if (!selected) return;
-
     const btn = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
@@ -476,7 +476,6 @@ export function initHoverButtonBorderRadiusControl(getSelectedElement) {
     if (!typeClass) return;
 
     window.__squareCraftHoverRadius = value;
-
     applyRadiusToAllSameTypeButtons(typeClass);
   }
 
