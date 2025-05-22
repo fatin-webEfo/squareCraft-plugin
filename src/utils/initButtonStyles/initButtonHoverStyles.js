@@ -4,6 +4,11 @@ const hoverShadowState = {
     Blur: 0,
     Spread: 0
   };
+let hoverRotationInitialized = false;
+let hoverSizeInitialized = false;
+let hoverSpacingInitialized = false;
+let hoverRadiusInitialized = false;
+let hoverBorderInitialized = false;
   
 export function initHoverButtonShadowControls(getSelectedElement) {
     function applyHoverShadow() {
@@ -104,7 +109,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   }
 
 
-let hoverRotationInitialized = false;
+
 
 export function initHoverButtonIconRotationControl(getSelectedElement) {
   if (hoverRotationInitialized) return;
@@ -219,7 +224,7 @@ export function initHoverButtonIconRotationControl(getSelectedElement) {
 }
 
 
-let hoverSizeInitialized = false;
+
 
 export function initHoverButtonIconSizeControl(getSelectedElement) {
   if (hoverSizeInitialized) return;
@@ -316,7 +321,7 @@ export function initHoverButtonIconSizeControl(getSelectedElement) {
 }
 
 
-let hoverSpacingInitialized = false;
+
 
 export function initHoverButtonIconSpacingControl(getSelectedElement) {
   if (hoverSpacingInitialized) return;
@@ -414,7 +419,7 @@ export function initHoverButtonIconSpacingControl(getSelectedElement) {
 }
 
 
-let hoverRadiusInitialized = false;
+
 
 export function initHoverButtonBorderRadiusControl(getSelectedElement) {
   if (hoverRadiusInitialized) return;
@@ -551,7 +556,7 @@ export function initHoverButtonBorderTypeToggle(getSelectedElement) {
   }
   
 
-let hoverBorderInitialized = false;
+
 
 export function initHoverButtonBorderControl(getSelectedElement) {
   if (hoverBorderInitialized) return;
