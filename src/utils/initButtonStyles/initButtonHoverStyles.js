@@ -109,11 +109,6 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 }
 
 
-
-
-
-
-
 let hoverRotationInitialized = false;
 
 export function initHoverButtonIconRotationControl(getSelectedElement) {
