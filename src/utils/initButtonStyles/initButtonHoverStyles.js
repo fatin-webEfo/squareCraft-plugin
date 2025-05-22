@@ -10,25 +10,31 @@ const hoverShadowState = {
 
 
 export function initHoverButtonShadowControls(getSelectedElement) {
-  function applyHoverShadow() {
-    const el = getSelectedElement?.();
-    if (!el) return;
-    const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (!btn) return;
-    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!cls) return;
+function applyHoverShadow() {
+  const el = getSelectedElement?.();
+  if (!el) return;
 
-    const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = styleId;
-      document.head.appendChild(style);
-    }
+  const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+  if (!btn) return;
 
-    const v = hoverShadowState;
-    style.innerHTML = `a.${cls}:hover { box-shadow: ${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3) !important; }`;
+  const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+  if (!cls) return;
+
+  const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
+  let style = document.getElementById(styleId);
+  if (!style) {
+    style = document.createElement("style");
+    style.id = styleId;
+    document.head.appendChild(style);
   }
+
+  const v = hoverShadowState;
+  const boxShadowValue = `${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
+  style.innerHTML = `a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`;
+
+  console.log(`🟧 Hover Shadow Applied → a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`);
+}
+
 
   function setup(type, range = 50) {
     const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
