@@ -32,6 +32,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 
   function setupControl(type, max = 50, min = 0) {
     if (type === "Xaxis" || type === "Yaxis") min = -max;
+
     const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
     const field = document.getElementById(`hover-buttonShadow${type}Field`);
     const label = document.getElementById(`hover-buttonShadow${type}Count`);
@@ -55,12 +56,12 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     }
 
     function update(val) {
-      const v = Math.max(min, Math.min(max, val));
-      hoverShadowState[type] = v;
-      const percent = ((v - min) / (max - min)) * 100;
+      const clamped = Math.max(min, Math.min(max, val));
+      hoverShadowState[type] = clamped;
+      const percent = ((clamped - min) / (max - min)) * 100;
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
-      label.textContent = `${v}px`;
+      label.textContent = `${clamped}px`;
       applyHoverShadow();
     }
 
@@ -70,8 +71,8 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       const move = (eMove) => {
         const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
         const percent = x / rect.width;
-        const value = Math.round(min + percent * (max - min));
-        update(value);
+        const val = Math.round(min + percent * (max - min));
+        update(val);
       };
       const up = () => {
         document.removeEventListener("mousemove", move);
@@ -85,13 +86,14 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
       const percent = x / rect.width;
-      const value = Math.round(min + percent * (max - min));
-      update(value);
+      const val = Math.round(min + percent * (max - min));
+      update(val);
     });
 
     inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
     dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
-    update(hoverShadowState[type]);
+
+    update(hoverShadowState[type] ?? 0);
   }
 
   setupControl("Xaxis", 30);
@@ -99,6 +101,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   setupControl("Blur", 50, 0);
   setupControl("Spread", 30, 0);
 }
+
 
 
 
