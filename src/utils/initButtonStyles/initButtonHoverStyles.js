@@ -1,10 +1,9 @@
 
   
 
-
 const hoverShadowState = {
-  Xaxis: 0,
-  Yaxis: 0,
+  X: 0,
+  Y: 0,
   Blur: 0,
   Spread: 0
 };
@@ -13,10 +12,8 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   function applyHoverShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
-
     const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
-
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!cls) return;
 
@@ -29,22 +26,22 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     }
 
     const v = hoverShadowState;
-    const boxShadowValue = `${v.Xaxis}px ${v.Yaxis}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
+    const boxShadowValue = `${v.X}px ${v.Y}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
     style.innerHTML = `a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`;
 
-    console.log(`🟧 Hover Shadow Applied → a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`);
+    console.log(`🟧 Hover Shadow Applied → ${boxShadowValue}`);
   }
 
-  function setup(type, range = 50) {
-    const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
-    const field = document.getElementById(`hover-buttonShadow${type}Field`);
-    const label = document.getElementById(`hover-buttonShadow${type}Count`);
-    const inc = document.getElementById(`hover-ButtonShadow${type}Increase`);
-    const dec = document.getElementById(`hover-ButtonShadow${type}Decrease`);
+  function setup(type, idKey, range = 50) {
+    const bullet = document.getElementById(`hover-buttonShadow${idKey}Bullet`);
+    const field = document.getElementById(`hover-buttonShadow${idKey}Field`);
+    const label = document.getElementById(`hover-buttonShadow${idKey}Count`);
+    const inc = document.getElementById(`hover-ButtonShadow${idKey}Increase`);
+    const dec = document.getElementById(`hover-ButtonShadow${idKey}Decrease`);
 
     if (!bullet || !field || !label) return;
 
-    const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
+    const min = (type === "X" || type === "Y") ? -range : 0;
     const max = range;
 
     let value = hoverShadowState[type] ?? 0;
@@ -103,13 +100,11 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     update(value);
   }
 
-  setup("Xaxis", 30);
-  setup("Yaxis", 30);
-  setup("Blur", 50);
-  setup("Spread", 30);
+  setup("X", "Xaxis", 30);
+  setup("Y", "Yaxis", 30);
+  setup("Blur", "Blur", 50);
+  setup("Spread", "Spread", 30);
 }
-
-
 
 
 
