@@ -12,8 +12,10 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   function applyHoverShadow() {
     const el = getSelectedElement?.();
     if (!el) return;
+
     const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
+
     const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
     if (!cls) return;
 
@@ -32,19 +34,19 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     console.log(`🟧 Hover Shadow Applied → ${boxShadowValue}`);
   }
 
-  function setup(type, idKey, range = 50) {
-    const bullet = document.getElementById(`hover-buttonShadow${idKey}Bullet`);
-    const field = document.getElementById(`hover-buttonShadow${idKey}Field`);
-    const label = document.getElementById(`hover-buttonShadow${idKey}Count`);
-    const inc = document.getElementById(`hover-ButtonShadow${idKey}Increase`);
-    const dec = document.getElementById(`hover-ButtonShadow${idKey}Decrease`);
+  function setup(typeKey, domKey, range = 50) {
+    const bullet = document.getElementById(`hover-buttonShadow${domKey}Bullet`);
+    const field = document.getElementById(`hover-buttonShadow${domKey}Field`);
+    const label = document.getElementById(`hover-buttonShadow${domKey}Count`);
+    const inc = document.getElementById(`hover-ButtonShadow${domKey}Increase`);
+    const dec = document.getElementById(`hover-ButtonShadow${domKey}Decrease`);
 
     if (!bullet || !field || !label) return;
 
-    const min = (type === "X" || type === "Y") ? -range : 0;
+    const min = (typeKey === "X" || typeKey === "Y") ? -range : 0;
     const max = range;
 
-    let value = hoverShadowState[type] ?? 0;
+    let value = hoverShadowState[typeKey] ?? 0;
 
     let fill = field.querySelector(".sc-shadow-fill");
     if (!fill) {
@@ -61,7 +63,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 
     function update(val) {
       value = Math.max(min, Math.min(max, val));
-      hoverShadowState[type] = value;
+      hoverShadowState[typeKey] = value;
       const percent = ((value - min) / (max - min)) * 100;
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
@@ -100,12 +102,12 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     update(value);
   }
 
-  setup("Xaxis", "Xaxis", 30);
-setup("Yaxis", "Yaxis", 30);
-setup("Blur", "Blur", 50);
-setup("Spread", "Spread", 30);
-
+  setup("X", "Xaxis", 30);
+  setup("Y", "Yaxis", 30);
+  setup("Blur", "Blur", 50);
+  setup("Spread", "Spread", 30);
 }
+
 
 
 
