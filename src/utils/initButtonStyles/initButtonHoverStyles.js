@@ -10,7 +10,7 @@ const hoverShadowState = {
 
 
 export function initHoverButtonShadowControls(getSelectedElement) {
-  
+
 function applyHoverShadow() {
   const el = getSelectedElement?.();
   if (!el) return;
@@ -38,69 +38,71 @@ function applyHoverShadow() {
 
 
   function setup(type, range = 50) {
-    const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
-    const field = document.getElementById(`hover-buttonShadow${type}Field`);
-    const label = document.getElementById(`hover-buttonShadow${type}Count`);
-    const inc = document.getElementById(`hover-ButtonShadow${type}Increase`);
-    const dec = document.getElementById(`hover-ButtonShadow${type}Decrease`);
+  const bullet = document.getElementById(`hover-buttonShadow${type}Bullet`);
+  const field = document.getElementById(`hover-buttonShadow${type}Field`);
+  const label = document.getElementById(`hover-buttonShadow${type}Count`);
+  const idPrefix = type.replace("axis", "");
+  const inc = document.getElementById(`hover-ButtonShadow${idPrefix}Increase`);
+  const dec = document.getElementById(`hover-ButtonShadow${idPrefix}Decrease`);
 
-    if (!bullet || !field || !label) return;
+  if (!bullet || !field || !label) return;
 
-    const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
-    const max = range;
+  const min = (type === "Xaxis" || type === "Yaxis") ? -range : 0;
+  const max = range;
 
-    let fill = field.querySelector(".sc-shadow-fill");
-    if (!fill) {
-      fill = document.createElement("div");
-      fill.className = "sc-shadow-fill";
-      fill.style.position = "absolute";
-      fill.style.top = "0";
-      fill.style.left = "0";
-      fill.style.height = "100%";
-      fill.style.width = "0%";
-      fill.style.backgroundColor = "#EF7C2F";
-      field.insertBefore(fill, bullet);
-    }
+  let fill = field.querySelector(".sc-shadow-fill");
+  if (!fill) {
+    fill = document.createElement("div");
+    fill.className = "sc-shadow-fill";
+    fill.style.position = "absolute";
+    fill.style.top = "0";
+    fill.style.left = "0";
+    fill.style.height = "100%";
+    fill.style.width = "0%";
+    fill.style.backgroundColor = "#EF7C2F";
+    field.insertBefore(fill, bullet);
+  }
 
-    function update(val) {
-      const clamped = Math.max(min, Math.min(max, val));
-      hoverShadowState[type] = clamped;
-      const percent = ((clamped - min) / (max - min)) * 100;
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${clamped}px`;
-      applyHoverShadow();
-    }
+  function update(val) {
+    const clamped = Math.max(min, Math.min(max, val));
+    hoverShadowState[type] = clamped;
+    const percent = ((clamped - min) / (max - min)) * 100;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    label.textContent = `${clamped}px`;
+    applyHoverShadow();
+  }
 
-    bullet.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      const rect = field.getBoundingClientRect();
-      const move = (eMove) => {
-        const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-        const percent = x / rect.width;
-        const val = Math.round(min + percent * (max - min));
-        update(val);
-      };
-      const up = () => {
-        document.removeEventListener("mousemove", move);
-        document.removeEventListener("mouseup", up);
-      };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", up);
-    });
+  inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
+  dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
+  update(hoverShadowState[type] ?? 0);
 
-    field.addEventListener("click", (e) => {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const rect = field.getBoundingClientRect();
+    const move = (eMove) => {
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const percent = x / rect.width;
       const val = Math.round(min + percent * (max - min));
       update(val);
-    });
+    };
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
 
-    inc?.addEventListener("click", () => update(hoverShadowState[type] + 1));
-    dec?.addEventListener("click", () => update(hoverShadowState[type] - 1));
-    update(hoverShadowState[type] ?? 0);
-  }
+  field.addEventListener("click", (e) => {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const percent = x / rect.width;
+    const val = Math.round(min + percent * (max - min));
+    update(val);
+  });
+}
+
 
   setup("Xaxis", 30);
   setup("Yaxis", 30);
