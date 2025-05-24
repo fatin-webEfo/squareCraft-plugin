@@ -1,14 +1,27 @@
-
-export function initButtonFontFamilyControls(getSelectedElement) {
- if (typeof getSelectedElement === "function") {
-  const selectedEl = getSelectedElement();
-  console.log("✅ Selected Element:", selectedEl);
-  if (selectedEl && selectedEl.id?.startsWith("block-")) {
-    console.log("🟢 Confirmed Squarespace block ID:", selectedEl.id);
+ function logSelectedBlock(getSelectedElement) {
+  if (typeof getSelectedElement === "function") {
+    const selectedEl = getSelectedElement();
+    console.log("✅ Selected Element:", selectedEl);
+    if (selectedEl && selectedEl.id?.startsWith("block-")) {
+      console.log("🟢 Confirmed Squarespace block ID:", selectedEl.id);
+    } else {
+      console.warn("⚠️ Selected element is null or not a valid block");
+    }
+    return selectedEl;
   } else {
-    console.warn("⚠️ Selected element is null or not a valid block");
+    console.warn("⚠️ getSelectedElement is not a function");
+    return null;
   }
 }
+
+
+
+export function initButtonFontFamilyControls(getSelectedElement) {
+
+  const selectedElement = logSelectedBlock(getSelectedElement);
+if (!selectedElement) return;
+else console.log("✅ Selected Element:", selectedElement);
+
 
   const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
   let fontsList = [];
@@ -1162,3 +1175,5 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   window.updateActiveButtonBars?.();
 };
+
+// initButtonStyles.js component 
