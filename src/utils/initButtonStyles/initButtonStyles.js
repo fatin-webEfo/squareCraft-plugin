@@ -122,12 +122,14 @@ else console.log("✅ Selected Element:", selectedElement);
           const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
           const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
 
-          if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
-            const style = document.createElement("style");
-            style.dataset.font = fontClass;
-            style.innerHTML = `.${fontClass} { font-family: ${fontFace} !important; }`;
-            document.head.appendChild(style);
-          }
+         if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
+              const style = document.createElement("style");
+              style.dataset.font = fontClass;
+              const blockId = selectedElement.id;
+              style.innerHTML = `#${blockId} .${fontClass} { font-family: ${fontFace} !important; }`;
+              document.head.appendChild(style);
+            }
+            
 
           spans.forEach(span => {
             [...span.classList].forEach(cls => {
