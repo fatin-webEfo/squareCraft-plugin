@@ -331,7 +331,12 @@ export function initButtonIconPositionToggle(getSelectedElement) {
   });
 }
 
+let normalRotationInitialized = false;
+
 export function initButtonIconRotationControl(getSelectedElement) {
+  if (normalRotationInitialized) return;
+  normalRotationInitialized = true;
+
   const bullet = document.getElementById("buttonIconRotationradiousBullet");
   const fill = document.getElementById("buttonIconRotationradiousFill");
   const field = document.getElementById("buttonIconRotationradiousField");
@@ -365,8 +370,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   }
 
   function updateFromRotationValue(value) {
-    userInteracted = true; // ✅ mark user started interaction
-
+    userInteracted = true;
     currentRotation = Math.max(-180, Math.min(180, value));
     const percent = ((currentRotation + 180) / 360) * 100;
 
@@ -388,7 +392,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   }
 
   function syncFromIconRotation() {
-    if (userInteracted) return; // ✅ Don't sync if user already interacted
+    if (userInteracted) return;
 
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector(
@@ -397,18 +401,26 @@ export function initButtonIconRotationControl(getSelectedElement) {
     if (!btn) return;
 
     const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-    if (!icon || !icon.style.transform) return;
+    if (!icon) {
+      updateFromRotationValue(0); // fallback default
+      return;
+    }
 
-    const match = icon.style.transform.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    if (!match) return;
+    const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+    if (match) {
+      const rotation = parseFloat(match[1]);
+      if (!isNaN(rotation)) {
+        updateFromRotationValue(rotation);
+        return;
+      }
+    }
 
-    const rotation = parseFloat(match[1]);
-    updateFromRotationValue(rotation);
+    updateFromRotationValue(0); // fallback default
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    userInteracted = true; // ✅
+    userInteracted = true;
     const move = (e) => updateUI(e.clientX);
     const up = () => {
       document.removeEventListener("mousemove", move);
@@ -419,27 +431,27 @@ export function initButtonIconRotationControl(getSelectedElement) {
   });
 
   field.addEventListener("click", (e) => {
-    userInteracted = true; // ✅
+    userInteracted = true;
     updateUI(e.clientX);
   });
 
   if (incBtn) {
     incBtn.addEventListener("click", () => {
-      userInteracted = true; // ✅
+      userInteracted = true;
       updateFromRotationValue(currentRotation + 1);
     });
   }
 
   if (decBtn) {
     decBtn.addEventListener("click", () => {
-      userInteracted = true; // ✅
+      userInteracted = true;
       updateFromRotationValue(currentRotation - 1);
     });
   }
 
-  // Only sync once after short delay
   setTimeout(syncFromIconRotation, 50);
 }
+
 
 
 export function initButtonIconSizeControl(getSelectedElement) {
