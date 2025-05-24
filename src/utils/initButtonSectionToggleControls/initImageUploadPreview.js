@@ -9,6 +9,25 @@ export function initImageUploadPreview(getSelectedElement) {
   });
   document.body.appendChild(input);
 
+  function applyIconToButtons(svgNode) {
+    const selected = getSelectedElement?.();
+    if (!selected || !svgNode) return;
+
+    const btn = selected.querySelector("a");
+    if (!btn) return;
+
+    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    svgNode.classList.add("sqscraft-button-icon");
+
+    document.querySelectorAll(`a.${typeClass}`).forEach(b => {
+      b.querySelector(".sqscraft-button-icon")?.remove();
+      b.insertBefore(svgNode.cloneNode(true), b.querySelector(".sqs-html") || b.firstChild);
+      b.classList.add("sc-flex", "sc-items-center");
+    });
+  }
+
   uploadButton.addEventListener("click", e => {
     e.stopPropagation();
     input.click();
@@ -20,12 +39,6 @@ export function initImageUploadPreview(getSelectedElement) {
     const file = event.target.files[0];
     const selected = getSelectedElement?.();
     if (!file || !selected) return;
-
-    const btn = selected.querySelector("a");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
 
     const reader = new FileReader();
     reader.onload = e => {
@@ -42,21 +55,32 @@ export function initImageUploadPreview(getSelectedElement) {
             return svg;
           })();
 
-      if (!svg) return;
-      svg.classList.add("sqscraft-button-icon");
-
-      document.querySelectorAll(`a.${typeClass}`).forEach(btn => {
-        btn.querySelector(".sqscraft-button-icon")?.remove();
-        btn.insertBefore(svg.cloneNode(true), btn.querySelector(".sqs-html") || btn.firstChild);
-
-        btn.classList.add("sc-flex", "sc-items-center");
-      });
-
+      if (svg) applyIconToButtons(svg);
       input.value = "";
     };
 
     file.type === "image/svg+xml"
       ? reader.readAsText(file)
       : reader.readAsDataURL(file);
+  });
+
+  const allIcons = [
+    ...document.querySelectorAll("#buttonIconSolidoptions img, #buttonIconOutlineoptions img")
+  ];
+
+  allIcons.forEach(icon => {
+    icon.addEventListener("click", () => {
+      const imgURL = icon.getAttribute("src");
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image");
+
+      svg.setAttribute("viewBox", "0 0 20 20");
+      image.setAttributeNS("http://www.w3.org/1999/xlink", "href", imgURL);
+      image.setAttribute("width", "20");
+      image.setAttribute("height", "20");
+
+      svg.appendChild(image);
+      applyIconToButtons(svg);
+    });
   });
 }
