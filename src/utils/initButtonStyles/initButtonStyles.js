@@ -1,8 +1,15 @@
 
 export function initButtonFontFamilyControls(getSelectedElement) {
-  if(getSelectedElement){
-    console.log("initButtonFontFamilyControls called", getSelectedElement);
+ if (typeof getSelectedElement === "function") {
+  const selectedEl = getSelectedElement();
+  console.log("✅ Selected Element:", selectedEl);
+  if (selectedEl && selectedEl.id?.startsWith("block-")) {
+    console.log("🟢 Confirmed Squarespace block ID:", selectedEl.id);
+  } else {
+    console.warn("⚠️ Selected element is null or not a valid block");
   }
+}
+
   const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
   let fontsList = [];
   let fontIndex = 0;
