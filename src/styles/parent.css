@@ -82,8 +82,8 @@
   padding-right: 24px !important;
 }
 
-.sc-w-250 {
-  width: 250px !important;
+.sc-w-260 {
+  width: 260px !important;
 }
 
 #buttonIconRotationradiousFill {
@@ -192,9 +192,10 @@
   overflow-y: auto !important;
 }
 
-.sc-p-8px{
+.sc-p-8px {
   padding: 8px !important;
 }
+
 .sc-spinner {
   width: 20px;
   height: 20px;
@@ -204,6 +205,7 @@
   animation: spin 0.7s linear infinite;
   margin: 0 auto;
 }
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
