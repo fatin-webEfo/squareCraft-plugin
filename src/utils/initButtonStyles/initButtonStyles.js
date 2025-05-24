@@ -663,7 +663,6 @@ export function initButtonBorderControl(getSelectedElement) {
         const css = {
           [`border${capitalize(side)}`]: `${width} ${currentStyle} ${color}`
         };
-        addPendingModification(blockId, css, tagType);
       }
     });
   });
@@ -675,22 +674,21 @@ function applyBorderSideStyle(selectedElement, side, width, style, color) {
   const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
   if (!btn) return;
 
-  const currentStyles = window.getComputedStyle(btn);
-
-  const borders = {
-    top: currentStyles.borderTopWidth + ' ' + currentStyles.borderTopStyle + ' ' + currentStyles.borderTopColor,
-    right: currentStyles.borderRightWidth + ' ' + currentStyles.borderRightStyle + ' ' + currentStyles.borderRightColor,
-    bottom: currentStyles.borderBottomWidth + ' ' + currentStyles.borderBottomStyle + ' ' + currentStyles.borderBottomColor,
-    left: currentStyles.borderLeftWidth + ' ' + currentStyles.borderLeftStyle + ' ' + currentStyles.borderLeftColor
+  const currentBorders = {
+    top: btn.style.borderTop || window.getComputedStyle(btn).borderTop,
+    right: btn.style.borderRight || window.getComputedStyle(btn).borderRight,
+    bottom: btn.style.borderBottom || window.getComputedStyle(btn).borderBottom,
+    left: btn.style.borderLeft || window.getComputedStyle(btn).borderLeft
   };
 
-  borders[side] = `${width} ${style} ${color}`;
+  currentBorders[side] = `${width} ${style} ${color}`;
 
-  btn.style.borderTop = borders.top;
-  btn.style.borderRight = borders.right;
-  btn.style.borderBottom = borders.bottom;
-  btn.style.borderLeft = borders.left;
+  btn.style.borderTop = currentBorders.top;
+  btn.style.borderRight = currentBorders.right;
+  btn.style.borderBottom = currentBorders.bottom;
+  btn.style.borderLeft = currentBorders.left;
 }
+
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
