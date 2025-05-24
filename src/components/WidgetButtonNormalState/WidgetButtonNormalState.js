@@ -323,7 +323,7 @@ export function WidgetButtonNormalState() {
                                 width="22" height="22" alt="">`).join("")}
                           </div>
                         </div>
-                        </div>
+                        
 
                            </div>
                      </div>
