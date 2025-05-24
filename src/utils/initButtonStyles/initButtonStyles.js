@@ -1009,15 +1009,21 @@ export function initButtonShadowControls(getSelectedElement) {
     bullet.style.transform = "translateX(-50%)";
     bullet.style.zIndex = "1";
 
-    function updateUI(value) {
-      const val = Math.max(minValue, Math.min(maxValue, value));
-      window.shadowState[type] = val;
-      const percent = ((val - minValue) / (maxValue - minValue)) * 100;
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
-      label.textContent = `${val}px`;
-      applyShadow();
-    }
+   function updateUI(value) {
+  const val = Math.max(minValue, Math.min(maxValue, value));
+  window.shadowState[type] = val;
+
+  const percent = ((val - minValue) / (maxValue - minValue)) * 100;
+  const centerPercent = ((0 - minValue) / (maxValue - minValue)) * 100;
+
+  bullet.style.left = `${percent}%`;
+  fill.style.left = `${Math.min(percent, centerPercent)}%`;
+  fill.style.width = `${Math.abs(percent - centerPercent)}%`;
+
+  label.textContent = `${val}px`;
+  applyShadow();
+}
+
 
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
