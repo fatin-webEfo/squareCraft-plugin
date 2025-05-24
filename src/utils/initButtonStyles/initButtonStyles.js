@@ -1,4 +1,4 @@
- function logSelectedBlock(getSelectedElement) {
+function logSelectedBlock(getSelectedElement) {
   if (typeof getSelectedElement === "function") {
     const selectedEl = getSelectedElement();
     console.log("✅ Selected Element:", selectedEl);
@@ -107,7 +107,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 
         const btn = selectedElement.querySelector(
           "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
         if (!btn) return;
 
@@ -127,30 +127,23 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         if (cssVar) {
           document.documentElement.style.setProperty(cssVar, fontFace);
 
-          const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
-          const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+          const blockId = selectedElement.id;
 
- if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
-  const style = document.createElement("style");
-  style.dataset.font = fontClass;
-  const blockId = selectedElement.id;
-  style.innerHTML = `#${blockId} .sqs-block-button-element { font-family: ${fontFace} !important; }`;
-  document.head.appendChild(style);
-}
+          const styleId = `sc-font-style-${blockId}-${typeClass}`;
+          let style = document.getElementById(styleId);
+          if (!style) {
+            style = document.createElement("style");
+            style.id = styleId;
+            document.head.appendChild(style);
+          }
 
-
-
-          spans.forEach((span) => {
-            [...span.classList].forEach((cls) => {
-              if (cls.startsWith("sc-font-family-"))
-                span.classList.remove(cls);
-            });
-            span.classList.add(fontClass);
-            span.classList.add("sc-force-repaint");
-            void span.offsetHeight;
-            span.classList.remove("sc-force-repaint");
-          });
+          style.innerHTML = `
+    #${blockId} .${typeClass} {
+      font-family: ${fontFace} !important;
+    }
+  `;
         }
+
 
         const fontWeightOptions = document.getElementById(
           "scButtonFontWeightOptions"
@@ -290,9 +283,9 @@ export function initButtonStyles(selectedButtonElement) {
           scButtonAllSmall: "sc-text-lower",
           scButtonFirstCapital: "sc-text-capitalize",
         };
-  
+
         const newClass = transformClassMap[id];
-  
+
         const isAlreadyActive = transformButton.classList.contains("sc-activeTab-border");
         ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((btnId) => {
           const btn = document.getElementById(btnId);
@@ -301,7 +294,7 @@ export function initButtonStyles(selectedButtonElement) {
             btn.classList.add("sc-inActiveTab-border");
           }
         });
-  
+
         const spans = Array.from(
           document.querySelectorAll(
             `a.${currentButtonTypeClass} .sqs-html span, 
@@ -309,19 +302,19 @@ export function initButtonStyles(selectedButtonElement) {
              button.${currentButtonTypeClass} span`
           )
         );
-  
+
         if (isAlreadyActive) {
           transformButton.classList.remove("sc-activeTab-border");
           transformButton.classList.add("sc-inActiveTab-border");
-  
+
           spans.forEach(span => {
             span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
           });
-  
+
         } else {
           transformButton.classList.remove("sc-inActiveTab-border");
           transformButton.classList.add("sc-activeTab-border");
-  
+
           spans.forEach(span => {
             span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
             span.classList.add(newClass);
@@ -330,8 +323,8 @@ export function initButtonStyles(selectedButtonElement) {
       };
     }
   });
-  
-  
+
+
 }
 
 
@@ -1055,20 +1048,20 @@ export function initButtonShadowControls(getSelectedElement) {
     bullet.style.transform = "translateX(-50%)";
     bullet.style.zIndex = "1";
 
-   function updateUI(value) {
-  const val = Math.max(minValue, Math.min(maxValue, value));
-  window.shadowState[type] = val;
+    function updateUI(value) {
+      const val = Math.max(minValue, Math.min(maxValue, value));
+      window.shadowState[type] = val;
 
-  const percent = ((val - minValue) / (maxValue - minValue)) * 100;
-  const centerPercent = ((0 - minValue) / (maxValue - minValue)) * 100;
+      const percent = ((val - minValue) / (maxValue - minValue)) * 100;
+      const centerPercent = ((0 - minValue) / (maxValue - minValue)) * 100;
 
-  bullet.style.left = `${percent}%`;
-  fill.style.left = `${Math.min(percent, centerPercent)}%`;
-  fill.style.width = `${Math.abs(percent - centerPercent)}%`;
+      bullet.style.left = `${percent}%`;
+      fill.style.left = `${Math.min(percent, centerPercent)}%`;
+      fill.style.width = `${Math.abs(percent - centerPercent)}%`;
 
-  label.textContent = `${val}px`;
-  applyShadow();
-}
+      label.textContent = `${val}px`;
+      applyShadow();
+    }
 
 
     bullet.addEventListener("mousedown", (e) => {
