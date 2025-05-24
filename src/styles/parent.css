@@ -1374,7 +1374,9 @@
 .sc-bg-color-gray {
   background-color: #747272 !important;
 }
-
+.sc-p-5px{
+  padding: 5px !important;
+}
 .sc-p-1px {
   padding: 1px !important;
 }
