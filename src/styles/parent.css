@@ -1657,6 +1657,17 @@
     transform: rotate(360deg);
   }
 }
+.sc-icon-arrow {
+  position: absolute !important;
+  top: -8px !important;
+  left: 6px !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 7px solid transparent !important;
+  border-right: 7px solid transparent !important;
+  border-bottom: 7px solid #fd8905 !important;
+  z-index: 99999 !important;
+}
 
 
 .sc-scrollBar::-webkit-scrollbar {

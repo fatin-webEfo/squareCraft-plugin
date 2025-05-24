@@ -283,18 +283,7 @@ export function WidgetButtonNormalState() {
 
                            </div>
                            <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-260 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
-                            <div
-                            style="
-                              position: absolute;
-                              top: -8px;
-                              left: 6px;
-                              width: 0;
-                              height: 0;
-                              border-left: 7px solid transparent;
-                              border-right: 7px solid transparent;
-                              border-bottom: 7px solid #fd8905;
-                              z-index: 99999;
-                            "
+                            <div class="sc-icon-arrow"
                           >
                           </div>
                          <div class="sc-absolute sc-flex sc-mt-1 sc-items-center sc-gap-3">
