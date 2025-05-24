@@ -130,12 +130,14 @@ export function initButtonFontFamilyControls(getSelectedElement) {
           const fontClass = `sc-font-family-${family.replace(/\s+/g, "-")}`;
           const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
 
-        if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
+ if (!document.querySelector(`style[data-font="${fontClass}"]`)) {
   const style = document.createElement("style");
   style.dataset.font = fontClass;
+  const blockId = selectedElement.id;
   style.innerHTML = `#${blockId} .sqs-block-button-element { font-family: ${fontFace} !important; }`;
   document.head.appendChild(style);
 }
+
 
 
           spans.forEach((span) => {
