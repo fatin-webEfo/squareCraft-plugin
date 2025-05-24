@@ -1,7 +1,8 @@
 
 export function initButtonFontFamilyControls(getSelectedElement) {
-  const clickedBlock = event.target.closest('[id^="block-"]');
-  console.log("Clicked block:", clickedBlock);
+  if(getSelectedElement){
+    console.log("initButtonFontFamilyControls called", getSelectedElement);
+  }
   const GOOGLE_FONTS_API = "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
   let fontsList = [];
   let fontIndex = 0;
