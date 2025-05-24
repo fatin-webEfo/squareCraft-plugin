@@ -658,11 +658,12 @@ export function initButtonBorderControl(getSelectedElement) {
       applyBorderSideStyle(selectedElement, side, width, currentStyle, color);
 
       const blockId = selectedElement?.id;
-      if (blockId) {
+      if (blockId && typeof addPendingModification === "function") {
         const tagType = "button";
         const css = {
           [`border${capitalize(side)}`]: `${width} ${currentStyle} ${color}`
         };
+        addPendingModification(blockId, css, tagType); // ✅ persist to pendingModifications
       }
     });
   });
@@ -671,7 +672,9 @@ export function initButtonBorderControl(getSelectedElement) {
 function applyBorderSideStyle(selectedElement, side, width, style, color) {
   if (!selectedElement) return;
 
-  const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+  const btn = selectedElement.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+  );
   if (!btn) return;
 
   const currentBorders = {
@@ -688,6 +691,11 @@ function applyBorderSideStyle(selectedElement, side, width, style, color) {
   btn.style.borderBottom = currentBorders.bottom;
   btn.style.borderLeft = currentBorders.left;
 }
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
 
 function capitalize(str) {
