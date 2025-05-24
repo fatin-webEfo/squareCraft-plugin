@@ -627,146 +627,75 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
 
 export function initButtonBorderControl(getSelectedElement) {
-  const fill = document.getElementById("buttonBorderFill");
-  const bullet = document.getElementById("buttonBorderBullet");
-  const field = document.getElementById("buttonBorderField");
-  const valueText = document.getElementById("buttonBorderCount");
-  const incBtn = document.getElementById("buttonBorderIncrease");
-  const decBtn = document.getElementById("buttonBorderDecrease");
-  const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
+  const borderControls = {
+    top: document.getElementById("buttonBorderTop"),
+    right: document.getElementById("buttonBorderRight"),
+    bottom: document.getElementById("buttonBorderBottom"),
+    left: document.getElementById("buttonBorderLeft")
+  };
 
-  if (!fill || !bullet || !field || !valueText) return;
+  const borderWidthInput = document.getElementById("buttonBorderCount");
+  const borderColorCode = document.getElementById("color-code");
+  const styleSolid = document.getElementById("buttonBorderTypeSolid");
+  const styleDashed = document.getElementById("buttonBorderTypeDashed");
+  const styleDotted = document.getElementById("buttonBorderTypeDotted");
 
-  const max = 10;
-  let currentValue = 0;
+  let currentStyle = "solid";
 
-  if (!window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap = new Map();
-  const sides = ["Top", "Right", "Bottom", "Left"];
+  if (styleSolid) styleSolid.addEventListener("click", () => currentStyle = "solid");
+  if (styleDashed) styleDashed.addEventListener("click", () => currentStyle = "dashed");
+  if (styleDotted) styleDotted.addEventListener("click", () => currentStyle = "dotted");
 
-  ["All", ...sides].forEach((side) => {
-    const el = document.getElementById(`buttonBorder${side}`);
-    if (!el) return;
-    el.addEventListener("click", () => {
-      ["All", ...sides].forEach((s) => {
-        const btn = document.getElementById(`buttonBorder${s}`);
-        btn?.classList.remove("sc-bg-454545");
-      });
-      el.classList.add("sc-bg-454545");
+  Object.entries(borderControls).forEach(([side, element]) => {
+    if (!element) return;
 
+    element.addEventListener("click", () => {
       const selectedElement = getSelectedElement?.();
       if (!selectedElement) return;
 
-      const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-      if (!btn) return;
+      const width = (borderWidthInput?.textContent || "0px").trim();
+      const color = (borderColorCode?.textContent || "#000000").trim();
+      applyBorderSideStyle(selectedElement, side, width, currentStyle, color);
 
-      const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-      const blockId = selectedElement.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(key) || { value: 0, side: "All" };
-      state.side = side;
-      window.__squareCraftBorderStateMap.set(key, state);
-      applyBorder();
-    });
-  });
-
-  function applyBorder() {
-    const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    const val = `${currentValue}px`;
-
-    let styleTag = document.getElementById(`sc-button-border-${blockId}-${typeClass}`);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = `sc-button-border-${blockId}-${typeClass}`;
-      document.head.appendChild(styleTag);
-    }
-
-    const state = window.__squareCraftBorderStateMap.get(key) || { value: currentValue, side: "All" };
-    state.value = currentValue;
-    window.__squareCraftBorderStateMap.set(key, state);
-
-    const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
-
-    const top = state.side === "Top" || state.side === "All" ? val : "0px";
-    const right = state.side === "Right" || state.side === "All" ? val : "0px";
-    const bottom = state.side === "Bottom" || state.side === "All" ? val : "0px";
-    const left = state.side === "Left" || state.side === "All" ? val : "0px";
-
-    styleTag.innerHTML = `
-      ${selector}, .${typeClass} {
-        box-sizing: border-box !important;
-        border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-        border-color: black !important;
-        border-top-width: ${top} !important;
-        border-right-width: ${right} !important;
-        border-bottom-width: ${bottom} !important;
-        border-left-width: ${left} !important;
+      const blockId = selectedElement?.id;
+      if (blockId) {
+        const tagType = "button";
+        const css = {
+          [`border${capitalize(side)}`]: `${width} ${currentStyle} ${color}`
+        };
+        addPendingModification(blockId, css, tagType);
       }
-    `;
-
-    document.querySelectorAll(`.${typeClass}`).forEach(el => {
-      el.style.borderTopWidth = top;
-      el.style.borderRightWidth = right;
-      el.style.borderBottomWidth = bottom;
-      el.style.borderLeftWidth = left;
     });
-  }
-
-  function updateUIFromValue(value) {
-    currentValue = Math.max(0, Math.min(max, value));
-    const percent = (currentValue / max) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    valueText.textContent = `${currentValue}px`;
-    applyBorder();
-  }
-
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const move = (eMove) => {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-      const value = Math.round((x / rect.width) * max);
-      updateUIFromValue(value);
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
   });
-
-  field.addEventListener("click", (e) => {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-    const value = Math.round((x / rect.width) * max);
-    updateUIFromValue(value);
-  });
-
-  incBtn?.addEventListener("click", () => updateUIFromValue(currentValue + 1));
-  decBtn?.addEventListener("click", () => updateUIFromValue(currentValue - 1));
-  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
-
-  setTimeout(() => {
-    const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    const stored = window.__squareCraftBorderStateMap.get(key);
-    if (stored?.value !== undefined) {
-      updateUIFromValue(stored.value);
-    }
-  }, 50);
 }
+
+function applyBorderSideStyle(selectedElement, side, width, style, color) {
+  if (!selectedElement) return;
+
+  const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+  if (!btn) return;
+
+  const currentStyles = window.getComputedStyle(btn);
+
+  const borders = {
+    top: currentStyles.borderTopWidth + ' ' + currentStyles.borderTopStyle + ' ' + currentStyles.borderTopColor,
+    right: currentStyles.borderRightWidth + ' ' + currentStyles.borderRightStyle + ' ' + currentStyles.borderRightColor,
+    bottom: currentStyles.borderBottomWidth + ' ' + currentStyles.borderBottomStyle + ' ' + currentStyles.borderBottomColor,
+    left: currentStyles.borderLeftWidth + ' ' + currentStyles.borderLeftStyle + ' ' + currentStyles.borderLeftColor
+  };
+
+  borders[side] = `${width} ${style} ${color}`;
+
+  btn.style.borderTop = borders.top;
+  btn.style.borderRight = borders.right;
+  btn.style.borderBottom = borders.bottom;
+  btn.style.borderLeft = borders.left;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 
 
 
