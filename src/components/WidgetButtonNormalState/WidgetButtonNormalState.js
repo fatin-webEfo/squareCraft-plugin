@@ -307,7 +307,7 @@ export function WidgetButtonNormalState() {
                          </div>
 
                        <div class="sc-mt-8 sc-relative">
-                          <div id="buttonIconSolidoptions" class="sc-absolute sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-8px sc-grid-cols-6 sc-bg-color-2c2c2c">
+                          <div id="buttonIconSolidoptions" class="sc-absolute sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-scrollBar sc-p-8px sc-grid-cols-6 sc-bg-color-2c2c2c">
                             ${solidIconList.map((i) => `
                               <img 
                                 src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
@@ -315,7 +315,7 @@ export function WidgetButtonNormalState() {
                                 width="22" height="22" alt="">`).join("")}
                           </div>
                         
-                          <div id="buttonIconOutlineoptions" class="sc-absolute sc-hidden sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-8px sc-grid-cols-6 sc-bg-color-2c2c2c">
+                          <div id="buttonIconOutlineoptions" class="sc-absolute sc-hidden sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-scrollBar sc-p-8px sc-grid-cols-6 sc-bg-color-2c2c2c">
                             ${outlineIcons.map((i) => `
                               <img 
                                 src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
