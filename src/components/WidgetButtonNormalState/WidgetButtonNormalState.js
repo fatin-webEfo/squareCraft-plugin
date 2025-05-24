@@ -306,7 +306,7 @@ export function WidgetButtonNormalState() {
                          </div>
                          </div>
 
-                       <div class="sc-mt-8 sc-relative sc-h-44">
+                       <div class="sc-mt-8 sc-relative">
                           <div id="buttonIconSolidoptions" class="sc-absolute sc-scrollBar sc-justify-between sc-rounded-md sc-gap-2 sc-h-44 sc-p-8px sc-grid-cols-6 sc-bg-color-2c2c2c">
                             ${solidIconList.map((i) => `
                               <img 
