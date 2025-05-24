@@ -282,7 +282,7 @@ export function WidgetButtonNormalState() {
                               class=" alignment-icon   sc-mx-auto" alt="right">
 
                            </div>
-                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-260 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
+                           <div id="buttonIconLibraryOptions" class="sc-absolute sc-hidden sc-p-1_5 sc-z-99999  sc-w-250 sc-border sc-border-solid sc-border-EF7C2F sc-rounded-md sc-top-12 sc-bg-color-3d3d3d  sc-left-0">
                             <div class="sc-icon-arrow"
                           >
                           </div>
