@@ -1657,6 +1657,15 @@
     transform: rotate(360deg);
   }
 }
+#buttonIconSolidoptions,
+#buttonIconOutlineoptions {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  box-sizing: border-box !important;
+  border-top: 1px solid #3f3f3f !important;
+}
+
 .sc-icon-arrow {
   position: absolute !important;
   top: -8px !important;
