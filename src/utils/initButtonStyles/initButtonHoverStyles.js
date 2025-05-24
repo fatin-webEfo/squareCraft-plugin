@@ -742,14 +742,19 @@ export function applyHoverButtonEffects(getSelectedElement) {
     `;
   }
 
-  function update(newVal) {
-    value = Math.max(min, Math.min(max, newVal));
-    const percent = ((value - min) / (max - min)) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    label.textContent = `${value}px`;
-    applyHoverStyles();
-  }
+ function update(newVal) {
+  value = Math.max(min, Math.min(max, newVal));
+  const percent = ((value - min) / (max - min)) * 100;
+  const centerPercent = ((0 - min) / (max - min)) * 100;
+
+  bullet.style.left = `${percent}%`;
+  fill.style.left = `${Math.min(percent, centerPercent)}%`;
+  fill.style.width = `${Math.abs(percent - centerPercent)}%`;
+  label.textContent = `${value}px`;
+
+  applyHoverStyles();
+}
+
 
   function updateFromClientX(clientX) {
     const rect = field.getBoundingClientRect();
