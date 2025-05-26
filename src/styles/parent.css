@@ -945,8 +945,8 @@
 
 
 .sc-border-t {
-  border-width: 0.1px !important;
-  height: 0.1px !important;
+  border-top-width: 0.5px !important;
+ 
 }
 
 .sc-border-dashed {
