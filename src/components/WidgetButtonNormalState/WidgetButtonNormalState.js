@@ -137,7 +137,7 @@ export function WidgetButtonNormalState() {
             <div class="sc-flex sc-items-center  ">
 
                <div id="scButtonAllCapital" 
-                  class=" sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                  class=" sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-9px sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">AG</p>
                </div>

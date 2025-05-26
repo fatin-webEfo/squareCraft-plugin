@@ -1272,7 +1272,10 @@
 }
 
 
-
+.sc-px-9px{
+  padding-left: 9px !important;
+  padding-right: 9px !important;
+}
 
 .sc-px-2_5 {
   padding-left: 10px !important;
