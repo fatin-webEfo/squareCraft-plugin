@@ -142,12 +142,12 @@ export function WidgetButtonNormalState() {
                   <p class="sc-universal sc-roboto sc-font-size-12">AG</p>
                </div>
                <div id="scButtonAllSmall" 
-                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-cursor-pointer ">
+                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-9px sc-inActiveTab-border sc-cursor-pointer ">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">ag</p>
                </div>
                <div id="scButtonFirstCapital" 
-                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-2 sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
+                  class="sc-h-9 sc-flex sc-items-center sc-justify-center sc-px-9px sc-inActiveTab-border sc-rounded-r sc-cursor-pointer">
 
                   <p class="sc-universal sc-roboto sc-font-size-12">Ag</p>
                </div>
