@@ -946,7 +946,17 @@
 
 .sc-border-t {
   border-top-width: 0.1px !important;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important;
+  border-bottom-width: 0 !important;
  height: 0.5px !important;
+}
+.sc-border-t-dashed{
+  border-top-style: dashed !important;
+  border-left-width: 0 !important;
+  border-right-width: 0 !important;
+  border-bottom-width: 0 !important;
+  height: 0.5px !important;
 }
 
 .sc-border-dashed {
