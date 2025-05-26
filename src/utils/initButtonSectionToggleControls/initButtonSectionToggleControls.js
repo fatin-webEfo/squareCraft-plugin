@@ -64,28 +64,49 @@ export function initButtonSectionToggleControls() {
   }
   
   
-  Object.keys(sections).forEach((buttonId) => {
-    const button = document.getElementById(buttonId);
-    const sectionId = sections[buttonId];
+ const arrowMap = {
+  fontButton: "button-font-arrow",
+  colorButton: "button-color-arrow",
+  iconButton: "button-icon-arrow",
+  bordersButton: "button-border-arrow",
+  shadowsButton: "button-shadow-arrow"
+};
 
-    button.addEventListener("click", () => {
-      Object.keys(sections).forEach((otherButtonId) => {
-        const otherSectionId = sections[otherButtonId];
-        const otherSection = document.getElementById(otherSectionId);
-        if (otherSectionId === sectionId) {
-          otherSection.classList.remove("sc-hidden");
-          otherSection.classList.add("sc-visible");
-          otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        } else if (otherSection) {
-          otherSection.classList.add("sc-hidden");
-          otherSection.classList.remove("sc-visible");
+Object.keys(sections).forEach((buttonId) => {
+  const button = document.getElementById(buttonId);
+  const sectionId = sections[buttonId];
+
+  button.addEventListener("click", () => {
+    Object.keys(sections).forEach((otherButtonId) => {
+      const otherSectionId = sections[otherButtonId];
+      const otherSection = document.getElementById(otherSectionId);
+      const otherArrowId = arrowMap[otherButtonId];
+      const otherArrow = document.getElementById(otherArrowId);
+
+      if (otherButtonId === buttonId) {
+        otherSection.classList.remove("sc-hidden");
+        otherSection.classList.add("sc-visible");
+        otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        if (otherArrow) {
+          otherArrow.classList.remove("sc-rotate-180");
+          otherArrow.style.transition = "transform 0.3s ease";
         }
-      });
-    
-      updateActiveBars(); 
+      } else {
+        otherSection?.classList.add("sc-hidden");
+        otherSection?.classList.remove("sc-visible");
+
+        if (otherArrow && !otherArrow.classList.contains("sc-rotate-180")) {
+          otherArrow.classList.add("sc-rotate-180");
+          otherArrow.style.transition = "transform 0.3s ease";
+        }
+      }
     });
-    
+
+    updateActiveBars();
   });
+});
+
 
   const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");
   const buttonFontSizeOptions = document.getElementById("scButtonFontSizeOptions");
