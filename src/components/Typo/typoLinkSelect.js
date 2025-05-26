@@ -76,7 +76,7 @@ export function typoLinkSelect(fontSizes) {
 
       <div class="sc-col-span-5 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
          <p id="textcolorHtml" class="sc-font-size-12 sc-roboto sc-universal">Select</p>
-         <div id="textColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+         <div id="textColorPalate" class="sc-square-6  sc-cursor-pointer"></div>
       </div>
      <div>
       
@@ -112,7 +112,7 @@ export function typoLinkSelect(fontSizes) {
       <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Text Highlight</p>
       <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
          <p class="sc-font-size-12 sc-roboto sc-universal sc-font-light">#363544</p>
-         <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+         <div class="sc-square-6  sc-cursor-pointer"></div>
       </div>
    </div> 
     `

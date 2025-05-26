@@ -173,7 +173,7 @@ export function WidgetButtonNormalState() {
                   <div class="sc-col-span-5 sc-mt-2 sc-z-99999 sc-relative ">
                      <div class="sc-flex sc-w-30 sc-justify-between sc-items-center sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-rounded-4px sc-py-0_5">
                      <p id="buttonFontColorCode" class="sc-font-size-12 sc-roboto sc-universal">Select</p>
-                     <div id="buttonFontColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                     <div id="buttonFontColorPalate" class="sc-square-6  sc-cursor-pointer"></div>
                      </div>
                   
                      <div id="button-font-color-palette"
@@ -226,7 +226,7 @@ export function WidgetButtonNormalState() {
                   <div
                      class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
                      <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
-                     <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                     <div class="sc-square-6  sc-cursor-pointer"></div>
                   </div>
                </div>
             </div>
@@ -415,7 +415,7 @@ export function WidgetButtonNormalState() {
                <div
                   class="sc-py-4px sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
                   <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">#363544</p>
-                  <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                  <div class="sc-square-6  sc-cursor-pointer"></div>
                </div>
             </div>
 
@@ -531,7 +531,7 @@ export function WidgetButtonNormalState() {
                         <div
                            class="sc-py-0_5 sc-relative sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
-                           <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
+                           <div class="sc-square-6  sc-cursor-pointer">
                            </div>
 
                            <div id="color-palette"
@@ -723,7 +723,7 @@ export function WidgetButtonNormalState() {
                         <div
                            class="sc-py-0_5  sc-bg-3f3f3f   sc-flex sc-gap-5 sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
-                           <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                           <div class="sc-square-6  sc-cursor-pointer"></div>
                         </div>
                      </div>
                   </div>

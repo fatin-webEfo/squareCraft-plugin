@@ -128,7 +128,7 @@ export function WidgetImageSection(id) {
                         <div
                            class="sc-py-1_2px sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
-                           <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                           <div id="border-color-select" class="sc-square-6  sc-cursor-pointer"></div>
 
                            <div id="color-palette"
                               class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-4px ">
@@ -278,7 +278,7 @@ export function WidgetImageSection(id) {
                         <div
                            class="sc-py-0_5 sc-gap-5 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-11 sc-roboto sc-font-light sc-universal">#363544</p>
-                           <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                           <div class="sc-square-6  sc-cursor-pointer"></div>
                         </div>
                      </div>
                      <div class="">
@@ -475,7 +475,7 @@ export function WidgetImageSection(id) {
                            <div
                               class="sc-py-0_5  sc-bg-3f3f3f   sc-flex sc-gap-5 sc-items-center sc-px-1_5 sc-rounded-4px">
                               <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
-                              <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+                              <div class="sc-square-6  sc-cursor-pointer"></div>
                            </div>
                         </div>
                      </div>
