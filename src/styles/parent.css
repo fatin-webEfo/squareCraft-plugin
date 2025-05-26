@@ -1712,7 +1712,7 @@
 }
 
 .sc-scrollBar {
-  scrollbar-width: thin !important;
+  scrollbar-width: 3px !important;
   scrollbar-color: #ff7f00 #222 !important;
 }
 
