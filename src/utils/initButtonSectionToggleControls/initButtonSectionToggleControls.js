@@ -6,35 +6,35 @@ export function initButtonSectionToggleControls() {
     bordersButton: "bordersSection",
     shadowsButton: "shadowsSection"
   };
-  
+
   function updateActiveBars() {
     Object.entries(sections).forEach(([buttonId, sectionId]) => {
       const button = document.getElementById(buttonId);
       if (!button) return;
-  
+
       const styleElements = sectionId === "fontSection"
         ? [
-            "scButtonFontSizeInput",
-            "scButtonFontWeightSelected",
-            "scButtonLetterSpacingInput",
-            "scButtonAllCapital",
-            "scButtonAllSmall",
-            "scButtonFirstCapital"
-          ]
+          "scButtonFontSizeInput",
+          "scButtonFontWeightSelected",
+          "scButtonLetterSpacingInput",
+          "scButtonAllCapital",
+          "scButtonAllSmall",
+          "scButtonFirstCapital"
+        ]
         : sectionId === "colorSection"
           ? ["buttonFontColorCode"]
           : sectionId === "iconSection"
-            ? ["buttoniconRotationradiousCount", "buttoniconSizeradiousCount", "buttoniconSpacingradiousCount"]
+            ? ["buttoniconRotationradiusCount", "buttoniconSizeradiusCount", "buttoniconSpacingradiusCount"]
             : sectionId === "bordersSection"
-              ? ["buttonBorderCount", "buttonBorderRadiousCount"]
+              ? ["buttonBorderCount", "buttonBorderradiusCount"]
               : sectionId === "shadowsSection"
                 ? ["buttonShadowXaxisCount", "buttonShadowYaxisCount", "buttonShadowBlurCount", "buttonShadowSpreadCount"]
                 : [];
-  
+
       const hasActiveStyle = styleElements.some((id) => {
         const el = document.getElementById(id);
         if (!el) return false;
-  
+
         // Capitalization tab check (special case)
         if (
           id === "scButtonAllCapital" ||
@@ -43,15 +43,15 @@ export function initButtonSectionToggleControls() {
         ) {
           return el.classList.contains("sc-activeTab-border");
         }
-  
+
         // All other text-based value checks
         const value = el.tagName === "INPUT"
           ? el.value?.trim()
           : el.innerText?.trim();
-  
+
         return value && !["0px", "Select", "0deg", "", "0", "400", "16", "15", "Select Font"].includes(value);
       });
-  
+
       const existingBar = button.querySelector(".sc-active-bar");
       if (hasActiveStyle && !existingBar) {
         const activeBar = document.createElement("div");
@@ -62,49 +62,49 @@ export function initButtonSectionToggleControls() {
       }
     });
   }
-  
-  
- const arrowMap = {
-  fontButton: "button-font-arrow",
-  colorButton: "button-color-arrow",
-  iconButton: "button-icon-arrow",
-  bordersButton: "button-border-arrow",
-  shadowsButton: "button-shadow-arrow"
-};
 
-Object.keys(sections).forEach((buttonId) => {
-  const button = document.getElementById(buttonId);
 
-  button.addEventListener("click", () => {
-    Object.keys(sections).forEach((otherButtonId) => {
-      const otherSectionId = sections[otherButtonId];
-      const otherSection = document.getElementById(otherSectionId);
-      const otherArrowId = arrowMap[otherButtonId];
-      const otherArrow = document.getElementById(otherArrowId);
+  const arrowMap = {
+    fontButton: "button-font-arrow",
+    colorButton: "button-color-arrow",
+    iconButton: "button-icon-arrow",
+    bordersButton: "button-border-arrow",
+    shadowsButton: "button-shadow-arrow"
+  };
 
-      if (otherButtonId === buttonId) {
-        otherSection.classList.remove("sc-hidden");
-        otherSection.classList.add("sc-visible");
-        otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  Object.keys(sections).forEach((buttonId) => {
+    const button = document.getElementById(buttonId);
 
-        if (otherArrow) {
-          otherArrow.classList.remove("sc-rotate-180");
-          otherArrow.style.transition = "transform 0.3s ease";
+    button.addEventListener("click", () => {
+      Object.keys(sections).forEach((otherButtonId) => {
+        const otherSectionId = sections[otherButtonId];
+        const otherSection = document.getElementById(otherSectionId);
+        const otherArrowId = arrowMap[otherButtonId];
+        const otherArrow = document.getElementById(otherArrowId);
+
+        if (otherButtonId === buttonId) {
+          otherSection.classList.remove("sc-hidden");
+          otherSection.classList.add("sc-visible");
+          otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+          if (otherArrow) {
+            otherArrow.classList.remove("sc-rotate-180");
+            otherArrow.style.transition = "transform 0.3s ease";
+          }
+        } else {
+          otherSection?.classList.add("sc-hidden");
+          otherSection?.classList.remove("sc-visible");
+
+          if (otherArrow && !otherArrow.classList.contains("sc-rotate-180")) {
+            otherArrow.classList.add("sc-rotate-180");
+            otherArrow.style.transition = "transform 0.3s ease";
+          }
         }
-      } else {
-        otherSection?.classList.add("sc-hidden");
-        otherSection?.classList.remove("sc-visible");
+      });
 
-        if (otherArrow && !otherArrow.classList.contains("sc-rotate-180")) {
-          otherArrow.classList.add("sc-rotate-180");
-          otherArrow.style.transition = "transform 0.3s ease";
-        }
-      }
+      updateActiveBars();
     });
-
-    updateActiveBars();
   });
-});
 
 
   const buttonFontSizeSelect = document.getElementById("scButtonFontSizeSelect");

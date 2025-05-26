@@ -106,16 +106,16 @@ export function WidgetButtonHoverState() {
                      </div>
                      <div
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                        <p id="hover-buttoniconRotationradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                        <p id="hover-buttoniconRotationradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                            <span id="hover-iconRotationIncrease" class="sc-arrow-placeholder"></span>
                            <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
-                  <div id="hover-buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-                     <div id="hover-buttonIconRotationradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                     <div id="hover-buttonIconRotationradiousBullet"
+                  <div id="hover-buttonIconRotationradiusField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="hover-buttonIconRotationradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                     <div id="hover-buttonIconRotationradiusBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                      </div>
                   </div>
@@ -140,16 +140,16 @@ export function WidgetButtonHoverState() {
                   </div>
                   <div
                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                     <p id="hover-buttoniconSizeradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                     <p id="hover-buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                      <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span id="hover-iconSizeIncrease" class="sc-arrow-placeholder "></span>
                         <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                      </div>
                   </div>
                </div>
-               <div id="hover-buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-                  <div id="hover-buttonIconSizeradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                  <div id="hover-buttonIconSizeradiousBullet"
+               <div id="hover-buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="hover-buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                  <div id="hover-buttonIconSizeradiusBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                   </div>
                </div>
@@ -178,16 +178,16 @@ export function WidgetButtonHoverState() {
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                  <p id="hover-buttoniconSpacingradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                  <p id="hover-buttoniconSpacingradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span id="hover-iconSpacingIncrease" class="sc-arrow-placeholder"></span>
                     <span id="hover-iconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
-            <div id="hover-buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="hover-buttonIconSpacingradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="hover-buttonIconSpacingradiousBullet"
+            <div id="hover-buttonIconSpacingradiusField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="hover-buttonIconSpacingradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="hover-buttonIconSpacingradiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -367,7 +367,7 @@ export function WidgetButtonHoverState() {
                      <div class="  sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
-                              Border Radious
+                              Border radius
                            </p>
                            <div
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
@@ -378,16 +378,16 @@ export function WidgetButtonHoverState() {
                         </div>
                         <div
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                           <p id="hover-buttonBorderRadiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                           <p id="hover-buttonBorderradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                              <span id="hover-buttonBorderRadiousIncrease" class="sc-arrow-placeholder"></span>
-                              <span id="hover-buttonBorderRadiousDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                              <span id="hover-buttonBorderradiusIncrease" class="sc-arrow-placeholder"></span>
+                              <span id="hover-buttonBorderradiusDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
-                    <div id="hover-buttonBorderRadiousField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
-          <div id="hover-buttonBorderRadiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-          <div id="hover-buttonBorderRadiousBullet"
+                    <div id="hover-buttonBorderradiusField" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+          <div id="hover-buttonBorderradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+          <div id="hover-buttonBorderradiusBullet"
           class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
           </div>
           </div>

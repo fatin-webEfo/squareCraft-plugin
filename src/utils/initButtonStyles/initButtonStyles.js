@@ -13,9 +13,9 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
   if (!fontFamilyOptions) return;
 
-const loader = document.createElement("div");
-loader.id = "sc-font-loader";
-loader.innerHTML = `
+  const loader = document.createElement("div");
+  loader.id = "sc-font-loader";
+  loader.innerHTML = `
   <div style="
     width: 24px;
     height: 24px;
@@ -26,7 +26,7 @@ loader.innerHTML = `
     animation: scSpin 0.8s linear infinite;
   "></div>
 `;
-document.head.insertAdjacentHTML("beforeend", `
+  document.head.insertAdjacentHTML("beforeend", `
   <style>
     @keyframes scSpin {
       0% { transform: rotate(0deg); }
@@ -34,7 +34,7 @@ document.head.insertAdjacentHTML("beforeend", `
     }
   </style>
 `);
-fontFamilyOptions.appendChild(loader);
+  fontFamilyOptions.appendChild(loader);
 
   fetchGoogleFonts();
   setupFontScrollLoader();
@@ -53,7 +53,7 @@ fontFamilyOptions.appendChild(loader);
   }
 
 
-  
+
   function setupFontScrollLoader() {
     fontFamilyOptions.addEventListener("scroll", () => {
       if (
@@ -370,10 +370,10 @@ export function initButtonIconRotationControl(getSelectedElement) {
   if (normalRotationInitialized) return;
   normalRotationInitialized = true;
 
-  const bullet = document.getElementById("buttonIconRotationradiousBullet");
-  const fill = document.getElementById("buttonIconRotationradiousFill");
-  const field = document.getElementById("buttonIconRotationradiousField");
-  const label = document.getElementById("buttoniconRotationradiousCount");
+  const bullet = document.getElementById("buttonIconRotationradiusBullet");
+  const fill = document.getElementById("buttonIconRotationradiusFill");
+  const field = document.getElementById("buttonIconRotationradiusField");
+  const label = document.getElementById("buttoniconRotationradiusCount");
 
   const incBtn = document.getElementById("buttoniconRotationIncrease");
   const decBtn = document.getElementById("buttoniconRotationDecrease");
@@ -488,10 +488,10 @@ export function initButtonIconRotationControl(getSelectedElement) {
 
 
 export function initButtonIconSizeControl(getSelectedElement) {
-  const bullet = document.getElementById("buttonIconSizeradiousBullet");
-  const fill = document.getElementById("buttonIconSizeradiousFill");
-  const field = document.getElementById("buttonIconSizeradiousField");
-  const label = document.getElementById("buttoniconSizeradiousCount");
+  const bullet = document.getElementById("buttonIconSizeradiusBullet");
+  const fill = document.getElementById("buttonIconSizeradiusFill");
+  const field = document.getElementById("buttonIconSizeradiusField");
+  const label = document.getElementById("buttoniconSizeradiusCount");
 
   const incBtn = document.getElementById("buttoniconSizeIncrease");
   const decBtn = document.getElementById("buttoniconSizeDecrease");
@@ -590,9 +590,9 @@ export function initButtonIconSizeControl(getSelectedElement) {
 
 
 export function initButtonIconSpacingControl(getSelectedElement) {
-  const fill = document.getElementById("buttonIconSpacingradiousFill");
-  const bullet = document.getElementById("buttonIconSpacingradiousBullet");
-  const field = document.getElementById("buttonIconSpacingradiousField");
+  const fill = document.getElementById("buttonIconSpacingradiusFill");
+  const bullet = document.getElementById("buttonIconSpacingradiusBullet");
+  const field = document.getElementById("buttonIconSpacingradiusField");
   const valueText = document.getElementById("buttoniconSpacingCount");
   const incBtn = document.getElementById("buttoniconSpacingIncrease");
   const decBtn = document.getElementById("buttoniconSpacingDecrease");
@@ -867,12 +867,12 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
 
 export function initButtonBorderRadiusControl(getSelectedElement) {
-  const fillField = document.getElementById("buttonBorderRadiousField");
-  const bullet = document.getElementById("buttonBorderRadiousBullet");
-  const fill = document.getElementById("buttonBorderRadiousFill");
-  const valueText = document.getElementById("buttonBorderRadiousCount");
-  const incBtn = document.getElementById("buttonBorderRadiousIncrease");
-  const decBtn = document.getElementById("buttonBorderRadiousDecrease");
+  const fillField = document.getElementById("buttonBorderradiusField");
+  const bullet = document.getElementById("buttonBorderradiusBullet");
+  const fill = document.getElementById("buttonBorderradiusFill");
+  const valueText = document.getElementById("buttonBorderradiusCount");
+  const incBtn = document.getElementById("buttonBorderradiusIncrease");
+  const decBtn = document.getElementById("buttonBorderradiusDecrease");
   const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
 
   if (!fillField || !bullet || !fill || !valueText) return;
@@ -1137,19 +1137,19 @@ window.syncButtonStylesFromElement = function (selectedElement) {
     if (btn) btn.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle));
   });
 
-  set("buttonBorderRadious", parseInt(sampleButton.style.borderRadius || "0"), 50);
+  set("buttonBorderradius", parseInt(sampleButton.style.borderRadius || "0"), 50);
 
   const size = parseInt(icon?.style.width || "0");
-  set("buttonIconSizeradious", size, 50);
+  set("buttonIconSizeradius", size, 50);
 
   const transformMatch = icon?.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
   if (transformMatch) {
     const rotation = parseFloat(transformMatch[1]);
     const percent = ((rotation + 180) / 360) * 100;
-    document.getElementById("buttoniconRotationradiousCount").textContent = `${rotation}deg`;
-    document.getElementById("buttonIconRotationradiousBullet").style.left = `${percent}%`;
-    document.getElementById("buttonIconRotationradiousFill").style.left = `${Math.min(percent, 50)}%`;
-    document.getElementById("buttonIconRotationradiousFill").style.width = `${Math.abs(percent - 50)}%`;
+    document.getElementById("buttoniconRotationradiusCount").textContent = `${rotation}deg`;
+    document.getElementById("buttonIconRotationradiusBullet").style.left = `${percent}%`;
+    document.getElementById("buttonIconRotationradiusFill").style.left = `${Math.min(percent, 50)}%`;
+    document.getElementById("buttonIconRotationradiusFill").style.width = `${Math.abs(percent - 50)}%`;
   }
 
   const spacing = {
@@ -1160,9 +1160,9 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   };
   const spacingValue = Math.max(...Object.values(spacing));
   const spacingPercent = getPercent(spacingValue, 30);
-  document.getElementById("buttoniconSpacingradiousCount").textContent = `${spacingValue}px`;
-  document.getElementById("buttonIconSpacingradiousFill").style.width = spacingPercent;
-  document.getElementById("buttonIconSpacingradiousBullet").style.left = spacingPercent;
+  document.getElementById("buttoniconSpacingradiusCount").textContent = `${spacingValue}px`;
+  document.getElementById("buttonIconSpacingradiusFill").style.width = spacingPercent;
+  document.getElementById("buttonIconSpacingradiusBullet").style.left = spacingPercent;
   ["Top", "Bottom", "Left", "Right"].forEach(dir => {
     const el = document.getElementById(`buttonIconSpacing${dir}`);
     if (el) el.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);

@@ -360,16 +360,16 @@ export function WidgetButtonNormalState() {
                      </div>
                      <div
                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                        <p id="buttoniconRotationradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                        <p id="buttoniconRotationradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                             <span id="buttoniconRotationIncrease" class="sc-arrow-placeholder"></span>
                            <span id="buttoniconRotationDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                         </div>
                      </div>
                   </div>
-                  <div id="buttonIconRotationradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-                     <div id="buttonIconRotationradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                     <div id="buttonIconRotationradiousBullet"
+                  <div id="buttonIconRotationradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                     <div id="buttonIconRotationradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                     <div id="buttonIconRotationradiusBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                      </div>
                   </div>
@@ -394,16 +394,16 @@ export function WidgetButtonNormalState() {
                   </div>
                   <div
                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                     <p id="buttoniconSizeradiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                     <p id="buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                      <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                          <span id="buttoniconSizeIncrease" class="sc-arrow-placeholder"></span>
                          <span id="buttoniconSizeDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                      </div>
                   </div>
                </div>
-               <div id="buttonIconSizeradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-                  <div id="buttonIconSizeradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                  <div id="buttonIconSizeradiousBullet"
+               <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                  <div id="buttonIconSizeradiusBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                   </div>
                </div>
@@ -439,9 +439,9 @@ export function WidgetButtonNormalState() {
                   </div>
                </div>
             </div>
-            <div id="buttonIconSpacingradiousField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="buttonIconSpacingradiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="buttonIconSpacingradiousBullet"
+            <div id="buttonIconSpacingradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="buttonIconSpacingradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="buttonIconSpacingradiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -620,7 +620,7 @@ export function WidgetButtonNormalState() {
                      <div class="  sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
-                              Border Radious
+                              Border radius
                            </p>
                            <div
                               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
@@ -631,16 +631,16 @@ export function WidgetButtonNormalState() {
                         </div>
                         <div
                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-                           <p id="buttonBorderRadiousCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                           <p id="buttonBorderradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                               <span  id="buttonBorderRadiousIncrease" class="sc-arrow-placeholder"></span>
-                               <span id="buttonBorderRadiousDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                               <span  id="buttonBorderradiusIncrease" class="sc-arrow-placeholder"></span>
+                               <span id="buttonBorderradiusDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                            </div>
                         </div>
                      </div>
-                    <div id="buttonBorderRadiousField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
-                   <div id="buttonBorderRadiousFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-                   <div id="buttonBorderRadiousBullet"
+                    <div id="buttonBorderradiusField" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+                   <div id="buttonBorderradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                   <div id="buttonBorderradiusBullet"
                        class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                    </div>
                    </div>

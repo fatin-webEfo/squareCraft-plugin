@@ -56,7 +56,7 @@
   all: unset;
 }
 
-#buttonIconRotationradiousField {
+#buttonIconRotationradiusField {
   position: relative !important;
 }
 
@@ -86,7 +86,7 @@
   width: 250px !important;
 }
 
-#buttonIconRotationradiousFill {
+#buttonIconRotationradiusFill {
   position: absolute !important;
   top: 0 !important;
   height: 100% !important;
