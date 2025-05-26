@@ -52,6 +52,7 @@ fontFamilyOptions.appendChild(loader);
     }
   }
 
+  
   function setupFontScrollLoader() {
     fontFamilyOptions.addEventListener("scroll", () => {
       if (
