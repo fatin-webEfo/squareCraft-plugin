@@ -1693,7 +1693,7 @@
 
 
 .sc-scrollBar::-webkit-scrollbar {
-  width: 3px !important;
+  width: 1px !important;
 }
 
 .sc-scrollBar::-webkit-scrollbar-track {
