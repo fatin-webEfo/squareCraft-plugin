@@ -36,7 +36,6 @@ document.head.insertAdjacentHTML("beforeend", `
 `);
 fontFamilyOptions.appendChild(loader);
 
-
   fetchGoogleFonts();
   setupFontScrollLoader();
 
