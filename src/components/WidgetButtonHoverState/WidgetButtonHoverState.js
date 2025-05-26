@@ -205,7 +205,7 @@ export function WidgetButtonHoverState() {
                </div>
           
                <div id="hover-bordersSection" class=" sc-mt-3 sc-hidden">
-                  <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
+                  <div class=" sc-flex sc-items-center sc-justify-between">
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                            Border
