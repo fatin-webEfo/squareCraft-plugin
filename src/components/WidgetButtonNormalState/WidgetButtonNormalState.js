@@ -14,7 +14,7 @@ export function WidgetButtonNormalState() {
                   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                 
                   <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
-                  <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                  <img id="button-font-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
             </div>
@@ -162,7 +162,7 @@ export function WidgetButtonNormalState() {
             <div id="colorButton"
                class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
-               <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+               <img id="button-color-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180" alt="">
             </div>
             <div id="colorSection" class="sc-mt-2 sc-hidden">
@@ -236,7 +236,7 @@ export function WidgetButtonNormalState() {
                <div id="iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
-                  <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                  <img id="button-icon-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
       
@@ -451,7 +451,7 @@ export function WidgetButtonNormalState() {
                <div id="bordersButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
-                  <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                  <img id="button-border-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
 
@@ -654,7 +654,7 @@ export function WidgetButtonNormalState() {
             <div id="shadowsButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
-                  <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                  <img id="button-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                      class="sc-rotate-180" alt="">
                </div>
                <div id="shadowsSection" class="sc-hidden">
