@@ -949,9 +949,10 @@
   border-left-width: 0 !important;
   border-right-width: 0 !important;
   border-bottom-width: 0 !important;
- height: 0.5px !important;
+  height: 0.5px !important;
 }
-.sc-border-t-dashed{
+
+.sc-border-t-dashed {
   border-top-style: dashed !important;
   border-left-width: 0 !important;
   border-right-width: 0 !important;
@@ -1272,7 +1273,7 @@
 }
 
 
-.sc-px-9px{
+.sc-px-9px {
   padding-left: 9px !important;
   padding-right: 9px !important;
 }
@@ -1319,8 +1320,8 @@
   background-color: #F2F2F2 !important;
 }
 
-.sc-rounded-6px {
-  border-radius: 6px !important;
+.sc-rounded-4px {
+  border-radius: 4px !important;
 }
 
 .sc-rounded-lg {
@@ -1387,9 +1388,11 @@
 .sc-bg-color-gray {
   background-color: #747272 !important;
 }
-.sc-p-5px{
+
+.sc-p-5px {
   padding: 5px !important;
 }
+
 .sc-p-1px {
   padding: 1px !important;
 }
@@ -1695,29 +1698,29 @@
 }
 
 
-  .sc-scrollBar::-webkit-scrollbar {
-    width: 1px !important;
-  }
+.sc-scrollBar::-webkit-scrollbar {
+  width: 1px !important;
+}
 
-  .sc-scrollBar::-webkit-scrollbar-track {
-    background: #222 !important;
-    border-radius: 100% !important;
-  }
+.sc-scrollBar::-webkit-scrollbar-track {
+  background: #222 !important;
+  border-radius: 100% !important;
+}
 
-  .sc-scrollBar::-webkit-scrollbar-thumb {
-    background: #ff7f00 !important;
-    border-radius: 100% !important;
-  }
+.sc-scrollBar::-webkit-scrollbar-thumb {
+  background: #ff7f00 !important;
+  border-radius: 100% !important;
+}
 
-  .sc-scrollBar::-webkit-scrollbar-thumb:hover {
-    background: #e67600 !important;
-    border-radius: 100%;
-  }
+.sc-scrollBar::-webkit-scrollbar-thumb:hover {
+  background: #e67600 !important;
+  border-radius: 100%;
+}
 
-  .sc-scrollBar {
-    scrollbar-width:  thin !important;
-    scrollbar-color: #ff7f00 #222 !important;
-  }
+.sc-scrollBar {
+  scrollbar-width: thin !important;
+  scrollbar-color: #ff7f00 #222 !important;
+}
 
 .sc-loader {
   width: 24px !important;
@@ -1729,9 +1732,11 @@
   margin: 10px auto !important;
   display: none !important;
 }
-.sc-border-5a5959{
+
+.sc-border-5a5959 {
   border: 1px #5a5959 !important;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg) !important;

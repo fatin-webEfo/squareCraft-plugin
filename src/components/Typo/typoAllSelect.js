@@ -4,7 +4,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
      class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
 
      <div id="scFontSelect"
-        class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+        class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
         <select class=" sc-font-size-12 sc-roboto sc-font-light"
            style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
            <option value="" selected disabled hidden>Select Font</option>
@@ -16,12 +16,12 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
         </div>
      </div>
      <div
-        class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
+        class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center ">
         <div class="sc-flex sc-text-color-white sc-items-center ">
            <div
-              class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center  ">
+              class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center  ">
               <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center  
-                    sc-rounded-6px 
+                    sc-rounded-4px 
                     ">
                  <input type="text" id="scFontSizeInput" value="16" class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white 
                        sc-bg-transparent  sc-universal sc-font-light">
@@ -39,7 +39,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                  </div>
               </div>
               <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-                    sc-rounded-6px sc-border sc-border-585858 sc-absolute 
+                    sc-rounded-4px sc-border sc-border-585858 sc-absolute 
                     sc-mt-1">
                  ${fontSizes?.map((size) => `
                  <div
@@ -56,7 +56,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
      <div
         class="sc-mt-2  sc-grid sc-grid-cols-12 sc-gap-2 ">
         <div
-           class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center ">
+           class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center ">
            <div >
               <p
                  class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
@@ -68,7 +68,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
            </div>
         </div>
 
-        <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-6px">
+        <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-4px">
            <p id="textcolorHtml" class="sc-font-size-12 sc-roboto sc-universal">Select</p>
            <div id="textColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
         </div>
@@ -115,10 +115,10 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
 
 
         <div class="sc-flex sc-text-color-white sc-px-1 
-              sc-rounded-6px sc-border sc-border-solid sc-border-585858
+              sc-rounded-4px sc-border sc-border-solid sc-border-585858
               sc-items-center ">
            <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
-                 sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
+                 sc-border-solid sc-border-3d3d3d  sc-rounded-4px 
                  ">
               <input type="text" id="scLetterSpacingInput" value="15px"
                  class="sc-Letter-spacing-input sc-font-light sc-font-size-12 sc-text-color-white 
@@ -130,7 +130,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
               </div>
            </div>
            <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-                 sc-rounded-6px sc-border sc-border-585858 sc-absolute 
+                 sc-rounded-4px sc-border sc-border-585858 sc-absolute 
                  sc-mt-1">
               ${LetterSpacing?.map((gap) => `
               <div
@@ -141,10 +141,10 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
            </div>
         </div>
         <div class="sc-flex sc-text-color-white sc-px-1 
-        sc-rounded-6px sc-border sc-border-solid sc-border-585858 
+        sc-rounded-4px sc-border sc-border-solid sc-border-585858 
         sc-items-center ">
      <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
-           sc-border-solid sc-border-3d3d3d  sc-rounded-6px 
+           sc-border-solid sc-border-3d3d3d  sc-rounded-4px 
            ">
         <input type="text" id="scLetterSpacingInput" value="15px"
            class="sc-Letter-spacing-input sc-font-light sc-font-size-12 sc-text-color-white 
@@ -156,7 +156,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
         </div>
      </div>
      <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-           sc-rounded-6px sc-border sc-border-585858 sc-absolute 
+           sc-rounded-4px sc-border sc-border-585858 sc-absolute 
            sc-mt-1">
         ${LetterSpacing?.map(
       (gap) => `
@@ -199,7 +199,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
 
      <div class="sc-mt-4 ">
         <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Text Highlight</p>
-        <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+        <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
            <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
            <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
         </div>

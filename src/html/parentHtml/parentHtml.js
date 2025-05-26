@@ -36,7 +36,7 @@ export function parentHtml() {
                 </div>
 
                 <div
-                    class="sc-rounded-6px sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+                    class="sc-rounded-4px sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
                     <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center"><img loading="lazy"
                                 src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.svg" alt="">
@@ -67,10 +67,10 @@ export function parentHtml() {
                         <div
                             class="sc-flex sc-px-2 sc-w-full sc-items-center sc-justify-between sc-gap-2">
                             <div
-                                class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1px sc-rounded-6px sc-text-color-white sc-justify-center">
+                                class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1px sc-rounded-4px sc-text-color-white sc-justify-center">
                                 Normal</div>
                             <div
-                                class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1px sc-rounded-6px sc-items-center sc-justify-center">
+                                class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1px sc-rounded-4px sc-items-center sc-justify-center">
                                 Hover</div>
                         </div>
                         <div class="sc-px-4">
@@ -84,7 +84,7 @@ export function parentHtml() {
                     </div>
 
                     <div class="sc-mt-2 sc-grid sc-w-full sc-grid-cols-12 sc-gap-2 sc-px-2">
-                        <div id="sc-font-family" class="sc-flex sc-col-span-8 sc-cursor-pointer sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center sc-h-full">
+                        <div id="sc-font-family" class="sc-flex sc-col-span-8 sc-cursor-pointer sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center sc-h-full">
                             <div class="sc-bg-494949 sc-w-full sc-px-2 sc-py-1px ">
                                 <p class="sc-font-size-12 sc-font-light">Sf Pro sans</p>
                             </div>
@@ -94,7 +94,7 @@ export function parentHtml() {
 
                             </div>
                         </div>
-                        <div  id="font-size" class="sc-flex sc-relative sc-cursor-pointer sc-relative sc-justify-between sc-col-span-4  sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center sc-h-full">
+                        <div  id="font-size" class="sc-flex sc-relative sc-cursor-pointer sc-relative sc-justify-between sc-col-span-4  sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center sc-h-full">
                            <div class="sc-flex sc-items-center sc-w-full">
                             <div class=" sc-bg-494949  sc-px-2 sc-w-full sc-py-1px ">
                                 <p id="font-size-number" class="sc-font-size-12  sc-font-light">14</p>
@@ -105,7 +105,7 @@ export function parentHtml() {
                             </div>
                            </div>
                             <div class="sc-bg-3f3f3f sc-px-1" style="height: 27px; padding: 0 8px;">
-                                <img class=" sc-rounded-6px sc-rotate-180" width="12px"
+                                <img class=" sc-rounded-4px sc-rotate-180" width="12px"
                                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
 
                             </div>
@@ -114,7 +114,7 @@ export function parentHtml() {
 
 
                     <div class="sc-mt-2 sc-grid sc-px-2 sc-w-full sc-grid-cols-12 sc-gap-2 ">
-                        <div id="sc-font-varient" class="sc-cursor-pointer sc-flex sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-6px sc-items-center sc-h-full">
+                        <div id="sc-font-varient" class="sc-cursor-pointer sc-flex sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center sc-h-full">
                             <div class="sc-bg-494949 sc-px-2 sc-w-full  sc-py-1px ">
                                 <p  class="sc-font-size-12  sc-font-light">Regular</p>
                             </div>
@@ -124,9 +124,9 @@ export function parentHtml() {
 
                             </div>
                         </div>
-                        <div class="sc-flex sc-w-full  sc-justify-between sc-col-span-4  sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center sc-h-full">
+                        <div class="sc-flex sc-w-full  sc-justify-between sc-col-span-4  sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center sc-h-full">
                           <div class="sc-flex  sc-mx-auto sc-items-center sc-justify-center">
-                            <img class=" sc-rounded-6px sc-rotate-180 sc-w-full " 
+                            <img class=" sc-rounded-4px sc-rotate-180 sc-w-full " 
                             src="https://fatin-webefo.github.io/squareCraft-plugin/public/dot.svg"  alt="">
                           </div>
                           <div class="sc-border-r   sc-border-585858 sc-h-full"></div>
@@ -135,12 +135,12 @@ export function parentHtml() {
                             </div>
                             <div class="sc-border-r   sc-border-585858 sc-h-full"></div>
                             
-                            <img class=" sc-rounded-6px sc-rotate-180 sc-flex sc-mx-auto sc-items-center sc-justify-center" width="12px"
+                            <img class=" sc-rounded-4px sc-rotate-180 sc-flex sc-mx-auto sc-items-center sc-justify-center" width="12px"
                             src="https://fatin-webefo.github.io/squareCraft-plugin/public/gap.svg" alt="">
                         </div>
                     </div>
 
-<div id="sc-bg-color-picker" class="sc-bg-color-2c2c2c sc-mt-2 sc-rounded-6px  sc-border sc-border-solid sc-border-585858 sc-w-full" style="z-index: 9999; position: relative;">
+<div id="sc-bg-color-picker" class="sc-bg-color-2c2c2c sc-mt-2 sc-rounded-4px  sc-border sc-border-solid sc-border-585858 sc-w-full" style="z-index: 9999; position: relative;">
     <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
         <div class="sc-flex sc-gap-2 sc-items-center">
             <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/color-picker.svg" alt="">

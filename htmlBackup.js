@@ -33,7 +33,7 @@ export function html() {
          </div>
       </div>
       <div
-         class="sc-rounded-6px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+         class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
                <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/T.svg" alt="">
@@ -54,11 +54,11 @@ export function html() {
          <div class="sc-mt-2">
             <div class="sc-flex sc-roboto sc-px-2  sc-items-center sc-justify-between sc-gap-2">
                <div
-                  class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+                  class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
                   Normal
                </div>
                <div
-                  class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+                  class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
                   Hover
                </div>
             </div>
@@ -77,7 +77,7 @@ export function html() {
                <div class="sc-flex  sc-mt-2 sc-px-2">
 
                   <div id="heading1"
-                     class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <div class="sc-active-bar sc-rounded-l"></div>
                      <p class="sc-roboto  sc-universal sc-font-size-12 ">Heading-1</p>
                      <img id="heading1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
@@ -92,7 +92,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading2"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Heading-2</p>
                      <img id="heading2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -104,7 +104,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading3"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Heading-3</p>
                      <img id="heading3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -116,7 +116,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="heading4"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Heading-4</p>
                      <img id="heading4Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -128,7 +128,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph1"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Paragraph-1</p>
                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -140,7 +140,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph2"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Paragraph-2</p>
                      <img id="paragraph2Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -152,7 +152,7 @@ export function html() {
             <div>
                <div class="sc-flex sc-mt-2 sc-px-2">
                   <div id="paragraph3"
-                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
+                     class="sc-bg-3f3f3f sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                      <p class="sc-roboto sc-universal sc-font-size-12 ">Paragraph-3</p>
                      <img id="paragraph3Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                         class="sc-rotate-180" alt="">
@@ -168,11 +168,11 @@ export function html() {
       <div class="sc-mt-4">
          <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
             <div id="publish"
-               class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+               class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
                Publish
             </div>
             <div
-               class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+               class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
                Reset
             </div>
          </div>

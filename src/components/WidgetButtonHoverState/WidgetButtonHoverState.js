@@ -2,7 +2,7 @@ export function WidgetButtonHoverState() {
    return `
      <div id="ButtonHoverState" class="sc-mt-4 sc-hidden  sc-roboto sc-font-light  sc-px-2">
             <div id="hover-colorButton"
-               class="sc-bg-3f3f3f sc-mt-4 sc-items-center sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-4 sc-items-center sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
                <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
             </div>
@@ -12,13 +12,13 @@ export function WidgetButtonHoverState() {
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">background Color
                   </p>
                   <div class="sc-col-span-5 sc-mt-2 sc-z-99999 sc-relative ">
-                     <div class="sc-flex sc-w-30 sc-justify-between sc-items-center sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-rounded-6px sc-py-0_5">
+                     <div class="sc-flex sc-w-30 sc-justify-between sc-items-center sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-rounded-4px sc-py-0_5">
                      <p id="hover-buttonFontColorCode" class="sc-font-size-12 sc-roboto sc-universal">Select</p>
                      <div id="hover-buttonFontColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                      </div>
                   
                      <div id="hover-button-font-color-palette"
-                     class="sc-absolute sc-z-99999 sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px">
+                     class="sc-absolute sc-z-99999 sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-4px">
                      <div class="sc-button-fontcolor-arrow"></div>
                   
                      <div class="sc-flex sc-items-center sc-justify-between">
@@ -52,7 +52,7 @@ export function WidgetButtonHoverState() {
                         </div>
                      </div>
                   
-                     <div class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                     <div class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545">
                         <p id="hover-button-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                         <p id="hover-button-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
                      </div>
@@ -63,7 +63,7 @@ export function WidgetButtonHoverState() {
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Text Color
                   </p>
                   <div
-                     class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+                     class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
                      <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
                      <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                   </div>
@@ -73,7 +73,7 @@ export function WidgetButtonHoverState() {
           
           
                <div id="hover-iconButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-items-center sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-items-center sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
                   <span class="sc-arrow-placeholder sc-flex sc-items-center sc-w-10 sc-justify-center sc-rotate-180"></span>
                </div>
@@ -159,7 +159,7 @@ export function WidgetButtonHoverState() {
                <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Icon Color
                </p>
                <div
-                  class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+                  class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
                   <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">#363544</p>
                   <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                </div>
@@ -199,7 +199,7 @@ export function WidgetButtonHoverState() {
           
             <div>
                <div id="hover-bordersButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                   <span class="sc-arrow-placeholder sc-w-10 sc-flex sc-items-center sc-justify-center sc-rotate-180"></span>
                </div>
@@ -236,33 +236,33 @@ export function WidgetButtonHoverState() {
                   <div class="sc-grid sc-grid-cols-12 sc-mt-3">
                      <div></div>
                      <div style="padding: 2px 0px;"
-                        class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-6px">
+                        class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
                         <div id="hover-buttonBorderAll"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
                               alt="all-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">All</p>
                         </div>
                         <div id="hover-buttonBorderTop"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
                               alt="top-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Top</p>
                         </div>
                         <div id="hover-buttonBorderBottom"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg"
                               loading="lazy" alt="bottom-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Bottom</p>
                         </div>
                         <div id="hover-buttonBorderLeft"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg"
                               loading="lazy" alt="left-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Left</p>
                         </div>
                         <div id="hover-buttonBorderRight"
-                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-6px sc-items-center sc-gap-1">
+                           class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg"
                               loading="lazy" alt="right-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
@@ -278,13 +278,13 @@ export function WidgetButtonHoverState() {
                         </p>
           
                         <div
-                           class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-6px">
+                           class="sc-py-0_5 sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
                            <div class="sc-square-6 sc-border-colors sc-cursor-pointer">
                            </div>
           
                            <div id="hover-color-palette"
-                              class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-6px ">
+                              class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-4px ">
                               <div class="sc-color-arrow"></div>
                               <div class="sc-flex sc-items-center sc-justify-between">
                                  <div id="hover-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1">
@@ -321,7 +321,7 @@ export function WidgetButtonHoverState() {
                                  </div>
                               </div>
                               <div
-                                 class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-6px sc-bg-454545">
+                                 class="sc-flex sc-justify-between sc-mt-3 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545">
                                  <p id="hover-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select
                                  </p>
                                  <p id="hover-color-transparency-count"
@@ -337,25 +337,25 @@ export function WidgetButtonHoverState() {
                            Style
                         </p>
                         <div style="padding: 3px 0px;"
-                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-6px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
+                           class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-3 sc-rounded-4px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
           
           
-                           <div id="hover-buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-6px ">
+                           <div id="hover-buttonBorderTypeSolid" class="sc-py-4px  sc-w-full sc-rounded-4px ">
                               <p style="padding: 2px 0px;" class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">
                                  Solid
                               </p>
                            </div>
           
           
-                           <div id="hover-buttonBorderTypeDashed" class="sc-py-4px  sc-w-full sc-rounded-6px ">
+                           <div id="hover-buttonBorderTypeDashed" class="sc-py-4px  sc-w-full sc-rounded-4px ">
                               <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  ">
                                  Dashed
                               </p>
                            </div>
-                           <div id="hover-buttonBorderTypeDotted" class="sc-py-4px  sc-w-full sc-rounded-6px">
+                           <div id="hover-buttonBorderTypeDotted" class="sc-py-4px  sc-w-full sc-rounded-4px">
           
                               <p 
-                                 class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-6px">
+                                 class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-4px">
                                  Dotted</p>
                            </div>
           
@@ -399,7 +399,7 @@ export function WidgetButtonHoverState() {
           
           
             <div id="hover-shadowsButton"
-                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-flex sc-flex sc-items-center sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-flex sc-flex sc-items-center sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
                   <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
                </div>
@@ -467,7 +467,7 @@ export function WidgetButtonHoverState() {
                      </p>
                      <div class="sc-flex sc-mt-2">
                         <div
-                           class="sc-py-0_5  sc-bg-3f3f3f   sc-flex sc-gap-5 sc-items-center sc-px-1_5 sc-rounded-6px">
+                           class="sc-py-0_5  sc-bg-3f3f3f   sc-flex sc-gap-5 sc-items-center sc-px-1_5 sc-rounded-4px">
                            <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
                            <div class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
                         </div>
@@ -535,7 +535,7 @@ export function WidgetButtonHoverState() {
                   </div>
                </div>
                <div id="hover-buttonEffect"
-               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-6px">
+               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Button Effect</p>
               <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
             </div>
@@ -550,7 +550,7 @@ export function WidgetButtonHoverState() {
                   <p id="hover-buttonTransitionTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
-                  <div id="hover-buttonTransitionDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-99999">
+                  <div id="hover-buttonTransitionDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-99999">
                   <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
@@ -573,7 +573,7 @@ export function WidgetButtonHoverState() {
                   <p id="hover-buttonDurationLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
-                  <div id="hover-buttonDurationDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-[99999]">
+                  <div id="hover-buttonDurationDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-[99999]">
                   <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
@@ -599,7 +599,7 @@ export function WidgetButtonHoverState() {
                   <p id="hover-buttonDelayLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                   </div>   
                
-                  <div id="hover-buttonDelayDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-50">
+                  <div id="hover-buttonDelayDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-50">
                   <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
                   <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
@@ -626,7 +626,7 @@ export function WidgetButtonHoverState() {
                <p id="hover-buttonTransformTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
                </div>   
             
-               <div id="hover-buttonTransformDropdown" class="sc-absolute sc-rounded-6px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-[99999]">
+               <div id="hover-buttonTransformDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-[99999]">
                <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateX">TranslateX</div>
                <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateY">TranslateY</div>

@@ -30,7 +30,7 @@ export function html() {
       </div>
    </div>
    <div
-      class="sc-rounded-6px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+      class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
   
       ${WidgetTypoSection("typoSection")}
       ${WidgetImageSection("imageSection")}
@@ -40,11 +40,11 @@ export function html() {
    <div class="sc-mt-3">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
          <div id="publish"
-            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
             Publish
          </div>
          <div
-            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
             Reset
          </div>
       </div>

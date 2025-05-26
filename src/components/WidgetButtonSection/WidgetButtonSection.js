@@ -31,11 +31,11 @@ export function WidgetButtonSection() {
          <div class="sc-mt-2">
             <div class="sc-flex sc-roboto sc-px-2 sc-items-center sc-justify-between sc-gap-2">
                <div id="buttonNormalStateClick"
-                  class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-6px sc-text-color-white sc-justify-center">
+                  class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
                   Normal
                </div>
                <div id="buttonHoverStateClick"
-                  class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-6px sc-items-center sc-justify-center">
+                  class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
                   Hover
                </div>
             </div>
