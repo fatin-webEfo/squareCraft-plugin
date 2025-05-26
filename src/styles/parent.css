@@ -1712,7 +1712,7 @@
   }
 
   .sc-scrollBar {
-    scrollbar-width: none !important;
+    scrollbar-width:  0.1px !important;
     scrollbar-color: #ff7f00 #222 !important;
   }
 .sc-border-3f3f3f {
