@@ -74,7 +74,6 @@ export function initButtonSectionToggleControls() {
 
 Object.keys(sections).forEach((buttonId) => {
   const button = document.getElementById(buttonId);
-  const sectionId = sections[buttonId];
 
   button.addEventListener("click", () => {
     Object.keys(sections).forEach((otherButtonId) => {

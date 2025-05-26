@@ -15,7 +15,7 @@ export function WidgetButtonNormalState() {
                 
                   <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
                   <img id="button-font-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                     class="sc-rotate-180" alt="">
+                     class="" alt="">
                </div>
             </div>
          <div id="fontSection">
