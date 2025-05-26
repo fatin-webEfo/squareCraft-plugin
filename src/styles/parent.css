@@ -1715,6 +1715,9 @@
     scrollbar-width: none !important;
     scrollbar-color: #ff7f00 #222 !important;
   }
+.sc-border-3f3f3f {
+  border-color: #3f3f3f !important;
+}
 
 .sc-loader {
   width: 24px !important;

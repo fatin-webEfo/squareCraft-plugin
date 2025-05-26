@@ -40,7 +40,7 @@ export function WidgetButtonSection() {
                </div>
             </div>
             <div class="sc-px-4">
-               <div class="sc-h-1px sc-mt-2 sc-bg-3f3f3f"></div>
+               <div class="sc-border-t sc-border-t-dashed sc-mt-2 sc-border-3f3f3f"></div>
             </div>
          </div>
          <div class="sc-mt-2 sc-px-2 sc-flex sc-justify-between">
