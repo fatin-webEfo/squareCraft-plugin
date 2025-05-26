@@ -929,18 +929,11 @@
   height: 1px !important;
 }
 
-.sc-px-10 {
-  padding-left: 32px !important;
-  /* 40px */
-  padding-right: 32px !important;
-  /* 40px */
-}
+.sc-px-10 {padding-left: 32px !important;padding-right: 32px !important;}
 
 .sc-px-1 {
   padding-left: 4px !important;
-  /* 4px */
   padding-right: 4px !important;
-  /* 4px */
 }
 
 
