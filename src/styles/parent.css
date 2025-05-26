@@ -1715,9 +1715,6 @@
     scrollbar-width:  thin !important;
     scrollbar-color: #ff7f00 #222 !important;
   }
-.sc-border-3f3f3f {
-  border-color: #3f3f3f !important;
-}
 
 .sc-loader {
   width: 24px !important;
@@ -1729,7 +1726,9 @@
   margin: 10px auto !important;
   display: none !important;
 }
-
+.sc-border-5a5959{
+  border: 1px #5a5959 !important;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg) !important;
