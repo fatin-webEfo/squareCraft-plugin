@@ -4,7 +4,7 @@ export function WidgetButtonHoverState() {
             <div id="hover-colorButton"
                class="sc-bg-3f3f3f sc-mt-4 sc-items-center sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Color</p>
-               <span id="hover-button-color-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
+               <span id="hover-button-color-arrow" class="sc-arrow-placeholder  sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
             </div>
             <div id="hover-colorSection" class="sc-mt-3">
             <div class="sc-items-center sc-gap-3  sc-flex">
