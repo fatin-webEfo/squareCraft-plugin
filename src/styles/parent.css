@@ -929,17 +929,24 @@
   height: 1px !important;
 }
 
-.sc-px-10 {padding-left: 32px !important;padding-right: 32px !important;}
+.sc-px-10 {
+  padding-left: 32px !important;
+  /* 40px */
+  padding-right: 32px !important;
+  /* 40px */
+}
 
 .sc-px-1 {
   padding-left: 4px !important;
+  /* 4px */
   padding-right: 4px !important;
+  /* 4px */
 }
 
 
 .sc-border-t {
-  border-top-width: 0.5px !important;
- 
+  border-top-width: 0.1px !important;
+ height: 0.5px !important;
 }
 
 .sc-border-dashed {
