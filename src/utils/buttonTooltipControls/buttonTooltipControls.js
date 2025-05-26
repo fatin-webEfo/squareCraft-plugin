@@ -10,7 +10,7 @@ export function initSimpleTooltipHover() {
       el.addEventListener('mouseenter', () => {
         showTimeout = setTimeout(() => {
           tooltip.classList.add('sc-visible');
-        }, 1000); // 1 second delay
+        }, 1000); 
       });
   
       el.addEventListener('mouseleave', () => {

@@ -7,34 +7,51 @@ export function initHoverButtonSectionToggleControls() {
     "hover-buttonEffect": "hover-buttonEffectSection"
   };
 
+  const arrowMap = {
+    "hover-colorButton": "hover-button-color-arrow",
+    "hover-iconButton": "hover-button-icon-arrow",
+    "hover-bordersButton": "hover-button-border-arrow",
+    "hover-shadowsButton": "hover-button-shadow-arrow",
+    "hover-buttonEffect": "hover-button-effects-arrow"
+  };
+
   Object.keys(hoverSections).forEach((buttonId) => {
     const button = document.getElementById(buttonId);
     const sectionId = hoverSections[buttonId];
+    const arrowId = arrowMap[buttonId];
+    const arrow = document.getElementById(arrowId);
 
     if (button && document.getElementById(sectionId)) {
       button.addEventListener("click", () => {
         Object.keys(hoverSections).forEach((otherButtonId) => {
           const otherSectionId = hoverSections[otherButtonId];
           const otherSection = document.getElementById(otherSectionId);
+          const otherArrowId = arrowMap[otherButtonId];
+          const otherArrow = document.getElementById(otherArrowId);
 
-          if (otherSection) {
-            if (otherButtonId === buttonId) {
-              otherSection.classList.remove("sc-hidden");
-              otherSection.classList.add("sc-visible");
-              otherSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-            } else {
+          if (otherButtonId === buttonId) {
+            otherSection.classList.remove("sc-hidden");
+            otherSection.classList.add("sc-visible");
+            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            if (otherArrow) {
+              otherArrow.classList.remove("sc-rotate-180");
+              otherArrow.style.transition = "transform 0.3s ease";
+            }
+          } else {
+            if (otherSection) {
               otherSection.classList.add("sc-hidden");
               otherSection.classList.remove("sc-visible");
+            }
+            if (otherArrow && !otherArrow.classList.contains("sc-rotate-180")) {
+              otherArrow.classList.add("sc-rotate-180");
+              otherArrow.style.transition = "transform 0.3s ease";
             }
           }
         });
       });
     }
   });
-
 
   const durationDropdown = document.getElementById("hover-all-color-selction-bar");
   const durationSelect = document.getElementById("hover-buttonDuration Select");
@@ -59,9 +76,8 @@ export function initHoverButtonSectionToggleControls() {
       }
     });
   }
-
-
 }
+
 
 
 export function initHoverButtonEffectDropdowns() {

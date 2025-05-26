@@ -75,7 +75,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-iconButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-items-center sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Icon</p>
-                  <span class="sc-arrow-placeholder sc-flex sc-items-center sc-w-10 sc-justify-center sc-rotate-180"></span>
+                  <span id="hover-button-icon-arrow" class="sc-arrow-placeholder sc-flex sc-items-center sc-w-10 sc-justify-center sc-rotate-180"></span>
                </div>
           
             <div id="hover-iconSection" class="sc-mt-3  sc-hidden">
@@ -201,7 +201,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-bordersButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
-                  <span class="sc-arrow-placeholder sc-w-10 sc-flex sc-items-center sc-justify-center sc-rotate-180"></span>
+                  <span id="hover-button-border-arrow" class="sc-arrow-placeholder sc-w-10 sc-flex sc-items-center sc-justify-center sc-rotate-180"></span>
                </div>
           
                <div id="hover-bordersSection" class=" sc-mt-3 sc-hidden">
@@ -401,7 +401,7 @@ export function WidgetButtonHoverState() {
             <div id="hover-shadowsButton"
                   class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-flex sc-flex sc-items-center sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                   <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
-                  <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
+                  <span id="hover-button-shadow-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
                </div>
                <div id="hover-shadowsSection" class="sc-hidden">
                   <div class="sc-flex sc-gap-2 sc-items-center sc-mt-3">
@@ -537,7 +537,7 @@ export function WidgetButtonHoverState() {
                <div id="hover-buttonEffect"
                class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                <p class="sc-roboto  sc-universal sc-font-size-14">Button Effect</p>
-              <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
+              <span id="hover-button-effects-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
             </div>
 
            <div id="hover-buttonEffectSection" class="sc-mt-4 sc-hidden">
