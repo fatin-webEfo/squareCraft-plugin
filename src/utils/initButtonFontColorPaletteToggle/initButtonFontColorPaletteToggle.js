@@ -108,32 +108,33 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
 
-   function syncBulletWithCanvasColor() {
-  const canvas = selectorField.querySelector("canvas");
-  if (!canvas) {
-    requestAnimationFrame(syncBulletWithCanvasColor);
-    return;
-  }
+    function syncBulletWithCanvasColor() {
+      const canvas = selectorField.querySelector("canvas");
+      if (!canvas) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
 
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
-  const bulletRect = bullet.getBoundingClientRect();
-  const fieldRect = selectorField.getBoundingClientRect();
-  const offsetX = bulletRect.left - fieldRect.left;
-  const offsetY = bulletRect.top - fieldRect.top;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const bulletRect = bullet.getBoundingClientRect();
+      const fieldRect = selectorField.getBoundingClientRect();
+      const offsetX = bulletRect.left - fieldRect.left;
 
-  const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+      const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
 
-  const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-  colorCode.textContent = rgba;
-  if (palette) palette.style.backgroundColor = rgba;
-  applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
 
-  const transRect = transparencyField.getBoundingClientRect();
-  const transparencyOffsetY = Math.round((1 - currentTransparency / 100) * transRect.height);
-  transparencyBullet.style.top = `${transparencyOffsetY}px`;
-  transparencyCount.textContent = `${currentTransparency}%`;
-}
+      if (!isValidColor) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
 
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
+      if (palette) palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    }
     requestAnimationFrame(syncBulletWithCanvasColor);
     const rect = transparencyField.getBoundingClientRect();
     transparencyBullet.style.top = `${offsetY}px`;
@@ -405,33 +406,58 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     swatch.style.borderRadius = "6px";
     swatch.title = cleanColor;
 
-  swatch.onclick = () => {
-  const color = swatch.style.backgroundColor;
+    swatch.onclick = () => {
+      const color = swatch.style.backgroundColor;
 
-  updateSelectorField(color);
-  console.log(`🎯 Swatch clicked: ${color}`);
+      updateSelectorField(color);
+      console.log(`🎯 Swatch clicked: ${color}`);
 
-  if (allColorField && allColorBullet) {
-    const rect = allColorField.getBoundingClientRect();
-    const hue = getHueFromColorString(color);
-    const huePercentage = hue / 360;
-    const bulletTop = huePercentage * rect.height;
-    allColorBullet.style.top = `${bulletTop}px`;
-    dynamicHue = hue;
-    updateTransparencyField(dynamicHue);
-  }
+      if (allColorField && allColorBullet) {
+        const rect = allColorField.getBoundingClientRect();
+        const huePercentage = dynamicHue / 360;
+        const bulletTop = huePercentage * rect.height;
+        allColorBullet.style.top = `${bulletTop}px`;
+      }
 
- requestAnimationFrame(() => {
-  const fieldRect = selectorField.getBoundingClientRect();
-  const centerX = Math.round(fieldRect.width * 0.5);
-  const centerY = Math.round(fieldRect.height * 0.5);
+      applyButtonBackgroundColor(color, currentTransparency / 100);
 
-  moveBullet(centerX, centerY);
-});
+      requestAnimationFrame(() => {
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
 
-};
+        let bestMatch = { x: 0, y: 0, diff: Infinity };
+
+        const [cr, cg, cb] = color
+          .replace(/[^\d,]/g, "")
+          .split(",")
+          .map(n => parseInt(n.trim()));
+
+        for (let y = 0; y < height; y += 2) {
+          for (let x = 0; x < width; x += 2) {
+            const data = ctx.getImageData(x, y, 1, 1).data;
+            const diff = Math.abs(data[0] - cr) + Math.abs(data[1] - cg) + Math.abs(data[2] - cb);
+            if (diff < bestMatch.diff) {
+              bestMatch = { x, y, diff };
+              if (diff <= 3) break;
+            }
+          }
+        }
+
+        moveBullet(bestMatch.x, bestMatch.y);
+        if (transparencyBullet && transparencyField) {
+          transparencyBullet.style.top = `0px`;
+        }
 
 
+      });
+      const rect = transparencyField.getBoundingClientRect();
+      const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+      transparencyBullet.style.top = `${offsetY}px`;
+      transparencyCount.textContent = `${currentTransparency}%`;
+
+    };
 
     container.appendChild(swatch);
 
