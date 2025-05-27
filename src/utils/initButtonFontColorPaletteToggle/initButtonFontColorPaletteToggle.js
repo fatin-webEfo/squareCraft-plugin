@@ -138,18 +138,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   }
 
-if (selectedElement && typeof selectedElement === "function") {
-  const currentEl = selectedElement();
-  if (currentEl) {
-    const button = currentEl.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-    if (button) {
-      const computedBg = getComputedStyle(button).backgroundColor;
-      if (palette) palette.style.backgroundColor = computedBg;
-      colorCode.textContent = computedBg;
-      updateSelectorField(computedBg); 
-    }
-  }
-}
+
 
 
   function applyButtonBackgroundColor(color, alpha = 1) {
