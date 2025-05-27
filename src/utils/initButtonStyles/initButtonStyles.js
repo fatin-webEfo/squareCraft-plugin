@@ -90,7 +90,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
       div.style.fontFamily = `"${family}", sans-serif`;
 
       div.addEventListener("click", async () => {
-        const selectedElement = getSelectedElement?.(); 
+        const selectedElement = getSelectedElement?.();
         if (!selectedElement) return;
 
         const label = document.getElementById("font-name");
@@ -311,10 +311,27 @@ export function initButtonStyles(selectedButtonElement) {
           transformButton.classList.remove("sc-inActiveTab-border");
           transformButton.classList.add("sc-activeTab-border");
 
-          spans.forEach(span => {
-            span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-            span.classList.add(activeClass);
-          });
+          const transformValueMap = {
+            scButtonAllCapital: "uppercase",
+            scButtonAllSmall: "lowercase",
+            scButtonFirstCapital: "capitalize"
+          };
+          const value = transformValueMap[id];
+
+          const styleId = `sc-transform-style-${typeClass}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
+          }
+          styleTag.innerHTML = `
+  .${typeClass} span,
+  .${typeClass} .sqs-add-to-cart-button-inner {
+    text-transform: ${value} !important;
+  }
+`;
+
         }
       };
     }
