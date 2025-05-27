@@ -1187,8 +1187,7 @@
 }
 .sc-gradiant-border {
   position: relative;
-  border: 2px solid transparent !important;
-  border-radius: 9999px !important;
+  border: 0.2px solid transparent !important;
   background:
     linear-gradient(#2c2c2c, #2c2c2c) padding-box,
     conic-gradient(from 0deg, #F08234, #2c2c2c, #F08234) border-box !important;
