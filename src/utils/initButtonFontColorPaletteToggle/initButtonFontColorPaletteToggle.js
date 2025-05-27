@@ -105,61 +105,46 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
 
-  function updateSelectorField(hueOrColor) {
-    let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
-    if (!hue) {
-      hue = getHueFromColorString(hueOrColor);
-    }
-
-    dynamicHue = hue;
-    setSelectorCanvas(hue);
-    updateTransparencyField(dynamicHue);
-    selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
-    selectorField.style.backgroundBlendMode = "multiply";
-
-   function syncBulletWithCanvasColor() {
-  const canvas = selectorField.querySelector("canvas");
-  if (!canvas) {
-    requestAnimationFrame(syncBulletWithCanvasColor);
-    return;
+function updateSelectorField(hueOrColor) {
+  let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
+  if (!hue) {
+    hue = getHueFromColorString(hueOrColor);
   }
 
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  dynamicHue = hue;
+  updateTransparencyField(dynamicHue);
+  selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
+  selectorField.style.backgroundBlendMode = "multiply";
 
-  let retries = 0;
-  const maxRetries = 10;
+  selectorField.innerHTML = "";
 
-  function waitUntilPainted() {
-    const testPixel = ctx.getImageData(1, 1, 1, 1).data;
-    const isPainted = testPixel[0] + testPixel[1] + testPixel[2] > 10;
+  const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+  canvas.style.position = "absolute";
+  canvas.style.top = "0";
+  canvas.style.left = "0";
+  canvas.style.zIndex = "0";
 
-    if (!isPainted && retries < maxRetries) {
-      retries++;
-      requestAnimationFrame(waitUntilPainted);
-      return;
-    }
+  selectorField.style.position = "relative";
+  selectorField.appendChild(canvas);
+  selectorField.appendChild(bullet);
 
-    const bulletRect = bullet.getBoundingClientRect();
+  setTimeout(() => {
     const fieldRect = selectorField.getBoundingClientRect();
-    const offsetX = bulletRect.left - fieldRect.left;
-    const offsetY = bulletRect.top - fieldRect.top;
+    const defaultX = Math.round(fieldRect.width * 0.5);
+    const defaultY = Math.round(fieldRect.height * 0.5);
+    bullet.style.left = `${defaultX}px`;
+    bullet.style.top = `${defaultY}px`;
 
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
-  }
-
-  waitUntilPainted();
+  }, 30); // Enough time for canvas to paint
 }
 
-requestAnimationFrame(syncBulletWithCanvasColor);
-
-  requestAnimationFrame(syncBulletWithCanvasColor);
-
-  }
 
 
 
