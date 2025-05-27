@@ -4,7 +4,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
-  if (palette) palette.style.backgroundColor = `rgba(240, 130, 52, ${currentTransparency / 100})`;
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -106,9 +105,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
 
-    setTimeout(() => {
+    function syncBulletWithCanvasColor() {
       const canvas = selectorField.querySelector("canvas");
-      if (!canvas) return;
+      if (!canvas) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
+
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
       const bulletRect = bullet.getBoundingClientRect();
       const fieldRect = selectorField.getBoundingClientRect();
@@ -116,14 +119,20 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const offsetY = bulletRect.top - fieldRect.top;
 
       const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
+
+      if (!isValidColor) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
 
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       colorCode.textContent = rgba;
       if (palette) palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    }
+  requestAnimationFrame(syncBulletWithCanvasColor);
 
-
-    }, 50);
   }
 
 
