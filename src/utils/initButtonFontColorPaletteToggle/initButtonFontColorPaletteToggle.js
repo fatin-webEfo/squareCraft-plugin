@@ -421,37 +421,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     updateTransparencyField(dynamicHue);
   }
 
-  requestAnimationFrame(() => {
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas?.getContext("2d");
-    const width = canvas.width;
-    const height = canvas.height;
+ requestAnimationFrame(() => {
+  const fieldRect = selectorField.getBoundingClientRect();
+  const centerX = Math.round(fieldRect.width * 0.5);
+  const centerY = Math.round(fieldRect.height * 0.5);
 
-    const [cr, cg, cb] = color
-      .replace(/[^\d,]/g, "")
-      .split(",")
-      .map(n => parseInt(n.trim()));
+  moveBullet(centerX, centerY);
+});
 
-    let bestMatch = { x: 0, y: 0, diff: Infinity };
-
-    for (let y = 0; y < height; y += 2) {
-      for (let x = 0; x < width; x += 2) {
-        const data = ctx.getImageData(x, y, 1, 1).data;
-        const diff = Math.abs(data[0] - cr) + Math.abs(data[1] - cg) + Math.abs(data[2] - cb);
-        if (diff < bestMatch.diff) {
-          bestMatch = { x, y, diff };
-          if (diff <= 3) break;
-        }
-      }
-    }
-
-    moveBullet(bestMatch.x, bestMatch.y);
-
-    const rect = transparencyField.getBoundingClientRect();
-    const transparencyOffsetY = Math.round((1 - currentTransparency / 100) * rect.height);
-    transparencyBullet.style.top = `${transparencyOffsetY}px`;
-    transparencyCount.textContent = `${currentTransparency}%`;
-  });
 };
 
 
