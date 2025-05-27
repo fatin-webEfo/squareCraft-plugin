@@ -1185,6 +1185,14 @@
 .sc-w-30 {
   width: 100px !important;
 }
+
+
+
+
+
+
+
+
 .sc-gradiant-border {
   position: relative !important;
   border: 0.2px solid transparent !important;
@@ -1195,26 +1203,23 @@
 .sc-gradiant-border::before {
   content: "" !important;
   position: absolute !important;
-  inset: 0 !important;
+  top: 0; left: 0; right: 0; bottom: 0 !important;
   border-radius: inherit !important;
-  background: conic-gradient(#F08234, #4c4c4c, #F08234) !important;
   z-index: -1 !important;
   pointer-events: none !important;
 
+  background: conic-gradient(#F08234, #4c4c4c, #F08234) !important;
+  transform-origin: center !important;
   animation: rotate-border 2s linear infinite !important;
-  mask-image: radial-gradient(closest-side, transparent calc(100% - 2px), white 100%) !important;
-  -webkit-mask-image: radial-gradient(closest-side, transparent calc(100% - 2px), white 100%) !important;
-  mask-composite: exclude !important;
-  -webkit-mask-composite: destination-out !important;
+
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), white 100%) !important;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), white 100%) !important;
 }
 @keyframes rotate-border {
-  0% {
-    transform: rotate(0deg) !important;
-  }
-  100% {
-    transform: rotate(360deg) !important;
-  }
+  0%   { transform: rotate(0deg) !important; }
+  100% { transform: rotate(360deg) !important; }
 }
+
 
 
 
