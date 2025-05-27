@@ -464,8 +464,8 @@ applyButtonBackgroundColor(currentColor, currentTransparency / 100);
     const ctx = canvas?.getContext("2d");
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-      colorCode.textContent = rgb;
+const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
     }
 
     transparencyBullet.style.top = `0px`;
@@ -501,12 +501,12 @@ applyButtonBackgroundColor(currentColor, currentTransparency / 100);
         return;
       }
 
-      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      colorCode.textContent = rgb;
-      applyButtonBackgroundColor(rgb);
-      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgb} (initial load)`);
+      colorCode.textContent = rgba;
+      applyButtonBackgroundColor(rgba);
+      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
     }
 
 
@@ -536,8 +536,8 @@ applyButtonBackgroundColor(currentColor, currentTransparency / 100);
 
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-      colorCode.textContent = rgb;
+const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
     }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
