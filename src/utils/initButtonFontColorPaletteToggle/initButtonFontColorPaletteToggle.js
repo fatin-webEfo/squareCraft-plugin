@@ -3,7 +3,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   const palette = document.getElementById("buttonFontColorPalate");
-  if (palette) palette.style.backgroundColor = "rgb(240, 130, 52)"; 
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
