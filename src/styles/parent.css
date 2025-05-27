@@ -1186,27 +1186,30 @@
   width: 100px !important;
 }
 .sc-gradiant-border {
-  position: relative;
+  position: relative !important;
   border: 0.2px solid transparent !important;
+  border-radius: 9999px !important;
   background:
     linear-gradient(#2c2c2c, #2c2c2c) padding-box,
     conic-gradient(from 0deg, #F08234, #2c2c2c, #F08234) border-box !important;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  animation: rotate-border 3s linear infinite;
+  background-origin: border-box !important;
+  background-clip: padding-box, border-box !important;
+  animation: rotate-border 3s linear infinite !important;
 }
+
 @keyframes rotate-border {
   0% {
     background:
       linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-      conic-gradient(from 0deg, #F08234, #2c2c2c, #F08234) border-box;
+      conic-gradient(from 0deg, #F08234, #2c2c2c, #F08234) border-box !important;
   }
   100% {
     background:
       linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-      conic-gradient(from 360deg, #F08234, #2c2c2c, #F08234) border-box;
+      conic-gradient(from 360deg, #F08234, #2c2c2c, #F08234) border-box !important;
   }
 }
+
 
 
 
