@@ -264,47 +264,38 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (selectorField && bullet) {
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
+   bullet.onmousedown = function (e) {
+  e.preventDefault();
 
-      document.onmousemove = function (e) {
-        const rect = selectorField.getBoundingClientRect();
-        let offsetX = e.clientX - rect.left;
-        let offsetY = e.clientY - rect.top;
+  document.onmousemove = function (e) {
+    const rect = selectorField.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
 
-        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-        bullet.style.left = `${offsetX}px`;
-        bullet.style.top = `${offsetY}px`;
+    bullet.style.left = `${offsetX}px`;
+    bullet.style.top = `${offsetY}px`;
 
-        const canvas = selectorField.querySelector("canvas");
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        if (!ctx) return;
+    const canvas = selectorField.querySelector("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
 
-        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-        palette.style.backgroundColor = rgba;
+    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-        console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgba}`);
+    if (colorCode) colorCode.textContent = rgba;
+    if (palette) palette.style.backgroundColor = rgba;
+    applyButtonBackgroundColor(rgba, currentTransparency / 100);
+  };
 
+  document.onmouseup = () => {
+    document.onmousemove = null;
+    document.onmouseup = null;
+  };
+};
 
-        if (colorCode) colorCode.textContent = rgba;
-        if (isFirstBulletMove) {
-          isFirstBulletMove = false;
-          return;
-        }
-
-        applyButtonBackgroundColor(rgba, currentTransparency / 100);
-      };
-
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-      console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgba}`);
-
-    };
 
   }
 
