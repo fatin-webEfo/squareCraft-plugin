@@ -450,41 +450,41 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     transparencyCount.textContent = `100%`;
 
 
-   function waitForCanvasReadyAndSyncBullet(x, y) {
-  const canvas = selectorField.querySelector("canvas");
-  if (!canvas) {
-    console.log("⏳ Canvas not found yet");
-    requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-    return;
-  }
+    function waitForCanvasReadyAndSyncBullet(x, y) {
+      const canvas = selectorField.querySelector("canvas");
+      if (!canvas) {
+        console.log("⏳ Canvas not found yet");
+        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+        return;
+      }
 
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
-  const data = ctx.getImageData(x, y, 1, 1).data;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const data = ctx.getImageData(x, y, 1, 1).data;
 
-  let painted = false;
-  for (let i = 0; i < 10; i++) {
-    const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
-    const sampleY = Math.floor(selectorField.offsetHeight / 2);
-    const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
-    if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
-      painted = true;
-      break;
+      let painted = false;
+      for (let i = 0; i < 10; i++) {
+        const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
+        const sampleY = Math.floor(selectorField.offsetHeight / 2);
+        const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
+        if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
+          painted = true;
+          break;
+        }
+      }
+
+      if (!painted) {
+        console.log("🕐 Canvas not fully painted, retrying...");
+        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+        return;
+      }
+
+      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+      bullet.style.left = `${x}px`;
+      bullet.style.top = `${y}px`;
+      colorCode.textContent = rgb;
+      applyButtonBackgroundColor(rgb);
+      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgb} (initial load)`);
     }
-  }
-
-  if (!painted) {
-    console.log("🕐 Canvas not fully painted, retrying...");
-    requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-    return;
-  }
-
-  const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-  bullet.style.left = `${x}px`;
-  bullet.style.top = `${y}px`;
-  colorCode.textContent = rgb;
-  applyButtonBackgroundColor(rgb);
-  console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgb} (initial load)`);
-}
 
 
     waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
