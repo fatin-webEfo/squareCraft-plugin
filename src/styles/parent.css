@@ -1202,9 +1202,9 @@
   to { --border-angle: 360deg; }
 }
 
-.sc-gradiant-border {
+.sc-gradiant-border:hover {
   position: relative !important;
-  border: 0.2px solid transparent !important;
+  border: 0.1px solid transparent !important;
   border-radius: 15px !important;
   background: linear-gradient(#4c4c4c, #4c4c4c) padding-box,
               conic-gradient(from var(--border-angle), #F08234 0%, #4c4c4c 40%, #F08234 100%) border-box !important;
