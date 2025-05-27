@@ -105,6 +105,22 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     updateTransparencyField(dynamicHue);
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
+    setTimeout(() => {
+  const canvas = selectorField.querySelector("canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const bulletRect = bullet.getBoundingClientRect();
+  const fieldRect = selectorField.getBoundingClientRect();
+  const offsetX = bulletRect.left - fieldRect.left;
+  const offsetY = bulletRect.top - fieldRect.top;
+
+  const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+  const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+
+  colorCode.textContent = rgb;
+  applyButtonBackgroundColor(rgb, currentTransparency / 100);
+}, 50);
+
   }
 
 
