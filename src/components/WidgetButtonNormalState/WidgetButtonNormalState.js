@@ -224,7 +224,7 @@ export function WidgetButtonNormalState() {
                   <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Text Color
                   </p>
                   <div
-                     class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
+                     class="sc-py-0_5 sc-mt-2 sc-w-30 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1 sc-rounded-4px">
                      <p class="sc-font-size-12 sc-roboto c-font-light sc-universal">#363544</p>
                      <div class="sc-square-6  sc-cursor-pointer"></div>
                   </div>
