@@ -402,28 +402,38 @@ export function initButtonIconRotationControl(getSelectedElement) {
     });
   }
 
-  function updateFromRotationValue(value) {
-    userInteracted = true;
-    currentRotation = Math.max(-180, Math.min(180, value));
-    const percent = ((currentRotation + 180) / 360) * 100;
-
-    bullet.style.left = `${percent}%`;
-
-    const centerPercent = 50;
-    fill.style.left = `${Math.min(percent, centerPercent)}%`;
-    fill.style.width = `${Math.abs(percent - centerPercent)}%`;
-
-    label.textContent = `${currentRotation}deg`;
-    applyRotation();
-  }
-
   function updateUI(clientX) {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     const centerX = rect.width / 2;
     const deltaX = x - centerX;
-    const newRotation = Math.round((deltaX / centerX) * 180);
-    updateFromRotationValue(newRotation);
+    currentRotation = Math.round((deltaX / centerX) * 180);
+
+    const percent = (x / rect.width) * 100;
+    bullet.style.left = `${percent}%`;
+
+    const fillStart = 50;
+    fill.style.left = `${Math.min(percent, fillStart)}%`;
+    fill.style.width = `${Math.abs(percent - fillStart)}%`;
+
+    label.textContent = `${currentRotation}deg`;
+
+    applyRotation();
+  }
+
+  function updateFromRotationValue(value) {
+    const clamped = Math.max(-180, Math.min(180, value));
+    currentRotation = clamped;
+    const percent = ((clamped + 180) / 360) * 100;
+
+    bullet.style.left = `${percent}%`;
+
+    const center = 50;
+    fill.style.left = `${Math.min(percent, center)}%`;
+    fill.style.width = `${Math.abs(percent - center)}%`;
+
+    label.textContent = `${clamped}deg`;
+    applyRotation();
   }
 
   function syncFromIconRotation() {
@@ -470,22 +480,19 @@ export function initButtonIconRotationControl(getSelectedElement) {
     updateUI(e.clientX);
   });
 
-  if (incBtn) {
-    incBtn.addEventListener("click", () => {
-      userInteracted = true;
-      updateFromRotationValue(currentRotation + 1);
-    });
-  }
+  incBtn?.addEventListener("click", () => {
+    userInteracted = true;
+    updateFromRotationValue(currentRotation + 1);
+  });
 
-  if (decBtn) {
-    decBtn.addEventListener("click", () => {
-      userInteracted = true;
-      updateFromRotationValue(currentRotation - 1);
-    });
-  }
+  decBtn?.addEventListener("click", () => {
+    userInteracted = true;
+    updateFromRotationValue(currentRotation - 1);
+  });
 
   setTimeout(syncFromIconRotation, 50);
 }
+
 
 
 
