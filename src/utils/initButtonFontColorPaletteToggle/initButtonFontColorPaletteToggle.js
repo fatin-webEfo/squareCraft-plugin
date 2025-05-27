@@ -330,26 +330,26 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
 
- function moveBullet(offsetX, offsetY) {
-  bullet.style.left = `${offsetX}px`;
-  bullet.style.top = `${offsetY}px`;
+  function moveBullet(offsetX, offsetY) {
+    bullet.style.left = `${offsetX}px`;
+    bullet.style.top = `${offsetY}px`;
 
-  const canvas = selectorField.querySelector("canvas");
-  const ctx = canvas?.getContext("2d");
-  if (!ctx) return;
+    const canvas = selectorField.querySelector("canvas");
+    const ctx = canvas?.getContext("2d");
+    if (!ctx) return;
 
-  const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-  const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-  colorCode.textContent = rgba;
-  if (palette) palette.style.backgroundColor = rgba;
-  applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    colorCode.textContent = rgba;
+    if (palette) palette.style.backgroundColor = rgba;
+    applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    const rect = transparencyField.getBoundingClientRect();
+    const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+    transparencyBullet.style.top = `${offsetY}px`;
+    transparencyCount.textContent = `${currentTransparency}%`;
 
-  const rect = transparencyField.getBoundingClientRect();
-  const transparencyOffsetY = Math.round((1 - currentTransparency / 100) * rect.height);
-  transparencyBullet.style.top = `${transparencyOffsetY}px`;
-  transparencyCount.textContent = `${currentTransparency}%`;
-}
 
+  }
 
 
   if (transparencyField && transparencyBullet) {
