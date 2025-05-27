@@ -1186,14 +1186,37 @@
   width: 100px !important;
 }
 .sc-gradiant-border {
-border: 0.2px solid transparent !important;
-  background:
-    linear-gradient(#454545, #2c2c2c) padding-box,
-    linear-gradient(180deg, #F08234, #2c2c2c) border-box !important;
+  position: relative;
+  border: 2px solid transparent !important;
+  border-radius: 9999px !important;
+  background: #2c2c2c !important;
+  z-index: 0;
 }
-.sc-gradiant-border:hover{
-    box-shadow: 0 0 2px 2px rgba(240,130,52,0.8) !important;
+
+.sc-gradiant-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    #f08234,
+    #2c2c2c,
+    #f08234
+  );
+  animation: rotateGradient 3s linear infinite;
+  z-index: -1;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
 }
+
+
 
 .sc-pt-1_5 {
   padding-top: 7px !important;
