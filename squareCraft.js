@@ -117,7 +117,9 @@
     initButtonBorderControl,
     initButtonBorderTypeToggle,
     initButtonBorderRadiusControl,
-    initButtonShadowControls, initButtonFontFamilyControls } =
+    initButtonShadowControls, 
+    initButtonFontFamilyControls,
+  syncButtonFontStylesFromDOM } =
     await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
   const { initHoverButtonShadowControls,
     initHoverButtonIconRotationControl,
@@ -204,6 +206,7 @@
       initButtonBorderControl(() => selectedElement);
       initButtonShadowControls(() => selectedElement);
       initButtonFontFamilyControls(() => selectedElement);
+      syncButtonFontStylesFromDOM(() => selectedElement)
       initButtonBorderTypeToggle(() => selectedElement, (selected) => {
         if (selected) {
           const event = new Event("reapplyBorder");
