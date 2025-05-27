@@ -408,31 +408,23 @@ export function initButtonIconRotationControl(getSelectedElement) {
     const percent = ((currentRotation + 180) / 360) * 100;
 
     bullet.style.left = `${percent}%`;
-    fill.style.left = `${Math.min(percent, 50)}%`;
-    fill.style.width = `${Math.abs(percent - 50)}%`;
-    label.textContent = `${currentRotation}deg`;
 
+    const centerPercent = 50;
+    fill.style.left = `${Math.min(percent, centerPercent)}%`;
+    fill.style.width = `${Math.abs(percent - centerPercent)}%`;
+
+    label.textContent = `${currentRotation}deg`;
     applyRotation();
   }
 
   function updateUI(clientX) {
-  const rect = field.getBoundingClientRect();
-  const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-  const centerX = rect.width / 2;
-  const deltaX = x - centerX;
-  const newRotation = Math.round((deltaX / centerX) * 180);
-
-  currentRotation = Math.max(-180, Math.min(180, newRotation));
-  const percent = ((currentRotation + 180) / 360) * 100;
-
-  bullet.style.left = `${percent}%`;
-  fill.style.left = `${Math.min(percent, 50)}%`;
-  fill.style.width = `${Math.abs(percent - 50)}%`;
-  label.textContent = `${currentRotation}deg`;
-
-  applyRotation();
-}
-
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const centerX = rect.width / 2;
+    const deltaX = x - centerX;
+    const newRotation = Math.round((deltaX / centerX) * 180);
+    updateFromRotationValue(newRotation);
+  }
 
   function syncFromIconRotation() {
     if (userInteracted) return;
@@ -445,7 +437,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
 
     const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
     if (!icon) {
-      updateFromRotationValue(0); // fallback default
+      updateFromRotationValue(0);
       return;
     }
 
@@ -458,7 +450,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
       }
     }
 
-    updateFromRotationValue(0); // fallback default
+    updateFromRotationValue(0);
   }
 
   bullet.addEventListener("mousedown", (e) => {
@@ -494,6 +486,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
 
   setTimeout(syncFromIconRotation, 50);
 }
+
 
 
 
