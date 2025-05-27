@@ -1186,14 +1186,14 @@
   width: 100px !important;
 }
 .sc-gradiant-border {
-border: 0.2px solid transparent !important;
+border: 1px solid transparent !important;
   border-radius: 9999px !important;
-  background: radial-gradient(circle, rgba(240,130,52,0.8) 40%, transparent 80%) !important;
-  box-shadow: 0 0 0 1px rgba(240,130,52,0.5) !important;
-  transition: all 0.3s ease-in-out !important;
+  background:
+    linear-gradient(#2c2c2c, #2c2c2c) padding-box,
+    linear-gradient(180deg, #F08234, #2c2c2c) border-box !important;
 }
 .sc-gradiant-border:hover{
-    box-shadow: 0 0 12px 2px rgba(240,130,52,0.8) !important;
+    box-shadow: 0 0 2px 2px rgba(240,130,52,0.8) !important;
 }
 
 .sc-pt-1_5 {
