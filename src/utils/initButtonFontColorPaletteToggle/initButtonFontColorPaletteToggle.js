@@ -287,7 +287,7 @@ palette.style.backgroundColor = rgba;
           return;
         }
 
-        applyButtonBackgroundColor(rgb, currentTransparency / 100);
+        applyButtonBackgroundColor(rgba, currentTransparency / 100);
       };
 
       document.onmouseup = () => {
