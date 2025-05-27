@@ -119,7 +119,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const bulletRect = bullet.getBoundingClientRect();
       const fieldRect = selectorField.getBoundingClientRect();
       const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY = bulletRect.top - fieldRect.top;
+      
+const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
 
       const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
       const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
@@ -136,7 +137,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
   requestAnimationFrame(syncBulletWithCanvasColor);
   const rect = transparencyField.getBoundingClientRect();
-const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
 transparencyBullet.style.top = `${offsetY}px`;
 transparencyCount.textContent = `${currentTransparency}%`;
 
