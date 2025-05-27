@@ -1206,8 +1206,8 @@
   position: relative !important;
   border: 0.2px solid transparent !important;
   border-radius: 15px !important;
-  background: linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-              conic-gradient(from var(--border-angle), #F08234 0%, #2c2c2c 40%, #F08234 100%) border-box !important;
+  background: linear-gradient(#4c4c4c, #4c4c4c) padding-box,
+              conic-gradient(from var(--border-angle), #F08234 0%, #4c4c4c 40%, #F08234 100%) border-box !important;
   background-origin: border-box !important;
   background-clip: padding-box, border-box !important;
   animation: rotate-angle 2s linear infinite !important;
