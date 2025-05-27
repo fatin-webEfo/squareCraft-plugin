@@ -1,45 +1,32 @@
 
 
 export function initButtonFontFamilyControls(getSelectedElement) {
-  const selectedElement = getSelectedElement?.();
-  if (!selectedElement) return;
-
   const GOOGLE_FONTS_API =
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
-  let fontsList = [];
-  let fontIndex = 0;
-  const fontsPerPage = 20;
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
   if (!fontFamilyOptions) return;
 
   const loader = document.createElement("div");
   loader.id = "sc-font-loader";
-  loader.innerHTML = `
-  <div style="
-    width: 24px;
-    height: 24px;
-    margin: 12px auto;
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top: 3px solid #EF7C2F;
-    border-radius: 50%;
-    animation: scSpin 0.8s linear infinite;
-  "></div>
-`;
+  loader.innerHTML = `<div style="width: 24px; height: 24px; margin: 12px auto; border: 3px solid rgba(0, 0, 0, 0.1); border-top: 3px solid #EF7C2F; border-radius: 50%; animation: scSpin 0.8s linear infinite;"></div>`;
   document.head.insertAdjacentHTML("beforeend", `
-  <style>
-    @keyframes scSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
-`);
+    <style>
+      @keyframes scSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  `);
   fontFamilyOptions.appendChild(loader);
 
-  fetchGoogleFonts();
-  setupFontScrollLoader();
+  let fontsList = [];
+  let fontIndex = 0;
+  const fontsPerPage = 20;
 
-  async function fetchGoogleFonts() {
+  fetchFonts();
+
+  async function fetchFonts() {
     try {
       const res = await fetch(GOOGLE_FONTS_API);
       const data = await res.json();
@@ -52,18 +39,11 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     }
   }
 
-
-
-  function setupFontScrollLoader() {
-    fontFamilyOptions.addEventListener("scroll", () => {
-      if (
-        fontFamilyOptions.scrollTop + fontFamilyOptions.clientHeight >=
-        fontFamilyOptions.scrollHeight - 5
-      ) {
-        renderFontBatch();
-      }
-    });
-  }
+  fontFamilyOptions.addEventListener("scroll", () => {
+    if (fontFamilyOptions.scrollTop + fontFamilyOptions.clientHeight >= fontFamilyOptions.scrollHeight - 5) {
+      renderFontBatch();
+    }
+  });
 
   function renderFontBatch() {
     const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
@@ -77,10 +57,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         const link = document.createElement("link");
         link.id = fontId;
         link.rel = "stylesheet";
-        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(
-          /\s+/g,
-          "+"
-        )}&display=swap`;
+        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/\s+/g, "+")}&display=swap`;
         document.head.appendChild(link);
       }
 
@@ -98,10 +75,8 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 
         try {
           await document.fonts.load(`1em ${fontFace}`);
-          await new Promise((resolve) => setTimeout(resolve, 50));
-        } catch (e) {
-          console.warn("Font preload failed:", family);
-        }
+          await new Promise((r) => setTimeout(r, 50));
+        } catch (_) {}
 
         if (label) {
           label.innerText = family;
@@ -115,40 +90,22 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         );
         if (!btn) return;
 
-        const typeClass = [...btn.classList].find((cls) =>
-          cls.startsWith("sqs-button-element--")
-        );
+        const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
         if (!typeClass) return;
 
-        let cssVar = "";
-        if (typeClass.includes("primary"))
-          cssVar = "--primary-button-font-font-family";
-        if (typeClass.includes("secondary"))
-          cssVar = "--secondary-button-font-font-family";
-        if (typeClass.includes("tertiary"))
-          cssVar = "--tertiary-button-font-font-family";
-
-        if (cssVar) {
-          document.documentElement.style.setProperty(cssVar, fontFace);
-
-          const styleId = `sc-font-style-${typeClass}`;
-          let style = document.getElementById(styleId);
-          if (!style) {
-            style = document.createElement("style");
-            style.id = styleId;
-            document.head.appendChild(style);
-          }
-
-          style.innerHTML = `
-            .${typeClass} {
-              font-family: ${fontFace} !important;
-            }
-            .${typeClass} span,
-            .${typeClass} .sqs-add-to-cart-button-inner {
-              font-family: ${fontFace} !important;
-            }
-          `;
+        const styleId = `sc-font-style-${typeClass}`;
+        let style = document.getElementById(styleId);
+        if (!style) {
+          style = document.createElement("style");
+          style.id = styleId;
+          document.head.appendChild(style);
         }
+
+        style.innerHTML = `
+          .${typeClass}, .${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner {
+            font-family: ${fontFace} !important;
+          }
+        `;
 
         const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
         const fontWeightSelectedLabel = document.getElementById("scButtonFontWeightSelected");
@@ -156,27 +113,33 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         if (fontWeightOptions && fontItem.variants) {
           fontWeightOptions.innerHTML = "";
 
-          const variants = fontItem.variants
-            .filter((v) => v !== "italic")
-            .map((v) => (v === "regular" ? "400" : v));
+          const variants = fontItem.variants.filter(v => v !== "italic").map(v => (v === "regular" ? "400" : v));
 
           variants.forEach((weight) => {
             const item = document.createElement("div");
-            item.className =
-              "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
+            item.className = "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
             item.innerText = weight;
+
             item.onclick = () => {
               fontWeightSelectedLabel.innerText = weight;
               fontWeightOptions.classList.add("sc-hidden");
 
-              const buttons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-              buttons.forEach((btn) => {
-                const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-                spans.forEach((span) => {
-                  span.style.fontWeight = weight;
-                });
-              });
+              const weightStyleId = `sc-font-weight-${typeClass}`;
+              let weightStyle = document.getElementById(weightStyleId);
+              if (!weightStyle) {
+                weightStyle = document.createElement("style");
+                weightStyle.id = weightStyleId;
+                document.head.appendChild(weightStyle);
+              }
+
+              weightStyle.innerHTML = `
+                .${typeClass} span,
+                .${typeClass} .sqs-add-to-cart-button-inner {
+                  font-weight: ${weight} !important;
+                }
+              `;
             };
+
             fontWeightOptions.appendChild(item);
           });
 
@@ -190,6 +153,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 
 
