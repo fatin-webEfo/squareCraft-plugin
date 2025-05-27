@@ -380,6 +380,10 @@ applyButtonBackgroundColor(rgba, currentTransparency / 100);
         document.onmousemove = null;
         document.onmouseup = null;
       };
+      const rgba = currentColor.replace("rgb(", "rgba(").replace(")", `, ${currentTransparency / 100})`);
+if (palette) palette.style.backgroundColor = rgba;
+applyButtonBackgroundColor(currentColor, currentTransparency / 100);
+
     };
   }
 
