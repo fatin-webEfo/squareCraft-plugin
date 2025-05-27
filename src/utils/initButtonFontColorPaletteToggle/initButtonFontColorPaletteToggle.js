@@ -323,7 +323,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return canvas;
   }
 
-
+ 
 
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
