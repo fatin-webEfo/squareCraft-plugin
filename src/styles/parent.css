@@ -1202,6 +1202,9 @@
   to { --border-angle: 360deg; }
 }
 
+.sc-gradiant-border{
+  border: 0.1px solid #4c4c4c !important;
+}
 .sc-gradiant-border:hover {
   position: relative !important;
   border: 0.1px solid transparent !important;
