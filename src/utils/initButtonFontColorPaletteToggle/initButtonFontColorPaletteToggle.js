@@ -108,53 +108,39 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
 
-   function syncBulletWithCanvasColor() {
-  const canvas = selectorField.querySelector("canvas");
-  if (!canvas) {
-    requestAnimationFrame(syncBulletWithCanvasColor);
-    return;
-  }
+    function syncBulletWithCanvasColor() {
+      const canvas = selectorField.querySelector("canvas");
+      if (!canvas) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
 
-  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const bulletRect = bullet.getBoundingClientRect();
+      const fieldRect = selectorField.getBoundingClientRect();
+      const offsetX = bulletRect.left - fieldRect.left;
+      const offsetY = bulletRect.top - fieldRect.top;
 
-  let retries = 0;
-  const maxRetries = 10;
+      const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
 
-  function waitUntilPainted() {
-    const testPixel = ctx.getImageData(1, 1, 1, 1).data;
-    const isPainted = testPixel[0] + testPixel[1] + testPixel[2] > 10;
+      if (!isValidColor) {
+        requestAnimationFrame(syncBulletWithCanvasColor);
+        return;
+      }
 
-    if (!isPainted && retries < maxRetries) {
-      retries++;
-      requestAnimationFrame(waitUntilPainted);
-      return;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
+      if (palette) palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
-
-    const bulletRect = bullet.getBoundingClientRect();
-    const fieldRect = selectorField.getBoundingClientRect();
-    const offsetX = bulletRect.left - fieldRect.left;
-    const offsetY = bulletRect.top - fieldRect.top;
-
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-
-    colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
-  }
-
-  waitUntilPainted();
-}
-
-requestAnimationFrame(syncBulletWithCanvasColor);
-
   requestAnimationFrame(syncBulletWithCanvasColor);
 
   }
 
 
 
-
+  
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
