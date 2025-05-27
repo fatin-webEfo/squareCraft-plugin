@@ -3,6 +3,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   const palette = document.getElementById("buttonFontColorPalate");
+  if (palette) palette.style.backgroundColor = "rgb(240, 130, 52)"; 
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -92,39 +93,36 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
 
-  function updateSelectorField(hueOrColor) {
-    let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
-
-    if (!hue) {
-      hue = getHueFromColorString(hueOrColor);
-    }
-
-
-    dynamicHue = hue;
-    setSelectorCanvas(hue);
-    updateTransparencyField(dynamicHue);
-    selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
-    selectorField.style.backgroundBlendMode = "multiply";
-    setTimeout(() => {
-      const canvas = selectorField.querySelector("canvas");
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY = bulletRect.top - fieldRect.top;
-
-      const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-
-      colorCode.textContent = rgb;
-      applyButtonBackgroundColor(rgb, currentTransparency / 100);
-    }, 50);
-colorCode.textContent = rgb;
-if (palette) palette.style.backgroundColor = rgb;
-applyButtonBackgroundColor(rgb, currentTransparency / 100);
-
+ function updateSelectorField(hueOrColor) {
+  let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
+  if (!hue) {
+    hue = getHueFromColorString(hueOrColor);
   }
+
+  dynamicHue = hue;
+  setSelectorCanvas(hue);
+  updateTransparencyField(dynamicHue);
+  selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
+  selectorField.style.backgroundBlendMode = "multiply";
+
+  setTimeout(() => {
+    const canvas = selectorField.querySelector("canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const bulletRect = bullet.getBoundingClientRect();
+    const fieldRect = selectorField.getBoundingClientRect();
+    const offsetX = bulletRect.left - fieldRect.left;
+    const offsetY = bulletRect.top - fieldRect.top;
+
+    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+
+    colorCode.textContent = rgb;
+    if (palette) palette.style.backgroundColor = rgb;
+    applyButtonBackgroundColor(rgb, currentTransparency / 200);
+  }, 50);
+}
+
 
 
 
