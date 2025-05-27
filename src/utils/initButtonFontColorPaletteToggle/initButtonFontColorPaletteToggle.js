@@ -120,6 +120,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     colorCode.textContent = rgb;
     if (palette) palette.style.backgroundColor = rgb;
     applyButtonBackgroundColor(rgb, currentTransparency / 100);
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+colorCode.textContent = rgba;
+if (palette) palette.style.backgroundColor = rgba;
+applyButtonBackgroundColor(rgba, currentTransparency / 100);
+
   }, 50);
 }
 
@@ -335,6 +340,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   if (palette) palette.style.backgroundColor = rgb;
 
   applyButtonBackgroundColor(rgb, currentTransparency / 100);
+  const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+colorCode.textContent = rgba;
+if (palette) palette.style.backgroundColor = rgba;
+applyButtonBackgroundColor(rgba, currentTransparency / 100);
+
 }
 
 
