@@ -63,27 +63,18 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return h * 360;
   }
   function setSelectorCanvas(hue) {
-  selectorField.innerHTML = "";
+    selectorField.innerHTML = "";
 
-  const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
-  canvas.style.position = "absolute";
-  canvas.style.top = "0";
-  canvas.style.left = "0";
-  canvas.style.zIndex = "0";
+    const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.zIndex = "0";
 
-  selectorField.style.position = "relative";
-  selectorField.appendChild(canvas);
-  selectorField.appendChild(bullet);
-
-  // 🧠 Delay bullet color sampling until canvas is actually rendered
-  setTimeout(() => {
-    const rect = selectorField.getBoundingClientRect();
-    const defaultX = Math.round(rect.width * 0.5);
-    const defaultY = Math.round(rect.height * 0.5);
-    moveBullet(defaultX, defaultY);
-  }, 20); // 20ms gives canvas enough time to render gradients
-}
-
+    selectorField.style.position = "relative";
+    selectorField.appendChild(canvas);
+    selectorField.appendChild(bullet);
+  }
   function hslToRgb(h, s = 1, l = 0.5) {
     function hueToRgb(p, q, t) {
       if (t < 0) t += 1;
