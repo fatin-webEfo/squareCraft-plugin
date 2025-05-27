@@ -320,26 +320,23 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
 
-  function moveBullet(offsetX, offsetY) {
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
+ function moveBullet(offsetX, offsetY) {
+  bullet.style.left = `${offsetX}px`;
+  bullet.style.top = `${offsetY}px`;
 
-    const width = selectorField.offsetWidth;
-    const height = selectorField.offsetHeight;
-    if (!width || !height) return;
+  const canvas = selectorField.querySelector("canvas");
+  const ctx = canvas?.getContext("2d");
+  if (!ctx) return;
 
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas?.getContext("2d");
-    if (!ctx) return;
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    ;
-    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+  const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+  const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
-    colorCode.textContent = rgb;
-    console.log(`📍 moveBullet to (${offsetX}, ${offsetY}) → ${rgb}`);
+  colorCode.textContent = rgb;
+  if (palette) palette.style.backgroundColor = rgb;
 
-    applyButtonBackgroundColor(rgb);
-  }
+  applyButtonBackgroundColor(rgb, currentTransparency / 100);
+}
+
 
   if (transparencyField && transparencyBullet) {
     transparencyBullet.onmousedown = function (e) {
