@@ -4,6 +4,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
+
+
+
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -135,7 +138,18 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   }
 
-
+if (selectedElement && typeof selectedElement === "function") {
+  const currentEl = selectedElement();
+  if (currentEl) {
+    const button = currentEl.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (button) {
+      const computedBg = getComputedStyle(button).backgroundColor;
+      if (palette) palette.style.backgroundColor = computedBg;
+      colorCode.textContent = computedBg;
+      updateSelectorField(computedBg); 
+    }
+  }
+}
 
 
   function applyButtonBackgroundColor(color, alpha = 1) {
@@ -299,7 +313,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmousemove = null;
         document.onmouseup = null;
       };
-      console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgb}`);
+      console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgba}`);
 
     };
 
