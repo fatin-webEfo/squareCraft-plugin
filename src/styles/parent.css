@@ -1185,6 +1185,10 @@
 .sc-w-30 {
   width: 100px !important;
 }
+.sc-gradiant-border {
+border: 0.2px solid #F08234 !important;
+background: var(--Black-800, #454545) !important;
+}
 
 .sc-pt-1_5 {
   padding-top: 7px !important;
