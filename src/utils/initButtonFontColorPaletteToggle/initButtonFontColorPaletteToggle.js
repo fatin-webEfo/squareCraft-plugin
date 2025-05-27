@@ -135,6 +135,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
   requestAnimationFrame(syncBulletWithCanvasColor);
+  const rect = transparencyField.getBoundingClientRect();
+const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+transparencyBullet.style.top = `${offsetY}px`;
+transparencyCount.textContent = `${currentTransparency}%`;
+
 
   }
 
@@ -338,6 +343,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    const rect = transparencyField.getBoundingClientRect();
+const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+transparencyBullet.style.top = `${offsetY}px`;
+transparencyCount.textContent = `${currentTransparency}%`;
+
 
   }
 
@@ -439,12 +449,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (transparencyBullet && transparencyField) {
           transparencyBullet.style.top = `0px`;
         }
-        currentTransparency = 100;
-        if (transparencyCount) {
-          transparencyCount.textContent = `100%`;
-        }
+       
 
       });
+      const rect = transparencyField.getBoundingClientRect();
+const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+transparencyBullet.style.top = `${offsetY}px`;
+transparencyCount.textContent = `${currentTransparency}%`;
+
     };
 
     container.appendChild(swatch);
