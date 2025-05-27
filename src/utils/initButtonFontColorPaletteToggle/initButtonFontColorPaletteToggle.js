@@ -140,7 +140,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       colorCode.textContent = rgb;
       if (palette) palette.style.backgroundColor = rgb;
-      applyButtonBackgroundColor(rgb, currentTransparency / 200);
+      applyButtonBackgroundColor(rgb, currentTransparency / 100);
     }, 50);
   }
 
