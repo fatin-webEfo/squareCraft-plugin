@@ -108,33 +108,32 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
 
-    function syncBulletWithCanvasColor() {
-      const canvas = selectorField.querySelector("canvas");
-      if (!canvas) {
-        requestAnimationFrame(syncBulletWithCanvasColor);
-        return;
-      }
+   function syncBulletWithCanvasColor() {
+  const canvas = selectorField.querySelector("canvas");
+  if (!canvas) {
+    requestAnimationFrame(syncBulletWithCanvasColor);
+    return;
+  }
 
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const bulletRect = bullet.getBoundingClientRect();
+  const fieldRect = selectorField.getBoundingClientRect();
+  const offsetX = bulletRect.left - fieldRect.left;
+  const offsetY = bulletRect.top - fieldRect.top;
 
-      const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+  const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
 
-      const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
+  const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+  colorCode.textContent = rgba;
+  if (palette) palette.style.backgroundColor = rgba;
+  applyButtonBackgroundColor(rgba, currentTransparency / 100);
 
-      if (!isValidColor) {
-        requestAnimationFrame(syncBulletWithCanvasColor);
-        return;
-      }
+  const transRect = transparencyField.getBoundingClientRect();
+  const transparencyOffsetY = Math.round((1 - currentTransparency / 100) * transRect.height);
+  transparencyBullet.style.top = `${transparencyOffsetY}px`;
+  transparencyCount.textContent = `${currentTransparency}%`;
+}
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    }
     requestAnimationFrame(syncBulletWithCanvasColor);
     const rect = transparencyField.getBoundingClientRect();
     transparencyBullet.style.top = `${offsetY}px`;
