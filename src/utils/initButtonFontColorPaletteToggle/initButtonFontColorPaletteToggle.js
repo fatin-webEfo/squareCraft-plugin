@@ -119,8 +119,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const bulletRect = bullet.getBoundingClientRect();
       const fieldRect = selectorField.getBoundingClientRect();
       const offsetX = bulletRect.left - fieldRect.left;
-
-      const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
+      const offsetY = bulletRect.top - fieldRect.top;
 
       const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
       const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
@@ -135,17 +134,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       if (palette) palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
-    requestAnimationFrame(syncBulletWithCanvasColor);
-    const rect = transparencyField.getBoundingClientRect();
-    transparencyBullet.style.top = `${offsetY}px`;
-    transparencyCount.textContent = `${currentTransparency}%`;
-
+  requestAnimationFrame(syncBulletWithCanvasColor);
 
   }
 
 
 
-
+  
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
@@ -269,37 +264,37 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (selectorField && bullet) {
-    bullet.onmousedown = function (e) {
-      e.preventDefault();
+   bullet.onmousedown = function (e) {
+  e.preventDefault();
 
-      document.onmousemove = function (e) {
-        const rect = selectorField.getBoundingClientRect();
-        let offsetX = e.clientX - rect.left;
-        let offsetY = e.clientY - rect.top;
+  document.onmousemove = function (e) {
+    const rect = selectorField.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left;
+    let offsetY = e.clientY - rect.top;
 
-        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-        bullet.style.left = `${offsetX}px`;
-        bullet.style.top = `${offsetY}px`;
+    bullet.style.left = `${offsetX}px`;
+    bullet.style.top = `${offsetY}px`;
 
-        const canvas = selectorField.querySelector("canvas");
-        const ctx = canvas.getContext("2d", { willReadFrequently: true });
-        if (!ctx) return;
+    const canvas = selectorField.querySelector("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
 
-        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-        if (colorCode) colorCode.textContent = rgba;
-        if (palette) palette.style.backgroundColor = rgba;
-        applyButtonBackgroundColor(rgba, currentTransparency / 100);
-      };
+    if (colorCode) colorCode.textContent = rgba;
+    if (palette) palette.style.backgroundColor = rgba;
+    applyButtonBackgroundColor(rgba, currentTransparency / 100);
+  };
 
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
+  document.onmouseup = () => {
+    document.onmousemove = null;
+    document.onmouseup = null;
+  };
+};
 
 
   }
@@ -343,55 +338,51 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    const rect = transparencyField.getBoundingClientRect();
-    const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
-    transparencyBullet.style.top = `${offsetY}px`;
-    transparencyCount.textContent = `${currentTransparency}%`;
-
+    
 
   }
 
 
   if (transparencyField && transparencyBullet) {
-    transparencyBullet.onmousedown = function (e) {
-      e.preventDefault();
+  transparencyBullet.onmousedown = function (e) {
+    e.preventDefault();
 
-      document.onmousemove = function (e) {
-        const rect = transparencyField.getBoundingClientRect();
-        let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
-        transparencyBullet.style.top = `${offsetY}px`;
+    document.onmousemove = function (e) {
+      const rect = transparencyField.getBoundingClientRect();
+      let offsetY = e.clientY - rect.top;
+      offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
+      transparencyBullet.style.top = `${offsetY}px`;
 
-        const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
-        currentTransparency = transparencyPercent;
+      const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
+      currentTransparency = transparencyPercent;
 
-        if (transparencyCount) {
-          transparencyCount.textContent = `${currentTransparency}%`;
-        }
+      if (transparencyCount) {
+        transparencyCount.textContent = `${currentTransparency}%`;
+      }
 
-        const bulletRect = bullet.getBoundingClientRect();
-        const fieldRect = selectorField.getBoundingClientRect();
-        const offsetX = bulletRect.left - fieldRect.left;
-        const offsetY2 = bulletRect.top - fieldRect.top;
+      const bulletRect = bullet.getBoundingClientRect();
+      const fieldRect = selectorField.getBoundingClientRect();
+      const offsetX = bulletRect.left - fieldRect.left;
+      const offsetY2 = bulletRect.top - fieldRect.top;
 
-        const canvas = selectorField.querySelector("canvas");
-        const ctx = canvas?.getContext("2d");
-        if (!ctx) return;
+      const canvas = selectorField.querySelector("canvas");
+      const ctx = canvas?.getContext("2d");
+      if (!ctx) return;
 
-        const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-        if (colorCode) colorCode.textContent = rgba;
-        if (palette) palette.style.backgroundColor = rgba;
-        applyButtonBackgroundColor(rgba, currentTransparency / 100);
-      };
-
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
+      if (colorCode) colorCode.textContent = rgba;
+      if (palette) palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba, currentTransparency / 100);
     };
-  }
+
+    document.onmouseup = () => {
+      document.onmousemove = null;
+      document.onmouseup = null;
+    };
+  };
+}
 
 
   if (container.innerHTML.trim() !== "") return;
@@ -449,14 +440,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (transparencyBullet && transparencyField) {
           transparencyBullet.style.top = `0px`;
         }
-
+       
 
       });
-      const rect = transparencyField.getBoundingClientRect();
-      const offsetY = Math.round((1 - currentTransparency / 100) * rect.height);
-      transparencyBullet.style.top = `${offsetY}px`;
-      transparencyCount.textContent = `${currentTransparency}%`;
-
     };
 
     container.appendChild(swatch);
