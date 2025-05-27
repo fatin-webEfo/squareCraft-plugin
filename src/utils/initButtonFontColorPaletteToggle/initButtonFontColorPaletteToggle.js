@@ -1,6 +1,7 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   let isFirstBulletMove = true;
-
+  let dynamicHue = 0;
+  let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
 if (palette) palette.style.backgroundColor = `rgba(240, 130, 52, ${currentTransparency / 100})`;
@@ -196,9 +197,6 @@ applyButtonBackgroundColor(rgba, currentTransparency / 100);
   )
     return;
 
-  let dynamicHue = 0;
-
-  let currentTransparency = 100;
 
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
