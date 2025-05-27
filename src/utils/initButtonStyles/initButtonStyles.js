@@ -90,6 +90,9 @@ export function initButtonFontFamilyControls(getSelectedElement) {
       div.style.fontFamily = `"${family}", sans-serif`;
 
       div.addEventListener("click", async () => {
+        const selectedElement = getSelectedElement?.(); // ✅ moved here for freshest block
+        if (!selectedElement) return;
+
         const label = document.getElementById("font-name");
         const fontFace = `"${family}", sans-serif`;
 
