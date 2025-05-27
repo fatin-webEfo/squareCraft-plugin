@@ -115,13 +115,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const offsetY = bulletRect.top - fieldRect.top;
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
-    colorCode.textContent = rgb;
-    if (palette) palette.style.backgroundColor = rgb;
-    applyButtonBackgroundColor(rgb, currentTransparency / 100);
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+   const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 colorCode.textContent = rgba;
+if (palette) palette.style.backgroundColor = rgba;
+applyButtonBackgroundColor(rgba, currentTransparency / 100);
+
 if (palette) palette.style.backgroundColor = rgba;
 applyButtonBackgroundColor(rgba, currentTransparency / 100);
 
@@ -276,11 +275,13 @@ applyButtonBackgroundColor(rgba, currentTransparency / 100);
         if (!ctx) return;
 
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-        const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-        console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgb}`);
+        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+palette.style.backgroundColor = rgba;
+
+        console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgba}`);
 
 
-        if (colorCode) colorCode.textContent = rgb;
+        if (colorCode) colorCode.textContent = rgba;
         if (isFirstBulletMove) {
           isFirstBulletMove = false;
           return;
@@ -334,12 +335,6 @@ applyButtonBackgroundColor(rgba, currentTransparency / 100);
   if (!ctx) return;
 
   const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-  const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-
-  colorCode.textContent = rgb;
-  if (palette) palette.style.backgroundColor = rgb;
-
-  applyButtonBackgroundColor(rgb, currentTransparency / 100);
   const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 colorCode.textContent = rgba;
 if (palette) palette.style.backgroundColor = rgba;
