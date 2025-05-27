@@ -2361,8 +2361,8 @@
 }
 
 .sc-square-6 {
-  width: 17px;
-  height: 17px;
+  width: 20px !important;
+  height: 20px !important;
   border-radius: 15%;
   background-color: #6e0303;
 }
