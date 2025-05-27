@@ -1189,7 +1189,6 @@
   position: relative !important;
   border: 0.2px solid transparent !important;
   border-radius: 15px !important;
-  background-color: #2c2c2c !important;
   z-index: 0 !important;
   overflow: hidden !important;
 }
@@ -1198,7 +1197,7 @@
   position: absolute !important;
   inset: 0 !important;
   border-radius: inherit !important;
-  background: conic-gradient(#F08234, #2c2c2c, #F08234) !important;
+  background: conic-gradient(#F08234, #4c4c4c, #F08234) !important;
   z-index: -1 !important;
   pointer-events: none !important;
 
