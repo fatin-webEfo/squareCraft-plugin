@@ -2586,17 +2586,14 @@
 #sc-font-dropdown {
   position: absolute;
   background-color: #3f3f3f;
-  /* Match the theme */
   border: 1px solid #585858;
   border-radius: 6px;
   width: 100%;
   max-height: 200px;
   overflow-y: auto;
   display: none;
-  /* Initially hidden */
   opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
+  transition: opacity 0.3s ease-in-out;}
 
 .sc-dropdown-item {
   padding: 8px 12px;
