@@ -60,7 +60,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
     return h * 360;
   }
-  function getGradientCanvas(hue, width, height) {
+ function getGradientCanvas(hue, width, height) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     canvas.width = width;
@@ -114,7 +114,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
   }
 
-   function applyButtonBackgroundColor(color, alpha = 1) {
+ 
+    function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
     const buttonTypes = ["sqs-button-element--primary", "sqs-button-element--secondary", "sqs-button-element--tertiary"];
@@ -137,6 +138,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
     allButtons.forEach(btn => btn.dataset.scButtonBg = color);
   }
+
   function updateSelectorField(hueOrColor) {
     let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
     if (!hue) {
@@ -237,12 +239,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const centerY = Math.round(selectorField.offsetHeight / 2);
     bullet.style.left = `${centerX}px`;
     bullet.style.top = `${centerY}px`;
+
     const ctx = canvas.getContext("2d");
     const data = ctx.getImageData(centerX, centerY, 1, 1).data;
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     colorCode.textContent = rgba;
     palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba);
+
     if (transparencyBullet && transparencyField) transparencyBullet.style.top = `0px`;
     if (transparencyCount) transparencyCount.textContent = `100%`;
   }
