@@ -310,36 +310,34 @@ const tabMap = {
   "preset-tab": "presetsTab"
 };
 
-const activeBar = document.querySelector(".sc-bg-color-EF7C2F"); 
+const activeBar = document.querySelector(".sc-tab-active-indicator"); // safer class targeting
 
 Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
   const targetTab = document.getElementById(tabMap[tabId]);
 
-if (tabButton && targetTab && activeBar) {
-  tabButton.addEventListener("click", () => {
-    Object.values(tabMap).forEach(id => {
-      const section = document.getElementById(id);
-      section?.classList.add("sc-hidden");
+  if (tabButton && targetTab && activeBar) {
+    tabButton.addEventListener("click", () => {
+      Object.values(tabMap).forEach(id => {
+        const section = document.getElementById(id);
+        section?.classList.add("sc-hidden");
+      });
+
+      targetTab.classList.remove("sc-hidden");
+
+      const parentRect = tabButton.parentElement.getBoundingClientRect();
+      const tabRect = tabButton.getBoundingClientRect();
+
+      const offsetLeft = tabRect.left - parentRect.left;
+      const tabWidth = tabRect.width;
+
+      activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
+      activeBar.style.setProperty("width", `${tabWidth}px`, "important");
     });
-
-    targetTab.classList.remove("sc-hidden");
-    const tabRect = tabButton.getBoundingClientRect();
-    const parentRect = tabButton.parentElement.getBoundingClientRect();
-    const offset = tabRect.left - parentRect.left + 2; 
-
-    activeBar.style.setProperty("left", `${offset}px`, "important");
-    activeBar.style.setProperty("width", `${tabButton.offsetWidth}px`, "important");
-  });
-}
-
+  }
 });
 
-
-
-  document.getElementById("design-tab")?.click();
-
-
+document.getElementById("design-tab")?.click();
 
 
   window.updateActiveButtonBars = updateActiveBars;
