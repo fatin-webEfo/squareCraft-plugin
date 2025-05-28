@@ -320,7 +320,10 @@
 .sc-border {
   border-width: 1px !important;
 }
-
+.sc-rounded-t-14px{
+  border-top-left-radius: 14px !important;
+  border-top-right-radius: 14px !important;
+}
 .sc-rounded-full {
   border-radius: 100% !important;
 }
