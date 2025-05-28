@@ -64,7 +64,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
-    
 
     const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
     canvas.style.position = "absolute";
@@ -107,13 +106,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     setSelectorCanvas(hue);
     updateTransparencyField(dynamicHue);
 
+
     function syncBulletWithCanvasColor() {
       const canvas = selectorField.querySelector("canvas");
       if (!canvas) {
-        requestAnimationFrame(() => {
-  requestAnimationFrame(syncBulletWithCanvasColor);
-});
-
+        requestAnimationFrame(syncBulletWithCanvasColor);
         return;
       }
 
@@ -141,16 +138,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
 
-updateSelectorField(defaultColor);
-
-const defaultX = Math.round(selectorField.offsetWidth * 0.5);
-const defaultY = Math.round(selectorField.offsetHeight * 0.5);
-
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
-  });
-});
 
   
   function applyButtonBackgroundColor(color, alpha = 1) {
@@ -530,17 +517,12 @@ requestAnimationFrame(() => {
 
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
-   updateSelectorField(defaultColor);
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
-  });
-});
-
+    updateSelectorField(defaultColor);
 
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
     const defaultY = Math.round(selectorField.offsetHeight * 0.5);
+    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
 
 
 
