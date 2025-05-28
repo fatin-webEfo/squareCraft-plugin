@@ -304,32 +304,33 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
 
 
 
-  const tabMap = {
-    "design-tab": "designTab",
-    "advanced-tab": "advancedTab",
-    "preset-tab": "presetsTab"
-  };
+ const tabMap = {
+  "design-tab": "designTab",
+  "advanced-tab": "advancedTab",
+  "preset-tab": "presetsTab"
+};
 
-    const activeBar = document.querySelector(".sc-bg-colo-EF7C2F");
+const activeBar = document.querySelector(".sc-bg-colo-EF7C2F");
 
-  Object.keys(tabMap).forEach((tabId) => {
-    const tabButton = document.getElementById(tabId);
-    const targetTab = document.getElementById(tabMap[tabId]);
+Object.keys(tabMap).forEach((tabId) => {
+  const tabButton = document.getElementById(tabId);
+  const targetTab = document.getElementById(tabMap[tabId]);
 
-    if (tabButton && targetTab && activeBar) {
-      tabButton.addEventListener("click", () => {
-        Object.values(tabMap).forEach(id => {
-          const section = document.getElementById(id);
-          section?.classList.add("sc-hidden");
-        });
-
-        targetTab.classList.remove("sc-hidden");
-
-        const offset = tabButton.offsetLeft;
-        activeBar.style.left = `${offset}px`;
+  if (tabButton && targetTab && activeBar) {
+    tabButton.addEventListener("click", () => {
+      Object.values(tabMap).forEach(id => {
+        const section = document.getElementById(id);
+        section?.classList.add("sc-hidden");
       });
-    }
-  });
+
+      targetTab.classList.remove("sc-hidden");
+
+      const offset = tabButton.offsetLeft;
+      activeBar.style.left = `${offset}px`;
+    });
+  }
+});
+
 
   document.getElementById("design-tab")?.click();
 
