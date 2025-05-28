@@ -532,29 +532,25 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        updateSelectorField(defaultColor);
+   updateSelectorField(defaultColor);
 
-        const rect = selectorField.getBoundingClientRect();
-        const defaultX = Math.round(rect.width * 0.5);
-        const defaultY = Math.round(rect.height * 0.5);
+const rect = selectorField.getBoundingClientRect();
+const defaultX = Math.round(rect.width * 0.5);
+const defaultY = Math.round(rect.height * 0.5);
 
-        bullet.style.left = `${defaultX}px`;
-        bullet.style.top = `${defaultY}px`;
+bullet.style.left = `${defaultX}px`;
+bullet.style.top = `${defaultY}px`;
 
-        waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
+waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
 
-        if (transparencyBullet && transparencyField) {
-          transparencyBullet.style.top = `0px`;
-        }
+if (transparencyBullet && transparencyField) {
+  transparencyBullet.style.top = `0px`;
+}
+currentTransparency = 100;
+if (transparencyCount) {
+  transparencyCount.textContent = `100%`;
+}
 
-        currentTransparency = 100;
-        if (transparencyCount) {
-          transparencyCount.textContent = `100%`;
-        }
-      });
-    });
 
   }
 
