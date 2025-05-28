@@ -183,12 +183,11 @@ export function WidgetButtonNormalState() {
                      <div class="sc-flex sc-items-center sc-justify-between">
                         <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                   
-                        <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
-                           <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                           <img id="buttonParagraph1Arrow" width="10"
-                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                           class="sc-rotate-180" alt="">
-                        </div>
+                        <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
+                                    <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
+                                   <span id="color-code-dropdown" class="sc-arrow-placeholder sc-rotate-180"></span>
+
+                                 </div>
                      </div>
                   
                      <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
@@ -546,7 +545,7 @@ export function WidgetButtonNormalState() {
 
                                  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
                                     <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                                   <span id="color-code-dropdown" class="sc-arrow-placeholder sc-rotate-180"></span>
+                                   <spanclass="sc-arrow-placeholder sc-rotate-180"></spanclass=>
 
                                  </div>
                               </div>
