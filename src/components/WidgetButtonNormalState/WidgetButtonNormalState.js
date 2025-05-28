@@ -546,9 +546,7 @@ export function WidgetButtonNormalState() {
 
                                  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
                                     <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                                    <img id="paragraph1Arrow" width="10"
-                                       src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                                       class="sc-rotate-180" alt="">
+                                   <span class="sc-arrow-placeholder sc-rotate-180"></span>
 
                                  </div>
                               </div>
