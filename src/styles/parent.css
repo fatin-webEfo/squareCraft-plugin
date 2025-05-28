@@ -876,7 +876,7 @@
 }
 #advanced-tab:active ~ .sc-tab-active-indicator,
 #advanced-tab.sc-tab-active ~ .sc-tab-active-indicator {
-  transform: translateX(-2px) !important; 
+  transform: translateX(-10px) !important; 
 }
 
 .sc-border-right-10 {
