@@ -400,7 +400,41 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
   if (container.innerHTML.trim() !== "") return;
+function waitForCanvasReadyAndSyncBullet(x, y) {
+    const canvas = selectorField.querySelector("canvas");
+    if (!canvas) {
+      console.log("⏳ Canvas not found yet");
+      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+      return;
+    }
 
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const data = ctx.getImageData(x, y, 1, 1).data;
+
+    let painted = false;
+    for (let i = 0; i < 10; i++) {
+      const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
+      const sampleY = Math.floor(selectorField.offsetHeight / 2);
+      const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
+      if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
+        painted = true;
+        break;
+      }
+    }
+
+    if (!painted) {
+      console.log("🕐 Canvas not fully painted, retrying...");
+      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+      return;
+    }
+
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    bullet.style.left = `${x}px`;
+    bullet.style.top = `${y}px`;
+    colorCode.textContent = rgba;
+    applyButtonBackgroundColor(rgba);
+    console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
+  }
   Object.values(themeColors).forEach((color) => {
     const cleanColor = color.replace(/['"]+/g, '');
     const swatch = document.createElement("div");
@@ -460,6 +494,27 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     };
 
     container.appendChild(swatch);
+    if (container.children.length > 0) {
+  const firstSwatchColor = container.children[0].style.backgroundColor;
+  updateSelectorField(firstSwatchColor);
+
+  const rect = selectorField.getBoundingClientRect();
+  const defaultX = Math.round(rect.width * 0.5);
+  const defaultY = Math.round(rect.height * 0.5);
+  bullet.style.left = `${defaultX}px`;
+  bullet.style.top = `${defaultY}px`;
+
+  waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
+
+  if (transparencyBullet && transparencyField) {
+    transparencyBullet.style.top = `0px`;
+  }
+  currentTransparency = 100;
+  if (transparencyCount) {
+    transparencyCount.textContent = `100%`;
+  }
+}
+
 
   });
 
@@ -494,41 +549,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   }
 
-  function waitForCanvasReadyAndSyncBullet(x, y) {
-    const canvas = selectorField.querySelector("canvas");
-    if (!canvas) {
-      console.log("⏳ Canvas not found yet");
-      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-      return;
-    }
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    const data = ctx.getImageData(x, y, 1, 1).data;
-
-    let painted = false;
-    for (let i = 0; i < 10; i++) {
-      const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
-      const sampleY = Math.floor(selectorField.offsetHeight / 2);
-      const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
-      if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
-        painted = true;
-        break;
-      }
-    }
-
-    if (!painted) {
-      console.log("🕐 Canvas not fully painted, retrying...");
-      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-      return;
-    }
-
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    bullet.style.left = `${x}px`;
-    bullet.style.top = `${y}px`;
-    colorCode.textContent = rgba;
-    applyButtonBackgroundColor(rgba);
-    console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
-  }
+  
 
   if (container.children.length === 0) {
  const firstSwatchColor = container.children[0].style.backgroundColor;
