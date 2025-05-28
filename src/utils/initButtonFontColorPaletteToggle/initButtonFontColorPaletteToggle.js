@@ -531,13 +531,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (container.children.length === 0) {
-    const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
-   updateSelectorField(defaultColor);
+ const firstSwatchColor = container.children[0].style.backgroundColor;
+updateSelectorField(firstSwatchColor);
 
 const rect = selectorField.getBoundingClientRect();
 const defaultX = Math.round(rect.width * 0.5);
 const defaultY = Math.round(rect.height * 0.5);
-
 bullet.style.left = `${defaultX}px`;
 bullet.style.top = `${defaultY}px`;
 
