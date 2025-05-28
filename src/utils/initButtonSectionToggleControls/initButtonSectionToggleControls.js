@@ -304,13 +304,13 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
 
 
 
-const tabMap = {
+ const tabMap = {
   "design-tab": "designTab",
   "advanced-tab": "advancedTab",
   "preset-tab": "presetsTab"
 };
 
-const activeBar = document.querySelector(".sc-bg-color-EF7C2F"); // ✅ fixed class typo
+const activeBar = document.querySelector(".sc-bg-colo-EF7C2F");
 
 Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
@@ -326,11 +326,10 @@ Object.keys(tabMap).forEach((tabId) => {
       targetTab.classList.remove("sc-hidden");
 
       const offset = tabButton.offsetLeft;
-      activeBar.style.setProperty("left", `${offset}px`, "important"); // ✅ force override
+      activeBar.style.left = `${offset}px`;
     });
   }
 });
-
 
 
   document.getElementById("design-tab")?.click();
