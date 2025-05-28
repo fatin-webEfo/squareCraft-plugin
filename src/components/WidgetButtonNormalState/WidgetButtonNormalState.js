@@ -184,7 +184,7 @@ export function WidgetButtonNormalState() {
                         <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                   
                      <div class="sc-relative sc-inline-block sc-w-auto">
-  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
+  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-items-center sc-gap-2">
     <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
     <span id="color-code-dropdown" class="sc-arrow-placeholder sc-rotate-180"></span>
   </div>
