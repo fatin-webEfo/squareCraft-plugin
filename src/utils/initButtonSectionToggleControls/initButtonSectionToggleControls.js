@@ -310,7 +310,7 @@ const tabMap = {
   "preset-tab": "presetsTab"
 };
 
-const activeBar = document.querySelector(".sc-tab-active-indicator"); // sc-w-16 is fixed width
+const activeBar = document.querySelector(".sc-tab-active-indicator");
 
 Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
@@ -326,8 +326,7 @@ Object.keys(tabMap).forEach((tabId) => {
 
       const tabRect = tabButton.getBoundingClientRect();
       const parentRect = tabButton.parentElement.getBoundingClientRect();
-      const barWidth = 16; // fixed width based on .sc-w-16
-      const offsetLeft = tabRect.left - parentRect.left + (tabRect.width / 2) - (barWidth / 2);
+      const offsetLeft = tabRect.left - parentRect.left;
 
       activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
     });
@@ -335,6 +334,7 @@ Object.keys(tabMap).forEach((tabId) => {
 });
 
 document.getElementById("design-tab")?.click();
+
 
 
 
