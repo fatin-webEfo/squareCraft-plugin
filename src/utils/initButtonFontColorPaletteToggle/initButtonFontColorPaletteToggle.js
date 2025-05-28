@@ -462,25 +462,30 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
   if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
 
-    updateSelectorField(firstSwatchColor);
+    requestAnimationFrame(() => {
+  updateSelectorField(firstSwatchColor);
 
-    const rect = selectorField.getBoundingClientRect();
-    const defaultX = Math.round(rect.width * 0.5);
-    const defaultY = Math.round(rect.height * 0.5);
-    bullet.style.left = `${defaultX}px`;
-    bullet.style.top = `${defaultY}px`;
+  const rect = selectorField.getBoundingClientRect();
+  const defaultX = Math.round(rect.width * 0.5);
+  const defaultY = Math.round(rect.height * 0.5);
 
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas?.getContext("2d");
-    if (ctx) {
-      const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
-    }
+  bullet.style.left = `${defaultX}px`;
+  bullet.style.top = `${defaultY}px`;
 
-    transparencyBullet.style.top = `0px`;
-    currentTransparency = 100;
-    transparencyCount.textContent = `100%`;
+  const canvas = selectorField.querySelector("canvas");
+  const ctx = canvas?.getContext("2d");
+  if (ctx) {
+    const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    colorCode.textContent = rgba;
+    applyButtonBackgroundColor(rgba);
+  }
+
+  transparencyBullet.style.top = `0px`;
+  currentTransparency = 100;
+  transparencyCount.textContent = `100%`;
+});
+
 
 
     function waitForCanvasReadyAndSyncBullet(x, y) {
