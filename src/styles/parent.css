@@ -1236,6 +1236,10 @@
 .sc-rounded-r {
   border-radius: 0px 6px 6px 0px !important;
 }
+.sc-py-2px{
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
 
 .sc-py-1_2px {
   padding-top: 6.4px !important;
