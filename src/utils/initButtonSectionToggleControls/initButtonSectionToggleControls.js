@@ -326,7 +326,12 @@ Object.keys(tabMap).forEach((tabId) => {
 
       const tabRect = tabButton.getBoundingClientRect();
       const parentRect = tabButton.parentElement.getBoundingClientRect();
-      const offsetLeft = tabRect.left - parentRect.left;
+
+      let offsetLeft = tabRect.left - parentRect.left;
+
+      if (tabId === "advanced-tab") {
+        offsetLeft += 5;
+      }
 
       activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
     });
@@ -334,6 +339,7 @@ Object.keys(tabMap).forEach((tabId) => {
 });
 
 document.getElementById("design-tab")?.click();
+
 
 
 
