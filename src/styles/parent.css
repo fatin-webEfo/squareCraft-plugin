@@ -324,7 +324,10 @@
 .sc-rounded-full {
   border-radius: 100% !important;
 }
-
+.sc-rounded-b-14px{
+  border-bottom-left-radius: 14px !important;
+  border-bottom-right-radius: 14px !important;
+}
 .sc-bg-color-3d3d3d {
   background-color: #3d3d3d !important;
 }
