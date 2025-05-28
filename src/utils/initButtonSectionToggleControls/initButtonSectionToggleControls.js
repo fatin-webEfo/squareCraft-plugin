@@ -310,7 +310,7 @@ const tabMap = {
   "preset-tab": "presetsTab"
 };
 
-const activeBar = document.querySelector(".sc-tab-active-indicator"); // safer class targeting
+const activeBar = document.querySelector(".sc-tab-active-indicator"); // Already styled correctly
 
 Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
@@ -325,14 +325,12 @@ Object.keys(tabMap).forEach((tabId) => {
 
       targetTab.classList.remove("sc-hidden");
 
+      // Adjust ONLY the position, keep original width
       const parentRect = tabButton.parentElement.getBoundingClientRect();
       const tabRect = tabButton.getBoundingClientRect();
-
       const offsetLeft = tabRect.left - parentRect.left;
-      const tabWidth = tabRect.width;
 
       activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
-      activeBar.style.setProperty("width", `${tabWidth}px`, "important");
     });
   }
 });
