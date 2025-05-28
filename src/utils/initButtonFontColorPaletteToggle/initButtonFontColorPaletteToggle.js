@@ -1,5 +1,5 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let dynamicHue = 0;
+  let dynamicHue = Math.floor(Math.random() * 360);
   let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
