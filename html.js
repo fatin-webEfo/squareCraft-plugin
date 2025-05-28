@@ -21,9 +21,9 @@ export function html() {
    <div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949  sc-w-full">
    </div>
    <div class="sc-mt-6 sc-h-12 sc-roboto sc-flex  sc-items-center sc-universal">
-      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
-      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
-      <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
+      <p id="design-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
+      <p id="advanced-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
+      <p id="preset-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
    </div>
    <div class="sc-border-t sc-border-solid sc-relative  sc-border-color-494949 sc-w-full">
       <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px">
