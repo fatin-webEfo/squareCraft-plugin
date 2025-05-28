@@ -29,14 +29,22 @@ export function html() {
       <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px">
       </div>
    </div>
-   <div
-      class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6  sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
-  
-      ${WidgetTypoSection("typoSection")}
-      ${WidgetImageSection("imageSection")}
-      ${WidgetButtonSection("buttonSection")}
-  
-   </div>
+  <div id="tabContentWrapper" class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+  <div id="designTab">
+    ${WidgetTypoSection("typoSection")}
+    ${WidgetImageSection("imageSection")}
+    ${WidgetButtonSection("buttonSection")}
+  </div>
+  <div id="advancedTab" class="sc-hidden">
+   <p>Advance tab</p>
+    <p class="sc-p-4 sc-font-size-12">Advanced tab content goes here</p>
+  </div>
+  <div id="presetsTab" class="sc-hidden">
+    <p>Preset tab</p>
+    <p class="sc-p-4 sc-font-size-12">Presets tab content goes here</p>
+  </div>
+</div>
+
    <div class="sc-mt-3">
       <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
          <div id="publish"

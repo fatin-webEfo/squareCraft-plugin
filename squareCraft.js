@@ -91,6 +91,7 @@
   const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
   const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
+  const { parentHtmlTabClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js");
   const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
   const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
   const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
@@ -134,6 +135,11 @@
 
 
   document.body.addEventListener("click", (event) => {
+if (typeof module.initToggleSwitch === "function") {
+  module.initToggleSwitch();
+}
+
+parentHtmlTabClick(); 
 
 
     if (selectedElement) {
