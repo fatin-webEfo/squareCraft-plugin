@@ -2531,7 +2531,9 @@
 .sc-toolbar-icon {
   pointer-events: all !important;
 }
-
+.sc-top-6{
+  top: 24px !important;
+}
 .sc-dropdown-content {
   position: absolute !important;
   background-color: #3d3d3d !important;
