@@ -2583,6 +2583,7 @@
   display: block !important;
 }
 
+
 #sc-font-dropdown {
   position: absolute;
   background-color: #3f3f3f;
@@ -2611,12 +2612,10 @@
 #sc-font-dropdown {
   position: absolute;
   top: 100%;
-  /* Opens below */
   left: 0;
   width: 100%;
   z-index: 99999;
   background: #3d3d3d;
-  /* Ensure visibility */
 }
 
 .sc-dropdown-content .sc-dropdown-item:hover {
@@ -2673,9 +2672,7 @@
 
 .sc-widget-icon {
   width: 100px !important;
-  /* Adjust size */
   height: 30px !important;
-  /* Keep it proportional */
 }
 
 .sc-admin-icon {
