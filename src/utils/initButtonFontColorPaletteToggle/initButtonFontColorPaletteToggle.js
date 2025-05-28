@@ -105,8 +105,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     dynamicHue = hue;
     setSelectorCanvas(hue);
     updateTransparencyField(dynamicHue);
-    selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
-    selectorField.style.backgroundBlendMode = "multiply";
 
     function syncBulletWithCanvasColor() {
       const canvas = selectorField.querySelector("canvas");
@@ -473,7 +471,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     transparencyCount.textContent = `100%`;
 
 
-    function waitForCanvasReadyAndSyncBullet(x, y) {
+   
+
+
+    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
+
+  }
+
+ function waitForCanvasReadyAndSyncBullet(x, y) {
       const canvas = selectorField.querySelector("canvas");
       if (!canvas) {
         console.log("⏳ Canvas not found yet");
@@ -509,36 +514,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
     }
 
-
-    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
-
-  }
-
-
-
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
     updateSelectorField(defaultColor);
 
-    function waitForCanvasReadyAndSyncBullet(x, y) {
-      const canvas = selectorField.querySelector("canvas");
-      if (!canvas) {
-        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-        return;
-      }
-
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const data = ctx.getImageData(x, y, 1, 1).data;
-      if (data[0] === 0 && data[1] === 0 && data[2] === 0) {
-        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-        return;
-      }
-
-      bullet.style.left = `${x}px`;
-      bullet.style.top = `${y}px`;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
-    }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
     const defaultY = Math.round(selectorField.offsetHeight * 0.5);
