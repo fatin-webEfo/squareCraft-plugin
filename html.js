@@ -27,7 +27,8 @@ export function html() {
    </div>
    <div class="sc-border-t sc-border-solid sc-relative  sc-border-color-494949 sc-w-full">
       <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px">
-      </div>
+   </div>
+   
    </div>
   <div id="tabContentWrapper" class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
   <div id="designTab">

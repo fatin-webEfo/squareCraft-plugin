@@ -310,11 +310,13 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
     "preset-tab": "presetsTab"
   };
 
+    const activeBar = document.querySelector(".sc-bg-colo-EF7C2F");
+
   Object.keys(tabMap).forEach((tabId) => {
     const tabButton = document.getElementById(tabId);
     const targetTab = document.getElementById(tabMap[tabId]);
 
-    if (tabButton && targetTab) {
+    if (tabButton && targetTab && activeBar) {
       tabButton.addEventListener("click", () => {
         Object.values(tabMap).forEach(id => {
           const section = document.getElementById(id);
@@ -322,11 +324,15 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
         });
 
         targetTab.classList.remove("sc-hidden");
+
+        const offset = tabButton.offsetLeft;
+        activeBar.style.left = `${offset}px`;
       });
     }
   });
 
   document.getElementById("design-tab")?.click();
+
 
 
 
