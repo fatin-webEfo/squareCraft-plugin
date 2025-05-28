@@ -271,14 +271,16 @@ export function initButtonSectionToggleControls() {
 
 
 
-  const colorCodeToggle = document.getElementById("color-code-dropdown");
+  const colorCodeToggle = document.getElementById("color-code-toggle");
+const colorCodeArrow = document.getElementById("color-code-arrow");
 const colorCodeList = document.getElementById("color-code-dropdown-list");
-const colorCodeLabel = colorCodeToggle?.previousElementSibling;
+const colorCodeLabel = document.getElementById("color-code-label");
 
-if (colorCodeToggle && colorCodeList && colorCodeLabel) {
+if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   colorCodeToggle.addEventListener("click", (e) => {
     e.stopPropagation();
     colorCodeList.classList.toggle("sc-hidden");
+    colorCodeArrow.classList.toggle("sc-rotate-180");
   });
 
   colorCodeList.querySelectorAll("[data-format]").forEach(option => {
@@ -286,12 +288,14 @@ if (colorCodeToggle && colorCodeList && colorCodeLabel) {
       const selected = option.getAttribute("data-format");
       colorCodeLabel.textContent = selected;
       colorCodeList.classList.add("sc-hidden");
+      colorCodeArrow.classList.add("sc-rotate-180");
     });
   });
 
   document.addEventListener("click", (e) => {
     if (!colorCodeList.contains(e.target) && !colorCodeToggle.contains(e.target)) {
       colorCodeList.classList.add("sc-hidden");
+      colorCodeArrow.classList.add("sc-rotate-180");
     }
   });
 }

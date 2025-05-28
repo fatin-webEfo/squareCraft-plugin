@@ -183,11 +183,11 @@ export function WidgetButtonNormalState() {
                      <div class="sc-flex sc-items-center sc-justify-between">
                         <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                   
-                 <div class="sc-relative sc-w-max">
+              <div class="sc-relative sc-w-max">
   <div id="color-code-toggle"
        class="sc-rounded-10px sc-bg-454545 sc-px-2 sc-py-4px sc-flex sc-items-center sc-gap-1 sc-cursor-pointer">
     <p id="color-code-label" class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-    <span id="color-code-dropdown" class="sc-arrow-placeholder sc-transition-transform sc-rotate-180"></span>
+    <span id="color-code-arrow" class="sc-arrow-placeholder sc-transition-transform sc-rotate-180"></span>
   </div>
 
   <div id="color-code-dropdown-list"
@@ -197,6 +197,7 @@ export function WidgetButtonNormalState() {
     <div class="sc-py-1 sc-px-2 sc-cursor-pointer sc-rounded-6px hover:sc-bg-454545" data-format="HEX">HEX</div>
   </div>
 </div>
+
 
 
                      </div>
