@@ -317,20 +317,28 @@ Object.keys(tabMap).forEach((tabId) => {
   const targetTab = document.getElementById(tabMap[tabId]);
 
   if (tabButton && targetTab && activeBar) {
-    tabButton.addEventListener("click", () => {
-      Object.values(tabMap).forEach(id => {
-        const section = document.getElementById(id);
-        section?.classList.add("sc-hidden");
-      });
+   tabButton.addEventListener("click", () => {
+  Object.values(tabMap).forEach(id => {
+    const section = document.getElementById(id);
+    section?.classList.add("sc-hidden");
+  });
 
-      targetTab.classList.remove("sc-hidden");
+  targetTab.classList.remove("sc-hidden");
 
-      const parentRect = tabButton.parentElement.getBoundingClientRect();
-      const tabRect = tabButton.getBoundingClientRect();
-      const offsetLeft = tabRect.left - parentRect.left +1 ;
+  const parentRect = tabButton.parentElement.getBoundingClientRect();
+  const tabRect = tabButton.getBoundingClientRect();
+  let offsetLeft = tabRect.left - parentRect.left;
 
-      activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
-    });
+  if (tabId === "advanced-tab") {
+    offsetLeft -= 4; 
+  } else {
+    offsetLeft -= 2;
+  }
+
+  activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
+  activeBar.style.setProperty("width", `${tabRect.width}px`, "important");
+});
+
   }
 });
 
