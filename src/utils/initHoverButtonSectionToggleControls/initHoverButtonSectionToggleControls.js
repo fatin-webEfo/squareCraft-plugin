@@ -76,31 +76,7 @@ export function initHoverButtonSectionToggleControls() {
       }
     });
   }
-  const colorCodeToggle = document.getElementById("color-code-dropdown");
-const colorCodeList = document.getElementById("color-code-dropdown-list");
-const colorCodeLabel = colorCodeToggle?.previousElementSibling;
-
-if (colorCodeToggle && colorCodeList && colorCodeLabel) {
-  colorCodeToggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    colorCodeList.classList.toggle("sc-hidden");
-  });
-
-  colorCodeList.querySelectorAll("[data-format]").forEach(option => {
-    option.addEventListener("click", () => {
-      const selected = option.getAttribute("data-format");
-      colorCodeLabel.textContent = selected;
-      colorCodeList.classList.add("sc-hidden");
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!colorCodeList.contains(e.target) && !colorCodeToggle.contains(e.target)) {
-      colorCodeList.classList.add("sc-hidden");
-    }
-  });
-}
-
+  
 }
 
 
