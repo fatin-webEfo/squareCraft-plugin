@@ -316,21 +316,23 @@ Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
   const targetTab = document.getElementById(tabMap[tabId]);
 
-  if (tabButton && targetTab && activeBar) {
-    tabButton.addEventListener("click", () => {
-      Object.values(tabMap).forEach(id => {
-        const section = document.getElementById(id);
-        section?.classList.add("sc-hidden");
-      });
-
-      targetTab.classList.remove("sc-hidden");
-
-   const tabPadding = parseInt(getComputedStyle(tabButton).paddingLeft || "0", 6);
-const offset = tabButton.offsetLeft + tabPadding / 2;
-activeBar.style.setProperty("left", `${offset}px`, "important");
- 
+if (tabButton && targetTab && activeBar) {
+  tabButton.addEventListener("click", () => {
+    Object.values(tabMap).forEach(id => {
+      const section = document.getElementById(id);
+      section?.classList.add("sc-hidden");
     });
-  }
+
+    targetTab.classList.remove("sc-hidden");
+    const tabRect = tabButton.getBoundingClientRect();
+    const parentRect = tabButton.parentElement.getBoundingClientRect();
+    const offset = tabRect.left - parentRect.left + 2; 
+
+    activeBar.style.setProperty("left", `${offset}px`, "important");
+    activeBar.style.setProperty("width", `${tabButton.offsetWidth}px`, "important");
+  });
+}
+
 });
 
 
