@@ -134,6 +134,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
   requestAnimationFrame(syncBulletWithCanvasColor);
+if (allColorField && allColorBullet) {
+  const rect = allColorField.getBoundingClientRect();
+  const huePercentage = dynamicHue / 360;
+  const bulletTop = huePercentage * rect.height;
+  allColorBullet.style.top = `${bulletTop}px`;
+}
 
   }
 
