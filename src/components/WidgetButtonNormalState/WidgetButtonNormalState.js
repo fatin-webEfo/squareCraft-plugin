@@ -183,19 +183,21 @@ export function WidgetButtonNormalState() {
                      <div class="sc-flex sc-items-center sc-justify-between">
                         <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                   
-                     <div class="sc-relative sc-inline-block sc-w-auto">
-  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-items-center sc-gap-2">
-    <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-    <span id="color-code-dropdown" class="sc-arrow-placeholder sc-rotate-180"></span>
+                 <div class="sc-relative sc-w-max">
+  <div id="color-code-toggle"
+       class="sc-rounded-10px sc-bg-454545 sc-px-2 sc-py-4px sc-flex sc-items-center sc-gap-1 sc-cursor-pointer">
+    <p id="color-code-label" class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
+    <span id="color-code-dropdown" class="sc-arrow-placeholder sc-transition-transform sc-rotate-180"></span>
   </div>
 
   <div id="color-code-dropdown-list"
-       class="sc-absolute sc-top-full sc-left-0 sc-w-full sc-mt-1 sc-bg-2e2e2e sc-rounded-10px sc-py-2 sc-px-2 sc-flex sc-flex-col sc-gap-1 sc-text-white sc-text-left sc-shadow-lg sc-hidden">
-    <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="RGB">RGB</div>
-    <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="HSL">HSL</div>
-    <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="HEX">HEX</div>
+       class="sc-absolute sc-top-full sc-left-0 sc-w-full sc-mt-1 sc-bg-2e2e2e sc-rounded-10px sc-py-2 sc-px-2 sc-text-white sc-text-left sc-flex sc-flex-col sc-gap-1 sc-shadow-lg sc-hidden">
+    <div class="sc-py-1 sc-px-2 sc-cursor-pointer sc-rounded-6px hover:sc-bg-454545" data-format="RGB">RGB</div>
+    <div class="sc-py-1 sc-px-2 sc-cursor-pointer sc-rounded-6px hover:sc-bg-454545" data-format="HSL">HSL</div>
+    <div class="sc-py-1 sc-px-2 sc-cursor-pointer sc-rounded-6px hover:sc-bg-454545" data-format="HEX">HEX</div>
   </div>
 </div>
+
 
                      </div>
                   
