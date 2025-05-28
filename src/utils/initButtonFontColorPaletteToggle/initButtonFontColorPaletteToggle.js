@@ -1,8 +1,10 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
+  let isFirstBulletMove = true;
   let dynamicHue = 0;
   let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
+
 
 
   const container = document.getElementById("button-border-colors");

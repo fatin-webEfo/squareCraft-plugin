@@ -284,25 +284,13 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   });
 
   colorCodeList.querySelectorAll("[data-format]").forEach(option => {
- option.addEventListener("click", () => {
-  selectedColorFormat = option.getAttribute("data-format");
-  colorCodeLabel.textContent = selectedColorFormat;
-  colorCodeList.classList.add("sc-hidden");
-  colorCodeArrow.classList.add("sc-rotate-180");
-
-  const bulletRect = bullet.getBoundingClientRect();
-  const fieldRect = selectorField.getBoundingClientRect();
-  const offsetX = bulletRect.left - fieldRect.left;
-  const offsetY = bulletRect.top - fieldRect.top;
-
-  const canvas = selectorField.querySelector("canvas");
-  if (canvas) {
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    updateColorCodeText(data[0], data[1], data[2], currentTransparency / 100);
-  }
-});
-
+  option.addEventListener("click", () => {
+    const selected = option.getAttribute("data-format");
+    colorCodeLabel.textContent = selected;
+    selectedColorFormat = selected;
+    colorCodeList.classList.add("sc-hidden");
+    colorCodeArrow.classList.add("sc-rotate-180");
+  });
 });
 
 
