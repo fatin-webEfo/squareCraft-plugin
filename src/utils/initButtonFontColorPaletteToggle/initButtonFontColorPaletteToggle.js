@@ -131,7 +131,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     }
   requestAnimationFrame(syncBulletWithCanvasColor);
@@ -286,7 +286,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
     if (colorCode) colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
   };
 
@@ -336,7 +336,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     
 
@@ -373,7 +373,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
       if (colorCode) colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     };
 
@@ -419,7 +419,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   const [r, g, b] = computed.replace(/[^\d,]/g, "").split(",").map(n => parseInt(n.trim()));
   const rgba = `rgba(${r}, ${g}, ${b}, ${currentTransparency / 100})`;
 
-  colorCode.textContent = formatColor(r, g, b, currentTransparency / 100);
+colorCode.textContent = rgba;
   if (palette) palette.style.backgroundColor = rgba;
   applyButtonBackgroundColor(rgba, currentTransparency / 100);
 
