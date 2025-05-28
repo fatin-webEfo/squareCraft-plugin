@@ -326,7 +326,6 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
     }
   });
 
-  // Show design tab by default
   document.getElementById("design-tab")?.click();
 
 
