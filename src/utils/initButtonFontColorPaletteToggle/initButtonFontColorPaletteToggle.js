@@ -64,7 +64,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
-    selectorField.style.background = "none";
+    
 
     const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
     canvas.style.position = "absolute";
@@ -415,13 +415,12 @@ requestAnimationFrame(() => {
       updateSelectorField(color);
       console.log(`🎯 Swatch clicked: ${color}`);
 
-     if (allColorField && allColorBullet) {
-  const rect = allColorField.getBoundingClientRect();
-  const huePercentage = dynamicHue / 360;
-  const bulletTop = huePercentage * rect.height;
-  allColorBullet.style.top = `${bulletTop}px`;
-}
-  
+      if (allColorField && allColorBullet) {
+        const rect = allColorField.getBoundingClientRect();
+        const huePercentage = dynamicHue / 360;
+        const bulletTop = huePercentage * rect.height;
+        allColorBullet.style.top = `${bulletTop}px`;
+      }
 
       applyButtonBackgroundColor(color, currentTransparency / 100);
 
