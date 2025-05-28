@@ -37,10 +37,10 @@ export function html() {
     ${WidgetButtonSection("buttonSection")}
   </div>
   <div id="advancedTab" class="sc-hidden">
-   <p class="text-sm sc-px-2">Advance tab</p>
+   <p class="sc-text-sm sc-px-2">Advance tab</p>
   </div>
   <div id="presetsTab" class="sc-hidden">
-    <p class="text-sm sc-px-2">Preset tab</p>
+    <p class="sc-text-sm sc-px-2">Preset tab</p>
   </div>
 </div>
 
