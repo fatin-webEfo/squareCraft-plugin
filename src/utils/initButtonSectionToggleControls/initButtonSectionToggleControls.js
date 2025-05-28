@@ -304,38 +304,31 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
 
 
 
-
-
-
-
-
-  const tabs = {
+  const tabMap = {
     "design-tab": "designTab",
     "advanced-tab": "advancedTab",
     "preset-tab": "presetsTab"
   };
 
-  Object.keys(tabs).forEach((tabId) => {
+  Object.keys(tabMap).forEach((tabId) => {
     const tabButton = document.getElementById(tabId);
-    const targetSectionId = tabs[tabId];
+    const targetTab = document.getElementById(tabMap[tabId]);
 
-    tabButton?.addEventListener("click", () => {
-      Object.keys(tabs).forEach((otherTabId) => {
-        const otherSection = document.getElementById(tabs[otherTabId]);
-        const otherButton = document.getElementById(otherTabId);
+    if (tabButton && targetTab) {
+      tabButton.addEventListener("click", () => {
+        Object.values(tabMap).forEach(id => {
+          const section = document.getElementById(id);
+          section?.classList.add("sc-hidden");
+        });
 
-        if (otherTabId === tabId) {
-          otherSection?.classList.remove("sc-hidden");
-          otherButton?.classList.add("sc-activeTab-border");
-        } else {
-          otherSection?.classList.add("sc-hidden");
-          otherButton?.classList.remove("sc-activeTab-border");
-        }
+        targetTab.classList.remove("sc-hidden");
       });
-    });
+    }
   });
 
+  // Show design tab by default
   document.getElementById("design-tab")?.click();
+
 
 
   window.updateActiveButtonBars = updateActiveBars;
