@@ -1,5 +1,6 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let dynamicHue = Math.floor(Math.random() * 360);
+   let dynamicHue = 0;
+  dynamicHue = 0;
   let currentTransparency = 100;
 
   const palette = document.getElementById("buttonFontColorPalate");
@@ -59,6 +60,25 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
     return h * 360;
   }
+  function getGradientCanvas(hue, width, height) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    canvas.width = width;
+    canvas.height = height;
+    const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
+    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
+    gradient1.addColorStop(1, "white");
+    const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
+    gradient2.addColorStop(0, "black");
+    gradient2.addColorStop(1, "transparent");
+    ctx.fillStyle = gradient1;
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = gradient2;
+    ctx.fillRect(0, 0, width, height);
+    return canvas;
+  }
+
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
 
@@ -94,7 +114,29 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
   }
 
-
+   function applyButtonBackgroundColor(color, alpha = 1) {
+    const currentElement = selectedElement?.();
+    if (!currentElement) return;
+    const buttonTypes = ["sqs-button-element--primary", "sqs-button-element--secondary", "sqs-button-element--tertiary"];
+    let buttonType = null;
+    for (let type of buttonTypes) {
+      if (currentElement.querySelector(`a.${type}`)) {
+        buttonType = type;
+        break;
+      }
+    }
+    if (!buttonType) return;
+    const rgbaColor = color.startsWith("rgb(") ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`) : color;
+    let styleTag = document.getElementById(`sc-style-global-${buttonType}`);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = `sc-style-global-${buttonType}`;
+      document.head.appendChild(styleTag);
+    }
+    styleTag.textContent = `a.${buttonType}, button.${buttonType} { background-color: ${rgbaColor} !important; }`;
+    const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
+    allButtons.forEach(btn => btn.dataset.scButtonBg = color);
+  }
   function updateSelectorField(hueOrColor) {
     let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
     if (!hue) {
@@ -152,29 +194,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
 
 
-  function applyButtonBackgroundColor(color, alpha = 1) {
-    const currentElement = selectedElement?.();
-    if (!currentElement) return;
-    const buttonTypes = ["sqs-button-element--primary", "sqs-button-element--secondary", "sqs-button-element--tertiary"];
-    let buttonType = null;
-    for (let type of buttonTypes) {
-      if (currentElement.querySelector(`a.${type}`)) {
-        buttonType = type;
-        break;
-      }
-    }
-    if (!buttonType) return;
-    const rgbaColor = color.startsWith("rgb(") ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`) : color;
-    let styleTag = document.getElementById(`sc-style-global-${buttonType}`);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = `sc-style-global-${buttonType}`;
-      document.head.appendChild(styleTag);
-    }
-    styleTag.textContent = `a.${buttonType}, button.${buttonType} { background-color: ${rgbaColor} !important; }`;
-    const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
-    allButtons.forEach(btn => btn.dataset.scButtonBg = color);
-  }
+ 
  function setCanvasAndBullet(hue) {
     selectorField.innerHTML = "";
     const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
@@ -185,6 +205,34 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.position = "relative";
     selectorField.appendChild(canvas);
     selectorField.appendChild(bullet);
+
+    let isDragging = false;
+
+    bullet.onmousedown = function () {
+      isDragging = true;
+    };
+    document.onmouseup = function () {
+      isDragging = false;
+    };
+
+    selectorField.onmousemove = function (e) {
+      if (!isDragging) return;
+      const rect = selectorField.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+      x = Math.max(0, Math.min(rect.width, x));
+      y = Math.max(0, Math.min(rect.height, y));
+      bullet.style.left = `${x}px`;
+      bullet.style.top = `${y}px`;
+
+      const ctx = canvas.getContext("2d");
+      const data = ctx.getImageData(x, y, 1, 1).data;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
+      palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba);
+    };
+
     const centerX = Math.round(selectorField.offsetWidth / 2);
     const centerY = Math.round(selectorField.offsetHeight / 2);
     bullet.style.left = `${centerX}px`;
@@ -302,24 +350,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   }
 
-    function getGradientCanvas(hue, width, height) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    canvas.width = width;
-    canvas.height = height;
-    const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
-    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
-    gradient1.addColorStop(1, "white");
-    const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
-    gradient2.addColorStop(0, "black");
-    gradient2.addColorStop(1, "transparent");
-    ctx.fillStyle = gradient1;
-    ctx.fillRect(0, 0, width, height);
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = gradient2;
-    ctx.fillRect(0, 0, width, height);
-    return canvas;
-  }
+  
 
 
 
