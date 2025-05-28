@@ -103,7 +103,17 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
 
     dynamicHue = hue;
+   requestAnimationFrame(() => {
+  if (selectorField.offsetWidth === 0 || selectorField.offsetHeight === 0) {
+    setTimeout(() => {
+      setSelectorCanvas(hue);
+    }, 50);
+  } else {
     setSelectorCanvas(hue);
+  }
+});
+console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.offsetHeight);
+
     updateTransparencyField(dynamicHue);
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
