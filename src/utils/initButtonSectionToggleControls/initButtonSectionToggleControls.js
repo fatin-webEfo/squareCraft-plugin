@@ -302,6 +302,42 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   });
 }
 
+
+
+
+
+
+
+
+  const tabs = {
+    "design-tab": "designTab",
+    "advanced-tab": "advancedTab",
+    "preset-tab": "presetsTab"
+  };
+
+  Object.keys(tabs).forEach((tabId) => {
+    const tabButton = document.getElementById(tabId);
+    const targetSectionId = tabs[tabId];
+
+    tabButton?.addEventListener("click", () => {
+      Object.keys(tabs).forEach((otherTabId) => {
+        const otherSection = document.getElementById(tabs[otherTabId]);
+        const otherButton = document.getElementById(otherTabId);
+
+        if (otherTabId === tabId) {
+          otherSection?.classList.remove("sc-hidden");
+          otherButton?.classList.add("sc-activeTab-border");
+        } else {
+          otherSection?.classList.add("sc-hidden");
+          otherButton?.classList.remove("sc-activeTab-border");
+        }
+      });
+    });
+  });
+
+  document.getElementById("design-tab")?.click();
+
+
   window.updateActiveButtonBars = updateActiveBars;
 
 }
