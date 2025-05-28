@@ -190,7 +190,7 @@ export function WidgetButtonNormalState() {
   </div>
 
   <div id="color-code-dropdown-list"
-       class="sc-absolute sc-top-full sc-left-0 sc-w-full sc-mt-1 sc-bg-2e2e2e sc-rounded-10px sc-py-2 sc-px-2 sc-flex sc-flex-col sc-gap-1 sc-text-white sc-text-left sc-shadow-lg sc-hidden">
+       class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-left-half sc-text-sm sc-top-0 sc-z-999999  sc-rounded-4px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
     <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="RGB">RGB</div>
     <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="HSL">HSL</div>
     <div class="sc-cursor-pointer sc-py-1 sc-px-2 sc-rounded-6px hover:sc-bg-454545" data-format="HEX">HEX</div>
