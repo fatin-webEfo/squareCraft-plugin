@@ -310,39 +310,32 @@ const tabMap = {
   "preset-tab": "presetsTab"
 };
 
-const activeBar = document.querySelector(".sc-tab-active-indicator"); // Already styled correctly
+const activeBar = document.querySelector(".sc-tab-active-indicator"); // sc-w-16 is fixed width
 
 Object.keys(tabMap).forEach((tabId) => {
   const tabButton = document.getElementById(tabId);
   const targetTab = document.getElementById(tabMap[tabId]);
 
   if (tabButton && targetTab && activeBar) {
-   tabButton.addEventListener("click", () => {
-  Object.values(tabMap).forEach(id => {
-    const section = document.getElementById(id);
-    section?.classList.add("sc-hidden");
-  });
+    tabButton.addEventListener("click", () => {
+      Object.values(tabMap).forEach(id => {
+        document.getElementById(id)?.classList.add("sc-hidden");
+      });
 
-  targetTab.classList.remove("sc-hidden");
+      targetTab.classList.remove("sc-hidden");
 
-  const parentRect = tabButton.parentElement.getBoundingClientRect();
-  const tabRect = tabButton.getBoundingClientRect();
-  let offsetLeft = tabRect.left - parentRect.left;
+      const tabRect = tabButton.getBoundingClientRect();
+      const parentRect = tabButton.parentElement.getBoundingClientRect();
+      const barWidth = 16; // fixed width based on .sc-w-16
+      const offsetLeft = tabRect.left - parentRect.left + (tabRect.width / 2) - (barWidth / 2);
 
-  if (tabId === "advanced-tab") {
-    offsetLeft -= 4; 
-  } else {
-    offsetLeft -= 2;
-  }
-
-  activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
-  activeBar.style.setProperty("width", `${tabRect.width}px`, "important");
-});
-
+      activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
+    });
   }
 });
 
 document.getElementById("design-tab")?.click();
+
 
 
   window.updateActiveButtonBars = updateActiveBars;
