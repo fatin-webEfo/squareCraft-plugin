@@ -874,6 +874,10 @@
 .sc-border-top-10 {
   border-top-width: 10px !important;
 }
+#advanced-tab:active ~ .sc-tab-active-indicator,
+#advanced-tab.sc-tab-active ~ .sc-tab-active-indicator {
+  transform: translateX(-2px) !important; 
+}
 
 .sc-border-right-10 {
   border-right-width: 10px !important;
