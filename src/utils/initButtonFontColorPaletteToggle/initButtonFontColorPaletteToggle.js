@@ -1,5 +1,4 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let isFirstBulletMove = true;
   let dynamicHue = 0;
   let currentTransparency = 100;
 
@@ -63,18 +62,18 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return h * 360;
   }
   function setSelectorCanvas(hue) {
-  selectorField.innerHTML = "";
+    selectorField.innerHTML = "";
 
-  const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
-  canvas.style.position = "absolute";
-  canvas.style.top = "0";
-  canvas.style.left = "0";
-  canvas.style.zIndex = "0";
+    const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.zIndex = "0";
 
-  selectorField.style.position = "relative";
-  selectorField.appendChild(canvas);
-  selectorField.appendChild(bullet);
-}
+    selectorField.style.position = "relative";
+    selectorField.appendChild(canvas);
+    selectorField.appendChild(bullet);
+  }
 
 
   function hslToRgb(h, s = 1, l = 0.5) {
@@ -533,29 +532,29 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    updateSelectorField(defaultColor);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        updateSelectorField(defaultColor);
 
-    const rect = selectorField.getBoundingClientRect();
-    const defaultX = Math.round(rect.width * 0.5);
-    const defaultY = Math.round(rect.height * 0.5);
+        const rect = selectorField.getBoundingClientRect();
+        const defaultX = Math.round(rect.width * 0.5);
+        const defaultY = Math.round(rect.height * 0.5);
 
-    bullet.style.left = `${defaultX}px`;
-    bullet.style.top = `${defaultY}px`;
+        bullet.style.left = `${defaultX}px`;
+        bullet.style.top = `${defaultY}px`;
 
-    waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
+        waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
 
-    if (transparencyBullet && transparencyField) {
-      transparencyBullet.style.top = `0px`;
-    }
+        if (transparencyBullet && transparencyField) {
+          transparencyBullet.style.top = `0px`;
+        }
 
-    currentTransparency = 100;
-    if (transparencyCount) {
-      transparencyCount.textContent = `100%`;
-    }
-  });
-});
+        currentTransparency = 100;
+        if (transparencyCount) {
+          transparencyCount.textContent = `100%`;
+        }
+      });
+    });
 
   }
 
