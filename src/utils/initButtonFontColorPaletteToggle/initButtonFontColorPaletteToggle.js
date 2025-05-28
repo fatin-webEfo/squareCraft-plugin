@@ -4,8 +4,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   const palette = document.getElementById("buttonFontColorPalate");
 
-
-
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -104,7 +102,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
 
     dynamicHue = hue;
-    // Sync to the vertical hue palette bullet
     if (allColorField && allColorBullet) {
       const rect = allColorField.getBoundingClientRect();
       const huePercentage = dynamicHue / 360;
@@ -158,14 +155,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
-
-
-    const buttonTypes = [
-      "sqs-button-element--primary",
-      "sqs-button-element--secondary",
-      "sqs-button-element--tertiary"
-    ];
-
+    const buttonTypes = ["sqs-button-element--primary", "sqs-button-element--secondary", "sqs-button-element--tertiary"];
     let buttonType = null;
     for (let type of buttonTypes) {
       if (currentElement.querySelector(`a.${type}`)) {
@@ -173,44 +163,43 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         break;
       }
     }
-
-
-    if (!buttonType) {
-      console.warn("⚠️ No Squarespace button found in block.");
-      return;
-    }
-
-    const rgbaColor = color.startsWith("rgb(")
-      ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`)
-      : color;
-
-    const styleId = `sc-style-global-${buttonType}`;
-    let styleTag = document.getElementById(styleId);
+    if (!buttonType) return;
+    const rgbaColor = color.startsWith("rgb(") ? color.replace("rgb(", "rgba(").replace(")", `, ${alpha})`) : color;
+    let styleTag = document.getElementById(`sc-style-global-${buttonType}`);
     if (!styleTag) {
       styleTag = document.createElement("style");
-      styleTag.id = styleId;
+      styleTag.id = `sc-style-global-${buttonType}`;
       document.head.appendChild(styleTag);
     }
-
-    styleTag.textContent = `
-      a.${buttonType},
-      button.${buttonType} {
-        background-color: ${rgbaColor} !important;
-      }
-      a.${buttonType}:hover,
-      button.${buttonType}:hover {
-        background-color: ${rgbaColor} !important;
-        filter: brightness(0.95);
-      }
-    `;
+    styleTag.textContent = `a.${buttonType}, button.${buttonType} { background-color: ${rgbaColor} !important; }`;
     const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
-    allButtons.forEach(btn => {
-      btn.dataset.scButtonBg = color;
-    });
-    console.log("🖌️ APPLYING COLOR:", rgbaColor, "on", buttonType);
-
+    allButtons.forEach(btn => btn.dataset.scButtonBg = color);
+  }
+ function setCanvasAndBullet(hue) {
+    selectorField.innerHTML = "";
+    const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.zIndex = "0";
+    selectorField.style.position = "relative";
+    selectorField.appendChild(canvas);
+    selectorField.appendChild(bullet);
+    const centerX = Math.round(selectorField.offsetWidth / 2);
+    const centerY = Math.round(selectorField.offsetHeight / 2);
+    bullet.style.left = `${centerX}px`;
+    bullet.style.top = `${centerY}px`;
+    const ctx = canvas.getContext("2d");
+    const data = ctx.getImageData(centerX, centerY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    colorCode.textContent = rgba;
+    palette.style.backgroundColor = rgba;
+    applyButtonBackgroundColor(rgba);
+    if (transparencyBullet && transparencyField) transparencyBullet.style.top = `0px`;
+    if (transparencyCount) transparencyCount.textContent = `100%`;
   }
 
+  setCanvasAndBullet(dynamicHue);
   if (
     !palette ||
     !container ||
@@ -313,27 +302,22 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   }
 
-  function getGradientCanvas(hue, width, height) {
+    function getGradientCanvas(hue, width, height) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
-
     canvas.width = width;
     canvas.height = height;
-
     const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
     gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
     gradient1.addColorStop(1, "white");
-
     const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
     gradient2.addColorStop(0, "black");
     gradient2.addColorStop(1, "transparent");
-
     ctx.fillStyle = gradient1;
     ctx.fillRect(0, 0, width, height);
     ctx.globalCompositeOperation = "multiply";
     ctx.fillStyle = gradient2;
     ctx.fillRect(0, 0, width, height);
-
     return canvas;
   }
 
