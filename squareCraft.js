@@ -135,7 +135,7 @@
 
 
   document.body.addEventListener("click", (event) => {
-
+   parentHtmlTabClick(); 
 
     if (selectedElement) {
       initButtonStyles(selectedElement);
