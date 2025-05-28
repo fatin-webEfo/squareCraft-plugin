@@ -284,13 +284,15 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   });
 
   colorCodeList.querySelectorAll("[data-format]").forEach(option => {
-    option.addEventListener("click", () => {
-      const selected = option.getAttribute("data-format");
-      colorCodeLabel.textContent = selected;
-      colorCodeList.classList.add("sc-hidden");
-      colorCodeArrow.classList.add("sc-rotate-180");
-    });
+  option.addEventListener("click", () => {
+    const selected = option.getAttribute("data-format");
+    colorCodeLabel.textContent = selected;
+    selectedColorFormat = selected;
+    colorCodeList.classList.add("sc-hidden");
+    colorCodeArrow.classList.add("sc-rotate-180");
   });
+});
+
 
   document.addEventListener("click", (e) => {
     if (!colorCodeList.contains(e.target) && !colorCodeToggle.contains(e.target)) {

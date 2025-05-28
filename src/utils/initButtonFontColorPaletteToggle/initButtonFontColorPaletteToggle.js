@@ -1,5 +1,5 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let isFirstBulletMove = true;
+ let selectedColorFormat = "RGB";
   let dynamicHue = 0;
   let currentTransparency = 100;
 
@@ -139,15 +139,43 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+   const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
+colorCode.textContent = formattedColor;
+
       if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     }
   requestAnimationFrame(syncBulletWithCanvasColor);
 
   }
 
+function formatColor(r, g, b, alpha = 1) {
+  if (selectedColorFormat === "HEX") {
+    const toHex = (v) => v.toString(16).padStart(2, "0");
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  } else if (selectedColorFormat === "HSL") {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+
+    return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+  } else {
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // default
+  }
+}
 
 
   
@@ -261,7 +289,7 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
         }
 
         updateTransparencyField(dynamicHue);
-        applyButtonBackgroundColor(finalColor, currentTransparency / 100);
+applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
       };
 
       document.onmouseup = () => {
@@ -293,11 +321,12 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
     if (!ctx) return;
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
 
-    if (colorCode) colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
+    if (colorCode) colorCode.textContent = formattedColor;
+
+    if (palette) palette.style.backgroundColor = formattedColor;
+    applyButtonBackgroundColor(formattedColor, currentTransparency / 100);
   };
 
   document.onmouseup = () => {
@@ -344,10 +373,11 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
     if (!ctx) return;
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    colorCode.textContent = rgba;
+    const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
+colorCode.textContent = formattedColor;
+
     if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
+applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     
 
   }
@@ -380,11 +410,13 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
       if (!ctx) return;
 
       const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+     const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
 
-      if (colorCode) colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+
+
+      if (colorCode) colorCode.textContent = formattedColor;
+      if (palette) palette.style.backgroundColor = formattedColor;
+      applyButtonBackgroundColor(formattedColor, currentTransparency / 100);
     };
 
     document.onmouseup = () => {
@@ -420,7 +452,7 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
         allColorBullet.style.top = `${bulletTop}px`;
       }
 
-      applyButtonBackgroundColor(color, currentTransparency / 100);
+applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
 
       requestAnimationFrame(() => {
         const canvas = selectorField.querySelector("canvas");
@@ -476,8 +508,9 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
   const ctx = canvas?.getContext("2d");
   if (ctx) {
     const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    colorCode.textContent = rgba;
+    const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
+colorCode.textContent = formattedColor;
+
     applyButtonBackgroundColor(rgba);
   }
 
@@ -551,8 +584,9 @@ console.log("🎯 setSelectorCanvas:", selectorField.offsetWidth, selectorField.
 
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+     const formattedColor = formatColor(data[0], data[1], data[2], currentTransparency / 100);
+colorCode.textContent = formattedColor;
+
     }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
