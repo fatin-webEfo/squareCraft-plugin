@@ -135,11 +135,6 @@
 
 
   document.body.addEventListener("click", (event) => {
-if (typeof module.initToggleSwitch === "function") {
-  module.initToggleSwitch();
-}
-
-parentHtmlTabClick(); 
 
 
     if (selectedElement) {
@@ -520,6 +515,8 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       const contentWrapper = document.createElement("div");
       contentWrapper.innerHTML = htmlString;
       widgetContainer.appendChild(contentWrapper);
+      parentHtmlTabClick(); 
+
 
       widgetContainer.style.display = "block";
       document.body.appendChild(widgetContainer);
