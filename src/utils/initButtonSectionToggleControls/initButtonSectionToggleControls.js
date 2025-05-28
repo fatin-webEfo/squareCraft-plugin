@@ -325,10 +325,9 @@ Object.keys(tabMap).forEach((tabId) => {
 
       targetTab.classList.remove("sc-hidden");
 
-      // Adjust ONLY the position, keep original width
       const parentRect = tabButton.parentElement.getBoundingClientRect();
       const tabRect = tabButton.getBoundingClientRect();
-      const offsetLeft = tabRect.left - parentRect.left;
+      const offsetLeft = tabRect.left - parentRect.left +1 ;
 
       activeBar.style.setProperty("left", `${offsetLeft}px`, "important");
     });
