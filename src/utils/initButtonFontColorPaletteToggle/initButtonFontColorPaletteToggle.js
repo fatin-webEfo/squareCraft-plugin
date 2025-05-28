@@ -63,18 +63,20 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return h * 360;
   }
   function setSelectorCanvas(hue) {
-    selectorField.innerHTML = "";
+  selectorField.innerHTML = "";
 
-    const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
-    canvas.style.position = "absolute";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.zIndex = "0";
+  const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+  canvas.style.position = "absolute";
+  canvas.style.top = "0";
+  canvas.style.left = "0";
+  canvas.style.zIndex = "0";
 
-    selectorField.style.position = "relative";
-    selectorField.appendChild(canvas);
-    selectorField.appendChild(bullet);
-  }
+  selectorField.style.position = "relative";
+  selectorField.appendChild(canvas);
+  selectorField.appendChild(bullet);
+}
+
+
   function hslToRgb(h, s = 1, l = 0.5) {
     function hueToRgb(p, q, t) {
       if (t < 0) t += 1;
@@ -103,6 +105,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
 
     dynamicHue = hue;
+    // Sync to the vertical hue palette bullet
+    if (allColorField && allColorBullet) {
+      const rect = allColorField.getBoundingClientRect();
+      const huePercentage = dynamicHue / 360;
+      const bulletTop = huePercentage * rect.height;
+      allColorBullet.style.top = `${bulletTop}px`;
+    }
+
     setSelectorCanvas(hue);
     updateTransparencyField(dynamicHue);
 
@@ -133,19 +143,19 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       if (palette) palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
-  requestAnimationFrame(syncBulletWithCanvasColor);
-if (allColorField && allColorBullet) {
-  const rect = allColorField.getBoundingClientRect();
-  const huePercentage = dynamicHue / 360;
-  const bulletTop = huePercentage * rect.height;
-  allColorBullet.style.top = `${bulletTop}px`;
-}
+    requestAnimationFrame(syncBulletWithCanvasColor);
+    if (allColorField && allColorBullet) {
+      const rect = allColorField.getBoundingClientRect();
+      const huePercentage = dynamicHue / 360;
+      const bulletTop = huePercentage * rect.height;
+      allColorBullet.style.top = `${bulletTop}px`;
+    }
 
   }
 
 
 
-  
+
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
@@ -269,37 +279,37 @@ if (allColorField && allColorBullet) {
   }
 
   if (selectorField && bullet) {
-   bullet.onmousedown = function (e) {
-  e.preventDefault();
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
 
-  document.onmousemove = function (e) {
-    const rect = selectorField.getBoundingClientRect();
-    let offsetX = e.clientX - rect.left;
-    let offsetY = e.clientY - rect.top;
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
 
-    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
 
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
 
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-    if (colorCode) colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
-  };
+        if (colorCode) colorCode.textContent = rgba;
+        if (palette) palette.style.backgroundColor = rgba;
+        applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      };
 
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-  };
-};
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
 
 
   }
@@ -328,7 +338,7 @@ if (allColorField && allColorBullet) {
     return canvas;
   }
 
- 
+
 
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
@@ -343,51 +353,51 @@ if (allColorField && allColorBullet) {
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    
+
 
   }
 
 
   if (transparencyField && transparencyBullet) {
-  transparencyBullet.onmousedown = function (e) {
-    e.preventDefault();
+    transparencyBullet.onmousedown = function (e) {
+      e.preventDefault();
 
-    document.onmousemove = function (e) {
-      const rect = transparencyField.getBoundingClientRect();
-      let offsetY = e.clientY - rect.top;
-      offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
-      transparencyBullet.style.top = `${offsetY}px`;
+      document.onmousemove = function (e) {
+        const rect = transparencyField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
+        transparencyBullet.style.top = `${offsetY}px`;
 
-      const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
-      currentTransparency = transparencyPercent;
+        const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
+        currentTransparency = transparencyPercent;
 
-      if (transparencyCount) {
-        transparencyCount.textContent = `${currentTransparency}%`;
-      }
+        if (transparencyCount) {
+          transparencyCount.textContent = `${currentTransparency}%`;
+        }
 
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY2 = bulletRect.top - fieldRect.top;
+        const bulletRect = bullet.getBoundingClientRect();
+        const fieldRect = selectorField.getBoundingClientRect();
+        const offsetX = bulletRect.left - fieldRect.left;
+        const offsetY2 = bulletRect.top - fieldRect.top;
 
-      const canvas = selectorField.querySelector("canvas");
-      const ctx = canvas?.getContext("2d");
-      if (!ctx) return;
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas?.getContext("2d");
+        if (!ctx) return;
 
-      const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+        const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
+        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-      if (colorCode) colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+        if (colorCode) colorCode.textContent = rgba;
+        if (palette) palette.style.backgroundColor = rgba;
+        applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      };
+
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
     };
-
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-  };
-}
+  }
 
 
   if (container.innerHTML.trim() !== "") return;
@@ -445,7 +455,7 @@ if (allColorField && allColorBullet) {
         if (transparencyBullet && transparencyField) {
           transparencyBullet.style.top = `0px`;
         }
-       
+
 
       });
     };
@@ -478,48 +488,48 @@ if (allColorField && allColorBullet) {
     transparencyCount.textContent = `100%`;
 
 
-   
+
 
 
     waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
 
   }
 
- function waitForCanvasReadyAndSyncBullet(x, y) {
-      const canvas = selectorField.querySelector("canvas");
-      if (!canvas) {
-        console.log("⏳ Canvas not found yet");
-        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-        return;
-      }
-
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const data = ctx.getImageData(x, y, 1, 1).data;
-
-      let painted = false;
-      for (let i = 0; i < 10; i++) {
-        const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
-        const sampleY = Math.floor(selectorField.offsetHeight / 2);
-        const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
-        if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
-          painted = true;
-          break;
-        }
-      }
-
-      if (!painted) {
-        console.log("🕐 Canvas not fully painted, retrying...");
-        requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
-        return;
-      }
-
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      bullet.style.left = `${x}px`;
-      bullet.style.top = `${y}px`;
-      colorCode.textContent = rgba;
-      applyButtonBackgroundColor(rgba);
-      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
+  function waitForCanvasReadyAndSyncBullet(x, y) {
+    const canvas = selectorField.querySelector("canvas");
+    if (!canvas) {
+      console.log("⏳ Canvas not found yet");
+      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+      return;
     }
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const data = ctx.getImageData(x, y, 1, 1).data;
+
+    let painted = false;
+    for (let i = 0; i < 10; i++) {
+      const sampleX = Math.floor((selectorField.offsetWidth / 10) * i);
+      const sampleY = Math.floor(selectorField.offsetHeight / 2);
+      const sample = ctx.getImageData(sampleX, sampleY, 1, 1).data;
+      if (sample[0] > 10 || sample[1] > 10 || sample[2] > 10) {
+        painted = true;
+        break;
+      }
+    }
+
+    if (!painted) {
+      console.log("🕐 Canvas not fully painted, retrying...");
+      requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
+      return;
+    }
+
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    bullet.style.left = `${x}px`;
+    bullet.style.top = `${y}px`;
+    colorCode.textContent = rgba;
+    applyButtonBackgroundColor(rgba);
+    console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
+  }
 
   if (container.children.length === 0) {
     const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
