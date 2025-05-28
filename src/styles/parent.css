@@ -882,6 +882,9 @@
 .sc-border-bottom-10 {
   border-bottom-width: 10px !important;
 }
+.sc-tab-active-indicator {
+  transition: left 0.3s ease !important;
+}
 
 .sc-border-left-10 {
   border-left-width: 10px !important;
