@@ -325,7 +325,7 @@ Object.keys(tabMap).forEach((tabId) => {
 
       targetTab.classList.remove("sc-hidden");
 
-   const tabPadding = parseInt(getComputedStyle(tabButton).paddingLeft || "0", 10);
+   const tabPadding = parseInt(getComputedStyle(tabButton).paddingLeft || "0", 6);
 const offset = tabButton.offsetLeft + tabPadding / 2;
 activeBar.style.setProperty("left", `${offset}px`, "important");
  
