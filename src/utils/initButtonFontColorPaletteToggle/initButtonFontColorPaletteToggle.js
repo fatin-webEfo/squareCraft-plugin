@@ -1,5 +1,5 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let isFirstBulletMove = true;
+let selectedColorFormat = "RGBA";
   let dynamicHue = 0;
   let currentTransparency = 100;
 
@@ -36,6 +36,39 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
   }
   console.log("clicked element", selectedElement)
+
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
+      case g: h = ((b - r) / d + 2); break;
+      case b: h = ((r - g) / d + 4); break;
+    }
+    h *= 60;
+  }
+
+  return [Math.round(h), Math.round(s * 100), Math.round(l * 100)];
+}
+  function updateColorCodeText(r, g, b, a = 1) {
+  if (selectedColorFormat === "HEX") {
+    const toHex = (v) => v.toString(16).padStart(2, '0');
+    const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    colorCode.textContent = hex.toUpperCase();
+  } else if (selectedColorFormat === "HSL") {
+    const [h, s, l] = rgbToHsl(r, g, b);
+    colorCode.textContent = `hsla(${h}, ${s}%, ${l}%, ${a})`;
+  } else {
+    colorCode.textContent = `rgba(${r}, ${g}, ${b}, ${a})`;
+  }
+}
   function getHueFromColorString(colorStr) {
     const tempDiv = document.createElement("div");
     tempDiv.style.color = colorStr;
@@ -130,7 +163,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       }
 
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+      updateColorCodeText(r, g, b, currentTransparency / 100);
       if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     }
@@ -285,7 +318,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-    if (colorCode) colorCode.textContent = rgba;
+    if (colorCode) updateColorCodeText(r, g, b, currentTransparency / 100);
     if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
   };
@@ -335,7 +368,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
     const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    colorCode.textContent = rgba;
+    updateColorCodeText(r, g, b, currentTransparency / 100);
     if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
     applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     
@@ -372,7 +405,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
 
-      if (colorCode) colorCode.textContent = rgba;
+      if (colorCode) updateColorCodeText(r, g, b, currentTransparency / 100);
       if (palette) palette.style.backgroundColor = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       applyButtonBackgroundColor(`rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`, currentTransparency / 100);
     };
@@ -419,7 +452,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   const [r, g, b] = computed.replace(/[^\d,]/g, "").split(",").map(n => parseInt(n.trim()));
   const rgba = `rgba(${r}, ${g}, ${b}, ${currentTransparency / 100})`;
 
-colorCode.textContent = rgba;
+updateColorCodeText(r, g, b, currentTransparency / 100);
   if (palette) palette.style.backgroundColor = rgba;
   applyButtonBackgroundColor(rgba, currentTransparency / 100);
 
@@ -471,7 +504,7 @@ colorCode.textContent = rgba;
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+      updateColorCodeText(r, g, b, currentTransparency / 100);
     }
 
     transparencyBullet.style.top = `0px`;
@@ -510,7 +543,7 @@ colorCode.textContent = rgba;
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      colorCode.textContent = rgba;
+      updateColorCodeText(r, g, b, currentTransparency / 100);
       applyButtonBackgroundColor(rgba);
       console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
     }
@@ -543,7 +576,7 @@ colorCode.textContent = rgba;
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+      updateColorCodeText(r, g, b, currentTransparency / 100);
     }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
