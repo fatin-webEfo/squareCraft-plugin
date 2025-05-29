@@ -2745,35 +2745,11 @@
   filter: drop-shadow(0 -1px 1px rgba(240, 101, 8, 0.25)) !important;
   z-index: 99998 !important;
 }
-
-
-
-
-
-.sc-tooltip.sc-visible {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-
-
-
-.sc-inline-block {
-  display: inline-block;
-}
-
-
-.sc-w-30px {
-  width: 30px;
-}
-
-.sc-h-30px {
-  height: 30px;
-}
-
-.sc-rounded-20 {
-  border-radius: 20%;
-}
+.sc-tooltip.sc-visible {opacity: 1 !important;visibility: visible !important;}
+.sc-inline-block {display: inline-block !important;}
+.sc-w-30px {width: 30px;}
+.sc-h-30px {height: 30px;}
+.sc-rounded-20 {border-radius: 20%;}
 
 .sc-mr-6 {
   margin-right: 6px;

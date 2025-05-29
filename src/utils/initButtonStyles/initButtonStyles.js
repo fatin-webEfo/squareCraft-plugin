@@ -752,13 +752,6 @@ export function initButtonBorderControl(getSelectedElement) {
   border-left-width: ${state.values.Left || 0}px !important;
 }
   `;
-
-  document.querySelectorAll(`.${typeClass}`).forEach(el => {
-    el.style.borderTopWidth = `${state.values.Top || 0}px`;
-    el.style.borderRightWidth = `${state.values.Right || 0}px`;
-    el.style.borderBottomWidth = `${state.values.Bottom || 0}px`;
-    el.style.borderLeftWidth = `${state.values.Left || 0}px`;
-  });
 }
 
 
