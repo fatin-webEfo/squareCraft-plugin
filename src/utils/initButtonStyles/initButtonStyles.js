@@ -1226,8 +1226,8 @@ export function resetAllButtonStyles(getSelectedElement) {
 
     const blockId = selected.id || "block-id";
 
-    // 1. Remove all plugin-generated <style> tags
-    const stylePrefixes = [
+    // Remove all plugin-injected <style> tags
+    const styleIds = [
       `sc-font-style-${typeClass}`,
       `sc-font-weight-${typeClass}`,
       `sc-style-${typeClass}`,
@@ -1236,28 +1236,22 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
       `sc-button-shadow-${typeClass}`
     ];
-    stylePrefixes.forEach(id => {
-      const styleTag = document.getElementById(id);
-      if (styleTag) styleTag.remove();
-    });
+    styleIds.forEach(id => document.getElementById(id)?.remove());
 
-    // 2. Reset plugin-applied inline styles
+    // Remove all inline styles & plugin classnames from buttons
     const allBtns = document.querySelectorAll(`.${typeClass}`);
     allBtns.forEach(btn => {
       btn.removeAttribute("style");
+      btn.classList.remove("sc-flex", "sc-items-center");
+
       const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
       spans.forEach(span => span.removeAttribute("style"));
 
       const icons = btn.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
-      icons.forEach(icon => {
-        icon.removeAttribute("style");
-        icon.remove();
-      });
-
-      btn.classList.remove("sc-flex", "sc-items-center");
+      icons.forEach(icon => icon.remove());
     });
 
-    // 3. Remove plugin-specific classnames
+    // Remove plugin classnames from all nested elements
     selected.querySelectorAll("*").forEach(el => {
       [...el.classList].forEach(cls => {
         if (cls.startsWith("sc-") || cls.startsWith("sqscraft-")) {
@@ -1266,27 +1260,40 @@ export function resetAllButtonStyles(getSelectedElement) {
       });
     });
 
-    // 4. Reset internal plugin state (like border map, shadow, etc.)
+    // Clear memory state
     if (window.__squareCraftBorderStateMap) {
       const key = `${blockId}--${typeClass}`;
       window.__squareCraftBorderStateMap.delete(key);
     }
-
     if (window.shadowState) {
       window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
     }
-
-    // 5. Reset global vars
     window.__squareCraftBorderStyle = "solid";
 
-    // 6. Resync plugin UI sliders/labels
+    // Reinitialize all plugin modules (flexible recovery)
     setTimeout(() => {
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
       }
-    }, 100);
+
+      // Flexible reinits
+      initButtonFontFamilyControls(getSelectedElement);
+      initButtonStyles(getSelectedElement?.());
+      initButtonIconPositionToggle(getSelectedElement);
+      initButtonIconRotationControl(getSelectedElement);
+      initButtonIconSizeControl(getSelectedElement);
+      initButtonIconSpacingControl(getSelectedElement);
+      initButtonBorderControl(getSelectedElement);
+      initButtonBorderTypeToggle(getSelectedElement);
+      initButtonBorderRadiusControl(getSelectedElement);
+      initButtonShadowControls(getSelectedElement);
+
+      // Reset UI highlight defaults
+      document.getElementById("buttonBorderTypeSolid")?.click();
+    }, 150);
   });
 }
+
 
 
 
