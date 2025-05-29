@@ -872,66 +872,108 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
 
 
-export function initButtonBorderTypeToggle(getSelectedElement) {
-  const typeButtons = [
-    { id: "buttonBorderTypeSolid", type: "solid" },
-    { id: "buttonBorderTypeDashed", type: "dashed" },
-    { id: "buttonBorderTypeDotted", type: "dotted" }
-  ];
+export function initButtonBorderRadiusControl(getSelectedElement) {
+  const fillField = document.getElementById("buttonBorderradiusField");
+  const bullet = document.getElementById("buttonBorderradiusBullet");
+  const fill = document.getElementById("buttonBorderradiusFill");
+  const valueText = document.getElementById("buttonBorderradiusCount");
+  const incBtn = document.getElementById("buttonBorderradiusIncrease");
+  const decBtn = document.getElementById("buttonBorderradiusDecrease");
+  const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
 
-  typeButtons.forEach(({ id, type }) => {
-    const el = document.getElementById(id);
-    if (!el) return;
+  if (!fillField || !bullet || !fill || !valueText) return;
 
-    el.onclick = () => {
-      typeButtons.forEach(({ id }) => {
-        const btn = document.getElementById(id);
-        btn?.classList.remove("sc-bg-454545");
-      });
+  const max = 50;
+  let radiusValue = 0;
 
-      el.classList.add("sc-bg-454545");
-      window.__squareCraftBorderStyle = type;
+  function getButtonTypeClass(btn) {
+    if (btn.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
+    if (btn.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
 
-      const selected = getSelectedElement?.();
-      if (!selected) return;
+  function applyBorderRadius() {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
 
-      const btn = selected.querySelector(
-        ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
-      );
-      if (!btn) return;
+    const typeClass = getButtonTypeClass(btn);
+    const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
 
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-      if (!typeClass) return;
-
-      const blockId = selected.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All", color: "#000000" };
-      window.__squareCraftBorderStateMap.set(key, { ...state });
-
-      const styleId = `sc-button-border-${typeClass}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
+    styleTag.innerHTML = `
+      a.${typeClass} {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
       }
+      a.${typeClass} span,
+      a.${typeClass} .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+      a.${typeClass}:hover {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
+      }
+      a.${typeClass}:hover span,
+      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+    `;
+  }
 
-      const borderColor = state.color || "black";
+  function updateUIFromValue(value) {
+    radiusValue = Math.max(0, Math.min(max, value));
+    const percent = (radiusValue / max) * 100;
 
-      styleTag.textContent = `
-.${typeClass} {
-  box-sizing: border-box !important;
-  border-style: ${type} !important;
-  border-color: ${borderColor} !important;
-  border-top-width: ${state.values.Top || 0}px !important;
-  border-right-width: ${state.values.Right || 0}px !important;
-  border-bottom-width: ${state.values.Bottom || 0}px !important;
-  border-left-width: ${state.values.Left || 0}px !important;
-}`;
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${radiusValue}px`;
+
+    applyBorderRadius();
+  }
+
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (eMove) => {
+      const rect = fillField.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      const value = Math.round((x / rect.width) * max);
+      updateUIFromValue(value);
     };
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
   });
-}
 
+  fillField.addEventListener("click", (e) => {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const value = Math.round((x / rect.width) * max);
+    updateUIFromValue(value);
+  });
+
+  incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
+  decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
+  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
+
+  // ✅ Sync radius from DOM on load (like icon does)
+  setTimeout(() => {
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    if (!btn) return;
+
+    const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
+    if (!isNaN(computed)) updateUIFromValue(computed);
+  }, 50);
+}
 
 
 const shadowState = {
