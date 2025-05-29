@@ -709,53 +709,58 @@ export function initButtonBorderControl(getSelectedElement) {
     });
   });
 
-  function applyBorder() {
-    const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
-    if (!btn) return;
+ function applyBorder() {
+  const selected = getSelectedElement?.();
+  const btn = selected?.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  );
+  if (!btn) return;
 
-    const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-    const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All" };
-    const val = `${currentValue}px`;
+  const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+  if (!typeClass) return;
 
-    if (state.side === "All") {
-      ["Top", "Right", "Bottom", "Left"].forEach(side => state.values[side] = currentValue);
-    } else {
-      state.values[state.side] = currentValue;
-    }
+  const blockId = selected.id || "block-id";
+  const key = `${blockId}--${typeClass}`;
+  const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All" };
 
-    window.__squareCraftBorderStateMap.set(key, state);
-
-    const selector = `#siteWrapper #${blockId} .sqs-block-button-container a.${typeClass}, #siteWrapper #${blockId} .sqs-block-button-container button.${typeClass}`;
-    const styleTagId = `sc-button-border-${blockId}-${typeClass}`;
-    let styleTag = document.getElementById(styleTagId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleTagId;
-      document.head.appendChild(styleTag);
-    }
-
-    styleTag.innerHTML = `
-      ${selector}, .${typeClass} {
-        box-sizing: border-box !important;
-        border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
-        border-color: black !important;
-        border-top-width: ${state.values.Top || 0}px !important;
-        border-right-width: ${state.values.Right || 0}px !important;
-        border-bottom-width: ${state.values.Bottom || 0}px !important;
-        border-left-width: ${state.values.Left || 0}px !important;
-      }
-    `;
-
-    document.querySelectorAll(`.${typeClass}`).forEach(el => {
-      el.style.borderTopWidth = `${state.values.Top || 0}px`;
-      el.style.borderRightWidth = `${state.values.Right || 0}px`;
-      el.style.borderBottomWidth = `${state.values.Bottom || 0}px`;
-      el.style.borderLeftWidth = `${state.values.Left || 0}px`;
+  if (state.side === "All") {
+    ["Top", "Right", "Bottom", "Left"].forEach(side => {
+      state.values[side] = currentValue;
     });
+  } else {
+    state.values[state.side] = currentValue;
   }
+
+  window.__squareCraftBorderStateMap.set(key, state);
+
+  const styleId = `sc-button-border-${typeClass}`;
+  let styleTag = document.getElementById(styleId);
+  if (!styleTag) {
+    styleTag = document.createElement("style");
+    styleTag.id = styleId;
+    document.head.appendChild(styleTag);
+  }
+
+  styleTag.innerHTML = `
+.${typeClass} {
+  box-sizing: border-box !important;
+  border-style: ${window.__squareCraftBorderStyle || "solid"} !important;
+  border-color: black !important;
+  border-top-width: ${state.values.Top || 0}px !important;
+  border-right-width: ${state.values.Right || 0}px !important;
+  border-bottom-width: ${state.values.Bottom || 0}px !important;
+  border-left-width: ${state.values.Left || 0}px !important;
+}
+  `;
+
+  document.querySelectorAll(`.${typeClass}`).forEach(el => {
+    el.style.borderTopWidth = `${state.values.Top || 0}px`;
+    el.style.borderRightWidth = `${state.values.Right || 0}px`;
+    el.style.borderBottomWidth = `${state.values.Bottom || 0}px`;
+    el.style.borderLeftWidth = `${state.values.Left || 0}px`;
+  });
+}
+
 
   function updateUIFromValue(value) {
     currentValue = Math.max(0, Math.min(max, value));

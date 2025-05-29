@@ -2855,5 +2855,4 @@
 
 .sc-force-repaint {
   transform: scale(1);
-  /* doesn't affect layout but triggers reflow */
 }
