@@ -210,7 +210,6 @@
       initButtonShadowControls(() => selectedElement);
       resetAllButtonStyles(() => selectedElement);
       initButtonFontFamilyControls(() => selectedElement);
-      syncButtonFontStylesFromDOM(() => selectedElement)
       initButtonBorderTypeToggle(() => selectedElement, (selected) => {
         if (selected) {
           const event = new Event("reapplyBorder");

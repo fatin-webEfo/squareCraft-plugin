@@ -1207,34 +1207,6 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
 
 
-export function syncButtonFontStylesFromDOM() {
-  const buttonTypes = [
-    "sqs-button-element--primary",
-    "sqs-button-element--secondary",
-    "sqs-button-element--tertiary"
-  ];
-
-  const styleProps = [
-    "fontFamily", "fontSize", "fontWeight", "letterSpacing", "textTransform",
-    "backgroundColor", "color", "borderWidth", "borderStyle",
-    "borderColor", "borderRadius", "boxShadow"
-  ];
-
-  buttonTypes.forEach(type => {
-    const el = document.querySelector(`.${type}`);
-    if (!el) return console.warn(`No button found for: ${type}`);
-    const styles = getComputedStyle(el);
-
-    console.group(`Styles for .${type}`);
-    styleProps.forEach(prop => {
-      console.log(`${prop}: ${styles[prop]}`);
-    });
-    console.groupEnd();
-  });
-}
-
-
-
 export function resetAllButtonStyles(getSelectedElement) {
   const resetTrigger = document.getElementById("buttonResetAll");
   if (!resetTrigger) return;
