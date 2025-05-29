@@ -1315,3 +1315,22 @@ export function resetAllButtonStyles(getSelectedElement) {
     }, 100);
   });
 }
+
+
+
+setTimeout(() => {
+  if (typeof window.syncButtonStylesFromElement === "function") {
+    window.syncButtonStylesFromElement(selected);
+  }
+
+  if (typeof initButtonBorderRadiusControl === "function") {
+    initButtonBorderRadiusControl(getSelectedElement);
+  }
+
+  if (typeof initButtonBorderTypeToggle === "function") {
+    initButtonBorderTypeToggle(getSelectedElement);
+  }
+
+  document.getElementById("buttonBorderTypeSolid")?.click();
+}, 100);
+
