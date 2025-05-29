@@ -1,12 +1,8 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   let isFirstBulletMove = true;
-  let dynamicHue = 0;
-  let currentTransparency = 100;
+
 
   const palette = document.getElementById("buttonFontColorPalate");
-
-
-
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -98,49 +94,21 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   function updateSelectorField(hueOrColor) {
     let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
+
     if (!hue) {
       hue = getHueFromColorString(hueOrColor);
     }
+
 
     dynamicHue = hue;
     setSelectorCanvas(hue);
     updateTransparencyField(dynamicHue);
     selectorField.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), white), linear-gradient(to top, black, transparent)`;
     selectorField.style.backgroundBlendMode = "multiply";
-
-    function syncBulletWithCanvasColor() {
-      const canvas = selectorField.querySelector("canvas");
-      if (!canvas) {
-        requestAnimationFrame(syncBulletWithCanvasColor);
-        return;
-      }
-
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY = bulletRect.top - fieldRect.top;
-
-      const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
-
-      if (!isValidColor) {
-        requestAnimationFrame(syncBulletWithCanvasColor);
-        return;
-      }
-
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    }
-  requestAnimationFrame(syncBulletWithCanvasColor);
-
   }
 
 
 
-  
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
@@ -207,6 +175,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   )
     return;
 
+  let dynamicHue = 0;
+
+  let currentTransparency = 100;
 
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
@@ -264,38 +235,45 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   }
 
   if (selectorField && bullet) {
-   bullet.onmousedown = function (e) {
-  e.preventDefault();
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
 
-  document.onmousemove = function (e) {
-    const rect = selectorField.getBoundingClientRect();
-    let offsetX = e.clientX - rect.left;
-    let offsetY = e.clientY - rect.top;
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
 
-    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
+        offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
 
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
 
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+        console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgb}`);
 
-    if (colorCode) colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
-  };
 
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-  };
-};
+        if (colorCode) colorCode.textContent = rgb;
+        if (isFirstBulletMove) {
+          isFirstBulletMove = false;
+          return;
+        }
 
+        applyButtonBackgroundColor(rgb, currentTransparency / 100);
+      };
+
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+      console.log(`🖱️ Bullet moved to (${offsetX}, ${offsetY}) → ${rgb}`);
+
+    };
 
   }
 
@@ -323,67 +301,63 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return canvas;
   }
 
- 
+
 
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
     bullet.style.top = `${offsetY}px`;
 
+    const width = selectorField.offsetWidth;
+    const height = selectorField.offsetHeight;
+    if (!width || !height) return;
+
     const canvas = selectorField.querySelector("canvas");
     const ctx = canvas?.getContext("2d");
     if (!ctx) return;
-
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    
+    ;
+    const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
 
+    colorCode.textContent = rgb;
+    console.log(`📍 moveBullet to (${offsetX}, ${offsetY}) → ${rgb}`);
+
+    applyButtonBackgroundColor(rgb);
   }
 
-
   if (transparencyField && transparencyBullet) {
-  transparencyBullet.onmousedown = function (e) {
-    e.preventDefault();
+    transparencyBullet.onmousedown = function (e) {
+      e.preventDefault();
+      document.onmousemove = function (e) {
+        const rect = transparencyField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(
+          0,
+          Math.min(rect.height - transparencyBullet.offsetHeight, offsetY)
+        );
+        transparencyBullet.style.top = `${offsetY}px`;
 
-    document.onmousemove = function (e) {
-      const rect = transparencyField.getBoundingClientRect();
-      let offsetY = e.clientY - rect.top;
-      offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
-      transparencyBullet.style.top = `${offsetY}px`;
+        const transparencyPercent =
+          100 - Math.round((offsetY / rect.height) * 100);
+        currentTransparency = transparencyPercent;
+        if (transparencyCount) {
+          transparencyCount.textContent = `${currentTransparency}%`;
+        }
+        console.log(`🌫️ Transparency changed to ${currentTransparency}%`);
 
-      const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
-      currentTransparency = transparencyPercent;
+        const currentColor = colorCode?.textContent;
+        if (currentColor) {
+          applyButtonBackgroundColor(currentColor, currentTransparency / 100);
+        }
+        console.log(`🎨 Color with transparency: ${currentColor} @ ${currentTransparency}%`);
 
-      if (transparencyCount) {
-        transparencyCount.textContent = `${currentTransparency}%`;
-      }
 
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY2 = bulletRect.top - fieldRect.top;
-
-      const canvas = selectorField.querySelector("canvas");
-      const ctx = canvas?.getContext("2d");
-      if (!ctx) return;
-
-      const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-
-      if (colorCode) colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      };
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
     };
-
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-  };
-}
-
+  }
 
   if (container.innerHTML.trim() !== "") return;
 
@@ -440,7 +414,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (transparencyBullet && transparencyField) {
           transparencyBullet.style.top = `0px`;
         }
-       
+        currentTransparency = 100;
+        if (transparencyCount) {
+          transparencyCount.textContent = `100%`;
+        }
 
       });
     };
@@ -464,8 +441,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const ctx = canvas?.getContext("2d");
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+      colorCode.textContent = rgb;
     }
 
     transparencyBullet.style.top = `0px`;
@@ -501,12 +478,12 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      colorCode.textContent = rgba;
-      applyButtonBackgroundColor(rgba);
-      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
+      colorCode.textContent = rgb;
+      applyButtonBackgroundColor(rgb);
+      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgb} (initial load)`);
     }
 
 
@@ -536,8 +513,8 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-      colorCode.textContent = rgba;
+      const rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+      colorCode.textContent = rgb;
     }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);

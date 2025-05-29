@@ -302,8 +302,6 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   });
 }
 
-
-
 const tabMap = {
   "design-tab": "designTab",
   "advanced-tab": "advancedTab",
