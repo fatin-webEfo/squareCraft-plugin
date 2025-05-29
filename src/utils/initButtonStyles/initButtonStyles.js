@@ -1201,8 +1201,7 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   window.updateActiveButtonBars?.();
 };
-
-document.getElementById("buttonResetAll")?.addEventListener("click", () => {
+export function resetAllButtonStyles(getSelectedElement) {
   const selected = getSelectedElement?.();
   if (!selected) return;
 
@@ -1211,44 +1210,37 @@ document.getElementById("buttonResetAll")?.addEventListener("click", () => {
   );
   if (!btn) return;
 
-  const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+  const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
   if (!typeClass) return;
 
-  const styleIdsToRemove = [
+  const styleIds = [
     `sc-style-${typeClass}`,
     `sc-font-style-${typeClass}`,
     `sc-font-weight-${typeClass}`,
     `sc-transform-style-${typeClass}`,
     `sc-button-border-${typeClass}`,
-    `sc-shadow-style-${typeClass}`,
-    `sc-radius-style-${typeClass}`
+    `sc-radius-style-${typeClass}`,
+    `sc-shadow-style-${typeClass}`
   ];
 
-  styleIdsToRemove.forEach(id => {
-    const styleTag = document.getElementById(id);
-    if (styleTag) styleTag.remove();
+  styleIds.forEach(id => {
+    const tag = document.getElementById(id);
+    if (tag) tag.remove();
   });
 
-  document.querySelectorAll(`.${typeClass}`).forEach(el => {
-    el.removeAttribute("style");
-    el.classList.remove("sc-flex", "sc-items-center", "sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-  });
+  const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+  if (icon) {
+    icon.style.removeProperty("transform");
+    icon.style.removeProperty("width");
+    icon.style.removeProperty("height");
+    icon.style.removeProperty("margin-left");
+    icon.style.removeProperty("margin-right");
+  }
 
-  const spans = selected.querySelectorAll(`.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`);
-  spans.forEach(el => {
-    el.removeAttribute("style");
-    el.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-  });
+  btn.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+  btn.style.removeProperty("gap");
 
-  const icons = selected.querySelectorAll(`.${typeClass} .sqscraft-button-icon, .${typeClass} .sqscraft-image-icon`);
-  icons.forEach(icon => {
-    icon.removeAttribute("style");
-  });
-
-  window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
-  window.__squareCraftBorderStyle = "solid";
-  if (window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap.clear();
-
-  window.syncButtonStylesFromElement?.(selected);
-});
-
+  setTimeout(() => {
+    window.syncButtonStylesFromElement?.(selected);
+  }, 20);
+}

@@ -118,6 +118,7 @@
     initButtonBorderControl,
     initButtonBorderTypeToggle,
     initButtonBorderRadiusControl,
+    resetAllButtonStyles,
     initButtonShadowControls, 
     initButtonFontFamilyControls,
   syncButtonFontStylesFromDOM } =
@@ -207,6 +208,7 @@
       initButtonBorderControl(() => selectedElement);
       initButtonShadowControls(() => selectedElement);
       initButtonFontFamilyControls(() => selectedElement);
+      resetAllButtonStyles(() => selectedElement)
       syncButtonFontStylesFromDOM(() => selectedElement)
       initButtonBorderTypeToggle(() => selectedElement, (selected) => {
         if (selected) {
