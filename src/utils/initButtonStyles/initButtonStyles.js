@@ -898,7 +898,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
-    const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
+    const styleId = `sc-radius-style-${typeClass}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
@@ -907,33 +907,31 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     }
 
     styleTag.innerHTML = `
-      a.${typeClass} {
-        border-radius: ${radiusValue}px !important;
-        overflow: hidden !important;
-      }
-      a.${typeClass} span,
-      a.${typeClass} .sqs-add-to-cart-button-inner {
-        border-radius: ${radiusValue}px !important;
-      }
-      a.${typeClass}:hover {
-        border-radius: ${radiusValue}px !important;
-        overflow: hidden !important;
-      }
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
-        border-radius: ${radiusValue}px !important;
-      }
+.${typeClass} {
+  border-radius: ${radiusValue}px !important;
+  overflow: hidden !important;
+}
+.${typeClass} span,
+.${typeClass} .sqs-add-to-cart-button-inner {
+  border-radius: ${radiusValue}px !important;
+}
+.${typeClass}:hover {
+  border-radius: ${radiusValue}px !important;
+  overflow: hidden !important;
+}
+.${typeClass}:hover span,
+.${typeClass}:hover .sqs-add-to-cart-button-inner {
+  border-radius: ${radiusValue}px !important;
+}
     `;
   }
 
   function updateUIFromValue(value) {
     radiusValue = Math.max(0, Math.min(max, value));
     const percent = (radiusValue / max) * 100;
-
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${radiusValue}px`;
-
     applyBorderRadius();
   }
 
@@ -964,16 +962,16 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
   resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 
-  // ✅ Sync radius from DOM on load (like icon does)
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
-
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
   }, 50);
 }
+
+
 
 
 const shadowState = {
