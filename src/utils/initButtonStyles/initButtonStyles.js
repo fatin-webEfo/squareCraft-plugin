@@ -892,7 +892,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   function applyBorderRadius() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
@@ -904,7 +906,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    styleTag.innerHTML = `
+    styleTag.textContent = `
 .${typeClass} {
   border-radius: ${radiusValue}px !important;
   overflow: hidden !important;
@@ -920,8 +922,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 .${typeClass}:hover span,
 .${typeClass}:hover .sqs-add-to-cart-button-inner {
   border-radius: ${radiusValue}px !important;
-}
-    `;
+}`;
   }
 
   function updateUIFromValue(value) {
@@ -962,12 +963,15 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
   }, 50);
 }
+
 
 
 
