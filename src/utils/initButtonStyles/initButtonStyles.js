@@ -828,7 +828,6 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       });
 
       el.classList.add("sc-bg-454545");
-
       window.__squareCraftBorderStyle = type;
 
       const selected = getSelectedElement?.();
@@ -855,7 +854,7 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
 
       const borderColor = state.color || "black";
 
-      styleTag.innerHTML = `
+      styleTag.textContent = `
 .${typeClass} {
   box-sizing: border-box !important;
   border-style: ${type} !important;
@@ -864,8 +863,7 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
   border-right-width: ${state.values.Right || 0}px !important;
   border-bottom-width: ${state.values.Bottom || 0}px !important;
   border-left-width: ${state.values.Left || 0}px !important;
-}
-      `;
+}`;
     };
   });
 }
