@@ -241,9 +241,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       document.onmousemove = function (e) {
         const rect = selectorField.getBoundingClientRect();
         let offsetX = e.clientX - rect.left;
+        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
         let offsetY = e.clientY - rect.top;
 
-        offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
         offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
 
         bullet.style.left = `${offsetX}px`;
