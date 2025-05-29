@@ -894,7 +894,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   function applyBorderRadius() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
@@ -906,23 +906,23 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    styleTag.innerHTML = `
-      a.${typeClass} {
-        border-radius: ${radiusValue}px !important;
-        overflow: hidden !important;
-      }
-      a.${typeClass} span,
-      a.${typeClass} .sqs-add-to-cart-button-inner {
-        border-radius: ${radiusValue}px !important;
-      }
-      a.${typeClass}:hover {
-        border-radius: ${radiusValue}px !important;
-        overflow: hidden !important;
-      }
-      a.${typeClass}:hover span,
-      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
-        border-radius: ${radiusValue}px !important;
-      }
+    styleTag.textContent = `
+.${typeClass} {
+  border-radius: ${radiusValue}px !important;
+  overflow: hidden !important;
+}
+.${typeClass} span,
+.${typeClass} .sqs-add-to-cart-button-inner {
+  border-radius: ${radiusValue}px !important;
+}
+.${typeClass}:hover {
+  border-radius: ${radiusValue}px !important;
+  overflow: hidden !important;
+}
+.${typeClass}:hover span,
+.${typeClass}:hover .sqs-add-to-cart-button-inner {
+  border-radius: ${radiusValue}px !important;
+}
     `;
   }
 
@@ -964,16 +964,16 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
   resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 
-  // ✅ Sync radius from DOM on load (like icon does)
   setTimeout(() => {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
     if (!btn) return;
 
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
   }, 50);
 }
+
 
 
 const shadowState = {
