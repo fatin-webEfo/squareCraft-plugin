@@ -454,11 +454,35 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     updateSelectorField(firstSwatchColor);
 
-    const rect = selectorField.getBoundingClientRect();
-    const defaultX = Math.round(rect.width * 0.5);
-    const defaultY = Math.round(rect.height * 0.5);
-    bullet.style.left = `${defaultX}px`;
-    bullet.style.top = `${defaultY}px`;
+bullet.style.left = `0px`;
+bullet.style.top = `0px`;
+
+function waitAndCenterBullet() {
+  const rect = selectorField.getBoundingClientRect();
+  if (rect.width < 50 || rect.height < 20) {
+    requestAnimationFrame(waitAndCenterBullet);
+    return;
+  }
+
+  const centerX = Math.round(rect.width * 0.5);
+  const centerY = Math.round(rect.height * 0.5);
+  bullet.style.left = `${centerX}px`;
+  bullet.style.top = `${centerY}px`;
+
+  const canvas = selectorField.querySelector("canvas");
+  const ctx = canvas?.getContext("2d");
+  if (ctx) {
+    const data = ctx.getImageData(centerX, centerY, 1, 1).data;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    colorCode.textContent = rgba;
+    applyButtonBackgroundColor(rgba);
+  }
+
+  console.log(`✅ Bullet moved inside field to center: (${centerX}, ${centerY})`);
+}
+
+requestAnimationFrame(waitAndCenterBullet);
+
 
     const canvas = selectorField.querySelector("canvas");
     const ctx = canvas?.getContext("2d");
