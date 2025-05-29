@@ -1202,28 +1202,53 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   window.updateActiveButtonBars?.();
 };
 
-export function syncButtonFontStylesFromDOM() {
-  const buttonTypes = [
-    "sqs-button-element--primary",
-    "sqs-button-element--secondary",
-    "sqs-button-element--tertiary"
+document.getElementById("buttonResetAll")?.addEventListener("click", () => {
+  const selected = getSelectedElement?.();
+  if (!selected) return;
+
+  const btn = selected.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  );
+  if (!btn) return;
+
+  const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+  if (!typeClass) return;
+
+  const styleIdsToRemove = [
+    `sc-style-${typeClass}`,
+    `sc-font-style-${typeClass}`,
+    `sc-font-weight-${typeClass}`,
+    `sc-transform-style-${typeClass}`,
+    `sc-button-border-${typeClass}`,
+    `sc-shadow-style-${typeClass}`,
+    `sc-radius-style-${typeClass}`
   ];
 
-  const styleProps = [
-    "fontFamily", "fontSize", "fontWeight", "letterSpacing", "textTransform",
-    "backgroundColor", "color", "borderWidth", "borderStyle",
-    "borderColor", "borderRadius", "boxShadow"
-  ];
-
-  buttonTypes.forEach(type => {
-    const el = document.querySelector(`.${type}`);
-    if (!el) return console.warn(`No button found for: ${type}`);
-    const styles = getComputedStyle(el);
-
-    console.group(`Styles for .${type}`);
-    styleProps.forEach(prop => {
-      console.log(`${prop}: ${styles[prop]}`);
-    });
-    console.groupEnd();
+  styleIdsToRemove.forEach(id => {
+    const styleTag = document.getElementById(id);
+    if (styleTag) styleTag.remove();
   });
-}
+
+  document.querySelectorAll(`.${typeClass}`).forEach(el => {
+    el.removeAttribute("style");
+    el.classList.remove("sc-flex", "sc-items-center", "sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+  });
+
+  const spans = selected.querySelectorAll(`.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`);
+  spans.forEach(el => {
+    el.removeAttribute("style");
+    el.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+  });
+
+  const icons = selected.querySelectorAll(`.${typeClass} .sqscraft-button-icon, .${typeClass} .sqscraft-image-icon`);
+  icons.forEach(icon => {
+    icon.removeAttribute("style");
+  });
+
+  window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+  window.__squareCraftBorderStyle = "solid";
+  if (window.__squareCraftBorderStateMap) window.__squareCraftBorderStateMap.clear();
+
+  window.syncButtonStylesFromElement?.(selected);
+});
+
