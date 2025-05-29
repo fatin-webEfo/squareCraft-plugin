@@ -999,9 +999,7 @@ export function initButtonShadowControls(getSelectedElement) {
     const el = getSelectedElement?.();
     if (!el) return;
 
-    const btn = el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
+    const btn = el.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
     if (!btn) return;
 
     const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
@@ -1009,7 +1007,7 @@ export function initButtonShadowControls(getSelectedElement) {
 
     const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
 
-    document.querySelectorAll(`a.${typeClass}, button.${typeClass}`).forEach(b => {
+    document.querySelectorAll(`.${typeClass}`).forEach(b => {
       b.style.boxShadow = value;
     });
   }
@@ -1063,7 +1061,6 @@ export function initButtonShadowControls(getSelectedElement) {
       applyShadow();
     }
 
-
     bullet.addEventListener("mousedown", (e) => {
       e.preventDefault();
       const rect = field.getBoundingClientRect();
@@ -1111,6 +1108,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 
 
