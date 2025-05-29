@@ -2756,14 +2756,11 @@
 .sc-mt-8 {margin-top: 32px;}
 .sc-cursor-pointer {cursor: pointer;}
 .sc-message {position: absolute;background-color: #2c2c2c;color: white;padding: 10px 14px;border-radius: 8px;font-size: 12px;font-weight: 400;
-  z-index: 99999;opacity: 1;white-space: nowrap;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);top: 54px;left: 40%;
+  z-index: 99999;opacity: 1;white-space: nowrap;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);top: 54px;
+left: 40%;
   transform: translateX(-50%);
   animation: scFadeIn 0.5s ease-in-out;
   transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
-}
-#button-color-selection-field {
-  overflow: hidden  !important;
-  position: relative !important;
 }
 
 .sc-message-arrow {
