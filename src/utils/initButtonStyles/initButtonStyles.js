@@ -828,46 +828,30 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       });
 
       el.classList.add("sc-bg-454545");
+
       window.__squareCraftBorderStyle = type;
 
-      const selected = getSelectedElement?.();
-      const btn = selected?.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
-      if (!btn) return;
+      const selectedElement = getSelectedElement?.();
+      if (!selectedElement) return;
 
-      const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+      const sample = selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      );
+      if (!sample) return;
+
+      const typeClass = [...sample.classList].find(cls =>
+        cls.includes("sqs-button-element--")
+      );
       if (!typeClass) return;
 
-      const blockId = selected.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All", color: "#000000" };
-      window.__squareCraftBorderStateMap.set(key, { ...state });
-
-      const styleId = `sc-button-border-${typeClass}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-
-      const borderColor = state.color || "black";
-
-      styleTag.textContent = `
-.${typeClass} {
-  box-sizing: border-box !important;
-  border-style: ${type} !important;
-  border-color: ${borderColor} !important;
-  border-top-width: ${state.values.Top || 0}px !important;
-  border-right-width: ${state.values.Right || 0}px !important;
-  border-bottom-width: ${state.values.Bottom || 0}px !important;
-  border-left-width: ${state.values.Left || 0}px !important;
-}`;
+      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
+      allSameTypeButtons.forEach(btn => {
+        btn.style.setProperty("border-style", type, "important");
+      });
     };
+
   });
 }
-
 
 
 export function initButtonBorderRadiusControl(getSelectedElement) {
@@ -892,13 +876,11 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   function applyBorderRadius() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
-    const styleId = `sc-radius-style-${typeClass}`;
+    const styleId = `sc-normal-radius-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
@@ -906,31 +888,34 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    styleTag.textContent = `
-.${typeClass} {
-  border-radius: ${radiusValue}px !important;
-  overflow: hidden !important;
-}
-.${typeClass} span,
-.${typeClass} .sqs-add-to-cart-button-inner {
-  border-radius: ${radiusValue}px !important;
-}
-.${typeClass}:hover {
-  border-radius: ${radiusValue}px !important;
-  overflow: hidden !important;
-}
-.${typeClass}:hover span,
-.${typeClass}:hover .sqs-add-to-cart-button-inner {
-  border-radius: ${radiusValue}px !important;
-}`;
+    styleTag.innerHTML = `
+      a.${typeClass} {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
+      }
+      a.${typeClass} span,
+      a.${typeClass} .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+      a.${typeClass}:hover {
+        border-radius: ${radiusValue}px !important;
+        overflow: hidden !important;
+      }
+      a.${typeClass}:hover span,
+      a.${typeClass}:hover .sqs-add-to-cart-button-inner {
+        border-radius: ${radiusValue}px !important;
+      }
+    `;
   }
 
   function updateUIFromValue(value) {
     radiusValue = Math.max(0, Math.min(max, value));
     const percent = (radiusValue / max) * 100;
+
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${radiusValue}px`;
+
     applyBorderRadius();
   }
 
@@ -961,19 +946,16 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
   resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 
+  // ✅ Sync radius from DOM on load (like icon does)
   setTimeout(() => {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
+    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
     if (!btn) return;
+
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
   }, 50);
 }
-
-
-
 
 
 const shadowState = {
@@ -995,36 +977,24 @@ export function initButtonShadowControls(getSelectedElement) {
     };
   }
 
- function applyShadow() {
-  const el = getSelectedElement?.();
-  if (!el) return;
+  function applyShadow() {
+    const el = getSelectedElement?.();
+    if (!el) return;
 
-  const btn = el.querySelector(
-    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-  );
-  if (!btn) return;
+    const btn = el.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
 
-  const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-  if (!typeClass) return;
+    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
 
-  const styleId = `sc-shadow-style-${typeClass}`;
-  let styleTag = document.getElementById(styleId);
-  if (!styleTag) {
-    styleTag = document.createElement("style");
-    styleTag.id = styleId;
-    document.head.appendChild(styleTag);
+    const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
+
+    document.querySelectorAll(`a.${typeClass}, button.${typeClass}`).forEach(b => {
+      b.style.boxShadow = value;
+    });
   }
-
-  const { Xaxis, Yaxis, Blur, Spread } = window.shadowState;
-  const shadowValue = `${Xaxis}px ${Yaxis}px ${Blur}px ${Spread}px rgba(0,0,0,0.3)`;
-
-  styleTag.innerHTML = `
-.${typeClass} {
-  box-shadow: ${shadowValue} !important;
-}
-  `;
-}
-
 
   function setupShadowControl(type, range = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
@@ -1203,46 +1173,29 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   window.updateActiveButtonBars?.();
 };
-export function resetAllButtonStyles(getSelectedElement) {
-  const selected = getSelectedElement?.();
-  if (!selected) return;
 
-  const btn = selected.querySelector(
-    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-  );
-  if (!btn) return;
-
-  const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
-  if (!typeClass) return;
-
-  const styleIds = [
-    `sc-style-${typeClass}`,
-    `sc-font-style-${typeClass}`,
-    `sc-font-weight-${typeClass}`,
-    `sc-transform-style-${typeClass}`,
-    `sc-button-border-${typeClass}`,
-    `sc-radius-style-${typeClass}`,
-    `sc-shadow-style-${typeClass}`
+export function syncButtonFontStylesFromDOM() {
+  const buttonTypes = [
+    "sqs-button-element--primary",
+    "sqs-button-element--secondary",
+    "sqs-button-element--tertiary"
   ];
 
-  styleIds.forEach(id => {
-    const tag = document.getElementById(id);
-    if (tag) tag.remove();
+  const styleProps = [
+    "fontFamily", "fontSize", "fontWeight", "letterSpacing", "textTransform",
+    "backgroundColor", "color", "borderWidth", "borderStyle",
+    "borderColor", "borderRadius", "boxShadow"
+  ];
+
+  buttonTypes.forEach(type => {
+    const el = document.querySelector(`.${type}`);
+    if (!el) return console.warn(`No button found for: ${type}`);
+    const styles = getComputedStyle(el);
+
+    console.group(`Styles for .${type}`);
+    styleProps.forEach(prop => {
+      console.log(`${prop}: ${styles[prop]}`);
+    });
+    console.groupEnd();
   });
-
-  const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
-  if (icon) {
-    icon.style.removeProperty("transform");
-    icon.style.removeProperty("width");
-    icon.style.removeProperty("height");
-    icon.style.removeProperty("margin-left");
-    icon.style.removeProperty("margin-right");
-  }
-
-  btn.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
-  btn.style.removeProperty("gap");
-
-  setTimeout(() => {
-    window.syncButtonStylesFromElement?.(selected);
-  }, 20);
 }
