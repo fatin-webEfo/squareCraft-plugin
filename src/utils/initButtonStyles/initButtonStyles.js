@@ -995,22 +995,36 @@ export function initButtonShadowControls(getSelectedElement) {
     };
   }
 
-  function applyShadow() {
-    const el = getSelectedElement?.();
-    if (!el) return;
+function applyShadow() {
+  const el = getSelectedElement?.();
+  if (!el) return;
 
-    const btn = el.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
-    if (!btn) return;
+  const btn = el.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
+  if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-    if (!typeClass) return;
+  const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+  if (!typeClass) return;
 
-    const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
-
-    document.querySelectorAll(`.${typeClass}`).forEach(b => {
-      b.style.boxShadow = value;
-    });
+  const styleId = `sc-button-shadow-${typeClass}`;
+  let styleTag = document.getElementById(styleId);
+  if (!styleTag) {
+    styleTag = document.createElement("style");
+    styleTag.id = styleId;
+    document.head.appendChild(styleTag);
   }
+
+  const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
+
+  styleTag.innerHTML = `
+.${typeClass} {
+  box-shadow: ${value} !important;
+}
+.${typeClass}:hover {
+  box-shadow: ${value} !important;
+}
+  `;
+}
+
 
   function setupShadowControl(type, range = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
