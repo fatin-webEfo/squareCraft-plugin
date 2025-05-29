@@ -122,14 +122,16 @@
     initButtonFontFamilyControls,
   syncButtonFontStylesFromDOM } =
     await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
-  const { initHoverButtonShadowControls,
+  const { 
+    initHoverButtonShadowControls,
     initHoverButtonIconRotationControl,
     initHoverButtonIconSizeControl,
     initHoverButtonIconSpacingControl,
     initHoverButtonBorderRadiusControl,
     initHoverButtonBorderTypeToggle,
     initHoverButtonBorderControl,
-    applyHoverButtonEffects } =
+    applyHoverButtonEffects 
+  } =
     await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
   const themeColors = await getSquarespaceThemeStyles();
 

@@ -828,30 +828,48 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       });
 
       el.classList.add("sc-bg-454545");
-
       window.__squareCraftBorderStyle = type;
 
-      const selectedElement = getSelectedElement?.();
-      if (!selectedElement) return;
+      const selected = getSelectedElement?.();
+      if (!selected) return;
 
-      const sample = selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      const btn = selected.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      if (!sample) return;
+      if (!btn) return;
 
-      const typeClass = [...sample.classList].find(cls =>
-        cls.includes("sqs-button-element--")
-      );
+      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
       if (!typeClass) return;
 
-      const allSameTypeButtons = document.querySelectorAll(`a.${typeClass}`);
-      allSameTypeButtons.forEach(btn => {
-        btn.style.setProperty("border-style", type, "important");
-      });
-    };
+      const blockId = selected.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+      const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All", color: "#000000" };
+      window.__squareCraftBorderStateMap.set(key, { ...state });
 
+      const styleId = `sc-button-border-${typeClass}`;
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+
+      const borderColor = state.color || "black";
+
+      styleTag.textContent = `
+.${typeClass} {
+  box-sizing: border-box !important;
+  border-style: ${type} !important;
+  border-color: ${borderColor} !important;
+  border-top-width: ${state.values.Top || 0}px !important;
+  border-right-width: ${state.values.Right || 0}px !important;
+  border-bottom-width: ${state.values.Bottom || 0}px !important;
+  border-left-width: ${state.values.Left || 0}px !important;
+}`;
+    };
   });
 }
+
 
 
 export function initButtonBorderRadiusControl(getSelectedElement) {
