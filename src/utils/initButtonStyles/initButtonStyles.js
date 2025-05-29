@@ -1205,6 +1205,8 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   window.updateActiveButtonBars?.();
 };
 
+
+
 export function syncButtonFontStylesFromDOM() {
   const buttonTypes = [
     "sqs-button-element--primary",
@@ -1228,5 +1230,88 @@ export function syncButtonFontStylesFromDOM() {
       console.log(`${prop}: ${styles[prop]}`);
     });
     console.groupEnd();
+  });
+}
+
+
+
+export function resetAllButtonStyles(getSelectedElement) {
+  const resetTrigger = document.getElementById("buttonResetAll");
+  if (!resetTrigger) return;
+
+  resetTrigger.addEventListener("click", () => {
+    const selected = getSelectedElement?.();
+    if (!selected) return;
+
+    const button = selected.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!button) return;
+
+    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    if (!typeClass) return;
+
+    const blockId = selected.id || "block-id";
+
+    // 1. Remove all plugin-generated <style> tags
+    const stylePrefixes = [
+      `sc-font-style-${typeClass}`,
+      `sc-font-weight-${typeClass}`,
+      `sc-style-${typeClass}`,
+      `sc-transform-style-${typeClass}`,
+      `sc-button-border-${typeClass}`,
+      `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
+      `sc-button-shadow-${typeClass}`
+    ];
+    stylePrefixes.forEach(id => {
+      const styleTag = document.getElementById(id);
+      if (styleTag) styleTag.remove();
+    });
+
+    // 2. Reset plugin-applied inline styles
+    const allBtns = document.querySelectorAll(`.${typeClass}`);
+    allBtns.forEach(btn => {
+      btn.removeAttribute("style");
+      const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+      spans.forEach(span => span.removeAttribute("style"));
+
+      const icons = btn.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
+      icons.forEach(icon => {
+        icon.removeAttribute("style");
+        icon.remove();
+      });
+
+      btn.classList.remove("sc-flex", "sc-items-center");
+    });
+
+    // 3. Remove plugin-specific classnames
+    selected.querySelectorAll("*").forEach(el => {
+      [...el.classList].forEach(cls => {
+        if (cls.startsWith("sc-") || cls.startsWith("sqscraft-")) {
+          el.classList.remove(cls);
+        }
+      });
+    });
+
+    // 4. Reset internal plugin state (like border map, shadow, etc.)
+    if (window.__squareCraftBorderStateMap) {
+      const key = `${blockId}--${typeClass}`;
+      window.__squareCraftBorderStateMap.delete(key);
+    }
+
+    if (window.shadowState) {
+      window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+    }
+
+    // 5. Reset global vars
+    window.__squareCraftBorderStyle = "solid";
+
+    // 6. Resync plugin UI sliders/labels
+    setTimeout(() => {
+      if (typeof window.syncButtonStylesFromElement === "function") {
+        window.syncButtonStylesFromElement(selected);
+      }
+    }, 100);
   });
 }
