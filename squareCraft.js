@@ -87,7 +87,10 @@
 
     styleTag.innerHTML = cssText;
   }
-
+  function getSelectedElement() {
+    return selectedElement;
+  }
+  
   const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
   const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
   const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -522,6 +525,7 @@ observer.observe(obsTarget, { childList: true, subtree: true });
 
 
       widgetContainer.style.display = "block";
+      
       document.body.appendChild(widgetContainer);
 
       initImageMaskControls(() => selectedElement);
@@ -569,7 +573,24 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       }
     }
   }
+  function positionWidgetBelowElement(selectedElement) {
+    if (!widgetContainer || !selectedElement) return;
 
+    const rect = selectedElement.getBoundingClientRect();
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const scrollX = window.scrollX || document.documentElement.scrollLeft;
+
+    const widgetTop = rect.bottom + scrollY + 10;
+    const widgetLeft = rect.left + scrollX;
+
+    const maxLeft = window.innerWidth - widgetContainer.offsetWidth;
+    const finalLeft = Math.min(widgetLeft, maxLeft);
+
+    widgetContainer.style.left = `${finalLeft}px`;
+    widgetContainer.style.top = `${widgetTop}px`;
+    widgetContainer.style.right = "auto";
+  }
+  
 
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
@@ -650,8 +671,11 @@ observer.observe(obsTarget, { childList: true, subtree: true });
       widgetContainer.style.left = "auto";
       widgetContainer.style.right = "0px";
       widgetContainer.style.top = "100px";
+    } else {
+      positionWidgetBelowElement(getSelectedElement?.());
     }
   }
+  
 
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
