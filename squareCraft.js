@@ -120,7 +120,8 @@
     initButtonBorderRadiusControl,
     initButtonShadowControls, 
     initButtonFontFamilyControls,
-  resetAllButtonStyles } =
+    resetAllButtonStyles
+ } =
     await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js');
   const { 
     initHoverButtonShadowControls,
