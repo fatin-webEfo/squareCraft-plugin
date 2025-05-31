@@ -192,9 +192,6 @@ export function initButtonStyles(selectedButtonElement) {
 
     const allRules = styleTag.innerHTML.split("}").filter(Boolean).map(r => r + "}");
 
-    const ruleExists = (selector) =>
-      allRules.findIndex(r => r.includes(selector)) !== -1;
-
     function updateRule(selector) {
       const index = allRules.findIndex(r => r.includes(selector));
       const newRule = `${selector} { ${property}: ${value} !important; }`;
@@ -1292,82 +1289,79 @@ export function resetAllButtonStyles(getSelectedElement) {
     window.__squareCraftHoverRadius = 0;
     window.__squareCraftTransformDistance = 0;
 
-    setTimeout(async () => {
-      if (typeof window.syncButtonStylesFromElement === "function") {
-        window.syncButtonStylesFromElement(selected);
-      }
+    setTimeout(() => {
+      const selected = getSelectedElement?.();
+      if (!selected) return;
 
-      initButtonFontFamilyControls(getSelectedElement);
-      initButtonStyles(getSelectedElement?.());
-      initButtonIconPositionToggle(getSelectedElement);
-      initButtonIconRotationControl(getSelectedElement);
-      initButtonIconSizeControl(getSelectedElement);
-      initButtonIconSpacingControl(getSelectedElement);
-      initButtonBorderControl(getSelectedElement);
-      initButtonBorderTypeToggle(getSelectedElement);
-      initButtonBorderRadiusControl(getSelectedElement);
-      initButtonShadowControls(getSelectedElement);
-
-      const {
-        initHoverButtonShadowControls,
-        initHoverButtonIconRotationControl,
-        initHoverButtonIconSizeControl,
-        initHoverButtonIconSpacingControl,
-        initHoverButtonBorderRadiusControl,
-        initHoverButtonBorderTypeToggle,
-        initHoverButtonBorderControl,
-        applyHoverButtonEffects,
-      } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js"
+      const button = selected.querySelector(
+        ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
       );
+      if (!button) return;
 
-      initHoverButtonShadowControls(getSelectedElement);
-      initHoverButtonIconRotationControl(getSelectedElement);
-      initHoverButtonIconSizeControl(getSelectedElement);
-      initHoverButtonIconSpacingControl(getSelectedElement);
-      initHoverButtonBorderRadiusControl(getSelectedElement);
-      initHoverButtonBorderTypeToggle(getSelectedElement);
-      initHoverButtonBorderControl(getSelectedElement);
-      applyHoverButtonEffects(getSelectedElement);
+      const typeClass = [...button.classList].find((cls) =>
+        cls.startsWith("sqs-button-element--")
+      );
+      if (!typeClass) return;
 
-      setTimeout(() => {
-        const transition = "ease-out";
-        const duration = "1200";
-        const delay = "300";
+      const classKey = typeClass.replace(/--/g, "-");
+      const blockId = selected.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
 
-        const selected = getSelectedElement?.();
-        if (!selected) return;
-
-        const button = selected.querySelector(
-          ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+      // 🟨 Reapply hover border defaults
+      const borderStyleId = `sc-hover-border-style-${classKey}`;
+      const borderStyleTag =
+        document.getElementById(borderStyleId) ||
+        document.head.appendChild(
+          Object.assign(document.createElement("style"), { id: borderStyleId })
         );
-        if (!button) return;
+      borderStyleTag.innerHTML = `.${typeClass}:hover { border-style: solid !important; }`;
 
-        const typeClass = [...button.classList].find((cls) =>
-          cls.startsWith("sqs-button-element--")
+      const borderId = `hover-button-border-${blockId}-${typeClass}`;
+      const borderTag =
+        document.getElementById(borderId) ||
+        document.head.appendChild(
+          Object.assign(document.createElement("style"), { id: borderId })
         );
-        if (!typeClass) return;
+      borderTag.innerHTML = `
+    .${typeClass}:hover {
+      border-style: solid !important;
+      border-color: black !important;
+      border-radius: 0px !important;
+      border-top-width: 0px !important;
+      border-right-width: 0px !important;
+      border-bottom-width: 0px !important;
+      border-left-width: 0px !important;
+    }
+    `;
 
-        const transformRule = "translateX(0px)";
-        const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
-        let styleTag = document.getElementById(styleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
+      // ✅ Reassign hover border memory state
+      window.__squareCraftHoverBorderStateMap =
+        window.__squareCraftHoverBorderStateMap || new Map();
+      window.__squareCraftHoverBorderStateMap.set(key, {
+        value: 0,
+        side: "All",
+      });
 
-        styleTag.innerHTML = `
-      .${typeClass}:hover {
-        transition: all ${duration}ms ${transition} ${delay}ms !important;
-        transform: ${transformRule} !important;
-      }
-      `;
-      }, 300);
-      
+      // 🟩 Reapply hover transform transition
+      const effectId = `sc-hover-effects-${classKey}`;
+      const effectTag =
+        document.getElementById(effectId) ||
+        document.head.appendChild(
+          Object.assign(document.createElement("style"), { id: effectId })
+        );
+      effectTag.innerHTML = `
+    .${typeClass}:hover {
+      transition: all 1200ms ease-out 300ms !important;
+      transform: translateX(0px) !important;
+    }
+    `;
 
-      document.getElementById("buttonBorderTypeSolid")?.click();
-    }, 150);
+      window.__squareCraftTransformDistance = 0;
+      window.__squareCraftHoverBorderColor = "black";
+      window.__squareCraftHoverRadius = 0;
+      window.__squareCraftBorderStyle = "solid";
+    }, 300);
+    
 
     if (resetIcon) {
       resetIcon.classList.remove("sc-rotate-once");
