@@ -1491,12 +1491,21 @@ export function resetAllButtonStyles(getSelectedElement) {
         }
       });
 
-      ["font-name", "scButtonFontWeightSelected", "iconPositionLabel"].forEach(
-        (id) => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = "Select";
-        }
-      );
+      const fontLabel = document.getElementById("font-name");
+      if (fontLabel) {
+        fontLabel.textContent = "Select";
+        fontLabel.style.fontFamily = "";
+      }
+
+      const weightLabel = document.getElementById("scButtonFontWeightSelected");
+      if (weightLabel) {
+        weightLabel.textContent = "Select";
+      }
+
+      const iconLabel = document.getElementById("iconPositionLabel");
+      if (iconLabel) {
+        iconLabel.textContent = "Select";
+      }
 
       ["buttonIconTransformNone", "buttoniconRotationTypeNone"].forEach(
         (id) => {
@@ -1565,6 +1574,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
