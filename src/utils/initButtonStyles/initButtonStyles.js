@@ -1226,7 +1226,9 @@ export function resetAllButtonStyles(getSelectedElement) {
 
     const blockId = selected.id || "block-id";
     const classKey = typeClass.replace(/--/g, "-");
-    const styleIds = [
+    const fullKey = `${blockId}--${typeClass}`;
+
+    const normalStyleIds = [
       `sc-font-style-${typeClass}`,
       `sc-font-weight-${typeClass}`,
       `sc-style-${typeClass}`,
@@ -1234,6 +1236,9 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-button-border-${typeClass}`,
       `sc-normal-radius-${classKey}`,
       `sc-button-shadow-${typeClass}`,
+    ];
+
+    const hoverStyleIds = [
       `sc-hover-border-style-${classKey}`,
       `sc-hover-radius-${classKey}`,
       `sc-hover-shadow-${classKey}`,
@@ -1243,7 +1248,10 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-hover-effects-${classKey}`,
       `hover-button-border-${blockId}-${typeClass}`,
     ];
-    styleIds.forEach((id) => document.getElementById(id)?.remove());
+
+    [...normalStyleIds, ...hoverStyleIds].forEach((id) =>
+      document.getElementById(id)?.remove()
+    );
 
     const allBtns = document.querySelectorAll(`.${typeClass}`);
     allBtns.forEach((btn) => {
@@ -1268,21 +1276,22 @@ export function resetAllButtonStyles(getSelectedElement) {
     });
 
     if (window.__squareCraftBorderStateMap) {
-      window.__squareCraftBorderStateMap.delete(`${blockId}--${typeClass}`);
+      window.__squareCraftBorderStateMap.delete(fullKey);
     }
     if (window.__squareCraftHoverBorderStateMap) {
-      window.__squareCraftHoverBorderStateMap.delete(
-        `${blockId}--${typeClass}`
-      );
+      window.__squareCraftHoverBorderStateMap.delete(fullKey);
     }
 
-    window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
-    window.__squareCraftHoverRadius = 0;
-    window.__squareCraftHoverBorderColor = "black";
-    window.__squareCraftTransformDistance = 0;
     window.__squareCraftBorderStyle = "solid";
+    window.__squareCraftHoverBorderColor = "black";
+    window.__squareCraftHoverRadius = 0;
+    window.__squareCraftTransformDistance = 0;
+    window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
 
     setTimeout(async () => {
+      const selected = getSelectedElement?.();
+      if (!selected) return;
+
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
       }
@@ -1333,6 +1342,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
