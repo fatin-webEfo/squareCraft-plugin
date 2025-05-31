@@ -409,6 +409,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   const fill = document.getElementById("buttonIconRotationradiusFill");
   const field = document.getElementById("buttonIconRotationradiusField");
   const label = document.getElementById("buttoniconRotationradiusCount");
+  if (label) count.textContent = `${rotation}deg`;
 
   const incBtn = document.getElementById("buttoniconRotationIncrease");
   const decBtn = document.getElementById("buttoniconRotationDecrease");
