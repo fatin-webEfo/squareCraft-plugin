@@ -1393,14 +1393,31 @@ export function resetAllButtonStyles(getSelectedElement) {
     allBtns.forEach((btn) => {
       btn.removeAttribute("style");
       btn.classList.remove("sc-flex", "sc-items-center");
+      btn.style.gap = "";
+      btn.style.borderWidth = "";
+      btn.style.borderStyle = "";
+      btn.style.borderRadius = "";
+      btn.style.borderColor = "";
+      btn.style.boxShadow = "";
 
       const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-      spans.forEach((span) => span.removeAttribute("style"));
+      spans.forEach((span) => {
+        span.removeAttribute("style");
+        span.style.fontSize = "";
+        span.style.letterSpacing = "";
+        span.style.textTransform = "";
+        span.style.fontFamily = "";
+        span.style.fontWeight = "";
+        span.style.transform = "";
+      });
 
       const icons = btn.querySelectorAll(
         ".sqscraft-button-icon, .sqscraft-image-icon"
       );
       icons.forEach((icon) => icon.remove());
+
+      const htmlSpans = btn.querySelectorAll(".sqs-html");
+      htmlSpans.forEach((el) => el.removeAttribute("style"));
     });
 
     selected.querySelectorAll("*").forEach((el) => {
@@ -1548,6 +1565,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
