@@ -1433,7 +1433,10 @@ export function resetAllButtonStyles(getSelectedElement) {
         const fill = document.getElementById(id + "Fill");
         const count = document.getElementById(id + "Count");
         if (bullet) bullet.style.left = percent;
-        if (fill) fill.style.width = percent;
+        if (fill) {
+          fill.style.left = percent;
+          fill.style.width = id.includes("Rotation") ? "0%" : percent;
+        }
         if (count) count.textContent = value;
       };
 
@@ -1449,11 +1452,31 @@ export function resetAllButtonStyles(getSelectedElement) {
         "scButtonFontWeightSelected",
         "iconPositionLabel",
       ];
-
       dropdowns.forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.textContent = "Select";
       });
+
+      const iconTransformBtn = document.getElementById(
+        "buttonIconTransformNone"
+      );
+      const rotationBtn = document.getElementById("buttoniconRotationTypeNone");
+
+      if (iconTransformBtn) {
+        iconTransformBtn.classList.add("sc-bg-454545");
+        ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
+          const other = document.getElementById(`buttonIconSpacing${dir}`);
+          other?.classList.remove("sc-bg-454545");
+        });
+      }
+
+      if (rotationBtn) {
+        rotationBtn.classList.add("sc-bg-454545");
+        ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
+          const other = document.getElementById(`buttonIconRotationType${dir}`);
+          other?.classList.remove("sc-bg-454545");
+        });
+      }
 
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
@@ -1490,7 +1513,6 @@ export function resetAllButtonStyles(getSelectedElement) {
       initHoverButtonBorderRadiusControl(getSelectedElement);
       initHoverButtonBorderTypeToggle(getSelectedElement);
       initHoverButtonBorderControl(getSelectedElement);
-
       applyHoverButtonEffects(getSelectedElement);
 
       document.getElementById("buttonBorderTypeSolid")?.click();
@@ -1507,6 +1529,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
