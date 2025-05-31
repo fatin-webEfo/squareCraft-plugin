@@ -1378,7 +1378,6 @@ export function resetAllButtonStyles(getSelectedElement) {
 
 
 
-
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
     window.syncButtonStylesFromElement(selected);
