@@ -748,7 +748,7 @@ export function applyHoverButtonEffects(getSelectedElement) {
     if (!selected) return;
 
     const button = selected.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
     );
     if (!button) return;
 
@@ -820,6 +820,7 @@ export function applyHoverButtonEffects(getSelectedElement) {
 
   setTimeout(() => update(window.__squareCraftTransformDistance || 0), 50);
 }
+
 
 
 
