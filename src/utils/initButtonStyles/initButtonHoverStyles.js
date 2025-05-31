@@ -5,7 +5,7 @@ const hoverShadowState = {
   X: 0,
   Y: 0,
   Blur: 0,
-  Spread: 0
+  Spread: 0,
 };
 
 export function initHoverButtonShadowControls(getSelectedElement) {
@@ -13,10 +13,14 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     const el = getSelectedElement?.();
     if (!el) return;
 
-    const btn = el.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = el.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
-    const cls = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    const cls = [...btn.classList].find((c) =>
+      c.startsWith("sqs-button-element--")
+    );
     if (!cls) return;
 
     const styleId = `sc-hover-shadow-${cls.replace(/--/g, "-")}`;
@@ -28,9 +32,13 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     }
 
     const v = hoverShadowState;
-    const boxShadowValue = `${v.X}px ${v.Y}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
-    style.innerHTML = `a.${cls}:hover { box-shadow: ${boxShadowValue} !important; }`;
+    const shadow = `${v.X}px ${v.Y}px ${v.Blur}px ${v.Spread}px rgba(0,0,0,0.3)`;
 
+    style.innerHTML = `
+.${cls}:hover {
+  box-shadow: ${shadow} !important;
+}
+`;
   }
 
   function setup(typeKey, domKey, range = 50) {
@@ -42,9 +50,8 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 
     if (!bullet || !field || !label) return;
 
-    const min = (typeKey === "X" || typeKey === "Y") ? -range : 0;
+    const min = typeKey === "X" || typeKey === "Y" ? -range : 0;
     const max = range;
-
     let value = hoverShadowState[typeKey] ?? 0;
 
     let fill = field.querySelector(".sc-shadow-fill");
@@ -78,8 +85,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
       const rect = field.getBoundingClientRect();
       const move = (eMove) => {
         const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
-        const percent = x / rect.width;
-        const val = Math.round(min + percent * (max - min));
+        const val = Math.round(min + (x / rect.width) * (max - min));
         update(val);
       };
       const up = () => {
@@ -93,8 +99,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     field.addEventListener("click", (e) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
-      const percent = x / rect.width;
-      const val = Math.round(min + percent * (max - min));
+      const val = Math.round(min + (x / rect.width) * (max - min));
       update(val);
     });
 
@@ -106,6 +111,7 @@ export function initHoverButtonShadowControls(getSelectedElement) {
   setup("Blur", "Blur", 50);
   setup("Spread", "Spread", 30);
 }
+
 
 
 
