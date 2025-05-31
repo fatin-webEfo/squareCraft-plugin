@@ -1511,7 +1511,7 @@ export function resetAllButtonStyles(getSelectedElement) {
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
-    window.syncButtonStylesFromElement(selected);
+    window.syncButtonStylesFromElement(getSelectedElement);
   }
 
   if (typeof initButtonBorderRadiusControl === "function") {
