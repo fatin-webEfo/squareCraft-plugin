@@ -1471,11 +1471,11 @@ export function resetAllButtonStyles(getSelectedElement) {
         "scButtonLetterSpacingInput"
       );
       if (fontSizeInput) {
-        fontSizeInput.value = "";
+        fontSizeInput.value = "10";
         fontSizeInput.dispatchEvent(new Event("input"));
       }
       if (letterSpacingInput) {
-        letterSpacingInput.value = "";
+        letterSpacingInput.value = "0";
         letterSpacingInput.dispatchEvent(new Event("input"));
       }
 
@@ -1574,6 +1574,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
