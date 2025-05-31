@@ -1290,15 +1290,19 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttonBorderTypeSolid")?.click();
     }, 150);
 
-    // ✅ Add rotate class
+    // ✅ Force reflow and apply rotation class
     if (resetIcon) {
+      resetIcon.classList.remove("sc-rotate-once");
+      void resetIcon.offsetWidth; // Force reflow
       resetIcon.classList.add("sc-rotate-once");
+
       setTimeout(() => {
         resetIcon.classList.remove("sc-rotate-once");
-      }, 600); // same duration as the animation
+      }, 600);
     }
   });
 }
+
 
 
 
