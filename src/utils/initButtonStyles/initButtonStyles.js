@@ -1,4 +1,11 @@
-
+setTimeout(() => {
+  const section = document.getElementById("buttoniconPositionSection");
+  if (section) {
+    initButtonIconPositionToggle(getSelectedElement);
+  } else {
+    console.warn("⛔ buttoniconPositionSection not found");
+  }
+}, 200);
 
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API =
@@ -10,14 +17,17 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   const loader = document.createElement("div");
   loader.id = "sc-font-loader";
   loader.innerHTML = `<div style="width: 24px; height: 24px; margin: 12px auto; border: 3px solid rgba(0, 0, 0, 0.1); border-top: 3px solid #EF7C2F; border-radius: 50%; animation: scSpin 0.8s linear infinite;"></div>`;
-  document.head.insertAdjacentHTML("beforeend", `
+  document.head.insertAdjacentHTML(
+    "beforeend",
+    `
     <style>
       @keyframes scSpin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
     </style>
-  `);
+  `
+  );
   fontFamilyOptions.appendChild(loader);
 
   let fontsList = [];
@@ -40,7 +50,10 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   }
 
   fontFamilyOptions.addEventListener("scroll", () => {
-    if (fontFamilyOptions.scrollTop + fontFamilyOptions.clientHeight >= fontFamilyOptions.scrollHeight - 5) {
+    if (
+      fontFamilyOptions.scrollTop + fontFamilyOptions.clientHeight >=
+      fontFamilyOptions.scrollHeight - 5
+    ) {
       renderFontBatch();
     }
   });
@@ -57,12 +70,16 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         const link = document.createElement("link");
         link.id = fontId;
         link.rel = "stylesheet";
-        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(/\s+/g, "+")}&display=swap`;
+        link.href = `https://fonts.googleapis.com/css2?family=${family.replace(
+          /\s+/g,
+          "+"
+        )}&display=swap`;
         document.head.appendChild(link);
       }
 
       const div = document.createElement("div");
-      div.className = "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
+      div.className =
+        "sc-dropdown-item sc-py-1px sc-text-center sc-cursor-pointer";
       div.textContent = family;
       div.style.fontFamily = `"${family}", sans-serif`;
 
@@ -86,11 +103,13 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 
         const btn = selectedElement.querySelector(
           "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
         if (!btn) return;
 
-        const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
         if (!typeClass) return;
 
         const styleId = `sc-font-style-${typeClass}`;
@@ -107,17 +126,24 @@ export function initButtonFontFamilyControls(getSelectedElement) {
           }
         `;
 
-        const fontWeightOptions = document.getElementById("scButtonFontWeightOptions");
-        const fontWeightSelectedLabel = document.getElementById("scButtonFontWeightSelected");
+        const fontWeightOptions = document.getElementById(
+          "scButtonFontWeightOptions"
+        );
+        const fontWeightSelectedLabel = document.getElementById(
+          "scButtonFontWeightSelected"
+        );
 
         if (fontWeightOptions && fontItem.variants) {
           fontWeightOptions.innerHTML = "";
 
-          const variants = fontItem.variants.filter(v => v !== "italic").map(v => (v === "regular" ? "400" : v));
+          const variants = fontItem.variants
+            .filter((v) => v !== "italic")
+            .map((v) => (v === "regular" ? "400" : v));
 
           variants.forEach((weight) => {
             const item = document.createElement("div");
-            item.className = "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
+            item.className =
+              "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
             item.innerText = weight;
 
             item.onclick = () => {
@@ -143,7 +169,9 @@ export function initButtonFontFamilyControls(getSelectedElement) {
             fontWeightOptions.appendChild(item);
           });
 
-          fontWeightSelectedLabel.innerText = variants.includes("400") ? "400" : variants[0] || "";
+          fontWeightSelectedLabel.innerText = variants.includes("400")
+            ? "400"
+            : variants[0] || "";
         }
       });
 
@@ -154,22 +182,26 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   }
 }
 
-
-
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
-  const letterSpacingInput = document.getElementById("scButtonLetterSpacingInput");
+  const letterSpacingInput = document.getElementById(
+    "scButtonLetterSpacingInput"
+  );
   const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
   const buttonElement =
-    selectedButtonElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary") ||
-    selectedButtonElement.querySelector("button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
+    selectedButtonElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    ) ||
+    selectedButtonElement.querySelector(
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
 
   if (!buttonElement) return;
 
-  const typeClass = [...buttonElement.classList].find(cls =>
+  const typeClass = [...buttonElement.classList].find((cls) =>
     cls.startsWith("sqs-button-element--")
   );
   if (!typeClass) return;
@@ -190,10 +222,13 @@ export function initButtonStyles(selectedButtonElement) {
       .${typeClass} .sqs-add-to-cart-button-inner
     `.trim();
 
-    const allRules = styleTag.innerHTML.split("}").filter(Boolean).map(r => r + "}");
+    const allRules = styleTag.innerHTML
+      .split("}")
+      .filter(Boolean)
+      .map((r) => r + "}");
 
     function updateRule(selector) {
-      const index = allRules.findIndex(r => r.includes(selector));
+      const index = allRules.findIndex((r) => r.includes(selector));
       const newRule = `${selector} { ${property}: ${value} !important; }`;
 
       if (index !== -1) {
@@ -233,112 +268,135 @@ export function initButtonStyles(selectedButtonElement) {
     };
   }
 
-  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((id) => {
-    const transformButton = document.getElementById(id);
-    if (transformButton) {
-      transformButton.onclick = () => {
-        const transformMap = {
-          scButtonAllCapital: "sc-text-upper",
-          scButtonAllSmall: "sc-text-lower",
-          scButtonFirstCapital: "sc-text-capitalize",
-        };
-        const activeClass = transformMap[id];
+  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(
+    (id) => {
+      const transformButton = document.getElementById(id);
+      if (transformButton) {
+        transformButton.onclick = () => {
+          const transformMap = {
+            scButtonAllCapital: "sc-text-upper",
+            scButtonAllSmall: "sc-text-lower",
+            scButtonFirstCapital: "sc-text-capitalize",
+          };
+          const activeClass = transformMap[id];
 
-        const isAlreadyActive = transformButton.classList.contains("sc-activeTab-border");
+          const isAlreadyActive = transformButton.classList.contains(
+            "sc-activeTab-border"
+          );
 
-        ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach((btnId) => {
-          const btn = document.getElementById(btnId);
-          if (btn) {
-            btn.classList.remove("sc-activeTab-border");
-            btn.classList.add("sc-inActiveTab-border");
-          }
-        });
-
-        const spans = document.querySelectorAll(
-          `.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`
-        );
-
-        if (isAlreadyActive) {
-          transformButton.classList.remove("sc-activeTab-border");
-          transformButton.classList.add("sc-inActiveTab-border");
-
-          spans.forEach(span => {
-            span.classList.remove("sc-text-upper", "sc-text-lower", "sc-text-capitalize");
+          [
+            "scButtonAllCapital",
+            "scButtonAllSmall",
+            "scButtonFirstCapital",
+          ].forEach((btnId) => {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+              btn.classList.remove("sc-activeTab-border");
+              btn.classList.add("sc-inActiveTab-border");
+            }
           });
 
-        } else {
-          transformButton.classList.remove("sc-inActiveTab-border");
-          transformButton.classList.add("sc-activeTab-border");
+          const spans = document.querySelectorAll(
+            `.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`
+          );
 
-          const transformValueMap = {
-            scButtonAllCapital: "uppercase",
-            scButtonAllSmall: "lowercase",
-            scButtonFirstCapital: "capitalize"
-          };
-          const value = transformValueMap[id];
+          if (isAlreadyActive) {
+            transformButton.classList.remove("sc-activeTab-border");
+            transformButton.classList.add("sc-inActiveTab-border");
 
-          const styleId = `sc-transform-style-${typeClass}`;
-          let styleTag = document.getElementById(styleId);
-          if (!styleTag) {
-            styleTag = document.createElement("style");
-            styleTag.id = styleId;
-            document.head.appendChild(styleTag);
-          }
-          styleTag.innerHTML = `
+            spans.forEach((span) => {
+              span.classList.remove(
+                "sc-text-upper",
+                "sc-text-lower",
+                "sc-text-capitalize"
+              );
+            });
+          } else {
+            transformButton.classList.remove("sc-inActiveTab-border");
+            transformButton.classList.add("sc-activeTab-border");
+
+            const transformValueMap = {
+              scButtonAllCapital: "uppercase",
+              scButtonAllSmall: "lowercase",
+              scButtonFirstCapital: "capitalize",
+            };
+            const value = transformValueMap[id];
+
+            const styleId = `sc-transform-style-${typeClass}`;
+            let styleTag = document.getElementById(styleId);
+            if (!styleTag) {
+              styleTag = document.createElement("style");
+              styleTag.id = styleId;
+              document.head.appendChild(styleTag);
+            }
+            styleTag.innerHTML = `
   .${typeClass} span,
   .${typeClass} .sqs-add-to-cart-button-inner {
     text-transform: ${value} !important;
   }
 `;
-
-        }
-      };
+          }
+        };
+      }
     }
-  });
+  );
 }
-
-
 
 export function initButtonIconPositionToggle(getSelectedElement) {
   document.getElementById("buttoniconPositionSection").onclick = () => {
-    document.getElementById("iconPositionDropdown").classList.toggle("sc-hidden");
+    document
+      .getElementById("iconPositionDropdown")
+      .classList.toggle("sc-hidden");
   };
 
-  document.querySelectorAll("#iconPositionDropdown [data-value]").forEach((option) => {
-    option.onclick = () => {
-      const value = option.dataset.value;
-      document.getElementById("iconPositionLabel").innerHTML =
-        `<p class="sc-universal sc-roboto sc-font-size-12">${value.charAt(0).toUpperCase() + value.slice(1)}</p>`;
-      document.getElementById("iconPositionDropdown").classList.add("sc-hidden");
+  document
+    .querySelectorAll("#iconPositionDropdown [data-value]")
+    .forEach((option) => {
+      option.onclick = () => {
+        const value = option.dataset.value;
+        document.getElementById(
+          "iconPositionLabel"
+        ).innerHTML = `<p class="sc-universal sc-roboto sc-font-size-12">${
+          value.charAt(0).toUpperCase() + value.slice(1)
+        }</p>`;
+        document
+          .getElementById("iconPositionDropdown")
+          .classList.add("sc-hidden");
 
-      const selectedElement = getSelectedElement();
-      const sampleButton = selectedElement?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
-      if (!sampleButton) return;
+        const selectedElement = getSelectedElement();
+        const sampleButton = selectedElement?.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+        );
+        if (!sampleButton) return;
 
-      let typeClass = "sqs-button-element--primary";
-      if (sampleButton.classList.contains("sqs-button-element--secondary")) typeClass = "sqs-button-element--secondary";
-      else if (sampleButton.classList.contains("sqs-button-element--tertiary")) typeClass = "sqs-button-element--tertiary";
+        let typeClass = "sqs-button-element--primary";
+        if (sampleButton.classList.contains("sqs-button-element--secondary"))
+          typeClass = "sqs-button-element--secondary";
+        else if (
+          sampleButton.classList.contains("sqs-button-element--tertiary")
+        )
+          typeClass = "sqs-button-element--tertiary";
 
-      const allButtons = document.querySelectorAll(`a.${typeClass}`);
-      allButtons.forEach(buttonLink => {
-        const icon = buttonLink.querySelector(".sqscraft-button-icon");
-        const textDiv = buttonLink.querySelector(".sqs-html");
+        const allButtons = document.querySelectorAll(`a.${typeClass}`);
+        allButtons.forEach((buttonLink) => {
+          const icon = buttonLink.querySelector(".sqscraft-button-icon");
+          const textDiv = buttonLink.querySelector(".sqs-html");
 
-        if (!icon || !textDiv) return;
+          if (!icon || !textDiv) return;
 
-        icon.style.marginLeft = "";
-        icon.style.marginRight = "";
+          icon.style.marginLeft = "";
+          icon.style.marginRight = "";
 
-        if (value === "after") {
-          icon.style.marginLeft = "8px";
-          buttonLink.insertBefore(icon, textDiv.nextSibling);
-        } else {
-          icon.style.marginRight = "8px";
-          buttonLink.insertBefore(icon, textDiv);
-        }
-      });
-    };
-  });
+          if (value === "after") {
+            icon.style.marginLeft = "8px";
+            buttonLink.insertBefore(icon, textDiv.nextSibling);
+          } else {
+            icon.style.marginRight = "8px";
+            buttonLink.insertBefore(icon, textDiv);
+          }
+        });
+      };
+    });
 }
 
 let normalRotationInitialized = false;
@@ -365,14 +423,16 @@ export function initButtonIconRotationControl(getSelectedElement) {
     );
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls =>
+    const typeClass = [...btn.classList].find((cls) =>
       cls.startsWith("sqs-button-element--")
     );
     if (!typeClass) return;
 
     const buttons = document.querySelectorAll(`a.${typeClass}`);
-    buttons.forEach(button => {
-      const icon = button.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    buttons.forEach((button) => {
+      const icon = button.querySelector(
+        ".sqscraft-button-icon, .sqscraft-image-icon"
+      );
       if (icon) {
         icon.style.transform = `rotate(${currentRotation}deg)`;
       }
@@ -422,7 +482,9 @@ export function initButtonIconRotationControl(getSelectedElement) {
     );
     if (!btn) return;
 
-    const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    const icon = btn.querySelector(
+      ".sqscraft-button-icon, .sqscraft-image-icon"
+    );
     if (!icon) {
       updateFromRotationValue(0);
       return;
@@ -470,8 +532,6 @@ export function initButtonIconRotationControl(getSelectedElement) {
   setTimeout(syncFromIconRotation, 50);
 }
 
-
-
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiusBullet");
   const fill = document.getElementById("buttonIconSizeradiusFill");
@@ -490,24 +550,27 @@ export function initButtonIconSizeControl(getSelectedElement) {
 
     const btn = selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find(cls =>
+    const typeClass = [...btn.classList].find((cls) =>
       cls.startsWith("sqs-button-element--")
     );
     if (!typeClass) return;
 
-    const allButtons = document.querySelectorAll(`a.${typeClass}, button.${typeClass}`);
-    allButtons.forEach(button => {
-      const icons = button.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
-      icons.forEach(icon => {
+    const allButtons = document.querySelectorAll(
+      `a.${typeClass}, button.${typeClass}`
+    );
+    allButtons.forEach((button) => {
+      const icons = button.querySelectorAll(
+        ".sqscraft-button-icon, .sqscraft-image-icon"
+      );
+      icons.forEach((icon) => {
         icon.style.width = `${currentSize}px`;
         icon.style.height = "auto";
       });
     });
-
   }
 
   function updateFromSizeValue(value) {
@@ -532,11 +595,13 @@ export function initButtonIconSizeControl(getSelectedElement) {
     const selectedElement = getSelectedElement?.();
     const btn = selectedElement?.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
     if (!btn) return;
 
-    const icon = btn.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    const icon = btn.querySelector(
+      ".sqscraft-button-icon, .sqscraft-image-icon"
+    );
     if (!icon || !icon.style.width) return;
 
     const size = parseInt(icon.style.width, 10);
@@ -573,7 +638,6 @@ export function initButtonIconSizeControl(getSelectedElement) {
   setTimeout(syncFromIcon, 50);
 }
 
-
 export function initButtonIconSpacingControl(getSelectedElement) {
   const fill = document.getElementById("buttonIconSpacingradiusFill");
   const bullet = document.getElementById("buttonIconSpacingradiusBullet");
@@ -581,7 +645,8 @@ export function initButtonIconSpacingControl(getSelectedElement) {
   const valueText = document.getElementById("buttoniconSpacingCount");
   const incBtn = document.getElementById("buttoniconSpacingIncrease");
   const decBtn = document.getElementById("buttoniconSpacingDecrease");
-  const resetBtn = field?.previousElementSibling?.querySelector('img[alt="reset"]');
+  const resetBtn =
+    field?.previousElementSibling?.querySelector('img[alt="reset"]');
 
   if (!fill || !bullet || !field || !valueText) return;
 
@@ -590,14 +655,20 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
   function applyGap() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
-    const btnClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+    const btnClass = [...btn.classList].find((c) =>
+      c.startsWith("sqs-button-element--")
+    );
     if (!btnClass) return;
 
-    document.querySelectorAll(`a.${btnClass}`).forEach(el => {
-      const hasIcon = el.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+    document.querySelectorAll(`a.${btnClass}`).forEach((el) => {
+      const hasIcon = el.querySelector(
+        ".sqscraft-button-icon, .sqscraft-image-icon"
+      );
       if (hasIcon) {
         el.classList.add("sc-flex", "sc-items-center");
         el.style.gap = `${gapValue}px`;
@@ -617,9 +688,9 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     applyGap();
   }
 
-  bullet.addEventListener("mousedown", e => {
+  bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    const move = eMove => {
+    const move = (eMove) => {
       const rect = field.getBoundingClientRect();
       const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
       const val = Math.round((x / rect.width) * maxGap);
@@ -633,7 +704,7 @@ export function initButtonIconSpacingControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", e => {
+  field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
     const val = Math.round((x / rect.width) * maxGap);
@@ -646,15 +717,15 @@ export function initButtonIconSpacingControl(getSelectedElement) {
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (btn) {
       const computedGap = parseInt(window.getComputedStyle(btn).gap);
       if (!isNaN(computedGap)) updateUI(computedGap);
     }
   }, 50);
 }
-
-
 
 export function initButtonBorderControl(getSelectedElement) {
   const fill = document.getElementById("buttonBorderFill");
@@ -835,15 +906,11 @@ export function initButtonBorderControl(getSelectedElement) {
   }, 50);
 }
 
-
-
-
-
 export function initButtonBorderTypeToggle(getSelectedElement) {
   const typeButtons = [
     { id: "buttonBorderTypeSolid", type: "solid" },
     { id: "buttonBorderTypeDashed", type: "dashed" },
-    { id: "buttonBorderTypeDotted", type: "dotted" }
+    { id: "buttonBorderTypeDotted", type: "dotted" },
   ];
 
   typeButtons.forEach(({ id, type }) => {
@@ -867,12 +934,18 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
       );
       if (!btn) return;
 
-      const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
+      const typeClass = [...btn.classList].find((cls) =>
+        cls.startsWith("sqs-button-element--")
+      );
       if (!typeClass) return;
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
-      const state = window.__squareCraftBorderStateMap.get(key) || { values: {}, side: "All", color: "#000000" };
+      const state = window.__squareCraftBorderStateMap.get(key) || {
+        values: {},
+        side: "All",
+        color: "#000000",
+      };
       window.__squareCraftBorderStateMap.set(key, { ...state });
 
       const styleId = `sc-button-border-${typeClass}`;
@@ -899,8 +972,6 @@ export function initButtonBorderTypeToggle(getSelectedElement) {
   });
 }
 
-
-
 export function initButtonBorderRadiusControl(getSelectedElement) {
   const fillField = document.getElementById("buttonBorderradiusField");
   const bullet = document.getElementById("buttonBorderradiusBullet");
@@ -908,7 +979,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   const valueText = document.getElementById("buttonBorderradiusCount");
   const incBtn = document.getElementById("buttonBorderradiusIncrease");
   const decBtn = document.getElementById("buttonBorderradiusDecrease");
-  const resetBtn = valueText?.closest(".sc-flex")?.querySelector('img[alt="reset"]');
+  const resetBtn = valueText
+    ?.closest(".sc-flex")
+    ?.querySelector('img[alt="reset"]');
 
   if (!fillField || !bullet || !fill || !valueText) return;
 
@@ -916,14 +989,18 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   let radiusValue = 0;
 
   function getButtonTypeClass(btn) {
-    if (btn.classList.contains("sqs-button-element--secondary")) return "sqs-button-element--secondary";
-    if (btn.classList.contains("sqs-button-element--tertiary")) return "sqs-button-element--tertiary";
+    if (btn.classList.contains("sqs-button-element--secondary"))
+      return "sqs-button-element--secondary";
+    if (btn.classList.contains("sqs-button-element--tertiary"))
+      return "sqs-button-element--tertiary";
     return "sqs-button-element--primary";
   }
 
   function applyBorderRadius() {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
     const typeClass = getButtonTypeClass(btn);
@@ -995,7 +1072,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
-    const btn = selected?.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
+    const btn = selected?.querySelector(
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+    );
     if (!btn) return;
 
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
@@ -1003,40 +1082,41 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   }, 50);
 }
 
-
-
-
 export function initButtonShadowControls(getSelectedElement) {
   if (!window.shadowState) {
     window.shadowState = {
       Xaxis: 0,
       Yaxis: 0,
       Blur: 0,
-      Spread: 0
+      Spread: 0,
     };
   }
 
-function applyShadow() {
-  const el = getSelectedElement?.();
-  if (!el) return;
+  function applyShadow() {
+    const el = getSelectedElement?.();
+    if (!el) return;
 
-  const btn = el.querySelector(".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary");
-  if (!btn) return;
+    const btn = el.querySelector(
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+    );
+    if (!btn) return;
 
-  const typeClass = [...btn.classList].find(cls => cls.startsWith("sqs-button-element--"));
-  if (!typeClass) return;
+    const typeClass = [...btn.classList].find((cls) =>
+      cls.startsWith("sqs-button-element--")
+    );
+    if (!typeClass) return;
 
-  const styleId = `sc-button-shadow-${typeClass}`;
-  let styleTag = document.getElementById(styleId);
-  if (!styleTag) {
-    styleTag = document.createElement("style");
-    styleTag.id = styleId;
-    document.head.appendChild(styleTag);
-  }
+    const styleId = `sc-button-shadow-${typeClass}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
 
-  const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
+    const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
 
-  styleTag.innerHTML = `
+    styleTag.innerHTML = `
 .${typeClass} {
   box-shadow: ${value} !important;
 }
@@ -1044,16 +1124,19 @@ function applyShadow() {
   box-shadow: ${value} !important;
 }
   `;
-}
-
+  }
 
   function setupShadowControl(type, range = 50) {
     const bullet = document.getElementById(`buttonShadow${type}Bullet`);
     const field = document.getElementById(`buttonShadow${type}Field`);
     const label = document.getElementById(`buttonShadow${type}Count`);
     const idPrefix = type.replace("axis", "");
-    const incBtn = document.getElementById(`buttonshadow${type}Increase`) || document.getElementById(`buttonshadow${idPrefix}Increase`);
-    const decBtn = document.getElementById(`buttonshadow${type}Decrease`) || document.getElementById(`buttonshadow${idPrefix}Decrease`);
+    const incBtn =
+      document.getElementById(`buttonshadow${type}Increase`) ||
+      document.getElementById(`buttonshadow${idPrefix}Increase`);
+    const decBtn =
+      document.getElementById(`buttonshadow${type}Decrease`) ||
+      document.getElementById(`buttonshadow${idPrefix}Decrease`);
 
     if (!bullet || !field || !label) return;
 
@@ -1144,8 +1227,6 @@ function applyShadow() {
   setupShadowControl("Spread", 30);
 }
 
-
-
 window.syncButtonStylesFromElement = function (selectedElement) {
   if (!selectedElement) return;
 
@@ -1154,7 +1235,9 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   );
   if (!sampleButton) return;
 
-  const icon = sampleButton.querySelector(".sqscraft-button-icon, .sqscraft-image-icon");
+  const icon = sampleButton.querySelector(
+    ".sqscraft-button-icon, .sqscraft-image-icon"
+  );
 
   const getPercent = (val, max) => `${(val / max) * 100}%`;
   const set = (id, value, max) => {
@@ -1170,38 +1253,64 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   set("buttonBorder", parseInt(sampleButton.style.borderWidth || "0"), 10);
 
   window.__squareCraftBorderStyle = sampleButton.style.borderStyle || "solid";
-  ["buttonBorderTypeSolid", "buttonBorderTypeDashed", "buttonBorderTypeDotted"].forEach(id => {
+  [
+    "buttonBorderTypeSolid",
+    "buttonBorderTypeDashed",
+    "buttonBorderTypeDotted",
+  ].forEach((id) => {
     const btn = document.getElementById(id);
-    if (btn) btn.classList.toggle("sc-bg-454545", id.includes(window.__squareCraftBorderStyle));
+    if (btn)
+      btn.classList.toggle(
+        "sc-bg-454545",
+        id.includes(window.__squareCraftBorderStyle)
+      );
   });
 
-  set("buttonBorderradius", parseInt(sampleButton.style.borderRadius || "0"), 50);
+  set(
+    "buttonBorderradius",
+    parseInt(sampleButton.style.borderRadius || "0"),
+    50
+  );
 
   const size = parseInt(icon?.style.width || "0");
   set("buttonIconSizeradius", size, 50);
 
-  const transformMatch = icon?.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
+  const transformMatch = icon?.style.transform?.match(
+    /rotate\((-?\d+(?:\.\d+)?)deg\)/
+  );
   if (transformMatch) {
     const rotation = parseFloat(transformMatch[1]);
     const percent = ((rotation + 180) / 360) * 100;
-    document.getElementById("buttoniconRotationradiusCount").textContent = `${rotation}deg`;
-    document.getElementById("buttonIconRotationradiusBullet").style.left = `${percent}%`;
-    document.getElementById("buttonIconRotationradiusFill").style.left = `${Math.min(percent, 50)}%`;
-    document.getElementById("buttonIconRotationradiusFill").style.width = `${Math.abs(percent - 50)}%`;
+    document.getElementById(
+      "buttoniconRotationradiusCount"
+    ).textContent = `${rotation}deg`;
+    document.getElementById(
+      "buttonIconRotationradiusBullet"
+    ).style.left = `${percent}%`;
+    document.getElementById(
+      "buttonIconRotationradiusFill"
+    ).style.left = `${Math.min(percent, 50)}%`;
+    document.getElementById(
+      "buttonIconRotationradiusFill"
+    ).style.width = `${Math.abs(percent - 50)}%`;
   }
 
   const spacing = {
     top: parseInt(icon?.style.marginTop || "0"),
     bottom: parseInt(icon?.style.marginBottom || "0"),
     left: parseInt(icon?.style.marginLeft || "0"),
-    right: parseInt(icon?.style.marginRight || "0")
+    right: parseInt(icon?.style.marginRight || "0"),
   };
   const spacingValue = Math.max(...Object.values(spacing));
   const spacingPercent = getPercent(spacingValue, 30);
-  document.getElementById("buttoniconSpacingradiusCount").textContent = `${spacingValue}px`;
-  document.getElementById("buttonIconSpacingradiusFill").style.width = spacingPercent;
-  document.getElementById("buttonIconSpacingradiusBullet").style.left = spacingPercent;
-  ["Top", "Bottom", "Left", "Right"].forEach(dir => {
+  document.getElementById(
+    "buttoniconSpacingradiusCount"
+  ).textContent = `${spacingValue}px`;
+  document.getElementById("buttonIconSpacingradiusFill").style.width =
+    spacingPercent;
+  document.getElementById("buttonIconSpacingradiusBullet").style.left =
+    spacingPercent;
+  ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
     const el = document.getElementById(`buttonIconSpacing${dir}`);
     if (el) el.classList.toggle("sc-bg-454545", spacing[dir.toLowerCase()] > 0);
   });
@@ -1210,11 +1319,18 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   const match = shadow.match(/(-?\d+)px\s+(-?\d+)px\s+(\d+)px\s+(\d+)px/);
   if (match) {
     const [x, y, blur, spread] = match.slice(1).map(Number);
-    const props = { Xaxis: [x, 30], Yaxis: [y, 30], Blur: [blur, 50], Spread: [spread, 30] };
+    const props = {
+      Xaxis: [x, 30],
+      Yaxis: [y, 30],
+      Blur: [blur, 50],
+      Spread: [spread, 30],
+    };
     Object.entries(props).forEach(([type, [val, max]]) => {
       const count = document.getElementById(`buttonShadow${type}Count`);
       const bullet = document.getElementById(`buttonShadow${type}Bullet`);
-      const fill = document.querySelector(`#buttonShadow${type}Field .sc-shadow-fill`);
+      const fill = document.querySelector(
+        `#buttonShadow${type}Field .sc-shadow-fill`
+      );
       if (count) count.textContent = `${val}px`;
       if (bullet) bullet.style.left = getPercent(val, max);
       if (fill) fill.style.width = getPercent(val, max);
@@ -1223,7 +1339,6 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
   window.updateActiveButtonBars?.();
 };
-
 
 export function resetAllButtonStyles(getSelectedElement) {
   const resetTrigger = document.getElementById("buttonResetAll");
@@ -1393,10 +1508,6 @@ export function resetAllButtonStyles(getSelectedElement) {
   });
 }
 
-
-
-
-
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
     window.syncButtonStylesFromElement(selected);
@@ -1412,4 +1523,3 @@ setTimeout(() => {
 
   document.getElementById("buttonBorderTypeSolid")?.click();
 }, 100);
-
