@@ -714,26 +714,9 @@ observer.observe(obsTarget, { childList: true, subtree: true });
         clonedIcon.addEventListener("click", async function (event) {
           event.stopPropagation();
           event.preventDefault();
-
-          const clickedBlock = event.target.closest('[id^="block-"]');
-          if (!clickedBlock) return;
-
-          if (!widgetLoaded) {
-            await createWidget(clickedBlock);
-          } else {
-            widgetContainer.style.display =
-              widgetContainer.style.display === "none" ? "block" : "none";
-          }
-
-          waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
-            .then(() => {
-              handleAndDetect(clickedBlock);
-              positionWidgetBelowElement(clickedBlock); // ✅ Position it under block
-            })
-            .catch((error) => {
-              console.error(error.message);
-            });
+          await toggleWidgetVisibility(event);
         });
+        
         
       });
     }
