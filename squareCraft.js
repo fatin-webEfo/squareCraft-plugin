@@ -817,5 +817,6 @@ try {
   checkView();
   window.addEventListener("resize", checkView);
   console.log(`🔒 Cross-origin access: ${!isSameOrigin ? 'DISALLOWED (using fallback)' : 'ALLOWED (parent.document)'}`);
+  console.log(`selectedElement is ${selectedElement}`)
 
 })();
