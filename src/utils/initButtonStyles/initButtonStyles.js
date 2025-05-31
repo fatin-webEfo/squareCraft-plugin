@@ -1209,6 +1209,7 @@ window.syncButtonStylesFromElement = function (selectedElement) {
 
 export function resetAllButtonStyles(getSelectedElement) {
   const resetTrigger = document.getElementById("buttonResetAll");
+  const resetIcon = document.getElementById("buttonResetAll-icon");
   if (!resetTrigger) return;
 
   resetTrigger.addEventListener("click", () => {
@@ -1217,16 +1218,17 @@ export function resetAllButtonStyles(getSelectedElement) {
 
     const button = selected.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
     if (!button) return;
 
-    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    const typeClass = [...button.classList].find((cls) =>
+      cls.startsWith("sqs-button-element--")
+    );
     if (!typeClass) return;
 
     const blockId = selected.id || "block-id";
 
-    // Remove all plugin-injected <style> tags
     const styleIds = [
       `sc-font-style-${typeClass}`,
       `sc-font-weight-${typeClass}`,
@@ -1234,33 +1236,32 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-transform-style-${typeClass}`,
       `sc-button-border-${typeClass}`,
       `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
-      `sc-button-shadow-${typeClass}`
+      `sc-button-shadow-${typeClass}`,
     ];
-    styleIds.forEach(id => document.getElementById(id)?.remove());
+    styleIds.forEach((id) => document.getElementById(id)?.remove());
 
-    // Remove all inline styles & plugin classnames from buttons
     const allBtns = document.querySelectorAll(`.${typeClass}`);
-    allBtns.forEach(btn => {
+    allBtns.forEach((btn) => {
       btn.removeAttribute("style");
       btn.classList.remove("sc-flex", "sc-items-center");
 
       const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
-      spans.forEach(span => span.removeAttribute("style"));
+      spans.forEach((span) => span.removeAttribute("style"));
 
-      const icons = btn.querySelectorAll(".sqscraft-button-icon, .sqscraft-image-icon");
-      icons.forEach(icon => icon.remove());
+      const icons = btn.querySelectorAll(
+        ".sqscraft-button-icon, .sqscraft-image-icon"
+      );
+      icons.forEach((icon) => icon.remove());
     });
 
-    // Remove plugin classnames from all nested elements
-    selected.querySelectorAll("*").forEach(el => {
-      [...el.classList].forEach(cls => {
+    selected.querySelectorAll("*").forEach((el) => {
+      [...el.classList].forEach((cls) => {
         if (cls.startsWith("sc-") || cls.startsWith("sqscraft-")) {
           el.classList.remove(cls);
         }
       });
     });
 
-    // Clear memory state
     if (window.__squareCraftBorderStateMap) {
       const key = `${blockId}--${typeClass}`;
       window.__squareCraftBorderStateMap.delete(key);
@@ -1270,13 +1271,11 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
     window.__squareCraftBorderStyle = "solid";
 
-    // Reinitialize all plugin modules (flexible recovery)
     setTimeout(() => {
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
       }
 
-      // Flexible reinits
       initButtonFontFamilyControls(getSelectedElement);
       initButtonStyles(getSelectedElement?.());
       initButtonIconPositionToggle(getSelectedElement);
@@ -1288,11 +1287,19 @@ export function resetAllButtonStyles(getSelectedElement) {
       initButtonBorderRadiusControl(getSelectedElement);
       initButtonShadowControls(getSelectedElement);
 
-      // Reset UI highlight defaults
       document.getElementById("buttonBorderTypeSolid")?.click();
     }, 150);
+
+    // ✅ Add rotate class
+    if (resetIcon) {
+      resetIcon.classList.add("sc-rotate-once");
+      setTimeout(() => {
+        resetIcon.classList.remove("sc-rotate-once");
+      }, 600); // same duration as the animation
+    }
   });
 }
+
 
 
 
