@@ -1326,6 +1326,8 @@ export function resetAllButtonStyles(getSelectedElement) {
       inputSync("hover-buttonIconTransformPosition", "0px", "50%");
       inputSync("hover-buttonBorder", "0px", "0%");
       inputSync("hover-buttonBorderradius", "0px", "0%");
+      inputSync("buttonIconSizeradius", "0px", "0%");
+      inputSync("buttonIconSpacingradius", "0px", "0%");
 
       const dropdowns = [
         "font-name",
@@ -1390,6 +1392,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
