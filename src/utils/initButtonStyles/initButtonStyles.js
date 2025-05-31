@@ -1330,6 +1330,42 @@ export function resetAllButtonStyles(getSelectedElement) {
       initHoverButtonBorderControl(getSelectedElement);
       applyHoverButtonEffects(getSelectedElement);
 
+      setTimeout(() => {
+        const transition = "ease-out";
+        const duration = "1200";
+        const delay = "300";
+
+        const selected = getSelectedElement?.();
+        if (!selected) return;
+
+        const button = selected.querySelector(
+          ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+        );
+        if (!button) return;
+
+        const typeClass = [...button.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (!typeClass) return;
+
+        const transformRule = "translateX(0px)";
+        const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+
+        styleTag.innerHTML = `
+      .${typeClass}:hover {
+        transition: all ${duration}ms ${transition} ${delay}ms !important;
+        transform: ${transformRule} !important;
+      }
+      `;
+      }, 300);
+      
+
       document.getElementById("buttonBorderTypeSolid")?.click();
     }, 150);
 
