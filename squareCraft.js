@@ -361,7 +361,17 @@ observer.observe(targetBody, { childList: true, subtree: true });
     }
   }
 
+  function positionWidgetBelowElement(element) {
+    if (!element || !widgetContainer) return;
 
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    widgetContainer.style.position = "absolute";
+    widgetContainer.style.left = `${rect.left}px`;
+    widgetContainer.style.top = `${rect.bottom + scrollTop + 10}px`; // 10px gap
+  }
+  
 
   window.addEventListener("load", async () => {
     await fetchModifications();
@@ -417,6 +427,7 @@ observer.observe(obsTarget, { childList: true, subtree: true });
 
   async function toggleWidgetVisibility(event) {
     event.stopPropagation();
+
     const clickedBlock = event?.target?.closest('[id^="block-"]');
     if (!clickedBlock) {
       return;
@@ -425,19 +436,23 @@ observer.observe(obsTarget, { childList: true, subtree: true });
 
     if (!widgetLoaded) {
       await createWidget(clickedBlock);
-      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-        handleAndDetect(clickedBlock);
-      }).catch(error => {
-        console.error(error.message);
-      });
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(
+        () => {
+          handleAndDetect(clickedBlock);
+          positionWidgetBelowElement(clickedBlock);
+        }
+      );
     } else {
-      widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
-      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-        handleAndDetect(clickedBlock);
-      }).catch(error => {
-        console.error(error.message);
-      });
+      widgetContainer.style.display =
+        widgetContainer.style.display === "none" ? "block" : "none";
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(
+        () => {
+          handleAndDetect(clickedBlock);
+          positionWidgetBelowElement(clickedBlock);
+        }
+      );
     }
+    
   }
 
   function handleAndDetect(clickedBlock) {
@@ -696,24 +711,52 @@ observer.observe(obsTarget, { childList: true, subtree: true });
 
         deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
 
-        clonedIcon.addEventListener("click", function (event) {
+        clonedIcon.addEventListener("click", async function (event) {
           event.stopPropagation();
           event.preventDefault();
-          toggleWidgetVisibility(event);
+
+          const clickedBlock = event.target.closest('[id^="block-"]');
+          if (!clickedBlock) return;
+
           if (!widgetLoaded) {
-            createWidget().then(() => {
-              widgetContainer = document.getElementById("sc-widget-container");
-              if (widgetContainer) {
-                widgetContainer.style.display = "block";
-              } else {
-                console.error("❌ Widget container not found after creation.");
-              }
-            });
+            await createWidget(clickedBlock);
           } else {
             widgetContainer.style.display =
               widgetContainer.style.display === "none" ? "block" : "none";
           }
+
+          waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+            .then(() => {
+              handleAndDetect(clickedBlock);
+              positionWidgetBelowElement(clickedBlock);
+
+              initButtonStyles(clickedBlock);
+              initButtonFontFamilyControls(() => clickedBlock);
+              initButtonIconPositionToggle(() => clickedBlock);
+              initButtonIconRotationControl(() => clickedBlock);
+              initButtonIconSizeControl(() => clickedBlock);
+              initButtonIconSpacingControl(() => clickedBlock);
+              initButtonBorderControl(() => clickedBlock);
+              initButtonBorderTypeToggle(() => clickedBlock);
+              initButtonBorderRadiusControl(() => clickedBlock);
+              initButtonShadowControls(() => clickedBlock);
+              initHoverButtonShadowControls(() => clickedBlock);
+              initHoverButtonIconRotationControl(() => clickedBlock);
+              initHoverButtonIconSizeControl(() => clickedBlock);
+              initHoverButtonIconSpacingControl(() => clickedBlock);
+              initHoverButtonBorderRadiusControl(() => clickedBlock);
+              initHoverButtonBorderTypeToggle(() => clickedBlock);
+              initHoverButtonBorderControl(() => clickedBlock);
+              applyHoverButtonEffects(() => clickedBlock);
+              resetAllButtonStyles(() => clickedBlock);
+            })
+            .catch((err) => {
+              console.error("Widget sections failed to load", err.message);
+            });
         });
+        
+        
+        
       });
     }
 
