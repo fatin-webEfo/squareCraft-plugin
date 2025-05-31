@@ -973,14 +973,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
 
 
-const shadowState = {
-  Xaxis: 0,
-  Yaxis: 0,
-  Blur: 0,
-  Spread: 0
-};
-
-
 
 export function initButtonShadowControls(getSelectedElement) {
   if (!window.shadowState) {

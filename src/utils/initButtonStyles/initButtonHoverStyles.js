@@ -70,12 +70,18 @@ export function initHoverButtonShadowControls(getSelectedElement) {
     function update(val) {
       value = Math.max(min, Math.min(max, val));
       hoverShadowState[typeKey] = value;
+
       const percent = ((value - min) / (max - min)) * 100;
+      const centerPercent = ((0 - min) / (max - min)) * 100;
+
       bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
+      fill.style.left = `${Math.min(percent, centerPercent)}%`;
+      fill.style.width = `${Math.abs(percent - centerPercent)}%`;
+
       label.textContent = `${value}px`;
       applyHoverShadow();
     }
+    
 
     inc?.addEventListener("click", () => update(value + 1));
     dec?.addEventListener("click", () => update(value - 1));
