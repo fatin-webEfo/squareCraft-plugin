@@ -1225,30 +1225,25 @@ export function resetAllButtonStyles(getSelectedElement) {
     if (!typeClass) return;
 
     const blockId = selected.id || "block-id";
-
-    const normalStyleIds = [
+    const classKey = typeClass.replace(/--/g, "-");
+    const styleIds = [
       `sc-font-style-${typeClass}`,
       `sc-font-weight-${typeClass}`,
       `sc-style-${typeClass}`,
       `sc-transform-style-${typeClass}`,
       `sc-button-border-${typeClass}`,
-      `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
+      `sc-normal-radius-${classKey}`,
       `sc-button-shadow-${typeClass}`,
+      `sc-hover-border-style-${classKey}`,
+      `sc-hover-radius-${classKey}`,
+      `sc-hover-shadow-${classKey}`,
+      `sc-hover-style-size-${classKey}`,
+      `sc-hover-style-gap-${classKey}`,
+      `sc-hover-style-transform-${classKey}`,
+      `sc-hover-effects-${classKey}`,
+      `hover-button-border-${blockId}-${typeClass}`,
     ];
-
-    const hoverStyleIds = [
-      `sc-hover-border-style-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-radius-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-shadow-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-style-size-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-style-gap-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-style-transform-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-effects-${typeClass.replace(/--/g, "-")}`,
-    ];
-
-    [...normalStyleIds, ...hoverStyleIds].forEach((id) =>
-      document.getElementById(id)?.remove()
-    );
+    styleIds.forEach((id) => document.getElementById(id)?.remove());
 
     const allBtns = document.querySelectorAll(`.${typeClass}`);
     allBtns.forEach((btn) => {
@@ -1273,95 +1268,60 @@ export function resetAllButtonStyles(getSelectedElement) {
     });
 
     if (window.__squareCraftBorderStateMap) {
-      const key = `${blockId}--${typeClass}`;
-      window.__squareCraftBorderStateMap.delete(key);
-    }
-    if (window.shadowState) {
-      window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+      window.__squareCraftBorderStateMap.delete(`${blockId}--${typeClass}`);
     }
     if (window.__squareCraftHoverBorderStateMap) {
-      const key = `${blockId}--${typeClass}`;
-      window.__squareCraftHoverBorderStateMap.delete(key);
+      window.__squareCraftHoverBorderStateMap.delete(
+        `${blockId}--${typeClass}`
+      );
     }
 
-    window.__squareCraftBorderStyle = "solid";
-    window.__squareCraftHoverBorderColor = "black";
+    window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
     window.__squareCraftHoverRadius = 0;
+    window.__squareCraftHoverBorderColor = "black";
     window.__squareCraftTransformDistance = 0;
+    window.__squareCraftBorderStyle = "solid";
 
-    setTimeout(() => {
-      const selected = getSelectedElement?.();
-      if (!selected) return;
+    setTimeout(async () => {
+      if (typeof window.syncButtonStylesFromElement === "function") {
+        window.syncButtonStylesFromElement(selected);
+      }
 
-      const button = selected.querySelector(
-        ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+      initButtonFontFamilyControls(getSelectedElement);
+      initButtonStyles(getSelectedElement?.());
+      initButtonIconPositionToggle(getSelectedElement);
+      initButtonIconRotationControl(getSelectedElement);
+      initButtonIconSizeControl(getSelectedElement);
+      initButtonIconSpacingControl(getSelectedElement);
+      initButtonBorderControl(getSelectedElement);
+      initButtonBorderTypeToggle(getSelectedElement);
+      initButtonBorderRadiusControl(getSelectedElement);
+      initButtonShadowControls(getSelectedElement);
+
+      const {
+        initHoverButtonShadowControls,
+        initHoverButtonIconRotationControl,
+        initHoverButtonIconSizeControl,
+        initHoverButtonIconSpacingControl,
+        initHoverButtonBorderRadiusControl,
+        initHoverButtonBorderTypeToggle,
+        initHoverButtonBorderControl,
+        applyHoverButtonEffects,
+      } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js"
       );
-      if (!button) return;
 
-      const typeClass = [...button.classList].find((cls) =>
-        cls.startsWith("sqs-button-element--")
-      );
-      if (!typeClass) return;
+      initHoverButtonShadowControls(getSelectedElement);
+      initHoverButtonIconRotationControl(getSelectedElement);
+      initHoverButtonIconSizeControl(getSelectedElement);
+      initHoverButtonIconSpacingControl(getSelectedElement);
+      initHoverButtonBorderRadiusControl(getSelectedElement);
+      initHoverButtonBorderTypeToggle(getSelectedElement);
+      initHoverButtonBorderControl(getSelectedElement);
+      applyHoverButtonEffects(getSelectedElement);
 
-      const classKey = typeClass.replace(/--/g, "-");
-      const blockId = selected.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-
-      // 🟨 Reapply hover border defaults
-      const borderStyleId = `sc-hover-border-style-${classKey}`;
-      const borderStyleTag =
-        document.getElementById(borderStyleId) ||
-        document.head.appendChild(
-          Object.assign(document.createElement("style"), { id: borderStyleId })
-        );
-      borderStyleTag.innerHTML = `.${typeClass}:hover { border-style: solid !important; }`;
-
-      const borderId = `hover-button-border-${blockId}-${typeClass}`;
-      const borderTag =
-        document.getElementById(borderId) ||
-        document.head.appendChild(
-          Object.assign(document.createElement("style"), { id: borderId })
-        );
-      borderTag.innerHTML = `
-    .${typeClass}:hover {
-      border-style: solid !important;
-      border-color: black !important;
-      border-radius: 0px !important;
-      border-top-width: 0px !important;
-      border-right-width: 0px !important;
-      border-bottom-width: 0px !important;
-      border-left-width: 0px !important;
-    }
-    `;
-
-      // ✅ Reassign hover border memory state
-      window.__squareCraftHoverBorderStateMap =
-        window.__squareCraftHoverBorderStateMap || new Map();
-      window.__squareCraftHoverBorderStateMap.set(key, {
-        value: 0,
-        side: "All",
-      });
-
-      // 🟩 Reapply hover transform transition
-      const effectId = `sc-hover-effects-${classKey}`;
-      const effectTag =
-        document.getElementById(effectId) ||
-        document.head.appendChild(
-          Object.assign(document.createElement("style"), { id: effectId })
-        );
-      effectTag.innerHTML = `
-    .${typeClass}:hover {
-      transition: all 1200ms ease-out 300ms !important;
-      transform: translateX(0px) !important;
-    }
-    `;
-
-      window.__squareCraftTransformDistance = 0;
-      window.__squareCraftHoverBorderColor = "black";
-      window.__squareCraftHoverRadius = 0;
-      window.__squareCraftBorderStyle = "solid";
-    }, 300);
-    
+      document.getElementById("buttonBorderTypeSolid")?.click();
+    }, 200);
 
     if (resetIcon) {
       resetIcon.classList.remove("sc-rotate-once");
