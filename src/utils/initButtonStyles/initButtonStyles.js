@@ -1411,6 +1411,8 @@ export function resetAllButtonStyles(getSelectedElement) {
       });
     });
 
+    document.querySelectorAll(".sc-active-bar").forEach((el) => el.remove());
+
     if (window.__squareCraftBorderStateMap) {
       window.__squareCraftBorderStateMap.delete(fullKey);
     }
@@ -1447,36 +1449,53 @@ export function resetAllButtonStyles(getSelectedElement) {
       inputSync("buttonIconSizeradius", "0px", "0%");
       inputSync("buttonIconSpacingradius", "0px", "0%");
 
-      const dropdowns = [
-        "font-name",
-        "scButtonFontWeightSelected",
-        "iconPositionLabel",
-      ];
-      dropdowns.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = "Select";
+      const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+      const letterSpacingInput = document.getElementById(
+        "scButtonLetterSpacingInput"
+      );
+      if (fontSizeInput) {
+        fontSizeInput.value = "10";
+        fontSizeInput.dispatchEvent(new Event("input"));
+      }
+      if (letterSpacingInput) {
+        letterSpacingInput.value = "0";
+        letterSpacingInput.dispatchEvent(new Event("input"));
+      }
+
+      [
+        "scButtonAllCapital",
+        "scButtonAllSmall",
+        "scButtonFirstCapital",
+      ].forEach((id) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove("sc-activeTab-border");
+          btn.classList.add("sc-inActiveTab-border");
+        }
       });
 
-      const iconTransformBtn = document.getElementById(
-        "buttonIconTransformNone"
+      ["font-name", "scButtonFontWeightSelected", "iconPositionLabel"].forEach(
+        (id) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = "Select";
+        }
       );
-      const rotationBtn = document.getElementById("buttoniconRotationTypeNone");
 
-      if (iconTransformBtn) {
-        iconTransformBtn.classList.add("sc-bg-454545");
-        ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
-          const other = document.getElementById(`buttonIconSpacing${dir}`);
-          other?.classList.remove("sc-bg-454545");
-        });
-      }
+      ["buttonIconTransformNone", "buttoniconRotationTypeNone"].forEach(
+        (id) => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add("sc-bg-454545");
+        }
+      );
 
-      if (rotationBtn) {
-        rotationBtn.classList.add("sc-bg-454545");
-        ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
-          const other = document.getElementById(`buttonIconRotationType${dir}`);
-          other?.classList.remove("sc-bg-454545");
-        });
-      }
+      ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
+        document
+          .getElementById(`buttonIconSpacing${dir}`)
+          ?.classList.remove("sc-bg-454545");
+        document
+          .getElementById(`buttoniconRotationType${dir}`)
+          ?.classList.remove("sc-bg-454545");
+      });
 
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
@@ -1518,9 +1537,7 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttonBorderTypeSolid")?.click();
       document.getElementById("hover-buttonBorderTypeSolid")?.click();
     }, 300);
-    const activeBars = document.querySelectorAll(".sc-active-bar");
-    activeBars.forEach((el) => el.remove());
-    
+
     if (resetIcon) {
       resetIcon.classList.remove("sc-rotate-once");
       void resetIcon.offsetWidth;
@@ -1531,6 +1548,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 setTimeout(() => {
