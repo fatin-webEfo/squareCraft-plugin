@@ -1313,6 +1313,31 @@ export function resetAllButtonStyles(getSelectedElement) {
       const selected = getSelectedElement?.();
       if (!selected) return;
 
+      const inputSync = (id, value, percent) => {
+        const bullet = document.getElementById(id + "Bullet");
+        const fill = document.getElementById(id + "Fill");
+        const count = document.getElementById(id + "Count");
+        if (bullet) bullet.style.left = percent;
+        if (fill) fill.style.width = percent;
+        if (count) count.textContent = value;
+      };
+
+      inputSync("buttonIconRotationradius", "0deg", "50%");
+      inputSync("hover-buttonIconTransformPosition", "0px", "50%");
+      inputSync("hover-buttonBorder", "0px", "0%");
+      inputSync("hover-buttonBorderradius", "0px", "0%");
+
+      const dropdowns = [
+        "font-name",
+        "scButtonFontWeightSelected",
+        "iconPositionLabel",
+      ];
+
+      dropdowns.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "Select";
+      });
+
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
       }
@@ -1351,50 +1376,6 @@ export function resetAllButtonStyles(getSelectedElement) {
 
       applyHoverButtonEffects(getSelectedElement);
 
-      const bullet = document.getElementById(
-        "hover-buttonIconTransformPositionBullet"
-      );
-      const fill = document.getElementById(
-        "hover-buttonIconTransformPositionFill"
-      );
-      const label = document.getElementById(
-        "hover-buttoniconTransformPositionCount"
-      );
-      if (bullet && fill && label) {
-        bullet.style.left = "50%";
-        fill.style.left = "50%";
-        fill.style.width = "0%";
-        label.textContent = "0px";
-      }
-
-      const hoverBorderBullet = document.getElementById(
-        "hover-buttonBorderBullet"
-      );
-      const hoverBorderFill = document.getElementById("hover-buttonBorderFill");
-      const hoverBorderCount = document.getElementById(
-        "hover-buttonBorderCount"
-      );
-      if (hoverBorderBullet && hoverBorderFill && hoverBorderCount) {
-        hoverBorderBullet.style.left = "0%";
-        hoverBorderFill.style.width = "0%";
-        hoverBorderCount.textContent = "0px";
-      }
-
-      const radiusBullet = document.getElementById(
-        "hover-buttonBorderradiusBullet"
-      );
-      const radiusFill = document.getElementById(
-        "hover-buttonBorderradiusFill"
-      );
-      const radiusCount = document.getElementById(
-        "hover-buttonBorderradiusCount"
-      );
-      if (radiusBullet && radiusFill && radiusCount) {
-        radiusBullet.style.left = "0%";
-        radiusFill.style.width = "0%";
-        radiusCount.textContent = "0px";
-      }
-
       document.getElementById("buttonBorderTypeSolid")?.click();
       document.getElementById("hover-buttonBorderTypeSolid")?.click();
     }, 300);
@@ -1409,6 +1390,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
