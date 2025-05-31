@@ -1212,7 +1212,7 @@ export function resetAllButtonStyles(getSelectedElement) {
   const resetIcon = document.getElementById("buttonResetAll-icon");
   if (!resetTrigger) return;
 
-  resetTrigger.addEventListener("click", () => {
+  resetTrigger.addEventListener("click", async () => {
     const selected = getSelectedElement?.();
     if (!selected) return;
 
@@ -1229,7 +1229,7 @@ export function resetAllButtonStyles(getSelectedElement) {
 
     const blockId = selected.id || "block-id";
 
-    const styleIds = [
+    const normalStyleIds = [
       `sc-font-style-${typeClass}`,
       `sc-font-weight-${typeClass}`,
       `sc-style-${typeClass}`,
@@ -1237,14 +1237,21 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-button-border-${typeClass}`,
       `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
       `sc-button-shadow-${typeClass}`,
+    ];
 
-      // ✅ Hover-specific styles
+    const hoverStyleIds = [
       `sc-hover-border-style-${typeClass.replace(/--/g, "-")}`,
       `sc-hover-radius-${typeClass.replace(/--/g, "-")}`,
       `sc-hover-shadow-${typeClass.replace(/--/g, "-")}`,
-      `sc-hover-icon-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-style-size-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-style-gap-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-style-transform-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-effects-${typeClass.replace(/--/g, "-")}`,
     ];
-    styleIds.forEach((id) => document.getElementById(id)?.remove());
+
+    [...normalStyleIds, ...hoverStyleIds].forEach((id) =>
+      document.getElementById(id)?.remove()
+    );
 
     const allBtns = document.querySelectorAll(`.${typeClass}`);
     allBtns.forEach((btn) => {
@@ -1275,20 +1282,21 @@ export function resetAllButtonStyles(getSelectedElement) {
     if (window.shadowState) {
       window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
     }
-
-    // ✅ Reset hover shadow object if you have it
-    if (window.hoverShadowState) {
-      window.hoverShadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+    if (window.__squareCraftHoverBorderStateMap) {
+      const key = `${blockId}--${typeClass}`;
+      window.__squareCraftHoverBorderStateMap.delete(key);
     }
 
     window.__squareCraftBorderStyle = "solid";
+    window.__squareCraftHoverBorderColor = "black";
+    window.__squareCraftHoverRadius = 0;
+    window.__squareCraftTransformDistance = 0;
 
-    setTimeout(() => {
+    setTimeout(async () => {
       if (typeof window.syncButtonStylesFromElement === "function") {
         window.syncButtonStylesFromElement(selected);
       }
 
-      // ✅ Re-initialize ALL normal + hover controls
       initButtonFontFamilyControls(getSelectedElement);
       initButtonStyles(getSelectedElement?.());
       initButtonIconPositionToggle(getSelectedElement);
@@ -1300,26 +1308,27 @@ export function resetAllButtonStyles(getSelectedElement) {
       initButtonBorderRadiusControl(getSelectedElement);
       initButtonShadowControls(getSelectedElement);
 
-      // ✅ Hover versions
-      import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonSectionToggleControls.js"
-      ).then((mod) => mod.default(getSelectedElement));
-      import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonBorderTypeToggle.js"
-      ).then((mod) => mod.initHoverButtonBorderTypeToggle(getSelectedElement));
-      import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonShadowControls.js"
-      ).then((mod) => mod.initHoverButtonShadowControls(getSelectedElement));
-      import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonBorderRadiusControl.js"
-      ).then((mod) =>
-        mod.initHoverButtonBorderRadiusControl(getSelectedElement)
+      const {
+        initHoverButtonShadowControls,
+        initHoverButtonIconRotationControl,
+        initHoverButtonIconSizeControl,
+        initHoverButtonIconSpacingControl,
+        initHoverButtonBorderRadiusControl,
+        initHoverButtonBorderTypeToggle,
+        initHoverButtonBorderControl,
+        applyHoverButtonEffects,
+      } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js"
       );
-      import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonFontColorPaletteToggle.js"
-      ).then((mod) =>
-        mod.initHoverButtonFontColorPaletteToggle(getSelectedElement)
-      );
+
+      initHoverButtonShadowControls(getSelectedElement);
+      initHoverButtonIconRotationControl(getSelectedElement);
+      initHoverButtonIconSizeControl(getSelectedElement);
+      initHoverButtonIconSpacingControl(getSelectedElement);
+      initHoverButtonBorderRadiusControl(getSelectedElement);
+      initHoverButtonBorderTypeToggle(getSelectedElement);
+      initHoverButtonBorderControl(getSelectedElement);
+      applyHoverButtonEffects(getSelectedElement);
 
       document.getElementById("buttonBorderTypeSolid")?.click();
     }, 150);
@@ -1334,6 +1343,7 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
+
 
 
 
