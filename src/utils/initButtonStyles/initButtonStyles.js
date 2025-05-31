@@ -1237,6 +1237,12 @@ export function resetAllButtonStyles(getSelectedElement) {
       `sc-button-border-${typeClass}`,
       `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
       `sc-button-shadow-${typeClass}`,
+
+      // ✅ Hover-specific styles
+      `sc-hover-border-style-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-radius-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-shadow-${typeClass.replace(/--/g, "-")}`,
+      `sc-hover-icon-${typeClass.replace(/--/g, "-")}`,
     ];
     styleIds.forEach((id) => document.getElementById(id)?.remove());
 
@@ -1269,6 +1275,12 @@ export function resetAllButtonStyles(getSelectedElement) {
     if (window.shadowState) {
       window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
     }
+
+    // ✅ Reset hover shadow object if you have it
+    if (window.hoverShadowState) {
+      window.hoverShadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+    }
+
     window.__squareCraftBorderStyle = "solid";
 
     setTimeout(() => {
@@ -1276,6 +1288,7 @@ export function resetAllButtonStyles(getSelectedElement) {
         window.syncButtonStylesFromElement(selected);
       }
 
+      // ✅ Re-initialize ALL normal + hover controls
       initButtonFontFamilyControls(getSelectedElement);
       initButtonStyles(getSelectedElement?.());
       initButtonIconPositionToggle(getSelectedElement);
@@ -1287,21 +1300,41 @@ export function resetAllButtonStyles(getSelectedElement) {
       initButtonBorderRadiusControl(getSelectedElement);
       initButtonShadowControls(getSelectedElement);
 
+      // ✅ Hover versions
+      import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonSectionToggleControls.js"
+      ).then((mod) => mod.default(getSelectedElement));
+      import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonBorderTypeToggle.js"
+      ).then((mod) => mod.initHoverButtonBorderTypeToggle(getSelectedElement));
+      import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonShadowControls.js"
+      ).then((mod) => mod.initHoverButtonShadowControls(getSelectedElement));
+      import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonBorderRadiusControl.js"
+      ).then((mod) =>
+        mod.initHoverButtonBorderRadiusControl(getSelectedElement)
+      );
+      import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/components/ButtonHover/initHoverButtonFontColorPaletteToggle.js"
+      ).then((mod) =>
+        mod.initHoverButtonFontColorPaletteToggle(getSelectedElement)
+      );
+
       document.getElementById("buttonBorderTypeSolid")?.click();
     }, 150);
 
-    // ✅ Force reflow and apply rotation class
     if (resetIcon) {
       resetIcon.classList.remove("sc-rotate-once");
-      void resetIcon.offsetWidth; // Force reflow
+      void resetIcon.offsetWidth;
       resetIcon.classList.add("sc-rotate-once");
-
       setTimeout(() => {
         resetIcon.classList.remove("sc-rotate-once");
       }, 600);
     }
   });
 }
+
 
 
 
