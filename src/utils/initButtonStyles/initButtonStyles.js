@@ -1518,7 +1518,9 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttonBorderTypeSolid")?.click();
       document.getElementById("hover-buttonBorderTypeSolid")?.click();
     }, 300);
-
+    const activeBars = document.querySelectorAll(".sc-active-bar");
+    activeBars.forEach((el) => el.remove());
+    
     if (resetIcon) {
       resetIcon.classList.remove("sc-rotate-once");
       void resetIcon.offsetWidth;
