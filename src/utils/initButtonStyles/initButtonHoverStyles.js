@@ -701,18 +701,38 @@ export function initHoverButtonBorderControl(getSelectedElement) {
 
 
 export function applyHoverButtonEffects(getSelectedElement) {
-  const transition = document.getElementById("hover-buttonTransitionTypeLabel")?.textContent?.trim() || "none";
-  const duration = document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() || "0";
-  const delay = document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() || "0";
-  const transformType = document.getElementById("hover-buttonTransformTypeLabel")?.textContent?.trim() || "none";
+  const transition =
+    document
+      .getElementById("hover-buttonTransitionTypeLabel")
+      ?.textContent?.trim() || "none";
+  const duration =
+    document.getElementById("hover-buttonDurationLabel")?.textContent?.trim() ||
+    "0";
+  const delay =
+    document.getElementById("hover-buttonDelayLabel")?.textContent?.trim() ||
+    "0";
+  const transformType =
+    document
+      .getElementById("hover-buttonTransformTypeLabel")
+      ?.textContent?.trim() || "none";
 
-  const bullet = document.getElementById("hover-buttonIconTransformPositionBullet");
+  const bullet = document.getElementById(
+    "hover-buttonIconTransformPositionBullet"
+  );
   const fill = document.getElementById("hover-buttonIconTransformPositionFill");
-  const field = document.getElementById("hover-buttonIconTransformPositionField");
-  const label = document.getElementById("hover-buttoniconTransformPositionCount");
+  const field = document.getElementById(
+    "hover-buttonIconTransformPositionField"
+  );
+  const label = document.getElementById(
+    "hover-buttoniconTransformPositionCount"
+  );
 
-  const incBtn = document.getElementById("hover-buttonTransformPositionIncrease");
-  const decBtn = document.getElementById("hover-buttonTransformPositionDecrease");
+  const incBtn = document.getElementById(
+    "hover-buttonTransformPositionIncrease"
+  );
+  const decBtn = document.getElementById(
+    "hover-buttonTransformPositionDecrease"
+  );
 
   if (!bullet || !fill || !field || !label) return;
 
@@ -727,32 +747,24 @@ export function applyHoverButtonEffects(getSelectedElement) {
     const selected = getSelectedElement?.();
     if (!selected) return;
 
-    const button = selected.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary");
+    const button = selected.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
     if (!button) return;
 
-    const typeClass = [...button.classList].find(cls => cls.startsWith("sqs-button-element--"));
+    const typeClass = [...button.classList].find((cls) =>
+      cls.startsWith("sqs-button-element--")
+    );
     if (!typeClass) return;
 
-    const transitionRule = `transition: all ${duration}ms ${transition} ${delay}ms !important;`;
-
-    const applyTransitionTo = (id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = el.innerHTML.replace(/transition:[^;]*;/g, '') + transitionRule;
-    };
-
-    applyTransitionTo(`sc-hover-style-size-${typeClass.replace(/--/g, '-')}`);
-    applyTransitionTo(`sc-hover-style-gap-${typeClass.replace(/--/g, '-')}`);
-    applyTransitionTo(`sc-hover-radius-${typeClass.replace(/--/g, '-')}`);
-    applyTransitionTo(`hover-border-style-${typeClass.replace(/--/g, '-')}`);
-    applyTransitionTo(`sc-hover-shadow-${typeClass.replace(/--/g, '-')}`);
-    applyTransitionTo(`sc-hover-style-transform-${typeClass.replace(/--/g, '-')}`);
-
-    let transformRule = "none";
-    if (transformType === "TranslateX") transformRule = `translateX(${distance}px)`;
-    else if (transformType === "TranslateY") transformRule = `translateY(${distance}px)`;
-    else if (transformType === "RotateX") transformRule = `rotateX(${distance}deg)`;
-    else if (transformType === "RotateY") transformRule = `rotateY(${distance}deg)`;
-    else if (transformType === "Scale") transformRule = `scale(${1 + distance / 100})`;
+    const transformRule = (() => {
+      if (transformType === "TranslateX") return `translateX(${distance}px)`;
+      if (transformType === "TranslateY") return `translateY(${distance}px)`;
+      if (transformType === "RotateX") return `rotateX(${distance}deg)`;
+      if (transformType === "RotateY") return `rotateY(${distance}deg)`;
+      if (transformType === "Scale") return `scale(${1 + distance / 100})`;
+      return "none";
+    })();
 
     const styleId = `sc-hover-effects-${typeClass.replace(/--/g, "-")}`;
     let styleTag = document.getElementById(styleId);
@@ -763,11 +775,11 @@ export function applyHoverButtonEffects(getSelectedElement) {
     }
 
     styleTag.innerHTML = `
-      a.${typeClass}:hover {
-        ${transitionRule}
-        transform: ${transformRule} !important;
-      }
-    `;
+.${typeClass}:hover {
+  transition: all ${duration}ms ${transition} ${delay}ms !important;
+  transform: ${transformRule} !important;
+}
+`;
   }
 
   function update(newVal) {
@@ -782,7 +794,6 @@ export function applyHoverButtonEffects(getSelectedElement) {
 
     applyHoverStyles();
   }
-
 
   function updateFromClientX(clientX) {
     const rect = field.getBoundingClientRect();
@@ -807,10 +818,9 @@ export function applyHoverButtonEffects(getSelectedElement) {
   incBtn?.addEventListener("click", () => update(value + 1));
   decBtn?.addEventListener("click", () => update(value - 1));
 
-  setTimeout(() => {
-    update(window.__squareCraftTransformDistance || 0);
-  }, 50);
+  setTimeout(() => update(window.__squareCraftTransformDistance || 0), 50);
 }
+
 
 
 
