@@ -1466,12 +1466,6 @@ export function resetAllButtonStyles(getSelectedElement) {
       inputSync("buttonIconSizeradius", "0px", "0%");
       inputSync("buttonIconSpacingradius", "0px", "0%");
 
-      document.getElementById("buttonIconRotationradiusCount").textContent =
-        "0deg";
-      document.getElementById("buttonIconSizeradiusCount").textContent = "0px";
-      document.getElementById("buttonIconSpacingradiusCount").textContent =
-        "0px";
-
       const fontSizeInput = document.getElementById("scButtonFontSizeInput");
       const letterSpacingInput = document.getElementById(
         "scButtonLetterSpacingInput"
