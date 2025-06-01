@@ -1665,6 +1665,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
+      // === ICON RESET ===
       if (
         resetId === "icon-size-reset" ||
         resetId === "icon-spacing-reset" ||
@@ -1704,6 +1705,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
+      // === BORDER RESET ===
       if (resetId === "border-reset") {
         const borderCount = document.getElementById("buttonBorderCount");
         if (borderCount) borderCount.textContent = "0px";
@@ -1719,6 +1721,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
+      // === BORDER RADIUS RESET ===
       if (resetId === "border-radius-reset") {
         const radiusCount = document.getElementById("buttonBorderradiusCount");
         if (radiusCount) radiusCount.textContent = "0px";
@@ -1736,6 +1739,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
+      // === SHADOW AXIS RESET ===
       if (resetId === "shadow-axis-reset") {
         ["Xaxis", "Yaxis"].forEach((axis) => {
           const count = document.getElementById(`buttonShadow${axis}Count`);
@@ -1750,6 +1754,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
+      // === SHADOW BLUR RESET ===
       if (resetId === "shadow-blur-reset") {
         const count = document.getElementById("buttonShadowBlurCount");
         if (count) count.textContent = "0px";
@@ -1774,10 +1779,14 @@ export function initButtonResetHandlers(getSelectedElement) {
         window.__squareCraftShadowMap?.delete?.(key);
         return;
       }
-    });    
+    });
+    
     
   });
 }
+
+
+
 
 
 
