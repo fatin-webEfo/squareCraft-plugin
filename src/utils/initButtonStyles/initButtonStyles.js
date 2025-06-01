@@ -1482,8 +1482,6 @@ export function initButtonResetHandlers(getSelectedElement) {
       const mapRef = window[config.map];
 
       console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
-
-      // Prevent re-application from style controls for 100ms
       window.__scResetBlock = selected.id;
       setTimeout(() => {
         window.__scResetBlock = null;
