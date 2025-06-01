@@ -1591,48 +1591,57 @@ export function initButtonResetHandlers(getSelectedElement) {
     "icon-size-reset": [
       "buttonIconSizeradiusBullet",
       "buttonIconSizeradiusFill",
-      "buttoniconSizeradiusCount",
+      "buttonIconSizeradiusCount",
       "sc-transform-style-ICON",
-    ],
-    "icon-rotation-reset": [
-      "buttonIconRotationradiusBullet",
-      "buttonIconRotationradiusFill",
-      "buttoniconRotationradiusCount",
-      "sc-transform-style-ICON",
+      "__squareCraftIconMap",
     ],
     "icon-spacing-reset": [
       "buttonIconSpacingradiusBullet",
       "buttonIconSpacingradiusFill",
-      "buttoniconSpacingCount",
+      "buttonIconSpacingCount",
       "sc-transform-style-ICON",
+      "__squareCraftIconMap",
+    ],
+    "icon-rotation-reset": [
+      "buttonIconRotationradiusBullet",
+      "buttonIconRotationradiusFill",
+      "buttonIconRotationCount",
+      "sc-transform-style-ICON",
+      "__squareCraftIconMap",
     ],
     "border-radius-reset": [
       "buttonBorderradiusBullet",
       "buttonBorderradiusFill",
       "buttonBorderradiusCount",
       "sc-normal-radius-ICON",
+      "__squareCraftRadiusMap",
     ],
     "shadow-blur-reset": [
       "buttonShadowBlurBullet",
       null,
       "buttonShadowBlurCount",
       "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
     ],
     "shadow-spread-reset": [
       "buttonShadowSpreadBullet",
       null,
       "buttonShadowSpreadCount",
       "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
     ],
     "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "sc-button-shadow-ICON"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "sc-button-shadow-ICON"],
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount"],
+      "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
     ],
     "border-reset": [
       "buttonBorderBullet",
       "buttonBorderFill",
       "buttonBorderCount",
       "sc-button-border-ICON",
+      "__squareCraftBorderStateMap",
     ],
   };
 
@@ -1653,34 +1662,57 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const btn = selected.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (!btn) return;
 
-      const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
+      const typeClass = [...btn.classList].find((c) =>
+        c.startsWith("sqs-button-element--")
+      );
       if (!typeClass) return;
 
-      if (resetId === "shadow-axis-reset") {
-        config.forEach(([bulletId, countId, stylePrefix]) => {
-          document.getElementById(bulletId)?.style.setProperty("left", "0px");
-          document.getElementById(countId)?.innerText = "0px";
+      const blockId = selected.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
 
-          const styleId = stylePrefix.replace("ICON", typeClass);
-          document.getElementById(styleId)?.remove();
+      if (resetId === "shadow-axis-reset") {
+        const [xConf, yConf, styleIdRaw, stateMapName] = config;
+
+        [xConf, yConf].forEach(([bulletId, countId]) => {
+          const bullet = document.getElementById(bulletId);
+          const count = document.getElementById(countId);
+          if (bullet) bullet.style.left = "0px";
+          if (count) count.textContent = "0px";
         });
+
+        const styleId = styleIdRaw.replace("ICON", typeClass);
+        document.getElementById(styleId)?.remove();
+        if (window[stateMapName]) window[stateMapName].delete?.(key);
         return;
       }
 
-      const [bulletId, fillId, countId, styleIdTemplate] = config;
-      document.getElementById(bulletId)?.style.setProperty("left", "0px");
-      if (fillId) document.getElementById(fillId)?.style.setProperty("width", "0px");
-      document.getElementById(countId)?.innerText = "0px";
+      const [bulletId, fillId, countId, styleIdRaw, stateMapName] = config;
 
-      const styleId = styleIdTemplate.replace("ICON", typeClass);
+      const bullet = document.getElementById(bulletId);
+      if (bullet) bullet.style.left = "0px";
+
+      if (fillId) {
+        const fill = document.getElementById(fillId);
+        if (fill) fill.style.width = "0px";
+      }
+
+      const count = document.getElementById(countId);
+      if (count) count.textContent = "0px";
+
+      const styleId = styleIdRaw.replace("ICON", typeClass);
       document.getElementById(styleId)?.remove();
+
+      if (stateMapName && window[stateMapName]) {
+        window[stateMapName].delete?.(key);
+      }
     });
   });
 }
+
 
 
 
