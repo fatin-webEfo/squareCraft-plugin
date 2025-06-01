@@ -1729,16 +1729,14 @@ export function initButtonResetHandlers(getSelectedElement) {
         setTimeout(() => (window[config.flag] = false), 100);
       }
 
-      // Axis special case
       if (resetId === "shadow-axis-reset") {
         config.axis.forEach(({ bullet, count }) => {
           const b = document.getElementById(bullet);
           const c = document.getElementById(count);
-          console.log(`[SC Reset] Bullet: ${bullet}, Count: ${count}`);
           if (b) b.style.left = "0px";
           if (c) {
-            console.log(`[SC Reset] Current count before: ${c.textContent}`);
-            c.textContent = "0px";
+            c.innerText = "0px";
+            console.log(`[SC Reset] ${count} value after reset:`, c.innerText);
           }
         });
       } else {
@@ -1748,17 +1746,15 @@ export function initButtonResetHandlers(getSelectedElement) {
           : null;
         const countEl = document.getElementById(config.count);
 
-        console.log(
-          `[SC Reset] Bullet: ${config.bullet}, Fill: ${config.fill}, Count: ${config.count}`
-        );
-        if (countEl)
-          console.log(
-            `[SC Reset] Current count before: ${countEl.textContent}`
-          );
-
         if (bulletEl) bulletEl.style.left = "0px";
         if (fillEl) fillEl.style.width = "0px";
-        if (countEl) countEl.textContent = "0px";
+        if (countEl) {
+          countEl.innerText = "0px";
+          console.log(
+            `[SC Reset] ${config.count} value after reset:`,
+            countEl.innerText
+          );
+        }
       }
 
       document.getElementById(styleId)?.remove();
@@ -1771,6 +1767,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
+
 
 
 
