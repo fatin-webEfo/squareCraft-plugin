@@ -1575,11 +1575,12 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
 
-      // Flag
-      if (config.flag) {
-        window[config.flag] = true;
-        setTimeout(() => (window[config.flag] = false), 100);
-      }
+      // Prevent re-application from style controls for 100ms
+      window.__scResetBlock = selected.id;
+      setTimeout(() => {
+        window.__scResetBlock = null;
+        console.log(`[SC Reset: ${resetId}] ⏱️ Reset mode cleared`);
+      }, 120);
 
       if (resetId === "shadow-axis-reset") {
         config.axis.forEach(({ bullet, count }) => {
@@ -1587,8 +1588,8 @@ export function initButtonResetHandlers(getSelectedElement) {
           const c = document.getElementById(count);
           if (b) b.style.left = "0px";
           if (c) {
+            console.log(`[SC Reset] Resetting ${count}: was "${c.innerText}"`);
             c.innerText = "0px";
-            console.log(`[SC Reset] ${count} value after reset:`, c.innerText);
           }
         });
       } else {
@@ -1601,24 +1602,25 @@ export function initButtonResetHandlers(getSelectedElement) {
         if (bulletEl) bulletEl.style.left = "0px";
         if (fillEl) fillEl.style.width = "0px";
         if (countEl) {
-          countEl.innerText = "0px";
           console.log(
-            `[SC Reset] ${config.count} value after reset:`,
-            countEl.innerText
+            `[SC Reset] Resetting ${config.count}: was "${countEl.innerText}"`
           );
+          countEl.innerText = "0px";
         }
       }
 
       document.getElementById(styleId)?.remove();
+
       if (mapRef && config.resetInternal) {
         config.resetInternal(mapRef, key);
-        console.log(`[SC Reset: ${resetId}] Internal map cleared for ${key}`);
+        console.log(`[SC Reset: ${resetId}] Internal state reset for ${key}`);
       }
 
-      console.log(`[SC Reset: ${resetId}] Reset complete. Visuals cleared.`);
+      console.log(`[SC Reset: ${resetId}] ✅ Reset complete.`);
     });
   });
 }
+
 
 
 
