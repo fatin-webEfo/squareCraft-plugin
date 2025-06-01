@@ -1588,51 +1588,52 @@ export function resetAllButtonStyles(getSelectedElement) {
 
 export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = {
-    "icon-size-reset": {
-      bullet: "#buttonIconSizeradiusBullet",
-      fill: "#buttonIconSizeradiusFill",
-      count: "#buttoniconSizeradiusCount",
-      key: "--icon-size",
-    },
-    "icon-rotation-reset": {
-      bullet: "#buttonIconRotationradiusBullet",
-      fill: "#buttonIconRotationradiusFill",
-      count: "#buttoniconRotationradiusCount",
-      key: "--icon-rotation",
-    },
-    "icon-spacing-reset": {
-      bullet: "#buttonIconSpacingradiusBullet",
-      fill: "#buttonIconSpacingradiusFill",
-      count: "#buttoniconSpacingCount",
-      key: "--icon-spacing",
-    },
-    "border-reset": {
-      bullet: "#buttonBorderBullet",
-      fill: "#buttonBorderFill",
-      count: "#buttonBorderCount",
-      key: "--border",
-    },
-    "border-radius-reset": {
-      bullet: "#buttonBorderradiusBullet",
-      fill: "#buttonBorderradiusFill",
-      count: "#buttonBorderradiusCount",
-      key: "--border-radius",
-    },
-    "shadow-axis-reset": {
-      bullets: ["#buttonShadowXaxisBullet", "#buttonShadowYaxisBullet"],
-      counts: ["#buttonShadowXaxisCount", "#buttonShadowYaxisCount"],
-      keys: ["--shadow-x", "--shadow-y"],
-    },
-    "shadow-blur-reset": {
-      bullet: "#buttonShadowBlurBullet",
-      count: "#buttonShadowBlurCount",
-      key: "--shadow-blur",
-    },
-    "shadow-spread-reset": {
-      bullet: "#buttonShadowSpreadBullet",
-      count: "#buttonShadowSpreadCount",
-      key: "--shadow-spread",
-    },
+    "icon-size-reset": [
+      "buttonIconSizeradiusBullet",
+      "buttonIconSizeradiusFill",
+      "buttoniconSizeradiusCount",
+      "--icon-size",
+    ],
+    "icon-rotation-reset": [
+      "buttonIconRotationradiusBullet",
+      "buttonIconRotationradiusFill",
+      "buttoniconRotationradiusCount",
+      "--icon-rotation",
+    ],
+    "icon-spacing-reset": [
+      "buttonIconSpacingradiusBullet",
+      "buttonIconSpacingradiusFill",
+      "buttoniconSpacingCount",
+      "--icon-spacing",
+    ],
+    "border-reset": [
+      "buttonBorderBullet",
+      "buttonBorderFill",
+      "buttonBorderCount",
+      "--border",
+    ],
+    "border-radius-reset": [
+      "buttonBorderradiusBullet",
+      "buttonBorderradiusFill",
+      "buttonBorderradiusCount",
+      "--border-radius",
+    ],
+    "shadow-axis-reset": [
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "--shadow-x"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "--shadow-y"],
+    ],
+    "shadow-blur-reset": [
+      "buttonShadowBlurBullet",
+      null,
+      "buttonShadowBlurCount",
+      "--shadow-blur",
+    ],
+    "shadow-spread-reset": [
+      "buttonShadowSpreadBullet",
+      null,
+      "buttonShadowSpreadCount",
+      "--shadow-spread",
+    ],
   };
 
   Object.entries(resetMap).forEach(([resetId, config]) => {
@@ -1643,62 +1644,37 @@ export function initButtonResetHandlers(getSelectedElement) {
       const selected = getSelectedElement?.();
       if (!selected) return;
 
-      const img = resetBtn.querySelector("img");
-      if (img) {
-        img.style.transition = "transform 0.4s ease";
-        img.style.transform = "rotate(360deg)";
-        setTimeout(() => {
-          img.style.transform = "rotate(0deg)";
-        }, 400);
-      }
-
-      if (resetId === "shadow-axis-reset") {
-        const prevX = selected.style.getPropertyValue(config.keys[0]) || "0px";
-        const prevY = selected.style.getPropertyValue(config.keys[1]) || "0px";
-
-        const pxVals = [prevX, prevY].map((val) => parseInt(val) || 0);
-
-        config.bullets.forEach((sel, i) => {
-          const bullet = document.querySelector(sel);
-          const count = document.querySelector(config.counts[i]);
-
+      if (Array.isArray(config[0])) {
+        config.forEach(([bulletId, countId, cssKey]) => {
+          const bullet = document.getElementById(bulletId);
+          const count = document.getElementById(countId);
           if (bullet) bullet.style.left = "0px";
           if (count) count.innerText = "0px";
-          selected.style.setProperty(config.keys[i], "0px");
+          selected.style.removeProperty(cssKey);
         });
-
-        setTimeout(() => {
-          config.bullets.forEach((sel, i) => {
-            const bullet = document.querySelector(sel);
-            const count = document.querySelector(config.counts[i]);
-            if (bullet) bullet.style.left = pxVals[i] + "px";
-            if (count) count.innerText = pxVals[i] + "px";
-            selected.style.setProperty(config.keys[i], pxVals[i] + "px");
-          });
-        }, 300);
       } else {
-        const prev = selected.style.getPropertyValue(config.key) || "0px";
-        const prevPx = parseInt(prev) || 0;
-
-        const bullet = document.querySelector(config.bullet);
-        const fill = document.querySelector(config.fill);
-        const count = document.querySelector(config.count);
+        const [bulletId, fillId, countId, cssKey] = config;
+        const bullet = document.getElementById(bulletId);
+        const fill = document.getElementById(fillId);
+        const count = document.getElementById(countId);
 
         if (bullet) bullet.style.left = "0px";
         if (fill) fill.style.width = "0px";
         if (count) count.innerText = "0px";
-        selected.style.setProperty(config.key, "0px");
 
-        setTimeout(() => {
-          if (bullet) bullet.style.left = prevPx + "px";
-          if (fill) fill.style.width = prevPx + "px";
-          if (count) count.innerText = prevPx + "px";
-          selected.style.setProperty(config.key, prevPx + "px");
-        }, 300);
+        selected.style.removeProperty(cssKey);
+      }
+
+      const img = resetBtn.querySelector("img");
+      if (img) {
+        img.style.transition = "transform 0.4s ease";
+        img.style.transform = "rotate(360deg)";
+        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
       }
     });
   });
 }
+
 
 
 
