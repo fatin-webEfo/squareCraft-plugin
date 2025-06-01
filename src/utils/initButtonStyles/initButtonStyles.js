@@ -1652,20 +1652,29 @@ export function initButtonResetHandlers(getSelectedElement) {
         const prevX = selected.style.getPropertyValue(config.keys[0]) || "0px";
         const prevY = selected.style.getPropertyValue(config.keys[1]) || "0px";
 
+        const pxVals = [prevX, prevY].map((val) => parseInt(val) || 0);
+
         config.bullets.forEach((sel, i) => {
           const bullet = document.querySelector(sel);
           const count = document.querySelector(config.counts[i]);
+
           if (bullet) bullet.style.left = "0px";
           if (count) count.innerText = "0px";
           selected.style.setProperty(config.keys[i], "0px");
         });
 
         setTimeout(() => {
-          selected.style.setProperty(config.keys[0], prevX);
-          selected.style.setProperty(config.keys[1], prevY);
+          config.bullets.forEach((sel, i) => {
+            const bullet = document.querySelector(sel);
+            const count = document.querySelector(config.counts[i]);
+            if (bullet) bullet.style.left = pxVals[i] + "px";
+            if (count) count.innerText = pxVals[i] + "px";
+            selected.style.setProperty(config.keys[i], pxVals[i] + "px");
+          });
         }, 300);
       } else {
         const prev = selected.style.getPropertyValue(config.key) || "0px";
+        const prevPx = parseInt(prev) || 0;
 
         const bullet = document.querySelector(config.bullet);
         const fill = document.querySelector(config.fill);
@@ -1677,12 +1686,16 @@ export function initButtonResetHandlers(getSelectedElement) {
         selected.style.setProperty(config.key, "0px");
 
         setTimeout(() => {
-          selected.style.setProperty(config.key, prev);
+          if (bullet) bullet.style.left = prevPx + "px";
+          if (fill) fill.style.width = prevPx + "px";
+          if (count) count.innerText = prevPx + "px";
+          selected.style.setProperty(config.key, prevPx + "px");
         }, 300);
       }
     });
   });
 }
+
 
 
 
