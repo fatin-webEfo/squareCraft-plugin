@@ -1344,187 +1344,249 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   window.updateActiveButtonBars?.();
 };
 
+export function resetAllButtonStyles(getSelectedElement) {
+  const resetTrigger = document.getElementById("buttonResetAll");
+  const resetIcon = document.getElementById("buttonResetAll-icon");
+  if (!resetTrigger) return;
 
+  resetTrigger.addEventListener("click", async () => {
+    const selected = getSelectedElement?.();
+    if (!selected) return;
 
-export function initButtonResetHandlers(getSelectedElement) {
-  const resetMap = {
-    "icon-size-reset": {
-      bullet: "buttonIconSizeradiusBullet",
-      fill: "buttonIconSizeradiusFill",
-      count: "buttonIconSizeradiusCount",
-      style: "sc-transform-style-ICON",
-      map: "__squareCraftIconMap",
-      flag: "__sc_reset_icon_size__",
-      resetInternal: (map, key) => map?.set?.(key, { size: 0 }),
-    },
-    "icon-spacing-reset": {
-      bullet: "buttonIconSpacingradiusBullet",
-      fill: "buttonIconSpacingradiusFill",
-      count: "buttonIconSpacingCount",
-      style: "sc-transform-style-ICON",
-      map: "__squareCraftIconMap",
-      flag: "__sc_reset_icon_spacing__",
-      resetInternal: (map, key) => map?.set?.(key, { spacing: 0 }),
-    },
-    "icon-rotation-reset": {
-      bullet: "buttonIconRotationradiusBullet",
-      fill: "buttonIconRotationradiusFill",
-      count: "buttonIconRotationCount",
-      style: "sc-transform-style-ICON",
-      map: "__squareCraftIconMap",
-      flag: "__sc_reset_icon_rotation__",
-      resetInternal: (map, key) => map?.set?.(key, { rotation: 0 }),
-    },
-    "border-radius-reset": {
-      bullet: "buttonBorderradiusBullet",
-      fill: "buttonBorderradiusFill",
-      count: "buttonBorderradiusCount",
-      style: "sc-normal-radius-ICON",
-      map: "__squareCraftRadiusMap",
-      flag: "__sc_reset_border_radius__",
-      resetInternal: (map, key) => {
-        const state = map.get(key);
-        if (state?.values) {
-          state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
-          map.set(key, state);
+    const button = selected.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!button) return;
+
+    const typeClass = [...button.classList].find((cls) =>
+      cls.startsWith("sqs-button-element--")
+    );
+    if (!typeClass) return;
+
+    const blockId = selected.id || "block-id";
+    const classKey = typeClass.replace(/--/g, "-");
+    const fullKey = `${blockId}--${typeClass}`;
+
+    const normalStyleIds = [
+      `sc-font-style-${typeClass}`,
+      `sc-font-weight-${typeClass}`,
+      `sc-style-${typeClass}`,
+      `sc-transform-style-${typeClass}`,
+      `sc-button-border-${typeClass}`,
+      `sc-normal-radius-${classKey}`,
+      `sc-button-shadow-${typeClass}`,
+    ];
+
+    const hoverStyleIds = [
+      `sc-hover-border-style-${classKey}`,
+      `sc-hover-radius-${classKey}`,
+      `sc-hover-shadow-${classKey}`,
+      `sc-hover-style-size-${classKey}`,
+      `sc-hover-style-gap-${classKey}`,
+      `sc-hover-style-transform-${classKey}`,
+      `sc-hover-effects-${classKey}`,
+      `hover-button-border-${blockId}-${typeClass}`,
+    ];
+
+    [...normalStyleIds, ...hoverStyleIds].forEach((id) =>
+      document.getElementById(id)?.remove()
+    );
+
+    const allBtns = document.querySelectorAll(`.${typeClass}`);
+    allBtns.forEach((btn) => {
+      btn.removeAttribute("style");
+      btn.classList.remove("sc-flex", "sc-items-center");
+      btn.style.gap = "";
+      btn.style.borderWidth = "";
+      btn.style.borderStyle = "";
+      btn.style.borderRadius = "";
+      btn.style.borderColor = "";
+      btn.style.boxShadow = "";
+
+      const spans = btn.querySelectorAll("span, .sqs-add-to-cart-button-inner");
+      spans.forEach((span) => {
+        span.removeAttribute("style");
+        span.style.fontSize = "";
+        span.style.letterSpacing = "";
+        span.style.textTransform = "";
+        span.style.fontFamily = "";
+        span.style.fontWeight = "";
+        span.style.transform = "";
+      });
+
+      const icons = btn.querySelectorAll(
+        ".sqscraft-button-icon, .sqscraft-image-icon"
+      );
+      icons.forEach((icon) => icon.remove());
+
+      const htmlSpans = btn.querySelectorAll(".sqs-html");
+      htmlSpans.forEach((el) => el.removeAttribute("style"));
+    });
+
+    selected.querySelectorAll("*").forEach((el) => {
+      [...el.classList].forEach((cls) => {
+        if (cls.startsWith("sc-") || cls.startsWith("sqscraft-")) {
+          el.classList.remove(cls);
         }
-      },
-    },
-    "shadow-blur-reset": {
-      bullet: "buttonShadowBlurBullet",
-      count: "buttonShadowBlurCount",
-      style: "sc-button-shadow-ICON",
-      map: "__squareCraftShadowMap",
-      flag: "__sc_reset_shadow_blur__",
-      resetInternal: (map, key) => {
-        const s = map.get(key);
-        if (s) s.blur = 0;
-        map.set(key, s);
-      },
-    },
-    "shadow-spread-reset": {
-      bullet: "buttonShadowSpreadBullet",
-      count: "buttonShadowSpreadCount",
-      style: "sc-button-shadow-ICON",
-      map: "__squareCraftShadowMap",
-      flag: "__sc_reset_shadow_spread__",
-      resetInternal: (map, key) => {
-        const s = map.get(key);
-        if (s) s.spread = 0;
-        map.set(key, s);
-      },
-    },
-    "shadow-axis-reset": {
-      axis: [
-        { bullet: "buttonShadowXaxisBullet", count: "buttonShadowXaxisCount" },
-        { bullet: "buttonShadowYaxisBullet", count: "buttonShadowYaxisCount" },
-      ],
-      style: "sc-button-shadow-ICON",
-      map: "__squareCraftShadowMap",
-      flag: "__sc_reset_shadow_axis__",
-      resetInternal: (map, key) => {
-        const s = map.get(key);
-        if (s) {
-          s.x = 0;
-          s.y = 0;
-          map.set(key, s);
-        }
-      },
-    },
-    "border-reset": {
-      bullet: "buttonBorderBullet",
-      fill: "buttonBorderFill",
-      count: "buttonBorderCount",
-      style: "sc-button-border-ICON",
-      map: "__squareCraftBorderStateMap",
-      flag: "__sc_reset_border__",
-      resetInternal: (map, key) => {
-        const state = map.get(key);
-        if (state?.values) {
-          state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
-          map.set(key, state);
-        }
-      },
-    },
-  };
+      });
+    });
 
-  Object.entries(resetMap).forEach(([resetId, config]) => {
-    const resetBtn = document.getElementById(resetId);
-    if (!resetBtn) return;
+    document.querySelectorAll(".sc-active-bar").forEach((el) => el.remove());
 
-    resetBtn.addEventListener("click", () => {
+    if (window.__squareCraftBorderStateMap) {
+      window.__squareCraftBorderStateMap.delete(fullKey);
+    }
+    if (window.__squareCraftHoverBorderStateMap) {
+      window.__squareCraftHoverBorderStateMap.delete(fullKey);
+    }
+
+    window.__squareCraftBorderStyle = "solid";
+    window.__squareCraftHoverBorderColor = "black";
+    window.__squareCraftHoverRadius = 0;
+    window.__squareCraftTransformDistance = 0;
+    window.shadowState = { Xaxis: 0, Yaxis: 0, Blur: 0, Spread: 0 };
+
+    setTimeout(async () => {
       const selected = getSelectedElement?.();
       if (!selected) return;
 
-      const img = resetBtn.querySelector("img");
-      if (img) {
-        img.style.transition = "transform 0.4s ease";
-        img.style.transform = "rotate(360deg)";
-        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
-      }
-
-      const btn = selected.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
-      if (!btn) return;
-
-      const typeClass = [...btn.classList].find((c) =>
-        c.startsWith("sqs-button-element--")
-      );
-      if (!typeClass) return;
-
-      const blockId = selected.id || "block-id";
-      const key = `${blockId}--${typeClass}`;
-      const styleId = config.style.replace("ICON", typeClass);
-      const mapRef = window[config.map];
-
-      console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
-
-      // Flag
-      if (config.flag) {
-        window[config.flag] = true;
-        setTimeout(() => (window[config.flag] = false), 100);
-      }
-
-      if (resetId === "shadow-axis-reset") {
-        config.axis.forEach(({ bullet, count }) => {
-          const b = document.getElementById(bullet);
-          const c = document.getElementById(count);
-          if (b) b.style.left = "0px";
-          if (c) {
-            c.innerText = "0px";
-            console.log(`[SC Reset] ${count} value after reset:`, c.innerText);
-          }
-        });
-      } else {
-        const bulletEl = document.getElementById(config.bullet);
-        const fillEl = config.fill
-          ? document.getElementById(config.fill)
-          : null;
-        const countEl = document.getElementById(config.count);
-
-        if (bulletEl) bulletEl.style.left = "0px";
-        if (fillEl) fillEl.style.width = "0px";
-        if (countEl) {
-          countEl.innerText = "0px";
-          console.log(
-            `[SC Reset] ${config.count} value after reset:`,
-            countEl.innerText
-          );
+      const inputSync = (id, value, percent) => {
+        const bullet = document.getElementById(id + "Bullet");
+        const fill = document.getElementById(id + "Fill");
+        const count = document.getElementById(id + "Count");
+        if (bullet) bullet.style.left = percent;
+        if (fill) {
+          fill.style.left = percent;
+          fill.style.width = id.includes("Rotation") ? "0%" : percent;
         }
+        if (count) count.textContent = value;
+      };
+
+      inputSync("buttonIconRotationradius", "0deg", "50%");
+      document.getElementById("buttoniconRotationradiusCount").textContent =
+        "0deg";
+
+      inputSync("buttonIconSizeradius", "0px", "0%");
+      document.getElementById("buttoniconSizeradiusCount").textContent = "0px";
+
+      inputSync("buttonIconSpacingradius", "0px", "0%");
+      document.getElementById("buttoniconSpacingCount").textContent = "0px"; 
+
+      inputSync("hover-buttonIconTransformPosition", "0px", "50%");
+      inputSync("hover-buttonBorder", "0px", "0%");
+      inputSync("hover-buttonBorderradius", "0px", "0%");
+
+      const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+      const letterSpacingInput = document.getElementById(
+        "scButtonLetterSpacingInput"
+      );
+      if (fontSizeInput) {
+        fontSizeInput.value = "";
+        fontSizeInput.dispatchEvent(new Event("input"));
+      }
+      if (letterSpacingInput) {
+        letterSpacingInput.value = "";
+        letterSpacingInput.dispatchEvent(new Event("input"));
       }
 
-      document.getElementById(styleId)?.remove();
-      if (mapRef && config.resetInternal) {
-        config.resetInternal(mapRef, key);
-        console.log(`[SC Reset: ${resetId}] Internal map cleared for ${key}`);
+      [
+        "scButtonAllCapital",
+        "scButtonAllSmall",
+        "scButtonFirstCapital",
+      ].forEach((id) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.classList.remove("sc-activeTab-border");
+          btn.classList.add("sc-inActiveTab-border");
+        }
+      });
+
+      const fontLabel = document.getElementById("font-name");
+      if (fontLabel) {
+        fontLabel.textContent = "Select";
+        fontLabel.style.fontFamily = "";
       }
 
-      console.log(`[SC Reset: ${resetId}] Reset complete. Visuals cleared.`);
-    });
+      const weightLabel = document.getElementById("scButtonFontWeightSelected");
+      if (weightLabel) {
+        weightLabel.textContent = "Select";
+      }
+
+      const iconLabel = document.getElementById("iconPositionLabel");
+      if (iconLabel) {
+        iconLabel.textContent = "Select";
+      }
+
+      ["buttonIconTransformNone", "buttoniconRotationTypeNone"].forEach(
+        (id) => {
+          const el = document.getElementById(id);
+          if (el) el.classList.add("sc-bg-454545");
+        }
+      );
+
+      ["Top", "Bottom", "Left", "Right"].forEach((dir) => {
+        document
+          .getElementById(`buttonIconSpacing${dir}`)
+          ?.classList.remove("sc-bg-454545");
+        document
+          .getElementById(`buttoniconRotationType${dir}`)
+          ?.classList.remove("sc-bg-454545");
+      });
+
+      if (typeof window.syncButtonStylesFromElement === "function") {
+        window.syncButtonStylesFromElement(selected);
+      }
+
+      initButtonFontFamilyControls(getSelectedElement);
+      initButtonStyles(getSelectedElement?.());
+      initButtonIconPositionToggle(getSelectedElement);
+      initButtonIconRotationControl(getSelectedElement);
+      initButtonIconSizeControl(getSelectedElement);
+      initButtonIconSpacingControl(getSelectedElement);
+      initButtonBorderControl(getSelectedElement);
+      initButtonBorderTypeToggle(getSelectedElement);
+      initButtonBorderRadiusControl(getSelectedElement);
+      initButtonShadowControls(getSelectedElement);
+
+      const {
+        initHoverButtonShadowControls,
+        initHoverButtonIconRotationControl,
+        initHoverButtonIconSizeControl,
+        initHoverButtonIconSpacingControl,
+        initHoverButtonBorderRadiusControl,
+        initHoverButtonBorderTypeToggle,
+        initHoverButtonBorderControl,
+        applyHoverButtonEffects,
+      } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js"
+      );
+
+      initHoverButtonShadowControls(getSelectedElement);
+      initHoverButtonIconRotationControl(getSelectedElement);
+      initHoverButtonIconSizeControl(getSelectedElement);
+      initHoverButtonIconSpacingControl(getSelectedElement);
+      initHoverButtonBorderRadiusControl(getSelectedElement);
+      initHoverButtonBorderTypeToggle(getSelectedElement);
+      initHoverButtonBorderControl(getSelectedElement);
+      applyHoverButtonEffects(getSelectedElement);
+
+      document.getElementById("buttonBorderTypeSolid")?.click();
+      document.getElementById("hover-buttonBorderTypeSolid")?.click();
+    }, 300);
+
+    if (resetIcon) {
+      resetIcon.classList.remove("sc-rotate-once");
+      void resetIcon.offsetWidth;
+      resetIcon.classList.add("sc-rotate-once");
+      setTimeout(() => {
+        resetIcon.classList.remove("sc-rotate-once");
+      }, 600);
+    }
   });
 }
+
+
 
 
 
