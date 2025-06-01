@@ -749,7 +749,7 @@
 
             const clickedBlock = event.target.closest('[id^="block-"]'); 
 
-            toggleWidgetVisibility(event); 
+            toggleWidgetVisibility(clickedBlock); 
           });
           
         });
