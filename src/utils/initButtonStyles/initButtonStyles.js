@@ -1460,11 +1460,18 @@ export function resetAllButtonStyles(getSelectedElement) {
       };
 
       inputSync("buttonIconRotationradius", "0deg", "50%");
+      document.getElementById("buttoniconRotationradiusCount").textContent =
+        "0deg";
+
+      inputSync("buttonIconSizeradius", "0px", "0%");
+      document.getElementById("buttoniconSizeradiusCount").textContent = "0px";
+
+      inputSync("buttonIconSpacingradius", "0px", "0%");
+      document.getElementById("buttoniconSpacingradiusCount").textContent =
+        "0px";
       inputSync("hover-buttonIconTransformPosition", "0px", "50%");
       inputSync("hover-buttonBorder", "0px", "0%");
       inputSync("hover-buttonBorderradius", "0px", "0%");
-      inputSync("buttonIconSizeradius", "0px", "0%");
-      inputSync("buttonIconSpacingradius", "0px", "0%");
 
       const fontSizeInput = document.getElementById("scButtonFontSizeInput");
       const letterSpacingInput = document.getElementById(
