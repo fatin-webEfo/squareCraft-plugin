@@ -1467,8 +1467,8 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttoniconSizeradiusCount").textContent = "0px";
 
       inputSync("buttonIconSpacingradius", "0px", "0%");
-      document.getElementById("buttoniconSpacingradiusCount").textContent =
-        "0px";
+      document.getElementById("buttoniconSpacingCount").textContent = "0px"; 
+
       inputSync("hover-buttonIconTransformPosition", "0px", "50%");
       inputSync("hover-buttonBorder", "0px", "0%");
       inputSync("hover-buttonBorderradius", "0px", "0%");
