@@ -1505,6 +1505,7 @@ export function resetAllButtonStyles(getSelectedElement) {
       const iconLabel = document.getElementById("iconPositionLabel");
       if (iconLabel) {
         iconLabel.textContent = "Select";
+        iconLabel.fontSize = "12px"
       }
 
       ["buttonIconTransformNone", "buttoniconRotationTypeNone"].forEach(
