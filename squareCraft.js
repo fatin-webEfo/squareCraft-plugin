@@ -814,8 +814,12 @@
     function moveWidgetToDesktop() {
       if (!widgetContainer) return;
 
-      document.body.appendChild(widgetContainer);
-    }
+      if (clickedBlock && clickedBlock.appendChild) {
+        clickedBlock.appendChild(widgetContainer);
+      } else {
+        document.body.appendChild(widgetContainer);
+      }
+          }
 
     checkView();
     window.addEventListener("resize", checkView);
