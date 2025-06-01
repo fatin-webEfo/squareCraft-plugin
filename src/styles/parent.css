@@ -21,7 +21,9 @@
 .sc-text-upper {
   text-transform: uppercase !important;
 }
-
+.sc-w-100px{
+  width: 100px !important;
+}
 .sc-text-lower {
   text-transform: lowercase !important;
 }

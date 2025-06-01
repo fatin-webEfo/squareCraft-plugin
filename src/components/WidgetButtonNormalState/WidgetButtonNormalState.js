@@ -79,7 +79,7 @@ export function WidgetButtonNormalState() {
                </div>
             </div>
             
-            <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-140px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-max-h-140px sc-rounded-4px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+            <div id="scButtonFontWeightOptions" class="sc-absolute sc-w-100px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-max-h-140px sc-rounded-4px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">300</div>
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">400</div>
                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer">500</div>
