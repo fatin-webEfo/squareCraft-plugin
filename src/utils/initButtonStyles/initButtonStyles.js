@@ -1762,6 +1762,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
+      // === SHADOW SPREAD RESET ===
       if (resetId === "shadow-spread-reset") {
         const count = document.getElementById("buttonShadowSpreadCount");
         if (count) count.textContent = "0px";
