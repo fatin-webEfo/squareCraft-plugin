@@ -1586,63 +1586,65 @@ export function resetAllButtonStyles(getSelectedElement) {
   });
 }
 
+
+
 export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = {
-    "icon-size-reset": [
-      "buttonIconSizeradiusBullet",
-      "buttonIconSizeradiusFill",
-      "buttonIconSizeradiusCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "icon-spacing-reset": [
-      "buttonIconSpacingradiusBullet",
-      "buttonIconSpacingradiusFill",
-      "buttonIconSpacingCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "icon-rotation-reset": [
-      "buttonIconRotationradiusBullet",
-      "buttonIconRotationradiusFill",
-      "buttonIconRotationCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "border-radius-reset": [
-      "buttonBorderradiusBullet",
-      "buttonBorderradiusFill",
-      "buttonBorderradiusCount",
-      "sc-normal-radius-ICON",
-      "__squareCraftRadiusMap",
-    ],
-    "shadow-blur-reset": [
-      "buttonShadowBlurBullet",
-      null,
-      "buttonShadowBlurCount",
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
-    "shadow-spread-reset": [
-      "buttonShadowSpreadBullet",
-      null,
-      "buttonShadowSpreadCount",
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
-    "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount"],
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
-    "border-reset": [
-      "buttonBorderBullet",
-      "buttonBorderFill",
-      "buttonBorderCount",
-      "sc-button-border-ICON",
-      "__squareCraftBorderStateMap",
-    ],
+    "icon-size-reset": {
+      bullet: "buttonIconSizeradiusBullet",
+      fill: "buttonIconSizeradiusFill",
+      count: "buttonIconSizeradiusCount",
+      style: "sc-transform-style-ICON",
+      map: "__squareCraftIconMap",
+    },
+    "icon-spacing-reset": {
+      bullet: "buttonIconSpacingradiusBullet",
+      fill: "buttonIconSpacingradiusFill",
+      count: "buttonIconSpacingCount",
+      style: "sc-transform-style-ICON",
+      map: "__squareCraftIconMap",
+    },
+    "icon-rotation-reset": {
+      bullet: "buttonIconRotationradiusBullet",
+      fill: "buttonIconRotationradiusFill",
+      count: "buttonIconRotationCount",
+      style: "sc-transform-style-ICON",
+      map: "__squareCraftIconMap",
+    },
+    "border-radius-reset": {
+      bullet: "buttonBorderradiusBullet",
+      fill: "buttonBorderradiusFill",
+      count: "buttonBorderradiusCount",
+      style: "sc-normal-radius-ICON",
+      map: "__squareCraftRadiusMap",
+    },
+    "shadow-blur-reset": {
+      bullet: "buttonShadowBlurBullet",
+      count: "buttonShadowBlurCount",
+      style: "sc-button-shadow-ICON",
+      map: "__squareCraftShadowMap",
+    },
+    "shadow-spread-reset": {
+      bullet: "buttonShadowSpreadBullet",
+      count: "buttonShadowSpreadCount",
+      style: "sc-button-shadow-ICON",
+      map: "__squareCraftShadowMap",
+    },
+    "shadow-axis-reset": {
+      axis: [
+        { bullet: "buttonShadowXaxisBullet", count: "buttonShadowXaxisCount" },
+        { bullet: "buttonShadowYaxisBullet", count: "buttonShadowYaxisCount" },
+      ],
+      style: "sc-button-shadow-ICON",
+      map: "__squareCraftShadowMap",
+    },
+    "border-reset": {
+      bullet: "buttonBorderBullet",
+      fill: "buttonBorderFill",
+      count: "buttonBorderCount",
+      style: "sc-button-border-ICON",
+      map: "__squareCraftBorderStateMap",
+    },
   };
 
   Object.entries(resetMap).forEach(([resetId, config]) => {
@@ -1676,55 +1678,35 @@ export function initButtonResetHandlers(getSelectedElement) {
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
+      // Handle shadow-axis-reset
       if (resetId === "shadow-axis-reset") {
-        const xConf = config[0];
-        const yConf = config[1];
-        const styleIdRaw = config[2];
-        const stateMapName = config[3];
-
-        [xConf, yConf].forEach((pair) => {
-          const bulletId = pair[0];
-          const countId = pair[1];
-          const bullet = document.getElementById(bulletId);
-          const count = document.getElementById(countId);
-          if (bullet) bullet.style.left = "0px";
-          if (count) count.textContent = "0px";
+        config.axis.forEach(({ bullet, count }) => {
+          const b = document.getElementById(bullet);
+          const c = document.getElementById(count);
+          if (b) b.style.left = "0px";
+          if (c) c.textContent = "0px";
         });
-
-        const styleId = styleIdRaw.replace("ICON", typeClass);
+        const styleId = config.style.replace("ICON", typeClass);
         document.getElementById(styleId)?.remove();
-        if (window[stateMapName]) {
-          window[stateMapName].delete?.(key);
-        }
+        if (window[config.map]) window[config.map].delete?.(key);
         return;
       }
 
-      const [bulletId, fillId, countId, styleIdRaw, stateMapName] = config;
+      // All other reset types
+      const bulletEl = document.getElementById(config.bullet);
+      const fillEl = config.fill ? document.getElementById(config.fill) : null;
+      const countEl = document.getElementById(config.count);
 
-      const bullet = document.getElementById(bulletId);
-      if (bullet) bullet.style.left = "0px";
+      if (bulletEl) bulletEl.style.left = "0px";
+      if (fillEl) fillEl.style.width = "0px";
+      if (countEl) countEl.textContent = "0px";
 
-      if (fillId) {
-        const fill = document.getElementById(fillId);
-        if (fill) fill.style.width = "0px";
-      }
-
-      const count = document.getElementById(countId);
-      if (count) count.textContent = "0px";
-
-      const styleId = styleIdRaw.replace("ICON", typeClass);
+      const styleId = config.style.replace("ICON", typeClass);
       document.getElementById(styleId)?.remove();
-
-      if (stateMapName && window[stateMapName]) {
-        window[stateMapName].delete?.(key);
-      }
+      if (window[config.map]) window[config.map].delete?.(key);
     });
   });
 }
-
-
-
-
 
 
 
