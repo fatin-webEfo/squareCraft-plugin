@@ -12,37 +12,33 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
+  if (!fontFamilyOptions) return;
 
- if (!fontFamilyOptions) return;
+  document.head.insertAdjacentHTML(
+    "beforeend",
+    `
+    <style>
+      @keyframes scSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      #sc-font-loader > div {
+        width: 24px;
+        height: 24px;
+        margin: 12px auto;
+        border: 3px solid rgba(0, 0, 0, 0.1);
+        border-top: 3px solid #EF7C2F;
+        border-radius: 50%;
+        animation: scSpin 0.8s linear infinite;
+      }
+    </style>
+  `
+  );
 
- document.head.insertAdjacentHTML(
-   "beforeend",
-   `
-  <style>
-    @keyframes scSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    #sc-font-loader > div {
-      width: 24px;
-      height: 24px;
-      margin: 12px auto;
-      border: 3px solid rgba(0, 0, 0, 0.1);
-      border-top: 3px solid #EF7C2F;
-      border-radius: 50%;
-      animation: scSpin 0.8s linear infinite;
-    }
-  </style>
-`
- );
-
- const loader = document.createElement("div");
- loader.id = "sc-font-loader";
-
- fontFamilyOptions.classList.remove("sc-hidden"); 
- fontFamilyOptions.style.minHeight = "80px"; 
- fontFamilyOptions.appendChild(loader);
-
+  const loader = document.createElement("div");
+  loader.id = "sc-font-loader";
+  loader.innerHTML = `<div></div>`;
+  fontFamilyOptions.appendChild(loader);
 
   let fontsList = [];
   let fontIndex = 0;
@@ -195,6 +191,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
