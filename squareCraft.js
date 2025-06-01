@@ -574,6 +574,15 @@
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
           loadWidgetFromString(htmlString, clickedBlock);
           setTimeout(() => {
+            widgetContainer = document.getElementById("sc-widget-container");
+            if (widgetContainer) {
+              widgetContainer.style.display = "block";
+            } else {
+              console.warn("⚠️ Widget container not found after creation.");
+            }
+          }, 300);
+          
+          setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
             }
