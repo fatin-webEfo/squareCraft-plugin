@@ -1675,9 +1675,14 @@ export function initButtonResetHandlers(getSelectedElement) {
       const key = `${blockId}--${typeClass}`;
 
       if (resetId === "shadow-axis-reset") {
-        const [xConf, yConf, styleIdRaw, stateMapName] = config;
+        const xConf = config[0];
+        const yConf = config[1];
+        const styleIdRaw = config[2];
+        const stateMapName = config[3];
 
-        [xConf, yConf].forEach(([bulletId, countId]) => {
+        [xConf, yConf].forEach((pair) => {
+          const bulletId = pair[0];
+          const countId = pair[1];
           const bullet = document.getElementById(bulletId);
           const count = document.getElementById(countId);
           if (bullet) bullet.style.left = "0px";
@@ -1689,6 +1694,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         if (window[stateMapName]) window[stateMapName].delete?.(key);
         return;
       }
+      
 
       const [bulletId, fillId, countId, styleIdRaw, stateMapName] = config;
 
