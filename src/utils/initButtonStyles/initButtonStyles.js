@@ -1344,98 +1344,6 @@ window.syncButtonStylesFromElement = function (selectedElement) {
   window.updateActiveButtonBars?.();
 };
 
-export function initButtonResetHandlers(getSelectedElement) {
-  const resetAllBtn = document.getElementById("buttonResetAll");
-  if (!resetAllBtn) return;
-
-  resetAllBtn.addEventListener("click", () => {
-    const el = getSelectedElement?.();
-    if (!el) return;
-
-    const id = el.id;
-    const type = el.classList.contains("sqs-button-element--primary")
-      ? "primary"
-      : el.classList.contains("sqs-button-element--secondary")
-      ? "secondary"
-      : "tertiary";
-
-    console.log(`[SC Reset-All 🔁] Triggered on block ${id} type ${type}`);
-
-    // Remove global style tag
-    const styleTag = document.getElementById(`sc-style-global-${type}`);
-    if (styleTag) {
-      styleTag.remove();
-      console.log("⛔ Removed global style tag:", styleTag.id);
-    }
-
-    // Clean inline styles
-    el.removeAttribute("style");
-    console.log("✅ Cleared inline styles from element");
-
-    // Reset data-attributes
-    el.removeAttribute("data-scButtonBg");
-    el.removeAttribute("data-sc-radius");
-    el.removeAttribute("data-sc-icon-rotation");
-    el.removeAttribute("data-sc-icon-size");
-    el.removeAttribute("data-sc-spacing");
-    el.removeAttribute("data-sc-shadow");
-    console.log("🧹 Cleared data-* attributes");
-
-    // Reset visual UI
-    const resetUI = [
-      {
-        fill: "buttonBorderradiusFill",
-        bullet: "buttonBorderradiusBullet",
-        count: "buttonBorderradiusCount",
-        label: "border-radius",
-      },
-      {
-        fill: "buttonIconSpacingradiusFill",
-        bullet: "buttonIconSpacingradiusBullet",
-        count: "buttonIconSpacingradiusCount",
-        label: "icon-spacing",
-      },
-      {
-        fill: "buttonShadowBlurFill",
-        bullet: "buttonShadowBlurBullet",
-        count: "buttonShadowBlurCount",
-        label: "shadow-blur",
-      },
-      {
-        fill: "buttonIconRotationradiusFill",
-        bullet: "buttonIconRotationradiusBullet",
-        count: "buttonIconRotationradiusCount",
-        label: "icon-rotation",
-      },
-      {
-        fill: "buttonIconSizeradiusFill",
-        bullet: "buttonIconSizeradiusBullet",
-        count: "buttonIconSizeradiusCount",
-        label: "icon-size",
-      },
-    ];
-
-    resetUI.forEach(({ fill, bullet, count, label }) => {
-      const fillEl = document.getElementById(fill);
-      const bulletEl = document.getElementById(bullet);
-      const countEl = document.getElementById(count);
-
-      if (fillEl) fillEl.style.width = "0%";
-      if (bulletEl) bulletEl.style.left = "0px";
-      if (countEl) countEl.textContent = "0px";
-
-      console.log(`✅ Reset UI for ${label}`);
-    });
-
-    // Delay reapply prevention (avoid reapplying immediately)
-    window.__scResetBlock = id;
-    setTimeout(() => {
-      window.__scResetBlock = null;
-    }, 100);
-
-    console.log("✅ Full Reset Complete for", id);
-  });
-}
 
 
 
@@ -1620,9 +1528,6 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
-
-
-
 
 
 
