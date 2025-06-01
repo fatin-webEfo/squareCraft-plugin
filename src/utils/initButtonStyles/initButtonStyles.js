@@ -1596,20 +1596,23 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonIconSizeradiusCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
+      resetInternal: (map, key) => map?.set?.(key, { size: 0 }),
     },
     "icon-spacing-reset": {
       bullet: "buttonIconSpacingradiusBullet",
       fill: "buttonIconSpacingradiusFill",
-      count: "buttonSpacingCount",
+      count: "buttonIconSpacingCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
+      resetInternal: (map, key) => map?.set?.(key, { spacing: 0 }),
     },
     "icon-rotation-reset": {
       bullet: "buttonIconRotationradiusBullet",
       fill: "buttonIconRotationradiusFill",
-      count: "buttonRotationCount",
+      count: "buttonIconRotationCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
+      resetInternal: (map, key) => map?.set?.(key, { rotation: 0 }),
     },
     "border-radius-reset": {
       bullet: "buttonBorderradiusBullet",
@@ -1617,18 +1620,35 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonBorderradiusCount",
       style: "sc-normal-radius-ICON",
       map: "__squareCraftRadiusMap",
+      resetInternal: (map, key) => {
+        const state = map.get(key);
+        if (state?.values) {
+          state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+          map.set(key, state);
+        }
+      },
     },
     "shadow-blur-reset": {
       bullet: "buttonShadowBlurBullet",
       count: "buttonShadowBlurCount",
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
+      resetInternal: (map, key) => {
+        const s = map.get(key);
+        if (s) s.blur = 0;
+        map.set(key, s);
+      },
     },
     "shadow-spread-reset": {
       bullet: "buttonShadowSpreadBullet",
       count: "buttonShadowSpreadCount",
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
+      resetInternal: (map, key) => {
+        const s = map.get(key);
+        if (s) s.spread = 0;
+        map.set(key, s);
+      },
     },
     "shadow-axis-reset": {
       axis: [
@@ -1637,6 +1657,14 @@ export function initButtonResetHandlers(getSelectedElement) {
       ],
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
+      resetInternal: (map, key) => {
+        const s = map.get(key);
+        if (s) {
+          s.x = 0;
+          s.y = 0;
+          map.set(key, s);
+        }
+      },
     },
     "border-reset": {
       bullet: "buttonBorderBullet",
@@ -1644,6 +1672,13 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonBorderCount",
       style: "sc-button-border-ICON",
       map: "__squareCraftBorderStateMap",
+      resetInternal: (map, key) => {
+        const state = map.get(key);
+        if (state?.values) {
+          state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+          map.set(key, state);
+        }
+      },
     },
   };
 
@@ -1653,105 +1688,63 @@ export function initButtonResetHandlers(getSelectedElement) {
 
     resetBtn.addEventListener("click", () => {
       const selected = getSelectedElement?.();
-      if (!selected) {
-        console.warn(`[SC Reset] No selected element found for ${resetId}`);
-        return;
-      }
+      if (!selected) return;
 
       const img = resetBtn.querySelector("img");
       if (img) {
         img.style.transition = "transform 0.4s ease";
         img.style.transform = "rotate(360deg)";
-        setTimeout(() => {
-          img.style.transform = "rotate(0deg)";
-        }, 400);
+        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
       }
 
       const btn = selected.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
           "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      if (!btn) {
-        console.warn(
-          `[SC Reset] No button found inside selected block for ${resetId}`
-        );
-        return;
-      }
+      if (!btn) return;
 
       const typeClass = [...btn.classList].find((c) =>
         c.startsWith("sqs-button-element--")
       );
-      if (!typeClass) {
-        console.warn(`[SC Reset] Button typeClass not found for ${resetId}`);
-        return;
-      }
+      if (!typeClass) return;
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
+      console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
+
       if (resetId === "shadow-axis-reset") {
-        const styleId = config.style.replace("ICON", typeClass);
-        const mapName = config.map;
-
-        // 🔍 Debug before state deletion
-        console.log(`[SC Reset: ${resetId}] Clearing shadow axis for ${key}`);
-
-        if (window[mapName]) {
-          window[mapName].delete?.(key);
-          console.log(`[SC Reset: ${resetId}] Deleted state from ${mapName}`);
-        }
-
-        const styleEl = document.getElementById(styleId);
-        if (styleEl) {
-          styleEl.remove();
-          console.log(`[SC Reset: ${resetId}] Removed style tag: ${styleId}`);
-        }
-
         config.axis.forEach(({ bullet, count }) => {
           const b = document.getElementById(bullet);
           const c = document.getElementById(count);
           if (b) b.style.left = "0px";
           if (c) c.textContent = "0px";
         });
-        return;
+      } else {
+        const bulletEl = document.getElementById(config.bullet);
+        const fillEl = config.fill
+          ? document.getElementById(config.fill)
+          : null;
+        const countEl = document.getElementById(config.count);
+
+        if (bulletEl) bulletEl.style.left = "0px";
+        if (fillEl) fillEl.style.width = "0px";
+        if (countEl) countEl.textContent = "0px";
       }
 
-      const bulletEl = document.getElementById(config.bullet);
-      const fillEl = config.fill ? document.getElementById(config.fill) : null;
-      const countEl = document.getElementById(config.count);
       const styleId = config.style.replace("ICON", typeClass);
-      const mapName = config.map;
+      document.getElementById(styleId)?.remove();
 
-      // 🔍 Debug current state
-      console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
-      console.log(
-        `[SC Reset] Bullet: ${config.bullet}, Fill: ${config.fill}, Count: ${config.count}`
-      );
-      if (countEl)
-        console.log(`[SC Reset] Current count before: ${countEl.textContent}`);
-
-      // 🔁 Clear map & style tag first to avoid re-sync issue
-      if (window[mapName]) {
-        window[mapName].delete?.(key);
-        console.log(`[SC Reset: ${resetId}] Deleted from map ${mapName}`);
+      const mapRef = window[config.map];
+      if (mapRef && config.resetInternal) {
+        config.resetInternal(mapRef, key);
+        console.log(`[SC Reset: ${resetId}] Internal map cleared for ${key}`);
       }
 
-      const styleEl = document.getElementById(styleId);
-      if (styleEl) {
-        styleEl.remove();
-        console.log(`[SC Reset: ${resetId}] Removed style tag: ${styleId}`);
-      }
-
-      if (bulletEl) bulletEl.style.left = "0px";
-      if (fillEl) fillEl.style.width = "0px";
-      if (countEl) countEl.textContent = "0px";
-
-      // ✅ Confirm after reset
-      console.log(`[SC Reset: ${resetId}] Reset complete. Visuals cleared.`);
+      console.log(`[SC Reset: ${resetId}] Reset complete.`);
     });
   });
 }
-
 
 
 
