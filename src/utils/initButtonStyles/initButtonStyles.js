@@ -1606,21 +1606,11 @@ export function initButtonResetHandlers(getSelectedElement) {
       "buttoniconSpacingCount",
       "--icon-spacing",
     ],
-    "border-reset": [
-      "buttonBorderBullet",
-      "buttonBorderFill",
-      "buttonBorderCount",
-      "--border",
-    ],
     "border-radius-reset": [
       "buttonBorderradiusBullet",
       "buttonBorderradiusFill",
       "buttonBorderradiusCount",
       "--border-radius",
-    ],
-    "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "--shadow-x"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "--shadow-y"],
     ],
     "shadow-blur-reset": [
       "buttonShadowBlurBullet",
@@ -1634,6 +1624,16 @@ export function initButtonResetHandlers(getSelectedElement) {
       "buttonShadowSpreadCount",
       "--shadow-spread",
     ],
+    "shadow-axis-reset": [
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "--shadow-x"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "--shadow-y"],
+    ],
+    "border-reset": [
+      "buttonBorderBullet",
+      "buttonBorderFill",
+      "buttonBorderCount",
+      "--border-width",
+    ],
   };
 
   Object.entries(resetMap).forEach(([resetId, config]) => {
@@ -1644,7 +1644,17 @@ export function initButtonResetHandlers(getSelectedElement) {
       const selected = getSelectedElement?.();
       if (!selected) return;
 
-      if (Array.isArray(config[0])) {
+      const img = resetBtn.querySelector("img");
+      if (img) {
+        img.style.transition = "transform 0.4s ease";
+        img.style.transform = "rotate(360deg)";
+        setTimeout(() => {
+          img.style.transform = "rotate(0deg)";
+        }, 400);
+      }
+
+      // 🔁 Handle shadow x/y case
+      if (resetId === "shadow-axis-reset") {
         config.forEach(([bulletId, countId, cssKey]) => {
           const bullet = document.getElementById(bulletId);
           const count = document.getElementById(countId);
@@ -1652,28 +1662,50 @@ export function initButtonResetHandlers(getSelectedElement) {
           if (count) count.innerText = "0px";
           selected.style.removeProperty(cssKey);
         });
-      } else {
-        const [bulletId, fillId, countId, cssKey] = config;
-        const bullet = document.getElementById(bulletId);
-        const fill = document.getElementById(fillId);
-        const count = document.getElementById(countId);
-
-        if (bullet) bullet.style.left = "0px";
-        if (fill) fill.style.width = "0px";
-        if (count) count.innerText = "0px";
-
-        selected.style.removeProperty(cssKey);
+        return;
       }
 
-      const img = resetBtn.querySelector("img");
-      if (img) {
-        img.style.transition = "transform 0.4s ease";
-        img.style.transform = "rotate(360deg)";
-        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
-      }
+      // 🔁 All other single property resets
+      const [bulletId, fillId, countId, cssKey] = config;
+      const bullet = document.getElementById(bulletId);
+      const fill = fillId ? document.getElementById(fillId) : null;
+      const count = document.getElementById(countId);
+
+      if (bullet) bullet.style.left = "0px";
+      if (fill) fill.style.width = "0px";
+      if (count) count.innerText = "0px";
+
+      selected.style.removeProperty(cssKey);
+
+      // 🧹 Remove related <style> tags injected by widget
+      const btn = selected.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+
+      const typeClass = [...btn.classList].find((c) =>
+        c.startsWith("sqs-button-element--")
+      );
+      if (!typeClass) return;
+
+      const styleIds = [
+        `sc-font-style-${typeClass}`,
+        `sc-font-weight-${typeClass}`,
+        `sc-button-shadow-${typeClass}`,
+        `sc-button-border-${typeClass}`,
+        `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
+        `sc-transform-style-${typeClass}`,
+      ];
+
+      styleIds.forEach((id) => {
+        const styleTag = document.getElementById(id);
+        if (styleTag) styleTag.remove();
+      });
     });
   });
 }
+
 
 
 
