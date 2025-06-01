@@ -592,17 +592,20 @@
 
         widgetContainer.style.display = "block";
         if (clickedBlock) {
-          clickedBlock.style.position = "relative";
+          const rect = clickedBlock.getBoundingClientRect();
+          const scrollTop = window.scrollY || parent.scrollY || 0;
+          const scrollLeft = window.scrollX || parent.scrollX || 0;
+
           widgetContainer.style.position = "absolute";
+          widgetContainer.style.top = `${rect.top + scrollTop + 10}px`;
+          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
 
-          widgetContainer.style.top = "8px";
-          widgetContainer.style.left = "0px";
-
-          clickedBlock.appendChild(widgetContainer);
-          selectedElement = clickedBlock; 
+          document.body.appendChild(widgetContainer); // ✅ Not inside the block
+          selectedElement = clickedBlock;
         } else {
           document.body.appendChild(widgetContainer);
         }
+        
         
         
 
