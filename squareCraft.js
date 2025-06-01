@@ -597,10 +597,10 @@
           const scrollLeft = window.scrollX || parent.scrollX || 0;
 
           widgetContainer.style.position = "absolute";
-          widgetContainer.style.top = `${rect.top + scrollTop + 10}px`;
+          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`; 
           widgetContainer.style.left = `${rect.left + scrollLeft}px`;
 
-          document.body.appendChild(widgetContainer); // ✅ Not inside the block
+          document.body.appendChild(widgetContainer);
           selectedElement = clickedBlock;
         } else {
           document.body.appendChild(widgetContainer);
