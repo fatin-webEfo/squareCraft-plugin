@@ -1657,7 +1657,9 @@ export function initButtonResetHandlers(getSelectedElement) {
       if (img) {
         img.style.transition = "transform 0.4s ease";
         img.style.transform = "rotate(360deg)";
-        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
+        setTimeout(() => {
+          img.style.transform = "rotate(0deg)";
+        }, 400);
       }
 
       const btn = selected.querySelector(
@@ -1691,10 +1693,11 @@ export function initButtonResetHandlers(getSelectedElement) {
 
         const styleId = styleIdRaw.replace("ICON", typeClass);
         document.getElementById(styleId)?.remove();
-        if (window[stateMapName]) window[stateMapName].delete?.(key);
+        if (window[stateMapName]) {
+          window[stateMapName].delete?.(key);
+        }
         return;
       }
-      
 
       const [bulletId, fillId, countId, styleIdRaw, stateMapName] = config;
 
@@ -1718,6 +1721,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
+
 
 
 
