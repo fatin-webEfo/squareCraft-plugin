@@ -526,7 +526,16 @@
 
 
         widgetContainer.style.display = "block";
-        document.body.appendChild(widgetContainer);
+        if (clickedBlock) {
+          clickedBlock.style.position = "relative";
+          widgetContainer.style.position = "absolute";
+          widgetContainer.style.top = "0px";
+          widgetContainer.style.left = "0px";
+          clickedBlock.appendChild(widgetContainer);
+        } else {
+          document.body.appendChild(widgetContainer);
+        }
+        
 
         initImageMaskControls(() => selectedElement);
         makeWidgetDraggable();
