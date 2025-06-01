@@ -1482,7 +1482,7 @@ export function resetAllButtonStyles(getSelectedElement) {
         fontSizeInput.dispatchEvent(new Event("input"));
       }
       if (letterSpacingInput) {
-        letterSpacingInput.value = "0";
+        letterSpacingInput.value = "";
         letterSpacingInput.dispatchEvent(new Event("input"));
       }
 
