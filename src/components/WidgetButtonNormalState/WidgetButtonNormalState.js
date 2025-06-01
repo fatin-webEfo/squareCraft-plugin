@@ -98,7 +98,7 @@ export function WidgetButtonNormalState() {
                <div class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center">
                  <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-rounded-4px">
                    
-                   <input type="text" id="scButtonLetterSpacingInput" value="15"
+                   <input type="text" id="scButtonLetterSpacingInput" value="0"
                      class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
              
                    <div class="sc-v-line"></div>
