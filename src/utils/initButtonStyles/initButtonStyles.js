@@ -1597,6 +1597,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
       resetInternal: (map, key) => map?.set?.(key, { size: 0 }),
+      disableFlag: "__sc_reset_icon_size__",
     },
     "icon-spacing-reset": {
       bullet: "buttonIconSpacingradiusBullet",
@@ -1605,6 +1606,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
       resetInternal: (map, key) => map?.set?.(key, { spacing: 0 }),
+      disableFlag: "__sc_reset_icon_spacing__",
     },
     "icon-rotation-reset": {
       bullet: "buttonIconRotationradiusBullet",
@@ -1613,6 +1615,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
       resetInternal: (map, key) => map?.set?.(key, { rotation: 0 }),
+      disableFlag: "__sc_reset_icon_rotation__",
     },
     "border-radius-reset": {
       bullet: "buttonBorderradiusBullet",
@@ -1627,6 +1630,7 @@ export function initButtonResetHandlers(getSelectedElement) {
           map.set(key, state);
         }
       },
+      disableFlag: "__sc_reset_border_radius__",
     },
     "shadow-blur-reset": {
       bullet: "buttonShadowBlurBullet",
@@ -1638,6 +1642,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         if (s) s.blur = 0;
         map.set(key, s);
       },
+      disableFlag: "__sc_reset_shadow_blur__",
     },
     "shadow-spread-reset": {
       bullet: "buttonShadowSpreadBullet",
@@ -1649,6 +1654,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         if (s) s.spread = 0;
         map.set(key, s);
       },
+      disableFlag: "__sc_reset_shadow_spread__",
     },
     "shadow-axis-reset": {
       axis: [
@@ -1665,6 +1671,7 @@ export function initButtonResetHandlers(getSelectedElement) {
           map.set(key, s);
         }
       },
+      disableFlag: "__sc_reset_shadow_axis__",
     },
     "border-reset": {
       bullet: "buttonBorderBullet",
@@ -1679,6 +1686,7 @@ export function initButtonResetHandlers(getSelectedElement) {
           map.set(key, state);
         }
       },
+      disableFlag: "__sc_reset_border__",
     },
   };
 
@@ -1727,6 +1735,11 @@ export function initButtonResetHandlers(getSelectedElement) {
           : null;
         const countEl = document.getElementById(config.count);
 
+        console.log(
+          `[SC Reset] Bullet: ${config.bullet}, Fill: ${config.fill}, Count: ${config.count}`
+        );
+        console.log(`[SC Reset] Current count before: ${countEl?.textContent}`);
+
         if (bulletEl) bulletEl.style.left = "0px";
         if (fillEl) fillEl.style.width = "0px";
         if (countEl) countEl.textContent = "0px";
@@ -1734,14 +1747,26 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const styleId = config.style.replace("ICON", typeClass);
       document.getElementById(styleId)?.remove();
+      console.log(`[SC Reset] Removed style tag: ${styleId}`);
 
       const mapRef = window[config.map];
       if (mapRef && config.resetInternal) {
         config.resetInternal(mapRef, key);
-        console.log(`[SC Reset: ${resetId}] Internal map cleared for ${key}`);
+        console.log(
+          `[SC Reset] Updated internal map: ${config.map} for key: ${key}`
+        );
       }
 
-      console.log(`[SC Reset: ${resetId}] Reset complete.`);
+      if (config.disableFlag) {
+        window[config.disableFlag] = true;
+        setTimeout(() => {
+          window[config.disableFlag] = false;
+        }, 100);
+      }
+
+      console.log(
+        `[SC Reset: ${resetId}] Reset complete. Visuals and internal states cleared.`
+      );
     });
   });
 }
