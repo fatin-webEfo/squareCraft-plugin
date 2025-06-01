@@ -759,10 +759,10 @@
             event.stopPropagation();
             event.preventDefault();
 
-            const clickedBlock = event.target.closest('[id^="block-"]'); 
-
-            toggleWidgetVisibility(clickedBlock); 
+            const clickedBlock = clonedIcon.closest('[id^="block-"]');
+            toggleWidgetVisibility(clickedBlock);
           });
+          
           
         });
       }
