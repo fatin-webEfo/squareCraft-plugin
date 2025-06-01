@@ -1,4 +1,8 @@
 setTimeout(() => {
+  let selectedElement = null;
+  function getSelectedElement() {
+    return selectedElement;
+  }
   const section = document.getElementById("buttoniconPositionSection");
   if (section) {
     initButtonIconPositionToggle(getSelectedElement);

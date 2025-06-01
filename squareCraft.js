@@ -573,7 +573,7 @@
       }
     }
 
-
+    
   function makeWidgetDraggable() {
     if (!widgetContainer) return;
 
