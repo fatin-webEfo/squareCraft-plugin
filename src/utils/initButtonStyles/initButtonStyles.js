@@ -1779,7 +1779,7 @@ export function initButtonResetHandlers(getSelectedElement) {
         window.__squareCraftShadowMap?.delete?.(key);
         return;
       }
-    });
+    });    
     
     
   });
