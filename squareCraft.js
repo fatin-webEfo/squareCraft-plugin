@@ -720,14 +720,22 @@
           clonedIcon.addEventListener("click", function (event) {
             event.stopPropagation();
             event.preventDefault();
-            toggleWidgetVisibility(event);
+
+            const clickedBlock = event.target.closest('[id^="block-"]'); // ✅ Get the clicked block
+
+            toggleWidgetVisibility(event); 
+
             if (!widgetLoaded) {
-              createWidget().then(() => {
-                widgetContainer = document.getElementById("sc-widget-container");
+              createWidget(clickedBlock).then(() => {
+                widgetContainer = document.getElementById(
+                  "sc-widget-container"
+                );
                 if (widgetContainer) {
                   widgetContainer.style.display = "block";
                 } else {
-                  console.error("❌ Widget container not found after creation.");
+                  console.error(
+                    "❌ Widget container not found after creation."
+                  );
                 }
               });
             } else {
@@ -735,6 +743,7 @@
                 widgetContainer.style.display === "none" ? "block" : "none";
             }
           });
+          
         });
       }
 

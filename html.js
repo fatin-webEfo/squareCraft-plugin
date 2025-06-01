@@ -8,8 +8,7 @@ import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-
 export function html() {
 
    const htmlString = `
-     <div 
-   class="sc-p-2  z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
+     <div class="sc-p-2  z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
    <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
     <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
          <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
