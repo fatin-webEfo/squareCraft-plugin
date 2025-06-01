@@ -1781,6 +1781,7 @@ export function initButtonResetHandlers(getSelectedElement) {
 
 
 
+
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
     window.syncButtonStylesFromElement(getSelectedElement);
