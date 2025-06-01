@@ -12,7 +12,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
 
   const fontFamilyOptions = document.getElementById("buttonFontFamilyOptions");
-  
   if (!fontFamilyOptions) return;
 
   const loader = document.createElement("div");
@@ -1472,7 +1471,7 @@ export function resetAllButtonStyles(getSelectedElement) {
         "scButtonLetterSpacingInput"
       );
       if (fontSizeInput) {
-        fontSizeInput.value = "";
+        fontSizeInput.value = "10";
         fontSizeInput.dispatchEvent(new Event("input"));
       }
       if (letterSpacingInput) {
@@ -1575,9 +1574,6 @@ export function resetAllButtonStyles(getSelectedElement) {
     }
   });
 }
-
-
-
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
