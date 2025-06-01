@@ -1596,7 +1596,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonIconSizeradiusCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
-      resetFlag: "__sc_reset_icon_size__",
+      flag: "__sc_reset_icon_size__",
       resetInternal: (map, key) => map?.set?.(key, { size: 0 }),
     },
     "icon-spacing-reset": {
@@ -1605,7 +1605,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonIconSpacingCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
-      resetFlag: "__sc_reset_icon_spacing__",
+      flag: "__sc_reset_icon_spacing__",
       resetInternal: (map, key) => map?.set?.(key, { spacing: 0 }),
     },
     "icon-rotation-reset": {
@@ -1614,7 +1614,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonIconRotationCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
-      resetFlag: "__sc_reset_icon_rotation__",
+      flag: "__sc_reset_icon_rotation__",
       resetInternal: (map, key) => map?.set?.(key, { rotation: 0 }),
     },
     "border-radius-reset": {
@@ -1623,7 +1623,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonBorderradiusCount",
       style: "sc-normal-radius-ICON",
       map: "__squareCraftRadiusMap",
-      resetFlag: "__sc_reset_border_radius__",
+      flag: "__sc_reset_border_radius__",
       resetInternal: (map, key) => {
         const state = map.get(key);
         if (state?.values) {
@@ -1637,7 +1637,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonShadowBlurCount",
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
-      resetFlag: "__sc_reset_shadow_blur__",
+      flag: "__sc_reset_shadow_blur__",
       resetInternal: (map, key) => {
         const s = map.get(key);
         if (s) s.blur = 0;
@@ -1649,7 +1649,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonShadowSpreadCount",
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
-      resetFlag: "__sc_reset_shadow_spread__",
+      flag: "__sc_reset_shadow_spread__",
       resetInternal: (map, key) => {
         const s = map.get(key);
         if (s) s.spread = 0;
@@ -1663,7 +1663,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       ],
       style: "sc-button-shadow-ICON",
       map: "__squareCraftShadowMap",
-      resetFlag: "__sc_reset_shadow_axis__",
+      flag: "__sc_reset_shadow_axis__",
       resetInternal: (map, key) => {
         const s = map.get(key);
         if (s) {
@@ -1679,7 +1679,7 @@ export function initButtonResetHandlers(getSelectedElement) {
       count: "buttonBorderCount",
       style: "sc-button-border-ICON",
       map: "__squareCraftBorderStateMap",
-      resetFlag: "__sc_reset_border__",
+      flag: "__sc_reset_border__",
       resetInternal: (map, key) => {
         const state = map.get(key);
         if (state?.values) {
@@ -1718,24 +1718,28 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
+      const styleId = config.style.replace("ICON", typeClass);
+      const mapRef = window[config.map];
 
       console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
 
-      // Set reset flag for guards
-      if (config.resetFlag) {
-        window[config.resetFlag] = true;
-        setTimeout(() => {
-          window[config.resetFlag] = false;
-        }, 100);
+      // Flag
+      if (config.flag) {
+        window[config.flag] = true;
+        setTimeout(() => (window[config.flag] = false), 100);
       }
 
+      // Axis special case
       if (resetId === "shadow-axis-reset") {
         config.axis.forEach(({ bullet, count }) => {
           const b = document.getElementById(bullet);
           const c = document.getElementById(count);
+          console.log(`[SC Reset] Bullet: ${bullet}, Count: ${count}`);
           if (b) b.style.left = "0px";
-          if (c) c.textContent = "0px";
-          console.log(`[SC Reset] Axis Bullet: ${bullet}, Count: ${count}`);
+          if (c) {
+            console.log(`[SC Reset] Current count before: ${c.textContent}`);
+            c.textContent = "0px";
+          }
         });
       } else {
         const bulletEl = document.getElementById(config.bullet);
@@ -1744,36 +1748,30 @@ export function initButtonResetHandlers(getSelectedElement) {
           : null;
         const countEl = document.getElementById(config.count);
 
-        if (bulletEl) bulletEl.style.left = "0px";
-        if (fillEl) fillEl.style.width = "0px";
-        if (countEl) {
-          console.log(
-            `[SC Reset] Current count before: ${countEl.textContent}`
-          );
-          countEl.textContent = "0px";
-        }
-
         console.log(
           `[SC Reset] Bullet: ${config.bullet}, Fill: ${config.fill}, Count: ${config.count}`
         );
+        if (countEl)
+          console.log(
+            `[SC Reset] Current count before: ${countEl.textContent}`
+          );
+
+        if (bulletEl) bulletEl.style.left = "0px";
+        if (fillEl) fillEl.style.width = "0px";
+        if (countEl) countEl.textContent = "0px";
       }
 
-      const styleId = config.style.replace("ICON", typeClass);
       document.getElementById(styleId)?.remove();
-      console.log(`[SC Reset: ${resetId}] Style element removed: ${styleId}`);
-
-      const mapRef = window[config.map];
       if (mapRef && config.resetInternal) {
         config.resetInternal(mapRef, key);
-        console.log(
-          `[SC Reset: ${resetId}] Internal map cleared/updated for ${key}`
-        );
+        console.log(`[SC Reset: ${resetId}] Internal map cleared for ${key}`);
       }
 
       console.log(`[SC Reset: ${resetId}] Reset complete. Visuals cleared.`);
     });
   });
 }
+
 
 
 
