@@ -1582,6 +1582,105 @@ export function resetAllButtonStyles(getSelectedElement) {
   });
 }
 
+export function initButtonResetHandlers(getSelectedElement) {
+  const resetMap = {
+    "icon-size-reset": {
+      field: "#buttonIconSizeradiusField",
+      fill: "#buttonIconSizeradiusFill",
+      bullet: "#buttonIconSizeradiusBullet",
+      count: "#buttoniconSizeradiusCount",
+      key: "icon-size",
+    },
+    "icon-rotation-reset": {
+      field: "#buttonIconRotationradiusField",
+      fill: "#buttonIconRotationradiusFill",
+      bullet: "#buttonIconRotationradiusBullet",
+      count: "#buttoniconRotationradiusCount",
+      key: "icon-rotation",
+    },
+    "icon-spacing-reset": {
+      field: "#buttonIconSpacingradiusField",
+      fill: "#buttonIconSpacingradiusFill",
+      bullet: "#buttonIconSpacingradiusBullet",
+      count: "#buttoniconSpacingCount",
+      key: "icon-spacing",
+    },
+    "border-reset": {
+      field: "#buttonBorderField",
+      fill: "#buttonBorderFill",
+      bullet: "#buttonBorderBullet",
+      count: "#buttonBorderCount",
+      key: "border",
+    },
+    "border-radius-reset": {
+      field: "#buttonBorderradiusField",
+      fill: "#buttonBorderradiusFill",
+      bullet: "#buttonBorderradiusBullet",
+      count: "#buttonBorderradiusCount",
+      key: "border-radius",
+    },
+    "shadow-axis-reset": {
+      x: {
+        field: "#buttonShadowXaxisField",
+        bullet: "#buttonShadowXaxisBullet",
+        count: "#buttonShadowXaxisCount",
+        key: "shadow-x",
+      },
+      y: {
+        field: "#buttonShadowYaxisField",
+        bullet: "#buttonShadowYaxisBullet",
+        count: "#buttonShadowYaxisCount",
+        key: "shadow-y",
+      },
+    },
+    "shadow-blur-reset": {
+      field: "#buttonShadowBlurField",
+      bullet: "#buttonShadowBlurBullet",
+      count: "#buttonShadowBlurCount",
+      key: "shadow-blur",
+    },
+    "shadow-spread-reset": {
+      field: "#buttonShadowSpreadField",
+      bullet: "#buttonShadowSpreadBullet",
+      count: "#buttonShadowSpreadCount",
+      key: "shadow-spread",
+    },
+  };
+
+  Object.keys(resetMap).forEach((resetId) => {
+    const resetBtn = document.getElementById(resetId);
+    if (!resetBtn) return;
+
+    resetBtn.addEventListener("click", () => {
+      const selectedElement = getSelectedElement();
+      if (!selectedElement) return;
+
+      if (resetId === "shadow-axis-reset") {
+        ["x", "y"].forEach((axis) => {
+          const config = resetMap[resetId][axis];
+          const bullet = document.querySelector(config.bullet);
+          const count = document.querySelector(config.count);
+          if (bullet && count) {
+            bullet.style.left = "0px";
+            count.innerText = "0px";
+          }
+          selectedElement.style[`--${config.key}`] = "0px";
+        });
+      } else {
+        const config = resetMap[resetId];
+        const bullet = document.querySelector(config.bullet);
+        const fill = document.querySelector(config.fill);
+        const count = document.querySelector(config.count);
+        if (bullet) bullet.style.left = "0px";
+        if (fill) fill.style.width = "0px";
+        if (count) count.innerText = "0px";
+        selectedElement.style[`--${config.key}`] = "0px";
+      }
+    });
+  });
+}
+
+
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
     window.syncButtonStylesFromElement(getSelectedElement);

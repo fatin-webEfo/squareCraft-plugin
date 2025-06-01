@@ -374,7 +374,7 @@ export function WidgetButtonNormalState() {
                      <div class="sc-flex sc-gap-2 sc-items-center">
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Rotation
                         </p>
-                        <div
+                        <div  id="icon-rotation-reset"
                            class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
       
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -408,7 +408,7 @@ export function WidgetButtonNormalState() {
                   <div class="sc-flex sc-gap-2 sc-items-center">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> icon Size
                      </p>
-                     <div
+                     <div id="icon-size-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
    
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -446,7 +446,7 @@ export function WidgetButtonNormalState() {
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Icon Spacing
                   </p>
-                  <div
+                  <div id="icon-spacing-reset"
                      class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -484,7 +484,7 @@ export function WidgetButtonNormalState() {
                         <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                            Border
                         </p>
-                        <div
+                        <div id="border-reset"
                            class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -643,7 +643,7 @@ export function WidgetButtonNormalState() {
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                               Border radius
                            </p>
-                           <div
+                           <div id="border-radius-reset"
                               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
@@ -682,7 +682,7 @@ export function WidgetButtonNormalState() {
                   <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
                      <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow
                      </p>
-                     <div
+                     <div id="shadow-axis-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
                         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -754,7 +754,7 @@ export function WidgetButtonNormalState() {
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                               Blur
                            </p>
-                           <div
+                           <div id="shadow-blur-reset"
                               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
 
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -787,7 +787,7 @@ export function WidgetButtonNormalState() {
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                               Spread
                            </p>
-                           <div
+                           <div id="shadow-spread-reset"
                               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
                               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                                  alt="reset">
