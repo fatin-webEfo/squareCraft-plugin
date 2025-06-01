@@ -141,7 +141,6 @@
 
     document.body.addEventListener("click", (event) => {
     parentHtmlTabClick(); 
-    console.log(selectedElement)
 
       if (selectedElement) {
         initButtonStyles(selectedElement);
@@ -419,43 +418,28 @@
     }
 
 
-    async function toggleWidgetVisibility(clickedBlock) {
+    async function toggleWidgetVisibility(event) {
+      event.stopPropagation();
+      const clickedBlock = event?.target?.closest('[id^="block-"]');
       if (!clickedBlock) {
         return;
       }
 
+
       if (!widgetLoaded) {
         await createWidget(clickedBlock);
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
-          .then(() => {
-            handleAndDetect(clickedBlock);
-          })
-          .catch((error) => {
-            console.error(error.message);
-          });
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
+          handleAndDetect(clickedBlock);
+        }).catch(error => {
+          console.error(error.message);
+        });
       } else {
-        if (clickedBlock) {
-          const rect = clickedBlock.getBoundingClientRect();
-          const scrollTop = window.scrollY || parent.scrollY || 0;
-          const scrollLeft = window.scrollX || parent.scrollX || 0;
-
-          widgetContainer.style.position = "absolute";
-          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`;
-          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
-
-          selectedElement = clickedBlock;
-        }
-
-        widgetContainer.style.display =
-          widgetContainer.style.display === "none" ? "block" : "none";
-
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
-          .then(() => {
-            handleAndDetect(clickedBlock);
-          })
-          .catch((error) => {
-            console.error(error.message);
-          });
+        widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
+          handleAndDetect(clickedBlock);
+        }).catch(error => {
+          console.error(error.message);
+        });
       }
     }
 
@@ -474,97 +458,7 @@
     }
 
 
-    function loadWidgetFromString(htmlString, clickedBlock) {
-      if (!widgetContainer) {
-        widgetContainer = document.createElement("div");
-        widgetContainer.id = "sc-widget-container";
-        widgetContainer.classList.add(
-          "sc-fixed",
-          "sc-text-color-white",
-          "sc-universal",
-          "sc-z-9999"
-        );
 
-        const styleLink = document.createElement("link");
-        styleLink.rel = "stylesheet";
-        styleLink.type = "text/css";
-        styleLink.href =
-          "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-        widgetContainer.appendChild(styleLink);
-
-        const contentWrapper = document.createElement("div");
-        contentWrapper.innerHTML = htmlString;
-        widgetContainer.appendChild(contentWrapper);
-        parentHtmlTabClick();
-
-        widgetContainer.style.display = "block";
-        if (clickedBlock) {
-          const rect = clickedBlock.getBoundingClientRect();
-          const scrollTop = window.scrollY || parent.scrollY || 0;
-          const scrollLeft = window.scrollX || parent.scrollX || 0;
-
-          widgetContainer.style.position = "absolute";
-          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`;
-          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
-
-          document.body.appendChild(widgetContainer);
-          selectedElement = clickedBlock;
-        } else {
-          document.body.appendChild(widgetContainer);
-        }
-
-        initImageMaskControls(() => selectedElement);
-        makeWidgetDraggable();
-        setTimeout(() => {
-          const placeholders = widgetContainer.querySelectorAll(
-            ".sc-arrow-placeholder"
-          );
-
-          placeholders.forEach((span) => {
-            const isRotate = span.classList.contains("sc-rotate-180");
-            const cloneClassList = Array.from(span.classList);
-            const originalId = span.getAttribute("id") || "";
-            const id =
-              originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-
-            const svg = createHoverableArrowSVG(id, isRotate);
-            cloneClassList.forEach((cls) => svg.classList.add(cls));
-            span.replaceWith(svg);
-          });
-        }, 100);
-        widgetLoaded = true;
-        initImageSectionToggleControls();
-        initSimpleTooltipHover();
-        initButtonSectionToggleControls();
-        initHoverButtonSectionToggleControls();
-        initHoverButtonEffectDropdowns();
-        initImageUploadPreview(() => selectedElement);
-
-        if (clickedBlock) {
-          waitForElement("#typoSection, #imageSection, #buttonSection")
-            .then(() => {
-              handleBlockClick(
-                { target: clickedBlock },
-                {
-                  getTextType,
-                  selectedElement,
-                  setSelectedElement: (val) => (selectedElement = val),
-                  setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                  setLastClickedElement: (val) => (lastClickedElement = val),
-                  setLastAppliedAlignment: (val) =>
-                    (lastAppliedAlignment = val),
-                  setLastActiveAlignmentElement: (val) =>
-                    (lastActiveAlignmentElement = val),
-                }
-              );
-              detectBlockElementTypes(clickedBlock);
-            })
-            .catch((error) => {
-              console.error(error.message);
-            });
-        }
-      }
-    }
 
     async function createWidget(clickedBlock) {
       try {
@@ -573,15 +467,6 @@
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
           loadWidgetFromString(htmlString, clickedBlock);
-          setTimeout(() => {
-            widgetContainer = document.getElementById("sc-widget-container");
-            if (widgetContainer) {
-              widgetContainer.style.display = "block";
-            } else {
-              console.warn("⚠️ Widget container not found after creation.");
-            }
-          }, 300);
-          
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
@@ -618,76 +503,135 @@
       });
     }
 
-    function makeWidgetDraggable() {
-      if (!widgetContainer) return;
 
-      widgetContainer.style.zIndex = "999";
+    function loadWidgetFromString(htmlString, clickedBlock) {
+      if (!widgetContainer) {
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "sc-widget-container";
+        widgetContainer.classList.add(
+          "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
+        );
 
-      if (
-        !widgetContainer.style.left ||
-        widgetContainer.style.left === "auto"
-      ) {
-        widgetContainer.style.left = "10px";
+        const styleLink = document.createElement("link");
+        styleLink.rel = "stylesheet";
+        styleLink.type = "text/css";
+        styleLink.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+        widgetContainer.appendChild(styleLink);
+
+        const contentWrapper = document.createElement("div");
+        contentWrapper.innerHTML = htmlString;
+        widgetContainer.appendChild(contentWrapper);
+        parentHtmlTabClick(); 
+
+
+        widgetContainer.style.display = "block";
+        document.body.appendChild(widgetContainer);
+
+        initImageMaskControls(() => selectedElement);
+        makeWidgetDraggable();
+        setTimeout(() => {
+          const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
+
+          placeholders.forEach(span => {
+            const isRotate = span.classList.contains("sc-rotate-180");
+            const cloneClassList = Array.from(span.classList);
+            const originalId = span.getAttribute("id") || "";
+            const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+          
+            const svg = createHoverableArrowSVG(id, isRotate);
+            cloneClassList.forEach(cls => svg.classList.add(cls));
+            span.replaceWith(svg);
+          });
+          
+        }, 100);
+        widgetLoaded = true;
+        initImageSectionToggleControls();
+        initSimpleTooltipHover();
+        initButtonSectionToggleControls();
+        initHoverButtonSectionToggleControls();
+        initHoverButtonEffectDropdowns();
+        initImageUploadPreview(() => selectedElement);
+
+        if (clickedBlock) {
+          waitForElement("#typoSection, #imageSection, #buttonSection")
+            .then(() => {
+              handleBlockClick({ target: clickedBlock }, {
+                getTextType,
+                selectedElement,
+                setSelectedElement: (val) => selectedElement = val,
+                setLastClickedBlockId: (val) => lastClickedBlockId = val,
+                setLastClickedElement: (val) => lastClickedElement = val,
+                setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+                setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+              });
+              detectBlockElementTypes(clickedBlock);
+            })
+            .catch(error => {
+              console.error(error.message);
+            });
+        }
       }
-      if (!widgetContainer.style.top || widgetContainer.style.top === "auto") {
-        widgetContainer.style.top = "10px";
-      }
-      
-
-      let offsetX = 0,
-        offsetY = 0,
-        isDragging = false;
-
-      function startDrag(event) {
-        const draggableElement = event.target.closest("#sc-grabbing");
-        if (!draggableElement || event.target.closest(".sc-dropdown")) return;
-
-        event.preventDefault();
-        isDragging = true;
-
-        let clientX = event.clientX || event.touches?.[0]?.clientX;
-        let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-        offsetX = clientX - widgetContainer.getBoundingClientRect().left;
-        offsetY = clientY - widgetContainer.getBoundingClientRect().top;
-
-        document.addEventListener("mousemove", moveAt);
-        document.addEventListener("mouseup", stopDragging);
-        document.addEventListener("touchmove", moveAt);
-        document.addEventListener("touchend", stopDragging);
-      }
-
-      function moveAt(event) {
-        if (!isDragging) return;
-
-        let clientX = event.clientX || event.touches?.[0]?.clientX;
-        let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-        const newX = clientX - offsetX;
-        const newY = clientY - offsetY;
-
-        widgetContainer.style.left = `${newX}px`;
-        widgetContainer.style.top = `${newY}px`;
-      }
-
-      function stopDragging() {
-        isDragging = false;
-        document.removeEventListener("mousemove", moveAt);
-        document.removeEventListener("mouseup", stopDragging);
-        document.removeEventListener("touchmove", moveAt);
-        document.removeEventListener("touchend", stopDragging);
-      }
-
-      widgetContainer.removeEventListener("mousedown", startDrag);
-      widgetContainer.removeEventListener("touchstart", startDrag);
-
-      widgetContainer.addEventListener("mousedown", startDrag);
-      widgetContainer.addEventListener("touchstart", startDrag);
     }
-  
 
 
- 
+  function makeWidgetDraggable() {
+    if (!widgetContainer) return;
+
+    widgetContainer.style.position = "absolute";
+    widgetContainer.style.zIndex = "999";
+    widgetContainer.style.left = "10px";
+    widgetContainer.style.top = "10px";
+
+    let offsetX = 0,
+      offsetY = 0,
+      isDragging = false;
+
+    function startDrag(event) {
+      const draggableElement = event.target.closest("#sc-grabbing");
+      if (!draggableElement || event.target.closest(".sc-dropdown")) return;
+
+      event.preventDefault();
+      isDragging = true;
+
+      let clientX = event.clientX || event.touches?.[0]?.clientX;
+      let clientY = event.clientY || event.touches?.[0]?.clientY;
+
+      offsetX = clientX - widgetContainer.getBoundingClientRect().left;
+      offsetY = clientY - widgetContainer.getBoundingClientRect().top;
+
+      document.addEventListener("mousemove", moveAt);
+      document.addEventListener("mouseup", stopDragging);
+      document.addEventListener("touchmove", moveAt);
+      document.addEventListener("touchend", stopDragging);
+    }
+
+    function moveAt(event) {
+      if (!isDragging) return;
+
+      let clientX = event.clientX || event.touches?.[0]?.clientX;
+      let clientY = event.clientY || event.touches?.[0]?.clientY;
+
+      const newX = clientX - offsetX;
+      const newY = clientY - offsetY;
+
+      widgetContainer.style.left = `${newX}px`;
+      widgetContainer.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      document.removeEventListener("mousemove", moveAt);
+      document.removeEventListener("mouseup", stopDragging);
+      document.removeEventListener("touchmove", moveAt);
+      document.removeEventListener("touchend", stopDragging);
+    }
+
+    widgetContainer.removeEventListener("mousedown", startDrag);
+    widgetContainer.removeEventListener("touchstart", startDrag);
+
+    widgetContainer.addEventListener("mousedown", startDrag);
+    widgetContainer.addEventListener("touchstart", startDrag);
+  }
 
 
 
@@ -758,12 +702,21 @@
           clonedIcon.addEventListener("click", function (event) {
             event.stopPropagation();
             event.preventDefault();
-
-            const clickedBlock = clonedIcon.closest('[id^="block-"]');
-            toggleWidgetVisibility(clickedBlock);
+            toggleWidgetVisibility(event);
+            if (!widgetLoaded) {
+              createWidget().then(() => {
+                widgetContainer = document.getElementById("sc-widget-container");
+                if (widgetContainer) {
+                  widgetContainer.style.display = "block";
+                } else {
+                  console.error("❌ Widget container not found after creation.");
+                }
+              });
+            } else {
+              widgetContainer.style.display =
+                widgetContainer.style.display === "none" ? "block" : "none";
+            }
           });
-          
-          
         });
       }
 
@@ -861,12 +814,8 @@
     function moveWidgetToDesktop() {
       if (!widgetContainer) return;
 
-      if (clickedBlock && clickedBlock.appendChild) {
-        clickedBlock.appendChild(widgetContainer);
-      } else {
-        document.body.appendChild(widgetContainer);
-      }
-          }
+      document.body.appendChild(widgetContainer);
+    }
 
     checkView();
     window.addEventListener("resize", checkView);
