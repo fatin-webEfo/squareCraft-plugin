@@ -594,12 +594,16 @@
         if (clickedBlock) {
           clickedBlock.style.position = "relative";
           widgetContainer.style.position = "absolute";
+
           widgetContainer.style.top = "8px";
           widgetContainer.style.left = "0px";
+
           clickedBlock.appendChild(widgetContainer);
+          selectedElement = clickedBlock; 
         } else {
           document.body.appendChild(widgetContainer);
         }
+        
         
 
         initImageMaskControls(() => selectedElement);
