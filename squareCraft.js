@@ -419,13 +419,10 @@
     }
 
 
-    async function toggleWidgetVisibility(event) {
-      event.stopPropagation();
-      const clickedBlock = event?.target?.closest('[id^="block-"]');
+    async function toggleWidgetVisibility(clickedBlock) {
       if (!clickedBlock) {
         return;
       }
-
 
       if (!widgetLoaded) {
         await createWidget(clickedBlock);
@@ -460,7 +457,6 @@
             console.error(error.message);
           });
       }
-      
     }
 
     function handleAndDetect(clickedBlock) {
