@@ -57,9 +57,13 @@ export function WidgetButtonNormalState() {
                      <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
                   sc-rounded-4px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
-                        ${fontSizes?.map((size) => `
+                        ${fontSizes
+                          ?.map(
+                            (size) => `
                         <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${size}">
-                           ${size}</div>`).join("")}
+                           ${size}</div>`
+                          )
+                          .join("")}
                      </div>
                   </div>
                </div>
@@ -118,10 +122,12 @@ export function WidgetButtonNormalState() {
              
                  <div id="scButtonLetterSpacingOptions"
                    class="sc-absolute sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12 sc-rounded-4px sc-border-585858 sc-mt-1">
-                   ${ButtonLetterSpacing?.map((gap) => `
+                   ${ButtonLetterSpacing?.map(
+                     (gap) => `
                      <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12" data-value="${gap}">
                        ${gap}
-                     </div>`).join("")}
+                     </div>`
+                   ).join("")}
                  </div>
                </div>
              </div>
@@ -306,19 +312,27 @@ export function WidgetButtonNormalState() {
 
                        <div class="sc-mt-8 sc-relative">
                           <div id="buttonIconSolidoptions" class=" sc-scrollBar sc-justify-between sc-rounded-md sc-gap-5px sc-h-44 sc-scrollBar sc-p-5px sc-grid-cols-6 sc-bg-color-2c2c2c">
-                            ${solidIconList.map((i) => `
+                            ${solidIconList
+                              .map(
+                                (i) => `
                               <img 
                                 src="https://fatin-webefo.github.io/squareCraft-plugin/public/solidIcons/solidicon%20(${i}).svg" 
                                 class="sc-rounded-md sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                                width="22" height="22" alt="">`).join("")}
+                                width="22" height="22" alt="">`
+                              )
+                              .join("")}
                           </div>
                         
                           <div id="buttonIconOutlineoptions" class=" sc-hidden sc-scrollBar sc-justify-between sc-rounded-md sc-gap-5px sc-h-44 sc-scrollBar sc-p-5px sc-grid-cols-6 sc-bg-color-2c2c2c">
-                            ${outlineIcons.map((i) => `
+                            ${outlineIcons
+                              .map(
+                                (i) => `
                               <img 
                                 src="https://fatin-webefo.github.io/squareCraft-plugin/public/outlineIcons/outlineicon%20(${i}).svg" 
                                 class="sc-rounded-md sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-mx-auto sc-bg-3f3f3f sc-px-1 sc-py-4px" 
-                                width="22" height="22" alt="">`).join("")}
+                                width="22" height="22" alt="">`
+                              )
+                              .join("")}
                           </div>
                         </div>
                         
@@ -331,8 +345,8 @@ export function WidgetButtonNormalState() {
                   <div>
                      <p class="sc-roboto sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Icon Position</p>
                      <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                        <div id="iconPositionLabel" class="sc-bg-3f3f3f sc-relative sc-py-0_5 sc-rounded-l sc-px-2 sc-w-16">
-                        <p class="sc-universal sc-roboto sc-font-size-12">Before</p>
+                        <div  class="sc-bg-3f3f3f sc-relative sc-py-0_5 sc-rounded-l sc-px-2 sc-w-16">
+                        <p id="iconPositionLabel" class="sc-universal sc-roboto sc-font-size-12">Before</p>
                         </div>
                      
                         <div id="iconPositionDropdown" class="sc-absolute sc-rounded-4px  sc-border sc-border-solid sc-border-EF7C2F sc-hidden  sc-left-0 sc-top-[35px] sc-z-50">
@@ -798,5 +812,5 @@ export function WidgetButtonNormalState() {
                   </div>
                </div>
          </div>
-    `
+    `;
 }
