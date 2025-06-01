@@ -1625,16 +1625,8 @@ export function initButtonResetHandlers(getSelectedElement) {
       "sc-button-shadow-ICON",
     ],
     "shadow-axis-reset": [
-      [
-        "buttonShadowXaxisBullet",
-        "buttonShadowXaxisCount",
-        "sc-button-shadow-ICON",
-      ],
-      [
-        "buttonShadowYaxisBullet",
-        "buttonShadowYaxisCount",
-        "sc-button-shadow-ICON",
-      ],
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "sc-button-shadow-ICON"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "sc-button-shadow-ICON"],
     ],
     "border-reset": [
       "buttonBorderBullet",
@@ -1656,48 +1648,40 @@ export function initButtonResetHandlers(getSelectedElement) {
       if (img) {
         img.style.transition = "transform 0.4s ease";
         img.style.transform = "rotate(360deg)";
-        setTimeout(() => {
-          img.style.transform = "rotate(0deg)";
-        }, 400);
+        setTimeout(() => (img.style.transform = "rotate(0deg)"), 400);
       }
 
       const btn = selected.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (!btn) return;
 
-      const typeClass = [...btn.classList].find((c) =>
-        c.startsWith("sqs-button-element--")
-      );
+      const typeClass = [...btn.classList].find(c => c.startsWith("sqs-button-element--"));
       if (!typeClass) return;
 
       if (resetId === "shadow-axis-reset") {
         config.forEach(([bulletId, countId, stylePrefix]) => {
-          const bullet = document.getElementById(bulletId);
-          const count = document.getElementById(countId);
-          if (bullet) bullet.style.left = "0px";
-          if (count) count.innerText = "0px";
-          const styleId = `${stylePrefix.replace("ICON", typeClass)}`;
+          document.getElementById(bulletId)?.style.setProperty("left", "0px");
+          document.getElementById(countId)?.innerText = "0px";
+
+          const styleId = stylePrefix.replace("ICON", typeClass);
           document.getElementById(styleId)?.remove();
         });
         return;
       }
 
       const [bulletId, fillId, countId, styleIdTemplate] = config;
-      const bullet = document.getElementById(bulletId);
-      const fill = fillId ? document.getElementById(fillId) : null;
-      const count = document.getElementById(countId);
+      document.getElementById(bulletId)?.style.setProperty("left", "0px");
+      if (fillId) document.getElementById(fillId)?.style.setProperty("width", "0px");
+      document.getElementById(countId)?.innerText = "0px";
 
-      if (bullet) bullet.style.left = "0px";
-      if (fill) fill.style.width = "0px";
-      if (count) count.innerText = "0px";
-
-      const fullStyleId = styleIdTemplate.replace("ICON", typeClass);
-      document.getElementById(fullStyleId)?.remove();
+      const styleId = styleIdTemplate.replace("ICON", typeClass);
+      document.getElementById(styleId)?.remove();
     });
   });
 }
+
 
 
 
