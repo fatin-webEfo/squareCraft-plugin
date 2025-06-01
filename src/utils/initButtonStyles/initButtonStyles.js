@@ -1653,7 +1653,10 @@ export function initButtonResetHandlers(getSelectedElement) {
 
     resetBtn.addEventListener("click", () => {
       const selected = getSelectedElement?.();
-      if (!selected) return;
+      if (!selected) {
+        console.warn(`[SC Reset] No selected element found for ${resetId}`);
+        return;
+      }
 
       const img = resetBtn.querySelector("img");
       if (img) {
@@ -1668,21 +1671,41 @@ export function initButtonResetHandlers(getSelectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
           "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      if (!btn) return;
+      if (!btn) {
+        console.warn(
+          `[SC Reset] No button found inside selected block for ${resetId}`
+        );
+        return;
+      }
 
       const typeClass = [...btn.classList].find((c) =>
         c.startsWith("sqs-button-element--")
       );
-      if (!typeClass) return;
+      if (!typeClass) {
+        console.warn(`[SC Reset] Button typeClass not found for ${resetId}`);
+        return;
+      }
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
-      // 🟠 Handle shadow-axis-reset separately
       if (resetId === "shadow-axis-reset") {
         const styleId = config.style.replace("ICON", typeClass);
-        if (window[config.map]) window[config.map].delete?.(key);
-        document.getElementById(styleId)?.remove();
+        const mapName = config.map;
+
+        // 🔍 Debug before state deletion
+        console.log(`[SC Reset: ${resetId}] Clearing shadow axis for ${key}`);
+
+        if (window[mapName]) {
+          window[mapName].delete?.(key);
+          console.log(`[SC Reset: ${resetId}] Deleted state from ${mapName}`);
+        }
+
+        const styleEl = document.getElementById(styleId);
+        if (styleEl) {
+          styleEl.remove();
+          console.log(`[SC Reset: ${resetId}] Removed style tag: ${styleId}`);
+        }
 
         config.axis.forEach(({ bullet, count }) => {
           const b = document.getElementById(bullet);
@@ -1693,22 +1716,42 @@ export function initButtonResetHandlers(getSelectedElement) {
         return;
       }
 
-      // 🧹 Delete state before anything else
-      const styleId = config.style.replace("ICON", typeClass);
-      if (window[config.map]) window[config.map].delete?.(key);
-      document.getElementById(styleId)?.remove();
-
-      // 🧼 Reset visuals
       const bulletEl = document.getElementById(config.bullet);
       const fillEl = config.fill ? document.getElementById(config.fill) : null;
       const countEl = document.getElementById(config.count);
+      const styleId = config.style.replace("ICON", typeClass);
+      const mapName = config.map;
+
+      // 🔍 Debug current state
+      console.log(`[SC Reset: ${resetId}] Resetting ${key}`);
+      console.log(
+        `[SC Reset] Bullet: ${config.bullet}, Fill: ${config.fill}, Count: ${config.count}`
+      );
+      if (countEl)
+        console.log(`[SC Reset] Current count before: ${countEl.textContent}`);
+
+      // 🔁 Clear map & style tag first to avoid re-sync issue
+      if (window[mapName]) {
+        window[mapName].delete?.(key);
+        console.log(`[SC Reset: ${resetId}] Deleted from map ${mapName}`);
+      }
+
+      const styleEl = document.getElementById(styleId);
+      if (styleEl) {
+        styleEl.remove();
+        console.log(`[SC Reset: ${resetId}] Removed style tag: ${styleId}`);
+      }
 
       if (bulletEl) bulletEl.style.left = "0px";
       if (fillEl) fillEl.style.width = "0px";
       if (countEl) countEl.textContent = "0px";
+
+      // ✅ Confirm after reset
+      console.log(`[SC Reset: ${resetId}] Reset complete. Visuals cleared.`);
     });
   });
 }
+
 
 
 
