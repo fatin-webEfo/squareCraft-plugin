@@ -474,7 +474,97 @@
     }
 
 
+    function loadWidgetFromString(htmlString, clickedBlock) {
+      if (!widgetContainer) {
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "sc-widget-container";
+        widgetContainer.classList.add(
+          "sc-fixed",
+          "sc-text-color-white",
+          "sc-universal",
+          "sc-z-9999"
+        );
 
+        const styleLink = document.createElement("link");
+        styleLink.rel = "stylesheet";
+        styleLink.type = "text/css";
+        styleLink.href =
+          "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+        widgetContainer.appendChild(styleLink);
+
+        const contentWrapper = document.createElement("div");
+        contentWrapper.innerHTML = htmlString;
+        widgetContainer.appendChild(contentWrapper);
+        parentHtmlTabClick();
+
+        widgetContainer.style.display = "block";
+        if (clickedBlock) {
+          const rect = clickedBlock.getBoundingClientRect();
+          const scrollTop = window.scrollY || parent.scrollY || 0;
+          const scrollLeft = window.scrollX || parent.scrollX || 0;
+
+          widgetContainer.style.position = "absolute";
+          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`;
+          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
+
+          document.body.appendChild(widgetContainer);
+          selectedElement = clickedBlock;
+        } else {
+          document.body.appendChild(widgetContainer);
+        }
+
+        initImageMaskControls(() => selectedElement);
+        makeWidgetDraggable();
+        setTimeout(() => {
+          const placeholders = widgetContainer.querySelectorAll(
+            ".sc-arrow-placeholder"
+          );
+
+          placeholders.forEach((span) => {
+            const isRotate = span.classList.contains("sc-rotate-180");
+            const cloneClassList = Array.from(span.classList);
+            const originalId = span.getAttribute("id") || "";
+            const id =
+              originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+
+            const svg = createHoverableArrowSVG(id, isRotate);
+            cloneClassList.forEach((cls) => svg.classList.add(cls));
+            span.replaceWith(svg);
+          });
+        }, 100);
+        widgetLoaded = true;
+        initImageSectionToggleControls();
+        initSimpleTooltipHover();
+        initButtonSectionToggleControls();
+        initHoverButtonSectionToggleControls();
+        initHoverButtonEffectDropdowns();
+        initImageUploadPreview(() => selectedElement);
+
+        if (clickedBlock) {
+          waitForElement("#typoSection, #imageSection, #buttonSection")
+            .then(() => {
+              handleBlockClick(
+                { target: clickedBlock },
+                {
+                  getTextType,
+                  selectedElement,
+                  setSelectedElement: (val) => (selectedElement = val),
+                  setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+                  setLastClickedElement: (val) => (lastClickedElement = val),
+                  setLastAppliedAlignment: (val) =>
+                    (lastAppliedAlignment = val),
+                  setLastActiveAlignmentElement: (val) =>
+                    (lastActiveAlignmentElement = val),
+                }
+              );
+              detectBlockElementTypes(clickedBlock);
+            })
+            .catch((error) => {
+              console.error(error.message);
+            });
+        }
+      }
+    }
 
     async function createWidget(clickedBlock) {
       try {
@@ -585,90 +675,7 @@
       widgetContainer.addEventListener("mousedown", startDrag);
       widgetContainer.addEventListener("touchstart", startDrag);
     }
-    function loadWidgetFromString(htmlString, clickedBlock) {
-      if (!widgetContainer) {
-        widgetContainer = document.createElement("div");
-        widgetContainer.id = "sc-widget-container";
-        widgetContainer.classList.add(
-          "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
-        );
-
-        const styleLink = document.createElement("link");
-        styleLink.rel = "stylesheet";
-        styleLink.type = "text/css";
-        styleLink.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-        widgetContainer.appendChild(styleLink);
-
-        const contentWrapper = document.createElement("div");
-        contentWrapper.innerHTML = htmlString;
-        widgetContainer.appendChild(contentWrapper);
-        parentHtmlTabClick(); 
-
-
-        widgetContainer.style.display = "block";
-        if (clickedBlock) {
-          const rect = clickedBlock.getBoundingClientRect();
-          const scrollTop = window.scrollY || parent.scrollY || 0;
-          const scrollLeft = window.scrollX || parent.scrollX || 0;
-
-          widgetContainer.style.position = "absolute";
-          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`; 
-          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
-
-          document.body.appendChild(widgetContainer);
-          selectedElement = clickedBlock;
-        } else {
-          document.body.appendChild(widgetContainer);
-        }
-        
-        
-        
-
-        initImageMaskControls(() => selectedElement);
-        makeWidgetDraggable();
-        setTimeout(() => {
-          const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
-
-          placeholders.forEach(span => {
-            const isRotate = span.classList.contains("sc-rotate-180");
-            const cloneClassList = Array.from(span.classList);
-            const originalId = span.getAttribute("id") || "";
-            const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-          
-            const svg = createHoverableArrowSVG(id, isRotate);
-            cloneClassList.forEach(cls => svg.classList.add(cls));
-            span.replaceWith(svg);
-          });
-          
-        }, 100);
-        widgetLoaded = true;
-        initImageSectionToggleControls();
-        initSimpleTooltipHover();
-        initButtonSectionToggleControls();
-        initHoverButtonSectionToggleControls();
-        initHoverButtonEffectDropdowns();
-        initImageUploadPreview(() => selectedElement);
-
-        if (clickedBlock) {
-          waitForElement("#typoSection, #imageSection, #buttonSection")
-            .then(() => {
-              handleBlockClick({ target: clickedBlock }, {
-                getTextType,
-                selectedElement,
-                setSelectedElement: (val) => selectedElement = val,
-                setLastClickedBlockId: (val) => lastClickedBlockId = val,
-                setLastClickedElement: (val) => lastClickedElement = val,
-                setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-                setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-              });
-              detectBlockElementTypes(clickedBlock);
-            })
-            .catch(error => {
-              console.error(error.message);
-            });
-        }
-      }
-    }
+  
 
 
  
