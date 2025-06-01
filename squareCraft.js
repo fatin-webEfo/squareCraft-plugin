@@ -429,19 +429,38 @@
 
       if (!widgetLoaded) {
         await createWidget(clickedBlock);
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-          handleAndDetect(clickedBlock);
-        }).catch(error => {
-          console.error(error.message);
-        });
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+          .then(() => {
+            handleAndDetect(clickedBlock);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       } else {
-        widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-          handleAndDetect(clickedBlock);
-        }).catch(error => {
-          console.error(error.message);
-        });
+        if (clickedBlock) {
+          const rect = clickedBlock.getBoundingClientRect();
+          const scrollTop = window.scrollY || parent.scrollY || 0;
+          const scrollLeft = window.scrollX || parent.scrollX || 0;
+
+          widgetContainer.style.position = "absolute";
+          widgetContainer.style.top = `${rect.bottom + scrollTop + 8}px`;
+          widgetContainer.style.left = `${rect.left + scrollLeft}px`;
+
+          selectedElement = clickedBlock;
+        }
+
+        widgetContainer.style.display =
+          widgetContainer.style.display === "none" ? "block" : "none";
+
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+          .then(() => {
+            handleAndDetect(clickedBlock);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       }
+      
     }
 
     function handleAndDetect(clickedBlock) {
@@ -728,7 +747,7 @@
             event.stopPropagation();
             event.preventDefault();
 
-            const clickedBlock = event.target.closest('[id^="block-"]'); // ✅ Get the clicked block
+            const clickedBlock = event.target.closest('[id^="block-"]'); 
 
             toggleWidgetVisibility(event); 
           });
