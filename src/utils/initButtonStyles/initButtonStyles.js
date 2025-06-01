@@ -1591,57 +1591,48 @@ export function initButtonResetHandlers(getSelectedElement) {
     "icon-size-reset": [
       "buttonIconSizeradiusBullet",
       "buttonIconSizeradiusFill",
-      "buttonIconSizeradiusCount",
+      "buttoniconSizeradiusCount",
       "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "icon-spacing-reset": [
-      "buttonIconSpacingradiusBullet",
-      "buttonIconSpacingradiusFill",
-      "buttonIconSpacingCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
     ],
     "icon-rotation-reset": [
       "buttonIconRotationradiusBullet",
       "buttonIconRotationradiusFill",
-      "buttonIconRotationCount",
+      "buttoniconRotationradiusCount",
       "sc-transform-style-ICON",
-      "__squareCraftIconMap",
+    ],
+    "icon-spacing-reset": [
+      "buttonIconSpacingradiusBullet",
+      "buttonIconSpacingradiusFill",
+      "buttoniconSpacingCount",
+      "sc-transform-style-ICON",
     ],
     "border-radius-reset": [
       "buttonBorderradiusBullet",
       "buttonBorderradiusFill",
       "buttonBorderradiusCount",
       "sc-normal-radius-ICON",
-      "__squareCraftRadiusMap",
     ],
     "shadow-blur-reset": [
       "buttonShadowBlurBullet",
       null,
       "buttonShadowBlurCount",
       "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
     ],
     "shadow-spread-reset": [
       "buttonShadowSpreadBullet",
       null,
       "buttonShadowSpreadCount",
       "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
     ],
     "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount"],
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "sc-button-shadow-ICON"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "sc-button-shadow-ICON"],
     ],
     "border-reset": [
       "buttonBorderBullet",
       "buttonBorderFill",
       "buttonBorderCount",
       "sc-button-border-ICON",
-      "__squareCraftBorderStateMap",
     ],
   };
 
@@ -1674,46 +1665,118 @@ export function initButtonResetHandlers(getSelectedElement) {
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
-      if (resetId === "shadow-axis-reset") {
-        const [xConfig, yConfig, styleIdRaw, mapName] = config;
-        [xConfig, yConfig].forEach(([bulletId, countId]) => {
-          const bullet = document.getElementById(bulletId);
-          const count = document.getElementById(countId);
-          if (bullet) bullet.style.left = "0px";
-          if (count) count.textContent = "0px";
-        });
-        const styleId = styleIdRaw.replace("ICON", typeClass);
-        document.getElementById(styleId)?.remove();
-        window[mapName]?.delete?.(key);
+      if (
+        resetId === "icon-size-reset" ||
+        resetId === "icon-spacing-reset" ||
+        resetId === "icon-rotation-reset"
+      ) {
+        const iconCount = document.getElementById("buttoniconSizeradiusCount");
+        if (iconCount) iconCount.textContent = "0px";
+        document
+          .getElementById("buttonIconSizeradiusBullet")
+          ?.style.setProperty("left", "0px");
+        document
+          .getElementById("buttonIconSizeradiusFill")
+          ?.style.setProperty("width", "0px");
+
+        const spacingCount = document.getElementById("buttoniconSpacingCount");
+        if (spacingCount) spacingCount.textContent = "0px";
+        document
+          .getElementById("buttonIconSpacingradiusBullet")
+          ?.style.setProperty("left", "0px");
+        document
+          .getElementById("buttonIconSpacingradiusFill")
+          ?.style.setProperty("width", "0px");
+
+        const rotationCount = document.getElementById(
+          "buttoniconRotationradiusCount"
+        );
+        if (rotationCount) rotationCount.textContent = "0px";
+        document
+          .getElementById("buttonIconRotationradiusBullet")
+          ?.style.setProperty("left", "0px");
+        document
+          .getElementById("buttonIconRotationradiusFill")
+          ?.style.setProperty("width", "0px");
+
+        document.getElementById(`sc-transform-style-${typeClass}`)?.remove();
+        window.__squareCraftIconMap?.delete?.(key);
         return;
       }
 
-      const [bulletId, fillId, countId, styleIdRaw, mapName] = config;
+      if (resetId === "border-reset") {
+        const borderCount = document.getElementById("buttonBorderCount");
+        if (borderCount) borderCount.textContent = "0px";
+        document
+          .getElementById("buttonBorderBullet")
+          ?.style.setProperty("left", "0px");
+        document
+          .getElementById("buttonBorderFill")
+          ?.style.setProperty("width", "0px");
 
-      if (bulletId) {
-        const bullet = document.getElementById(bulletId);
-        if (bullet) bullet.style.left = "0px";
+        document.getElementById(`sc-button-border-${typeClass}`)?.remove();
+        window.__squareCraftBorderStateMap?.delete?.(key);
+        return;
       }
 
-      if (fillId) {
-        const fill = document.getElementById(fillId);
-        if (fill) fill.style.width = "0px";
+      if (resetId === "border-radius-reset") {
+        const radiusCount = document.getElementById("buttonBorderradiusCount");
+        if (radiusCount) radiusCount.textContent = "0px";
+        document
+          .getElementById("buttonBorderradiusBullet")
+          ?.style.setProperty("left", "0px");
+        document
+          .getElementById("buttonBorderradiusFill")
+          ?.style.setProperty("width", "0px");
+
+        document
+          .getElementById(`sc-normal-radius-${typeClass.replace(/--/g, "-")}`)
+          ?.remove();
+        window.__squareCraftRadiusMap?.delete?.(key);
+        return;
       }
 
-      if (countId) {
-        const count = document.getElementById(countId);
+      if (resetId === "shadow-axis-reset") {
+        ["Xaxis", "Yaxis"].forEach((axis) => {
+          const count = document.getElementById(`buttonShadow${axis}Count`);
+          if (count) count.textContent = "0px";
+          document
+            .getElementById(`buttonShadow${axis}Bullet`)
+            ?.style.setProperty("left", "0px");
+        });
+
+        document.getElementById(`sc-button-shadow-${typeClass}`)?.remove();
+        window.__squareCraftShadowMap?.delete?.(key);
+        return;
+      }
+
+      if (resetId === "shadow-blur-reset") {
+        const count = document.getElementById("buttonShadowBlurCount");
         if (count) count.textContent = "0px";
+        document
+          .getElementById("buttonShadowBlurBullet")
+          ?.style.setProperty("left", "0px");
+
+        document.getElementById(`sc-button-shadow-${typeClass}`)?.remove();
+        window.__squareCraftShadowMap?.delete?.(key);
+        return;
       }
 
-      const styleId = styleIdRaw.replace("ICON", typeClass);
-      document.getElementById(styleId)?.remove();
-      if (mapName && window[mapName]) {
-        window[mapName].delete?.(key);
+      if (resetId === "shadow-spread-reset") {
+        const count = document.getElementById("buttonShadowSpreadCount");
+        if (count) count.textContent = "0px";
+        document
+          .getElementById("buttonShadowSpreadBullet")
+          ?.style.setProperty("left", "0px");
+
+        document.getElementById(`sc-button-shadow-${typeClass}`)?.remove();
+        window.__squareCraftShadowMap?.delete?.(key);
+        return;
       }
-    });
+    });    
+    
   });
 }
-
 
 
 
