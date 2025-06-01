@@ -1585,100 +1585,105 @@ export function resetAllButtonStyles(getSelectedElement) {
 export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = {
     "icon-size-reset": {
-      field: "#buttonIconSizeradiusField",
-      fill: "#buttonIconSizeradiusFill",
       bullet: "#buttonIconSizeradiusBullet",
+      fill: "#buttonIconSizeradiusFill",
       count: "#buttoniconSizeradiusCount",
-      key: "icon-size",
+      key: "--icon-size",
     },
     "icon-rotation-reset": {
-      field: "#buttonIconRotationradiusField",
-      fill: "#buttonIconRotationradiusFill",
       bullet: "#buttonIconRotationradiusBullet",
+      fill: "#buttonIconRotationradiusFill",
       count: "#buttoniconRotationradiusCount",
-      key: "icon-rotation",
+      key: "--icon-rotation",
     },
     "icon-spacing-reset": {
-      field: "#buttonIconSpacingradiusField",
-      fill: "#buttonIconSpacingradiusFill",
       bullet: "#buttonIconSpacingradiusBullet",
+      fill: "#buttonIconSpacingradiusFill",
       count: "#buttoniconSpacingCount",
-      key: "icon-spacing",
+      key: "--icon-spacing",
     },
     "border-reset": {
-      field: "#buttonBorderField",
-      fill: "#buttonBorderFill",
       bullet: "#buttonBorderBullet",
+      fill: "#buttonBorderFill",
       count: "#buttonBorderCount",
-      key: "border",
+      key: "--border",
     },
     "border-radius-reset": {
-      field: "#buttonBorderradiusField",
-      fill: "#buttonBorderradiusFill",
       bullet: "#buttonBorderradiusBullet",
+      fill: "#buttonBorderradiusFill",
       count: "#buttonBorderradiusCount",
-      key: "border-radius",
+      key: "--border-radius",
     },
     "shadow-axis-reset": {
-      x: {
-        field: "#buttonShadowXaxisField",
-        bullet: "#buttonShadowXaxisBullet",
-        count: "#buttonShadowXaxisCount",
-        key: "shadow-x",
-      },
-      y: {
-        field: "#buttonShadowYaxisField",
-        bullet: "#buttonShadowYaxisBullet",
-        count: "#buttonShadowYaxisCount",
-        key: "shadow-y",
-      },
+      bullets: ["#buttonShadowXaxisBullet", "#buttonShadowYaxisBullet"],
+      counts: ["#buttonShadowXaxisCount", "#buttonShadowYaxisCount"],
+      keys: ["--shadow-x", "--shadow-y"],
     },
     "shadow-blur-reset": {
-      field: "#buttonShadowBlurField",
       bullet: "#buttonShadowBlurBullet",
       count: "#buttonShadowBlurCount",
-      key: "shadow-blur",
+      key: "--shadow-blur",
     },
     "shadow-spread-reset": {
-      field: "#buttonShadowSpreadField",
       bullet: "#buttonShadowSpreadBullet",
       count: "#buttonShadowSpreadCount",
-      key: "shadow-spread",
+      key: "--shadow-spread",
     },
   };
 
-  Object.keys(resetMap).forEach((resetId) => {
+  Object.entries(resetMap).forEach(([resetId, config]) => {
     const resetBtn = document.getElementById(resetId);
     if (!resetBtn) return;
 
     resetBtn.addEventListener("click", () => {
-      const selectedElement = getSelectedElement();
-      if (!selectedElement) return;
+      const selected = getSelectedElement?.();
+      if (!selected) return;
+
+      const img = resetBtn.querySelector("img");
+      if (img) {
+        img.style.transition = "transform 0.4s ease";
+        img.style.transform = "rotate(360deg)";
+        setTimeout(() => {
+          img.style.transform = "rotate(0deg)";
+        }, 400);
+      }
 
       if (resetId === "shadow-axis-reset") {
-        ["x", "y"].forEach((axis) => {
-          const config = resetMap[resetId][axis];
-          const bullet = document.querySelector(config.bullet);
-          const count = document.querySelector(config.count);
-          if (bullet && count) {
-            bullet.style.left = "0px";
-            count.innerText = "0px";
-          }
-          selectedElement.style[`--${config.key}`] = "0px";
+        const prevX = selected.style.getPropertyValue(config.keys[0]) || "0px";
+        const prevY = selected.style.getPropertyValue(config.keys[1]) || "0px";
+
+        config.bullets.forEach((sel, i) => {
+          const bullet = document.querySelector(sel);
+          const count = document.querySelector(config.counts[i]);
+          if (bullet) bullet.style.left = "0px";
+          if (count) count.innerText = "0px";
+          selected.style.setProperty(config.keys[i], "0px");
         });
+
+        setTimeout(() => {
+          selected.style.setProperty(config.keys[0], prevX);
+          selected.style.setProperty(config.keys[1], prevY);
+        }, 300);
       } else {
-        const config = resetMap[resetId];
+        const prev = selected.style.getPropertyValue(config.key) || "0px";
+
         const bullet = document.querySelector(config.bullet);
         const fill = document.querySelector(config.fill);
         const count = document.querySelector(config.count);
+
         if (bullet) bullet.style.left = "0px";
         if (fill) fill.style.width = "0px";
         if (count) count.innerText = "0px";
-        selectedElement.style[`--${config.key}`] = "0px";
+        selected.style.setProperty(config.key, "0px");
+
+        setTimeout(() => {
+          selected.style.setProperty(config.key, prev);
+        }, 300);
       }
     });
   });
 }
+
 
 
 setTimeout(() => {
