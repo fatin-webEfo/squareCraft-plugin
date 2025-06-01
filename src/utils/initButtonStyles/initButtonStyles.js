@@ -1592,47 +1592,55 @@ export function initButtonResetHandlers(getSelectedElement) {
       "buttonIconSizeradiusBullet",
       "buttonIconSizeradiusFill",
       "buttoniconSizeradiusCount",
-      "--icon-size",
+      "sc-transform-style-ICON",
     ],
     "icon-rotation-reset": [
       "buttonIconRotationradiusBullet",
       "buttonIconRotationradiusFill",
       "buttoniconRotationradiusCount",
-      "--icon-rotation",
+      "sc-transform-style-ICON",
     ],
     "icon-spacing-reset": [
       "buttonIconSpacingradiusBullet",
       "buttonIconSpacingradiusFill",
       "buttoniconSpacingCount",
-      "--icon-spacing",
+      "sc-transform-style-ICON",
     ],
     "border-radius-reset": [
       "buttonBorderradiusBullet",
       "buttonBorderradiusFill",
       "buttonBorderradiusCount",
-      "--border-radius",
+      "sc-normal-radius-ICON",
     ],
     "shadow-blur-reset": [
       "buttonShadowBlurBullet",
       null,
       "buttonShadowBlurCount",
-      "--shadow-blur",
+      "sc-button-shadow-ICON",
     ],
     "shadow-spread-reset": [
       "buttonShadowSpreadBullet",
       null,
       "buttonShadowSpreadCount",
-      "--shadow-spread",
+      "sc-button-shadow-ICON",
     ],
     "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount", "--shadow-x"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount", "--shadow-y"],
+      [
+        "buttonShadowXaxisBullet",
+        "buttonShadowXaxisCount",
+        "sc-button-shadow-ICON",
+      ],
+      [
+        "buttonShadowYaxisBullet",
+        "buttonShadowYaxisCount",
+        "sc-button-shadow-ICON",
+      ],
     ],
     "border-reset": [
       "buttonBorderBullet",
       "buttonBorderFill",
       "buttonBorderCount",
-      "--border-width",
+      "sc-button-border-ICON",
     ],
   };
 
@@ -1653,31 +1661,6 @@ export function initButtonResetHandlers(getSelectedElement) {
         }, 400);
       }
 
-      // 🔁 Handle shadow x/y case
-      if (resetId === "shadow-axis-reset") {
-        config.forEach(([bulletId, countId, cssKey]) => {
-          const bullet = document.getElementById(bulletId);
-          const count = document.getElementById(countId);
-          if (bullet) bullet.style.left = "0px";
-          if (count) count.innerText = "0px";
-          selected.style.removeProperty(cssKey);
-        });
-        return;
-      }
-
-      // 🔁 All other single property resets
-      const [bulletId, fillId, countId, cssKey] = config;
-      const bullet = document.getElementById(bulletId);
-      const fill = fillId ? document.getElementById(fillId) : null;
-      const count = document.getElementById(countId);
-
-      if (bullet) bullet.style.left = "0px";
-      if (fill) fill.style.width = "0px";
-      if (count) count.innerText = "0px";
-
-      selected.style.removeProperty(cssKey);
-
-      // 🧹 Remove related <style> tags injected by widget
       const btn = selected.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
           "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
@@ -1689,22 +1672,33 @@ export function initButtonResetHandlers(getSelectedElement) {
       );
       if (!typeClass) return;
 
-      const styleIds = [
-        `sc-font-style-${typeClass}`,
-        `sc-font-weight-${typeClass}`,
-        `sc-button-shadow-${typeClass}`,
-        `sc-button-border-${typeClass}`,
-        `sc-normal-radius-${typeClass.replace(/--/g, "-")}`,
-        `sc-transform-style-${typeClass}`,
-      ];
+      if (resetId === "shadow-axis-reset") {
+        config.forEach(([bulletId, countId, stylePrefix]) => {
+          const bullet = document.getElementById(bulletId);
+          const count = document.getElementById(countId);
+          if (bullet) bullet.style.left = "0px";
+          if (count) count.innerText = "0px";
+          const styleId = `${stylePrefix.replace("ICON", typeClass)}`;
+          document.getElementById(styleId)?.remove();
+        });
+        return;
+      }
 
-      styleIds.forEach((id) => {
-        const styleTag = document.getElementById(id);
-        if (styleTag) styleTag.remove();
-      });
+      const [bulletId, fillId, countId, styleIdTemplate] = config;
+      const bullet = document.getElementById(bulletId);
+      const fill = fillId ? document.getElementById(fillId) : null;
+      const count = document.getElementById(countId);
+
+      if (bullet) bullet.style.left = "0px";
+      if (fill) fill.style.width = "0px";
+      if (count) count.innerText = "0px";
+
+      const fullStyleId = styleIdTemplate.replace("ICON", typeClass);
+      document.getElementById(fullStyleId)?.remove();
     });
   });
 }
+
 
 
 
