@@ -1600,14 +1600,14 @@ export function initButtonResetHandlers(getSelectedElement) {
     "icon-spacing-reset": {
       bullet: "buttonIconSpacingradiusBullet",
       fill: "buttonIconSpacingradiusFill",
-      count: "buttonIconSpacingCount",
+      count: "buttonSpacingCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
     },
     "icon-rotation-reset": {
       bullet: "buttonIconRotationradiusBullet",
       fill: "buttonIconRotationradiusFill",
-      count: "buttonIconRotationCount",
+      count: "buttonRotationCount",
       style: "sc-transform-style-ICON",
       map: "__squareCraftIconMap",
     },
@@ -1678,21 +1678,27 @@ export function initButtonResetHandlers(getSelectedElement) {
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
 
-      // Handle shadow-axis-reset
+      // 🟠 Handle shadow-axis-reset separately
       if (resetId === "shadow-axis-reset") {
+        const styleId = config.style.replace("ICON", typeClass);
+        if (window[config.map]) window[config.map].delete?.(key);
+        document.getElementById(styleId)?.remove();
+
         config.axis.forEach(({ bullet, count }) => {
           const b = document.getElementById(bullet);
           const c = document.getElementById(count);
           if (b) b.style.left = "0px";
           if (c) c.textContent = "0px";
         });
-        const styleId = config.style.replace("ICON", typeClass);
-        document.getElementById(styleId)?.remove();
-        if (window[config.map]) window[config.map].delete?.(key);
         return;
       }
 
-      // All other reset types
+      // 🧹 Delete state before anything else
+      const styleId = config.style.replace("ICON", typeClass);
+      if (window[config.map]) window[config.map].delete?.(key);
+      document.getElementById(styleId)?.remove();
+
+      // 🧼 Reset visuals
       const bulletEl = document.getElementById(config.bullet);
       const fillEl = config.fill ? document.getElementById(config.fill) : null;
       const countEl = document.getElementById(config.count);
@@ -1700,13 +1706,10 @@ export function initButtonResetHandlers(getSelectedElement) {
       if (bulletEl) bulletEl.style.left = "0px";
       if (fillEl) fillEl.style.width = "0px";
       if (countEl) countEl.textContent = "0px";
-
-      const styleId = config.style.replace("ICON", typeClass);
-      document.getElementById(styleId)?.remove();
-      if (window[config.map]) window[config.map].delete?.(key);
     });
   });
 }
+
 
 
 
