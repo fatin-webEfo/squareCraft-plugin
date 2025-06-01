@@ -1471,7 +1471,7 @@ export function resetAllButtonStyles(getSelectedElement) {
         "scButtonLetterSpacingInput"
       );
       if (fontSizeInput) {
-        fontSizeInput.value = "10";
+        fontSizeInput.value = "";
         fontSizeInput.dispatchEvent(new Event("input"));
       }
       if (letterSpacingInput) {
