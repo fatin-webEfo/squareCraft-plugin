@@ -407,110 +407,57 @@ export function initButtonIconPositionToggle(getSelectedElement) {
 let normalRotationInitialized = false;
 
 export function initButtonIconRotationControl(getSelectedElement) {
-  if (normalRotationInitialized) return;
-  normalRotationInitialized = true;
+  const fillField = document.getElementById("buttonIconRotationradiousField");
+  const bullet = document.getElementById("buttonIconRotationradiousBullet");
+  const fill = document.getElementById("buttonIconRotationradiousFill");
+  const valueText = document.getElementById("buttonIconRotationradiousCount");
+  const resetBtn = document.getElementById("icon-rotation-reset");
 
-  const bullet = document.getElementById("buttonIconRotationradiusBullet");
-  const fill = document.getElementById("buttonIconRotationradiusFill");
-  const field = document.getElementById("buttonIconRotationradiusField");
-  const label = document.getElementById("buttoniconRotationradiusCount");
+  if (!fillField || !bullet || !fill || !valueText) return;
 
-  const incBtn = document.getElementById("buttoniconRotationIncrease");
-  const decBtn = document.getElementById("buttoniconRotationDecrease");
+  const maxRotation = 180;
+  let rotationValue = 0;
+  let manualReset = false;
 
-  let currentRotation = 0;
-  let userInteracted = false;
+  function getButtonTypeClass(btn) {
+    if (btn.classList.contains("sqs-button-element--secondary"))
+      return "sqs-button-element--secondary";
+    if (btn.classList.contains("sqs-button-element--tertiary"))
+      return "sqs-button-element--tertiary";
+    return "sqs-button-element--primary";
+  }
 
   function applyRotation() {
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector(
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
     );
     if (!btn) return;
 
-    const typeClass = [...btn.classList].find((cls) =>
-      cls.startsWith("sqs-button-element--")
-    );
-    if (!typeClass) return;
+    const icon = btn.querySelector(".sqscraft-button-icon");
+    if (!icon) return;
 
-    const buttons = document.querySelectorAll(`a.${typeClass}`);
-    buttons.forEach((button) => {
-      const icon = button.querySelector(
-        ".sqscraft-button-icon, .sqscraft-image-icon"
-      );
-      if (icon) {
-        icon.style.transform = `rotate(${currentRotation}deg)`;
-      }
-    });
+    icon.style.transform = `rotate(${rotationValue}deg)`;
   }
 
-  function updateUI(clientX) {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const centerX = rect.width / 2;
-    const deltaX = x - centerX;
-    currentRotation = Math.round((deltaX / centerX) * 180);
-
-    const percent = (x / rect.width) * 100;
+  function updateUIFromValue(deg) {
+    rotationValue = Math.max(-maxRotation, Math.min(maxRotation, deg));
+    const percent = ((rotationValue + maxRotation) / (maxRotation * 2)) * 100;
     bullet.style.left = `${percent}%`;
-
-    const fillStart = 50;
-    fill.style.left = `${Math.min(percent, fillStart)}%`;
-    fill.style.width = `${Math.abs(percent - fillStart)}%`;
-
-    label.textContent = `${currentRotation}deg`;
-
+    fill.style.width = `${percent}%`;
+    valueText.textContent = `${rotationValue}°`;
     applyRotation();
-  }
-
-  function updateFromRotationValue(value) {
-    const clamped = Math.max(-180, Math.min(180, value));
-    currentRotation = clamped;
-    const percent = ((clamped + 180) / 360) * 100;
-
-    bullet.style.left = `${percent}%`;
-
-    const center = 50;
-    fill.style.left = `${Math.min(percent, center)}%`;
-    fill.style.width = `${Math.abs(percent - center)}%`;
-
-    label.textContent = `${clamped}deg`;
-    applyRotation();
-  }
-
-  function syncFromIconRotation() {
-    if (userInteracted) return;
-
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
-    if (!btn) return;
-
-    const icon = btn.querySelector(
-      ".sqscraft-button-icon, .sqscraft-image-icon"
-    );
-    if (!icon) {
-      updateFromRotationValue(0);
-      return;
-    }
-
-    const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    if (match) {
-      const rotation = parseFloat(match[1]);
-      if (!isNaN(rotation)) {
-        updateFromRotationValue(rotation);
-        return;
-      }
-    }
-
-    updateFromRotationValue(0);
   }
 
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
-    userInteracted = true;
-    const move = (e) => updateUI(e.clientX);
+    const move = (eMove) => {
+      const rect = fillField.getBoundingClientRect();
+      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width);
+      const percent = x / rect.width;
+      const value = Math.round((percent - 0.5) * (maxRotation * 2));
+      updateUIFromValue(value);
+    };
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -519,23 +466,48 @@ export function initButtonIconRotationControl(getSelectedElement) {
     document.addEventListener("mouseup", up);
   });
 
-  field.addEventListener("click", (e) => {
-    userInteracted = true;
-    updateUI(e.clientX);
+  fillField.addEventListener("click", (e) => {
+    const rect = fillField.getBoundingClientRect();
+    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+    const percent = x / rect.width;
+    const value = Math.round((percent - 0.5) * (maxRotation * 2));
+    updateUIFromValue(value);
   });
 
-  incBtn?.addEventListener("click", () => {
-    userInteracted = true;
-    updateFromRotationValue(currentRotation + 1);
+  resetBtn?.addEventListener("click", () => {
+    manualReset = true;
+    updateUIFromValue(0);
   });
 
-  decBtn?.addEventListener("click", () => {
-    userInteracted = true;
-    updateFromRotationValue(currentRotation - 1);
-  });
+  setTimeout(() => {
+    if (manualReset) {
+      manualReset = false;
+      return;
+    }
 
-  setTimeout(syncFromIconRotation, 50);
-} 
+    const selected = getSelectedElement?.();
+    const btn = selected?.querySelector(
+      ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const icon = btn.querySelector(".sqscraft-button-icon");
+    if (!icon) return;
+
+    const transform = window.getComputedStyle(icon).transform;
+    if (transform && transform !== "none") {
+      const values = transform.match(/matrix.*\((.+)\)/);
+      if (values) {
+        const matrix = values[1].split(", ");
+        const a = parseFloat(matrix[0]);
+        const b = parseFloat(matrix[1]);
+        const angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        updateUIFromValue(angle);
+      }
+    }
+  }, 50);
+}
+
 
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiusBullet");
