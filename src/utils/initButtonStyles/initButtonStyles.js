@@ -1637,8 +1637,11 @@ export function initButtonResetHandlers(getSelectedElement) {
       action: (btn, selected, typeClass, key, state) => {
         if (state?.shadow) {
           const { x, y, blur, spread, color } = state.shadow;
-          const shadowValue = `${x} ${y} ${blur} ${spread} ${color}`;
-          btn.style.setProperty("box-shadow", shadowValue, "important");
+          btn.style.setProperty(
+            "box-shadow",
+            `${x} ${y} ${blur} ${spread} ${color}`,
+            "important"
+          );
         }
       },
     },
@@ -1647,8 +1650,11 @@ export function initButtonResetHandlers(getSelectedElement) {
       action: (btn, selected, typeClass, key, state) => {
         if (state?.shadow) {
           const { x, y, spread, color } = state.shadow;
-          const shadowValue = `${x} ${y} 0px ${spread} ${color}`;
-          btn.style.setProperty("box-shadow", shadowValue, "important");
+          btn.style.setProperty(
+            "box-shadow",
+            `${x} ${y} 0px ${spread} ${color}`,
+            "important"
+          );
         }
       },
     },
@@ -1657,8 +1663,11 @@ export function initButtonResetHandlers(getSelectedElement) {
       action: (btn, selected, typeClass, key, state) => {
         if (state?.shadow) {
           const { x, y, blur, color } = state.shadow;
-          const shadowValue = `${x} ${y} ${blur} 0px ${color}`;
-          btn.style.setProperty("box-shadow", shadowValue, "important");
+          btn.style.setProperty(
+            "box-shadow",
+            `${x} ${y} ${blur} 0px ${color}`,
+            "important"
+          );
         }
       },
     },
@@ -1687,30 +1696,31 @@ export function initButtonResetHandlers(getSelectedElement) {
         const styleTag = document.getElementById(
           `sc-button-border-${typeClass}`
         );
-
         action(btn, selected, typeClass, key, state, styleTag);
       });
     });
   });
 
   function updateBorderStyleTag(typeClass, state, styleTag) {
-    const borderColor = state.color || "#000000";
-    const borderRadius = state.borderRadius || "0px";
     const values = state.values || { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+    const color = state.color || "#000000";
+    const radius = state.borderRadius || "0px";
+    const type = state.type || "solid";
 
     styleTag.textContent = `
 .${typeClass} {
   box-sizing: border-box !important;
-  border-style: ${state.type || "solid"} !important;
-  border-color: ${borderColor} !important;
+  border-style: ${type} !important;
+  border-color: ${color} !important;
   border-top-width: ${values.Top}px !important;
   border-right-width: ${values.Right}px !important;
   border-bottom-width: ${values.Bottom}px !important;
   border-left-width: ${values.Left}px !important;
-  border-radius: ${borderRadius} !important;
+  border-radius: ${radius} !important;
 }`;
   }
 }
+
 
 
 
