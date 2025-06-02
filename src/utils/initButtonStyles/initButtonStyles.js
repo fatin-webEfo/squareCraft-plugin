@@ -1471,7 +1471,7 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttoniconSizeradiusCount").textContent = "0px";
 
       inputSync("buttonIconSpacingradius", "0px", "0%");
-      document.getElementById("buttoniconSpacingCount").textContent = "0px"; 
+      document.getElementById("buttoniconSpacingCount").textContent = "0px";
 
       inputSync("hover-buttonIconTransformPosition", "0px", "50%");
       inputSync("hover-buttonBorder", "0px", "0%");
@@ -1592,82 +1592,28 @@ export function initButtonBorderResetHandlers(getSelectedElement) {
       id: "border-reset",
       action: ({ typeClass, key, state, styleTag }) => {
         if (!state || !styleTag) return;
-        state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+
+        if (
+          !state.originalValues ||
+          !state.originalColor ||
+          !state.originalType
+        ) {
+          console.warn(`❗ No original border data to reset for ${key}`);
+          return;
+        }
+
+        state.values = {
+          Top: parseInt(state.originalValues.Top),
+          Right: parseInt(state.originalValues.Right),
+          Bottom: parseInt(state.originalValues.Bottom),
+          Left: parseInt(state.originalValues.Left),
+        };
+        state.color = state.originalColor;
+        state.type = state.originalType;
+
         window.__squareCraftBorderStateMap.set(key, state);
         updateBorderStyleTag(typeClass, state, styleTag);
-        console.log(`🔁 Border reset → 0px on all sides for ${key}`);
-      },
-    },
-    {
-      id: "border-radius-reset",
-      action: ({ typeClass, key, state, styleTag }) => {
-        if (!state || !styleTag) return;
-        state.borderRadius = "0px";
-        window.__squareCraftBorderStateMap.set(key, state);
-        updateBorderStyleTag(typeClass, state, styleTag);
-        console.log(`🔁 Border radius reset → 0px for ${key}`);
-      },
-    },
-    {
-      id: "icon-size-reset",
-      action: ({ btn, state }) => {
-        const icon = btn.querySelector("svg");
-        if (icon && state?.iconSize) {
-          icon.style.setProperty("width", state.iconSize, "important");
-          icon.style.setProperty("height", state.iconSize, "important");
-          console.log(`🔁 Icon size reset → ${state.iconSize}`);
-        }
-      },
-    },
-    {
-      id: "icon-rotation-reset",
-      action: ({ btn, state }) => {
-        if (state?.iconRotation) {
-          btn.style.setProperty("transform", state.iconRotation, "important");
-          console.log(`🔁 Icon rotation reset → ${state.iconRotation}`);
-        }
-      },
-    },
-    {
-      id: "icon-spacing-reset",
-      action: ({ btn, state }) => {
-        if (state?.iconSpacing) {
-          btn.style.setProperty("gap", state.iconSpacing, "important");
-          console.log(`🔁 Icon spacing reset → ${state.iconSpacing}`);
-        }
-      },
-    },
-    {
-      id: "shadow-axis-reset",
-      action: ({ btn, state }) => {
-        if (state?.shadow) {
-          const { x, y, blur, spread, color } = state.shadow;
-          const shadow = `${x} ${y} ${blur} ${spread} ${color}`;
-          btn.style.setProperty("box-shadow", shadow, "important");
-          console.log(`🔁 Shadow axis reset → ${shadow}`);
-        }
-      },
-    },
-    {
-      id: "shadow-blur-reset",
-      action: ({ btn, state }) => {
-        if (state?.shadow) {
-          const { x, y, spread, color } = state.shadow;
-          const shadow = `${x} ${y} 0px ${spread} ${color}`;
-          btn.style.setProperty("box-shadow", shadow, "important");
-          console.log(`🔁 Shadow blur reset → ${shadow}`);
-        }
-      },
-    },
-    {
-      id: "shadow-spread-reset",
-      action: ({ btn, state }) => {
-        if (state?.shadow) {
-          const { x, y, blur, color } = state.shadow;
-          const shadow = `${x} ${y} ${blur} 0px ${color}`;
-          btn.style.setProperty("box-shadow", shadow, "important");
-          console.log(`🔁 Shadow spread reset → ${shadow}`);
-        }
+        console.log(`🔁 Border reset → original widths and color for ${key}`);
       },
     },
   ];
@@ -1725,21 +1671,6 @@ export function initButtonBorderResetHandlers(getSelectedElement) {
     console.log(`📦 Updated border CSS for .${typeClass}`);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
