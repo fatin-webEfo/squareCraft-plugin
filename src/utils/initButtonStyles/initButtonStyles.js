@@ -991,6 +991,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   const max = 50;
   let radiusValue = 0;
+  let manualReset = false; // 🟡 NEW: flag to detect reset action
 
   function getButtonTypeClass(btn) {
     if (btn.classList.contains("sqs-button-element--secondary"))
@@ -1039,11 +1040,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   function updateUIFromValue(value) {
     radiusValue = Math.max(0, Math.min(max, value));
     const percent = (radiusValue / max) * 100;
-
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${radiusValue}px`;
-
     applyBorderRadius();
   }
 
@@ -1072,9 +1071,19 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
-  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
+
+  // ✅ Fix reset logic
+  resetBtn?.addEventListener("click", () => {
+    manualReset = true;
+    updateUIFromValue(0);
+  });
 
   setTimeout(() => {
+    if (manualReset) {
+      manualReset = false;
+      return;
+    }
+
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector(
       ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
@@ -1085,6 +1094,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
     if (!isNaN(computed)) updateUIFromValue(computed);
   }, 50);
 }
+
 
 export function initButtonShadowControls(getSelectedElement) {
   if (!window.shadowState) {
