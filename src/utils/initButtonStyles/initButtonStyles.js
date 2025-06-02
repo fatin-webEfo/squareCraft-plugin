@@ -1588,54 +1588,6 @@ export function resetAllButtonStyles(getSelectedElement) {
 
 export function initButtonBorderResetHandlers(getSelectedElement) {
   const resetMap = {
-    "icon-size-reset": [
-      "buttonIconSizeradiusBullet",
-      "buttonIconSizeradiusFill",
-      "buttonIconSizeradiusCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "icon-spacing-reset": [
-      "buttonIconSpacingradiusBullet",
-      "buttonIconSpacingradiusFill",
-      "buttonIconSpacingCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "icon-rotation-reset": [
-      "buttonIconRotationradiusBullet",
-      "buttonIconRotationradiusFill",
-      "buttonIconRotationCount",
-      "sc-transform-style-ICON",
-      "__squareCraftIconMap",
-    ],
-    "border-radius-reset": [
-      "buttonBorderradiusBullet",
-      "buttonBorderradiusFill",
-      "buttonBorderradiusCount",
-      "sc-normal-radius-ICON",
-      "__squareCraftRadiusMap",
-    ],
-    "shadow-blur-reset": [
-      "buttonShadowBlurBullet",
-      null,
-      "buttonShadowBlurCount",
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
-    "shadow-spread-reset": [
-      "buttonShadowSpreadBullet",
-      null,
-      "buttonShadowSpreadCount",
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
-    "shadow-axis-reset": [
-      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount"],
-      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount"],
-      "sc-button-shadow-ICON",
-      "__squareCraftShadowMap",
-    ],
     "border-reset": [
       "buttonBorderBullet",
       "buttonBorderFill",
