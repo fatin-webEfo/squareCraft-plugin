@@ -534,7 +534,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   });
 
   setTimeout(syncFromIconRotation, 50);
-}
+} 
 
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiusBullet");
