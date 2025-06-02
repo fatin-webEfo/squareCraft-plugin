@@ -331,38 +331,39 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
     colorCodeArrow.classList.toggle("sc-rotate-180");
   });
 
-  colorCodeList.querySelectorAll("[data-format]").forEach(option => {
-  option.addEventListener("click", () => {
-    const selected = option.getAttribute("data-format");
-    colorCodeLabel.textContent = selected;
-    const display = document.getElementById("button-color-code");
-    const lastColor = display?.dataset?.rawColor || display?.textContent;
+  colorCodeList.querySelectorAll("[data-format]").forEach((option) => {
+    option.addEventListener("click", () => {
+      const selected = option.getAttribute("data-format");
+      colorCodeLabel.textContent = selected;
+      const display = document.getElementById("button-color-code");
+      const lastColor = display?.dataset?.rawColor || display?.textContent;
 
-    if (display && lastColor) {
-      const temp = document.createElement("div");
-      temp.style.color = lastColor;
-      document.body.appendChild(temp);
-      const rgb = getComputedStyle(temp).color;
-      document.body.removeChild(temp);
+      if (display && lastColor) {
+        const temp = document.createElement("div");
+        temp.style.color = lastColor;
+        document.body.appendChild(temp);
+        const rgb = getComputedStyle(temp).color;
+        document.body.removeChild(temp);
 
-      const match = rgb.match(/\d+/g);
-      if (match && match.length >= 3) {
-        const r = +match[0],
-          g = +match[1],
-          b = +match[2];
-        const alpha = match[3] ? +match[3] / 255 : 1;
+        const match = rgb.match(/\d+/g);
+        if (match && match.length >= 3) {
+          const r = +match[0],
+            g = +match[1],
+            b = +match[2];
+          const alpha = match[3] ? +match[3] / 255 : 1;
 
-        const formatted = formatColorOutput(r, g, b, alpha);
-        display.textContent = formatted;
-        display.dataset.rawColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+          const formatted = formatColorOutput(r, g, b, alpha);
+          display.textContent = formatted;
+          display.dataset.rawColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
       }
-    }
 
-    selectedColorFormat = selected;
-    colorCodeList.classList.add("sc-hidden");
-    colorCodeArrow.classList.add("sc-rotate-180");
+      selectedColorFormat = selected;
+      colorCodeList.classList.add("sc-hidden");
+      colorCodeArrow.classList.add("sc-rotate-180");
+    });
   });
-});
+  
 
 
   document.addEventListener("click", (e) => {
