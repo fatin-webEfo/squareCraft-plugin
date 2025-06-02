@@ -1637,28 +1637,54 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "border-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalBorder) {
-          btn.dataset.originalBorder = getComputedStyle(btn).border;
-        }
-        btn.style.setProperty(
-          "border",
-          btn.dataset.originalBorder,
-          "important"
+      action: (btn, selected) => {
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
         );
+        const key = `${selected.id}--${typeClass}`;
+        const state = window.__squareCraftBorderStateMap?.get(key);
+        if (!state) return;
+
+        const styleId = `sc-button-border-${typeClass}`;
+        const styleTag = document.getElementById(styleId);
+        if (!styleTag) return;
+
+        const updatedState = {
+          ...state,
+          values: { Top: 0, Right: 0, Bottom: 0, Left: 0 },
+        };
+        window.__squareCraftBorderStateMap.set(key, updatedState);
+
+        styleTag.textContent = `
+.${typeClass} {
+  box-sizing: border-box !important;
+  border-style: ${updatedState.type || "solid"} !important;
+  border-color: ${updatedState.color || "#000"} !important;
+  border-top-width: 0px !important;
+  border-right-width: 0px !important;
+  border-bottom-width: 0px !important;
+  border-left-width: 0px !important;
+}`;
       },
     },
     {
       id: "border-radius-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalRadius) {
-          btn.dataset.originalRadius = getComputedStyle(btn).borderRadius;
-        }
-        btn.style.setProperty(
-          "border-radius",
-          btn.dataset.originalRadius,
-          "important"
+      action: (btn, selected) => {
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
         );
+        const key = `${selected.id}--${typeClass}`;
+        const state = window.__squareCraftBorderStateMap?.get(key);
+        if (!state) return;
+
+        const styleId = `sc-button-border-${typeClass}`;
+        const styleTag = document.getElementById(styleId);
+        if (!styleTag) return;
+
+        styleTag.textContent += `
+.${typeClass} {
+  border-radius: 0px !important;
+}`;
       },
     },
     {
@@ -1716,10 +1742,11 @@ export function initButtonResetHandlers(getSelectedElement) {
       const btns = selected.querySelectorAll(
         "a.sqs-button-element, .sqs-block-button-element--small"
       );
-      btns.forEach(action);
+      btns.forEach((btn) => action(btn, selected));
     });
   });
 }
+
 
 
 
