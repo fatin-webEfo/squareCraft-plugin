@@ -65,7 +65,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
 
-    const canvas = getGradientCanvas(hue, selectorField.offsetWidth, selectorField.offsetHeight);
+    const canvas = getGradientCanvas(
+      hue,
+      selectorField.offsetWidth,
+      selectorField.offsetHeight
+    );
     canvas.style.position = "absolute";
     canvas.style.top = "0";
     canvas.style.left = "0";
@@ -74,7 +78,17 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.style.position = "relative";
     selectorField.appendChild(canvas);
     selectorField.appendChild(bullet);
+
+    requestAnimationFrame(() => {
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      const centerX = Math.floor(canvas.width / 2);
+      const centerY = Math.floor(canvas.height / 2);
+      const data = ctx.getImageData(centerX, centerY, 1, 1).data;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
+      console.log(`🖼️ Canvas rendered (center pixel): ${rgba}`);
+    });
   }
+  
   function hslToRgb(h, s = 1, l = 0.5) {
     function hueToRgb(p, q, t) {
       if (t < 0) t += 1;
