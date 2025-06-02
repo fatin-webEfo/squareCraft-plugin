@@ -368,9 +368,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (!ctx) return;
 
         const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        const rgba = formatColorOutput(
+          data[0],
+          data[1],
+          data[2],
           currentTransparency / 100
-        })`;
+        );
+
 
         if (colorCode) colorCode.textContent = rgba;
         if (palette) palette.style.backgroundColor = rgba;
@@ -395,9 +399,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     if (!ctx) return;
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+    const rgba = formatColorOutput(
+      data[0],
+      data[1],
+      data[2],
       currentTransparency / 100
-    })`;
+    );
+
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
@@ -434,9 +442,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (!ctx) return;
 
         const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        const rgba = formatColorOutput(
+          data[0],
+          data[1],
+          data[2],
           currentTransparency / 100
-        })`;
+        );
+
 
         if (colorCode) colorCode.textContent = rgba;
         if (palette) palette.style.backgroundColor = rgba;
