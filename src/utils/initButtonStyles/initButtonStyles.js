@@ -11,6 +11,7 @@ setTimeout(() => {
   }
 }, 200);
 
+let manualReset = false; 
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API =
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
@@ -881,8 +882,11 @@ export function initButtonBorderControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => updateUIFromValue(currentValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(currentValue - 1));
-  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
-
+  resetBtn?.addEventListener("click", () => {
+    manualReset = true;
+    updateUIFromValue(0);
+  });
+  
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector(
@@ -991,7 +995,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   const max = 50;
   let radiusValue = 0;
-  let manualReset = false; // 🟡 NEW: flag to detect reset action
 
   function getButtonTypeClass(btn) {
     if (btn.classList.contains("sqs-button-element--secondary"))
