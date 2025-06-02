@@ -1589,141 +1589,77 @@ export function resetAllButtonStyles(getSelectedElement) {
 export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = [
     {
-      id: "icon-rotation-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalRotate) {
-          const transform = getComputedStyle(btn).transform;
-          btn.dataset.originalRotate =
-            transform === "none" ? "rotate(0deg)" : transform;
-        }
-        btn.style.setProperty(
-          "transform",
-          btn.dataset.originalRotate,
-          "important"
-        );
+      id: "border-reset",
+      action: (btn, selected, typeClass, key, state, styleTag) => {
+        if (!state || !styleTag) return;
+        state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+        window.__squareCraftBorderStateMap.set(key, state);
+        updateBorderStyleTag(typeClass, state, styleTag);
+      },
+    },
+    {
+      id: "border-radius-reset",
+      action: (btn, selected, typeClass, key, state, styleTag) => {
+        if (!state || !styleTag) return;
+        state.borderRadius = "0px";
+        window.__squareCraftBorderStateMap.set(key, state);
+        updateBorderStyleTag(typeClass, state, styleTag);
       },
     },
     {
       id: "icon-size-reset",
-      action: (btn) => {
+      action: (btn, selected, typeClass, key, state) => {
         const icon = btn.querySelector("svg");
-        if (icon) {
-          if (!icon.dataset.originalWidth) {
-            const cs = getComputedStyle(icon);
-            icon.dataset.originalWidth = cs.width;
-            icon.dataset.originalHeight = cs.height;
-          }
-          icon.style.setProperty(
-            "width",
-            icon.dataset.originalWidth,
-            "important"
-          );
-          icon.style.setProperty(
-            "height",
-            icon.dataset.originalHeight,
-            "important"
-          );
+        if (icon && state?.iconSize) {
+          icon.style.setProperty("width", state.iconSize, "important");
+          icon.style.setProperty("height", state.iconSize, "important");
+        }
+      },
+    },
+    {
+      id: "icon-rotation-reset",
+      action: (btn, selected, typeClass, key, state) => {
+        if (state?.iconRotation) {
+          btn.style.setProperty("transform", state.iconRotation, "important");
         }
       },
     },
     {
       id: "icon-spacing-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalSpacing) {
-          btn.dataset.originalSpacing = getComputedStyle(btn).gap || "10px";
+      action: (btn, selected, typeClass, key, state) => {
+        if (state?.iconSpacing) {
+          btn.style.setProperty("gap", state.iconSpacing, "important");
         }
-        btn.style.setProperty("gap", btn.dataset.originalSpacing, "important");
-      },
-    },
-    {
-      id: "border-reset",
-      action: (btn, selected) => {
-        const typeClass = [...btn.classList].find((cls) =>
-          cls.startsWith("sqs-button-element--")
-        );
-        const key = `${selected.id}--${typeClass}`;
-        const state = window.__squareCraftBorderStateMap?.get(key);
-        if (!state) return;
-
-        const styleId = `sc-button-border-${typeClass}`;
-        const styleTag = document.getElementById(styleId);
-        if (!styleTag) return;
-
-        const updatedState = {
-          ...state,
-          values: { Top: 0, Right: 0, Bottom: 0, Left: 0 },
-        };
-        window.__squareCraftBorderStateMap.set(key, updatedState);
-
-        styleTag.textContent = `
-.${typeClass} {
-  box-sizing: border-box !important;
-  border-style: ${updatedState.type || "solid"} !important;
-  border-color: ${updatedState.color || "#000"} !important;
-  border-top-width: 0px !important;
-  border-right-width: 0px !important;
-  border-bottom-width: 0px !important;
-  border-left-width: 0px !important;
-}`;
-      },
-    },
-    {
-      id: "border-radius-reset",
-      action: (btn, selected) => {
-        const typeClass = [...btn.classList].find((cls) =>
-          cls.startsWith("sqs-button-element--")
-        );
-        const key = `${selected.id}--${typeClass}`;
-        const state = window.__squareCraftBorderStateMap?.get(key);
-        if (!state) return;
-
-        const styleId = `sc-button-border-${typeClass}`;
-        const styleTag = document.getElementById(styleId);
-        if (!styleTag) return;
-
-        styleTag.textContent += `
-.${typeClass} {
-  border-radius: 0px !important;
-}`;
       },
     },
     {
       id: "shadow-axis-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalShadowAxis) {
-          btn.dataset.originalShadowAxis = getComputedStyle(btn).boxShadow;
+      action: (btn, selected, typeClass, key, state) => {
+        if (state?.shadow) {
+          const { x, y, blur, spread, color } = state.shadow;
+          const shadowValue = `${x} ${y} ${blur} ${spread} ${color}`;
+          btn.style.setProperty("box-shadow", shadowValue, "important");
         }
-        btn.style.setProperty(
-          "box-shadow",
-          btn.dataset.originalShadowAxis,
-          "important"
-        );
       },
     },
     {
       id: "shadow-blur-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalShadowBlur) {
-          btn.dataset.originalShadowBlur = getComputedStyle(btn).boxShadow;
+      action: (btn, selected, typeClass, key, state) => {
+        if (state?.shadow) {
+          const { x, y, spread, color } = state.shadow;
+          const shadowValue = `${x} ${y} 0px ${spread} ${color}`;
+          btn.style.setProperty("box-shadow", shadowValue, "important");
         }
-        btn.style.setProperty(
-          "box-shadow",
-          btn.dataset.originalShadowBlur,
-          "important"
-        );
       },
     },
     {
       id: "shadow-spread-reset",
-      action: (btn) => {
-        if (!btn.dataset.originalShadowSpread) {
-          btn.dataset.originalShadowSpread = getComputedStyle(btn).boxShadow;
+      action: (btn, selected, typeClass, key, state) => {
+        if (state?.shadow) {
+          const { x, y, blur, color } = state.shadow;
+          const shadowValue = `${x} ${y} ${blur} 0px ${color}`;
+          btn.style.setProperty("box-shadow", shadowValue, "important");
         }
-        btn.style.setProperty(
-          "box-shadow",
-          btn.dataset.originalShadowSpread,
-          "important"
-        );
       },
     },
   ];
@@ -1734,18 +1670,48 @@ export function initButtonResetHandlers(getSelectedElement) {
 
     resetBtn.addEventListener("click", () => {
       const selected = getSelectedElement?.();
-      if (!selected) {
-        console.warn(`⛔ Reset: No selected element for ${id}`);
-        return;
-      }
+      if (!selected) return;
 
       const btns = selected.querySelectorAll(
-        "a.sqs-button-element, .sqs-block-button-element--small"
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
-      btns.forEach((btn) => action(btn, selected));
+
+      btns.forEach((btn) => {
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (!typeClass) return;
+
+        const key = `${selected.id}--${typeClass}`;
+        const state = window.__squareCraftBorderStateMap?.get(key);
+        const styleTag = document.getElementById(
+          `sc-button-border-${typeClass}`
+        );
+
+        action(btn, selected, typeClass, key, state, styleTag);
+      });
     });
   });
+
+  function updateBorderStyleTag(typeClass, state, styleTag) {
+    const borderColor = state.color || "#000000";
+    const borderRadius = state.borderRadius || "0px";
+    const values = state.values || { Top: 0, Right: 0, Bottom: 0, Left: 0 };
+
+    styleTag.textContent = `
+.${typeClass} {
+  box-sizing: border-box !important;
+  border-style: ${state.type || "solid"} !important;
+  border-color: ${borderColor} !important;
+  border-top-width: ${values.Top}px !important;
+  border-right-width: ${values.Right}px !important;
+  border-bottom-width: ${values.Bottom}px !important;
+  border-left-width: ${values.Left}px !important;
+  border-radius: ${borderRadius} !important;
+}`;
+  }
 }
+
 
 
 
