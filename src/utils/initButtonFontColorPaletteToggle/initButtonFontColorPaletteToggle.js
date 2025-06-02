@@ -5,8 +5,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   const palette = document.getElementById("buttonFontColorPalate");
 
-
-
   const container = document.getElementById("button-border-colors");
   const selectorField = document.getElementById("button-color-selection-field");
   const bullet = document.getElementById("button-color-selection-bar");
@@ -35,7 +33,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     )`;
     }
   }
-  console.log("clicked element", selectedElement)
+  console.log("clicked element", selectedElement);
   function getHueFromColorString(colorStr) {
     const tempDiv = document.createElement("div");
     tempDiv.style.color = colorStr;
@@ -50,8 +48,11 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const g = parseInt(match[2]) / 255;
     const b = parseInt(match[3]) / 255;
 
-    const max = Math.max(r, g, b), min = Math.min(r, g, b);
-    let h = 0, s = 0, l = (max + min) / 2;
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s = 0,
+      l = (max + min) / 2;
     if (max !== min) {
       const d = max - min;
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -88,7 +89,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       console.log(`🖼️ Canvas rendered (center pixel): ${rgba}`);
     });
   }
-  
+
   function hslToRgb(h, s = 1, l = 0.5) {
     function hueToRgb(p, q, t) {
       if (t < 0) t += 1;
@@ -106,12 +107,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const g = hueToRgb(p, q, h);
     const b = hueToRgb(p, q, h - 1 / 3);
 
-    return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+    return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(
+      b * 255
+    )})`;
   }
 
-
   function updateSelectorField(hueOrColor) {
-    let hue = typeof hueOrColor === 'number' ? hueOrColor : null;
+    let hue = typeof hueOrColor === "number" ? hueOrColor : null;
     if (!hue) {
       hue = getHueFromColorString(hueOrColor);
     }
@@ -143,27 +145,24 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        currentTransparency / 100
+      })`;
       colorCode.textContent = rgba;
       if (palette) palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
     }
-  requestAnimationFrame(syncBulletWithCanvasColor);
-
+    requestAnimationFrame(syncBulletWithCanvasColor);
   }
 
-
-
-  
   function applyButtonBackgroundColor(color, alpha = 1) {
     const currentElement = selectedElement?.();
     if (!currentElement) return;
 
-
     const buttonTypes = [
       "sqs-button-element--primary",
       "sqs-button-element--secondary",
-      "sqs-button-element--tertiary"
+      "sqs-button-element--tertiary",
     ];
 
     let buttonType = null;
@@ -173,7 +172,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         break;
       }
     }
-
 
     if (!buttonType) {
       console.warn("⚠️ No Squarespace button found in block.");
@@ -203,12 +201,13 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         filter: brightness(0.95);
       }
     `;
-    const allButtons = currentElement.querySelectorAll(`a.${buttonType}, button.${buttonType}`);
-    allButtons.forEach(btn => {
+    const allButtons = currentElement.querySelectorAll(
+      `a.${buttonType}, button.${buttonType}`
+    );
+    allButtons.forEach((btn) => {
       btn.dataset.scButtonBg = color;
     });
     console.log("🖌️ APPLYING COLOR:", rgbaColor, "on", buttonType);
-
   }
 
   if (
@@ -221,7 +220,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
   )
     return;
 
-
   if (allColorField) {
     allColorField.style.background = `linear-gradient(to bottom, 
       hsl(0, 100%, 50%), 
@@ -233,7 +231,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       hsl(360, 100%, 50%)
     )`;
   }
-
 
   if (
     allColorField &&
@@ -248,7 +245,10 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       document.onmousemove = function (e) {
         const rect = allColorField.getBoundingClientRect();
         let offsetY = e.clientY - rect.top;
-        offsetY = Math.max(0, Math.min(rect.height - allColorBullet.offsetHeight, offsetY));
+        offsetY = Math.max(
+          0,
+          Math.min(rect.height - allColorBullet.offsetHeight, offsetY)
+        );
         allColorBullet.style.top = `${offsetY}px`;
 
         const percentage = offsetY / rect.height;
@@ -273,44 +273,49 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmouseup = null;
       };
       console.log("🎨 Updated dynamicHue from palette:", dynamicHue);
-
     };
   }
 
   if (selectorField && bullet) {
-   bullet.onmousedown = function (e) {
-  e.preventDefault();
+    bullet.onmousedown = function (e) {
+      e.preventDefault();
 
-  document.onmousemove = function (e) {
-    const rect = selectorField.getBoundingClientRect();
-    let offsetX = e.clientX - rect.left;
-    let offsetY = e.clientY - rect.top;
+      document.onmousemove = function (e) {
+        const rect = selectorField.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        let offsetY = e.clientY - rect.top;
 
-    offsetX = Math.max(0, Math.min(rect.width - bullet.offsetWidth, offsetX));
-    offsetY = Math.max(0, Math.min(rect.height - bullet.offsetHeight, offsetY));
+        offsetX = Math.max(
+          0,
+          Math.min(rect.width - bullet.offsetWidth, offsetX)
+        );
+        offsetY = Math.max(
+          0,
+          Math.min(rect.height - bullet.offsetHeight, offsetY)
+        );
 
-    bullet.style.left = `${offsetX}px`;
-    bullet.style.top = `${offsetY}px`;
+        bullet.style.left = `${offsetX}px`;
+        bullet.style.top = `${offsetY}px`;
 
-    const canvas = selectorField.querySelector("canvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
 
-    const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+        const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
+        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+          currentTransparency / 100
+        })`;
 
-    if (colorCode) colorCode.textContent = rgba;
-    if (palette) palette.style.backgroundColor = rgba;
-    applyButtonBackgroundColor(rgba, currentTransparency / 100);
-  };
+        if (colorCode) colorCode.textContent = rgba;
+        if (palette) palette.style.backgroundColor = rgba;
+        applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      };
 
-  document.onmouseup = () => {
-    document.onmousemove = null;
-    document.onmouseup = null;
-  };
-};
-
-
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
   }
 
   function getGradientCanvas(hue, width, height) {
@@ -337,8 +342,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     return canvas;
   }
 
- 
-
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
     bullet.style.top = `${offsetY}px`;
@@ -348,61 +351,65 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     if (!ctx) return;
 
     const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+      currentTransparency / 100
+    })`;
     colorCode.textContent = rgba;
     if (palette) palette.style.backgroundColor = rgba;
     applyButtonBackgroundColor(rgba, currentTransparency / 100);
-    
-
   }
 
-
   if (transparencyField && transparencyBullet) {
-  transparencyBullet.onmousedown = function (e) {
-    e.preventDefault();
+    transparencyBullet.onmousedown = function (e) {
+      e.preventDefault();
 
-    document.onmousemove = function (e) {
-      const rect = transparencyField.getBoundingClientRect();
-      let offsetY = e.clientY - rect.top;
-      offsetY = Math.max(0, Math.min(rect.height - transparencyBullet.offsetHeight, offsetY));
-      transparencyBullet.style.top = `${offsetY}px`;
+      document.onmousemove = function (e) {
+        const rect = transparencyField.getBoundingClientRect();
+        let offsetY = e.clientY - rect.top;
+        offsetY = Math.max(
+          0,
+          Math.min(rect.height - transparencyBullet.offsetHeight, offsetY)
+        );
+        transparencyBullet.style.top = `${offsetY}px`;
 
-      const transparencyPercent = 100 - Math.round((offsetY / rect.height) * 100);
-      currentTransparency = transparencyPercent;
+        const transparencyPercent =
+          100 - Math.round((offsetY / rect.height) * 100);
+        currentTransparency = transparencyPercent;
 
-      if (transparencyCount) {
-        transparencyCount.textContent = `${currentTransparency}%`;
-      }
+        if (transparencyCount) {
+          transparencyCount.textContent = `${currentTransparency}%`;
+        }
 
-      const bulletRect = bullet.getBoundingClientRect();
-      const fieldRect = selectorField.getBoundingClientRect();
-      const offsetX = bulletRect.left - fieldRect.left;
-      const offsetY2 = bulletRect.top - fieldRect.top;
+        const bulletRect = bullet.getBoundingClientRect();
+        const fieldRect = selectorField.getBoundingClientRect();
+        const offsetX = bulletRect.left - fieldRect.left;
+        const offsetY2 = bulletRect.top - fieldRect.top;
 
-      const canvas = selectorField.querySelector("canvas");
-      const ctx = canvas?.getContext("2d");
-      if (!ctx) return;
+        const canvas = selectorField.querySelector("canvas");
+        const ctx = canvas?.getContext("2d");
+        if (!ctx) return;
 
-      const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+        const data = ctx.getImageData(offsetX, offsetY2, 1, 1).data;
+        const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+          currentTransparency / 100
+        })`;
 
-      if (colorCode) colorCode.textContent = rgba;
-      if (palette) palette.style.backgroundColor = rgba;
-      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+        if (colorCode) colorCode.textContent = rgba;
+        if (palette) palette.style.backgroundColor = rgba;
+        applyButtonBackgroundColor(rgba, currentTransparency / 100);
+      };
+
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
     };
-
-    document.onmouseup = () => {
-      document.onmousemove = null;
-      document.onmouseup = null;
-    };
-  };
-}
-
+  }
 
   if (container.innerHTML.trim() !== "") return;
 
   Object.values(themeColors).forEach((color) => {
-    const cleanColor = color.replace(/['"]+/g, '');
+    const cleanColor = color.replace(/['"]+/g, "");
     const swatch = document.createElement("div");
     swatch.className = "sc-border-colors sc-cursor-pointer";
     swatch.style.backgroundColor = cleanColor;
@@ -437,12 +444,15 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         const [cr, cg, cb] = color
           .replace(/[^\d,]/g, "")
           .split(",")
-          .map(n => parseInt(n.trim()));
+          .map((n) => parseInt(n.trim()));
 
         for (let y = 0; y < height; y += 2) {
           for (let x = 0; x < width; x += 2) {
             const data = ctx.getImageData(x, y, 1, 1).data;
-            const diff = Math.abs(data[0] - cr) + Math.abs(data[1] - cg) + Math.abs(data[2] - cb);
+            const diff =
+              Math.abs(data[0] - cr) +
+              Math.abs(data[1] - cg) +
+              Math.abs(data[2] - cb);
             if (diff < bestMatch.diff) {
               bestMatch = { x, y, diff };
               if (diff <= 3) break;
@@ -454,75 +464,72 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         if (transparencyBullet && transparencyField) {
           transparencyBullet.style.top = `0px`;
         }
-       
-
       });
     };
 
     container.appendChild(swatch);
-
   });
 
-  if (container.children.length > 0) {  
+  if (container.children.length > 0) {
     const firstSwatchColor = container.children[0].style.backgroundColor;
 
     updateSelectorField(firstSwatchColor);
 
-bullet.style.left = `0px`;
-bullet.style.top = `0px`;
+    bullet.style.left = `0px`;
+    bullet.style.top = `0px`;
 
-function waitAndCenterBullet() {
-  const rect = selectorField.getBoundingClientRect();
-  if (rect.width < 50 || rect.height < 20) {
+    const centerX = Math.round(rect.width * 0.5);
+    const centerY = Math.round(rect.height * 0.5);
+    
+    function waitAndCenterBullet() {
+      const rect = selectorField.getBoundingClientRect();
+      if (rect.width < 50 || rect.height < 20) {
+        requestAnimationFrame(waitAndCenterBullet);
+        return;
+      }
+
+      const canvas = selectorField.querySelector("canvas");
+      const ctx = canvas?.getContext("2d", { willReadFrequently: true });
+      if (!ctx) {
+        requestAnimationFrame(waitAndCenterBullet);
+        return;
+      }
+
+
+      const pixel = ctx.getImageData(centerX, centerY, 1, 1).data;
+      const [r, g, b] = pixel;
+
+      if (r + g + b <= 20) {
+        requestAnimationFrame(waitAndCenterBullet);
+        return;
+      }
+
+      bullet.style.left = `${centerX}px`;
+      bullet.style.top = `${centerY}px`;
+
+      const rgba = `rgba(${r}, ${g}, ${b}, ${currentTransparency / 100})`;
+      colorCode.textContent = rgba;
+      palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba);
+
+      console.log(`✅ Bullet synced after canvas painted → ${rgba}`);
+    }
+
     requestAnimationFrame(waitAndCenterBullet);
-    return;
-  }
-
-  const canvas = selectorField.querySelector("canvas");
-  const ctx = canvas?.getContext("2d", { willReadFrequently: true });
-  if (!ctx) {
-    requestAnimationFrame(waitAndCenterBullet);
-    return;
-  }
-
-  const centerX = Math.round(rect.width * 0.5);
-  const centerY = Math.round(rect.height * 0.5);
-
-  const pixel = ctx.getImageData(centerX, centerY, 1, 1).data;
-  const [r, g, b] = pixel;
-
-  if (r + g + b <= 20) {
-    requestAnimationFrame(waitAndCenterBullet);
-    return;
-  }
-
-  bullet.style.left = `${centerX}px`;
-  bullet.style.top = `${centerY}px`;
-
-  const rgba = `rgba(${r}, ${g}, ${b}, ${currentTransparency / 100})`;
-  colorCode.textContent = rgba;
-  palette.style.backgroundColor = rgba;
-  applyButtonBackgroundColor(rgba);
-
-  console.log(`✅ Bullet synced after canvas painted → ${rgba}`);
-}
-
-
-requestAnimationFrame(waitAndCenterBullet);
-
 
     const canvas = selectorField.querySelector("canvas");
     const ctx = canvas?.getContext("2d");
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        currentTransparency / 100
+      })`;
       colorCode.textContent = rgba;
     }
 
     transparencyBullet.style.top = `0px`;
     currentTransparency = 100;
     transparencyCount.textContent = `100%`;
-
 
     function waitForCanvasReadyAndSyncBullet(x, y) {
       const canvas = selectorField.querySelector("canvas");
@@ -552,7 +559,9 @@ requestAnimationFrame(waitAndCenterBullet);
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        currentTransparency / 100
+      })`;
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
       colorCode.textContent = rgba;
@@ -560,15 +569,12 @@ requestAnimationFrame(waitAndCenterBullet);
       console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
     }
 
-
     waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
-
   }
 
-
-
   if (container.children.length === 0) {
-    const defaultColor = Object.values(themeColors)[0]?.replace(/['"]+/g, '') || "rgb(255, 0, 0)";
+    const defaultColor =
+      Object.values(themeColors)[0]?.replace(/['"]+/g, "") || "rgb(255, 0, 0)";
     updateSelectorField(defaultColor);
 
     function waitForCanvasReadyAndSyncBullet(x, y) {
@@ -587,15 +593,15 @@ requestAnimationFrame(waitAndCenterBullet);
 
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        currentTransparency / 100
+      })`;
       colorCode.textContent = rgba;
     }
 
     const defaultX = Math.round(selectorField.offsetWidth * 0.5);
     const defaultY = Math.round(selectorField.offsetHeight * 0.5);
     waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
-
-
 
     if (transparencyBullet && transparencyField) {
       transparencyBullet.style.top = `0px`;
@@ -605,7 +611,4 @@ requestAnimationFrame(waitAndCenterBullet);
       transparencyCount.textContent = `100%`;
     }
   }
-
-
-
 }
