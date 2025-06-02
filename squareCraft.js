@@ -125,7 +125,7 @@
       initButtonShadowControls,
       initButtonFontFamilyControls,
       resetAllButtonStyles,
-      initButtonResetHandlers,
+      initButtonBorderResetHandlers,
     } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js"
     );
@@ -216,7 +216,7 @@
         initButtonBorderControl(() => selectedElement);
         initButtonShadowControls(() => selectedElement);
         resetAllButtonStyles(() => selectedElement);
-        initButtonResetHandlers(() => selectedElement)
+        initButtonBorderResetHandlers(() => selectedElement)
         initButtonFontFamilyControls(() => selectedElement);
         initButtonBorderTypeToggle(() => selectedElement, (selected) => {
           if (selected) {

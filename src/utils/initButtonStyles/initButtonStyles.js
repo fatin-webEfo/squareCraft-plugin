@@ -1586,7 +1586,7 @@ export function resetAllButtonStyles(getSelectedElement) {
   });
 }
 
-export function initButtonResetHandlers(getSelectedElement) {
+export function initButtonBorderResetHandlers(getSelectedElement) {
   const resetMap = [
     {
       id: "border-reset",
