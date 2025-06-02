@@ -134,7 +134,52 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       b * 255
     )})`;
   }
+  function formatColorOutput(r, g, b, alpha = 1) {
+    const label = document.getElementById("color-code-label");
+    const format = label?.textContent?.trim().toUpperCase();
 
+    if (format === "HEX") {
+      const toHex = (v) => v.toString(16).padStart(2, "0");
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+
+    if (format === "HSL") {
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      const max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+      let h,
+        s,
+        l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r:
+            h = (g - b) / d + (g < b ? 6 : 0);
+            break;
+          case g:
+            h = (b - r) / d + 2;
+            break;
+          case b:
+            h = (r - g) / d + 4;
+            break;
+        }
+        h *= 60;
+      }
+
+      return `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(
+        l * 100
+      )}%)`;
+    }
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // fallback: RGB
+  }
+  
   function updateSelectorField(hueOrColor) {
     let hue = typeof hueOrColor === "number" ? hueOrColor : null;
     if (!hue) {
@@ -168,9 +213,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
-        currentTransparency / 100
-      })`;
+      const rgba = formatColorOutput(data[0], data[1], data[2], currentTransparency / 100)
       colorCode.textContent = rgba;
       if (palette) palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba, currentTransparency / 100);
@@ -522,9 +565,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     const ctx = canvas?.getContext("2d");
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
-        currentTransparency / 100
-      })`;
+      const rgba = formatColorOutput(data[0], data[1], data[2], currentTransparency / 100)
       colorCode.textContent = rgba;
     }
 
@@ -560,9 +601,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         return;
       }
 
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
-        currentTransparency / 100
-      })`;
+      const rgba = formatColorOutput(data[0], data[1], data[2], currentTransparency / 100)
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
       colorCode.textContent = rgba;
@@ -594,9 +633,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
       bullet.style.left = `${x}px`;
       bullet.style.top = `${y}px`;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
-        currentTransparency / 100
-      })`;
+      const rgba = formatColorOutput(data[0], data[1], data[2], currentTransparency / 100)
       colorCode.textContent = rgba;
     }
 
