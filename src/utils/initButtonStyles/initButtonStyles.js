@@ -1589,80 +1589,115 @@ export function resetAllButtonStyles(getSelectedElement) {
 export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = [
     {
-      id: "border-reset",
+      id: "icon-rotation-reset",
       action: (btn) => {
-        btn.style.setProperty("border", "0px", "important");
-        btn.style.setProperty("border-radius", "0px", "important");
-      },
-    },
-    {
-      id: "icon-rotate-reset",
-      action: (btn) => {
-        btn.style.setProperty("transform", "rotate(0deg)", "important");
+        if (!btn.dataset.originalRotate) {
+          const transform = getComputedStyle(btn).transform;
+          btn.dataset.originalRotate =
+            transform === "none" ? "rotate(0deg)" : transform;
+        }
+        btn.style.setProperty(
+          "transform",
+          btn.dataset.originalRotate,
+          "important"
+        );
       },
     },
     {
       id: "icon-size-reset",
       action: (btn) => {
-        btn.style.setProperty("--sc-icon-size", "20px", "important");
+        const icon = btn.querySelector("svg");
+        if (icon) {
+          if (!icon.dataset.originalWidth) {
+            const cs = getComputedStyle(icon);
+            icon.dataset.originalWidth = cs.width;
+            icon.dataset.originalHeight = cs.height;
+          }
+          icon.style.setProperty(
+            "width",
+            icon.dataset.originalWidth,
+            "important"
+          );
+          icon.style.setProperty(
+            "height",
+            icon.dataset.originalHeight,
+            "important"
+          );
+        }
       },
     },
     {
       id: "icon-spacing-reset",
       action: (btn) => {
-        btn.style.setProperty("--sc-icon-spacing", "10px", "important");
+        if (!btn.dataset.originalSpacing) {
+          btn.dataset.originalSpacing = getComputedStyle(btn).gap || "10px";
+        }
+        btn.style.setProperty("gap", btn.dataset.originalSpacing, "important");
       },
     },
     {
-      id: "shadowXreset",
+      id: "border-reset",
       action: (btn) => {
+        if (!btn.dataset.originalBorder) {
+          btn.dataset.originalBorder = getComputedStyle(btn).border;
+        }
         btn.style.setProperty(
-          "box-shadow",
-          "0px 0px 0px 0px rgba(0,0,0,0.3)",
+          "border",
+          btn.dataset.originalBorder,
           "important"
         );
       },
     },
     {
-      id: "shadowYreset",
+      id: "border-radius-reset",
       action: (btn) => {
+        if (!btn.dataset.originalRadius) {
+          btn.dataset.originalRadius = getComputedStyle(btn).borderRadius;
+        }
         btn.style.setProperty(
-          "box-shadow",
-          "0px 0px 0px 0px rgba(0,0,0,0.3)",
+          "border-radius",
+          btn.dataset.originalRadius,
           "important"
         );
       },
     },
     {
-      id: "shadowBlurreset",
+      id: "shadow-axis-reset",
       action: (btn) => {
+        if (!btn.dataset.originalShadowAxis) {
+          btn.dataset.originalShadowAxis = getComputedStyle(btn).boxShadow;
+        }
         btn.style.setProperty(
           "box-shadow",
-          "0px 0px 0px 0px rgba(0,0,0,0.3)",
+          btn.dataset.originalShadowAxis,
           "important"
         );
       },
     },
     {
-      id: "shadowSpreadreset",
+      id: "shadow-blur-reset",
       action: (btn) => {
+        if (!btn.dataset.originalShadowBlur) {
+          btn.dataset.originalShadowBlur = getComputedStyle(btn).boxShadow;
+        }
         btn.style.setProperty(
           "box-shadow",
-          "0px 0px 0px 0px rgba(0,0,0,0.3)",
+          btn.dataset.originalShadowBlur,
           "important"
         );
       },
     },
     {
-      id: "fontSizeReset",
+      id: "shadow-spread-reset",
       action: (btn) => {
-        btn.style.setProperty("font-size", "16px", "important");
-      },
-    },
-    {
-      id: "fontWeightReset",
-      action: (btn) => {
-        btn.style.setProperty("font-weight", "400", "important");
+        if (!btn.dataset.originalShadowSpread) {
+          btn.dataset.originalShadowSpread = getComputedStyle(btn).boxShadow;
+        }
+        btn.style.setProperty(
+          "box-shadow",
+          btn.dataset.originalShadowSpread,
+          "important"
+        );
       },
     },
   ];
