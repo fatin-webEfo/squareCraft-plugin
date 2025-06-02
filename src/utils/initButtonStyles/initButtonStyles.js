@@ -1667,6 +1667,10 @@ export function initButtonResetHandlers(getSelectedElement) {
         img.style.transform = "rotate(360deg)";
         setTimeout(() => {
           img.style.transform = "rotate(0deg)";
+          if (window.__squareCraftResetFlags?.get?.(key)) {
+            window.__squareCraftResetFlags.delete?.(key);
+            return;
+          }
         }, 400);
       }
 
@@ -1683,12 +1687,8 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
-      if (window.__squareCraftResetFlags?.get?.(key)) {
-        window.__squareCraftResetFlags.delete?.(key);
-        return;
-      }
+    
       
-      window.__squareCraftResetFlags?.set?.(key, true);
 
       if (resetId === "shadow-axis-reset") {
         const xConf = config[0];
