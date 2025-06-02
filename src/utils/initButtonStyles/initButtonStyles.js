@@ -11,7 +11,6 @@ setTimeout(() => {
   }
 }, 200);
 
-let manualReset = false; 
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API =
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
@@ -1684,6 +1683,11 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
+      if (window.__squareCraftResetFlags?.get?.(key)) {
+        window.__squareCraftResetFlags.delete?.(key);
+        return;
+      }
+      
       window.__squareCraftResetFlags?.set?.(key, true);
 
       if (resetId === "shadow-axis-reset") {
@@ -1731,12 +1735,6 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
-
-
-
-
-
-
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
