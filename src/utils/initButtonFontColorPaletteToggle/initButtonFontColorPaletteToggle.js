@@ -464,22 +464,35 @@ function waitAndCenterBullet() {
     return;
   }
 
+  const canvas = selectorField.querySelector("canvas");
+  const ctx = canvas?.getContext("2d", { willReadFrequently: true });
+  if (!ctx) {
+    requestAnimationFrame(waitAndCenterBullet);
+    return;
+  }
+
   const centerX = Math.round(rect.width * 0.5);
   const centerY = Math.round(rect.height * 0.5);
+
+  const pixel = ctx.getImageData(centerX, centerY, 1, 1).data;
+  const [r, g, b] = pixel;
+
+  if (r + g + b <= 20) {
+    requestAnimationFrame(waitAndCenterBullet);
+    return;
+  }
+
   bullet.style.left = `${centerX}px`;
   bullet.style.top = `${centerY}px`;
 
-  const canvas = selectorField.querySelector("canvas");
-  const ctx = canvas?.getContext("2d");
-  if (ctx) {
-    const data = ctx.getImageData(centerX, centerY, 1, 1).data;
-    const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${currentTransparency / 100})`;
-    colorCode.textContent = rgba;
-    applyButtonBackgroundColor(rgba);
-  }
+  const rgba = `rgba(${r}, ${g}, ${b}, ${currentTransparency / 100})`;
+  colorCode.textContent = rgba;
+  palette.style.backgroundColor = rgba;
+  applyButtonBackgroundColor(rgba);
 
-  console.log(`✅ Bullet moved inside field to center: (${centerX}, ${centerY})`);
+  console.log(`✅ Bullet synced after canvas painted → ${rgba}`);
 }
+
 
 requestAnimationFrame(waitAndCenterBullet);
 
