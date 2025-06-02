@@ -63,14 +63,14 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
     return h * 360;
   }
+
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
 
-    const canvas = getGradientCanvas(
-      hue,
-      selectorField.offsetWidth,
-      selectorField.offsetHeight
-    );
+    const width = selectorField.offsetWidth;
+    const height = selectorField.offsetHeight;
+
+    const canvas = getGradientCanvas(hue, width, height);
     canvas.style.position = "absolute";
     canvas.style.top = "0";
     canvas.style.left = "0";
@@ -80,15 +80,27 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     selectorField.appendChild(canvas);
     selectorField.appendChild(bullet);
 
-    requestAnimationFrame(() => {
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-      const centerX = Math.floor(canvas.width / 2);
-      const centerY = Math.floor(canvas.height / 2);
+    const centerX = Math.floor(width / 2);
+    const centerY = Math.floor(height / 2);
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    setTimeout(() => {
       const data = ctx.getImageData(centerX, centerY, 1, 1).data;
-      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
-      console.log(`🖼️ Canvas rendered (center pixel): ${rgba}`);
-    });
+      const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${
+        currentTransparency / 100
+      })`;
+
+      bullet.style.left = `${centerX}px`;
+      bullet.style.top = `${centerY}px`;
+      colorCode.textContent = rgba;
+      palette.style.backgroundColor = rgba;
+      applyButtonBackgroundColor(rgba, currentTransparency / 100);
+
+      console.log(`✅ Canvas pixel synced: ${rgba}`);
+    }, 20); 
   }
+
 
   function hslToRgb(h, s = 1, l = 0.5) {
     function hueToRgb(p, q, t) {
