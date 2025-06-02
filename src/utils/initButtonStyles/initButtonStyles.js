@@ -1095,7 +1095,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   }, 50);
 }
 
-
 export function initButtonShadowControls(getSelectedElement) {
   if (!window.shadowState) {
     window.shadowState = {
@@ -1685,6 +1684,7 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
+      window.__squareCraftResetFlags?.set?.(key, true);
 
       if (resetId === "shadow-axis-reset") {
         const xConf = config[0];
@@ -1731,9 +1731,6 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
-
-
-
 
 
 
