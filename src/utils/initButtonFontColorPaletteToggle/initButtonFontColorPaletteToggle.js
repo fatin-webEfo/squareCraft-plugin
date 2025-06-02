@@ -480,9 +480,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     const centerX = Math.round(rect.width * 0.5);
     const centerY = Math.round(rect.height * 0.5);
-    
+    const rect = selectorField.getBoundingClientRect();
+
     function waitAndCenterBullet() {
-      const rect = selectorField.getBoundingClientRect();
       if (rect.width < 50 || rect.height < 20) {
         requestAnimationFrame(waitAndCenterBullet);
         return;
