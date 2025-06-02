@@ -1471,7 +1471,7 @@ export function resetAllButtonStyles(getSelectedElement) {
       document.getElementById("buttoniconSizeradiusCount").textContent = "0px";
 
       inputSync("buttonIconSpacingradius", "0px", "0%");
-      document.getElementById("buttoniconSpacingCount").textContent = "0px";
+      document.getElementById("buttoniconSpacingCount").textContent = "0px"; 
 
       inputSync("hover-buttonIconTransformPosition", "0px", "50%");
       inputSync("hover-buttonBorder", "0px", "0%");
@@ -1587,90 +1587,149 @@ export function resetAllButtonStyles(getSelectedElement) {
 }
 
 export function initButtonBorderResetHandlers(getSelectedElement) {
-  const resetMap = [
-    {
-      id: "border-reset",
-      action: ({ typeClass, key, state, styleTag }) => {
-        if (!state || !styleTag) return;
+  const resetMap = {
+    "icon-size-reset": [
+      "buttonIconSizeradiusBullet",
+      "buttonIconSizeradiusFill",
+      "buttonIconSizeradiusCount",
+      "sc-transform-style-ICON",
+      "__squareCraftIconMap",
+    ],
+    "icon-spacing-reset": [
+      "buttonIconSpacingradiusBullet",
+      "buttonIconSpacingradiusFill",
+      "buttonIconSpacingCount",
+      "sc-transform-style-ICON",
+      "__squareCraftIconMap",
+    ],
+    "icon-rotation-reset": [
+      "buttonIconRotationradiusBullet",
+      "buttonIconRotationradiusFill",
+      "buttonIconRotationCount",
+      "sc-transform-style-ICON",
+      "__squareCraftIconMap",
+    ],
+    "border-radius-reset": [
+      "buttonBorderradiusBullet",
+      "buttonBorderradiusFill",
+      "buttonBorderradiusCount",
+      "sc-normal-radius-ICON",
+      "__squareCraftRadiusMap",
+    ],
+    "shadow-blur-reset": [
+      "buttonShadowBlurBullet",
+      null,
+      "buttonShadowBlurCount",
+      "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
+    ],
+    "shadow-spread-reset": [
+      "buttonShadowSpreadBullet",
+      null,
+      "buttonShadowSpreadCount",
+      "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
+    ],
+    "shadow-axis-reset": [
+      ["buttonShadowXaxisBullet", "buttonShadowXaxisCount"],
+      ["buttonShadowYaxisBullet", "buttonShadowYaxisCount"],
+      "sc-button-shadow-ICON",
+      "__squareCraftShadowMap",
+    ],
+    "border-reset": [
+      "buttonBorderBullet",
+      "buttonBorderFill",
+      "buttonBorderCount",
+      "sc-button-border-ICON",
+      "__squareCraftBorderStateMap",
+    ],
+  };
 
-        if (
-          !state.originalValues ||
-          !state.originalColor ||
-          !state.originalType
-        ) {
-          console.warn(`❗ No original border data to reset for ${key}`);
-          return;
-        }
-
-        state.values = {
-          Top: parseInt(state.originalValues.Top),
-          Right: parseInt(state.originalValues.Right),
-          Bottom: parseInt(state.originalValues.Bottom),
-          Left: parseInt(state.originalValues.Left),
-        };
-        state.color = state.originalColor;
-        state.type = state.originalType;
-
-        window.__squareCraftBorderStateMap.set(key, state);
-        updateBorderStyleTag(typeClass, state, styleTag);
-        console.log(`🔁 Border reset → original widths and color for ${key}`);
-      },
-    },
-  ];
-
-  resetMap.forEach(({ id, action }) => {
-    const resetBtn = document.getElementById(id);
+  Object.entries(resetMap).forEach(([resetId, config]) => {
+    const resetBtn = document.getElementById(resetId);
     if (!resetBtn) return;
 
     resetBtn.addEventListener("click", () => {
       const selected = getSelectedElement?.();
-      if (!selected) {
-        console.warn(`⛔ Reset failed → No selected element for #${id}`);
+      if (!selected) return;
+
+      const img = resetBtn.querySelector("img");
+      if (img) {
+        img.style.transition = "transform 0.4s ease";
+        img.style.transform = "rotate(360deg)";
+        setTimeout(() => {
+          img.style.transform = "rotate(0deg)";
+        }, 400);
+      }
+
+      const btn = selected.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+
+      const typeClass = [...btn.classList].find((c) =>
+        c.startsWith("sqs-button-element--")
+      );
+      if (!typeClass) return;
+
+      const blockId = selected.id || "block-id";
+      const key = `${blockId}--${typeClass}`;
+
+      if (resetId === "shadow-axis-reset") {
+        const xConf = config[0];
+        const yConf = config[1];
+        const styleIdRaw = config[2];
+        const stateMapName = config[3];
+
+        [xConf, yConf].forEach((pair) => {
+          const bulletId = pair[0];
+          const countId = pair[1];
+          const bullet = document.getElementById(bulletId);
+          const count = document.getElementById(countId);
+          if (bullet) bullet.style.left = "0px";
+          if (count) count.textContent = "0px";
+        });
+
+        const styleId = styleIdRaw.replace("ICON", typeClass);
+        document.getElementById(styleId)?.remove();
+        if (window[stateMapName]) {
+          window[stateMapName].delete?.(key);
+        }
         return;
       }
 
-      const btns = selected.querySelectorAll(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
+      const [bulletId, fillId, countId, styleIdRaw, stateMapName] = config;
 
-      btns.forEach((btn) => {
-        const typeClass = [...btn.classList].find((cls) =>
-          cls.startsWith("sqs-button-element--")
-        );
-        if (!typeClass) return;
+      const bullet = document.getElementById(bulletId);
+      if (bullet) bullet.style.left = "0px";
 
-        const key = `${selected.id}--${typeClass}`;
-        const state = window.__squareCraftBorderStateMap?.get(key);
-        const styleTag = document.getElementById(
-          `sc-button-border-${typeClass}`
-        );
+      if (fillId) {
+        const fill = document.getElementById(fillId);
+        if (fill) fill.style.width = "0px";
+      }
 
-        console.log(`⏪ Resetting #${id} → for ${key}`);
-        action({ btn, selected, typeClass, key, state, styleTag });
-      });
+      const count = document.getElementById(countId);
+      if (count) count.textContent = "0px";
+
+      const styleId = styleIdRaw.replace("ICON", typeClass);
+      document.getElementById(styleId)?.remove();
+
+      if (stateMapName && window[stateMapName]) {
+        window[stateMapName].delete?.(key);
+      }
     });
   });
-
-  function updateBorderStyleTag(typeClass, state, styleTag) {
-    const values = state.values || { Top: 0, Right: 0, Bottom: 0, Left: 0 };
-    const color = state.color || "#000000";
-    const radius = state.borderRadius || "0px";
-    const type = state.type || "solid";
-
-    styleTag.textContent = `
-.${typeClass} {
-  box-sizing: border-box !important;
-  border-style: ${type} !important;
-  border-color: ${color} !important;
-  border-top-width: ${values.Top}px !important;
-  border-right-width: ${values.Right}px !important;
-  border-bottom-width: ${values.Bottom}px !important;
-  border-left-width: ${values.Left}px !important;
-  border-radius: ${radius} !important;
-}`;
-    console.log(`📦 Updated border CSS for .${typeClass}`);
-  }
 }
+
+
+
+
+
+
+
+
+
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
