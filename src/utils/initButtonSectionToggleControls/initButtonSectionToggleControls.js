@@ -283,15 +283,38 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
     colorCodeArrow.classList.toggle("sc-rotate-180");
   });
 
-  colorCodeList.querySelectorAll("[data-format]").forEach(option => {
-  option.addEventListener("click", () => {
-    const selected = option.getAttribute("data-format");
-    colorCodeLabel.textContent = selected;
-    selectedColorFormat = selected;
-    colorCodeList.classList.add("sc-hidden");
-    colorCodeArrow.classList.add("sc-rotate-180");
+  colorCodeList.querySelectorAll("[data-format]").forEach((option) => {
+    option.addEventListener("click", () => {
+      const selected = option.getAttribute("data-format");
+      colorCodeLabel.textContent = selected;
+      selectedColorFormat = selected;
+
+      const colorDisplay = document.getElementById("button-color-code");
+      const raw = colorDisplay?.dataset?.rawColor || colorDisplay?.textContent;
+
+      if (raw && colorDisplay) {
+        const temp = document.createElement("div");
+        temp.style.color = raw;
+        document.body.appendChild(temp);
+        const rgb = getComputedStyle(temp).color;
+        document.body.removeChild(temp);
+
+        const match = rgb.match(/\d+/g);
+        if (match) {
+          const r = +match[0],
+            g = +match[1],
+            b = +match[2];
+          const alpha = match[3] ? +match[3] / 255 : 1;
+
+          colorDisplay.textContent = formatColorOutput(r, g, b, alpha);
+        }
+      }
+
+      colorCodeList.classList.add("sc-hidden");
+      colorCodeArrow.classList.remove("sc-rotate-180");
+    });
   });
-});
+  
 
 
   document.addEventListener("click", (e) => {
