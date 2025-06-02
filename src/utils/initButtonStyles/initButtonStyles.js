@@ -534,7 +534,7 @@ export function initButtonIconRotationControl(getSelectedElement) {
   });
 
   setTimeout(syncFromIconRotation, 50);
-} 
+}
 
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiusBullet");
@@ -881,11 +881,8 @@ export function initButtonBorderControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => updateUIFromValue(currentValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(currentValue - 1));
-  resetBtn?.addEventListener("click", () => {
-    manualReset = true;
-    updateUIFromValue(0);
-  });
-  
+  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
+
   setTimeout(() => {
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector(
@@ -986,6 +983,9 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   const valueText = document.getElementById("buttonBorderradiusCount");
   const incBtn = document.getElementById("buttonBorderradiusIncrease");
   const decBtn = document.getElementById("buttonBorderradiusDecrease");
+  const resetBtn = valueText
+    ?.closest(".sc-flex")
+    ?.querySelector('img[alt="reset"]');
 
   if (!fillField || !bullet || !fill || !valueText) return;
 
@@ -1039,9 +1039,11 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   function updateUIFromValue(value) {
     radiusValue = Math.max(0, Math.min(max, value));
     const percent = (radiusValue / max) * 100;
+
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
     valueText.textContent = `${radiusValue}px`;
+
     applyBorderRadius();
   }
 
@@ -1070,6 +1072,7 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 
   incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
+  resetBtn?.addEventListener("click", () => updateUIFromValue(0));
 
   setTimeout(() => {
     const selected = getSelectedElement?.();
@@ -1077,17 +1080,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
       ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
     );
     if (!btn) return;
-
-    const typeClass = [...btn.classList].find((c) =>
-      c.startsWith("sqs-button-element--")
-    );
-    const blockId = selected.id || "block-id";
-    const key = `${blockId}--${typeClass}`;
-
-    if (window.__squareCraftResetFlags?.get?.(key)) {
-      window.__squareCraftResetFlags.delete?.(key);
-      return;
-    }
 
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
@@ -1667,10 +1659,6 @@ export function initButtonResetHandlers(getSelectedElement) {
         img.style.transform = "rotate(360deg)";
         setTimeout(() => {
           img.style.transform = "rotate(0deg)";
-          if (window.__squareCraftResetFlags?.get?.(key)) {
-            window.__squareCraftResetFlags.delete?.(key);
-            return;
-          }
         }, 400);
       }
 
@@ -1687,8 +1675,6 @@ export function initButtonResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
-    
-      
 
       if (resetId === "shadow-axis-reset") {
         const xConf = config[0];
@@ -1735,6 +1721,15 @@ export function initButtonResetHandlers(getSelectedElement) {
     });
   });
 }
+
+
+
+
+
+
+
+
+
 
 setTimeout(() => {
   if (typeof window.syncButtonStylesFromElement === "function") {
