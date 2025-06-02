@@ -206,7 +206,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const offsetY = bulletRect.top - fieldRect.top;
 
       const data = ctx.getImageData(offsetX, offsetY, 1, 1).data;
-      const isValidColor = data[0] + data[1] + data[2] > 30; // Skip if too dark
+      const isValidColor = data[0] + data[1] + data[2] > 30; 
 
       if (!isValidColor) {
         requestAnimationFrame(syncBulletWithCanvasColor);

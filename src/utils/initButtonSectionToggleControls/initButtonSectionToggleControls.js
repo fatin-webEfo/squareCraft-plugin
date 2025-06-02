@@ -1,4 +1,52 @@
 export function initButtonSectionToggleControls() {
+  function formatColorOutput(r, g, b, alpha = 1) {
+    const format = document
+      .getElementById("color-code-label")
+      ?.textContent?.trim()
+      .toUpperCase();
+
+    if (format === "HEX") {
+      const toHex = (v) => v.toString(16).padStart(2, "0");
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+
+    if (format === "HSL") {
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      const max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+      let h,
+        s,
+        l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r:
+            h = (g - b) / d + (g < b ? 6 : 0);
+            break;
+          case g:
+            h = (b - r) / d + 2;
+            break;
+          case b:
+            h = (r - g) / d + 4;
+            break;
+        }
+        h *= 60;
+      }
+
+      return `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(
+        l * 100
+      )}%)`;
+    }
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+  
   const sections = {
     fontButton: "fontSection",
     colorButton: "colorSection",
@@ -287,6 +335,29 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
   option.addEventListener("click", () => {
     const selected = option.getAttribute("data-format");
     colorCodeLabel.textContent = selected;
+    const display = document.getElementById("button-color-code");
+    const lastColor = display?.dataset?.rawColor || display?.textContent;
+
+    if (display && lastColor) {
+      const temp = document.createElement("div");
+      temp.style.color = lastColor;
+      document.body.appendChild(temp);
+      const rgb = getComputedStyle(temp).color;
+      document.body.removeChild(temp);
+
+      const match = rgb.match(/\d+/g);
+      if (match && match.length >= 3) {
+        const r = +match[0],
+          g = +match[1],
+          b = +match[2];
+        const alpha = match[3] ? +match[3] / 255 : 1;
+
+        const formatted = formatColorOutput(r, g, b, alpha);
+        display.textContent = formatted;
+        display.dataset.rawColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+    }
+
     selectedColorFormat = selected;
     colorCodeList.classList.add("sc-hidden");
     colorCodeArrow.classList.add("sc-rotate-180");
