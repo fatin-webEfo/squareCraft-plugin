@@ -987,9 +987,6 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   const valueText = document.getElementById("buttonBorderradiusCount");
   const incBtn = document.getElementById("buttonBorderradiusIncrease");
   const decBtn = document.getElementById("buttonBorderradiusDecrease");
-  const resetBtn = valueText
-    ?.closest(".sc-flex")
-    ?.querySelector('img[alt="reset"]');
 
   if (!fillField || !bullet || !fill || !valueText) return;
 
@@ -1075,23 +1072,23 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
   incBtn?.addEventListener("click", () => updateUIFromValue(radiusValue + 1));
   decBtn?.addEventListener("click", () => updateUIFromValue(radiusValue - 1));
 
-  // ✅ Fix reset logic
-  resetBtn?.addEventListener("click", () => {
-    manualReset = true;
-    updateUIFromValue(0);
-  });
-
   setTimeout(() => {
-    if (manualReset) {
-      manualReset = false;
-      return;
-    }
-
     const selected = getSelectedElement?.();
     const btn = selected?.querySelector(
       ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
     );
     if (!btn) return;
+
+    const typeClass = [...btn.classList].find((c) =>
+      c.startsWith("sqs-button-element--")
+    );
+    const blockId = selected.id || "block-id";
+    const key = `${blockId}--${typeClass}`;
+
+    if (window.__squareCraftResetFlags?.get?.(key)) {
+      window.__squareCraftResetFlags.delete?.(key);
+      return;
+    }
 
     const computed = parseInt(window.getComputedStyle(btn).borderRadius || "0");
     if (!isNaN(computed)) updateUIFromValue(computed);
