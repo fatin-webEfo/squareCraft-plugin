@@ -63,6 +63,32 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     }
     return h * 360;
   }
+  function getGradientCanvas(hue, width, height) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const horizontal = ctx.createLinearGradient(0, 0, width, 0);
+    horizontal.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
+    horizontal.addColorStop(1, "white");
+
+    ctx.fillStyle = horizontal;
+    ctx.fillRect(0, 0, width, height);
+
+    const vertical = ctx.createLinearGradient(0, height, 0, 0);
+    vertical.addColorStop(0, "black");
+    vertical.addColorStop(1, "transparent");
+
+    ctx.fillStyle = vertical;
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.globalCompositeOperation = "source-over";
+
+    return canvas;
+  }
   
   function setSelectorCanvas(hue) {
     selectorField.innerHTML = "";
@@ -319,29 +345,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     };
   }
 
-  function getGradientCanvas(hue, width, height) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
-    canvas.width = width;
-    canvas.height = height;
-
-    const gradient1 = ctx.createLinearGradient(0, 0, width, 0);
-    gradient1.addColorStop(0, `hsl(${hue}, 100%, 50%)`);
-    gradient1.addColorStop(1, "white");
-
-    const gradient2 = ctx.createLinearGradient(0, height, 0, 0);
-    gradient2.addColorStop(0, "black");
-    gradient2.addColorStop(1, "transparent");
-
-    ctx.fillStyle = gradient1;
-    ctx.fillRect(0, 0, width, height);
-    ctx.globalCompositeOperation = "multiply";
-    ctx.fillStyle = gradient2;
-    ctx.fillRect(0, 0, width, height);
-
-    return canvas;
-  }
 
   function moveBullet(offsetX, offsetY) {
     bullet.style.left = `${offsetX}px`;
