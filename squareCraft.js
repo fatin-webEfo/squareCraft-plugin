@@ -1,4 +1,8 @@
   (async function squareCraft() {
+    if (!window.__squareCraftResetFlags) {
+      window.__squareCraftResetFlags = new Map();
+    }
+    
 
     let isSameOrigin = true;
     const Url = isSameOrigin ? parent.document.location.href : document.location.href;
