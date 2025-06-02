@@ -307,6 +307,7 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
           const alpha = match[3] ? +match[3] / 255 : 1;
 
           colorDisplay.textContent = formatColorOutput(r, g, b, alpha);
+          colorDisplay.dataset.rawColor = `rgba(${r}, ${g}, ${b}, ${alpha})`; // optional
         }
       }
 
@@ -314,6 +315,8 @@ if (colorCodeToggle && colorCodeArrow && colorCodeList && colorCodeLabel) {
       colorCodeArrow.classList.remove("sc-rotate-180");
     });
   });
+  
+  
   
 
 
