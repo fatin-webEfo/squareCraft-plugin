@@ -1590,7 +1590,7 @@ export function initButtonResetHandlers(getSelectedElement) {
   const resetMap = [
     {
       id: "border-reset",
-      action: (btn, selected, typeClass, key, state, styleTag) => {
+      action: ({ typeClass, key, state, styleTag }) => {
         if (!state || !styleTag) return;
         state.values = { Top: 0, Right: 0, Bottom: 0, Left: 0 };
         window.__squareCraftBorderStateMap.set(key, state);
@@ -1599,7 +1599,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "border-radius-reset",
-      action: (btn, selected, typeClass, key, state, styleTag) => {
+      action: ({ typeClass, key, state, styleTag }) => {
         if (!state || !styleTag) return;
         state.borderRadius = "0px";
         window.__squareCraftBorderStateMap.set(key, state);
@@ -1608,7 +1608,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "icon-size-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         const icon = btn.querySelector("svg");
         if (icon && state?.iconSize) {
           icon.style.setProperty("width", state.iconSize, "important");
@@ -1618,7 +1618,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "icon-rotation-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         if (state?.iconRotation) {
           btn.style.setProperty("transform", state.iconRotation, "important");
         }
@@ -1626,7 +1626,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "icon-spacing-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         if (state?.iconSpacing) {
           btn.style.setProperty("gap", state.iconSpacing, "important");
         }
@@ -1634,7 +1634,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "shadow-axis-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         if (state?.shadow) {
           const { x, y, blur, spread, color } = state.shadow;
           btn.style.setProperty(
@@ -1647,7 +1647,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "shadow-blur-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         if (state?.shadow) {
           const { x, y, spread, color } = state.shadow;
           btn.style.setProperty(
@@ -1660,7 +1660,7 @@ export function initButtonResetHandlers(getSelectedElement) {
     },
     {
       id: "shadow-spread-reset",
-      action: (btn, selected, typeClass, key, state) => {
+      action: ({ btn, state }) => {
         if (state?.shadow) {
           const { x, y, blur, color } = state.shadow;
           btn.style.setProperty(
@@ -1696,7 +1696,8 @@ export function initButtonResetHandlers(getSelectedElement) {
         const styleTag = document.getElementById(
           `sc-button-border-${typeClass}`
         );
-        action(btn, selected, typeClass, key, state, styleTag);
+
+        action({ btn, selected, typeClass, key, state, styleTag });
       });
     });
   });
@@ -1720,6 +1721,7 @@ export function initButtonResetHandlers(getSelectedElement) {
 }`;
   }
 }
+
 
 
 
