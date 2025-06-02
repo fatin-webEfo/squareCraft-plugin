@@ -449,7 +449,7 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
   });
 
-  if (container.children.length > 0) {
+  if (container.children.length > 0) {  
     const firstSwatchColor = container.children[0].style.backgroundColor;
 
     updateSelectorField(firstSwatchColor);
