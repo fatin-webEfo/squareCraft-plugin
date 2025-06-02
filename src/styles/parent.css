@@ -2362,7 +2362,9 @@
 .sc-dropdown-item:hover {
   background-color: #EF7C2F !important;
 }
-
+.sc-z-999999{
+  z-index:999999;
+}
 .sc-text-EF7C2F {
   color: #EF7C2F !important;
 }

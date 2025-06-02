@@ -513,7 +513,10 @@
         widgetContainer = document.createElement("div");
         widgetContainer.id = "sc-widget-container";
         widgetContainer.classList.add(
-          "sc-fixed", "sc-text-color-white", "sc-universal", "sc-z-9999"
+          "sc-fixed",
+          "sc-text-color-white",
+          "sc-universal",
+          "sc-z-999999"
         );
 
         const styleLink = document.createElement("link");
