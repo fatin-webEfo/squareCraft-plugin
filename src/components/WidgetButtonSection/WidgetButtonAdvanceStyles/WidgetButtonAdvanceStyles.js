@@ -1,5 +1,3 @@
-// initButtonAdvanceStyles.js with GSAP integration
-
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("timeline-start-bullet");
   const endBullet = document.getElementById("timeline-end-bullet");
@@ -60,28 +58,32 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   )
     return;
 
+  let startPercent = 10;
+  let endPercent = 30;
+
+  const updateRangeFill = () => {
+    gsap.set(endFill, {
+      left: `${startPercent}%`,
+      width: `${endPercent - startPercent}%`,
+    });
+  };
+
   const updateField =
     (bullet, fill, countEl, cssVar, position = "left") =>
     (val) => {
       const isLeft = position === "left";
       console.log(
-        `[sc-log] Updating \${cssVar} to \${val} (\${isLeft ? 'left' : 'right'})`
+        `[sc-log] Updating ${cssVar} to ${val} (${isLeft ? "left" : "right"})`
       );
       if (isLeft) {
         gsap.set(bullet, { left: `${val}%` });
         gsap.set(fill, { width: `${val}%` });
       } else {
-        gsap.set(bullet, { right: `${100 - val}%` });
-        gsap.set(fill, {
-          right: "0%",
-          width: `${val}%`,
-          left: "auto",
-          transformOrigin: "right",
-        });
-          
-          
+        gsap.set(bullet, { left: `${val}%` });
+        endPercent = val;
+        updateRangeFill();
       }
-      
+
       countEl.textContent = `${val}${
         countEl.id.includes("Value") ? "%" : "px"
       }`;
@@ -97,10 +99,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             `${val}${cssVar.includes("scroll") ? "%" : "px"}`,
             "important"
           );
-          console.log(`[sc-log] Applied \${cssVar}: \${val} to button`, button);
+          console.log(`[sc-log] Applied ${cssVar}: ${val} to button`, button);
         } else {
           console.warn(
-            `[sc-warn] No button found inside selected element to apply \${cssVar}`
+            `[sc-warn] No button found inside selected element to apply ${cssVar}`
           );
         }
       } else {
@@ -169,8 +171,18 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     "left"
   );
 
-  makeDraggable(startBullet, updateStart);
-  makeDraggable(endBullet, updateEnd);
+  makeDraggable(startBullet, (val) => {
+    startPercent = val;
+    updateStart(val);
+    updateRangeFill();
+  });
+
+  makeDraggable(endBullet, (val) => {
+    endPercent = val;
+    updateEnd(val);
+    updateRangeFill();
+  });
+
   makeDraggable(entryBullet, updateEntry);
   makeDraggable(centerBullet, updateCenter);
   makeDraggable(exitBullet, updateExit);
@@ -196,7 +208,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       ].forEach(([cssVar, bullet, fill, countEl, val, position]) => {
         const updater = updateField(bullet, fill, countEl, cssVar, position);
         updater(val);
+        if (cssVar === "--sc-scroll-start") startPercent = val;
+        if (cssVar === "--sc-scroll-end") endPercent = val;
       });
+      updateRangeFill();
     };
   }
 }
