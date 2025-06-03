@@ -44,7 +44,7 @@ export function WidgetButtonAdvanceSection(){
             <div
               class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px"
             >
-              <div class="sc-flex sc-items-center sc-gap-8px">
+              <div class="sc-flex  sc-gap-8px">
                 <img
                   width="15px"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance/button-advance-effects-tab-head.svg"
