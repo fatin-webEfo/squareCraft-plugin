@@ -41,8 +41,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div class="sc-px-2 sc-mt-2">
-             <p class="sc-roboto sc-font-size-12 sc-text-gray-300 sc-universal">Select one or multiple feature to make button scroll effect </p>
-            <div class="sc-flex  sc-mt-2">
+            <div class="sc-flex ">
                <div
                  class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px"
                >
