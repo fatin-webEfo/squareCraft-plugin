@@ -25,7 +25,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       c.startsWith(classPrefix)
     );
     currentClasses.forEach((cls) => button.classList.remove(cls));
-    button.classList.add(`${classPrefix}${val}`);
+    const newClass = `${classPrefix}${val}`;
+    button.classList.add(newClass);
+    console.log(`[sc-log] Applied class ${newClass} to button`, button);
   }
 
   function applyStyle(type, val) {
@@ -37,7 +39,15 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       );
       if (button) {
         applyScrollClass(button, type, val);
+      } else {
+        console.warn(
+          `[sc-warn] No button found inside selected element for ${type}`
+        );
       }
+    } else {
+      console.warn(
+        "[sc-warn] No selected block element found to apply scroll classes."
+      );
     }
   }
 
@@ -46,6 +56,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     gsap.set(startBullet, { left: `${startPercent}%` });
     gsap.set(startFill, { left: "0%", width: `${startPercent}%` });
     startValue.textContent = `${startPercent}%`;
+    console.log(`[sc-log] Updating --sc-scroll-start to ${startPercent}%`);
     applyStyle("start", startPercent);
     updateEnd(endPercent); // refresh fill
   };
@@ -57,8 +68,12 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       left: `${startPercent}%`,
       width: `${endPercent - startPercent}%`,
     });
-    endValue.textContent = `${endPercent}%`;
-    applyStyle("end", endPercent);
+    const countFromRight = 100 - endPercent;
+    endValue.textContent = `${countFromRight}%`;
+    console.log(
+      `[sc-log] Updating --sc-scroll-end to ${countFromRight}% (real left: ${endPercent}%)`
+    );
+    applyStyle("end", countFromRight);
   };
 
   const makeDraggable = (bullet, updateFn) => {
@@ -85,6 +100,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const resetBtn = document.getElementById("icon-size-reset");
   if (resetBtn) {
     resetBtn.onclick = () => {
+      console.log("[sc-log] Resetting start and end scroll values.");
       updateStart(10);
       updateEnd(30);
     };
