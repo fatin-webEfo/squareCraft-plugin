@@ -3,6 +3,7 @@ import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/s
 import { WidgetTypoSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSection.js';
 import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
+import { WidgetButtonAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceSection/WidgetButtonAdvanceSection.js";
 
 
 export function html() {
@@ -36,7 +37,7 @@ export function html() {
     ${WidgetButtonSection("buttonSection")}
   </div>
   <div id="advancedTab" class="sc-hidden">
-   <p class="sc-text-sm sc-px-2">Advance tab</p>
+   ${WidgetButtonAdvanceSection()}
   </div>
   <div id="presetsTab" class="sc-hidden">
     <p class="sc-text-sm sc-px-2">Preset tab</p>
