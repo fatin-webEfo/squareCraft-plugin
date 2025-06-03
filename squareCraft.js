@@ -1,4 +1,26 @@
   (async function squareCraft() {
+    async function loadGSAP() {
+      return new Promise((resolve, reject) => {
+        if (window.gsap) {
+          return resolve(window.gsap);
+        }
+
+        const script = document.createElement("script");
+        script.src =
+          "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+        script.defer = true;
+        script.onload = () => resolve(window.gsap);
+        script.onerror = () => reject("❌ Failed to load GSAP CDN");
+        document.head.appendChild(script);
+      });
+    }
+    await loadGSAP();
+    const { initButtonAdvanceStyles } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonAdvanceStyles.js"
+    );
+    initButtonAdvanceStyles(() => selectedElement);
+        
+    
     if (!window.__squareCraftResetFlags) {
       window.__squareCraftResetFlags = new Map();
     }
