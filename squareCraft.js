@@ -16,7 +16,7 @@
     }
     await loadGSAP();
     const { initButtonAdvanceStyles } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/initButtonAdvanceStyles/initButtonAdvanceStyles.js"
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
     );
     initButtonAdvanceStyles(() => selectedElement);
         
