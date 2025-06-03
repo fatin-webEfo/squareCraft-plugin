@@ -15,10 +15,8 @@
       });
     }
     await loadGSAP();
-    const { initButtonAdvanceStyles } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
-    );
-    initButtonAdvanceStyles(() => selectedElement);
+   
+
         
     
     if (!window.__squareCraftResetFlags) {
@@ -113,7 +111,9 @@
 
       styleTag.innerHTML = cssText;
     }
-
+    const { initButtonAdvanceStyles } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
+    );
     const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
     const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
     const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
@@ -170,6 +170,9 @@
 
       if (selectedElement) {
         initButtonStyles(selectedElement);
+      }
+      if(selectedElement){
+        initButtonAdvanceStyles(() => selectedElement);
       }
 
       if (selectedElement) {
