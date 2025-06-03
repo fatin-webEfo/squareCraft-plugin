@@ -59,23 +59,32 @@ export function detectBlockElementTypes(block) {
   const show = (id) =>
     document.getElementById(id)?.classList.remove("sc-hidden");
 
-  hide("typoSection");
-  hide("imageSection");
-  hide("buttonSection");
+  const allSections = [
+    "typoSection",
+    "imageSection",
+    "buttonSection",
+    "advancedTypoSection",
+    "advancedImageSection",
+    "advancedButtonSection",
+    "presetTypoSection",
+    "presetImageSection",
+    "presetButtonSection",
+  ];
 
-  hide("advancedTypoSection");
-  hide("advancedImageSection");
-  hide("advancedButtonSection");
+  allSections.forEach(hide);
 
   if (foundType === "text") {
     show("typoSection");
-    show("advancedTypoSection"); 
+    show("advancedTypoSection");
+    show("presetTypoSection");
   } else if (foundType === "image") {
     show("imageSection");
-    show("advancedImageSection"); 
+    show("advancedImageSection");
+    show("presetImageSection");
   } else if (foundType === "button") {
     show("buttonSection");
-    show("advancedButtonSection"); 
+    show("advancedButtonSection");
+    show("presetButtonSection");
   }
 
   return currentButtonType;

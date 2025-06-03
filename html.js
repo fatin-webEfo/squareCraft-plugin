@@ -48,7 +48,10 @@ export function html() {
 </div>
 
   <div id="presetsTab" class="sc-hidden">
-    <p class="sc-text-sm sc-px-2">Preset tab</p>
+   <div id="presetButtonSection">${WidgetButtonPresetSection()}</div>
+<div id="presetTypoSection">${WidgetTypoPresetSection()}</div>
+<div id="presetImageSection">${WidgetImagePresetSection()}</div>
+
   </div>
 </div>
 
