@@ -60,20 +60,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const styleState = {
-    start: 10,
-    end: 30,
-    entry: 0,
-    center: 0,
-    exit: 0,
-    speed: 0,
-  };
-
   const updateField =
-    (bullet, fill, countEl, cssVar, key, position = "left") =>
+    (bullet, fill, countEl, cssVar, position = "left") =>
     (val) => {
-      styleState[key] = val;
       const isLeft = position === "left";
+      console.log(
+        `[sc-log] Updating \${cssVar} to \${val} (\${isLeft ? 'left' : 'right'})`
+      );
       if (isLeft) {
         gsap.set(bullet, { left: `${val}%` });
         gsap.set(fill, { width: `${val}%` });
@@ -96,58 +89,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             `${val}${cssVar.includes("scroll") ? "%" : "px"}`,
             "important"
           );
+          console.log(`[sc-log] Applied \${cssVar}: \${val} to button`, button);
+        } else {
+          console.warn(
+            `[sc-warn] No button found inside selected element to apply \${cssVar}`
+          );
         }
+      } else {
+        console.warn("[sc-warn] No selected element found to apply styles.");
       }
     };
-
-  const updateStart = updateField(
-    startBullet,
-    startFill,
-    startValue,
-    "--sc-scroll-start",
-    "start",
-    "left"
-  );
-  const updateEnd = updateField(
-    endBullet,
-    endFill,
-    endValue,
-    "--sc-scroll-end",
-    "end",
-    "right"
-  );
-  const updateEntry = updateField(
-    entryBullet,
-    entryFill,
-    entryCount,
-    "--sc-scroll-entry",
-    "entry",
-    "left"
-  );
-  const updateCenter = updateField(
-    centerBullet,
-    centerFill,
-    centerCount,
-    "--sc-scroll-center",
-    "center",
-    "left"
-  );
-  const updateExit = updateField(
-    exitBullet,
-    exitFill,
-    exitCount,
-    "--sc-scroll-exit",
-    "exit",
-    "left"
-  );
-  const updateSpeed = updateField(
-    speedBullet,
-    speedFill,
-    speedCount,
-    "--sc-scroll-speed",
-    "speed",
-    "left"
-  );
 
   const makeDraggable = (bullet, updateFn) => {
     bullet.onmousedown = (e) => {
@@ -167,6 +118,49 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     };
   };
 
+  const updateStart = updateField(
+    startBullet,
+    startFill,
+    startValue,
+    "--sc-scroll-start",
+    "left"
+  );
+  const updateEnd = updateField(
+    endBullet,
+    endFill,
+    endValue,
+    "--sc-scroll-end",
+    "right"
+  );
+  const updateEntry = updateField(
+    entryBullet,
+    entryFill,
+    entryCount,
+    "--sc-scroll-entry",
+    "left"
+  );
+  const updateCenter = updateField(
+    centerBullet,
+    centerFill,
+    centerCount,
+    "--sc-scroll-center",
+    "left"
+  );
+  const updateExit = updateField(
+    exitBullet,
+    exitFill,
+    exitCount,
+    "--sc-scroll-exit",
+    "left"
+  );
+  const updateSpeed = updateField(
+    speedBullet,
+    speedFill,
+    speedCount,
+    "--sc-scroll-speed",
+    "left"
+  );
+
   makeDraggable(startBullet, updateStart);
   makeDraggable(endBullet, updateEnd);
   makeDraggable(entryBullet, updateEntry);
@@ -177,19 +171,24 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const resetBtn = document.getElementById("icon-size-reset");
   if (resetBtn) {
     resetBtn.onclick = () => {
-      updateStart(10);
-      updateEnd(30);
-      updateEntry(0);
-      updateCenter(0);
-      updateExit(0);
-      updateSpeed(0);
+      [
+        ["--sc-scroll-start", startBullet, startFill, startValue, 10, "left"],
+        ["--sc-scroll-end", endBullet, endFill, endValue, 30, "right"],
+        ["--sc-scroll-entry", entryBullet, entryFill, entryCount, 0, "left"],
+        [
+          "--sc-scroll-center",
+          centerBullet,
+          centerFill,
+          centerCount,
+          0,
+          "left",
+        ],
+        ["--sc-scroll-exit", exitBullet, exitFill, exitCount, 0, "left"],
+        ["--sc-scroll-speed", speedBullet, speedFill, speedCount, 0, "left"],
+      ].forEach(([cssVar, bullet, fill, countEl, val, position]) => {
+        const updater = updateField(bullet, fill, countEl, cssVar, position);
+        updater(val);
+      });
     };
   }
-
-  updateStart(styleState.start);
-  updateEnd(styleState.end);
-  updateEntry(styleState.entry);
-  updateCenter(styleState.center);
-  updateExit(styleState.exit);
-  updateSpeed(styleState.speed);
 }
