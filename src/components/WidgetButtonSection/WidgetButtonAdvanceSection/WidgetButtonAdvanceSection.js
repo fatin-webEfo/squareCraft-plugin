@@ -11,7 +11,7 @@ export function WidgetButtonAdvanceSection(){
                width="19px"
                alt=""
              />
-             <p class="sc-universal sc-roboto">scrolling Effects</p>
+             <p class="sc-universal sc-roboto">Scroll Effects</p>
            </div>
            <img
              src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
