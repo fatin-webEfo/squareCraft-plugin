@@ -1,82 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/styles/parent.css" type="text/css" />
+    <title>Document</title>
+  </head>
 
-<head>
-   <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <link rel="stylesheet" href="./src/styles/parent.css" type="text/css" />
-   <title>Document</title>
-</head>
-
-<body class="sc-bg-color-3d3d3d sc-flex sc-items-center sc-justify-center">
-   <div
-      class="sc-p-2 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
+  <body class="sc-bg-color-3d3d3d sc-flex sc-items-center sc-justify-center">
+    <div
+      class="sc-p-2 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px"
+    >
       <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
-         <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
-            <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
-               width="140px" />
-         </div>
-         <p class="sc-font-size-12 sc-mt-6 sc-roboto sc-font-light">
-            Powerful Visual Editor for Customizing Squarespace Text Styles in
-            Real-Time.
-         </p>
-      </div>
-      <div class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949 sc-w-full"></div>
-      <div class="sc-mt-6 sc-roboto sc-flex sc-items-center sc-universal">
-         <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Design</p>
-         <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
-         <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
-      </div>
-      <div class="sc-border-t sc-border-solid sc-relative sc-border-color-494949 sc-w-full">
-         <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px"></div>
+        <div
+          class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between"
+        >
+          <img
+            class="sc-cursor-grabbing sc-universal"
+            src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png"
+            width="140px"
+          />
+        </div>
+        <p class="sc-font-size-12 sc-mt-6 sc-roboto sc-font-light">
+          Powerful Visual Editor for Customizing Squarespace Text Styles in
+          Real-Time.
+        </p>
       </div>
       <div
-         class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
-         <div id="buttonSection">
-            <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
-               <div class="sc-flex sc-gap-2 sc-items-center">
-                  <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance.png"
-                     alt="">
-                  <p class="sc-universal sc-roboto">Advanced</p>
-               </div>
-               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-            </div>
-            <div class="sc-h-1px sc-bg-3f3f3f"></div>
-            <div class="sc-flex sc-px-2   sc-items-center sc-justify-between">
-               <div class="sc-flex sc-gap-2 sc-items-center">
-                  <div class="toggle-container" id="toggleSwitch">
-                     <div class="toggle-bullet"></div>
-                  </div>
-                  <p id="toggleText" class="sc-font-size-12 sc-roboto">Enable</p>
-               </div>
-               <div
-                  class="sc-flex sc-gradiant-border sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-4px sc-bg sc-bg-454545">
-                  <p class="sc-font-thin sc-universal sc-font-size-12 sc-font-size-11 sc-roboto">Reset</p>
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
-               </div>
-            </div>
-
-            <div class="sc-mt-4">
-            </div>
-         </div>
-
-
+        class="sc-mt-6 sc-roboto sc-border-t sc-border-dashed sc-border-color-494949 sc-w-full"
+      ></div>
+      <div class="sc-mt-6 sc-roboto sc-flex sc-items-center sc-universal">
+        <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">
+          Design
+        </p>
+        <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">
+          Advanced
+        </p>
+        <p class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">
+          Presets
+        </p>
       </div>
-      <div class="sc-mt-4">
-         <div class="sc-flex sc-items-center sc-justify-between sc-gap-2">
-            <div id="publish"
-               class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
-               Publish
+      <div
+        class="sc-border-t sc-border-solid sc-relative sc-border-color-494949 sc-w-full"
+      >
+        <div
+          class="sc-absolute sc-top-0 sc-left-0 sc-bg-colo-EF7C2F sc-w-16 sc-h-1px"
+        ></div>
+      </div>
+      <div
+        class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d"
+      >
+        <div id="button-advance-section">
+          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
+            <div class="sc-flex sc-gap-2 sc-items-center">
+              <img
+                loading="lazy"
+                src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance.png"
+                width="19px"
+                alt=""
+              />
+              <p class="sc-universal sc-roboto">Advanced</p>
+            </div>
+            <img
+              src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+              alt=""
+            />
+          </div>
+          <div class="sc-h-1px sc-bg-3f3f3f"></div>
+          <div class="sc-flex sc-px-2 sc-items-center sc-justify-between">
+            <div class="sc-flex sc-gap-2 sc-items-center">
+              <div class="toggle-container" id="toggleSwitch">
+                <div class="toggle-bullet"></div>
+              </div>
+              <p id="toggleText" class="sc-font-size-12 sc-roboto">Enable</p>
             </div>
             <div
-               class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
-               Reset
+              class="sc-flex sc-gradiant-border sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-4px sc-bg sc-bg-454545"
+            >
+              <p
+                class="sc-font-thin sc-universal sc-font-size-12 sc-font-size-11 sc-roboto"
+              >
+                Reset
+              </p>
+              <img
+                src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
+                alt="reset"
+              />
             </div>
-         </div>
+          </div>
+          <div class="sc-flex sc-px-2 sc-mt-2">
+            <div
+              class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px"
+            >
+              <div class="sc-flex sc-items-center sc-gap-8px">
+                <img
+                  width="15px"
+                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance/button-advance-effects-tab-head.svg"
+                  loading="lazy"
+                  alt=""
+                />
+                <p class="sc-roboto sc-font-size-14 sc-universal">Effects</p>
+              </div>
+              <img
+                id="button-font-arrow"
+                src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+                class=""
+                alt=""
+              />
+            </div>
+          </div>
+
+          <div class="sc-mt-4"></div>
+        </div>
       </div>
-   </div>
+      <div class="sc-mt-4">
+        <div class="sc-flex sc-items-center sc-justify-between sc-gap-2">
+          <div
+            id="publish"
+            class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center"
+          >
+            Publish
+          </div>
+          <div
+            class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center"
+          >
+            Reset
+          </div>
+        </div>
+      </div>
+    </div>
 
-   <script src="./squareCraft.js"></script>
-</body>
-
+    <script src="./squareCraft.js"></script>
+  </body>
 </html>
