@@ -73,10 +73,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       } else {
         gsap.set(bullet, { right: `${100 - val}%` });
         gsap.set(fill, {
+          left: `${100 - val}%`,
           width: `${val}%`,
-          right: "0%",
-          left: "auto",
+          right: "auto",
         });
+          
       }
       
       countEl.textContent = `${val}${
