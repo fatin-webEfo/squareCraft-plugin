@@ -1,9 +1,9 @@
 
 import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/squareCraft-plugin/toggleState.js';
 import { WidgetTypoSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSection.js';
-import { WidgetTypoAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoAdvanceSection/WidgetTypoSection.js";
+import { WidgetTypoAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoAdvanceSection/WidgetTypoAdvanceSection.js";
 import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
-import { WidgetImageAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageAdvanceSection/WidgetImageSection.js";
+import { WidgetImageAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageAdvanceSection/WidgetImageAdvanceSection.js";
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
 import { WidgetButtonAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceSection/WidgetButtonAdvanceSection.js";
 
