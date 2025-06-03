@@ -1367,6 +1367,21 @@ export function resetAllButtonStyles(getSelectedElement) {
     const blockId = selected.id || "block-id";
     const classKey = typeClass.replace(/--/g, "-");
     const fullKey = `${blockId}--${typeClass}`;
+    const borderIds = [
+      "buttonBorderAll",
+      "buttonBorderTop",
+      "buttonBorderBottom",
+      "buttonBorderLeft",
+      "buttonBorderRight",
+    ];
+
+    borderIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && el.classList.contains("sc-bg-454545")) {
+        el.classList.remove("sc-bg-454545");
+      }
+    });
+    
 
     const normalStyleIds = [
       `sc-font-style-${typeClass}`,
