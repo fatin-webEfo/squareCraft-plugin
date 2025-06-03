@@ -83,8 +83,8 @@ export function WidgetButtonAdvanceSection(){
                 <div id="timeline-start-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full" style="left: 0%; width: 0%;"></div>
                 <div id="timeline-end-fill" class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full" style="right: 0%; width: 0%;"></div>
             
-                <div id="timeline-start-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half" style="left: 10%;"></div>
-                <div id="timeline-end-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half" style="right: 30%;"></div>
+                <div id="timeline-start-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half" style="left: 0%;"></div>
+                <div id="timeline-end-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half" style="right: 0%;"></div>
               </div>
             
               <div class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300 ">
