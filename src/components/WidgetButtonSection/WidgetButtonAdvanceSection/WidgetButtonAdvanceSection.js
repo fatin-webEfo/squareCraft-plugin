@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-   <div id="button-advance-section">
+  <div id="button-advance-section">
         <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
           <div class="sc-flex sc-gap-2 sc-items-center">
             <img
@@ -54,7 +54,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Vertical</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-vertical-arrow"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class=""
                  alt=""
@@ -93,7 +93,7 @@ export function WidgetButtonAdvanceSection(){
               </div>
             </div>
             
-            <div class="sc-w-full sc-mt-4">
+            <div class="sc-w-full sc-mt-3">
             <div class=" sc-flex sc-w-full sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Entry
@@ -121,7 +121,7 @@ export function WidgetButtonAdvanceSection(){
                </div>
             </div>
            </div>
-           <div class="sc-w-full sc-mt-4">
+           <div class="sc-w-full sc-mt-3">
             <div class=" sc-flex sc-w-full sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Center
@@ -149,7 +149,7 @@ export function WidgetButtonAdvanceSection(){
                </div>
             </div>
            </div>
-           <div class="sc-w-full sc-mt-4">
+           <div class="sc-w-full sc-mt-3">
             <div class=" sc-flex sc-w-full sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Exit
@@ -177,7 +177,7 @@ export function WidgetButtonAdvanceSection(){
                </div>
             </div>
            </div>
-           <div class="sc-w-full sc-mt-4">
+           <div class="sc-w-full sc-mt-3">
             <div class=" sc-flex sc-w-full sc-items-center sc-justify-between">
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Effect Speed
@@ -263,7 +263,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Opacity</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-opacity-arrow"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class="sc-rotate-180"
                  alt=""
@@ -283,7 +283,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Scale</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-scale-arro"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class="sc-rotate-180"
                  alt=""
@@ -303,7 +303,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Rotate</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-rotate-arrow"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class="sc-rotate-180"
                  alt=""
@@ -323,7 +323,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Blur</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-blur-arrow"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class="sc-rotate-180"
                  alt=""
@@ -331,6 +331,8 @@ export function WidgetButtonAdvanceSection(){
              </div>
            </div>
         </div>
+
+        
 
         <div class="sc-mt-4"></div>
       </div>
