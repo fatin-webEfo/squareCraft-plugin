@@ -5,6 +5,9 @@ import { WidgetTypoAdvanceSection } from "https://fatin-webefo.github.io/squareC
 import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
 import { WidgetImageAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageAdvanceSection/WidgetImageAdvanceSection.js";
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
+import { WidgetButtonPresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonPresetSection/WidgetButtonPresetSection.js";
+import { WidgetImagePresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImagePresetSection/WidgetImagePresetSection.js";
+import { WidgetTypoPresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoPresetSection/WidgetTypoPresetSection.js";
 import { WidgetButtonAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceSection/WidgetButtonAdvanceSection.js";
 
 
