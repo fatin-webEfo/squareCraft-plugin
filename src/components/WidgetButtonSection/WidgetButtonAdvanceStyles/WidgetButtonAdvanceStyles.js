@@ -1,3 +1,5 @@
+// initButtonAdvanceStyles.js with GSAP integration
+
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("timeline-start-bullet");
   const endBullet = document.getElementById("timeline-end-bullet");
@@ -19,16 +21,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   let startPercent = 0;
   let endPercent = 100;
 
-  function applyScrollClass(button, type, val) {
-    const classPrefix = `sc-scroll-${type}-`;
-    const currentClasses = Array.from(button.classList).filter((c) =>
-      c.startsWith(classPrefix)
+  function applyScrollClass(button, cssVar, val) {
+    const varName = `${cssVar}-${val}`.replace(/[^a-zA-Z0-9-_]/g, "");
+    const allClasses = Array.from(button.classList).filter((c) =>
+      c.startsWith(cssVar + "-")
     );
-    currentClasses.forEach((cls) => button.classList.remove(cls));
-    button.classList.add(`${classPrefix}${val}`);
+    allClasses.forEach((cls) => button.classList.remove(cls));
+    button.classList.add(varName);
   }
 
-  function applyStyle(type, val) {
+  function applyStyle(cssVar, val) {
     const el = getSelectedElement?.();
     if (el) {
       const button = el.querySelector(
@@ -36,7 +38,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       );
       if (button) {
-        applyScrollClass(button, type, val);
+        applyScrollClass(button, cssVar.replace("--", "sc-scroll"), val);
       }
     }
   }
@@ -46,8 +48,8 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     gsap.set(startBullet, { left: `${startPercent}%` });
     gsap.set(startFill, { left: "0%", width: `${startPercent}%` });
     startValue.textContent = `${startPercent}%`;
-    applyStyle("start", startPercent);
-    updateEnd(endPercent); // refresh fill
+    applyStyle("--sc-scroll-start", startPercent);
+    updateEnd(endPercent); // refresh fill area
   };
 
   const updateEnd = (val) => {
@@ -58,7 +60,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       width: `${endPercent - startPercent}%`,
     });
     endValue.textContent = `${endPercent}%`;
-    applyStyle("end", endPercent);
+    applyStyle("--sc-scroll-end", endPercent);
   };
 
   const makeDraggable = (bullet, updateFn) => {
