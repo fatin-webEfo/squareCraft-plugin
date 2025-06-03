@@ -108,45 +108,23 @@
         }
         };
 
-        const makeDraggable = (bullet, updateFn, isStart = true) => {
-          bullet.onmousedown = (e) => {
-            e.preventDefault();
-            document.onmousemove = (event) => {
-              const rect = bullet.parentElement.getBoundingClientRect();
-              const percent = Math.min(
-                100,
-                Math.max(0, ((event.clientX - rect.left) / rect.width) * 100)
-              );
-
-              const rounded = Math.round(percent);
-
-              if (isStart) {
-                if (rounded < endPercent) {
-                  startPercent = rounded;
-                  updateFn(startPercent);
-                }
-              } else {
-                if (rounded > startPercent) {
-                  endPercent = rounded;
-                  updateFn(endPercent);
-                }
-              }
-
-              // Active fill: sync start to end fill range
-              gsap.set(endFill, {
-                left: `${startPercent}%`,
-                width: `${endPercent - startPercent}%`,
-                right: "auto",
-              });
-            };
-
-            document.onmouseup = () => {
-              document.onmousemove = null;
-              document.onmouseup = null;
-            };
-          };
+    const makeDraggable = (bullet, updateFn) => {
+        bullet.onmousedown = (e) => {
+        e.preventDefault();
+        document.onmousemove = (event) => {
+            const rect = bullet.parentElement.getBoundingClientRect();
+            const percent = Math.min(
+            100,
+            Math.max(0, ((event.clientX - rect.left) / rect.width) * 100)
+            );
+            updateFn(Math.round(percent));
         };
-          
+        document.onmouseup = () => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+        };
+    };
 
     const updateStart = updateField(
         startBullet,
@@ -191,9 +169,8 @@
         "left"
     );
 
-    makeDraggable(startBullet, updateStart, true);
-    makeDraggable(endBullet, updateEnd, false);
-    
+    makeDraggable(startBullet, updateStart);
+    makeDraggable(endBullet, updateEnd);
     makeDraggable(entryBullet, updateEntry);
     makeDraggable(centerBullet, updateCenter);
     makeDraggable(exitBullet, updateExit);
