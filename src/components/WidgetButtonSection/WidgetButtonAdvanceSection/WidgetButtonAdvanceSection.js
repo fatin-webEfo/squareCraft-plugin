@@ -98,7 +98,7 @@ export function WidgetButtonAdvanceSection(){
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Entry
                   </p>
-                  <div id="icon-size-reset"
+                  <div id="button-advance-entry-reset"
                      class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
 
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -107,16 +107,16 @@ export function WidgetButtonAdvanceSection(){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
-                  <p id="buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                  <p id="button-advance-entry-count" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                      <span id="buttoniconSizeIncrease" class="sc-arrow-placeholder"></span>
-                      <span id="buttoniconSizeDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                      <span id="button-advance-entry-Increase" class="sc-arrow-placeholder"></span>
+                      <span id="button-advance-entry-Decrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
-            <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="buttonIconSizeradiusBullet"
+            <div id="button-advance-entry-Field" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="button-advance-entry-Fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="button-advance-entry-Bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -126,7 +126,7 @@ export function WidgetButtonAdvanceSection(){
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Center
                   </p>
-                  <div id="icon-size-reset"
+                  <div id="button-advance-center-reset"
                      class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
 
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -135,16 +135,16 @@ export function WidgetButtonAdvanceSection(){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
-                  <p id="buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                  <p id="button-advance-center-radiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                      <span id="buttoniconSizeIncrease" class="sc-arrow-placeholder"></span>
-                      <span id="buttoniconSizeDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                      <span id="button-advance-center-Increase" class="sc-arrow-placeholder"></span>
+                      <span id="button-advance-center-Decrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
-            <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="buttonIconSizeradiusBullet"
+            <div id="button-advance-center-radiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="button-advance-center-radiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="button-advance-center-radiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -154,7 +154,7 @@ export function WidgetButtonAdvanceSection(){
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Exit
                   </p>
-                  <div id="icon-size-reset"
+                  <div id="button-advance-exit-reset"
                      class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
 
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -163,16 +163,16 @@ export function WidgetButtonAdvanceSection(){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
-                  <p id="buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                  <p id="button-advance-exit-radiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                      <span id="buttoniconSizeIncrease" class="sc-arrow-placeholder"></span>
-                      <span id="buttoniconSizeDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                      <span id="button-advance-exit-Increase" class="sc-arrow-placeholder"></span>
+                      <span id="button-advance-exit-Decrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
-            <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="buttonIconSizeradiusBullet"
+            <div id="button-advance-exit-radiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="button-advance-exit-radiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="button-advance-exit-radiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -182,7 +182,7 @@ export function WidgetButtonAdvanceSection(){
                <div class="sc-flex sc-gap-2 sc-items-center">
                   <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-14 "> Effect Speed
                   </p>
-                  <div id="icon-size-reset"
+                  <div id="button-advance-effectSpeed-reset"
                      class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
 
                      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
@@ -191,16 +191,16 @@ export function WidgetButtonAdvanceSection(){
                </div>
                <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
-                  <p id="buttoniconSizeradiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+                  <p id="button-advance-effectSpeed-radiusCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                      <span id="buttoniconSizeIncrease" class="sc-arrow-placeholder"></span>
-                      <span id="buttoniconSizeDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+                      <span id="button-advance-effectSpeed-Increase" class="sc-arrow-placeholder"></span>
+                      <span id="button-advance-effectSpeed-Decrease" class="sc-arrow-placeholder sc-rotate-180"></span>
                   </div>
                </div>
             </div>
-            <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
-               <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-               <div id="buttonIconSizeradiusBullet"
+            <div id="button-advance-effectSpeed-radiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="button-advance-effectSpeed-radiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+               <div id="button-advance-effectSpeed-radiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
                </div>
             </div>
@@ -243,7 +243,7 @@ export function WidgetButtonAdvanceSection(){
                  <p class="sc-roboto sc-font-size-14 sc-universal">Horizontal</p>
                </div>
                <img
-                 id="button-font-arrow"
+                 id="button-advance-horizontal-arrow"
                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                  class="sc-rotate-180"
                  alt=""
@@ -331,8 +331,6 @@ export function WidgetButtonAdvanceSection(){
              </div>
            </div>
         </div>
-
-        
 
         <div class="sc-mt-4"></div>
       </div>
