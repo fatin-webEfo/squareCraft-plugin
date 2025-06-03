@@ -1657,8 +1657,8 @@
 
 .toggle-container {
   position: relative;
-  width: 35px;
-  height: 16px;
+  width: 30px;
+  height: 14px;
   border-radius: 15px;
   background-color: #EF7C2F;
   cursor: pointer;
@@ -1669,8 +1669,8 @@
   position: absolute;
   top: 50%;
   right: 1.5px;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   background: #F2F2F2;
   border-radius: 50%;
   transform: translateY(-50%);
