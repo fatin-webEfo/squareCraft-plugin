@@ -24,7 +24,7 @@ export function WidgetButtonAdvanceSection(){
               <div class="toggle-container" id="toggleSwitch">
                 <div class="toggle-bullet"></div>
               </div>
-              <p id="toggleText" class="sc-font-size-12 sc-roboto">Enable</p>
+              <p id="toggleText" class="sc-font-size-12 sc-roboto sc-universal">Enable</p>
             </div>
             <div
               class="sc-flex sc-gradiant-border sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-4px sc-bg sc-bg-454545"
@@ -40,7 +40,7 @@ export function WidgetButtonAdvanceSection(){
               />
             </div>
           </div>
-          <div class="sc-flex sc-px-2 sc-mt-2">
+          <div class="sc-flex sc-px-2">
             <div
               class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px"
             >
