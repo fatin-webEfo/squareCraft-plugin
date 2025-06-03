@@ -7,7 +7,7 @@
 
         const script = document.createElement("script");
         script.src =
-          "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js";
         script.defer = true;
         script.onload = () => resolve(window.gsap);
         script.onerror = () => reject("❌ Failed to load GSAP CDN");

@@ -72,8 +72,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         gsap.set(fill, { width: `${val}%` });
       } else {
         gsap.set(bullet, { right: `${100 - val}%` });
-        gsap.set(fill, { width: `${val}%` });
+        gsap.set(fill, {
+          width: `${val}%`,
+          right: "0%",
+          left: "auto",
+        });
       }
+      
       countEl.textContent = `${val}${
         countEl.id.includes("Value") ? "%" : "px"
       }`;
