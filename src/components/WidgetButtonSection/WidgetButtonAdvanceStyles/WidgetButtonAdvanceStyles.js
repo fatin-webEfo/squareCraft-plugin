@@ -60,9 +60,19 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   )
     return;
 
+  const styleState = {
+    start: 10,
+    end: 30,
+    entry: 0,
+    center: 0,
+    exit: 0,
+    speed: 0,
+  };
+
   const updateField =
-    (bullet, fill, countEl, cssVar, position = "left") =>
+    (bullet, fill, countEl, cssVar, key, position = "left") =>
     (val) => {
+      styleState[key] = val;
       const isLeft = position === "left";
       if (isLeft) {
         gsap.set(bullet, { left: `${val}%` });
@@ -75,11 +85,19 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         countEl.id.includes("Value") ? "%" : "px"
       }`;
       const el = getSelectedElement?.();
-      if (el)
-        el.style.setProperty(
-          cssVar,
-          `${val}${cssVar.includes("scroll") ? "%" : "px"}`
+      if (el) {
+        const button = el.querySelector(
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
+        if (button) {
+          button.style.setProperty(
+            cssVar,
+            `${val}${cssVar.includes("scroll") ? "%" : "px"}`,
+            "important"
+          );
+        }
+      }
     };
 
   const updateStart = updateField(
@@ -87,6 +105,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     startFill,
     startValue,
     "--sc-scroll-start",
+    "start",
     "left"
   );
   const updateEnd = updateField(
@@ -94,6 +113,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     endFill,
     endValue,
     "--sc-scroll-end",
+    "end",
     "right"
   );
   const updateEntry = updateField(
@@ -101,6 +121,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     entryFill,
     entryCount,
     "--sc-scroll-entry",
+    "entry",
     "left"
   );
   const updateCenter = updateField(
@@ -108,6 +129,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     centerFill,
     centerCount,
     "--sc-scroll-center",
+    "center",
     "left"
   );
   const updateExit = updateField(
@@ -115,6 +137,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     exitFill,
     exitCount,
     "--sc-scroll-exit",
+    "exit",
     "left"
   );
   const updateSpeed = updateField(
@@ -122,6 +145,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     speedFill,
     speedCount,
     "--sc-scroll-speed",
+    "speed",
     "left"
   );
 
@@ -162,10 +186,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     };
   }
 
-  updateStart(10);
-  updateEnd(30);
-  updateEntry(0);
-  updateCenter(0);
-  updateExit(0);
-  updateSpeed(0);
+  updateStart(styleState.start);
+  updateEnd(styleState.end);
+  updateEntry(styleState.entry);
+  updateCenter(styleState.center);
+  updateExit(styleState.exit);
+  updateSpeed(styleState.speed);
 }
