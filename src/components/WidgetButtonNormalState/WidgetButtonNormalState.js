@@ -569,7 +569,7 @@ export function WidgetButtonNormalState() {
 
                                  <div class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
                                     <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                                   <spanclass="sc-arrow-placeholder sc-rotate-180"></spanclass=>
+                                   <span="sc-arrow-placeholder sc-rotate-180"></span>
 
                                  </div>
                               </div>
