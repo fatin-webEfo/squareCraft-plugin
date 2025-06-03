@@ -1627,6 +1627,21 @@ export function initButtonBorderResetHandlers(getSelectedElement) {
 
       const blockId = selected.id || "block-id";
       const key = `${blockId}--${typeClass}`;
+      const ids = [
+        "buttonBorderAll",
+        "buttonBorderTop",
+        "buttonBorderBottom",
+        "buttonBorderLeft",
+        "buttonBorderRight",
+      ];
+
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && el.classList.contains("sc-bg-454545")) {
+          el.classList.remove("sc-bg-454545");
+        }
+      });
+      
 
       if (resetId === "shadow-axis-reset") {
         const xConf = config[0];

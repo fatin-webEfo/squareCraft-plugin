@@ -35,7 +35,6 @@ export function initButtonSectionToggleControls() {
         const el = document.getElementById(id);
         if (!el) return false;
 
-        // Capitalization tab check (special case)
         if (
           id === "scButtonAllCapital" ||
           id === "scButtonAllSmall" ||
@@ -44,7 +43,6 @@ export function initButtonSectionToggleControls() {
           return el.classList.contains("sc-activeTab-border");
         }
 
-        // All other text-based value checks
         const value = el.tagName === "INPUT"
           ? el.value?.trim()
           : el.innerText?.trim();
