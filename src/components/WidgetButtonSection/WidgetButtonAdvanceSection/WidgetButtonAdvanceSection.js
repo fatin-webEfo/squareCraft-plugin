@@ -80,16 +80,16 @@ export function WidgetButtonAdvanceSection(){
                </div>
             
               <div class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px">
-                <div id="timeline-start-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full" style="left: 0%; width: 10%;"></div>
-                <div id="timeline-end-fill" class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full" style="right: 0%; width: 30%;"></div>
+                <div id="timeline-start-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full" style="left: 0%; width: 0%;"></div>
+                <div id="timeline-end-fill" class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full" style="right: 0%; width: 0%;"></div>
             
                 <div id="timeline-start-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half" style="left: 10%;"></div>
                 <div id="timeline-end-bullet" class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half" style="right: 30%;"></div>
               </div>
             
               <div class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300 ">
-                <p class="sc-universal sc-roboto">Start <span id="timelineStartValue">10%</span></p>
-                <p class="sc-universal sc-roboto">End <span id="timelineEndValue">30%</span></p>
+                <p class="sc-universal sc-roboto">Start <span id="timelineStartValue">0%</span></p>
+                <p class="sc-universal sc-roboto">End <span id="timelineEndValue">0%</span></p>
               </div>
             </div>
             
