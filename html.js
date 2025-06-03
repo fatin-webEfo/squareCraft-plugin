@@ -1,7 +1,9 @@
 
 import { getToggleState, setToggleState } from 'https://fatin-webefo.github.io/squareCraft-plugin/toggleState.js';
 import { WidgetTypoSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSection.js';
+import { WidgetTypoAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoAdvanceSection/WidgetTypoSection.js";
 import { WidgetImageSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageSection.js';
+import { WidgetImageAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageAdvanceSection/WidgetImageSection.js";
 import { WidgetButtonSection } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonSection.js';
 import { WidgetButtonAdvanceSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonSection/WidgetButtonAdvanceSection/WidgetButtonAdvanceSection.js";
 
@@ -36,9 +38,12 @@ export function html() {
     ${WidgetImageSection("imageSection")}
     ${WidgetButtonSection("buttonSection")}
   </div>
-  <div id="advancedTab" class="sc-hidden">
-   ${WidgetButtonAdvanceSection()}
-  </div>
+ <div id="advancedTab" class="sc-hidden">
+  <div id="advancedButtonSection">${WidgetButtonAdvanceSection()}</div>
+  <div id="advancedTypoSection">${WidgetTypoAdvanceSection()}</div>
+  <div id="advancedImageSection">${WidgetImageAdvanceSection()}</div>
+</div>
+
   <div id="presetsTab" class="sc-hidden">
     <p class="sc-text-sm sc-px-2">Preset tab</p>
   </div>

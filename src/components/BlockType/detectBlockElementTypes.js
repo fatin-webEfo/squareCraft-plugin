@@ -43,9 +43,26 @@ export function detectBlockElementTypes(block) {
   hide("imageSection");
   hide("buttonSection");
 
+  hide("advancedTypoSection");
+  hide("advancedImageSection");
+  hide("advancedButtonSection");
+
+  if (foundType === "text") {
+    show("typoSection");
+    show("advancedTypoSection");
+  } else if (foundType === "image") {
+    show("imageSection");
+    show("advancedImageSection");
+  } else if (foundType === "button") {
+    show("buttonSection");
+    show("advancedButtonSection");
+  }
+
   if (foundType === "text") show("typoSection");
   else if (foundType === "image") show("imageSection");
   else if (foundType === "button") show("buttonSection");
 
   return currentButtonType;
+
+  
 }
