@@ -41,9 +41,9 @@ export function WidgetImageSection(id) {
             <div class="sc-px-4">
                <div class="sc-h-1px  sc-mt-2 sc-bg-3f3f3f"></div>
             </div>
-         </div>
-${WidgetImageNormalState()}
-${WidgetImageHoverState()}
+          </div>
+             ${WidgetImageNormalState()}
+             ${WidgetImageHoverState()}
          <div class="sc-mt-3"> </div>
       </div>
           `;
