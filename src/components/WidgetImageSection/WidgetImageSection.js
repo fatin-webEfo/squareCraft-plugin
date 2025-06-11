@@ -7,7 +7,7 @@ export function WidgetImageSection(id) {
                          alt="">
                       <p class="sc-universal sc-roboto">Image</p>
                    </div>
-                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+                   <span  class="sc-arrow-placeholder"></span>
                 </div>
                 <div class="sc-h-1px sc-bg-3f3f3f"></div>
                 <div class="sc-flex sc-px-2 sc-mt-1_5  sc-items-center sc-justify-between">
@@ -44,8 +44,7 @@ export function WidgetImageSection(id) {
                    <div id="borderButton"
                       class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-w-full sc-rounded-4px">
                       <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Border</h5>
-                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                         class="sc-rotate-180" alt="">
+                       <span  class="sc-arrow-placeholder sc-rotate-180"></span>
                    </div>
                 </div>
                 <div id="borderSection" class="sc-px-2 sc-mt-3">
@@ -160,9 +159,7 @@ export function WidgetImageSection(id) {
  
                                   <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                                      <p class="sc-universal sc-text-xs sc-roboto">RGB</p>
-                                     <img id="paragraph1Arrow" width="10"
-                                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                                        class="sc-rotate-180" alt="">
+                                     <span  class="sc-arrow-placeholder sc-rotate-180"></span>
  
                                   </div>
                                </div>
@@ -307,8 +304,7 @@ export function WidgetImageSection(id) {
                    <div id="overLayButton"
                       class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2  sc-rounded-4px">
                       <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Overlay</h5>
-                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                         class="sc-rotate-180" alt="">
+                       <span  class="sc-arrow-placeholder sc-rotate-180"></span>
                    </div>
                 </div>
  
@@ -332,8 +328,7 @@ export function WidgetImageSection(id) {
                       <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-rounded-l">
                          <p class="sc-universal sc-roboto sc-text-sm ">Yes</p>
                       </div>
-                      <img style="width: 30px;" loading="lazy"
-                         src="https://fatin-webefo.github.io/squareCraft-plugin/public/imageArrow.svg" alt="">
+                      <span  class="sc-arrow-placeholder"></span>
                    </div>
  
                    <div class="sc-mt-4 sc-gap-2 sc-flex">
@@ -354,9 +349,7 @@ export function WidgetImageSection(id) {
                          <div id="overlay-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                          <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                             <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                            <img id="buttonParagraph1Arrow" width="10"
-                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                            class="sc-rotate-180" alt="">
+                            <span  class="sc-arrow-placeholder sc-rotate-180"></span>
                          </div>
                       </div>
                       <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
@@ -398,10 +391,8 @@ export function WidgetImageSection(id) {
                             </div>
                             <div id="overlayWidthControl" style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                                  <img class="overlay-arrow-up" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                     width="10">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
-                                     class="overlay-arrow-down sc-rotate-180" alt="">
+                                  <span  class="sc-arrow-placeholder overlay-arrow-up"></span>
+                                  <span  class="sc-arrow-placeholder overlay-arrow-down sc-rotate-180"></span>
                                </div>
                             </div>
                          </div>
@@ -417,10 +408,8 @@ export function WidgetImageSection(id) {
                             </div>
                             <div id="overlayHeightControl" style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                                  <img class="overlay-arrow-up" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                     width="10">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="10"
-                                     class="overlay-arrow-down sc-rotate-180" alt="">
+                                  <span  class="sc-arrow-placeholder overlay-arrow-up"></span>
+                                  <span  class="sc-arrow-placeholder overlay-arrow-down sc-rotate-180"></span>
                                </div>
                             </div>
                          </div>
@@ -491,8 +480,7 @@ export function WidgetImageSection(id) {
                    <div id="shadowButton"
                       class="sc-bg-3f3f3f sc-mt-3 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2  sc-rounded-4px">
                       <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Shadow</h5>
-                      <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                         class="sc-rotate-180" alt="">
+                                  <span  class="sc-arrow-placeholder sc-rotate-180"></span>
                    </div>
  
  
@@ -578,9 +566,7 @@ export function WidgetImageSection(id) {
                          <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
                          <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                             <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
-                            <img id="buttonParagraph1Arrow" width="10"
-                            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-                            class="sc-rotate-180" alt="">
+                                  <span  class="sc-arrow-placeholder sc-rotate-180"></span>
                          </div>
                       </div>
                       <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
