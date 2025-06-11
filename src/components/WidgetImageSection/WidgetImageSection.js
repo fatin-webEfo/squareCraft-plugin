@@ -389,7 +389,7 @@ export function WidgetImageSection(id) {
                             <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2">
                                <p id="overlayWidthValue" class="sc-universal sc-roboto sc-text-sm ">100%</p>
                             </div>
-                            <div id="overlayWidthControl" style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
+                            <div id="overlayWidthControl" style="padding-top: 6.5px; padding-bottom: 6.5px;" class="sc-bg-454545 sc-px-2_5 ">
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                                   <span  class="sc-arrow-placeholder overlay-arrow-up"></span>
                                   <span  class="sc-arrow-placeholder overlay-arrow-down sc-rotate-180"></span>
@@ -406,7 +406,7 @@ export function WidgetImageSection(id) {
                             <div class="sc-bg-3f3f3f sc-py-1 sc-rounded-l sc-px-2">
                                <p id="overlayHeightValue" class="sc-universal sc-roboto sc-text-sm ">100%</p>
                             </div>
-                            <div id="overlayHeightControl" style="padding-top: 7px; padding-bottom: 7px;" class="sc-bg-454545 sc-px-2_5 ">
+                            <div id="overlayHeightControl" style="padding-top: 6.5px; padding-bottom: 6.5px;" class="sc-bg-454545 sc-px-2_5 ">
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                                   <span  class="sc-arrow-placeholder overlay-arrow-up"></span>
                                   <span  class="sc-arrow-placeholder overlay-arrow-down sc-rotate-180"></span>
