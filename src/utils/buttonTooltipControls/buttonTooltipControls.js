@@ -1,4 +1,4 @@
-export function initSimpleTooltipHover() {
+export function buttonTooltipControls() {
     const tooltipTargets = document.querySelectorAll('.sc-tooltip-target');
   
     tooltipTargets.forEach(el => {
