@@ -124,7 +124,7 @@
     const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
     const { initImageSectionControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js");
     const { initImageSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js");
-    const { initHoverButtonSectionToggleControls, initHoverButtonEffectDropdowns } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initHoverButtonSectionToggleControls/initHoverButtonSectionToggleControls.js");
+    const { initHoverButtonSectionToggleControls, initHoverButtonEffectDropdowns } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initHoverButtonSectionToggleControls/initHoverButtonSectionToggleControls.js");
     const { initButtonSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initButtonSectionToggleControls.js");
     const { initImageUploadPreview } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initImageUploadPreview.js");
     const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js");
@@ -133,7 +133,7 @@
     const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
     const { createHoverableArrowSVG } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js');
     const { initButtonFontColorPaletteToggle } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
     );
     const {
       initButtonStyles,
