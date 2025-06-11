@@ -49,7 +49,7 @@ export function WidgetImageSection(id) {
                    </div>
                 </div>
                 <div id="borderSection" class="sc-px-2 sc-mt-3">
-                   <div class=" sc-px-2 sc-flex sc-items-center sc-justify-between">
+                   <div class=" sc-flex sc-items-center sc-justify-between">
  
  
                       <div class="sc-flex sc-gap-2 sc-items-center">
@@ -319,7 +319,7 @@ export function WidgetImageSection(id) {
                       <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Overlay
                       </p>
                       <div
-                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-10px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-full sc-rounded-10px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545 sc-gradiant-border">
  
                          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                             alt="reset">
