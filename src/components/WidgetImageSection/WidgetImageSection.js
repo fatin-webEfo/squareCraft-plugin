@@ -208,11 +208,11 @@ export function WidgetImageSection(id) {
                             </div>
  
  
-                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-cente  sc-w-full sc-rounded-4px " id="borderStyleDashed">
+                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-center  sc-w-full sc-rounded-4px " id="borderStyleDashed">
                                <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  ">Dashed
                                </p>
                             </div>
-                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-cente  sc-w-full sc-rounded-4px" id="borderStyleDotted">
+                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-center  sc-w-full sc-rounded-4px" id="borderStyleDotted">
  
                                <p
                                   class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-4px">
