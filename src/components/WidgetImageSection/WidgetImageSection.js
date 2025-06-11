@@ -15,7 +15,7 @@ export function WidgetImageSection(id) {
                       <div class="toggle-container" id="toggleSwitch">
                          <div class="toggle-bullet"></div>
                       </div>
-                      <p id="toggleText" class="sc-text-sm sc-roboto">Enable</p>
+                      <p id="toggleText" class="sc-text-sm sc-roboto sc-universal">Enable</p>
                    </div>
                    <div
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
