@@ -300,7 +300,9 @@
 .sc-justify-center {
   justify-content: center !important;
 }
-
+.sc-justify-end{
+  justify-content: end !important;
+}
 .sc-bg-color-2c2c2c {
   background-color: #2c2c2c !important;
 }
