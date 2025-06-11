@@ -40,7 +40,7 @@ export function WidgetImageSection(id) {
                    </div>
                 </div>
  
-                <div class="sc-flex sc-mt-4 sc-px-2">
+                <div class="sc-flex sc-mt-3 sc-px-2">
                    <div id="borderButton"
                       class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-6px">
                       <h5 class="sc-roboto sc-font-thin sc-universal  sc-text-color-white">Border</h5>
