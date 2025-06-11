@@ -145,7 +145,7 @@ export function WidgetImageSection(id) {
                          </p>
  
                          <div
-                            class="sc-py-1_2px sc-relative sc-mt-3 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1_5 sc-rounded-4px">
+                            class="sc-py-4px sc-relative sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border  sc-flex sc-justify-between sc-items-center sc-px-1 sc-rounded-4px">
                             <p class="sc-text-sm sc-roboto sc-font-light sc-universal">Select</p>
                             <div id="border-color-select" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
  
