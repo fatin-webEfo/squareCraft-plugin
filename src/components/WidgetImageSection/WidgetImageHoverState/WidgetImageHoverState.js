@@ -1,6 +1,6 @@
 export function WidgetImageHoverState() {
   return `
-    <div id="image-hover-state">
+    <div id="image-hover-state" class="sc-huidden">
       <div class="sc-flex sc-mt-2 sc-px-2">
         <div id="hover-borderButton"
           class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-w-full sc-rounded-4pxx">
