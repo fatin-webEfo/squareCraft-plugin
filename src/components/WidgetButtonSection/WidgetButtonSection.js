@@ -1,5 +1,5 @@
-import { WidgetButtonNormalState } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonNormalState/WidgetButtonNormalState.js'
-import { WidgetButtonHoverState } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetButtonHoverState/WidgetButtonHoverState.js'
+import { WidgetButtonNormalState } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonNormalState/WidgetButtonNormalState.js'
+import { WidgetButtonHoverState } from 'https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonHoverState/WidgetButtonHoverState.js'
 
 export function WidgetButtonSection() {
 
