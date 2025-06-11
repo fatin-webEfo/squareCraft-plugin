@@ -18,7 +18,7 @@ export function WidgetImageSection(id) {
                       <p id="toggleText" class="sc-text-sm sc-roboto sc-universal">Enable</p>
                    </div>
                    <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-0_5 sc-gradiant-border sc-bg sc-bg-454545">
                       <p class="sc-font-thin sc-universal sc-text-sm sc-text-xs sc-roboto">Reset</p>
                       <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
                    </div>
@@ -56,7 +56,7 @@ export function WidgetImageSection(id) {
                          <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Border
                          </p>
                          <div
-                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545 sc-gradiant-border">
  
                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                                alt="reset">
@@ -526,7 +526,7 @@ export function WidgetImageSection(id) {
                          <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Shadow
                          </p>
                          <div
-                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545 sc-gradiant-border">
  
                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                                alt="reset">
@@ -676,7 +676,7 @@ export function WidgetImageSection(id) {
                                   Spread
                                </p>
                                <div 
-                                  class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                                  class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545 sc-gradiant-border">
  
                                   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                                      alt="reset">
@@ -710,7 +710,7 @@ export function WidgetImageSection(id) {
                       <p style="font-size: 16px;" class="sc-roboto sc-font-thin sc-universal  sc-text-color-white">image
                          Masking</p>
                       <div
-                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545 sc-gradiant-border">
  
                          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                             alt="reset">
