@@ -29,11 +29,11 @@ export function WidgetImageSection(id) {
          <div class="sc-h-1px sc-mt-1_5 sc-bg-3f3f3f"></div>
          <div class="sc-mt-3">
             <div class="sc-flex sc-roboto sc-px-2  sc-items-center sc-justify-between sc-gap-2">
-               <div
+               <div id="image-normal-state-button"
                   class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-thin sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
                   Normal
                </div>
-               <div
+               <div id="image-hover-state-button"
                   class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-thin sc-flex sc-text-sm sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
                   Hover
                </div>
@@ -43,6 +43,7 @@ export function WidgetImageSection(id) {
             </div>
          </div>
 ${WidgetImageNormalState()}
+${WidgetImageHoverState()}
          <div class="sc-mt-3"> </div>
       </div>
           `;
