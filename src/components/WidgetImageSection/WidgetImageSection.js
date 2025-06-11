@@ -202,20 +202,20 @@ export function WidgetImageSection(id) {
                             Style
                          </p>
                          <div style="padding: 3px 0px;"
-                            class="sc-bg-3f3f3f sc-flex sc-text-xs sc-gap-1 sc-mt-3 sc-rounded-4px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
+                            class="sc-bg-3f3f3f sc-flex sc-text-xs sc-gap-1 sc-mt-2 sc-rounded-4px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
  
  
-                            <div class="sc-py-0_5 sc-bg-454545 sc-w-full sc-rounded-4px " id="borderStyleSolid">
+                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-center sc-rounded-4px  sc-bg-454545 sc-w-full" id="borderStyleSolid">
                                <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   ">Solid
                                </p>
                             </div>
  
  
-                            <div class="sc-py-0_5  sc-w-full sc-rounded-4px " id="borderStyleDashed">
+                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-cente  sc-w-full sc-rounded-4px " id="borderStyleDashed">
                                <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  ">Dashed
                                </p>
                             </div>
-                            <div class="sc-py-0_5  sc-w-full sc-rounded-4px" id="borderStyleDotted">
+                            <div class="sc-py-4px sc-flex sc-items-center sc-justify-cente  sc-w-full sc-rounded-4px" id="borderStyleDotted">
  
                                <p
                                   class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer  sc-rounded-4px">
