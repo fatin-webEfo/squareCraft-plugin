@@ -267,7 +267,7 @@ export function WidgetImageSection(id) {
  
  
                          <div
-                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-2" id="topLeftradiusBorder">
+                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="topLeftradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/Vector.svg" loading="lazy"
                                alt="top-left-radius">
                          </div>
@@ -275,21 +275,21 @@ export function WidgetImageSection(id) {
  
  
                          <div
-                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-2" id="topRightradiusBorder">
+                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="topRightradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/TopRight.svg" loading="lazy"
                                alt="top-right-radius">
                          </div>
  
  
                          <div
-                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-2" id="bottomRightradiusBorder">
+                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="bottomRightradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/Bottom Right.svg" loading="lazy"
                                alt="bottom-right-radius">
                          </div>
  
  
                          <div
-                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-2" id="bottomLeftradiusBorder">
+                            class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="bottomLeftradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/left-bottom.svg" loading="lazy"
                                alt="left-bottom-radius">
                          </div>
