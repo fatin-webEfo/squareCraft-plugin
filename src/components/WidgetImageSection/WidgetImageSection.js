@@ -335,7 +335,7 @@ export function WidgetImageSection(id) {
                       <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Overlay
                       </p>
                       <div
-                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+                         class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-10px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
  
                          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
                             alt="reset">
