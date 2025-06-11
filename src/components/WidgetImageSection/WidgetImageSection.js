@@ -138,7 +138,7 @@ export function WidgetImageSection(id) {
                       </div>
                    </div>
                 
-                   <div class="sc-mt-4 sc-gap-2 sc-grid sc-grid-cols-12">
+                   <div class="sc-mt-3 sc-gap-2 sc-grid sc-grid-cols-12">
                       <div class="sc-col-span-5">
                          <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300"> Border
                             Color
