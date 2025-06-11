@@ -304,7 +304,7 @@ export function WidgetImageSection(id) {
                    </div>
  
  
-                <div class="sc-mt-4 sc-px-2">
+                <div class="sc-mt-3 sc-px-2">
                    <div id="overLayButton"
                       class="sc-bg-3f3f3f sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
                       <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Overlay</h5>
@@ -494,7 +494,7 @@ export function WidgetImageSection(id) {
  
                 <div class="sc-px-2">
                    <div id="shadowButton"
-                      class="sc-bg-3f3f3f sc-mt-4 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
+                      class="sc-bg-3f3f3f sc-mt-3 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
                       <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Shadow</h5>
                       <img id="paragraph1Arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                          class="sc-rotate-180" alt="">
