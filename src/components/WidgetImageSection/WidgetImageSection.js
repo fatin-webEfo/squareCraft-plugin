@@ -712,7 +712,7 @@ export function WidgetImageSection(id) {
                         .join("")}
                    </div>
                 </div>
-                <div class="sc-mt-4"> </div>
+                <div class="sc-mt-3"> </div>
              </div>
           `;
 }
