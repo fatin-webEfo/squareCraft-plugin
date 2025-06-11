@@ -259,10 +259,10 @@ export function WidgetImageSection(id) {
                       <div style="padding: 2px 0px; margin-top: 15px; margin-left: 30px;"
                          class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
  
- 
+   
  
                          <div
-                            class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px sc-items-center sc-gap-1 sc-bg-454545"  id="allradiusBorder">
+                            class="sc-flex sc-px-1 sc-justify-center sc-w-full sc-cursor-pointer sc-py-1 sc-rounded-4px sc-items-center sc-gap-1 sc-bg-454545"  id="allradiusBorder">
                             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
                                alt="all-radious">
                             <p class="sc-font-thin sc-roboto sc-universal">All</p>
@@ -270,7 +270,7 @@ export function WidgetImageSection(id) {
  
  
                          <div
-                            class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="topLeftradiusBorder">
+                            class="sc-flex sc-px-1 sc-justify-center sc-w-full sc-cursor-pointer sc-py-1 sc-rounded-4px  sc-items-center sc-gap-1" id="topLeftradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/Vector.svg" loading="lazy"
                                alt="top-left-radius">
                          </div>
@@ -278,21 +278,21 @@ export function WidgetImageSection(id) {
  
  
                          <div
-                            class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="topRightradiusBorder">
+                            class="sc-flex sc-px-1 sc-justify-center sc-w-full sc-cursor-pointer sc-py-1 sc-rounded-4px  sc-items-center sc-gap-1" id="topRightradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/TopRight.svg" loading="lazy"
                                alt="top-right-radius">
                          </div>
  
  
                          <div
-                            class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="bottomRightradiusBorder">
+                            class="sc-flex sc-px-1 sc-cursor-pointer sc-py-1 sc-rounded-4px  sc-items-center sc-gap-1" id="bottomRightradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/Bottom Right.svg" loading="lazy"
                                alt="bottom-right-radius">
                          </div>
  
  
                          <div
-                            class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="bottomLeftradiusBorder">
+                            class="sc-flex sc-px-1 sc-justify-center sc-w-full sc-cursor-pointer sc-py-1 sc-rounded-4px  sc-items-center sc-gap-1" id="bottomLeftradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/left-bottom.svg" loading="lazy"
                                alt="left-bottom-radius">
                          </div>
