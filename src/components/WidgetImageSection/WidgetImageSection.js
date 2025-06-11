@@ -328,7 +328,7 @@ export function WidgetImageSection(id) {
                       <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-rounded-l">
                          <p class="sc-universal sc-roboto sc-text-sm ">Yes</p>
                       </div>
-                      <div class="sc-bg-454545 sc-px-2_5 "><span  class="sc-arrow-placeholder"></span></div>
+                      <div class="sc-bg-454545 sc-px-2_5 sc-py-1"><span  class="sc-arrow-placeholder sc-rotate-180"></span></div>
                    </div>
  
                    <div class="sc-mt-4 sc-gap-2 sc-flex">
