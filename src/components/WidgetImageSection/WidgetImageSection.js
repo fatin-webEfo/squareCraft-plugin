@@ -572,7 +572,7 @@ export function WidgetImageSection(id) {
  
  
  
-                <div id="bgColorSection" class=" ">
+                <div id="bgColorSection" class="sc-mt-3 ">
                    <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"> Color
                    </p>
                    <div class="sc-col-span-5 sc-mt-2 sc-z-99999 sc-relative ">
