@@ -129,7 +129,7 @@
     const { initImageUploadPreview } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonSectionToggleControls/initImageUploadPreview.js");
     const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js");
     const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
-    const { buttonTooltipControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/buttonTooltipControls/buttonTooltipControls.js');
+    const { buttonTooltipControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonTooltipControls/buttonTooltipControls.js');
     const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
     const { createHoverableArrowSVG } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js');
     const { initButtonFontColorPaletteToggle } = await import(
