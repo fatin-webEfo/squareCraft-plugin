@@ -359,7 +359,9 @@
 .sc-mt-2 {
   margin-top: 8px !important;
 }
-
+.sc-mt-1_5{
+  margin-top: 5px !important;
+}
 .sc-mt-1 {
   margin-top: 3px !important;
 }
@@ -958,9 +960,7 @@
 
 .sc-px-1 {
   padding-left: 4px !important;
-  /* 4px */
   padding-right: 4px !important;
-  /* 4px */
 }
 
 
@@ -2258,7 +2258,6 @@
 
 .sc-ml-1 {
   margin-left: 2px !important;
-  /* 4px */
 }
 
 .sc-ml-2 {
@@ -2289,7 +2288,6 @@
 
 .sc-mr-1 {
   margin-right: 2px !important;
-  /* 4px */
 }
 
 .sc-dropdown-item {
@@ -2306,9 +2304,7 @@
 
 .sc-px-1_5 {
   padding-left: 6px !important;
-  /* 6px */
   padding-right: 6px !important;
-  /* 6px */
 }
 
 .sc-mb-1 {
@@ -2327,9 +2323,7 @@
 
 .sc-px-1px {
   padding-left: 3px !important;
-  /* 4px */
   padding-right: 3px !important;
-  /* 4px */
 }
 
 #sc-font-family {
@@ -2342,7 +2336,6 @@
   left: 0 !important;
   width: 100% !important;
   max-height: 200px !important;
-  /* Reduce height */
   overflow-y: auto !important;
   z-index: 9999 !important;
   border: 1px solid #585858 !important;
