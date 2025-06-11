@@ -66,12 +66,11 @@ export function WidgetImageSection(id) {
                       <div
                          class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                          <p id="radiousCount" class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
-                         <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9">
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                               class="sc-rotate-180" alt="">
-                         </div>
-                      </div>
+                              <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+                                <span  class="sc-arrow-placeholder"></span>
+                                <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                              </div>
+                                                   </div>
  
  
                    </div>
@@ -240,10 +239,10 @@ export function WidgetImageSection(id) {
                          <div
                             class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                             <p class="sc-font-thin sc-roboto sc-universal sc-text-xs" id="radiusCountAnother">0px</p>
-                            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="" width="9" />
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9" class="sc-rotate-180" alt="" />
-                            </div>
+                             <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
                          </div>
                       </div>
  
@@ -449,11 +448,9 @@ export function WidgetImageSection(id) {
                                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                                <p class="sc-font-thin sc-roboto sc-universal sc-text-xs" id="xAxisValue">0px</p>
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                     width="9">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                     class="sc-rotate-180" alt="">
-                               </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
  
                             </div>
  
@@ -473,11 +470,9 @@ export function WidgetImageSection(id) {
                                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                                <p class="sc-font-thin sc-roboto sc-universal sc-text-xs" id="yAxisValue">0px</p>
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                     width="9">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                     class="sc-rotate-180" alt="">
-                               </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
  
                             </div>
  
@@ -525,11 +520,9 @@ export function WidgetImageSection(id) {
                                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                                   <p class="sc-font-thin sc-roboto sc-universal sc-text-xs">50px</p>
                                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                        width="9">
-                                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                        class="sc-rotate-180" alt="">
-                                  </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
  
                                </div>
  
@@ -551,11 +544,9 @@ export function WidgetImageSection(id) {
                                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                                   <p class="sc-font-thin sc-roboto sc-universal sc-text-xs">50px</p>
                                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                        width="9">
-                                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                        class="sc-rotate-180" alt="">
-                                  </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
  
                                </div>
  
@@ -632,9 +623,9 @@ export function WidgetImageSection(id) {
                          <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                             <p id="shadowBlurValue" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
                             <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9" />
-                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9" class="sc-rotate-180" />
-                            </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
                          </div>
                       </div>
                       <div id="shadowBlurSlider" class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
@@ -666,11 +657,9 @@ export function WidgetImageSection(id) {
                                class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
                                <p class="sc-font-thin sc-roboto sc-universal sc-text-xs">0px</p>
                                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt=""
-                                     width="9">
-                                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" width="9"
-                                     class="sc-rotate-180" alt="">
-                               </div>
+   <span  class="sc-arrow-placeholder"></span>
+   <span class="sc-arrow-placeholder sc-rotate-180"></span>
+ </div>
                             </div>
                          </div>
                          <div class="sc-rounded-15px sc-mt-3 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6" id="shadowSpreadSlider">
