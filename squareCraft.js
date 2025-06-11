@@ -117,6 +117,9 @@
     const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
     const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
     const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
+    const { initImageStateTabToggle } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/initImageStateTabToggle/initImageStateTabToggle.js"
+    );
     const { parentHtmlTabClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js");
     const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
     const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
@@ -583,6 +586,8 @@
         initHoverButtonSectionToggleControls();
         initHoverButtonEffectDropdowns();
         initImageUploadPreview(() => selectedElement);
+        initImageStateTabToggle();
+
 
         if (clickedBlock) {
           waitForElement("#typoSection, #imageSection, #buttonSection")
