@@ -149,7 +149,7 @@
       resetAllButtonStyles,
       initButtonBorderResetHandlers,
     } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonStyles.js"
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonStyles.js"
     );
     const { 
       initHoverButtonShadowControls,
@@ -161,7 +161,7 @@
       initHoverButtonBorderControl,
       applyHoverButtonEffects 
     } =
-      await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initButtonStyles/initButtonHoverStyles.js');
+      await import('https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js');
     const themeColors = await getSquarespaceThemeStyles();
 
 
