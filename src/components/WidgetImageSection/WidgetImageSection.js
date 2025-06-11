@@ -427,7 +427,7 @@ export function WidgetImageSection(id) {
                       </div>
                    </div>
  
-                   <div class="mt-3 sc-flex sc-mt-4 sc-items-center sc-gap-3">
+                   <div class=" sc-flex sc-mt-3 sc-items-center sc-gap-3">
                       <div class="sc-w-full">
                          <div class="sc-flex sc-gap-2 sc-items-center sc-justify-between">
                             <p class="sc-roboto sc-font-thin sc-universal  sc-text-sm sc-font-thin sc-text-gray-300">
@@ -497,7 +497,7 @@ export function WidgetImageSection(id) {
                       </div>
  
  
-                      <div class="mt-3 sc-flex sc-mt-4 sc-items-center sc-gap-3">
+                      <div class="sc-flex sc-mt-3 sc-items-center sc-gap-3">
  
                          <div class="sc-w-full">
                             <div class="sc-flex sc-gap-2 sc-items-center sc-justify-between" >
