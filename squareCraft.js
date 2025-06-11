@@ -199,6 +199,7 @@
       if (selectedElement) {
         applyHoverButtonEffects(() => selectedElement);
       }
+      initImageStateTabToggle();
       const trigger = event.target.closest("#border-color-select");
 
 
@@ -586,7 +587,7 @@
         initHoverButtonSectionToggleControls();
         initHoverButtonEffectDropdowns();
         initImageUploadPreview(() => selectedElement);
-        initImageStateTabToggle();
+  
 
 
         if (clickedBlock) {
