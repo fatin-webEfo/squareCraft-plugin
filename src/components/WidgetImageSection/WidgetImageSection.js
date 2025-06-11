@@ -256,7 +256,7 @@ export function WidgetImageSection(id) {
  
  
  
-                      <div style="padding: 2px 0px; margin-top: 10px; margin-left: 30px;"
+                      <div style="padding: 2px 0px; margin-top: 10px; margin-left: 70px;"
                          class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
  
    
@@ -285,7 +285,7 @@ export function WidgetImageSection(id) {
  
  
                          <div
-                            class="sc-flex sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="bottomRightradiusBorder">
+                            class="sc-flex sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="bottomRightradiusBorder">
                             <img src="https://goswami34.github.io/squareCraft-widget/public/Bottom Right.svg" loading="lazy"
                                alt="bottom-right-radius">
                          </div>
