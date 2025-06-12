@@ -323,8 +323,17 @@ viewportContainer.addEventListener("mouseleave", () => {
     return "desktop";
   }
 
-  console.log("📱 Squarespace Viewport Mode:", getCurrentSquarespaceViewport());
-  
+  let lastViewport = getCurrentSquarespaceViewport();
+  console.log("📱 Current Viewport:", lastViewport);
+
+  setInterval(() => {
+    const currentViewport = getCurrentSquarespaceViewport();
+    if (currentViewport !== lastViewport) {
+      lastViewport = currentViewport;
+      console.log("🔁 Viewport changed to:", currentViewport);
+    }
+  }, 2000);
+    
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
