@@ -137,8 +137,10 @@ viewportContainer.addEventListener("mouseenter", () => {
     wrapper.appendChild(container);
   });
 
-  viewportContainer.innerHTML = "";
+  let innerWrapper = viewportContainer.querySelector(".sc-viewport-wrapper");
+  if (innerWrapper) innerWrapper.remove();
   viewportContainer.appendChild(wrapper);
+  
 
   requestAnimationFrame(() => {
     wrapper.style.transform = "translateX(0)";
@@ -154,13 +156,29 @@ viewportContainer.addEventListener("mouseleave", () => {
   wrapper.style.opacity = "0";
 
   setTimeout(() => {
-    viewportContainer.innerHTML = `
-      <div class="sc-viewport-wrapper" style="display: flex; gap: 6px; align-items: center; transition: all 0.4s ease;">
-        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
-      </div>
-    `;
+    wrapper.remove();
+
+    const fallback = document.createElement("div");
+    fallback.className = "sc-viewport-wrapper";
+    fallback.style.display = "flex";
+    fallback.style.gap = "6px";
+    fallback.style.alignItems = "center";
+    fallback.style.transition = "all 0.4s ease";
+
+    const img = document.createElement("img");
+    img.src =
+      "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg";
+    img.style.width = "18px";
+    img.style.height = "18px";
+    img.style.opacity = "1";
+    img.style.transform = "translateX(0)";
+    img.style.transition = "all 0.3s ease";
+
+    fallback.appendChild(img);
+    viewportContainer.appendChild(fallback);
   }, 300);
 });
+
 
 
           const dragTarget = panel.querySelector("#icon-options");
