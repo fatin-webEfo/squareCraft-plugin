@@ -1,42 +1,5 @@
   (async function squareCraft() {
     let isSameOrigin = true;
-    try {
-      void parent.document;
-    } catch (e) {
-      isSameOrigin = false;
-    }
-    if (isSameOrigin) {
-      const checkAndRemoveIfMissing = () => {
-        const widgetScript = parent.document.querySelector("#sc-script");
-        if (!widgetScript) {
-          console.warn(
-            "❌ [SquareCraft] Inject script tag missing — clearing tokens"
-          );
-
-          localStorage.removeItem("sc_auth_token");
-          localStorage.removeItem("sc_u_id");
-          localStorage.removeItem("sc_w_id");
-
-          parent.document.cookie =
-            "sc_auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          parent.document.cookie =
-            "sc_u_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          parent.document.cookie =
-            "sc_w_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        }
-      };
-
-      checkAndRemoveIfMissing();
-      const observer = new MutationObserver(() => {
-        checkAndRemoveIfMissing();
-      });
-
-      observer.observe(parent.document.body, {
-        childList: true,
-        subtree: true,
-      });
-    }
-    
 
     async function loadGSAP() {
       return new Promise((resolve, reject) => {
