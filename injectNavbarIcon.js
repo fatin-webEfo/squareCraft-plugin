@@ -55,7 +55,7 @@ export function injectNavbarIcon() {
               </div>  
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
                 ${[
-                  "Site",
+                  "Global",
                   "Page",
                   "Template",
                   "Settings",
