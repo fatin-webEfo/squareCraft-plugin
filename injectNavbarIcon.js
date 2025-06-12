@@ -55,7 +55,7 @@ export function injectNavbarIcon() {
             },
             {
               label: "Template",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/template.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/template.png",
             },
             {
               label: "Settings",
