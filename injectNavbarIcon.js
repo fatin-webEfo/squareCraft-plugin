@@ -46,7 +46,7 @@ export function injectNavbarIcon() {
           panel.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
 
           panel.innerHTML = `
-              <div style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
+              <div id="icon-options" style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span>SquareCraft</span>
                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/monitor.png" style="width: 18px;">
               </div>
@@ -74,7 +74,33 @@ export function injectNavbarIcon() {
           `;
 
           wrapper.appendChild(panel);
+          const dragTarget = panel.querySelector("#icon-options");
 
+          let isDragging = false;
+          let offsetX, offsetY;
+
+          dragTarget.style.cursor = "move"; // Visual feedback
+
+          dragTarget.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            const rect = panel.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            document.body.style.userSelect = "none";
+          });
+
+          document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            panel.style.left = `${e.clientX - offsetX}px`;
+            panel.style.top = `${e.clientY - offsetY}px`;
+            panel.style.transform = "none"; // Disable initial translateX(-50%) effect after drag starts
+          });
+
+          document.addEventListener("mouseup", () => {
+            isDragging = false;
+            document.body.style.userSelect = "";
+          });
+          
           const hide = () => {
             panel.remove();
             document.removeEventListener("click", handleOutsideClick);
