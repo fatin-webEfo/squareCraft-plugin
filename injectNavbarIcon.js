@@ -44,32 +44,55 @@ export function injectNavbarIcon() {
           panel.style.width = "320px";
           panel.style.fontFamily = "'Poppins', sans-serif";
           panel.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
+          const items = [
+            {
+              label: "Global",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/global.png",
+            },
+            {
+              label: "Page",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/page.png",
+            },
+            {
+              label: "Template",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/template.png",
+            },
+            {
+              label: "Settings",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/settings.png",
+            },
+            {
+              label: "Subscription",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/subscription.png",
+            },
+            {
+              label: "Support",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/support.png",
+            },
+          ];
+          const gridHTML = items
+            .map(
+              (item) => `
+    <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
+      <img src="${item.icon}" style="width: 18px; height: 18px;" />
+      <span>${item.label}</span>
+    </div>
+  `
+            )
+            .join("");
 
           panel.innerHTML = `
               <div id="icon-options" style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span>SquareCraft</span>
-               <div id="viewport-sections"> <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;"></div>
+<div id="viewport-sections" style="cursor: pointer;">
+  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
+</div>
               </div>
               <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
                 Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
               </div>  
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
-                ${[
-                  "Global",
-                  "Page",
-                  "Template",
-                  "Settings",
-                  "Subscription",
-                  "Support",
-                ]
-                  .map(
-                    (label) => `
-                    <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s;">
-                      ${label}
-                    </div>
-                  `
-                  )
-                  .join("")}
+                  ${gridHTML}
               </div>
           `;
 
@@ -82,12 +105,14 @@ export function injectNavbarIcon() {
           dragTarget.style.cursor = "move"; // Visual feedback
 
           dragTarget.addEventListener("mousedown", (e) => {
+            if (e.target.closest("#viewport-sections")) return;
             isDragging = true;
             const rect = panel.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
             document.body.style.userSelect = "none";
           });
+          
 
           document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
