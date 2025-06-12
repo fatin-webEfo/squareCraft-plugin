@@ -72,13 +72,14 @@ export function injectNavbarIcon() {
           ];
           const gridHTML = items
             .map(
-                           (item) => `
+              (item) => `
                  <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
                    <img src="${item.icon}" style="width: 18px; height: 18px;" />
-                   <span>${item.label}</span>
+                  <span style="font-weight: 300; color: #9ca3af;">${item.label}</span>
+
                  </div>
                `
-                         )
+            )
             .join("");
 
           panel.innerHTML = `
