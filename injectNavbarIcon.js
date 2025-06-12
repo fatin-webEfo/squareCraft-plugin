@@ -206,7 +206,11 @@ export function injectNavbarIcon() {
 
     insertToolbarIcon();
     insertAdminIcon();
-    adminIconOptions()
+    icon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      adminIconOptions(wrapper);
+    });
+    
 
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
