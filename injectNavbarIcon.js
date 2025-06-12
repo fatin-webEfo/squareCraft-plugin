@@ -86,7 +86,7 @@ export function injectNavbarIcon() {
             .join("");
 
           panel.innerHTML = `
-              <div id="icon-options" style="padding: 12px 16px;  color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
+              <div id="icon-options"><div  style="padding: 12px 16px;  color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:18px; font-weight: 400;">SquareCraft</span>
                   <div id="viewport-sections" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
@@ -97,7 +97,7 @@ export function injectNavbarIcon() {
               </div>  
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
                   ${gridHTML}
-              </div>
+              </div></div>
           `;
 
           wrapper.appendChild(panel);
