@@ -318,20 +318,28 @@ viewportContainer.addEventListener("mouseleave", () => {
       return setTimeout(waitForIframeAndTrackViewport, 500);
     }
 
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const width = entry.contentRect.width;
-        console.log("🔁 Viewport changed width to:", width);
-        let viewport;
-        if (width <= 480) viewport = "mobile";
-        else if (width <= 768) viewport = "tablet";
-        else if (width <= 1024) viewport = "laptop";
-        else viewport = "desktop";
-        console.log("📱 Viewport mode:", viewport);
+    function waitForIframeAndTrackViewport() {
+      const iframe = parent.document.querySelector(
+        'iframe[src*="squarespace.com"]'
+      );
+      if (!iframe || !iframe.contentDocument) {
+        setTimeout(waitForIframeAndTrackViewport, 500);
+        return;
       }
-    });
 
-    ro.observe(iframe);
+      const target = iframe.contentDocument.documentElement;
+      let lastViewport = getCurrentSquarespaceViewport();
+
+      const ro = new ResizeObserver((entries) => {
+        const current = getCurrentSquarespaceViewport();
+        if (current !== lastViewport) {
+          lastViewport = current;
+          console.log("🔁 Viewport changed to:", current);
+        }
+      });
+      ro.observe(target);
+    }
+    
   }
   console.log("📱 Current Viewport:", getCurrentSquarespaceViewport());
 
