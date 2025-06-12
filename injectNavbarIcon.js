@@ -73,7 +73,9 @@ export function injectNavbarIcon() {
           const gridHTML = items
             .map(
               (item) => `
-                 <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;">
+                 <div  style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;" 
+      onmouseenter="this.style.background='#3a3a3a'" 
+      onmouseleave="this.style.background='#1f1f1f'">
                    <img src="${item.icon}" style="width: 18px; height: 18px;" />
                   <span style="font-weight: 300; color: #9ca3af;">${item.label}</span>
 
