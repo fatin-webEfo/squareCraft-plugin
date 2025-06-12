@@ -83,7 +83,7 @@ export function injectNavbarIcon() {
 
           panel.innerHTML = `
               <div id="icon-options" style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
-                <span>SquareCraft</span>
+                <span style="font-size:18px;">SquareCraft</span>
 <div id="viewport-sections" style="cursor: pointer;">
   <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
 </div>
