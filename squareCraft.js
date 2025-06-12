@@ -100,24 +100,35 @@
     let widgetContainer = null;
 
     let widgetLoaded = false;
-    let token = widgetScript.dataset?.token;
-    let userId = widgetScript.dataset?.uId;
-    let widgetId = widgetScript.dataset?.wId;
+    const widgetScript = isSameOrigin
+      ? parent.document.getElementById("sc-script")
+      : document.getElementById("sc-script");
 
-    if (token) {
-      localStorage.setItem("sc_auth_token", token);
-      document.cookie = `sc_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
-    }
+    let token = null;
+    let userId = null;
+    let widgetId = null;
 
-    if (userId) {
-      localStorage.setItem("sc_u_id", userId);
-      document.cookie = `sc_u_id=${userId}; path=.squarespace.com;`;
-    }
+    if (widgetScript) {
+      token = widgetScript.dataset?.token;
+      userId = widgetScript.dataset?.uId;
+      widgetId = widgetScript.dataset?.wId;
 
-    if (widgetId) {
-      localStorage.setItem("sc_w_id", widgetId);
-      document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
+      if (token) {
+        localStorage.setItem("sc_auth_token", token);
+        document.cookie = `sc_auth_token=${token}; path=/; domain=${location.hostname}; Secure; SameSite=Lax`;
+      }
+
+      if (userId) {
+        localStorage.setItem("sc_u_id", userId);
+        document.cookie = `sc_u_id=${userId}; path=.squarespace.com;`;
+      }
+
+      if (widgetId) {
+        localStorage.setItem("sc_w_id", widgetId);
+        document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
+      }
     }
+  
 
     let lastClickedBlockId = null;
     let lastClickedElement = null;
