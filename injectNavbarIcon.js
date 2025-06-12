@@ -101,6 +101,33 @@ export function injectNavbarIcon() {
           `;
 
           wrapper.appendChild(panel);
+          const viewportContainer = panel.querySelector("#viewport-sections");
+          const monitorIcon = viewportContainer.querySelector("img");
+
+          const extraIcons = [
+            "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/mobile.png",
+            "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/tablet.png",
+            "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/laptop.png",
+            "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png",
+          ];
+
+          viewportContainer.style.transition = "all 0.3s ease";
+
+          viewportContainer.addEventListener("mouseenter", () => {
+            viewportContainer.innerHTML = extraIcons
+              .map(
+                (src) =>
+                  `<img src="${src}" style="width:18px; height:18px; transition: all 0.3s ease;">`
+              )
+              .join("");
+            viewportContainer.style.gap = "8px";
+          });
+
+          viewportContainer.addEventListener("mouseleave", () => {
+            viewportContainer.innerHTML = `<img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">`;
+            viewportContainer.style.gap = "0";
+          });
+
           const dragTarget = panel.querySelector("#icon-options");
           let isDragging = false;
           let offsetX = 0;
