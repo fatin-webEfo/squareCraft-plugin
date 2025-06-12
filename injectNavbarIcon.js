@@ -48,7 +48,7 @@ export function injectNavbarIcon() {
           panel.innerHTML = `
               <div id="icon-options" style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span>SquareCraft</span>
-                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/monitor.png" style="width: 18px;">
+                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
               </div>
               <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
                 Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
