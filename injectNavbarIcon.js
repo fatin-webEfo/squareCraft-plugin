@@ -73,11 +73,12 @@ export function injectNavbarIcon() {
           const gridHTML = items
             .map(
               (item) => `
-                 <div  style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;" 
-      onmouseenter="this.style.background='#3a3a3a'" 
-      onmouseleave="this.style.background='#1f1f1f'">
+                 <div  style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s;
+                  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;" 
+                           onmouseenter="this.style.background='#3a3a3a'" 
+                           onmouseleave="this.style.background='#1f1f1f'">
                    <img src="${item.icon}" style="width: 18px; height: 18px;" />
-                  <span style="font-weight: 300; color: #9ca3af;">${item.label}</span>
+                  <span style="font-weight: 300; color:rgb(194, 197, 204);">${item.label}</span>
 
                  </div>
                `
@@ -85,7 +86,7 @@ export function injectNavbarIcon() {
             .join("");
 
           panel.innerHTML = `
-              <div id="icon-options" style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
+              <div id="icon-options" style="padding: 12px 16px;  color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:18px;">SquareCraft</span>
                   <div id="viewport-sections" style="cursor: pointer;">
                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
