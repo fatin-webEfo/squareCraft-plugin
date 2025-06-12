@@ -90,6 +90,9 @@ export function injectNavbarIcon() {
                 <span style="font-size:18px; font-weight: 400;">SquareCraft</span>
                   <div id="viewport-sections" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
                     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width: 18px;">
+                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/laptop.svg" style="width: 18px;">
+                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/tab.svg" style="width: 18px;">
+                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/mobile.svg" style="width: 18px;">
                   </div>
               </div>
               <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
@@ -101,83 +104,7 @@ export function injectNavbarIcon() {
           `;
 
           wrapper.appendChild(panel);
-          const viewportContainer = panel.querySelector("#viewport-sections");
-          viewportContainer.style.position = "relative";
-          viewportContainer.style.overflow = "hidden";
-
-          viewportContainer.innerHTML = `
-  <div class="sc-viewport-wrapper" style="display: flex; gap: 5px; align-items: center; transition: all 0.4s ease;">
-    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
-  </div>
-`;
-
-viewportContainer.addEventListener("mouseenter", () => {
-  const wrapper = document.createElement("div");
-  wrapper.className = "sc-viewport-wrapper";
-  wrapper.style.display = "flex";
-  wrapper.style.gap = "10px";
-  wrapper.style.alignItems = "center";
-  wrapper.style.transition = "all 0.4s ease";
-  wrapper.style.transform = "translateX(30px)";
-  wrapper.style.opacity = "0";
-
-  const images = ["mobile.svg", "tab.svg", "laptop.svg", "monitor.svg"];
-
-  images.forEach((name) => {
-    const container = document.createElement("div");
-    container.style.cursor = "pointer";
-
-    const img = document.createElement("img");
-    img.src = `https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/${name}`;
-    img.style.width = "18px";
-    img.style.height = "18px";
-    img.style.transition = `all 0.3s ease`;
-
-    container.appendChild(img);
-    wrapper.appendChild(container);
-  });
-
-  let innerWrapper = viewportContainer.querySelector(".sc-viewport-wrapper");
-  if (innerWrapper) innerWrapper.remove();
-  viewportContainer.appendChild(wrapper);
-  
-
-  requestAnimationFrame(() => {
-    wrapper.style.transform = "translateX(0)";
-    wrapper.style.opacity = "1";
-  });
-});
-
-viewportContainer.addEventListener("mouseleave", () => {
-  const wrapper = viewportContainer.querySelector(".sc-viewport-wrapper");
-  if (!wrapper) return;
-
-  wrapper.style.transform = "translateX(30px)";
-  wrapper.style.opacity = "0";
-
-  setTimeout(() => {
-    wrapper.remove();
-
-    const fallback = document.createElement("div");
-    fallback.className = "sc-viewport-wrapper";
-    fallback.style.display = "flex";
-    fallback.style.gap = "6px";
-    fallback.style.alignItems = "center";
-    fallback.style.transition = "all 0.4s ease";
-
-    const img = document.createElement("img");
-    img.src =
-      "https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg";
-    img.style.width = "18px";
-    img.style.height = "18px";
-    img.style.opacity = "1";
-    img.style.transform = "translateX(0)";
-    img.style.transition = "all 0.3s ease";
-
-    fallback.appendChild(img);
-    viewportContainer.appendChild(fallback);
-  }, 300);
-});
+          
 
 
 
