@@ -106,7 +106,7 @@ export function injectNavbarIcon() {
           viewportContainer.style.overflow = "hidden";
 
           viewportContainer.innerHTML = `
-  <div class="sc-viewport-wrapper" style="display: flex; gap: 8px; align-items: center; transition: all 0.4s ease;">
+  <div class="sc-viewport-wrapper" style="display: flex; gap: 5px; align-items: center; transition: all 0.4s ease;">
     <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
   </div>
 `;
@@ -165,7 +165,7 @@ viewportContainer.addEventListener("mouseleave", () => {
 
   setTimeout(() => {
     viewportContainer.innerHTML = `
-      <div class="sc-viewport-wrapper" style="display: flex; gap: 8px; align-items: center; transition: all 0.4s ease;">
+      <div class="sc-viewport-wrapper" style="display: flex; gap: 6px; align-items: center; transition: all 0.4s ease;">
         <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
       </div>
     `;
