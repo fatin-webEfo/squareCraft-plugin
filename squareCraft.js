@@ -5,12 +5,10 @@
     } catch (e) {
       isSameOrigin = false;
     }
-
-    // ✅ Check immediately
     if (isSameOrigin) {
       const checkAndRemoveIfMissing = () => {
-        const scriptExists = parent.document.querySelector("#sc-script");
-        if (!scriptExists) {
+        const widgetScript = parent.document.querySelector("#sc-script");
+        if (!widgetScript) {
           console.warn(
             "❌ [SquareCraft] Inject script tag missing — clearing tokens"
           );
