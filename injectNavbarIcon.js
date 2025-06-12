@@ -109,7 +109,12 @@ export function injectNavbarIcon() {
           dragTarget.style.cursor = "move";
 
           function startDragging(e) {
-            if (e.target.closest("#viewport-sections")) return;
+            const viewport = panel.querySelector("#viewport-sections");
+            if (
+              viewport &&
+              (viewport === e.target || viewport.contains(e.target))
+            )
+              return;
 
             isDragging = true;
             const rect = panel.getBoundingClientRect();
@@ -119,6 +124,9 @@ export function injectNavbarIcon() {
             panel.style.position = "absolute";
             panel.style.right = "unset";
             panel.style.transform = "none";
+            panel.style.cursor = "default";
+            dragTarget.style.cursor = "move";
+
             document.body.style.userSelect = "none";
 
             document.addEventListener("mousemove", doDrag);
