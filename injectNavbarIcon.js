@@ -46,31 +46,31 @@ export function injectNavbarIcon() {
           panel.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
 
           panel.innerHTML = `
-            <div style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
-              <span>SquareCraft</span>
-              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/monitor.png" style="width: 18px;">
-            </div>
-            <div style="background:#1db954; color:white; font-size:12px; padding:6px 12px; text-align:center;">
-              Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
-              ${[
-                "Site",
-                "Page",
-                "Template",
-                "Settings",
-                "Subscription",
-                "Support",
-              ]
-                .map(
-                  (label) => `
-                  <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s;">
-                    ${label}
-                  </div>
-                `
-                )
-                .join("")}
-            </div>
+              <div style="padding: 12px 16px; font-weight: 600; color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
+                <span>SquareCraft</span>
+                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/monitor.png" style="width: 18px;">
+              </div>
+              <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
+                Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
+                ${[
+                  "Site",
+                  "Page",
+                  "Template",
+                  "Settings",
+                  "Subscription",
+                  "Support",
+                ]
+                  .map(
+                    (label) => `
+                    <div style="background:#1f1f1f; color:white; font-size:12px; text-align:center; padding: 16px 0; cursor:pointer; transition:background 0.2s;">
+                      ${label}
+                    </div>
+                  `
+                  )
+                  .join("")}
+              </div>
           `;
 
           wrapper.appendChild(panel);
