@@ -249,23 +249,36 @@ export function injectNavbarIcon() {
       const iframe = parent.document.querySelector(
         'iframe[src*="squarespace.com"]'
       );
-      if (!iframe || !iframe.contentDocument) {
-        setTimeout(waitForIframeAndTrackViewport, 500);
-        return;
+      if (!iframe) {
+        return setTimeout(waitForIframeAndTrackViewport, 500);
       }
 
-      const target = iframe.contentDocument.documentElement;
-      let lastViewport = getCurrentSquarespaceViewport();
+      let lastMode = getCurrentSquarespaceViewport();
 
       const ro = new ResizeObserver((entries) => {
-        const current = getCurrentSquarespaceViewport();
-        if (current !== lastViewport) {
-          lastViewport = current;
-          console.log("🔁 Viewport changed to:", current);
+        for (const entry of entries) {
+          const width = entry.contentRect.width;
+          let currentMode;
+          if (width <= 480) currentMode = "mobile";
+          else if (width <= 768) currentMode = "tablet";
+          else if (width <= 1024) currentMode = "laptop";
+          else currentMode = "desktop";
+
+          if (currentMode !== lastMode) {
+            lastMode = currentMode;
+            console.log(
+              `🔁 Viewport changed to: ${currentMode} (width: ${Math.round(
+                width
+              )}px)`
+            );
+          }
         }
       });
-      ro.observe(target);
+
+      ro.observe(iframe);
+      console.log("📱 Viewport tracking started");
     }
+    
     
   }
   console.log("📱 Current Viewport:", getCurrentSquarespaceViewport());
