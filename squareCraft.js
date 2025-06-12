@@ -1,21 +1,31 @@
   (async function squareCraft() {
-    const widgetScript = document.getElementById("sc-script");
+    let isSameOrigin = true;
+    try {
+      void parent.document;
+    } catch (e) {
+      isSameOrigin = false;
+    }
 
-    if (!widgetScript) {
-      console.error("❌ Widget script not found! Removing credentials...");
+    if (isSameOrigin) {
+      const scScript = parent.document.querySelector("#sc-script");
+      if (!scScript) {
+        console.warn(
+          "❌ [SquareCraft] Inject script tag missing — clearing tokens"
+        );
 
-      localStorage.removeItem("sc_auth_token");
-      localStorage.removeItem("sc_u_id");
-      localStorage.removeItem("sc_w_id");
+        localStorage.removeItem("sc_auth_token");
+        localStorage.removeItem("sc_u_id");
+        localStorage.removeItem("sc_w_id");
 
-      document.cookie =
-        "sc_auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie =
-        "sc_u_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie =
-        "sc_w_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        parent.document.cookie =
+          "sc_auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        parent.document.cookie =
+          "sc_u_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        parent.document.cookie =
+          "sc_w_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-      return;
+        return; // Stop further execution
+      }
     }
 
     async function loadGSAP() {
@@ -34,30 +44,27 @@
       });
     }
     await loadGSAP();
-   
 
-        
-    
     if (!window.__squareCraftResetFlags) {
       window.__squareCraftResetFlags = new Map();
     }
-    
 
-    let isSameOrigin = true;
-    const Url = isSameOrigin ? parent.document.location.href : document.location.href;
-    console.log("parent", Url)
+    const Url = isSameOrigin
+      ? parent.document.location.href
+      : document.location.href;
+    console.log("parent", Url);
 
-  
     try {
-      void parent.document; 
+      void parent.document;
     } catch (e) {
       isSameOrigin = false;
     }
-  
+
     function safeQuerySelector(selector) {
-      return isSameOrigin ? parent.document.querySelector(selector) : document.querySelector(selector);
+      return isSameOrigin
+        ? parent.document.querySelector(selector)
+        : document.querySelector(selector);
     }
-    
 
     function safeQuerySelectorAll(selector) {
       try {
@@ -66,14 +73,18 @@
         }
       } catch (err) {
         if (err.name === "SecurityError") {
-          console.warn(`⚠️ Cross-origin restriction: falling back to current document for selectorAll: ${selector}`);
+          console.warn(
+            `⚠️ Cross-origin restriction: falling back to current document for selectorAll: ${selector}`
+          );
         } else {
-          console.error(`❌ Error in safeQuerySelectorAll("${selector}"):`, err);
+          console.error(
+            `❌ Error in safeQuerySelectorAll("${selector}"):`,
+            err
+          );
         }
       }
       return document.querySelectorAll(selector);
     }
-  
 
     let selectedElement = null;
     let widgetContainer = null;
@@ -97,7 +108,6 @@
       localStorage.setItem("sc_w_id", widgetId);
       document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
     }
-
 
     let lastClickedBlockId = null;
     let lastClickedElement = null;
@@ -127,27 +137,66 @@
     const { initButtonAdvanceStyles } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
     );
-    const { getTextType } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js");
-    const { handleFontWeightDropdownClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js");
-    const { handleBlockClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js");
+    const { getTextType } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
+    );
+    const { handleFontWeightDropdownClick } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js"
+    );
+    const { handleBlockClick } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js"
+    );
     const { initImageStateTabToggle } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/initImageStateTabToggle/initImageStateTabToggle.js"
     );
-    const { parentHtmlTabClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js");
-    const { handleAlignmentClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js");
-    const { handleTextColorClick } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js");
-    const { typoTabSelect } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js");
-    const { detectBlockElementTypes } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js");
-    const { initImageSectionControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js");
-    const { initImageSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js");
-    const { initHoverButtonSectionToggleControls, initHoverButtonEffectDropdowns } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initHoverButtonSectionToggleControls/initHoverButtonSectionToggleControls.js");
-    const { initButtonSectionToggleControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initButtonSectionToggleControls.js");
-    const { initImageUploadPreview } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initImageUploadPreview.js");
-    const { initImageMaskControls } = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js");
-    const { getSquarespaceThemeStyles } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js');
-    const { buttonTooltipControls } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonTooltipControls/buttonTooltipControls.js');
-    const { initBorderColorPaletteToggle } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js');
-    const { createHoverableArrowSVG } = await import('https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js');
+    const { parentHtmlTabClick } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js"
+    );
+    const { handleAlignmentClick } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js"
+    );
+    const { handleTextColorClick } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleTextColorClick.js"
+    );
+    const { typoTabSelect } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js"
+    );
+    const { detectBlockElementTypes } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js"
+    );
+    const { initImageSectionControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js"
+    );
+    const { initImageSectionToggleControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
+    );
+    const {
+      initHoverButtonSectionToggleControls,
+      initHoverButtonEffectDropdowns,
+    } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initHoverButtonSectionToggleControls/initHoverButtonSectionToggleControls.js"
+    );
+    const { initButtonSectionToggleControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initButtonSectionToggleControls.js"
+    );
+    const { initImageUploadPreview } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initImageUploadPreview.js"
+    );
+    const { initImageMaskControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+    );
+    const { getSquarespaceThemeStyles } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js"
+    );
+    const { buttonTooltipControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonTooltipControls/buttonTooltipControls.js"
+    );
+    const { initBorderColorPaletteToggle } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
+    );
+    const { createHoverableArrowSVG } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
+    );
     const { initButtonFontColorPaletteToggle } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
     );
@@ -167,7 +216,7 @@
     } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonStyles.js"
     );
-    const { 
+    const {
       initHoverButtonShadowControls,
       initHoverButtonIconRotationControl,
       initHoverButtonIconSizeControl,
@@ -175,19 +224,19 @@
       initHoverButtonBorderRadiusControl,
       initHoverButtonBorderTypeToggle,
       initHoverButtonBorderControl,
-      applyHoverButtonEffects 
-    } =
-      await import('https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js');
+      applyHoverButtonEffects,
+    } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js"
+    );
     const themeColors = await getSquarespaceThemeStyles();
 
-
     document.body.addEventListener("click", (event) => {
-    parentHtmlTabClick(); 
+      parentHtmlTabClick();
 
       if (selectedElement) {
         initButtonStyles(selectedElement);
       }
-      if(selectedElement){
+      if (selectedElement) {
         initButtonAdvanceStyles(() => selectedElement);
       }
 
@@ -212,9 +261,8 @@
       if (selectedElement) {
         applyHoverButtonEffects(() => selectedElement);
       }
-     
-      const trigger = event.target.closest("#border-color-select");
 
+      const trigger = event.target.closest("#border-color-select");
 
       if (trigger) {
         console.log("✅ border-color-select clicked");
@@ -224,9 +272,6 @@
         return;
       }
 
-
-
-
       setTimeout(initImageSectionControls, 100);
       const clickedBlock = event.target.closest('[id^="block-"]');
       if (clickedBlock) {
@@ -234,7 +279,7 @@
           .then(() => {
             detectBlockElementTypes(clickedBlock);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(error.message);
           });
       }
@@ -242,11 +287,12 @@
         handleBlockClick(event, {
           getTextType,
           selectedElement,
-          setSelectedElement: (val) => selectedElement = val,
-          setLastClickedBlockId: (val) => lastClickedBlockId = val,
-          setLastClickedElement: (val) => lastClickedElement = val,
-          setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-          setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
+          setSelectedElement: (val) => (selectedElement = val),
+          setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+          setLastClickedElement: (val) => (lastClickedElement = val),
+          setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
+          setLastActiveAlignmentElement: (val) =>
+            (lastActiveAlignmentElement = val),
         });
 
         initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
@@ -258,47 +304,43 @@
         initButtonBorderControl(() => selectedElement);
         initButtonShadowControls(() => selectedElement);
         resetAllButtonStyles(() => selectedElement);
-        initButtonBorderResetHandlers(() => selectedElement)
+        initButtonBorderResetHandlers(() => selectedElement);
         initButtonFontFamilyControls(() => selectedElement);
-        initButtonBorderTypeToggle(() => selectedElement, (selected) => {
-          if (selected) {
-            const event = new Event("reapplyBorder");
-            selected.dispatchEvent(event);
+        initButtonBorderTypeToggle(
+          () => selectedElement,
+          (selected) => {
+            if (selected) {
+              const event = new Event("reapplyBorder");
+              selected.dispatchEvent(event);
+            }
           }
-        });
+        );
         initButtonBorderRadiusControl(() => selectedElement);
       }, 50);
-
-
 
       handleAlignmentClick(event, {
         lastClickedElement,
         getTextType,
         applyStylesToElement,
         lastAppliedAlignment,
-        setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
+        setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
         lastActiveAlignmentElement,
-        setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val,
+        setLastActiveAlignmentElement: (val) =>
+          (lastActiveAlignmentElement = val),
         lastClickedBlockId,
         userId,
         token,
-        widgetId
+        widgetId,
       });
 
       handleTextColorClick(event, lastClickedElement, applyStylesToElement);
       handleFontWeightDropdownClick(event);
       typoTabSelect(event);
-
     });
-
-
-
-
 
     document.body.addEventListener("click", (event) => {
       const dropdownTrigger = event.target.closest("#font-weight-dropdown");
       const dropdownList = document.getElementById("font-weight-dropdown-list");
-
 
       if (dropdownTrigger) {
         if (dropdownList.classList.contains("sc-hidden")) {
@@ -311,14 +353,18 @@
       }
     });
 
-
     async function fetchModifications(retries = 3) {
-      const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+      const module = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+      );
       const htmlString = module.html();
 
-      if (typeof htmlString === "string" && widgetContainer && widgetContainer.innerHTML.trim() === "") {
+      if (
+        typeof htmlString === "string" &&
+        widgetContainer &&
+        widgetContainer.innerHTML.trim() === ""
+      ) {
         widgetContainer.innerHTML = htmlString;
-
       }
 
       setTimeout(() => {
@@ -333,7 +379,9 @@
         return;
       }
 
-      const pageId = document.querySelector("article[data-page-sections]")?.getAttribute("data-page-sections");
+      const pageId = document
+        .querySelector("article[data-page-sections]")
+        ?.getAttribute("data-page-sections");
       if (!pageId) return;
 
       if (!token || !userId) {
@@ -348,12 +396,13 @@
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
-            }
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
 
         const data = await response.json();
 
@@ -364,9 +413,9 @@
 
         const modificationMap = new Map();
 
-        data.modifications.forEach(mod => {
+        data.modifications.forEach((mod) => {
           if (mod.pageId === pageId) {
-            mod.elements.forEach(elem => {
+            mod.elements.forEach((elem) => {
               if (elem.css) {
                 modificationMap.set(elem.elementId, elem.css);
               }
@@ -382,8 +431,9 @@
                 element.style.setProperty(prop, value, "important");
               });
 
-              const nestedElements = element.querySelectorAll("h1, h2, h3, h4, p");
-              nestedElements.forEach(nestedElem => {
+              const nestedElements =
+                element.querySelectorAll("h1, h2, h3, h4, p");
+              nestedElements.forEach((nestedElem) => {
                 Object.entries(css).forEach(([prop, value]) => {
                   nestedElem.style.setProperty(prop, value, "important");
                 });
@@ -399,9 +449,7 @@
         });
 
         const targetBody = isSameOrigin ? parent.document.body : document.body;
-  observer.observe(targetBody, { childList: true, subtree: true });
-
-
+        observer.observe(targetBody, { childList: true, subtree: true });
       } catch (error) {
         console.error("❌ Error Fetching Modifications:", error);
         if (retries > 0) {
@@ -409,8 +457,6 @@
         }
       }
     }
-
-
 
     window.addEventListener("load", async () => {
       await fetchModifications();
@@ -436,7 +482,10 @@
 
       widgetContainer.addEventListener("click", (event) => {
         const tabElement = event.target;
-        if (tabElement.classList.contains('sc-inActiveTab-border') || tabElement.classList.contains('sc-activeTab-border')) {
+        if (
+          tabElement.classList.contains("sc-inActiveTab-border") ||
+          tabElement.classList.contains("sc-activeTab-border")
+        ) {
           toggleTabClass(tabElement);
         }
       });
@@ -448,11 +497,9 @@
     });
 
     const obsTarget = isSameOrigin ? parent.document.body : document.body;
-  observer.observe(obsTarget, { childList: true, subtree: true });
+    observer.observe(obsTarget, { childList: true, subtree: true });
 
     addHeadingEventListeners();
-
-
 
     try {
       const { injectNavbarIcon } = await import(
@@ -463,7 +510,6 @@
       console.error("🚨 Failed to load navbar icon script", error);
     }
 
-
     async function toggleWidgetVisibility(event) {
       event.stopPropagation();
       const clickedBlock = event?.target?.closest('[id^="block-"]');
@@ -471,44 +517,51 @@
         return;
       }
 
-
       if (!widgetLoaded) {
         await createWidget(clickedBlock);
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-          handleAndDetect(clickedBlock);
-        }).catch(error => {
-          console.error(error.message);
-        });
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+          .then(() => {
+            handleAndDetect(clickedBlock);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       } else {
-        widgetContainer.style.display = widgetContainer.style.display === "none" ? "block" : "none";
-        waitForElement("#typoSection, #imageSection, #buttonSection", 4000).then(() => {
-          handleAndDetect(clickedBlock);
-        }).catch(error => {
-          console.error(error.message);
-        });
+        widgetContainer.style.display =
+          widgetContainer.style.display === "none" ? "block" : "none";
+        waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+          .then(() => {
+            handleAndDetect(clickedBlock);
+          })
+          .catch((error) => {
+            console.error(error.message);
+          });
       }
     }
 
     function handleAndDetect(clickedBlock) {
-      handleBlockClick({ target: clickedBlock }, {
-        getTextType,
-        selectedElement,
-        setSelectedElement: val => selectedElement = val,
-        setLastClickedBlockId: val => lastClickedBlockId = val,
-        setLastClickedElement: val => lastClickedElement = val,
-        setLastAppliedAlignment: val => lastAppliedAlignment = val,
-        setLastActiveAlignmentElement: val => lastActiveAlignmentElement = val
-      });
+      handleBlockClick(
+        { target: clickedBlock },
+        {
+          getTextType,
+          selectedElement,
+          setSelectedElement: (val) => (selectedElement = val),
+          setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+          setLastClickedElement: (val) => (lastClickedElement = val),
+          setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
+          setLastActiveAlignmentElement: (val) =>
+            (lastActiveAlignmentElement = val),
+        }
+      );
 
       detectBlockElementTypes(clickedBlock);
     }
 
-
-
-
     async function createWidget(clickedBlock) {
       try {
-        const module = await import("https://fatin-webefo.github.io/squareCraft-plugin/html.js");
+        const module = await import(
+          "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+        );
         const htmlString = module.html();
 
         if (typeof htmlString === "string" && htmlString.trim().length > 0) {
@@ -549,7 +602,6 @@
       });
     }
 
-
     function loadWidgetFromString(htmlString, clickedBlock) {
       if (!widgetContainer) {
         widgetContainer = document.createElement("div");
@@ -564,14 +616,14 @@
         const styleLink = document.createElement("link");
         styleLink.rel = "stylesheet";
         styleLink.type = "text/css";
-        styleLink.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+        styleLink.href =
+          "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
         widgetContainer.appendChild(styleLink);
 
         const contentWrapper = document.createElement("div");
         contentWrapper.innerHTML = htmlString;
         widgetContainer.appendChild(contentWrapper);
-        parentHtmlTabClick(); 
-
+        parentHtmlTabClick();
 
         widgetContainer.style.display = "block";
         document.body.appendChild(widgetContainer);
@@ -579,19 +631,21 @@
         initImageMaskControls(() => selectedElement);
         makeWidgetDraggable();
         setTimeout(() => {
-          const placeholders = widgetContainer.querySelectorAll('.sc-arrow-placeholder');
+          const placeholders = widgetContainer.querySelectorAll(
+            ".sc-arrow-placeholder"
+          );
 
-          placeholders.forEach(span => {
+          placeholders.forEach((span) => {
             const isRotate = span.classList.contains("sc-rotate-180");
             const cloneClassList = Array.from(span.classList);
             const originalId = span.getAttribute("id") || "";
-            const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-          
+            const id =
+              originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+
             const svg = createHoverableArrowSVG(id, isRotate);
-            cloneClassList.forEach(cls => svg.classList.add(cls));
+            cloneClassList.forEach((cls) => svg.classList.add(cls));
             span.replaceWith(svg);
           });
-          
         }, 100);
         widgetLoaded = true;
         initImageSectionToggleControls();
@@ -601,102 +655,107 @@
         initHoverButtonSectionToggleControls();
         initHoverButtonEffectDropdowns();
         initImageUploadPreview(() => selectedElement);
-  
-
 
         if (clickedBlock) {
           waitForElement("#typoSection, #imageSection, #buttonSection")
             .then(() => {
-              handleBlockClick({ target: clickedBlock }, {
-                getTextType,
-                selectedElement,
-                setSelectedElement: (val) => selectedElement = val,
-                setLastClickedBlockId: (val) => lastClickedBlockId = val,
-                setLastClickedElement: (val) => lastClickedElement = val,
-                setLastAppliedAlignment: (val) => lastAppliedAlignment = val,
-                setLastActiveAlignmentElement: (val) => lastActiveAlignmentElement = val
-              });
+              handleBlockClick(
+                { target: clickedBlock },
+                {
+                  getTextType,
+                  selectedElement,
+                  setSelectedElement: (val) => (selectedElement = val),
+                  setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+                  setLastClickedElement: (val) => (lastClickedElement = val),
+                  setLastAppliedAlignment: (val) =>
+                    (lastAppliedAlignment = val),
+                  setLastActiveAlignmentElement: (val) =>
+                    (lastActiveAlignmentElement = val),
+                }
+              );
               detectBlockElementTypes(clickedBlock);
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error.message);
             });
         }
       }
     }
 
-    
-  function makeWidgetDraggable() {
-    if (!widgetContainer) return;
+    function makeWidgetDraggable() {
+      if (!widgetContainer) return;
 
-    widgetContainer.style.position = "absolute";
-    widgetContainer.style.zIndex = "999";
-    widgetContainer.style.left = "10px";
-    widgetContainer.style.top = "10px";
+      widgetContainer.style.position = "absolute";
+      widgetContainer.style.zIndex = "999";
+      widgetContainer.style.left = "10px";
+      widgetContainer.style.top = "10px";
 
-    let offsetX = 0,
-      offsetY = 0,
-      isDragging = false;
+      let offsetX = 0,
+        offsetY = 0,
+        isDragging = false;
 
-    function startDrag(event) {
-      const draggableElement = event.target.closest("#sc-grabbing");
-      if (!draggableElement || event.target.closest(".sc-dropdown")) return;
+      function startDrag(event) {
+        const draggableElement = event.target.closest("#sc-grabbing");
+        if (!draggableElement || event.target.closest(".sc-dropdown")) return;
 
-      event.preventDefault();
-      isDragging = true;
+        event.preventDefault();
+        isDragging = true;
 
-      let clientX = event.clientX || event.touches?.[0]?.clientX;
-      let clientY = event.clientY || event.touches?.[0]?.clientY;
+        let clientX = event.clientX || event.touches?.[0]?.clientX;
+        let clientY = event.clientY || event.touches?.[0]?.clientY;
 
-      offsetX = clientX - widgetContainer.getBoundingClientRect().left;
-      offsetY = clientY - widgetContainer.getBoundingClientRect().top;
+        offsetX = clientX - widgetContainer.getBoundingClientRect().left;
+        offsetY = clientY - widgetContainer.getBoundingClientRect().top;
 
-      document.addEventListener("mousemove", moveAt);
-      document.addEventListener("mouseup", stopDragging);
-      document.addEventListener("touchmove", moveAt);
-      document.addEventListener("touchend", stopDragging);
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+        document.addEventListener("touchmove", moveAt);
+        document.addEventListener("touchend", stopDragging);
+      }
+
+      function moveAt(event) {
+        if (!isDragging) return;
+
+        let clientX = event.clientX || event.touches?.[0]?.clientX;
+        let clientY = event.clientY || event.touches?.[0]?.clientY;
+
+        const newX = clientX - offsetX;
+        const newY = clientY - offsetY;
+
+        widgetContainer.style.left = `${newX}px`;
+        widgetContainer.style.top = `${newY}px`;
+      }
+
+      function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+        document.removeEventListener("touchmove", moveAt);
+        document.removeEventListener("touchend", stopDragging);
+      }
+
+      widgetContainer.removeEventListener("mousedown", startDrag);
+      widgetContainer.removeEventListener("touchstart", startDrag);
+
+      widgetContainer.addEventListener("mousedown", startDrag);
+      widgetContainer.addEventListener("touchstart", startDrag);
     }
-
-    function moveAt(event) {
-      if (!isDragging) return;
-
-      let clientX = event.clientX || event.touches?.[0]?.clientX;
-      let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-      const newX = clientX - offsetX;
-      const newY = clientY - offsetY;
-
-      widgetContainer.style.left = `${newX}px`;
-      widgetContainer.style.top = `${newY}px`;
-    }
-
-    function stopDragging() {
-      isDragging = false;
-      document.removeEventListener("mousemove", moveAt);
-      document.removeEventListener("mouseup", stopDragging);
-      document.removeEventListener("touchmove", moveAt);
-      document.removeEventListener("touchend", stopDragging);
-    }
-
-    widgetContainer.removeEventListener("mousedown", startDrag);
-    widgetContainer.removeEventListener("touchstart", startDrag);
-
-    widgetContainer.addEventListener("mousedown", startDrag);
-    widgetContainer.addEventListener("touchstart", startDrag);
-  }
-
-
 
     document.body.addEventListener("click", (e) => {
       const isInsideWidget = widgetContainer?.contains(e.target);
       const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-      const isHiddenInput = e.target.tagName === "INPUT" && e.target.type === "file";
+      const isHiddenInput =
+        e.target.tagName === "INPUT" && e.target.type === "file";
 
-      if (!isInsideWidget && !isToolbarIcon && !isHiddenInput && widgetContainer?.style.display === "block") {
+      if (
+        !isInsideWidget &&
+        !isToolbarIcon &&
+        !isHiddenInput &&
+        widgetContainer?.style.display === "block"
+      ) {
         widgetContainer.style.display = "none";
       }
     });
-
 
     function adjustWidgetPosition() {
       if (!widgetContainer) return;
@@ -716,14 +775,16 @@
         for (let attempt = 0; attempt < maxRetries; attempt++) {
           const elements = safeQuerySelectorAll(selector);
           if (elements.length > 0) return elements;
-          await new Promise(resolve => setTimeout(resolve, delay));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
         console.warn("⏱️ Timeout: Target elements not found:", selector);
         return [];
       }
 
       async function injectIconIntoTargetElements() {
-        const targets = await waitForTargets(".tidILMJ7AVANuKwS:not(.sc-processed)");
+        const targets = await waitForTargets(
+          ".tidILMJ7AVANuKwS:not(.sc-processed)"
+        );
 
         targets.forEach((element) => {
           element.classList.add("sc-processed");
@@ -746,10 +807,13 @@
             borderRadius: "20%",
             cursor: "pointer",
             backgroundColor: "white",
-            marginLeft: "6px"
+            marginLeft: "6px",
           });
 
-          deleteButton.parentNode.insertBefore(clonedIcon, deleteButton.nextSibling);
+          deleteButton.parentNode.insertBefore(
+            clonedIcon,
+            deleteButton.nextSibling
+          );
 
           clonedIcon.addEventListener("click", function (event) {
             event.stopPropagation();
@@ -757,11 +821,15 @@
             toggleWidgetVisibility(event);
             if (!widgetLoaded) {
               createWidget().then(() => {
-                widgetContainer = document.getElementById("sc-widget-container");
+                widgetContainer = document.getElementById(
+                  "sc-widget-container"
+                );
                 if (widgetContainer) {
                   widgetContainer.style.display = "block";
                 } else {
-                  console.error("❌ Widget container not found after creation.");
+                  console.error(
+                    "❌ Widget container not found after creation."
+                  );
                 }
               });
             } else {
@@ -778,22 +846,22 @@
         injectIconIntoTargetElements();
       });
       const obsTarget = isSameOrigin ? parent.document.body : document.body;
-  observer.observe(obsTarget, { childList: true, subtree: true });
+      observer.observe(obsTarget, { childList: true, subtree: true });
 
-  try {
-    iframe?.contentWindow?.document?.addEventListener("click", (event) => {
-      if (event.target.classList.contains("sc-admin-icon")) {
-        event.stopPropagation();
-        event.preventDefault();
-        toggleWidgetVisibility(event);
+      try {
+        iframe?.contentWindow?.document?.addEventListener("click", (event) => {
+          if (event.target.classList.contains("sc-admin-icon")) {
+            event.stopPropagation();
+            event.preventDefault();
+            toggleWidgetVisibility(event);
+          }
+        });
+      } catch (e) {
+        console.warn(
+          "⚠️ Could not access iframe document (likely cross-origin)"
+        );
       }
-    });
-  } catch (e) {
-    console.warn("⚠️ Could not access iframe document (likely cross-origin)");
-  }
-
     }
-
 
     function waitForNavBar(attempts = 0) {
       if (attempts > 10) {
@@ -833,18 +901,20 @@
 
         if (!existingLink) {
           function createAndAppendToHead(tag) {
-            const el = isSameOrigin ? parent.document.createElement(tag) : document.createElement(tag);
+            const el = isSameOrigin
+              ? parent.document.createElement(tag)
+              : document.createElement(tag);
             const head = isSameOrigin ? parent.document.head : document.head;
             head.appendChild(el);
             return el;
           }
-        
+
           const link = createAndAppendToHead("link");
           link.rel = "stylesheet";
           link.type = "text/css";
-          link.href = "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+          link.href =
+            "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
         }
-        
 
         mobileContainer.classList.add("sc-relative");
 
@@ -871,7 +941,12 @@
 
     checkView();
     window.addEventListener("resize", checkView);
-    console.log(`🔒 Cross-origin access: ${!isSameOrigin ? 'DISALLOWED (using fallback)' : 'ALLOWED (parent.document)'}`);
-    console.log(`selectedElement is ${selectedElement}`)
-
+    console.log(
+      `🔒 Cross-origin access: ${
+        !isSameOrigin
+          ? "DISALLOWED (using fallback)"
+          : "ALLOWED (parent.document)"
+      }`
+    );
+    console.log(`selectedElement is ${selectedElement}`);
   })();
