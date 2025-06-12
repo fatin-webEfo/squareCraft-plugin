@@ -125,17 +125,7 @@ viewportContainer.addEventListener("mouseenter", () => {
 
   images.forEach((name) => {
     const container = document.createElement("div");
-    container.style.padding = "6px";
-    container.style.borderRadius = "50%";
-    container.style.transition = "background 0.3s ease";
     container.style.cursor = "pointer";
-
-    container.addEventListener("mouseenter", () => {
-      container.style.background = "#3a3a3a";
-    });
-    container.addEventListener("mouseleave", () => {
-      container.style.background = "transparent";
-    });
 
     const img = document.createElement("img");
     img.src = `https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/${name}`;
