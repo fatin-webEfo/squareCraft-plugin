@@ -322,28 +322,7 @@ viewportContainer.addEventListener("mouseleave", () => {
     if (width <= 1024) return "laptop";
     return "desktop";
   }
-  function simulateViewportSwitch(viewport) {
-    const toolbarButtons = [
-      ...parent.document.querySelectorAll("[aria-label]"),
-    ];
-    const matchLabel = {
-      mobile: "Mobile preview",
-      tablet: "Tablet preview",
-      laptop: "Laptop preview",
-      desktop: "Desktop preview",
-    };
 
-    const btn = toolbarButtons.find(
-      (b) => b.getAttribute("aria-label") === matchLabel[viewport]
-    );
-    if (btn) {
-      btn.click();
-      console.log(`✅ Switched to ${viewport} preview`);
-    } else {
-      console.warn("❌ Cannot find preview switch button for:", viewport);
-    }
-  }
-  
   console.log("📱 Squarespace Viewport Mode:", getCurrentSquarespaceViewport());
   
 
@@ -397,7 +376,6 @@ viewportContainer.addEventListener("mouseleave", () => {
     insertToolbarIcon();
     getCurrentSquarespaceViewport()
     insertAdminIcon();
-    simulateViewportSwitch()
 
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
