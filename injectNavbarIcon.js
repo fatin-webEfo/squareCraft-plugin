@@ -47,27 +47,27 @@ export function injectNavbarIcon() {
           const items = [
             {
               label: "Global",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/global.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/global.svg",
             },
             {
               label: "Page",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/page.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/page.svg",
             },
             {
               label: "Template",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/template.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/template.svg",
             },
             {
               label: "Settings",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/settings.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/settings.svg",
             },
             {
               label: "Subscription",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/subscription.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/subscription.svg",
             },
             {
               label: "Support",
-              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/support.png",
+              icon: "https://fatin-webefo.github.io/squareCraft-plugin/public/icon-click-items/support.svg",
             },
           ];
           const gridHTML = items
@@ -89,7 +89,7 @@ export function injectNavbarIcon() {
               <div id="icon-options"><div  style="padding: 12px 16px;  color: white; font-size: 14px; display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:18px; font-weight: 400;">SquareCraft</span>
                   <div id="viewport-sections" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width: 18px;">
+                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width: 18px;">
                   </div>
               </div>
               <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
@@ -107,7 +107,7 @@ export function injectNavbarIcon() {
 
           viewportContainer.innerHTML = `
   <div class="sc-viewport-wrapper" style="display: flex; gap: 8px; align-items: center; transition: all 0.4s ease;">
-    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
+    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
   </div>
 `;
 
@@ -121,7 +121,7 @@ viewportContainer.addEventListener("mouseenter", () => {
   wrapper.style.transform = "translateX(30px)";
   wrapper.style.opacity = "0";
 
-  const images = ["mobile.svg", "tablet.svg", "laptop.svg", "monitor.svg"];
+  const images = ["mobile.png", "tablet.png", "laptop.png", "monitor.png"];
 
   images.forEach((name) => {
     const container = document.createElement("div");
@@ -166,7 +166,7 @@ viewportContainer.addEventListener("mouseleave", () => {
   setTimeout(() => {
     viewportContainer.innerHTML = `
       <div class="sc-viewport-wrapper" style="display: flex; gap: 8px; align-items: center; transition: all 0.4s ease;">
-        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.png" style="width:18px; height:18px; opacity:1; transform: translateX(0); transition: all 0.3s ease;">
       </div>
     `;
   }, 300);
