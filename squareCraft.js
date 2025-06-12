@@ -1,4 +1,23 @@
   (async function squareCraft() {
+    const widgetScript = document.getElementById("sc-script");
+
+    if (!widgetScript) {
+      console.error("❌ Widget script not found! Removing credentials...");
+
+      localStorage.removeItem("sc_auth_token");
+      localStorage.removeItem("sc_u_id");
+      localStorage.removeItem("sc_w_id");
+
+      document.cookie =
+        "sc_auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie =
+        "sc_u_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie =
+        "sc_w_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+      return;
+    }
+
     async function loadGSAP() {
       return new Promise((resolve, reject) => {
         if (window.gsap) {
@@ -27,14 +46,8 @@
     let isSameOrigin = true;
     const Url = isSameOrigin ? parent.document.location.href : document.location.href;
     console.log("parent", Url)
-    const widgetScript = document.getElementById("sc-script");
 
-    if (!widgetScript) {
-      console.error(
-        "❌ Widget script not found! Ensure the script tag exists with id 'sc-script'."
-      );
-      return;
-    }
+  
     try {
       void parent.document; 
     } catch (e) {
