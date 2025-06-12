@@ -309,7 +309,43 @@ viewportContainer.addEventListener("mouseleave", () => {
   }
   
       
-    
+  function getCurrentSquarespaceViewport() {
+    const iframe = parent.document.querySelector(
+      'iframe[src*="squarespace.com"]'
+    );
+    if (!iframe) return "unknown";
+
+    const width = iframe.offsetWidth;
+
+    if (width <= 480) return "mobile";
+    if (width <= 768) return "tablet";
+    if (width <= 1024) return "laptop";
+    return "desktop";
+  }
+  function simulateViewportSwitch(viewport) {
+    const toolbarButtons = [
+      ...parent.document.querySelectorAll("[aria-label]"),
+    ];
+    const matchLabel = {
+      mobile: "Mobile preview",
+      tablet: "Tablet preview",
+      laptop: "Laptop preview",
+      desktop: "Desktop preview",
+    };
+
+    const btn = toolbarButtons.find(
+      (b) => b.getAttribute("aria-label") === matchLabel[viewport]
+    );
+    if (btn) {
+      btn.click();
+      console.log(`✅ Switched to ${viewport} preview`);
+    } else {
+      console.warn("❌ Cannot find preview switch button for:", viewport);
+    }
+  }
+  
+  console.log("📱 Squarespace Viewport Mode:", getCurrentSquarespaceViewport());
+  
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
@@ -359,7 +395,9 @@ viewportContainer.addEventListener("mouseleave", () => {
     }
 
     insertToolbarIcon();
+    getCurrentSquarespaceViewport()
     insertAdminIcon();
+    simulateViewportSwitch()
 
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
