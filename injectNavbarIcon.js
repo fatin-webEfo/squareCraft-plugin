@@ -102,34 +102,45 @@ export function injectNavbarIcon() {
 
           wrapper.appendChild(panel);
           const dragTarget = panel.querySelector("#icon-options");
-
           let isDragging = false;
-          let offsetX, offsetY;
+          let offsetX = 0;
+          let offsetY = 0;
 
-          dragTarget.style.cursor = "move"; // Visual feedback
+          dragTarget.style.cursor = "move";
 
-          dragTarget.addEventListener("mousedown", (e) => {
+          function startDragging(e) {
             if (e.target.closest("#viewport-sections")) return;
+
             isDragging = true;
             const rect = panel.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
-            document.body.style.userSelect = "none";
-          });
-          
 
-          document.addEventListener("mousemove", (e) => {
-            if (!isDragging) return;
+            panel.style.position = "absolute";
             panel.style.right = "unset";
-            panel.style.left = `${e.clientX - offsetX}px`;            
-            panel.style.top = `${e.clientY - offsetY}px`;
-            panel.style.transform = "none"; // Disable initial translateX(-50%) effect after drag starts
-          });
+            panel.style.transform = "none";
+            document.body.style.userSelect = "none";
 
-          document.addEventListener("mouseup", () => {
+            document.addEventListener("mousemove", doDrag);
+            document.addEventListener("mouseup", stopDragging);
+          }
+
+          function doDrag(e) {
+            if (!isDragging) return;
+            panel.style.left = `${e.clientX - offsetX}px`;
+            panel.style.top = `${e.clientY - offsetY}px`;
+          }
+
+          function stopDragging() {
             isDragging = false;
             document.body.style.userSelect = "";
-          });
+            document.removeEventListener("mousemove", doDrag);
+            document.removeEventListener("mouseup", stopDragging);
+          }
+
+          dragTarget.removeEventListener("mousedown", startDragging);
+          dragTarget.addEventListener("mousedown", startDragging);
+          
           
           const hide = () => {
             panel.remove();
