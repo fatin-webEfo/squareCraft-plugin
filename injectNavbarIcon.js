@@ -37,7 +37,7 @@ export function injectNavbarIcon() {
           panel.style.position = "absolute";
           panel.style.top = "45px";
           panel.style.right = "-10px";
-          panel.style.background = "#1e1e1e";
+          panel.style.background = "#2c2c2c";
           panel.style.borderRadius = "8px";
           panel.style.padding = "0";
           panel.style.zIndex = "99999";
@@ -52,7 +52,7 @@ export function injectNavbarIcon() {
               </div>
               <div style="background:#EF7C2F; color:white; font-size:12px; padding:6px 12px; text-align:center;">
                 Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
-              </div>
+              </div>  
               <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background:#2c2c2c; padding: 1px;">
                 ${[
                   "Site",
