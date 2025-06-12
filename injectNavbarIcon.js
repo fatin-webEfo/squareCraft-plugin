@@ -322,18 +322,19 @@ viewportContainer.addEventListener("mouseleave", () => {
     if (width <= 1024) return "laptop";
     return "desktop";
   }
+  console.log("📱 Current Viewport:", getCurrentSquarespaceViewport());
 
-  let lastViewport = getCurrentSquarespaceViewport();
-  console.log("📱 Current Viewport:", lastViewport);
-
-  setInterval(() => {
-    const currentViewport = getCurrentSquarespaceViewport();
-    if (currentViewport !== lastViewport) {
-      lastViewport = currentViewport;
-      console.log("🔁 Viewport changed to:", currentViewport);
-    }
-  }, 2000);
-    
+  function trackViewportChange() {
+    let lastViewport = getCurrentSquarespaceViewport();
+    setInterval(() => {
+      const current = getCurrentSquarespaceViewport();
+      if (current !== lastViewport) {
+        lastViewport = current;
+        console.log("🔁 Viewport changed to:", current);
+      }
+    }, 2000);
+  }
+  
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
@@ -384,7 +385,8 @@ viewportContainer.addEventListener("mouseleave", () => {
 
     insertToolbarIcon();
     getCurrentSquarespaceViewport()
-    insertAdminIcon();
+    insertAdminIcon();trackViewportChange();
+
 
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
