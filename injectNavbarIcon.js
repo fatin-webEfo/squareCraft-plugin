@@ -91,7 +91,8 @@ export function injectNavbarIcon() {
 
           document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
-            panel.style.left = `${e.clientX - offsetX}px`;
+            panel.style.right = "unset";
+            panel.style.left = `${e.clientX - offsetX}px`;            
             panel.style.top = `${e.clientY - offsetY}px`;
             panel.style.transform = "none"; // Disable initial translateX(-50%) effect after drag starts
           });
