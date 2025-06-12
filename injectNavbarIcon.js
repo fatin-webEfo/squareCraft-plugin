@@ -310,30 +310,32 @@ viewportContainer.addEventListener("mouseleave", () => {
   
       
   function getCurrentSquarespaceViewport() {
-    const iframe = parent.document.querySelector(
-      'iframe[src*="squarespace.com"]'
-    );
-    if (!iframe) return "unknown";
+    const iframe =
+      parent.document.querySelector <
+      HTMLIFrameElement >
+      'iframe[src*="squarespace.com"]';
+    if (!iframe) {
+      return setTimeout(waitForIframeAndTrackViewport, 500);
+    }
 
-    const width = iframe.offsetWidth;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const width = entry.contentRect.width;
+        console.log("🔁 Viewport changed width to:", width);
+        let viewport;
+        if (width <= 480) viewport = "mobile";
+        else if (width <= 768) viewport = "tablet";
+        else if (width <= 1024) viewport = "laptop";
+        else viewport = "desktop";
+        console.log("📱 Viewport mode:", viewport);
+      }
+    });
 
-    if (width <= 480) return "mobile";
-    if (width <= 768) return "tablet";
-    if (width <= 1024) return "laptop";
-    return "desktop";
+    ro.observe(iframe);
   }
   console.log("📱 Current Viewport:", getCurrentSquarespaceViewport());
 
-  function trackViewportChange() {
-    let lastViewport = getCurrentSquarespaceViewport();
-    setInterval(() => {
-      const current = getCurrentSquarespaceViewport();
-      if (current !== lastViewport) {
-        lastViewport = current;
-        console.log("🔁 Viewport changed to:", current);
-      }
-    }, 2000);
-  }
+
   
 
     function insertToolbarIcon() {
@@ -385,7 +387,7 @@ viewportContainer.addEventListener("mouseleave", () => {
 
     insertToolbarIcon();
     getCurrentSquarespaceViewport()
-    insertAdminIcon();trackViewportChange();
+    insertAdminIcon();
 
 
     const observer = new MutationObserver(() => {
