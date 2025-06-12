@@ -121,7 +121,7 @@ viewportContainer.addEventListener("mouseenter", () => {
   wrapper.style.transform = "translateX(30px)";
   wrapper.style.opacity = "0";
 
-  const images = ["mobile.png", "tabt.png", "laptop.png", "monitor.png"];
+  const images = ["mobile.svg", "tab.svg", "laptop.svg", "monitor.svg"];
 
   images.forEach((name) => {
     const container = document.createElement("div");
