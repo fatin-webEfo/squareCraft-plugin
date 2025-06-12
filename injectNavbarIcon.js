@@ -99,7 +99,63 @@ export function injectNavbarIcon() {
         }
       }
       
-    
+      function adminIconOptions(wrapper) {
+        if (document.getElementById("sc-admin-panel")) return;
+
+        const panel = document.createElement("div");
+        panel.id = "sc-admin-panel";
+        panel.style.position = "absolute";
+        panel.style.top = "48px";
+        panel.style.right = "0";
+        panel.style.background = "#1e1e1e";
+        panel.style.borderRadius = "8px";
+        panel.style.padding = "10px 0";
+        panel.style.zIndex = "99999";
+        panel.style.width = "300px";
+        panel.style.boxShadow = "0 2px 8px rgba(0,0,0,0.25)";
+        panel.style.fontFamily = "'Poppins', sans-serif";
+
+        panel.innerHTML = `
+          <div style="text-align:center; color:white; font-weight:bold; margin-bottom:6px;">SquareCraft</div>
+          <div style="background:#1db954; color:white; font-size:12px; padding:6px 12px; text-align:center;">
+            Your free trial expires in 0 days. <span style="text-decoration: underline; cursor:pointer;">Click here to upgrade.</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px;">
+            ${[
+              "Site",
+              "Page",
+              "Template",
+              "Settings",
+              "Subscription",
+              "Support",
+            ]
+              .map(
+                (name) => `
+              <div style="background:#2c2c2c; color:white; font-size:12px; text-align:center; padding: 14px 0; border-radius: 6px; cursor:pointer;">
+                ${name}
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        `;
+
+        wrapper.appendChild(panel);
+
+        const hide = () => {
+          panel.remove();
+          document.removeEventListener("click", handleOutsideClick);
+        };
+
+        const handleOutsideClick = (e) => {
+          if (!panel.contains(e.target) && !wrapper.contains(e.target)) hide();
+        };
+
+        setTimeout(() => {
+          document.addEventListener("click", handleOutsideClick);
+        }, 0);
+      }
+      
 
     function insertToolbarIcon() {
         const toolbarContainers = parent.document.querySelectorAll('div.js-section-toolbar');
@@ -150,6 +206,7 @@ export function injectNavbarIcon() {
 
     insertToolbarIcon();
     insertAdminIcon();
+    adminIconOptions()
 
     const observer = new MutationObserver(() => {
         insertToolbarIcon();
