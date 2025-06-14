@@ -30,7 +30,6 @@ export function ButtonAdvanceToggleControls() {
       };
 
       button.addEventListener("click", handleInteraction);
-      button.addEventListener("mouseenter", handleInteraction);
     }
   });
 }
