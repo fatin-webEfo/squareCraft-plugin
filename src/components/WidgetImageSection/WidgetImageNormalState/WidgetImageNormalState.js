@@ -187,7 +187,7 @@ export function WidgetImageNormalState(){
       <div class="sc-mt-3">
          <div class="sc-flex sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
-               <p class="sc-roboto sc-font-thin sc-universal sc-text-sm sc-text-gray-300">
+               <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
                Border Radious
                </p>
                <div

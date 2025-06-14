@@ -170,7 +170,7 @@ export function WidgetImageHoverState() {
                      <div class="  sc-flex sc-items-center sc-justify-between">
                         <div class="sc-flex sc-gap-2 sc-items-center">
                            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
-                              Border radius
+                              Border Radius
                            </p>
                            <div id="border-radius-reset"
                               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
