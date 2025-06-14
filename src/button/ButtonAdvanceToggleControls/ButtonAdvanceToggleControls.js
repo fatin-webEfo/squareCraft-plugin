@@ -1,33 +1,36 @@
 export function ButtonAdvanceToggleControls() {
-  const buttonIdsToSectionIds = {
-    button_advance_vertical: "button-advance-vertical",
-    button_advance_horizontal: "button-advance-horizontal",
-    button_advance_opacity: "button-advance-opacity",
-    button_advance_scale: "button-advance-scale",
-    button_advance_rotate: "button-advance-rotate",
-    button_advance_blur: "button-advance-blur"
-  };
+  const buttonIds = [
+    "button-advance-vertical",
+    "button-advance-horizontal",
+    "button-advance-opacity",
+    "button-advance-scale",
+    "button-advance-rotate",
+    "button-advance-blur",
+  ];
 
-  Object.keys(buttonIdsToSectionIds).forEach((buttonId) => {
-    const button = document.getElementById(buttonId);
-    const targetSectionId = buttonIdsToSectionIds[buttonId];
+  buttonIds.forEach((btnId) => {
+    const button = document.getElementById(btnId);
+    const sectionId = `${btnId}-section`;
 
-    if (button && document.getElementById(targetSectionId)) {
-      button.addEventListener("click", () => {
-        Object.entries(buttonIdsToSectionIds).forEach(([id, sectionId]) => {
-          const section = document.getElementById(sectionId);
-          if (!section) return;
+    if (button && document.getElementById(sectionId)) {
+      const handleInteraction = () => {
+        buttonIds.forEach((otherBtnId) => {
+          const otherSection = document.getElementById(`${otherBtnId}-section`);
+          if (!otherSection) return;
 
-          if (id === buttonId) {
-            section.classList.remove("sc-hidden");
-            section.classList.add("sc-visible");
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (otherBtnId === btnId) {
+            otherSection.classList.remove("sc-hidden");
+            otherSection.classList.add("sc-visible");
+            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
           } else {
-            section.classList.remove("sc-visible");
-            section.classList.add("sc-hidden");
+            otherSection.classList.remove("sc-visible");
+            otherSection.classList.add("sc-hidden");
           }
         });
-      });
+      };
+
+      button.addEventListener("click", handleInteraction);
+      button.addEventListener("mouseenter", handleInteraction);
     }
   });
 }
