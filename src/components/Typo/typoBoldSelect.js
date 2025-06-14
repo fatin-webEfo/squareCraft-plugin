@@ -1,128 +1,105 @@
 export function typoBoldSelect(fontSizes) {
-   return `
-        <div
-   class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2">
-
-   <div id="scFontSelect"
-      class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
-      <select class=" sc-font-size-12 sc-roboto sc-font-light"
-         style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
-         <option value="" selected disabled hidden>Select Font</option>
-      </select>
-      <div class="sc-bg-3f3f3f sc-px-2"
-         style="height: 27px; padding: 0 3px; pointer-events: none;">
-         <img class="sc-rotate-180 sc-mt-3" width="12px"
-            src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-      </div>
-   </div>
-
-   <div
-      class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center ">
-      <div class="sc-flex sc-text-color-white sc-items-center ">
+  return `
          <div
-            class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center  ">
-            <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center  
-                  sc-rounded-4px 
-                  ">
-               <input type="text" id="scFontSizeInput" value="16" class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white 
-                     sc-bg-transparent  sc-universal sc-font-light">
-               <div class="sc-v-line"></div>
-               <div
-                  class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
-                  <p
-                     class=" sc-font-light sc-font-size-12 sc-px-1">
-                     px
-               </div>
-               <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
-                  style="height: 27px; padding: 0 8px; border-radius: 0px 5px 5px 0px;">
-                  <img class=" sc-rotate-180 sc-mt-3" width="12px"
-                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-               </div>
-            </div>
-            <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-                  sc-rounded-4px sc-border sc-border-585858 sc-absolute 
-                  sc-mt-1">
-               ${fontSizes
-         ?.map(
-            (size) => `
-               <div
-                  class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12"
-                  data-value="${size}">${size}</div>
-               `
-         )
-         .join("")}
-            </div>
-         </div>
-      </div>
-      <div class="sc-border-r sc-border-585858 "></div>
-   </div>
-</div>
+    class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
  
-   <div
-      class="sc-mt-2  sc-grid   sc-grid-cols-12 sc-gap-2 ">
-       <div id="font-weight-dropdown" class="sc-flex sc-bg-494949 sc-relative sc-cursor-pointer sc-col-span-7 sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center">
-        
-        <div class="sc-px-2">
-          <p class="sc-font-size-12 sc-universal sc-roboto sc-font-light">Regular</p>
-        </div>
-    
-        <div class="sc-bg-3f3f3f sc-px-2" style="height: 27px; padding: 0 8px;">
-          <img class="sc-mx-auto sc-rotate-180 sc-mt-3" width="10px"
-               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="arrow">
-        </div>
-    
-        <ol id="font-weight-dropdown-list" class="sc-absolute sc-hidden sc-top-10 sc-h-dropdown sc-w-full sc-bg-3f3f3f sc-border sc-border-solid sc-border-EF7C2F sc-rounded-4px sc-scrollBar sc-z-9999" style="list-style: none; padding: 0; margin: 0;">
-         <li class="sc-dropdown-item" style="font-weight: 300;">Light (300)</li>
-         <li class="sc-dropdown-item" style="font-weight: 400;">Regular (400)</li>
-         <li class="sc-dropdown-item" style="font-weight: 500;">Medium (500)</li>
-         <li class="sc-dropdown-item" style="font-weight: 600;">Semi Bold (600)</li>
-         <li class="sc-dropdown-item" style="font-weight: 700;">Bold (700)</li>
-         <li class="sc-dropdown-item" style="font-weight: 800;">Extra Bold (800)</li>
-       </ol>
-      </div>
-
-      <div class="sc-col-span-5 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
-         <p id="textcolorHtml" class="sc-font-size-12 sc-roboto sc-universal">Select</p>
-         <div id="textColorPalate" class="sc-square-6  sc-cursor-pointer"></div>
-      </div>
-     <div>
-      
-     </div>
-   </div>
-
-
+    <div id="sc-font-family"
+       class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+       <div  
+          class=" sc-text-sm sc-poppins sc-font-light"
+          style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;"> select font family
+       </div>
+       <div class="sc-bg-3f3f3f sc-px-2"
+          style="height: 27px; padding: 0 3px; pointer-events: none;">
+          <img class="sc-rotate-180 sc-mt-3" width="12px"
+             src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
+       </div>
+    </div>
+ 
     <div
-     class="sc-flex sc-col-span-5 sc-justify-between  sc-items-center ">
-    <div
-        class="sc-flex sc-items-center  ">
-        
-        <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
-
-           <p class="sc-universal sc-roboto sc-font-size-12">AG</p>
-        </div>
-         <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
-
-          <p class="sc-universal sc-roboto sc-font-size-12">ag</p>
-        </div>
-         <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
-
-          <p class="sc-universal sc-roboto sc-font-size-12">Ag</p>
-        </div>
-        <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
-          <p class="sc-universal sc-roboto sc-font-size-12">AG</p>
-        </div>
-        
-       
-       
-        </div>
-     </div>
-
-   <div class="sc-mt-4 ">
-      <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">Text Highlight</p>
-      <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
-         <p class="sc-font-size-12 sc-roboto sc-universal c-font-light">#363544</p>
-         <div class="sc-square-6  sc-cursor-pointer"></div>
-      </div>
-   </div>
-    `
+       class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
+       <div class="sc-flex sc-text-color-white sc-items-center ">
+          <div
+             class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center  ">
+             <div class="sc-font-size-container sc-poppins sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-rounded-6px">
+                <input 
+                   type="number" 
+                   id="scFontSizeInput" 
+                   value="16"
+                   min="8"
+                   max="120" 
+                   class="sc-font-size-input sc-font-light sc-z-99999 sc-text-sm sc-text-color-white sc-bg-transparent sc-universal sc-font-light"
+                   data-tag-type="p"
+                >
+                <div class="sc-v-line"></div>
+                <div class="sc-flex sc-items-center sc-justify-center sc-items-center">
+                   <p class="sc-font-light sc-text-sm sc-px-1">px</p>
+                </div>
+                <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2" style="height: 27px; padding: 0 8px; border-radius: 0px 5px 5px 0px;">
+                   <img class="sc-rotate-180 sc-mt-3" width="12px" src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
+                </div>
+             </div>
+             <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                   sc-rounded-6px sc-border sc-border-585858 sc-absolute 
+                   sc-mt-1">
+                ${fontSizes
+                  ?.map(
+                    (size) => `
+                <div
+                   class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
+                   data-value="${size}">${size}</div>
+                `
+                  )
+                  .join("")}
+             </div>
+          </div>
+       </div>
+       <div class="sc-border-r sc-border-585858 "></div>
+    </div>
+ 
+    <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-6px" style="margin-bottom: 10px;">
+ 
+             <p id="BoldtextcolorHtml" class="sc-text-sm sc-poppins sc-universal">Select</p>
+             <div id="BoldtextColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+ 
+       </div>
+ </div>
+  
+    
+    
+ 
+ 
+     <div class="sc-flex sc-col-span-5 sc-justify-between sc-items-center">
+          <div class="sc-flex sc-items-center" id="squareCraftBoldElementTextTransform">
+                <div id="scTextTransformUppercase" 
+                    
+                   class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
+                   <p data-bold-text-transform="uppercase" class="sc-universal sc-poppins sc-text-sm squareCraft-text-transform">AG</p>
+                </div>
+                <div id="scTextTransformLowercase" 
+                     
+                   class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                   <p data-bold-text-transform="lowercase" class="sc-universal sc-poppins sc-text-sm squareCraft-text-transform">ag</p>
+                </div>
+                <div id="scTextTransformCapitalize" 
+                    
+                   class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
+                   <p data-bold-text-transform="capitalize" class="sc-universal sc-poppins sc-text-sm squareCraft-text-transform">Ag</p>
+                </div>
+                <div id="scTextTransformNone" 
+                    
+                   class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+                   <p data-bold-text-transform="small-caps" class="sc-universal sc-poppins sc-text-sm squareCraft-text-transform">AG</p>
+                </div>
+          </div>
+       </div>
+ 
+    <div class="sc-mt-4 ">
+       <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-poppins">Text Highlight</p>
+       <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+          <p id="BoldtextHighlightHtml" class="sc-text-sm sc-poppins sc-universal c-font-light">#363544</p>
+          <div id="BoldtextHighlightPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
+       </div>
+    </div>
+     `;
 }
