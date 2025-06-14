@@ -45,7 +45,7 @@ export function WidgetImageNormalState(){
       </div>
 
 
-      <div class="sc-grid sc-grid-cols-12 sc-mt-3">
+      <div class="sc-grid sc-grid-cols-12 sc-mt-2">
          <div></div>
 
 
@@ -55,7 +55,7 @@ export function WidgetImageNormalState(){
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-bg-454545 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px sc-items-center sc-gap-1"  id="allBorder">
+               class="sc-flex sc-px-1_5 sc-bg-454545 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1"  id="allBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
                   alt="all-radious">
                <p class="sc-font-thin sc-roboto sc-universal">All</p>
@@ -63,7 +63,7 @@ export function WidgetImageNormalState(){
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="topBorder">
+               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="topBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy"
                   alt="top-radious">
                <p class="sc-font-thin sc-roboto sc-universal" >Top</p>
@@ -72,7 +72,7 @@ export function WidgetImageNormalState(){
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="bottomBorder">
+               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="bottomBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" loading="lazy"
                   alt="bottom-radious">
                <p class="sc-font-thin sc-roboto sc-universal " >Bottom</p>
@@ -80,7 +80,7 @@ export function WidgetImageNormalState(){
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="leftBorder">
+               class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="leftBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" loading="lazy"
                   alt="left-radious">
                <p class="sc-font-thin sc-roboto sc-universal " >Left</p>
@@ -88,7 +88,7 @@ export function WidgetImageNormalState(){
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-0_5 sc-rounded-4px  sc-items-center sc-gap-1" id="rightBorder">
+               class="sc-flex sc-px-1_5 sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1" id="rightBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" loading="lazy"
                   alt="right-radious">
                <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
