@@ -1,24 +1,24 @@
 export function ButtonAdvanceToggleControls() {
-  const sections = {
-    "button-advance-vertical": "buttonVerticalEffect",
-    "button-advance-horizontal": "buttonHorizontalEffect",
-    "button-advance-opacity": "buttonOpacityEffect",
-    "button-advance-scale": "buttonScaleEffect",
-    "button-advance-rotate": "buttonRotateEffect",
-    "button-advance-blur": "buttonBlurEffect",
+  const buttonIdsToSectionIds = {
+    button_advance_vertical: "button-advance-vertical",
+    button_advance_horizontal: "button-advance-horizontal",
+    button_advance_opacity: "button-advance-opacity",
+    button_advance_scale: "button-advance-scale",
+    button_advance_rotate: "button-advance-rotate",
+    button_advance_blur: "button-advance-blur"
   };
 
-  Object.keys(sections).forEach((buttonId) => {
+  Object.keys(buttonIdsToSectionIds).forEach((buttonId) => {
     const button = document.getElementById(buttonId);
-    const sectionId = sections[buttonId];
+    const targetSectionId = buttonIdsToSectionIds[buttonId];
 
-    if (button && document.getElementById(sectionId)) {
-      const toggleSection = () => {
-        Object.entries(sections).forEach(([btnId, secId]) => {
-          const section = document.getElementById(secId);
+    if (button && document.getElementById(targetSectionId)) {
+      button.addEventListener("click", () => {
+        Object.entries(buttonIdsToSectionIds).forEach(([id, sectionId]) => {
+          const section = document.getElementById(sectionId);
           if (!section) return;
 
-          if (btnId === buttonId) {
+          if (id === buttonId) {
             section.classList.remove("sc-hidden");
             section.classList.add("sc-visible");
             section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -27,10 +27,7 @@ export function ButtonAdvanceToggleControls() {
             section.classList.add("sc-hidden");
           }
         });
-      };
-
-      button.addEventListener("click", toggleSection);
-      button.addEventListener("mouseenter", toggleSection);
+      });
     }
   });
 }
