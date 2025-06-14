@@ -176,9 +176,6 @@ export function injectNavbarIcon() {
           
           
           
-          
-          
-          
           const hide = () => {
             panel.remove();
             document.removeEventListener("click", handleOutsideClick);
