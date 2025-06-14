@@ -9,7 +9,7 @@ export function WidgetImageNormalState(){
         class="sc-rotate-180" alt="">
       </div>
    </div>
-   <div id="borderSection" class="sc-px-2 sc-mt-3">
+   <div id="borderSection" class="sc-px-2 sc-mt-2">
       <div class=" sc-flex sc-items-center sc-justify-between">
 
 
