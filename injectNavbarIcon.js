@@ -113,7 +113,7 @@ export function injectNavbarIcon() {
           let offsetX = 0;
           let offsetY = 0;
 
-          dragTarget.style.cursor = "move";
+          dragTarget.style.cursor = "grab";
 
           function startDragging(e) {
             const viewport = panel.querySelector("#viewport-sections");
@@ -124,6 +124,7 @@ export function injectNavbarIcon() {
               return;
 
             isDragging = true;
+
             const rect = panel.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
@@ -133,15 +134,14 @@ export function injectNavbarIcon() {
             panel.style.left = `${rect.left}px`;
             panel.style.top = `${rect.top}px`;
             panel.style.transform = "none";
-            panel.style.cursor = "default";
-            dragTarget.style.cursor = "move";
+            panel.style.cursor = "grabbing";
+            dragTarget.style.cursor = "grabbing";
 
             document.body.style.userSelect = "none";
 
             document.addEventListener("mousemove", doDrag);
             document.addEventListener("mouseup", stopDragging);
           }
-          
 
           function doDrag(e) {
             if (!isDragging) return;
@@ -151,6 +151,8 @@ export function injectNavbarIcon() {
 
           function stopDragging() {
             isDragging = false;
+            panel.style.cursor = "default";
+            dragTarget.style.cursor = "grab";
             document.body.style.userSelect = "";
             document.removeEventListener("mousemove", doDrag);
             document.removeEventListener("mouseup", stopDragging);
@@ -158,6 +160,7 @@ export function injectNavbarIcon() {
 
           dragTarget.removeEventListener("mousedown", startDragging);
           dragTarget.addEventListener("mousedown", startDragging);
+          
           
           
           const hide = () => {
