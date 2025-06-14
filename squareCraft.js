@@ -121,6 +121,9 @@
     const { initButtonAdvanceStyles } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
     );
+    const { ButtonEffectDropdownToggleControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonEffectDropdownToggleControls/ButtonEffectDropdownToggleControls.js"
+    );
     const { getTextType } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
     );
@@ -637,6 +640,7 @@
         }, 100);
         widgetLoaded = true;
         initImageSectionToggleControls();
+        ButtonEffectDropdownToggleControls();
         buttonTooltipControls();
         initButtonSectionToggleControls();
         initImageStateTabToggle();

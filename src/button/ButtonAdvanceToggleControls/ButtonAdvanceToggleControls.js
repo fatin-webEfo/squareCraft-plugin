@@ -1,23 +1,24 @@
-export function ButtonAdvanceToggleControls() {
-  const buttonIdsToSectionIds = {
-    fontAdvanceButton: "fontAdvanceSection",
-    iconAdvanceButton: "iconAdvanceSection",
-    borderAdvanceButton: "borderAdvanceSection",
-    shadowAdvanceButton: "shadowAdvanceSection",
-    spacingAdvanceButton: "spacingAdvanceSection",
+export function ButtonEffectDropdownToggleControls() {
+  const sections = {
+    "button-advance-vertical": "buttonVerticalEffect",
+    "button-advance-horizontal": "buttonHorizontalEffect",
+    "button-advance-opacity": "buttonOpacityEffect",
+    "button-advance-scale": "buttonScaleEffect",
+    "button-advance-rotate": "buttonRotateEffect",
+    "button-advance-blur": "buttonBlurEffect",
   };
 
-  Object.keys(buttonIdsToSectionIds).forEach((buttonId) => {
+  Object.keys(sections).forEach((buttonId) => {
     const button = document.getElementById(buttonId);
-    const targetSectionId = buttonIdsToSectionIds[buttonId];
+    const sectionId = sections[buttonId];
 
-    if (button && document.getElementById(targetSectionId)) {
-      button.addEventListener("click", () => {
-        Object.entries(buttonIdsToSectionIds).forEach(([id, sectionId]) => {
-          const section = document.getElementById(sectionId);
+    if (button && document.getElementById(sectionId)) {
+      const toggleSection = () => {
+        Object.entries(sections).forEach(([btnId, secId]) => {
+          const section = document.getElementById(secId);
           if (!section) return;
 
-          if (id === buttonId) {
+          if (btnId === buttonId) {
             section.classList.remove("sc-hidden");
             section.classList.add("sc-visible");
             section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -26,7 +27,10 @@ export function ButtonAdvanceToggleControls() {
             section.classList.add("sc-hidden");
           }
         });
-      });
+      };
+
+      button.addEventListener("click", toggleSection);
+      button.addEventListener("mouseenter", toggleSection);
     }
   });
 }
