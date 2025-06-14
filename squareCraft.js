@@ -133,6 +133,9 @@
     const { initImageStateTabToggle } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/initImageStateTabToggle/initImageStateTabToggle.js"
     );
+    const { WidgetImageHoverToggleControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageHoverToggleControls/WidgetImageHoverToggleControls.js"
+    );
     const { parentHtmlTabClick } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js"
     );
@@ -151,7 +154,7 @@
     const { initImageSectionControls } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js"
     );
-    
+
     const { initImageSectionToggleControls } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
     );
@@ -637,6 +640,7 @@
         buttonTooltipControls();
         initButtonSectionToggleControls();
         initImageStateTabToggle();
+        WidgetImageHoverToggleControls()
         initHoverButtonSectionToggleControls();
         initHoverButtonEffectDropdowns();
         initImageUploadPreview(() => selectedElement);
