@@ -1,4 +1,4 @@
-export function ButtonEffectDropdownToggleControls() {
+export function ButtonAdvanceToggleControls() {
   const sections = {
     "button-advance-vertical": "buttonVerticalEffect",
     "button-advance-horizontal": "buttonHorizontalEffect",
