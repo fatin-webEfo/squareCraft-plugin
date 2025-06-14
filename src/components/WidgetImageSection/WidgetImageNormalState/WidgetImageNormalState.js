@@ -1,7 +1,7 @@
 export function WidgetImageNormalState(){
     return `
     <div id="image-normal-state">
-   <div class="sc-flex sc-mt-2 sc-px-2">
+   <div class="sc-flex sc-mt-3 sc-px-2">
       <div id="borderButton"
          class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-w-full sc-rounded-4pxx">
          <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Border</h5>
