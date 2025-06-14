@@ -128,8 +128,10 @@ export function injectNavbarIcon() {
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
 
-            panel.style.position = "absolute";
+            panel.style.position = "fixed";
             panel.style.right = "unset";
+            panel.style.left = `${rect.left}px`;
+            panel.style.top = `${rect.top}px`;
             panel.style.transform = "none";
             panel.style.cursor = "default";
             dragTarget.style.cursor = "move";
@@ -139,6 +141,7 @@ export function injectNavbarIcon() {
             document.addEventListener("mousemove", doDrag);
             document.addEventListener("mouseup", stopDragging);
           }
+          
 
           function doDrag(e) {
             if (!isDragging) return;
