@@ -50,7 +50,7 @@ export function WidgetButtonSection() {
          ${WidgetButtonNormalState()}
          ${WidgetButtonHoverState()}
 
-         <div class="sc-mt-4">
+         <div class="sc-mt-3">
          </div>
       </div>
    `;
