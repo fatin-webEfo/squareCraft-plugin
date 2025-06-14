@@ -235,53 +235,6 @@ export function injectNavbarIcon() {
     }
   }
   
-      
-  function getCurrentSquarespaceViewport() {
-    const iframe =
-      parent.document.querySelector <
-      HTMLIFrameElement >
-      'iframe[src*="squarespace.com"]';
-    if (!iframe) {
-      return setTimeout(waitForIframeAndTrackViewport, 500);
-    }
-
-    function waitForIframeAndTrackViewport() {
-      const iframe = parent.document.querySelector(
-        'iframe[src*="squarespace.com"]'
-      );
-      if (!iframe) {
-        return setTimeout(waitForIframeAndTrackViewport, 500);
-      }
-
-      let lastMode = getCurrentSquarespaceViewport();
-
-      const ro = new ResizeObserver((entries) => {
-        for (const entry of entries) { 
-          const width = entry.contentRect.width;
-          let currentMode;
-          if (width <= 480) currentMode = "mobile";
-          else if (width <= 768) currentMode = "tablet";
-          else if (width <= 1024) currentMode = "laptop";
-          else currentMode = "desktop";
-
-          if (currentMode !== lastMode) {
-            lastMode = currentMode;
-            console.log(
-              `🔁 Viewport changed to: ${currentMode} (width: ${Math.round(
-                width
-              )}px)`
-            );
-          }
-        }
-      });
-
-      ro.observe(iframe);
-      console.log("📱 Viewport tracking started");
-    }
-    
-    
-  }
-  console.log("📱 Current Viewport:", getCurrentSquarespaceViewport());
 
 
   
@@ -334,7 +287,6 @@ export function injectNavbarIcon() {
     }
 
     insertToolbarIcon();
-    getCurrentSquarespaceViewport()
     insertAdminIcon();
 
 
