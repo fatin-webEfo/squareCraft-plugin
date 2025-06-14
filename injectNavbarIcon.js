@@ -115,51 +115,56 @@ export function injectNavbarIcon() {
 
           dragTarget.style.cursor = "grab";
 
-          function startDragging(e) {
+          function startDrag(event) {
             const viewport = panel.querySelector("#viewport-sections");
             if (
               viewport &&
-              (viewport === e.target || viewport.contains(e.target))
+              (viewport === event.target || viewport.contains(event.target))
             )
               return;
 
             isDragging = true;
-
             const rect = panel.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
+
+            offsetX = event.clientX - rect.left;
+            offsetY = event.clientY - rect.top;
 
             panel.style.position = "fixed";
             panel.style.right = "unset";
             panel.style.left = `${rect.left}px`;
             panel.style.top = `${rect.top}px`;
-            panel.style.transform = "none";
             panel.style.cursor = "grabbing";
             dragTarget.style.cursor = "grabbing";
 
             document.body.style.userSelect = "none";
 
-            document.addEventListener("mousemove", doDrag);
-            document.addEventListener("mouseup", stopDragging);
+            document.addEventListener("mousemove", onDragMove);
+            document.addEventListener("mouseup", stopDrag);
           }
 
-          function doDrag(e) {
+          function onDragMove(event) {
             if (!isDragging) return;
-            panel.style.left = `${e.clientX - offsetX}px`;
-            panel.style.top = `${e.clientY - offsetY}px`;
+
+            const newX = event.clientX - offsetX;
+            const newY = event.clientY - offsetY;
+
+            panel.style.left = `${newX}px`;
+            panel.style.top = `${newY}px`;
           }
 
-          function stopDragging() {
+          function stopDrag() {
             isDragging = false;
+            document.body.style.userSelect = "";
             panel.style.cursor = "default";
             dragTarget.style.cursor = "grab";
-            document.body.style.userSelect = "";
-            document.removeEventListener("mousemove", doDrag);
-            document.removeEventListener("mouseup", stopDragging);
+
+            document.removeEventListener("mousemove", onDragMove);
+            document.removeEventListener("mouseup", stopDrag);
           }
 
-          dragTarget.removeEventListener("mousedown", startDragging);
-          dragTarget.addEventListener("mousedown", startDragging);
+          dragTarget.removeEventListener("mousedown", startDrag);
+          dragTarget.addEventListener("mousedown", startDrag);
+          
           
           
           
