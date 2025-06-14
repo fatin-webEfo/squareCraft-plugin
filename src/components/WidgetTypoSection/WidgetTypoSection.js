@@ -18,12 +18,12 @@ export function WidgetTypoSection(id) {
             <div class="toggle-container" id="toggleSwitch">
                <div class="toggle-bullet"></div>
             </div>
-            <p id="toggleText" class="sc-text-sm sc-roboto">Enable</p>
+            <p id="toggleText" class="sc-text-sm sc-roboto sc-universal">Enable</p>
          </div>
-        <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
-        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
-        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
-        </div>
+        <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+               <p class="sc-font-light sc-universal sc-font-size-11">Reset</p>
+               <img id="buttonResetAll-icon" src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" alt="reset">
+         </div>
       </div>
       <div class="sc-h-1px  sc-bg-3f3f3f"></div>
       <div class="sc-mt-2">
