@@ -1115,7 +1115,7 @@ export function WidgetImageHoverState() {
               <div id="hover-image-effects-Effect"
               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
               <p class="sc-roboto  sc-universal sc-font-size-14">Image Effect</p>
-             <span id="hover-image-effects--effects-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
+             <span id="hover-image-effects-effects-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
            </div>
    
           <div id="hover-image-effects-section" class="sc-mt-4 ">
