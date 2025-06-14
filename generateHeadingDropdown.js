@@ -10,7 +10,7 @@ export function createHeadingDropdown(
 ) {
   return `
     <div id="${id}">
-      <div class="sc-mt-2 sc-px-2 sc-gap-2">
+      <div class="sc-mt-3 sc-px-2 sc-gap-2">
         <div class="sc-flex sc-mt-2 sc-justify-between sc-items-center">
           <div class="sc-flex sc-items-center sc-justify-between">
             <div id="${id}-allSelect" class="sc-px-2 sc-py-1px sc-select-activeTab-border sc-cursor-pointer sc-rounded-l">
