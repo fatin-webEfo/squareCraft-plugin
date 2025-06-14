@@ -151,6 +151,7 @@
     const { initImageSectionControls } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionControls.js"
     );
+    
     const { initImageSectionToggleControls } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
     );
