@@ -109,61 +109,59 @@ export function injectNavbarIcon() {
 
 
           const dragTarget = panel.querySelector("#icon-options");
+          let offsetX = 0,
+            offsetY = 0;
           let isDragging = false;
-          let offsetX = 0;
-          let offsetY = 0;
 
           dragTarget.style.cursor = "grab";
 
-          function startDrag(event) {
+          function startDrag(e) {
             const viewport = panel.querySelector("#viewport-sections");
             if (
               viewport &&
-              (viewport === event.target || viewport.contains(event.target))
+              (viewport === e.target || viewport.contains(e.target))
             )
               return;
 
+            if (e.button !== 0) return; // Only left mouse button
+
             isDragging = true;
             const rect = panel.getBoundingClientRect();
-
-            offsetX = event.clientX - rect.left;
-            offsetY = event.clientY - rect.top;
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
 
             panel.style.position = "fixed";
-            panel.style.right = "unset";
             panel.style.left = `${rect.left}px`;
             panel.style.top = `${rect.top}px`;
-            panel.style.cursor = "grabbing";
+            panel.style.right = "unset";
+            panel.style.transform = "none";
             dragTarget.style.cursor = "grabbing";
 
-            document.body.style.userSelect = "none";
-
-            document.addEventListener("mousemove", onDragMove);
+            document.addEventListener("mousemove", dragMove);
             document.addEventListener("mouseup", stopDrag);
           }
 
-          function onDragMove(event) {
+          function dragMove(e) {
             if (!isDragging) return;
 
-            const newX = event.clientX - offsetX;
-            const newY = event.clientY - offsetY;
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
 
-            panel.style.left = `${newX}px`;
-            panel.style.top = `${newY}px`;
+            panel.style.left = `${x}px`;
+            panel.style.top = `${y}px`;
           }
 
-          function stopDrag() {
+          function stopDrag(e) {
             isDragging = false;
-            document.body.style.userSelect = "";
-            panel.style.cursor = "default";
             dragTarget.style.cursor = "grab";
 
-            document.removeEventListener("mousemove", onDragMove);
+            document.removeEventListener("mousemove", dragMove);
             document.removeEventListener("mouseup", stopDrag);
           }
 
           dragTarget.removeEventListener("mousedown", startDrag);
           dragTarget.addEventListener("mousedown", startDrag);
+          
           
           
           
