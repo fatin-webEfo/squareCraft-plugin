@@ -1,6 +1,6 @@
 export function WidgetImageHoverState() {
   return `
-    <div id="image-hover-state" class="sc-huidden sc-mt-2 sc-px-2">
+   <div id="image-hover-state" class="sc-hidden sc-mt-2 sc-px-2">
             <div
               id="image-hover-border"
               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
@@ -331,7 +331,7 @@ export function WidgetImageHoverState() {
                 alt=""
               />
             </div>
-            <div id="image-hover-filter-section">
+            <div id="image-hover-filter-section" class="sc-hidden">
               <div class="sc-mt-3">
                 <div class="sc-flex sc-items-center sc-justify-between">
                   <div class="sc-flex sc-gap-2 sc-items-center">
@@ -619,7 +619,7 @@ export function WidgetImageHoverState() {
               />
             </div>
 
-            <div id="Image-hover-overLaySection" class="sc-mt-3">
+            <div id="Image-hover-overLaySection" class="sc-mt-5 sc-hidden">
               <div class="sc-flex sc-gap-2 sc-items-center">
                 <p
                   class="sc-roboto sc-font-thin sc-universal sc-text-sm sc-font-thin sc-text-gray-300"
@@ -637,7 +637,7 @@ export function WidgetImageHoverState() {
                 </div>
               </div>
 
-              <div class="sc-mt-4 sc-gap-2 sc-flex">
+              <div class="sc-mt-3 sc-gap-2 sc-flex">
                 <div id="Image-hover-backgorundColor" class=" ">
                   <p
                     class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"
@@ -880,7 +880,7 @@ export function WidgetImageHoverState() {
             </div>
             <div
               id="image-hover-shadowsButton"
-              class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
+              class="sc-bg-3f3f3f sc-mt-5 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
             >
               <p class="sc-roboto sc-universal sc-font-size-14">Shadow</p>
               <img
@@ -890,7 +890,7 @@ export function WidgetImageHoverState() {
                 alt=""
               />
             </div>
-            <div id="image-hover-shadowsSection" class="">
+            <div id="image-hover-shadowsSection" class="sc-hidden">
               <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
                 <p
                   class="sc-roboto sc-font-thin sc-universal sc-font-size-12 sc-font-thin sc-text-gray-300"
@@ -908,7 +908,7 @@ export function WidgetImageHoverState() {
                   />
                 </div>
               </div>
-              <div class="mt-2 sc-flex sc-mt-4 sc-items-center sc-gap-3">
+              <div class="mt-2 sc-flex sc-mt-3 sc-items-center sc-gap-3">
                 <div class="sc-w-full">
                   <div
                     class="sc-flex sc-gap-2 sc-items-center sc-justify-between"
