@@ -240,5 +240,6 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
              <p class="sc-text-sm sc-poppins c-font-light sc-universal" id="texHeightlistHtml">Select</p>
              <div id="texHeightlistPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
           </div>
-       </div> `;
+       </div>
+        `;
 }
