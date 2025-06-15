@@ -6,9 +6,9 @@ export function widgetTypoHoverState() {
 
   return `
     <div id="typo-hover-state" class="sc-hidden sc-mt-2 sc-px-2">
-
-<p>Hover Section</p>
-      
+      <div class="sc-flex sc-justify-between">
+        <p class=" sc-universal sc-roboto sc-text-gray-300">Hover Text Section</p>
+      </div>
     </div>
   `;
 }
