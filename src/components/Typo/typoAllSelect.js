@@ -4,19 +4,18 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
        class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
   
        <div id="scFontSelect"
-          class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
-          
-          <select class=" sc-text-sm sc-poppins sc-font-light" id="squareCraftAllFontFamily"
-             style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
-             <option value="" selected disabled hidden>Select Font</option>
-          </select>
- 
-          <div class="sc-bg-3f3f3f sc-px-2"
-             style="height: 27px; padding: 0 3px; pointer-events: none;">
-             <img class="sc-rotate-180 sc-mt-3" width="12px"
-                src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
-          </div>
-       </div>
+         class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+              <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
+              Select Font
+              </p>
+              <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-px-2 sc-h-9">
+              <img class="sc-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
+              </div>
+           
+           </div>
+           <div id="buttonFontFamilyOptions" class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-w-190px sc-hidden sc-top-10 sc-z-999999 sc-scrollBar sc-h-dropdown sc-rounded-4px  sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+
+           </div>
   
   
   
