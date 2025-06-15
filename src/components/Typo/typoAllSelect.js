@@ -152,7 +152,34 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
             </div>
           </div>
         </div>
-         
+          <div class="sc-flex sc-text-color-white sc-px-1 
+          sc-rounded-4px sc-border sc-border-solid sc-border-585858 
+          sc-items-center ">
+       <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
+             sc-border-solid sc-border-3d3d3d  sc-rounded-4px 
+             ">
+          <input type="number" id="scLineHeightInput" value="15"
+             class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
+                sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
+          <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+             <img id="scLetterSpacingDropdown" loading="lazy"
+                src="https://i.ibb.co.com/G460VVdR/Vector.png"
+              style="width: 15px;"  class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mx-auto sc-cursor-pointer">
+          </div>
+       </div>
+       <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+             sc-rounded-4px sc-border sc-border-585858 sc-absolute 
+             sc-mt-1">
+          ${LetterSpacing?.map(
+            (gap) => `
+          <div
+             class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
+             data-value="${gap}">${gap}
+          </div>
+          `
+          ).join("")}
+       </div>
+    </div>
   
        </div>
   
