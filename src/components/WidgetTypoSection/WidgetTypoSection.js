@@ -42,10 +42,6 @@ export function WidgetTypoSection(id) {
               <div class="sc-h-1px  sc-mt-2 sc-bg-3f3f3f"></div>
            </div>
         </div>
-        <div class=" sc-mt-2 sc-px-2 sc-flex sc-justify-between">
-           <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">Text</p>
-           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
-        </div>
       ${widgetTypoNormalState()}
       ${widgetTypoHoverState()}
         <div class="sc-mt-4"> </div>
