@@ -4,72 +4,106 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
        class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
   
        <div id="scFontSelect"
-         class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
-              <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
-              Select Font
-              </p>
-              <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-px-2 sc-h-9">
-              <img class="sc-rotate-180" width="12px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-              </div>
-           
-           </div>
-           <div id="buttonFontFamilyOptions" class="sc-absolute sc-border sc-border-solid sc-border-EF7C2F sc-w-190px sc-hidden sc-top-10 sc-z-999999 sc-scrollBar sc-h-dropdown sc-rounded-4px  sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
-
-           </div>
+          class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+          
+          <select class=" sc-text-sm sc-poppins sc-font-light" id="squareCraftAllFontFamily"
+             style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
+             <option value="" selected disabled hidden>Select Font</option>
+          </select>
+ 
+          <div class="sc-bg-3f3f3f sc-px-2"
+             style="height: 27px; padding: 0 3px; pointer-events: none;">
+             <img class="sc-rotate-180 sc-mt-3" width="12px"
+                src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
+          </div>
+       </div>
   
   
   
        <div
           class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center ">
           <div class="sc-flex sc-text-color-white sc-items-center ">
-            <div
-               class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center  ">
-               <div
-                  class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center  sc-items-center sc-rounded-4px ">
-                  <input type="text" id="scButtonFontSizeInput" value="16"
-                     class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
-                  <div class="sc-v-line"></div>
-                  <div class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
-                     <p class=" sc-font-light sc-text-center sc-font-size-12 sc-mx-2  ">
-                        px
-                  </div>
-                  <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
-                     style="height: 28px;    border-radius: 0px 5px 5px 0px;">
-                     <img class=" sc-rotate-180 sc-mt-3" width="12px"
-                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-                  </div>
-               </div>
-               <div id="scButtonFontSizeOptions" class="sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-scrollBar sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12
-            sc-rounded-4px sc-border sc-border-585858 sc-absolute 
-            sc-mt-1">
-                  ${fontSizes
-                    ?.map(
-                      (size) => `
-                  <div class="sc-dropdown-item sc-py-1px sc-text-center  sc-font-size-12" data-value="${size}">
-                     ${size}</div>`
-                    )
-                    .join("")}
-               </div>
-            </div>
-         </div>
+             <div
+                class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center  ">
+                <div class="sc-font-size-container sc-poppins sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center  
+                      sc-rounded-4px 
+                      ">
+                   <input type="number" id="scAllFontSizeInput" value="16" class="sc-font-size-input sc-font-light sc-z-99999 sc-text-sm sc-text-color-white 
+                         sc-bg-transparent  sc-universal sc-font-light">
+                   <div class="sc-v-line"></div>
+                   <div
+                      class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
+                      <p
+                         class=" sc-font-light sc-text-sm sc-px-1  ">
+                         px
+                   </div>
+                   <div class="sc-bg-3f3f3f sc-px-1_5 sc-ml-2"
+                      style="height: 27px; padding: 0 8px; border-radius: 0px 5px 5px 0px;">
+                      <img class=" sc-rotate-180 sc-mt-3" width="12px"
+                         src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
+                   </div>
+                </div>
+ 
+ 
+                <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                      sc-rounded-4px sc-border sc-border-585858 sc-absolute 
+                      sc-mt-1">
+                   ${fontSizes
+                     ?.map(
+                       (size) => `
+                   <div
+                      class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
+                      data-value="${size}">${size}</div>
+                   `
+                     )
+                     .join("")}
+                </div>
+             </div>
+          </div>
           <div class="sc-border-r sc-border-585858 "></div>
        </div>
     </div>
       
        <div
           class="sc-mt-2  sc-grid sc-grid-cols-12 sc-gap-2 ">
-           <div id="scButtonFontWeightSelect" class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7 sc-cursor-pointer sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center">
-           <div>
-           <p id="scButtonFontWeightSelected" class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
-              400
-           </p>
-           </div>
-           <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-px-2 sc-h-9" >
-           <img class="sc-mx-auto sc-rotate-180 " width="10px" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
-           </div>
-        </div>
+          <div
+             class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7  sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center ">
+             <div >
+                <div class="sc-px-2">
+                   <select 
+                         id="squareCraftAllFontWeight"
+                         class="sc-font-weight-select"
+                         data-font-weight-select
+                         style="
+                            background: transparent;
+                            border: none;
+                            color: white;
+                            padding: 5px;
+                            width: 100%;
+                            cursor: pointer;
+                            outline: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            appearance: none;
+                            position: relative;
+                            z-index: 1;
+                         "
+                   >
+                         <option value="100">Thin (100)</option>
+                         <option value="200">Extra Light (200)</option>
+                         <option value="300">Light (300)</option>
+                         <option value="400" selected>Regular (400)</option>
+                         <option value="500">Medium (500)</option>
+                         <option value="600">Semi Bold (600)</option>
+                         <option value="700">Bold (700)</option>
+                         <option value="800">Extra Bold (800)</option>
+                         <option value="900">Black (900)</option>
+                   </select>
+                </div>
+             </div>
+          </div>
   
-          <div class="sc-col-span-5 sc-px-1 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-4px">
+          <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-4px">
              <p id="textcolorHtml" class="sc-text-sm sc-poppins sc-universal">Select</p>
              <div id="textColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
           </div>
@@ -89,25 +123,25 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                 <div id="scTextAlignLeft" data-align="left" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-l">
   
                    <img 
-                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (4).svg"
+                      src="https://goswami34.github.io/squareCraft-widget/public/alignment (4).svg"
                       class=" alignment-icon   sc-mx-auto" alt="left">
                 </div>
                  <div id="scTextAlignCenter" data-align="center" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer ">
   
                    <img 
-                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (3).svg"
+                      src="https://goswami34.github.io/squareCraft-widget/public/alignment (3).svg"
                       class=" alignment-icon   sc-mx-auto" alt="center">
                 </div>
                  <div id="scTextAlignRight" data-align="right" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer">
   
                    <img 
-                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (2).svg"
+                      src="https://goswami34.github.io/squareCraft-widget/public/alignment (2).svg"
                       class=" alignment-icon   sc-mx-auto" alt="right">
                 </div>
                 <div id="scTextAlignJustify" data-align="justify" class="sc-pt-1 sc-pb-1 sc-px-1_5 sc-inActiveTab-border sc-cursor-pointer sc-rounded-r">
   
                    <img 
-                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/alignment (1).svg"
+                      src="https://goswami34.github.io/squareCraft-widget/public/alignment (1).svg"
                       class=" alignment-icon   sc-mx-auto" alt="justify">
                 </div>
                 
@@ -115,80 +149,64 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
           </div>
  
  
-          <div class="sc-flex sc-text-color-white sc-rounded-4px sc-relative sc-border sc-border-solid sc-border-585858 sc-items-center">
-          <div class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center">
-            <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-rounded-4px">
-              
-              <input type="text" id="scButtonLetterSpacingInput" value="0"
-                class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
-        
-              <div class="sc-v-line"></div>
-        
-              <div class="sc-flex sc-items-center sc-justify-center sc-px-5px">
-                <p class="sc-font-light sc-text-center sc-font-size-12 sc-universal">px</p>
-              </div>
-        
-              <div id="scButtonLetterSpacingSelect"
-                class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-cursor-pointer sc-px-1_5 sc-tooltip-target"
-                style="height: 28px;  border-radius: 0px 5px 5px 0px;">
-                <div class="sc-tooltip sc-hidden">
-                  <div class="tooltip-arrow"></div>
-                  Letter spacing
+          <div class="sc-flex sc-text-color-white sc-px-1 
+                sc-rounded-4px sc-border sc-border-solid sc-border-585858 
+                sc-items-center ">
+             <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
+                   sc-border-solid sc-border-3d3d3d  sc-rounded-4px 
+                   ">
+                <input type="number" id="scLetterSpacingInput" value="15"
+                   class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
+                      sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
+                <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+                   <img id="scLetterSpacingDropdown" loading="lazy"
+                      src="https://goswami34.github.io/squareCraft-widget/public/line-spacing.svg"
+                    style="width: 12px;"  class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mt-1 sc-mx-auto sc-cursor-pointer">
                 </div>
-                <img id="scButtonLetterSpacingDropdown" loading="lazy"
-                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg"
-                  style="width: 12px;" class=" sc-mx-auto sc-cursor-pointer">
-              </div>
-            </div>
-        
-            <div id="scButtonLetterSpacingOptions"
-              class="sc-absolute sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12 sc-rounded-4px sc-border-585858 sc-mt-1">
-              ${LetterSpacing?.map(
-                (gap) => `
-                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12" data-value="${gap}">
-                  ${gap}
-                </div>`
-              ).join("")}
-            </div>
-          </div>
-        </div>
-          <div class="sc-flex sc-text-color-white sc-rounded-4px sc-relative sc-border sc-border-solid sc-border-585858 sc-items-center">
-          <div class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center">
-            <div class="sc-font-size-container sc-roboto sc-universal sc-flex sc-justify-between sc-items-center sc-rounded-4px">
-              
-              <input type="text" id="scButtonLetterSpacingInput" value="0"
-                class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
-        
-              <div class="sc-v-line"></div>
-        
-              <div class="sc-flex sc-items-center sc-justify-center sc-px-5px">
-                <p class="sc-font-light sc-text-center sc-font-size-12 sc-universal">px</p>
-              </div>
-        
-              <div id="scButtonLetterSpacingSelect"
-                class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-cursor-pointer sc-px-1_5 sc-tooltip-target"
-                style="height: 28px;  border-radius: 0px 5px 5px 0px;">
-                <div class="sc-tooltip sc-hidden">
-                  <div class="tooltip-arrow"></div>
-                  Letter spacing
+             </div>
+             <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+                   sc-rounded-4px sc-border sc-border-585858 sc-absolute 
+                   sc-mt-1">
+                ${LetterSpacing?.map(
+                  (gap) => `
+                <div
+                   class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
+                   data-value="${gap}">${gap}
                 </div>
-                <img id="scLetterSpacingDropdown" loading="lazy"
-   src="https://i.ibb.co.com/G460VVdR/Vector.png"
- style="width: 15px;"  class=" sc-flex sc-items-center sc-justify-center sc-mx-auto sc-cursor-pointer">
-              </div>
-            </div>
-        
-            <div id="scButtonLetterSpacingOptions"
-              class="sc-absolute sc-hidden sc-scrollBar sc-z-99999 sc-border sc-border-solid sc-border-EF7C2F sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-12 sc-rounded-4px sc-border-585858 sc-mt-1">
-              ${LetterSpacing?.map(
-                (gap) => `
-                <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12" data-value="${gap}">
-                  ${gap}
-                </div>`
-              ).join("")}
-            </div>
+                `
+                ).join("")}
+             </div>
           </div>
-        </div>
+          <div class="sc-flex sc-text-color-white sc-px-1 
+          sc-rounded-4px sc-border sc-border-solid sc-border-585858 
+          sc-items-center ">
+       <div class="sc-Letter-spacing-container sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-border 
+             sc-border-solid sc-border-3d3d3d  sc-rounded-4px 
+             ">
+          <input type="number" id="scLineHeightInput" value="15"
+             class="sc-Letter-spacing-input sc-font-light sc-text-sm sc-text-color-white 
+                sc-bg-transparent sc-w-full  sc-py-1px sc-font-light">
+          <div class="sc-mx-auto sc-ml-1 sc-flex sc-items-center sc-justify-center">
+             <img id="scLetterSpacingDropdown" loading="lazy"
+                src="https://i.ibb.co.com/G460VVdR/Vector.png"
+              style="width: 15px;"  class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mx-auto sc-cursor-pointer">
+          </div>
+       </div>
+       <div id="scLetterSpacingOptions" class="sc-hidden sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
+             sc-rounded-4px sc-border sc-border-585858 sc-absolute 
+             sc-mt-1">
+          ${LetterSpacing?.map(
+            (gap) => `
+          <div
+             class="sc-dropdown-item sc-py-1px sc-text-center  sc-text-sm"
+             data-value="${gap}">${gap}
+          </div>
+          `
+          ).join("")}
+       </div>
+    </div>
+  
+       </div>
   
        <div
       class="sc-flex sc-col-span-6 sc-mt-2 sc-justify-between  sc-items-center ">
@@ -219,10 +237,9 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
   
        <div class="sc-mt-4 ">
           <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-poppins">Text Highlight</p>
-          <div class="sc-py-4px sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-1 sc-rounded-4px">
+          <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
              <p class="sc-text-sm sc-poppins c-font-light sc-universal" id="texHeightlistHtml">Select</p>
              <div id="texHeightlistPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
           </div>
-       </div>
-        `;
+       </div> `;
 }
