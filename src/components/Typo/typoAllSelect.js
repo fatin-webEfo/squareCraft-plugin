@@ -124,7 +124,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
         
               <div class="sc-v-line"></div>
         
-              <div class="sc-flex sc-items-center sc-justify-center sc-px-5px">
+              <div class="sc-flex sc-items-center sc-justify-center sc-px-7px">
                 <p class="sc-font-light sc-text-center sc-font-size-12 sc-universal">px</p>
               </div>
         
