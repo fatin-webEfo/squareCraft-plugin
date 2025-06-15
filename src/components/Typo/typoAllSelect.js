@@ -30,7 +30,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                      class="sc-font-size-input sc-font-light sc-z-99999 sc-font-size-12 sc-text-color-white sc-bg-transparent  sc-universal sc-font-light">
                   <div class="sc-v-line"></div>
                   <div class="sc-flex sc-items-center  sc-justify-center  sc-items-center">
-                     <p class=" sc-font-light sc-text-center sc-font-size-12 sc-ml-2  ">
+                     <p class=" sc-font-light sc-text-center sc-font-size-12 sc-mx-2  ">
                         px
                   </div>
                   <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
