@@ -33,7 +33,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                      <p class=" sc-font-light sc-text-center sc-font-size-12 sc-mx-2  ">
                         px
                   </div>
-                  <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
+                  <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-2 sc-ml-1"
                      style="height: 28px;    border-radius: 0px 5px 5px 0px;">
                      <img class=" sc-rotate-180 sc-mt-3" width="12px"
                         src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
