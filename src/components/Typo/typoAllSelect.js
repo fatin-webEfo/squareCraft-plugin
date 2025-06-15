@@ -169,7 +169,9 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
                   <div class="tooltip-arrow"></div>
                   Letter spacing
                 </div>
-                <img id="scButtonLetterSpacingDropdown" loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/line-spacing.svg" style="width: 12px;" class=" sc-mx-auto sc-cursor-pointer">
+              <img id="scLetterSpacingDropdown" loading="lazy"
+   src="https://i.ibb.co.com/G460VVdR/Vector.png"
+ style="width: 15px;"  class=" sc-px-1 sc-flex sc-items-center sc-justify-center sc-mx-auto sc-cursor-pointer">
               </div>
             </div>
         
