@@ -22,7 +22,7 @@ export function createHeadingDropdown(
             <div id="${id}-italicSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
               <p class="sc-font-italic sc-universal sc-font-size-11px sc-text-center sc-mx-auto">Italic</p>
             </div>
-            <div id="${id}-linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-items-center sc-gap-2 sc-select-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+            <div id="${id}-linkSelect" class="sc-px-2 sc-py-1px sc-flex sc-items-center sc-gap-2 sc-select-inActiveTab-border sc-cursor-pointer sc-rounded-r">
               <p class="sc-universal sc-font-size-11px sc-text-center sc-mx-auto">Link</p>
               <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="sc-w-4 sc-h-4 sc-object-contain" alt="">
             </div>
