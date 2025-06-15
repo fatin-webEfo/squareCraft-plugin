@@ -4,7 +4,7 @@ export function WidgetImageHoverToggleControls() {
     "image-hover-filter": "image-hover-filter-section",
     "image-hover-overLayButton": "Image-hover-overLaySection",
     "image-hover-shadowsButton": "image-hover-shadowsSection",
-    "hover-image-effects-Effect": "hover-image-effects-section",
+    "hover-image-effects": "hover-image-effects-section",
   };
 
   Object.keys(sections).forEach((buttonId) => {
