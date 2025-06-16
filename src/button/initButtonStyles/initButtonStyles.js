@@ -1087,13 +1087,8 @@ export function initButtonBorderRadiusControl(getSelectedElement) {
 }
 
 export function initButtonShadowControls(getSelectedElement) {
-  if (!window.shadowState) {
-    window.shadowState = {
-      Xaxis: 0,
-      Yaxis: 0,
-      Blur: 0,
-      Spread: 0,
-    };
+  if (!window.shadowStatesByType) {
+    window.shadowStatesByType = new Map();
   }
 
   function applyShadow() {
@@ -1110,6 +1105,17 @@ export function initButtonShadowControls(getSelectedElement) {
     );
     if (!typeClass) return;
 
+    if (!window.shadowStatesByType.has(typeClass)) {
+      window.shadowStatesByType.set(typeClass, {
+        Xaxis: 0,
+        Yaxis: 0,
+        Blur: 0,
+        Spread: 0,
+      });
+    }
+
+    const shadowState = window.shadowStatesByType.get(typeClass);
+
     const styleId = `sc-button-shadow-${typeClass}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -1118,7 +1124,7 @@ export function initButtonShadowControls(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
 
-    const value = `${window.shadowState.Xaxis}px ${window.shadowState.Yaxis}px ${window.shadowState.Blur}px ${window.shadowState.Spread}px rgba(0,0,0,0.3)`;
+    const value = `${shadowState.Xaxis}px ${shadowState.Yaxis}px ${shadowState.Blur}px ${shadowState.Spread}px rgba(0,0,0,0.3)`;
 
     styleTag.innerHTML = `
 .${typeClass} {
@@ -1127,7 +1133,7 @@ export function initButtonShadowControls(getSelectedElement) {
 .${typeClass}:hover {
   box-shadow: ${value} !important;
 }
-  `;
+    `;
   }
 
   function setupShadowControl(type, range = 50) {
@@ -1169,8 +1175,31 @@ export function initButtonShadowControls(getSelectedElement) {
     bullet.style.zIndex = "1";
 
     function updateUI(value) {
+      const el = getSelectedElement?.();
+      if (!el) return;
+
+      const btn = el.querySelector(
+        ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+      );
+      if (!btn) return;
+
+      const typeClass = [...btn.classList].find((cls) =>
+        cls.startsWith("sqs-button-element--")
+      );
+      if (!typeClass) return;
+
+      if (!window.shadowStatesByType.has(typeClass)) {
+        window.shadowStatesByType.set(typeClass, {
+          Xaxis: 0,
+          Yaxis: 0,
+          Blur: 0,
+          Spread: 0,
+        });
+      }
+
+      const shadowState = window.shadowStatesByType.get(typeClass);
       const val = Math.max(minValue, Math.min(maxValue, value));
-      window.shadowState[type] = val;
+      shadowState[type] = val;
 
       const percent = ((val - minValue) / (maxValue - minValue)) * 100;
       const centerPercent = ((0 - minValue) / (maxValue - minValue)) * 100;
@@ -1210,19 +1239,62 @@ export function initButtonShadowControls(getSelectedElement) {
 
     if (incBtn) {
       incBtn.onclick = () => {
-        const current = window.shadowState[type] || 0;
+        const el = getSelectedElement?.();
+        if (!el) return;
+
+        const btn = el.querySelector(
+          ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (!typeClass) return;
+
+        const state = window.shadowStatesByType.get(typeClass) || {};
+        const current = state[type] || 0;
         updateUI(current + 1);
       };
     }
 
     if (decBtn) {
       decBtn.onclick = () => {
-        const current = window.shadowState[type] || 0;
+        const el = getSelectedElement?.();
+        if (!el) return;
+
+        const btn = el.querySelector(
+          ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+        );
+        if (!btn) return;
+
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (!typeClass) return;
+
+        const state = window.shadowStatesByType.get(typeClass) || {};
+        const current = state[type] || 0;
         updateUI(current - 1);
       };
     }
 
-    updateUI(window.shadowState[type] || 0);
+    // Initial render
+    const el = getSelectedElement?.();
+    if (el) {
+      const btn = el.querySelector(
+        ".sqs-button-element--primary, .sqs-button-element--secondary, .sqs-button-element--tertiary"
+      );
+      if (btn) {
+        const typeClass = [...btn.classList].find((cls) =>
+          cls.startsWith("sqs-button-element--")
+        );
+        if (typeClass && window.shadowStatesByType.has(typeClass)) {
+          const current = window.shadowStatesByType.get(typeClass)[type] || 0;
+          updateUI(current);
+        }
+      }
+    }
   }
 
   setupShadowControl("Xaxis", 30);
@@ -1230,6 +1302,7 @@ export function initButtonShadowControls(getSelectedElement) {
   setupShadowControl("Blur", 50);
   setupShadowControl("Spread", 30);
 }
+
 
 window.syncButtonStylesFromElement = function (selectedElement) {
   if (!selectedElement) return;
