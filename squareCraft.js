@@ -18,11 +18,11 @@
       }
       await loadGSAP();
 
-      
+
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
       }
-
+// checking
       const Url = isSameOrigin
         ? parent.document.location.href
         : document.location.href;
