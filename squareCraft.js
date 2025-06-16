@@ -1,28 +1,12 @@
     (async function squareCraft() {
       let isSameOrigin = true;
 
-      async function loadGSAP() {
-        return new Promise((resolve, reject) => {
-          if (window.gsap) {
-            return resolve(window.gsap);
-          }
 
-          const script = document.createElement("script");
-          script.src =
-            "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js";
-          script.defer = true;
-          script.onload = () => resolve(window.gsap);
-          script.onerror = () => reject("❌ Failed to load GSAP CDN");
-          document.head.appendChild(script);
-        });
-      }
-      await loadGSAP();
 
 
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
       }
-// checking
       const Url = isSameOrigin
         ? parent.document.location.href
         : document.location.href;
