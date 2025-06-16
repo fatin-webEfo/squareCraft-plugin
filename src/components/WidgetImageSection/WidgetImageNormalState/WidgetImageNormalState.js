@@ -50,7 +50,7 @@ export function WidgetImageNormalState(){
 
 
          <div style="padding: 2px 0px;"
-            class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
+            class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin  sc-mt-2 sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
 
 
 
