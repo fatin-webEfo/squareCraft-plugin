@@ -17,7 +17,7 @@
         });
       }
       await loadGSAP();
-
+// checking
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
       }
