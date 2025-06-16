@@ -214,7 +214,7 @@ export function WidgetImageNormalState(){
 
 
 
-         <div style="padding: 2px 0px;" class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
+          <div style="padding: 2px 0px;" class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
                         <div id="buttonBorderAll" class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy" alt="all-border">
                            <p class="sc-font-thin sc-roboto sc-universal ">All</p>
@@ -236,6 +236,9 @@ export function WidgetImageNormalState(){
                            <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
                         </div>
                      </div>
+         </div>
+
+      </div>
 
 
    <div class="sc-mt-3 sc-px-2">
