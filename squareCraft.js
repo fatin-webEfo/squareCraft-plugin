@@ -2,11 +2,10 @@
       let isSameOrigin = true;
 
 
-
-
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
       }
+
       const Url = isSameOrigin
         ? parent.document.location.href
         : document.location.href;
@@ -48,9 +47,8 @@
       let widgetContainer = null;
 
       let widgetLoaded = false;
-      const widgetScript = isSameOrigin
-        ? parent.document.getElementById("sc-script")
-        : document.getElementById("sc-script");
+      const widgetScript = document.getElementById("sc-script");
+
 
       let token = null;
       let userId = null;
@@ -364,6 +362,10 @@
           ?.getAttribute("data-page-sections");
         if (!pageId) return;
 
+        if (!token || !userId) {
+          console.warn("Missing authentication data");
+          return;
+        }
 
         try {
           const response = await fetch(
