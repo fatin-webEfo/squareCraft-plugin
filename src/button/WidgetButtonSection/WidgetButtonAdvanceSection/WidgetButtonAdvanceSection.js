@@ -23,10 +23,10 @@ export function WidgetButtonAdvanceSection(){
             class="sc-flex sc-px-2 sc-mt-2 sc-items-center sc-justify-between"
           >
             <div class="sc-flex sc-gap-2 sc-items-center">
-              <div class="toggle-container" id="toggleSwitch">
+              <div class="toggle-container" >
                 <div class="toggle-bullet"></div>
               </div>
-              <p id="toggleText" class="sc-font-size-12 sc-universal sc-roboto">
+              <p class="sc-font-size-12 sc-universal sc-roboto">
                 Enable
               </p>
             </div>
