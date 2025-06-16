@@ -229,7 +229,7 @@ export function WidgetImageNormalState(){
 
             <div
                class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="topLeftradiusBorder">
-               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/Vector.svg" loading="lazy"
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" loading="lazy"
                   alt="top-left-radius">
             </div>
 
@@ -237,23 +237,17 @@ export function WidgetImageNormalState(){
 
             <div
                class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="topRightradiusBorder">
-               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/TopRight.svg" loading="lazy"
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" loading="lazy"
                   alt="top-right-radius">
             </div>
 
 
             <div
                class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="bottomRightradiusBorder">
-               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/Bottom Right.svg" loading="lazy"
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" loading="lazy"
                   alt="bottom-right-radius">
             </div>
 
-
-            <div
-               class="sc-flex sc-justify-center  sc-cursor-pointer sc-py-4px sc-rounded-4px  sc-items-center sc-gap-1 sc-px-1" id="bottomLeftradiusBorder">
-               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left-bottom.svg" loading="lazy"
-                  alt="left-bottom-radius">
-            </div>
 
 
             </div>
