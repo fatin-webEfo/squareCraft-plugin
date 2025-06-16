@@ -191,8 +191,7 @@ export function WidgetImageHoverState() {
                         </div>
                         <div
                           id="all-color-selction-field"
-                          class="sc-h-full sc-w-3 sc-relative sc-rounded-15px"
-                        >
+                          class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
                           <div
                             id="all-color-selction-bar"
                             class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"
