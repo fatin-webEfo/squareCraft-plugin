@@ -3,7 +3,7 @@ export function typoAllSelect(fontSizes, LetterSpacing) {
        <div
        class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
   
-       <div id="scFontSelect"
+       <div 
          class="sc-flex sc-relative sc-bg-494949 sc-h-9 sc-cursor-pointer sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
               <p id="font-name" class="sc-font-size-12 sc-roboto sc-font-light" style="background: transparent; color: white; border: none; outline: none; appearance: none; padding: 0 8px;">
               Select Font

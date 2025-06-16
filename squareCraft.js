@@ -380,10 +380,6 @@
           ?.getAttribute("data-page-sections");
         if (!pageId) return;
 
-        if (!token || !userId) {
-          console.warn("Missing authentication data");
-          return;
-        }
 
         try {
           const response = await fetch(
