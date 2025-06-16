@@ -150,7 +150,7 @@ export function WidgetImageHoverState() {
                     <div class="sc-square-6 sc-cursor-pointer"></div>
 
                     <div
-                      id="color-palette"
+                      id="image-chover-color-palette"
                       class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-4px"
                     >
                       <div class="sc-color-arrow"></div>
@@ -203,7 +203,7 @@ export function WidgetImageHoverState() {
                         class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545"
                       >
                         <p
-                          id="color-code"
+                          id="image-hover-color-code"
                           class="sc-font-size-12 sc-roboto sc-font-light sc-universal"
                         >
                           Select
@@ -605,7 +605,7 @@ export function WidgetImageHoverState() {
             </div>
 
             <div
-              id="image-hover-overLay"
+              id="image-hover-overLayButton"
               class="sc-bg-3f3f3f sc-mt-3 sc-px-2 sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-rounded-4px"
             >
               <h5 class="sc-roboto sc-font-size-14 sc-universal sc-font-thin">
