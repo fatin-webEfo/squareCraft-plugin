@@ -49,13 +49,13 @@ export function WidgetImageNormalState(){
          <div></div>
 
 
-         <div style="padding: 2px 0px;"
+         <div style="padding: 2px 0px; margin-left:30px;"
             class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-text-sm sc-font-thin  sc-mt-2 sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
 
 
 
             <div
-               class="sc-flex sc-px-1_5 sc-bg-454545 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1"  id="allBorder">
+               class="sc-flex sc-px-1_5 sc-bg-454545 sc-bg-454545 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1"  id="allBorder">
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy"
                   alt="all-radious">
                <p class="sc-font-thin sc-roboto sc-universal">All</p>
