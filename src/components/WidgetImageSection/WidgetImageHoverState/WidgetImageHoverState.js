@@ -605,7 +605,7 @@ export function WidgetImageHoverState() {
             </div>
 
             <div
-              id="image-hover-overLayButton"
+              id="image-hover-overLay"
               class="sc-bg-3f3f3f sc-mt-3 sc-px-2 sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-rounded-4px"
             >
               <h5 class="sc-roboto sc-font-size-14 sc-universal sc-font-thin">
