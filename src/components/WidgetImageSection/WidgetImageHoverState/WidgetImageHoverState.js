@@ -962,29 +962,29 @@ export function WidgetImageHoverState() {
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545"
                     >
                       <p
-                        id="buttonShadowYaxisCount"
+                        id="image-hover-ShadowYaxisCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
-                          id="buttonshadowYIncrease"
+                          id="image-hover-shadowYIncrease"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
-                          id="buttonshadowYDecrease"
+                          id="image-hover-shadowYDecrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
-                    id="buttonShadowYaxisField"
+                    id="image-hover-ShadowYaxisField"
                     class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
-                      id="buttonShadowYaxisBullet"
+                      id="image-hover-ShadowYaxisBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1033,29 +1033,29 @@ export function WidgetImageHoverState() {
                     class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545"
                   >
                     <p
-                      id="buttonShadowBlurCount"
+                      id="image-hover-ShadowBlurCount"
                       class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                     >
                       0px
                     </p>
                     <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                       <span
-                        id="buttonshadowBlurIncrease"
+                        id="image-hover-shadowBlurIncrease"
                         class="sc-arrow-placeholder"
                       ></span>
                       <span
-                        id="buttonshadowBlurDecrease"
+                        id="image-hover-shadowBlurDecrease"
                         class="sc-arrow-placeholder sc-rotate-180"
                       ></span>
                     </div>
                   </div>
                 </div>
                 <div
-                  id="buttonShadowBlurField"
+                  id="image-hover-ShadowBlurField"
                   class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6"
                 >
                   <div
-                    id="buttonShadowBlurBullet"
+                    id="image-hover-ShadowBlurBullet"
                     class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                   ></div>
                 </div>
@@ -1084,29 +1084,29 @@ export function WidgetImageHoverState() {
                     class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545"
                   >
                     <p
-                      id="buttonShadowSpreadCount"
+                      id="image-hover-ShadowSpreadCount"
                       class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                     >
                       0px
                     </p>
                     <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                       <span
-                        id="buttonshadowSpreadIncrease"
+                        id="image-hover-shadowSpreadIncrease"
                         class="sc-arrow-placeholder"
                       ></span>
                       <span
-                        id="buttonshadowSpreadDecrease"
+                        id="image-hover-shadowSpreadDecrease"
                         class="sc-arrow-placeholder sc-rotate-180"
                       ></span>
                     </div>
                   </div>
                 </div>
                 <div
-                  id="buttonShadowSpreadField"
+                  id="image-hover-ShadowSpreadField"
                   class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6"
                 >
                   <div
-                    id="buttonShadowSpreadBullet"
+                    id="image-hover-ShadowSpreadBullet"
                     class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                   ></div>
                 </div>
