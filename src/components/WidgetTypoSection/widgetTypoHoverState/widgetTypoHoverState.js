@@ -1,4 +1,4 @@
-  import { createHeadingDropdown } from "https://fatin-webefo.github.io/squareCraft-plugin/generateHeadingDropdown.js";
+  import { HovercreateHeadingDropdown } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/HoverHovercreateHeadingDropdown/HoverHovercreateHeadingDropdown.js";
 
   export function widgetTypoHoverState() {
     const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
@@ -21,7 +21,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown("heading1Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("heading1Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="heading2Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -32,7 +32,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown("heading2Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("heading2Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="heading3Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -43,7 +43,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown("heading3Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("heading3Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="heading4Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -54,7 +54,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown("heading4Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("heading4Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="paragraph1Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -65,7 +65,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown(
+         ${HovercreateHeadingDropdown(
            "paragraph1Dropdown",
            fontSizes,
            LetterSpacing
@@ -80,7 +80,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown(
+         ${HovercreateHeadingDropdown(
            "paragraph2Dropdown",
            fontSizes,
            LetterSpacing
@@ -95,7 +95,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${createHeadingDropdown(
+         ${HovercreateHeadingDropdown(
            "paragraph3Dropdown",
            fontSizes,
            LetterSpacing
