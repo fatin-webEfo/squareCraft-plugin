@@ -1,12 +1,13 @@
 export async function handleBlockClick(event, context) {
   const {
     getTextType,
+    getHoverTextType,
     setSelectedElement,
     selectedElement,
     setLastClickedBlockId,
     setLastClickedElement,
     setLastAppliedAlignment,
-    setLastActiveAlignmentElement
+    setLastActiveAlignmentElement,
   } = context;
 
   const block = event.target.closest('[id^="block-"]');
@@ -15,7 +16,7 @@ export async function handleBlockClick(event, context) {
   if (selectedElement && selectedElement !== block) {
     selectedElement.style.outline = "";
     selectedElement.classList.remove("sc-selected");
-    selectedElement.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
+    selectedElement.querySelectorAll("h1,h2,h3,h4,p").forEach((el) => {
       el.style.border = "";
       el.style.borderRadius = "";
       el.style.padding = "";
@@ -34,8 +35,7 @@ export async function handleBlockClick(event, context) {
   if (typeof window.updateActiveButtonBars === "function") {
     window.updateActiveButtonBars();
   }
-  
-  
+
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
 
@@ -53,7 +53,7 @@ export async function handleBlockClick(event, context) {
       left: "scTextAlignLeft",
       center: "scTextAlignCenter",
       right: "scTextAlignRight",
-      justify: "scTextAlignJustify"
+      justify: "scTextAlignJustify",
     };
     const activeIcon = document.getElementById(map[appliedTextAlign]);
     if (activeIcon) {
@@ -64,17 +64,27 @@ export async function handleBlockClick(event, context) {
   }
 
   const allParts = [
-    "heading1Part", "heading2Part", "heading3Part", "heading4Part",
-    "paragraph1Part", "paragraph2Part", "paragraph3Part"
+    "heading1Part",
+    "heading2Part",
+    "heading3Part",
+    "heading4Part",
+    "paragraph1Part",
+    "paragraph2Part",
+    "paragraph3Part",
   ];
   const allTabs = [
-    "heading1", "heading2", "heading3", "heading4",
-    "paragraph1", "paragraph2", "paragraph3"
+    "heading1",
+    "heading2",
+    "heading3",
+    "heading4",
+    "paragraph1",
+    "paragraph2",
+    "paragraph3",
   ];
   const visibleParts = new Set();
   const innerTextElements = block.querySelectorAll("h1,h2,h3,h4,p");
 
-  innerTextElements.forEach(el => {
+  innerTextElements.forEach((el) => {
     const tag = el.tagName.toLowerCase();
     const result = getTextType(tag, el);
     if (result) {
@@ -87,22 +97,24 @@ export async function handleBlockClick(event, context) {
 
   await waitForPartsAndTabsReady(allParts, allTabs);
 
-  allParts.forEach(id => {
+  allParts.forEach((id) => {
     const part = document.getElementById(id);
     if (part) {
       part.classList.toggle("sc-hidden", !visibleParts.has(id));
     }
   });
 
-  visibleParts.forEach(partId => {
+  visibleParts.forEach((partId) => {
     const typeId = partId.replace("Part", "");
     const tab = document.getElementById(typeId);
     if (!tab) return;
 
     tab.onmouseenter = () => {
       const b = document.getElementById(block.id);
-      const t = typeId.startsWith("heading") ? `h${typeId.replace("heading", "")}` : "p";
-      b.querySelectorAll(t).forEach(el => {
+      const t = typeId.startsWith("heading")
+        ? `h${typeId.replace("heading", "")}`
+        : "p";
+      b.querySelectorAll(t).forEach((el) => {
         const r = getTextType(t, el);
         if (r?.type === typeId) {
           el.style.outline = `2px solid ${r.borderColor}`;
@@ -112,7 +124,57 @@ export async function handleBlockClick(event, context) {
 
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
-      b.querySelectorAll("h1,h2,h3,h4,p").forEach(el => {
+      b.querySelectorAll("h1,h2,h3,h4,p").forEach((el) => {
+        el.style.outline = "";
+      });
+    };
+  });
+
+  const hoverParts = allParts.map((id) => `hover-${id}`);
+  const hoverTabs = allTabs.map((id) => `hover-${id}`);
+  const visibleHoverParts = new Set();
+
+  innerTextElements.forEach((el) => {
+    const tag = el.tagName.toLowerCase();
+    const result = getHoverTextType(tag, el);
+    if (result) {
+      visibleHoverParts.add(`hover-${result.type}Part`);
+      el.style.border = `1px dashed ${result.borderColor}`;
+      el.style.borderRadius = "4px";
+      el.style.padding = "2px 4px";
+    }
+  });
+
+  await waitForPartsAndTabsReady(hoverParts, hoverTabs);
+
+  hoverParts.forEach((id) => {
+    const part = document.getElementById(id);
+    if (part) {
+      part.classList.toggle("sc-hidden", !visibleHoverParts.has(id));
+    }
+  });
+
+  visibleHoverParts.forEach((partId) => {
+    const typeId = partId.replace("hover-", "").replace("Part", "");
+    const tab = document.getElementById(`hover-${typeId}`);
+    if (!tab) return;
+
+    tab.onmouseenter = () => {
+      const b = document.getElementById(block.id);
+      const t = typeId.startsWith("heading")
+        ? `h${typeId.replace("heading", "")}`
+        : "p";
+      b.querySelectorAll(t).forEach((el) => {
+        const r = getHoverTextType(t, el);
+        if (r?.type === typeId) {
+          el.style.outline = `2px dashed ${r.borderColor}`;
+        }
+      });
+    };
+
+    tab.onmouseleave = () => {
+      const b = document.getElementById(block.id);
+      b.querySelectorAll("h1,h2,h3,h4,p").forEach((el) => {
         el.style.outline = "";
       });
     };
@@ -121,9 +183,9 @@ export async function handleBlockClick(event, context) {
 
 async function waitForPartsAndTabsReady(allParts, allTabs) {
   for (let attempt = 0; attempt < 10; attempt++) {
-    const partsReady = allParts.every(id => document.getElementById(id));
-    const tabsReady = allTabs.every(id => document.getElementById(id));
+    const partsReady = allParts.every((id) => document.getElementById(id));
+    const tabsReady = allTabs.every((id) => document.getElementById(id));
     if (partsReady && tabsReady) break;
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
