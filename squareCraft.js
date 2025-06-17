@@ -134,6 +134,9 @@
       const { typoTabSelect } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/typoTabSelect.js"
       );
+      const { hoverTypoTabSelect } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/hoverTypoTabSelect.js"
+      );
       const { detectBlockElementTypes } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/components/BlockType/detectBlockElementTypes.js"
       );
@@ -314,6 +317,7 @@
         handleTextColorClick(event, lastClickedElement, applyStylesToElement);
         handleFontWeightDropdownClick(event);
         typoTabSelect(event);
+        hoverTypoTabSelect(event);
       });
 
       document.body.addEventListener("click", (event) => {
