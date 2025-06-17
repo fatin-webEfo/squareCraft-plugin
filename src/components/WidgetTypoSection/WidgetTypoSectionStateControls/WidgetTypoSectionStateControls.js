@@ -7,7 +7,7 @@ export function WidgetTypoSectionStateControls() {
     document.getElementById("typo-hover-state"),
   ];
 
-  if (!tabButtons.length || tabContents.includes(null)) return;
+  if (!tabButtons.length || tabContents.includes(null)) return; 
 
   tabButtons.forEach((btn, index) => {
     btn.addEventListener("click", () => {

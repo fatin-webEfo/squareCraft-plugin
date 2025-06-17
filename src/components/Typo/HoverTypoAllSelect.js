@@ -205,7 +205,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
         </div>
      </div>
    
-        </div>
+
    
         <div
        class="sc-flex sc-col-span-6 sc-mt-2 sc-justify-between  sc-items-center ">
