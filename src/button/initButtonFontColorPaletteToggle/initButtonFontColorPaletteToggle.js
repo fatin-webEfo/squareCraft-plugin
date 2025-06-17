@@ -534,9 +534,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     bullet.style.left = `0px`;
     bullet.style.top = `0px`;
 
+    const rect = selectorField.getBoundingClientRect();
     const centerX = Math.round(rect.width * 0.5);
     const centerY = Math.round(rect.height * 0.5);
-    const rect = selectorField.getBoundingClientRect();
 
     function waitAndCenterBullet() {
       if (rect.width < 50 || rect.height < 20) {
