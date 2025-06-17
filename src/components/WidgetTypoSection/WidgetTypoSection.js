@@ -22,7 +22,7 @@ export function WidgetTypoSection(id) {
             </div>
             <p id="toggleText" class="sc-text-sm sc-roboto">Enable</p>
          </div>
-        <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-1 sc-bg sc-bg-454545">
+        <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
         <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
         </div>
@@ -44,7 +44,7 @@ export function WidgetTypoSection(id) {
          </div>
       </div>
     ${widgetTypoNormalState()}
-    ${widgetTypoHoverState()}
+    ${widgetTypoHoverState()} 
 
       <div class="sc-mt-4"> </div>
     </div>
