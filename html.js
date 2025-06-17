@@ -38,16 +38,19 @@ export function html() {
     )} ${WidgetImageSection("imageSection")} ${WidgetButtonSection(
      "buttonSection"
    )} </div>
+
     <div id="advancedTab" class="sc-hidden">
       <div id="advancedButtonSection">${WidgetButtonAdvanceSection()}</div>
       <div id="advancedTypoSection">${WidgetTypoAdvanceSection()}</div>
       <div id="advancedImageSection">${WidgetImageAdvanceSection()}</div>
     </div>
+
     <div id="presetsTab" class="sc-hidden">
       <div id="presetButtonSection">${WidgetButtonPresetSection()}</div>
       <div id="presetTypoSection">${WidgetTypoPresetSection()}</div>
       <div id="presetImageSection">${WidgetImagePresetSection()}</div>
     </div>
+    
   </div>
   <div class="sc-mt-3">
     <div class="sc-flex  sc-items-center sc-justify-between sc-gap-2">
