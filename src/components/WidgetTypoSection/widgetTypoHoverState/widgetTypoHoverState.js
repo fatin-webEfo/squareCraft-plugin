@@ -6,7 +6,7 @@
 
     return `
       <div id="typo-hover-state" class="sc-hidden sc-mt-2 sc-px-2">
-        <div class=" sc-mt-2 sc-px-2 sc-flex sc-justify-between">
+        <div class=" sc-mt-2 sc-flex sc-justify-between">
       <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">Text</p>
       <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
    </div>
