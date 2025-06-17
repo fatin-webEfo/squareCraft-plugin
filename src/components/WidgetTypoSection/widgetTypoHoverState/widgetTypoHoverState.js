@@ -1,4 +1,4 @@
-  import { HovercreateHeadingDropdown } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/HoverHovercreateHeadingDropdown/HoverHovercreateHeadingDropdown.js";
+  import { HovercreateHeadingDropdown } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/HovercreateHeadingDropdown/HovercreateHeadingDropdown.js";
 
   export function widgetTypoHoverState() {
     const fontSizes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"];
