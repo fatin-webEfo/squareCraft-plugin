@@ -112,6 +112,10 @@
       const { getTextType } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
       );
+      const { getHoverTextType } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getHoverTextType.js"
+      );
+
       const { handleFontWeightDropdownClick } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js"
       );
@@ -266,6 +270,7 @@
         setTimeout(() => {
           handleBlockClick(event, {
             getTextType,
+            getHoverTextType,
             selectedElement,
             setSelectedElement: (val) => (selectedElement = val),
             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -302,6 +307,7 @@
         handleAlignmentClick(event, {
           lastClickedElement,
           getTextType,
+          getHoverTextType,
           applyStylesToElement,
           lastAppliedAlignment,
           setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
@@ -526,6 +532,7 @@
           { target: clickedBlock },
           {
             getTextType,
+            getHoverTextType,
             selectedElement,
             setSelectedElement: (val) => (selectedElement = val),
             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -646,6 +653,7 @@
                   { target: clickedBlock },
                   {
                     getTextType,
+                    getHoverTextType,
                     selectedElement,
                     setSelectedElement: (val) => (selectedElement = val),
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
