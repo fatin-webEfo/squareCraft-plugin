@@ -1,7 +1,7 @@
-import { HoverTypoLinkSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoLinkSelect.js";
-import { HoverTypoAllSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoAllSelect.js";
-import { HoverTypoBoldSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoBoldSelect.js";
-import { HoverTypoItalicSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoItalicSelect.js";
+import { HoverTypoLinkSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/HoverTypoLinkSelect.js";
+import { HoverTypoAllSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/HoverTypoAllSelect.js";
+import { HoverTypoBoldSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/HoverTypoBoldSelect.js";
+import { HoverTypoItalicSelect } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/Typo/HoverTypoItalicSelect.js";
 
 export function HovercreateHeadingDropdown(
   id,

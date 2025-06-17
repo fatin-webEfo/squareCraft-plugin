@@ -4,10 +4,6 @@ import { typoItalicSelect } from "https://goswami34.github.io/squareCraft-widget
 import { typoLinkSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/typoLinkSelect.js";
 
 
-import { HoverTypoLinkSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoLinkSelect.js";
-import { HoverTypoAllSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoAllSelect.js";
-import { HoverTypoBoldSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoBoldSelect.js";
-import { HoverTypoItalicSelect } from "https://goswami34.github.io/squareCraft-widget/src/components/Typo/HoverTypoItalicSelect.js";
 
 export function createHeadingDropdown(id,fontSizes = [],LetterSpacing = [],fontFamily = []) {
   return `
