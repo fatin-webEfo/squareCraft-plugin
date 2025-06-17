@@ -502,7 +502,7 @@ export function WidgetImageNormalState(){
          <p  class="sc-font-size-12 sc-roboto sc-universal">Select</p>
          <div  class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
          </div>
-         <div id="button-font-color-palette"
+         <div 
          class="sc-absolute sc-z-99999 sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1_5 sc-rounded-4px">
          <div class="sc-button-fontcolor-arrow"></div>
          <div class="sc-flex sc-items-center sc-justify-between">
