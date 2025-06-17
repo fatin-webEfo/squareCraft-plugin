@@ -1,6 +1,6 @@
 export function WidgetImageHoverState() {
   return `
-   <div id="image-hover-state" class="sc-hidden sc-mt-2 sc-px-2">
+  <div id="image-hover-state" class="sc-hidden sc-mt-2 sc-px-2">
             <div
               id="image-hover-border"
               class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
@@ -1111,143 +1111,143 @@ export function WidgetImageHoverState() {
                 </div>
               </div>
 
-              <div id="hover-image-effects"
-              class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
-              <p class="sc-roboto  sc-universal sc-font-size-14">Image Effect</p>
-             <span id="hover-image-effects-effects-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
-           </div>
-   
-          <div id="hover-image-effects-section" class="sc-mt-4 ">
-           <div class="sc-flex sc-items-center sc-gap-8px"> 
-              <div >
-              <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
-   
-              <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                 <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
-                 <p id="hover-image-effects-TransitionTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
-                 </div>   
-              
-                 <div id="hover-image-effects-TransitionDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-99999">
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-out">ease-out</div>
-                 </div>
-              
-                 <div id="hover-image-effects-TransitionTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
-                 <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                    <span class="sc-arrow-placeholder"></span>
-                    <span class="sc-arrow-placeholder sc-rotate-180"></span>
-                 </div>
-                 </div>
-              </div>
-           </div>
-              <div id="hover-image-effects-EffectDurationSection">
-              <p class="sc-universal sc-roboto sc-font-size-12">Duration(ms)</p>
-   
-              <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
-                 <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
-                 <p id="hover-image-effects-DurationLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
-                 </div>   
-              
-                 <div id="hover-image-effects-DurationDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-[99999]">
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
-                 </div>
-              
-                 <div id="hover-image-effects-DurationSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
-                 <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                    <span class="sc-arrow-placeholder"></span>
-                    <span class="sc-arrow-placeholder sc-rotate-180"></span>
-                 </div>
-                 </div>
-              </div>
-           </div>
-              <div id="hover-image-effects-EffectDelaySection">
-              <p class="sc-universal sc-roboto sc-font-size-12">Delay(ms)</p>
-   
-              <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
-                 <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
-                 <p id="hover-image-effects-DelayLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
-                 </div>   
-              
-                 <div id="hover-image-effects-DelayDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-50">
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
-                 <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
-                 </div>
-              
-                 <div id="hover-image-effects-DelayTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
-                 <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+            </div>
+            <div id="hover-image-effects"
+            class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
+            <p class="sc-roboto  sc-universal sc-font-size-14">Image Effect</p>
+           <span id="hover-image-effects-effects-arrow" class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
+         </div>
+ 
+        <div id="hover-image-effects-section" class="sc-mt-4 sc-hidden">
+         <div class="sc-flex sc-items-center sc-gap-8px"> 
+            <div >
+            <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
+ 
+            <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
+               <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+               <p id="hover-image-effects-TransitionTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
+               </div>   
+            
+               <div id="hover-image-effects-TransitionDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-99999">
+               <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="linear">Linear</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-in">ease-in</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="ease-out">ease-out</div>
+               </div>
+            
+               <div id="hover-image-effects-TransitionTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+               <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                   <span class="sc-arrow-placeholder"></span>
                   <span class="sc-arrow-placeholder sc-rotate-180"></span>
-                 </div>
-                 </div>
-              </div>
-           </div>
-        </div>
-        <div id="hover-image-effects-section" class="sc-mt-3 sc-z-[99999]">
-           <p class="sc-universal sc-roboto sc-font-size-12">Transform</p>
-   
-           <div class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
-              <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
-              <p id="hover-image-effects-TransformTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
-              </div>   
-           
-              <div id="hover-image-effects-TransformDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-[99999]">
-              <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
-              <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateX">TranslateX</div>
-              <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateY">TranslateY</div>
-              <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="RotateX">RotateX</div>
-              <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="RotateY">RotateY</div>
-              <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="Scale">Scale</div>
-              </div>
-           
-              <div id="hover-image-effects-TransformTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
-              <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
-                 <span class="sc-arrow-placeholder"></span>
-                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
-              </div>
-              </div>
-           </div>
-        </div>
-        <div class=" sc-mt-3 sc-flex sc-items-center sc-justify-between">
-           <div class="sc-flex sc-gap-2 sc-items-center">
-              <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Transform Position
-              </p>
-              <div
-                 class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
-   
-                 <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
-                    alt="reset">
-              </div>
-           </div>
-           <div
-              class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
-              <p id="hover-image-effects-TransformPositionCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
-              <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                <span id="hover-image-effects-TransformPositionIncrease" class="sc-arrow-placeholder"></span>
-                <span id="hover-image-effects-TransformPositionDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
-              </div>
-           </div>
-        </div>
-        <div id="hover-image-effects-TransformPositionField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
-           <div id="hover-image-effects-TransformPositionFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-           <div id="hover-image-effects-TransformPositionBullet"
-              class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
-           </div>
-        </div>
-          </div>
+               </div>
+               </div>
             </div>
+         </div>
+            <div id="hover-image-effects-EffectDurationSection">
+            <p class="sc-universal sc-roboto sc-font-size-12">Duration(ms)</p>
+ 
+            <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+               <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
+               <p id="hover-image-effects-DurationLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
+               </div>   
+            
+               <div id="hover-image-effects-DurationDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-[99999]">
+               <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle  sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
+               </div>
+            
+               <div id="hover-image-effects-DurationSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+               <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                  <span class="sc-arrow-placeholder"></span>
+                  <span class="sc-arrow-placeholder sc-rotate-180"></span>
+               </div>
+               </div>
+            </div>
+         </div>
+            <div id="hover-image-effects-EffectDelaySection">
+            <p class="sc-universal sc-roboto sc-font-size-12">Delay(ms)</p>
+ 
+            <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
+               <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-toogle">
+               <p id="hover-image-effects-DelayLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
+               </div>   
+            
+               <div id="hover-image-effects-DelayDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-h-dropdown sc-scrollBar  sc-left-0 sc-top-[35px] sc-z-50">
+               <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-toogle sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="100">100</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="300">300</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="500">500</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="700">700</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1000">1000</div>
+               <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-toogle sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="1200">1200</div>
+               </div>
+            
+               <div id="hover-image-effects-DelayTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+               <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                <span class="sc-arrow-placeholder"></span>
+                <span class="sc-arrow-placeholder sc-rotate-180"></span>
+               </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="hover-image-effects-section" class="sc-mt-3 sc-z-[99999]">
+         <p class="sc-universal sc-roboto sc-font-size-12">Transform</p>
+ 
+         <div class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
+            <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-16">
+            <p id="hover-image-effects-TransformTypeLabel" class="sc-universal sc-roboto sc-font-size-12">None</p>
+            </div>   
+         
+            <div id="hover-image-effects-TransformDropdown" class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F   sc-left-0 sc-top-[35px] sc-z-[99999]">
+            <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover  sc-cursor-pointer" data-value="none">None</div>
+            <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateX">TranslateX</div>
+            <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="TranslateY">TranslateY</div>
+            <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="RotateX">RotateX</div>
+            <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="RotateY">RotateY</div>
+            <div class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover" data-value="Scale">Scale</div>
+            </div>
+         
+            <div id="hover-image-effects-TransformTypeSelect" class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+            <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+               <span class="sc-arrow-placeholder"></span>
+               <span class="sc-arrow-placeholder sc-rotate-180"></span>
+            </div>
+            </div>
+         </div>
+      </div>
+      <div class=" sc-mt-3 sc-flex sc-items-center sc-justify-between">
+         <div class="sc-flex sc-gap-2 sc-items-center">
+            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Transform Position
+            </p>
+            <div
+               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+ 
+               <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10"
+                  alt="reset">
+            </div>
+         </div>
+         <div
+            class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
+            <p id="hover-image-effects-TransformPositionCount" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+            <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+              <span id="hover-image-effects-TransformPositionIncrease" class="sc-arrow-placeholder"></span>
+              <span id="hover-image-effects-TransformPositionDecrease" class="sc-arrow-placeholder sc-rotate-180"></span>
+            </div>
+         </div>
+      </div>
+      <div id="hover-image-effects-TransformPositionField" class="sc-rounded-15px sc-relative sc-mt-3 sc-w-full sc-h-2 sc-bg-F6F6F6">
+         <div id="hover-image-effects-TransformPositionFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+         <div id="hover-image-effects-TransformPositionBullet"
+            class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
+         </div>
+      </div>
+        </div>
           </div>
     `;
 }
