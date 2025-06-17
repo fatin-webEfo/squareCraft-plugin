@@ -1,7 +1,38 @@
     (async function squareCraft() {
+
+
+
+      function checkDuplicateIds(scope = document) {
+        const elements = scope.querySelectorAll("[id]");
+        const idMap = new Map();
+
+        elements.forEach((el) => {
+          const id = el.id;
+          if (idMap.has(id)) {
+            idMap.set(id, idMap.get(id) + 1);
+          } else {
+            idMap.set(id, 1);
+          }
+        });
+
+        const duplicates = [...idMap.entries()].filter(
+          ([_, count]) => count > 1
+        );
+        if (duplicates.length > 0) {
+          console.warn("⚠️ Duplicate IDs found:");
+          duplicates.forEach(([id, count]) => {
+            console.log(`❗ ID: "${id}" appears ${count} times`);
+          });
+        } else {
+          console.log("✅ No duplicate IDs found.");
+        }
+      }
+      
+
+
+
+
       let isSameOrigin = true;
-
-
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
       }
@@ -612,6 +643,7 @@
             const placeholders = widgetContainer.querySelectorAll(
               ".sc-arrow-placeholder"
             );
+            checkDuplicateIds(widgetContainer);
 
             placeholders.forEach((span) => {
               const isRotate = span.classList.contains("sc-rotate-180");
