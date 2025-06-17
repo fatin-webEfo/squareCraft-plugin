@@ -4,7 +4,7 @@ export function typoBoldSelect(fontSizes) {
    class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
 
    <div id="sc-font-family"
-      class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-6px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+      class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
       <div  
          class=" sc-text-sm sc-poppins sc-font-light"
          style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;"> select font family
@@ -17,11 +17,11 @@ export function typoBoldSelect(fontSizes) {
    </div>
 
    <div
-      class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-6px sc-border sc-border-solid sc-border-585858 sc-items-center ">
+      class="sc-flex sc-bg-transparent sc-h-9 sc-text-color-white sc-justify-between sc-col-span-4   sc-rounded-4px sc-border sc-border-solid sc-border-585858 sc-items-center ">
       <div class="sc-flex sc-text-color-white sc-items-center ">
          <div
-            class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-6px sc-items-center  ">
-            <div class="sc-font-size-container sc-poppins sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-rounded-6px">
+            class="sc-flex sc-text-color-white sc-justify-between sc-col-span-4 sc-rounded-4px sc-items-center  ">
+            <div class="sc-font-size-container sc-poppins sc-universal sc-flex sc-justify-between sc-items-center sc-flex sc-items-center sc-rounded-4px">
                <input 
                   type="number" 
                   id="scFontSizeInput" 
@@ -40,7 +40,7 @@ export function typoBoldSelect(fontSizes) {
                </div>
             </div>
             <div id="scFontSizeOptions" class="sc-hidden  sc-h-44 sc-font-sm sc-bg-3f3f3f sc-w-20
-                  sc-rounded-6px sc-border sc-border-585858 sc-absolute 
+                  sc-rounded-4px sc-border sc-border-585858 sc-absolute 
                   sc-mt-1">
                ${fontSizes
                  ?.map(
@@ -57,7 +57,7 @@ export function typoBoldSelect(fontSizes) {
       <div class="sc-border-r sc-border-585858 "></div>
    </div>
 
-   <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-6px" style="margin-bottom: 10px;">
+   <div class="sc-col-span-5 sc-px-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center  sc-rounded-4px" style="margin-bottom: 10px;">
 
             <p id="BoldtextcolorHtml" class="sc-text-sm sc-poppins sc-universal">Select</p>
             <div id="BoldtextColorPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
@@ -96,7 +96,7 @@ export function typoBoldSelect(fontSizes) {
 
    <div class="sc-mt-4 ">
       <p class="sc-text-xs sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-poppins">Text Highlight</p>
-      <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-6px">
+      <div class="sc-py-1 sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-w-50 sc-flex sc-justify-between sc-items-center sc-px-2 sc-rounded-4px">
          <p id="BoldtextHighlightHtml" class="sc-text-sm sc-poppins sc-universal c-font-light">#363544</p>
          <div id="BoldtextHighlightPalate" class="sc-square-6 sc-border-colors sc-cursor-pointer"></div>
       </div>
