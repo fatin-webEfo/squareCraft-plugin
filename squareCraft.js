@@ -1,23 +1,18 @@
     (async function squareCraft() {
 
 
-
       function checkDuplicateIds(scope = document) {
-        const elements = scope.querySelectorAll("[id]");
         const idMap = new Map();
 
-        elements.forEach((el) => {
+        scope.querySelectorAll("[id]").forEach((el) => {
           const id = el.id;
-          if (idMap.has(id)) {
-            idMap.set(id, idMap.get(id) + 1);
-          } else {
-            idMap.set(id, 1);
-          }
+          idMap.set(id, (idMap.get(id) || 0) + 1);
         });
 
         const duplicates = [...idMap.entries()].filter(
-          ([_, count]) => count > 1
+          ([, count]) => count > 1
         );
+
         if (duplicates.length > 0) {
           console.warn("⚠️ Duplicate IDs found:");
           duplicates.forEach(([id, count]) => {
