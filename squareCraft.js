@@ -124,9 +124,7 @@
       const { WidgetImageHoverToggleControls } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageHoverToggleControls/WidgetImageHoverToggleControls.js"
       );
-      const { parentHtmlTabClick } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/parentHtmlTabClick.js"
-      );
+
       const { handleAlignmentClick } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js"
       );
@@ -210,7 +208,7 @@
       const themeColors = await getSquarespaceThemeStyles();
 
       document.body.addEventListener("click", (event) => {
-        parentHtmlTabClick();
+     
 
         if (selectedElement) {
           initButtonStyles(selectedElement);
