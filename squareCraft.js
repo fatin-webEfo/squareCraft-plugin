@@ -601,7 +601,6 @@
           const contentWrapper = document.createElement("div");
           contentWrapper.innerHTML = htmlString;
           widgetContainer.appendChild(contentWrapper);
-          parentHtmlTabClick();
 
           widgetContainer.style.display = "block";
           document.body.appendChild(widgetContainer);
