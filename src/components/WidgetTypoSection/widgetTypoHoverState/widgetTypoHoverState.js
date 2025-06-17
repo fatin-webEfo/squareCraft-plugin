@@ -11,7 +11,7 @@
       <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />
    </div>
    <div>
-      <div id="hover-heading1Part" class="sc-hidden" >
+      <div id="hover-heading1Part" class="sc-hidden">
          <div class="sc-flex  sc-mt-2 sc-px-2">
             <div id="hover-heading1"
                class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-EF7C2F sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
@@ -21,7 +21,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${HovercreateHeadingDropdown("heading1Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("hover-heading1Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="hover-heading2Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -32,7 +32,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${HovercreateHeadingDropdown("heading2Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("hover-heading2Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="hover-heading3Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -43,7 +43,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${HovercreateHeadingDropdown("heading3Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("hover-heading3Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="hover-heading4Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -54,7 +54,7 @@
                   class="sc-rotate-180" alt="">
             </div>
          </div>
-         ${HovercreateHeadingDropdown("heading4Dropdown", fontSizes, LetterSpacing)}
+         ${HovercreateHeadingDropdown("hover-heading4Dropdown", fontSizes, LetterSpacing)}
       </div>
       <div id="hover-paragraph1Part" class="sc-hidden">
          <div class="sc-flex sc-mt-2 sc-px-2">
@@ -66,7 +66,7 @@
             </div>
          </div>
          ${HovercreateHeadingDropdown(
-           "paragraph1Dropdown",
+           "hover-paragraph1Dropdown",
            fontSizes,
            LetterSpacing
          )}
@@ -81,7 +81,7 @@
             </div>
          </div>
          ${HovercreateHeadingDropdown(
-           "paragraph2Dropdown",
+           "hover-paragraph2Dropdown",
            fontSizes,
            LetterSpacing
          )}
@@ -96,7 +96,7 @@
             </div>
          </div>
          ${HovercreateHeadingDropdown(
-           "paragraph3Dropdown",
+           "hover-paragraph3Dropdown",
            fontSizes,
            LetterSpacing
          )}

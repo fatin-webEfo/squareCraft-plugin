@@ -5,8 +5,9 @@ export function hoverTypoTabSelect(event) {
   const dropdown = clicked.closest("[id^='hover-'][id$='Dropdown']");
   if (!dropdown) return;
 
-  const baseId = clicked.id.split("-")[1]; // e.g., "heading1"
-  const suffix = clicked.id.split("-")[2]; // e.g., "boldSelect"
+  const idParts = clicked.id.split("-");
+  const baseId = idParts[1];
+  const suffix = idParts[2];
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
 
   if (!styleIds.includes(suffix)) return;
