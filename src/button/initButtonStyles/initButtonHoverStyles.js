@@ -119,8 +119,6 @@ export function initHoverButtonShadowControls(getSelectedElement) {
 }
 
 
-
-
 let hoverRotationInitialized = false;
 
 export function initHoverButtonIconRotationControl(getSelectedElement) {
@@ -555,8 +553,6 @@ export function initHoverButtonBorderTypeToggle(getSelectedElement) {
 }
 
 
-
-
 let hoverBorderInitialized = false;
 
 export function initHoverButtonBorderControl(getSelectedElement) {
@@ -704,8 +700,6 @@ export function initHoverButtonBorderControl(getSelectedElement) {
 
 
 
-
-
 export function applyHoverButtonEffects(getSelectedElement) {
   const transition =
     document
@@ -826,9 +820,6 @@ export function applyHoverButtonEffects(getSelectedElement) {
 
   setTimeout(() => update(window.__squareCraftTransformDistance || 0), 50);
 }
-
-
-
 
 
 window.syncHoverButtonStylesFromElement = function (selectedElement) {
