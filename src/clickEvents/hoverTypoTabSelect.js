@@ -9,7 +9,6 @@ export function hoverTypoTabSelect(event) {
   const baseId = idParts[1];
   const suffix = idParts[2];
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-
   if (!styleIds.includes(suffix)) return;
 
   styleIds.forEach((sfx) => {
@@ -35,4 +34,23 @@ export function hoverTypoTabSelect(event) {
       }
     }
   });
+
+  const hoverTypoIds = [
+    "hover-heading1",
+    "hover-heading2",
+    "hover-heading3",
+    "hover-heading4",
+    "hover-paragraph1",
+    "hover-paragraph2",
+    "hover-paragraph3",
+  ];
+
+  const partId = `hover-${baseId}Part`;
+  hoverTypoIds.forEach((id) => {
+    const part = document.getElementById(id + "Part");
+    if (part) part.classList.add("sc-hidden");
+  });
+
+  const currentPart = document.getElementById(partId);
+  if (currentPart) currentPart.classList.remove("sc-hidden");
 }
