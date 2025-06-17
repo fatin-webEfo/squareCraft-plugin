@@ -2,7 +2,21 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
   return `
         <div
         class="sc-mt-2 sc-relative sc-grid  sc-grid-cols-12 sc-gap-2 ">
-
+   
+        <div 
+           class="sc-flex sc-bg-494949 sc-h-9 sc-col-span-8 sc-rounded-4px sc-justify-between sc-border sc-border-solid sc-border-585858 sc-items-center">
+           
+           <select class=" sc-text-sm sc-poppins sc-font-light"
+              style="background: transparent; color: white; border: none; outline: none; appearance: none; cursor: pointer; padding: 0 8px;">
+              <option value="" selected disabled hidden>Select Font</option>
+           </select>
+  
+           <div class="sc-bg-3f3f3f sc-px-2"
+              style="height: 27px; padding: 0 3px; pointer-events: none;">
+              <img class="sc-rotate-180 sc-mt-3" width="12px"
+                 src="https://goswami34.github.io/squareCraft-widget/public/arrow.svg" alt="">
+           </div>
+        </div>
    
    
    
