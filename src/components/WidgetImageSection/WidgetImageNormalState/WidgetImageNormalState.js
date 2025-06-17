@@ -5,7 +5,7 @@ export function WidgetImageNormalState(){
       <div id="borderButton"
          class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2 sc-w-full sc-rounded-4pxx">
          <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Border</h5>
-           <img id="button-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+           <img id="image-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
         class="sc-rotate-180" alt="">
       </div>
    </div>
@@ -245,7 +245,7 @@ export function WidgetImageNormalState(){
       <div id="overLayButton"
          class="sc-bg-3f3f3f  sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2  sc-rounded-4px">
          <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Overlay</h5>
-           <img id="button-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+           <img id="image-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
         class="sc-rotate-180" alt="">
       </div>
    </div>
@@ -286,7 +286,7 @@ export function WidgetImageNormalState(){
          </div>
          <div id="overlay-color-palette"
          class="sc-absolute sc-z-99999 sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1_5 sc-rounded-4px">
-         <div class="sc-button-fontcolor-arrow"></div>
+         <div class="sc-image-fontcolor-arrow"></div>
          <div class="sc-flex sc-items-center sc-justify-between">
             <div id="overlay-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
             <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
@@ -301,20 +301,20 @@ export function WidgetImageNormalState(){
                class="sc-w-2 sc-h-2 sc-absolute sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
                </div>
             </div>
-            <div id="overlay-button-color-transparency-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
-               <div id="overlay-button-color-transparency-bar"
+            <div id="overlay-image-color-transparency-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
+               <div id="overlay-image-color-transparency-bar"
                class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2">
                </div>
             </div>
-            <div id="overlay-button-all-color-selection-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
-               <div id="overlay-button-all-color-selection-bar"
+            <div id="overlay-image-all-color-selection-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
+               <div id="overlay-image-all-color-selection-bar"
                class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2">
                </div>
             </div>
          </div>
          <div class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545">
-            <p id="overlay-button-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
-            <p id="overlay-button-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
+            <p id="overlay-image-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
+            <p id="overlay-image-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
          </div>
          </div>
       </div>
@@ -422,7 +422,7 @@ export function WidgetImageNormalState(){
       <div id="shadowButton"
          class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-2  sc-rounded-4px">
          <h5 class="sc-roboto sc-font-size-14 sc-universal  sc-font-thin">Shadow</h5>
-         <img id="button-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+         <img id="image-shadow-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
         class="sc-rotate-180" alt="">
       </div>
 
@@ -504,9 +504,9 @@ export function WidgetImageNormalState(){
          </div>
          <div 
          class="sc-absolute sc-z-99999 sc-border sc-hidden sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1_5 sc-rounded-4px">
-         <div class="sc-button-fontcolor-arrow"></div>
+         <div class="sc-image-fontcolor-arrow"></div>
          <div class="sc-flex sc-items-center sc-justify-between">
-            <div id="button-border-colors" class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
+            <div  class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
             <div class="sc-rounded-15px sc-px-1_5 sc-py-0_5 sc-bg-454545 sc-flex sc-gap-1">
                <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
                      <span  class="sc-arrow-placeholder sc-rotate-180"></span>
@@ -514,25 +514,25 @@ export function WidgetImageNormalState(){
          </div>
          <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
          <div class="sc-flex color-h-selection sc-mt-2 sc-items-center sc-gap-2">
-            <div id="button-color-selection-field" class="sc-relative">
-               <div id="button-color-selection-bar"
+            <div id="image-color-selection-field" class="sc-relative">
+               <div id="image-color-selection-bar"
                class="sc-w-2 sc-h-2 sc-absolute sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white">
                </div>
             </div>
-            <div id="button-color-transparency-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
-               <div id="button-color-transparency-bar"
+            <div id="image-color-transparency-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
+               <div id="image-color-transparency-bar"
                class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2">
                </div>
             </div>
-            <div id="button-all-color-selection-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
-               <div id="button-all-color-selection-bar"
+            <div id="image-all-color-selection-field" class="sc-h-full sc-w-3 sc-relative sc-rounded-15px">
+               <div id="image-all-color-selection-bar"
                class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2">
                </div>
             </div>
          </div>
          <div class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545">
-            <p id="button-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
-            <p id="button-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
+            <p id="image-color-code" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
+            <p id="image-color-transparency-count" class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
          </div>
          </div>
       </div>
