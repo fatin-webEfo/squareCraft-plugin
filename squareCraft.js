@@ -1,18 +1,23 @@
     (async function squareCraft() {
 
 
+
       function checkDuplicateIds(scope = document) {
+        const elements = scope.querySelectorAll("[id]");
         const idMap = new Map();
 
-        scope.querySelectorAll("[id]").forEach((el) => {
+        elements.forEach((el) => {
           const id = el.id;
-          idMap.set(id, (idMap.get(id) || 0) + 1);
+          if (idMap.has(id)) {
+            idMap.set(id, idMap.get(id) + 1);
+          } else {
+            idMap.set(id, 1);
+          }
         });
 
         const duplicates = [...idMap.entries()].filter(
-          ([, count]) => count > 1
+          ([_, count]) => count > 1
         );
-
         if (duplicates.length > 0) {
           console.warn("⚠️ Duplicate IDs found:");
           duplicates.forEach(([id, count]) => {
@@ -638,7 +643,6 @@
             const placeholders = widgetContainer.querySelectorAll(
               ".sc-arrow-placeholder"
             );
-            checkDuplicateIds(widgetContainer);
 
             placeholders.forEach((span) => {
               const isRotate = span.classList.contains("sc-rotate-180");
