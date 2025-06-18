@@ -219,7 +219,7 @@
 
       document.body.addEventListener("click", (event) => {
      
-        initHoverTypoTabControls();
+    
         if (selectedElement) {
           initButtonStyles(selectedElement);
         }
@@ -645,8 +645,7 @@
           initButtonSectionToggleControls();
           initImageStateTabToggle();
           WidgetImageHoverToggleControls();
-          initHoverTypoTabControls();
-          initHoverTypoTabControls();
+ initHoverTypoTabControls();
           initHoverButtonSectionToggleControls();
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);
