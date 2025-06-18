@@ -219,7 +219,7 @@
 
       document.body.addEventListener("click", (event) => {
      
-
+        initHoverTypoTabControls();
         if (selectedElement) {
           initButtonStyles(selectedElement);
         }
