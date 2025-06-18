@@ -119,6 +119,9 @@
       const { handleFontWeightDropdownClick } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js"
       );
+      const { initHoverTypoTabControls } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initHoverTypoTabControls.js"
+      );
       const { handleBlockClick } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js"
       );
@@ -641,7 +644,8 @@
           buttonTooltipControls();
           initButtonSectionToggleControls();
           initImageStateTabToggle();
-          WidgetImageHoverToggleControls()
+          WidgetImageHoverToggleControls();
+          initHoverTypoTabControls();
           initHoverButtonSectionToggleControls();
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);

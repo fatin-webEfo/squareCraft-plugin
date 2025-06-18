@@ -1,4 +1,4 @@
-export function initHoverButtonTabControls() {
+export function initHoverTypoTabControls() {
   const buttonToSectionMap = {
     "typo-hover-font-button": "typo-hover-font-section",
     "typo-hover-color-button": "typo-hover-color-section",
