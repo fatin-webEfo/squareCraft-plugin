@@ -5,7 +5,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
                 class="sc-mt-3 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px"
               >
                 <div class="sc-col-span-7">
-                  <p class="sc-universal sc-text-gray-300 sc-text-sm">
+                  <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
                     Font weight
                   </p>
                   <div
@@ -72,8 +72,8 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
                 </div>
 
                 <div class="sc-flex-col sc-col-span-4">
-                  <p class="sc-universal sc-text-gray-300 sc-text-sm">
-                    Font weight
+                  <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
+                    Font spacing
                   </p>
                   <div
                     class="sc-flex sc-text-color-white sc-mt-2 sc-rounded-4px sc-relative sc-border sc-border-solid sc-border-585858 sc-items-center"
