@@ -30,8 +30,7 @@ export function HovercreateHeadingDropdown(
             </div>
           </div>
         </div>
-        <div class="sc-mt-5 sc-px-2">
-          <p class="sc-text-xs sc-font-thin sc-universal sc-text-gray-300 sc-poppins">Style</p>
+        <div class="sc-mt-4 sc-px-2">
           <div class="sc-text-xs sc-text-gray-400 sc-mt-1" id="hover-scDesc-${id}-allSelect">
           ${HoverTypoAllSelect(fontSizes, LetterSpacing)}
         </div>
