@@ -1,6 +1,6 @@
 export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
   return `
-    <div id="?" class="sc-mt-2 sc-text-color-white">
+    <div  class="sc-mt-2 sc-text-color-white">
             <div id="typo-hover-font-button"
             class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
           
@@ -280,7 +280,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
                     class="sc-rotate-180" alt="">
               </div>
      
-              <div "typo-hover-border-section" class="sc-hidden sc-mt-2">
+              <div id="typo-hover-border-section" class="sc-hidden sc-mt-2">
                  <div class=" sc-flex sc-items-center sc-justify-between">
                     <div class="sc-flex sc-gap-2 sc-items-center">
                        <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
