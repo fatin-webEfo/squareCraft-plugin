@@ -31,11 +31,11 @@ export function WidgetTypoSection(id) {
       <div class="sc-h-1px  sc-bg-3f3f3f"></div>
       <div class="sc-mt-2">
          <div class="sc-flex sc-roboto sc-px-2  sc-items-center sc-justify-between sc-gap-2">
-            <div
+            <div id="typo-normal-state"
                class="sc-cursor-pointer sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-text-sm sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
                Normal
             </div>
-            <div
+            <div id="typo-hover-state"
                class="sc-cursor-pointer sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-text-sm sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
                Hover
             </div>
