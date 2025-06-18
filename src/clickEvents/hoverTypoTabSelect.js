@@ -6,8 +6,8 @@ export function hoverTypoTabSelect(event) {
   )
     return;
 
-  if (clicked.id.includes("Dropdown")) {
-    const [prefix, rawId, tabType] = clicked.id.split("-");
+  if (clicked.id.includes("Dropdown") && clicked.id.match(/Select$/)) {
+    const [, rawId, tabType] = clicked.id.split("-");
     const baseId = rawId.replace("Dropdown", "");
     const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
 
@@ -68,6 +68,7 @@ export function hoverTypoTabSelect(event) {
         if (section) {
           if (id === sectionId) {
             section.classList.remove("sc-hidden");
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
           } else {
             section.classList.add("sc-hidden");
           }
