@@ -7,7 +7,7 @@ export function WidgetTypoSectionStateControls() {
     document.getElementById("typo-hover-state"),
   ];
 
-  if (!tabButtons.length || tabContents.some((el) => el === null)) return;
+  if (!tabButtons.length || tabContents.includes(null)) return; 
 
   tabButtons.forEach((btn, index) => {
     btn.addEventListener("click", () => {
@@ -15,11 +15,11 @@ export function WidgetTypoSectionStateControls() {
         if (i === index) {
           b.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
           b.classList.remove("sc-bg-3f3f3f");
-          if (tabContents[i]) tabContents[i].classList.remove("sc-hidden");
+          tabContents[i].classList.remove("sc-hidden");
         } else {
           b.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
           b.classList.add("sc-bg-3f3f3f");
-          if (tabContents[i]) tabContents[i].classList.add("sc-hidden");
+          tabContents[i].classList.add("sc-hidden");
         }
       });
     });
