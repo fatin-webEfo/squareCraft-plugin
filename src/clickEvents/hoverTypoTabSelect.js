@@ -6,7 +6,6 @@ export function hoverTypoTabSelect(event) {
   )
     return;
 
-  // Handle tab selection logic
   if (clicked.id.includes("Dropdown")) {
     const [prefix, rawId, tabType] = clicked.id.split("-");
     const baseId = rawId.replace("Dropdown", "");

@@ -649,6 +649,7 @@
           WidgetImageHoverToggleControls();
           initHoverTypoTabControls();
           initHoverButtonSectionToggleControls();
+          hoverTypoTabSelect()
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);
 
