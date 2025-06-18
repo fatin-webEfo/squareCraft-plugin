@@ -2,44 +2,33 @@ export function hoverTypoTabSelect(event) {
   const clicked = event.target.closest("div[id$='Select']");
   if (!clicked || !clicked.id.startsWith("hover-")) return;
 
-  const dropdown = clicked.closest("div");
-  if (!dropdown) return;
-
-  const idParts = clicked.id.split("-");
-  const baseId = idParts[1]; // e.g., "heading2Dropdown"
-  const suffix = idParts[2]; // e.g., "allSelect"
-
+  const [prefix, rawId, tabType] = clicked.id.split("-");
+  const baseId = rawId.replace("Dropdown", ""); // "heading2"
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
-  if (!styleIds.includes(suffix)) return;
 
-  styleIds.forEach((sfx) => {
-    const tab = dropdown.querySelector(`#hover-${baseId}-${sfx}`);
-    const desc = dropdown.querySelector(`#hover-scDesc-${baseId}-${sfx}`);
+  if (!styleIds.includes(tabType)) return;
+
+  styleIds.forEach((type) => {
+    const tabId = `hover-${rawId}-${type}`;
+    const descId = `hover-scDesc-${rawId}-${type}`;
+
+    const tab = document.getElementById(tabId);
+    const desc = document.getElementById(descId);
 
     if (tab) {
-      if (tab === clicked) {
-        tab.classList.add("sc-select-activeTab-border");
-        tab.classList.remove("sc-select-inActiveTab-border");
-      } else {
-        tab.classList.remove("sc-select-activeTab-border");
-        tab.classList.add("sc-select-inActiveTab-border");
-      }
+      tab.classList.toggle("sc-select-activeTab-border", tabId === clicked.id);
+      tab.classList.toggle(
+        "sc-select-inActiveTab-border",
+        tabId !== clicked.id
+      );
     }
 
     if (desc) {
-      if (`hover-${baseId}-${sfx}` === clicked.id) {
-        desc.classList.remove("sc-hidden");
-      } else {
-        desc.classList.add("sc-hidden");
-      }
+      desc.classList.toggle("sc-hidden", tabId !== clicked.id);
     }
   });
 
-  // Convert from baseId like "heading2Dropdown" → "heading2"
-  const base = baseId.replace("Dropdown", "");
-  const currentPartId = `hover-${base}Part`;
-
-  const hoverTypoParts = [
+  const hoverParts = [
     "hover-heading1Part",
     "hover-heading2Part",
     "hover-heading3Part",
@@ -49,11 +38,11 @@ export function hoverTypoTabSelect(event) {
     "hover-paragraph3Part",
   ];
 
-  hoverTypoParts.forEach((id) => {
-    const part = document.getElementById(id);
-    if (part) part.classList.add("sc-hidden");
+  hoverParts.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("sc-hidden");
   });
 
-  const currentPart = document.getElementById(currentPartId);
+  const currentPart = document.getElementById(`hover-${baseId}Part`);
   if (currentPart) currentPart.classList.remove("sc-hidden");
 }
