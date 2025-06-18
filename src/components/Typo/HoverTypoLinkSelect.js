@@ -1,14 +1,14 @@
 export function HoverTypoLinkSelect(LetterSpacing) {
   return `
           <div  class="sc-mt-2 sc-text-color-white">
-            <div id="typo-hover-font-button"
+            <div id="typo-link-hover-font-button"
             class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
           
             <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
             <img  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                class="" alt="">
          </div>
-            <div id="typo-hover-font-section"
+            <div id="typo-link-hover-font-section"
               class="sc-mt-3 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
               <div class="sc-col-span-7">
                 <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
@@ -273,14 +273,14 @@ export function HoverTypoLinkSelect(LetterSpacing) {
 
 
             <div>
-              <div id="typo-hover-border-button"
+              <div id="typo-link-hover-border-button"
                  class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
                  <p class="sc-roboto  sc-universal sc-font-size-14">Border</p>
                  <img  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                     class="sc-rotate-180" alt="">
               </div>
      
-              <div id="typo-hover-border-section" class="sc-hidden sc-mt-2">
+              <div id="typo-link-hover-border-section" class="sc-hidden sc-mt-2">
                  <div class=" sc-flex sc-items-center sc-justify-between">
                     <div class="sc-flex sc-gap-2 sc-items-center">
                        <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300">
@@ -472,13 +472,13 @@ export function HoverTypoLinkSelect(LetterSpacing) {
                  </div>
               </div>
            </div>
-           <div id="typo-hover-shadow-button"
+           <div id="typo-link-hover-shadow-button"
           class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
           <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
              class="sc-rotate-180" alt="">
        </div>
-       <div id="typo-hover-shadow-section" class="sc-hidden">
+       <div id="typo-link-hover-shadow-section" class="sc-hidden">
           <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
              <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow
              </p>
@@ -611,13 +611,13 @@ export function HoverTypoLinkSelect(LetterSpacing) {
 
           </div>
        </div>
-       <div  id="typo-hover-effects-button"
+       <div  id="typo-link-hover-effects-button"
           class="sc-bg-3f3f3f sc-mt-3 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
           <p class="sc-roboto  sc-universal sc-font-size-14">Text Effect</p>
          <span  class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
        </div>
  
-      <div id="typo-hover-effects-section" class="sc-mt-4 sc-hidden">
+      <div id="typo-link-hover-effects-section" class="sc-mt-4 sc-hidden">
        <div class="sc-flex sc-items-center sc-gap-8px"> 
           <div >
           <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
