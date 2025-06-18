@@ -304,7 +304,7 @@
             }
           );
           initButtonBorderRadiusControl(() => selectedElement);
-          WidgetTypoSectionStateControls()
+         
         }, 50);
 
         handleAlignmentClick(event, {
@@ -643,6 +643,7 @@
           ButtonAdvanceToggleControls();
           buttonTooltipControls();
           initButtonSectionToggleControls();
+          WidgetTypoSectionStateControls();
           initImageStateTabToggle();
           WidgetImageHoverToggleControls();
           initHoverTypoTabControls();

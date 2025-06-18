@@ -6,7 +6,7 @@ export function HoverTypoItalicSelect(LetterSpacing) {
           
             <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
             <img  src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
-               class="" alt="">
+               class="" alt="">  
          </div>
             <div id="typo-italic-hover-font-section"
               class="sc-mt-3 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
