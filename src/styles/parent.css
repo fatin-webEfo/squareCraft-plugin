@@ -1868,6 +1868,9 @@
 .sc-font-size-14 {
   --sc-font-size: 14px;
 }
+.sc-font-szie-11{
+  --sc-font-size: 13px;
+}
 
 .sc-font-size-16 {
   --sc-font-size: 16px;
