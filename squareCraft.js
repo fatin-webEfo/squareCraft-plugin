@@ -304,6 +304,7 @@
             }
           );
           initButtonBorderRadiusControl(() => selectedElement);
+          initHoverTypoTabControls()
          
         }, 50);
 
