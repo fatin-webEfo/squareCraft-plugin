@@ -1,6 +1,6 @@
 export function HoverTypoLinkSelect(LetterSpacing) {
   return `
-          <div id="hover-typo-link-select" class="sc-mt-2 sc-text-color-white">
+          <div  class="sc-mt-2 sc-text-color-white">
             <div id="typo-link-hover-font-button"
             class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
           
