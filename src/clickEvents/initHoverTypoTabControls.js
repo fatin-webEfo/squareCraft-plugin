@@ -1,29 +1,34 @@
 export function initHoverTypoTabControls() {
-  const buttonToSectionMap = {
-    "typo-hover-font-button": "typo-hover-font-section",
-    "typo-hover-color-button": "typo-hover-color-section",
-    "typo-hover-effects-button": "typo-hover-effects-section",
-    "typo-hover-border-button": "typo-hover-border-section",
-  };
+  const buttonIds = [
+    "typo-hover-font-button",
+    "typo-hover-color-button",
+    "typo-hover-effects-button",
+    "typo-hover-border-button",
+  ];
 
-  Object.keys(buttonToSectionMap).forEach((buttonId) => {
-    const button = document.getElementById(buttonId);
-    if (!button) return;
+  buttonIds.forEach((btnId) => {
+    const button = document.getElementById(btnId);
+    const sectionId = `${btnId.replace("-button", "-section")}`;
 
-    button.addEventListener("click", () => {
-      const targetSectionId = buttonToSectionMap[buttonId];
+    if (button && document.getElementById(sectionId)) {
+      const handleInteraction = () => {
+        buttonIds.forEach((otherBtnId) => {
+          const otherSectionId = `${otherBtnId.replace("-button", "-section")}`;
+          const otherSection = document.getElementById(otherSectionId);
+          if (!otherSection) return;
 
-      Object.values(buttonToSectionMap).forEach((sectionId) => {
-        const section = document.getElementById(sectionId);
-        if (!section) return;
+          if (otherBtnId === btnId) {
+            otherSection.classList.remove("sc-hidden");
+            otherSection.classList.add("sc-visible");
+            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            otherSection.classList.remove("sc-visible");
+            otherSection.classList.add("sc-hidden");
+          }
+        });
+      };
 
-        section.classList.toggle("sc-hidden", sectionId !== targetSectionId);
-      });
-
-      const targetSection = document.getElementById(targetSectionId);
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
+      button.addEventListener("click", handleInteraction);
+    }
   });
 }
