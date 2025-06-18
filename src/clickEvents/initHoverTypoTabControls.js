@@ -20,7 +20,6 @@ export function initHoverTypoTabControls() {
         section.classList.toggle("sc-hidden", sectionId !== targetSectionId);
       });
 
-      // Optional: Focus scroll to section
       const targetSection = document.getElementById(targetSectionId);
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
