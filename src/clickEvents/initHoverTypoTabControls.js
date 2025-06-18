@@ -1,9 +1,9 @@
 export function initHoverTypoTabControls() {
   const buttonIds = [
-    "typo-hover-font-button",
-    "typo-hover-color-button",
-    "typo-hover-effects-button",
-    "typo-hover-border-button",
+    "typo-all-hover-font-button",
+    "typo-all-hover-color-button",
+    "typo-all-hover-effects-button",
+    "typo-all-hover-border-button",
   ];
 
   buttonIds.forEach((btnId) => {
