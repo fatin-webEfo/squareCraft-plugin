@@ -1,19 +1,22 @@
 export function hoverTypoTabSelect(event) {
   const clicked = event.target.closest("div[id$='Select']");
-  if (!clicked || !clicked.id.startsWith("hover-")) return;
+  if (!clicked) return;
 
-  const dropdown = clicked.closest("[id^='hover-'][id$='Dropdown']");
-  if (!dropdown) return;
+  const fullId = clicked.id; // e.g. "hover-heading2Dropdown-allSelect"
+  const idParts = fullId.split("-");
+  if (idParts.length < 3) return;
 
-  const idParts = clicked.id.split("-");
-  const baseId = idParts[1];
-  const suffix = idParts[2];
+  const baseId = idParts[0] + "-" + idParts[1]; // "hover-heading2Dropdown"
+  const suffix = idParts[2]; // "allSelect", "boldSelect", etc.
+
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
   if (!styleIds.includes(suffix)) return;
 
+  const dropdown = clicked.closest(`#${baseId}`); // this is still safe
+  if (!dropdown) return;
+
   styleIds.forEach((sfx) => {
-    const fullId = `hover-${baseId}-${sfx}`;
-    const tab = dropdown.querySelector(`#${fullId}`);
+    const tab = dropdown.querySelector(`#${baseId}-${sfx}`);
     const desc = dropdown.querySelector(`#hover-scDesc-${baseId}-${sfx}`);
 
     if (tab) {
@@ -27,7 +30,7 @@ export function hoverTypoTabSelect(event) {
     }
 
     if (desc) {
-      if (clicked.id === fullId) {
+      if (`${baseId}-${sfx}` === fullId) {
         desc.classList.remove("sc-hidden");
       } else {
         desc.classList.add("sc-hidden");
@@ -45,9 +48,11 @@ export function hoverTypoTabSelect(event) {
     "hover-paragraph3",
   ];
 
-  const partId = `hover-${baseId}Part`;
+  const targetBase = baseId.replace("Dropdown", "");
+  const partId = `${targetBase}Part`; // example: hover-heading2Part
+
   hoverTypoIds.forEach((id) => {
-    const part = document.getElementById(id + "Part");
+    const part = document.getElementById(`${id}Part`);
     if (part) part.classList.add("sc-hidden");
   });
 
