@@ -12,7 +12,7 @@ export function hoverTypoTabSelect(event) {
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
   if (!styleIds.includes(suffix)) return;
 
-  const dropdown = clicked.closest(`#${baseId}`); // this is still safe
+  const dropdown = clicked.closest(`#${baseId}`);
   if (!dropdown) return;
 
   styleIds.forEach((sfx) => {
@@ -20,42 +20,12 @@ export function hoverTypoTabSelect(event) {
     const desc = dropdown.querySelector(`#hover-scDesc-${baseId}-${sfx}`);
 
     if (tab) {
-      if (tab === clicked) {
-        tab.classList.add("sc-select-activeTab-border");
-        tab.classList.remove("sc-select-inActiveTab-border");
-      } else {
-        tab.classList.remove("sc-select-activeTab-border");
-        tab.classList.add("sc-select-inActiveTab-border");
-      }
+      tab.classList.toggle("sc-select-activeTab-border", tab === clicked);
+      tab.classList.toggle("sc-select-inActiveTab-border", tab !== clicked);
     }
 
     if (desc) {
-      if (`${baseId}-${sfx}` === fullId) {
-        desc.classList.remove("sc-hidden");
-      } else {
-        desc.classList.add("sc-hidden");
-      }
+      desc.classList.toggle("sc-hidden", `${baseId}-${sfx}` !== fullId);
     }
   });
-
-  const hoverTypoIds = [
-    "hover-heading1",
-    "hover-heading2",
-    "hover-heading3",
-    "hover-heading4",
-    "hover-paragraph1",
-    "hover-paragraph2",
-    "hover-paragraph3",
-  ];
-
-  const targetBase = baseId.replace("Dropdown", "");
-  const partId = `${targetBase}Part`; // example: hover-heading2Part
-
-  hoverTypoIds.forEach((id) => {
-    const part = document.getElementById(`${id}Part`);
-    if (part) part.classList.add("sc-hidden");
-  });
-
-  const currentPart = document.getElementById(partId);
-  if (currentPart) currentPart.classList.remove("sc-hidden");
 }
