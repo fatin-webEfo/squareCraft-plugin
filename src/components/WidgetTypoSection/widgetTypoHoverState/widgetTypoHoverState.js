@@ -5,7 +5,7 @@
       const LetterSpacing = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 
       return `
-         <div id="typo-hover-state" class="sc-hidden sc-mt-2 ">
+         <div id="typo-hover-state-section" class="sc-hidden sc-mt-2 ">
          <div class="sc-px-2 sc-mt-2 sc-flex sc-justify-between">
          <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300"> Hover Text</p>
          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />

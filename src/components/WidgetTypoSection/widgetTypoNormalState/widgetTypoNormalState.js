@@ -5,7 +5,7 @@ export function widgetTypoNormalState(){
    const fontSizes = Array.from({ length: 40 }, (_, i) => `${i + 1}`),
      LetterSpacing = Array.from({ length: 40 }, (_, i) => `${i}`);
     return `
-    <div id="typo-normal-state">
+    <div id="typo-normal-state-section">
       <div class=" sc-mt-2 sc-px-2 sc-flex sc-justify-between">
    <p class="sc-text-sm sc-universal sc-roboto sc-text-gray-300">Text</p>
    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/eye.svg" width="12px" />

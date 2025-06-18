@@ -1,25 +1,34 @@
 export function WidgetTypoSectionStateControls() {
-  const tabButtons = document.querySelectorAll(
-    "#typoSection .sc-mt-2 .sc-flex.sc-roboto > div"
-  );
-  const tabContents = [
-    document.getElementById("typo-normal-state"),
-    document.getElementById("typo-hover-state"),
-  ];
+  const buttonIds = ["typo-normal-state", "typo-hover-state"];
+  const sectionIds = ["typo-normal-state-section", "typo-hover-state-section"];
 
-  if (!tabButtons.length || tabContents.includes(null)) return; 
+  buttonIds.forEach((btnId, index) => {
+    const button = document.getElementById(btnId);
+    const section = document.getElementById(sectionIds[index]);
 
-  tabButtons.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-      tabButtons.forEach((b, i) => {
+    if (!button || !section) return;
+
+    button.addEventListener("click", () => {
+      buttonIds.forEach((otherBtnId, i) => {
+        const otherButton = document.getElementById(otherBtnId);
+        const otherSection = document.getElementById(sectionIds[i]);
+
+        if (!otherButton || !otherSection) return;
+
         if (i === index) {
-          b.classList.add("sc-bg-color-EF7C2F", "sc-text-color-white");
-          b.classList.remove("sc-bg-3f3f3f");
-          tabContents[i].classList.remove("sc-hidden");
+          otherButton.classList.add(
+            "sc-bg-color-EF7C2F",
+            "sc-text-color-white"
+          );
+          otherButton.classList.remove("sc-bg-3f3f3f");
+          otherSection.classList.remove("sc-hidden");
         } else {
-          b.classList.remove("sc-bg-color-EF7C2F", "sc-text-color-white");
-          b.classList.add("sc-bg-3f3f3f");
-          tabContents[i].classList.add("sc-hidden");
+          otherButton.classList.remove(
+            "sc-bg-color-EF7C2F",
+            "sc-text-color-white"
+          );
+          otherButton.classList.add("sc-bg-3f3f3f");
+          otherSection.classList.add("sc-hidden");
         }
       });
     });
