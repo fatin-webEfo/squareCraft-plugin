@@ -645,7 +645,7 @@
           initButtonSectionToggleControls();
           initImageStateTabToggle();
           WidgetImageHoverToggleControls();
- initHoverTypoTabControls();
+          initHoverTypoTabControls();
           initHoverButtonSectionToggleControls();
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);
