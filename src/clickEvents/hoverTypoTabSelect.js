@@ -1,31 +1,37 @@
 export function hoverTypoTabSelect(event) {
   const clicked = event.target.closest("div[id$='Select']");
-  if (!clicked) return;
+  if (!clicked || !clicked.id.startsWith("hover-")) return;
 
-  const fullId = clicked.id; // e.g. "hover-heading2Dropdown-boldSelect"
-  const idParts = fullId.split("-");
-  if (idParts.length < 3) return;
+  const dropdown = clicked.closest("[id^='hover-'][id$='Dropdown']");
+  if (!dropdown) return;
 
-  const baseId = `${idParts[0]}-${idParts[1]}`; // hover-heading2Dropdown
-  const suffix = idParts.slice(2).join("-"); // boldSelect
-
+  const idParts = clicked.id.split("-");
+  const baseId = idParts[1];
+  const suffix = idParts[2];
   const styleIds = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
   if (!styleIds.includes(suffix)) return;
 
-  const dropdown = clicked.closest(`#${baseId}`);
-  if (!dropdown) return;
-
   styleIds.forEach((sfx) => {
-    const tab = dropdown.querySelector(`#${baseId}-${sfx}`);
-    const desc = document.getElementById(`hover-scDesc-${baseId}-${sfx}`);
+    const fullId = `hover-${baseId}-${sfx}`;
+    const tab = dropdown.querySelector(`#${fullId}`);
+    const desc = dropdown.querySelector(`#hover-scDesc-${baseId}-${sfx}`);
 
     if (tab) {
-      tab.classList.toggle("sc-select-activeTab-border", tab === clicked);
-      tab.classList.toggle("sc-select-inActiveTab-border", tab !== clicked);
+      if (tab === clicked) {
+        tab.classList.add("sc-select-activeTab-border");
+        tab.classList.remove("sc-select-inActiveTab-border");
+      } else {
+        tab.classList.remove("sc-select-activeTab-border");
+        tab.classList.add("sc-select-inActiveTab-border");
+      }
     }
 
     if (desc) {
-      desc.classList.toggle("sc-hidden", `${baseId}-${sfx}` !== fullId);
+      if (clicked.id === fullId) {
+        desc.classList.remove("sc-hidden");
+      } else {
+        desc.classList.add("sc-hidden");
+      }
     }
   });
 
@@ -39,11 +45,9 @@ export function hoverTypoTabSelect(event) {
     "hover-paragraph3",
   ];
 
-  const targetBase = baseId.replace("Dropdown", ""); 
-  const partId = `${targetBase}Part`;
-
+  const partId = `hover-${baseId}Part`;
   hoverTypoIds.forEach((id) => {
-    const part = document.getElementById(`${id}Part`);
+    const part = document.getElementById(id + "Part");
     if (part) part.classList.add("sc-hidden");
   });
 
