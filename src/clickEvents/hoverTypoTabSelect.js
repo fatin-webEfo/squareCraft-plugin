@@ -88,16 +88,11 @@ export function hoverTypoTabSelect(event) {
 
   const sectionId = clicked.id.replace("-button", "-section");
 
-  const sectionTypes = ["all", "bold", "italic", "link"];
-  const sectionTargets = ["font", "color", "effects", "border"];
-
-  sectionTypes.forEach((type) => {
-    sectionTargets.forEach((target) => {
+  ["all", "bold", "italic", "link"].forEach((type) => {
+    ["font", "color", "effects", "border"].forEach((target) => {
       const id = `typo-${type}-hover-${target}-section`;
       const section = document.getElementById(id);
-      if (section) {
-        section.classList.toggle("sc-hidden", id !== sectionId);
-      }
+      if (section) section.classList.toggle("sc-hidden", id !== sectionId);
     });
   });
 }
