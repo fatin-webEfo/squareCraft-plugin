@@ -10,20 +10,20 @@ export function HovercreateHeadingDropdown(
   fontFamily = []
 ) {
   return `
-    <div id="hover-${id}">
+    <div id="${id}">
         <div class="sc-mt-2 sc-px-2 sc-gap-2">
           <div class="sc-flex sc-mt-2 sc-justify-between sc-items-center">
             <div class="sc-flex sc-items-center sc-justify-between">
-              <div id="hover-${id}-allSelect" class="sc-px-2 sc-py-1px sc-select-activeTab-border sc-cursor-pointer sc-rounded-l">
+              <div id="${id}-allSelect" class="sc-px-2 sc-py-1px sc-select-activeTab-border sc-cursor-pointer sc-rounded-l">
                 <p class="sc-universal sc-text-sm sc-poppins">All</p>
               </div>
-              <div id="hover-${id}-boldSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
+              <div id="${id}-boldSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
                 <p class="sc-font-bold sc-universal sc-text-sm sc-poppins">Bold</p>
               </div>
-              <div id="hover-${id}-italicSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
+              <div id="${id}-italicSelect" class="sc-px-2 sc-py-1px sc-select-inActiveTab-border sc-cursor-pointer">
                 <p class="sc-font-italic sc-universal sc-text-sm sc-text-center sc-mx-auto">Italic</p>
               </div>
-              <div id="hover-${id}-linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-items-center sc-gap-2 sc-select-inActiveTab-border sc-cursor-pointer sc-rounded-r">
+              <div id="${id}-linkSelect" class="sc-px-2 sc-py-sm sc-flex sc-items-center sc-gap-2 sc-select-inActiveTab-border sc-cursor-pointer sc-rounded-r">
                 <p class="sc-universal sc-text-sm sc-text-center sc-mx-auto">Link</p>
                 <img src="https://i.ibb.co.com/jvHLfd8c/Group.png" class="sc-w-4 sc-h-4 sc-object-contain" alt="">
               </div>
