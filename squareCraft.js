@@ -347,7 +347,7 @@
 
       async function fetchModifications(retries = 3) {
         const module = await import(
-          "./html.js"
+          "html.js"
         );
         const htmlString = module.html();
 
