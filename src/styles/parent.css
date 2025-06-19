@@ -1560,7 +1560,6 @@
 .sqscraft-button-icon {
   height: 1em;
   width: auto;
-  max-height: 20px;
   object-fit: contain;
   vertical-align: middle;
 }
