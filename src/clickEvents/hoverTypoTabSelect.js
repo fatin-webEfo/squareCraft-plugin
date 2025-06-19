@@ -3,22 +3,18 @@ export function hoverTypoTabSelect(event) {
   if (!clicked) return;
 
   const clickedId = clicked.id; // e.g. heading1Dropdown-boldSelect
-  const parentId = clicked.closest("div[id]").id; // e.g. heading1Dropdown
+  const parentId = clickedId.split("-")[0]; // e.g. heading1Dropdown
 
-  const tabIds = [
-    `${parentId}-allSelect`,
-    `${parentId}-boldSelect`,
-    `${parentId}-italicSelect`,
-    `${parentId}-linkSelect`,
-  ];
+  const tabSuffixes = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
 
-  tabIds.forEach((tabId) => {
-    const tabButton = document.getElementById(tabId);
-    const desc = document.getElementById(`hover-scDesc-${tabId}`);
+  tabSuffixes.forEach((suffix) => {
+    const fullTabId = `${parentId}-${suffix}`;
+    const tab = document.getElementById(fullTabId);
+    const desc = document.getElementById(`hover-scDesc-${fullTabId}`);
 
-    if (tabButton) {
-      tabButton.classList.remove("sc-select-activeTab-border");
-      tabButton.classList.add("sc-select-inActiveTab-border");
+    if (tab) {
+      tab.classList.remove("sc-select-activeTab-border");
+      tab.classList.add("sc-select-inActiveTab-border");
     }
 
     if (desc) {
