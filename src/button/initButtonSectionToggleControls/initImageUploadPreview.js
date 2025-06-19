@@ -2,14 +2,13 @@ export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
   if (!uploadButton) return;
 
-  let fileInput = document.createElement("input");
+  const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = "image/*";
   fileInput.style.display = "none";
   document.body.appendChild(fileInput);
 
-  let inputBusy = false;
-  let fileDialogOpen = false;
+  let isBusy = false;
 
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
@@ -35,26 +34,23 @@ export function initImageUploadPreview(getSelectedElement) {
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (inputBusy || fileDialogOpen) return;
+    if (isBusy) return;
 
+    isBusy = true;
     fileInput.value = ""; // allow same file reselect
-    fileDialogOpen = true;
-    fileInput.click();
+    setTimeout(() => {
+      fileInput.click();
+    }, 50); // delay prevents instant double trigger
   });
 
-  fileInput.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+  fileInput.addEventListener("click", (e) => e.stopPropagation());
 
   fileInput.addEventListener("change", (event) => {
-    fileDialogOpen = false;
-    inputBusy = true;
-
     const file = event.target.files[0];
     const selected = getSelectedElement?.();
 
     if (!file || !selected) {
-      inputBusy = false;
+      isBusy = false;
       return;
     }
 
@@ -67,10 +63,10 @@ export function initImageUploadPreview(getSelectedElement) {
       image.classList.add("sqscraft-button-icon");
 
       applyIconToButtons(image);
-      inputBusy = false;
+      isBusy = false;
     };
     reader.onerror = () => {
-      inputBusy = false;
+      isBusy = false;
     };
 
     reader.readAsDataURL(file);
