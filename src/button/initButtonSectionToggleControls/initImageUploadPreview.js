@@ -2,6 +2,8 @@ export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
   if (!uploadButton) return;
 
+  let isUploading = false;
+
   function createInput() {
     const input = Object.assign(document.createElement("input"), {
       type: "file",
@@ -11,59 +13,49 @@ export function initImageUploadPreview(getSelectedElement) {
 
     uploadButton.parentNode.insertBefore(input, uploadButton.nextSibling);
 
-    input.addEventListener("click", (e) => e.stopPropagation());
+    input.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isUploading) {
+        e.preventDefault();
+        return false;
+      }
+    });
 
     input.addEventListener("change", (event) => {
+      isUploading = true;
       const file = event.target.files[0];
       const selected = getSelectedElement?.();
-      if (!file || !selected) return;
+      if (!file || !selected) {
+        isUploading = false;
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        let svg =
-          file.type === "image/svg+xml"
-            ? new DOMParser()
-                .parseFromString(e.target.result, "image/svg+xml")
-                .querySelector("svg")
-            : (() => {
-                const svg = document.createElementNS(
-                  "http://www.w3.org/2000/svg",
-                  "svg"
-                );
-                const img = document.createElementNS(
-                  "http://www.w3.org/2000/svg",
-                  "image"
-                );
-                svg.setAttribute("viewBox", "0 0 20 20");
-                img.setAttributeNS(
-                  "http://www.w3.org/1999/xlink",
-                  "href",
-                  e.target.result
-                );
-                img.setAttribute("width", "20");
-                img.setAttribute("height", "20");
-                svg.appendChild(img);
-                return svg;
-              })();
+        const image = document.createElement("img");
+        image.src = e.target.result;
+        image.width = 20;
+        image.height = 20;
+        image.classList.add("sqscraft-button-icon");
 
-        if (svg) applyIconToButtons(svg);
+        applyIconToButtons(image);
 
-        // 💡 Remove and recreate input to allow same file upload again
-        input.remove();
-        createInput();
+        setTimeout(() => {
+          input.remove();
+          isUploading = false;
+          createInput();
+        }, 100);
       };
 
-      file.type === "image/svg+xml"
-        ? reader.readAsText(file)
-        : reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
     });
 
     return input;
   }
 
-  function applyIconToButtons(svgNode) {
+  function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
-    if (!selected || !svgNode) return;
+    if (!selected || !iconNode) return;
 
     const btn = selected.querySelector("a");
     if (!btn) return;
@@ -73,23 +65,23 @@ export function initImageUploadPreview(getSelectedElement) {
     );
     if (!typeClass) return;
 
-    svgNode.classList.add("sqscraft-button-icon");
-
     document.querySelectorAll(`a.${typeClass}`).forEach((b) => {
       b.querySelector(".sqscraft-button-icon")?.remove();
       b.insertBefore(
-        svgNode.cloneNode(true),
+        iconNode.cloneNode(true),
         b.querySelector(".sqs-html") || b.firstChild
       );
       b.classList.add("sc-flex", "sc-items-center");
     });
   }
 
-  const input = createInput();
+  let input = createInput();
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    input.click();
+    if (!isUploading && input) {
+      input.click();
+    }
   });
 
   const allIcons = [
@@ -101,19 +93,13 @@ export function initImageUploadPreview(getSelectedElement) {
   allIcons.forEach((icon) => {
     icon.addEventListener("click", () => {
       const imgURL = icon.getAttribute("src");
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      const image = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "image"
-      );
+      const image = document.createElement("img");
+      image.src = imgURL;
+      image.width = 20;
+      image.height = 20;
+      image.classList.add("sqscraft-button-icon");
 
-      svg.setAttribute("viewBox", "0 0 20 20");
-      image.setAttributeNS("http://www.w3.org/1999/xlink", "href", imgURL);
-      image.setAttribute("width", "20");
-      image.setAttribute("height", "20");
-
-      svg.appendChild(image);
-      applyIconToButtons(svg);
+      applyIconToButtons(image);
     });
   });
 }
