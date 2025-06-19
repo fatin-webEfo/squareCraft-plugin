@@ -13,7 +13,7 @@ export function injectNavbarIcon() {
 
 
 
-  
+
   function insertAdminIcon() {
     if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
       const navContainer = parent.document.querySelector("ul.css-1tn5iw9");
@@ -59,7 +59,7 @@ export function injectNavbarIcon() {
           panel.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
          
 
-          panel.innerHTML = NavbarIconHtml;
+          panel.innerHTML = NavbarIconHtml();
 
           wrapper.appendChild(panel);
 
