@@ -1,6 +1,19 @@
 import { NavbarIconHtml } from "https://fatin-webefo.github.io/squareCraft-plugin/NavbarIconHtml.js";
 
 export function injectNavbarIcon() {
+
+
+
+
+
+
+
+
+
+
+
+
+  
   function insertAdminIcon() {
     if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
       const navContainer = parent.document.querySelector("ul.css-1tn5iw9");
