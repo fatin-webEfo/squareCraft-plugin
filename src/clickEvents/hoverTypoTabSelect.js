@@ -1,33 +1,16 @@
+
 export function hoverTypoTabSelect(event) {
-  const clicked = event.target.closest("div[id$='Select']");
+  const clicked = event.target.closest("div[id$='-button']");
   if (!clicked) return;
 
-  const parentId = clicked.parentElement?.parentElement?.parentElement?.id;
-  const clickedTabId = clicked.id;
+  const sectionId = clicked.id.replace("-button", "-section");
 
-  if (!parentId || !clickedTabId) return;
-
-  const tabIds = [
-    `${parentId}-allSelect`,
-    `${parentId}-boldSelect`,
-    `${parentId}-italicSelect`,
-    `${parentId}-linkSelect`,
-  ];
-
-  tabIds.forEach((id) => {
-    const tabEl = document.getElementById(id);
-    if (tabEl) {
-      tabEl.classList.remove("sc-select-activeTab-border");
-      tabEl.classList.add("sc-select-inActiveTab-border");
-    }
-
-    const desc = document.getElementById(`hover-scDesc-${id}`);
-    if (desc) desc.classList.add("sc-hidden");
+  ["all", "bold", "italic", "link"].forEach((type) => {
+    ["font", "color", "effects", "border"].forEach((target) => {
+      const id = `typo-${type}-hover-${target}-section`;
+      const section = document.getElementById(id);
+      if (section) section.classList.toggle("sc-hidden", id !== sectionId);
+    });
   });
-
-  clicked.classList.remove("sc-select-inActiveTab-border");
-  clicked.classList.add("sc-select-activeTab-border");
-
-  const activeDesc = document.getElementById(`hover-scDesc-${clickedTabId}`);
-  if (activeDesc) activeDesc.classList.remove("sc-hidden");
 }
+
