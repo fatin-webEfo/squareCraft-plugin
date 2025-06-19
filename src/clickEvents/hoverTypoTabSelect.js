@@ -1,6 +1,12 @@
 export function hoverTypoTabSelect(event) {
   const clicked = event.target.closest("div[id$='Select']");
-  if (!clicked || !clicked.id.match(/-(all|bold|italic|link)Select$/)) return;
+  if (
+    !clicked ||
+    !clicked.id.match(
+      /^hover-heading[1-4]Dropdown-(all|bold|italic|link)Select$/
+    )
+  )
+    return;
 
   const clickedId = clicked.id;
   const prefix = clickedId.replace(/-(all|bold|italic|link)Select$/, "");
