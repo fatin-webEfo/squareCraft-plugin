@@ -2,13 +2,14 @@ export function hoverTypoTabSelect(event) {
   const clicked = event.target.closest("div[id$='Select']");
   if (!clicked) return;
 
-  const clickedId = clicked.id; // e.g. heading1Dropdown-boldSelect
-  const parentId = clickedId.split("-")[0]; // e.g. heading1Dropdown
+  const clickedId = clicked.id; 
+
+  const prefix = clickedId.replace(/-(all|bold|italic|link)Select$/, "");
 
   const tabSuffixes = ["allSelect", "boldSelect", "italicSelect", "linkSelect"];
 
   tabSuffixes.forEach((suffix) => {
-    const fullTabId = `${parentId}-${suffix}`;
+    const fullTabId = `${prefix}-${suffix}`;
     const tab = document.getElementById(fullTabId);
     const desc = document.getElementById(`hover-scDesc-${fullTabId}`);
 
@@ -22,6 +23,7 @@ export function hoverTypoTabSelect(event) {
     }
   });
 
+  // Apply to clicked
   clicked.classList.remove("sc-select-inActiveTab-border");
   clicked.classList.add("sc-select-activeTab-border");
 
