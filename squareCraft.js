@@ -248,7 +248,7 @@
         if (selectedElement) {
           applyHoverButtonEffects(() => selectedElement);
         }
-
+        initImageUploadPreview(() => selectedElement);
         const trigger = event.target.closest("#border-color-select");
 
         if (trigger) {
