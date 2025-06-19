@@ -9,6 +9,7 @@ export function initImageUploadPreview(getSelectedElement) {
   document.body.appendChild(fileInput);
 
   let inputBusy = false;
+  let fileDialogOpen = false;
 
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
@@ -34,9 +35,10 @@ export function initImageUploadPreview(getSelectedElement) {
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (inputBusy) return;
+    if (inputBusy || fileDialogOpen) return;
 
     fileInput.value = ""; // allow same file reselect
+    fileDialogOpen = true;
     fileInput.click();
   });
 
@@ -45,6 +47,7 @@ export function initImageUploadPreview(getSelectedElement) {
   });
 
   fileInput.addEventListener("change", (event) => {
+    fileDialogOpen = false;
     inputBusy = true;
 
     const file = event.target.files[0];
