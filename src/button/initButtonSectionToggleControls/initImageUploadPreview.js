@@ -2,12 +2,13 @@ export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
   if (!uploadButton) return;
 
-  const input = Object.assign(document.createElement("input"), {
-    type: "file",
-    accept: "image/*",
-    style: "display: none",
-  });
-  uploadButton.parentNode.insertBefore(input, uploadButton.nextSibling);
+  let fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
+
+  let inputBusy = false;
 
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
@@ -33,18 +34,26 @@ export function initImageUploadPreview(getSelectedElement) {
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    input.value = ""; // ✅ Reset input to allow same file selection
-    input.click();
+    if (inputBusy) return;
+
+    fileInput.value = ""; // allow same file reselect
+    fileInput.click();
   });
 
-  input.addEventListener("click", (e) => {
+  fileInput.addEventListener("click", (e) => {
     e.stopPropagation();
   });
 
-  input.addEventListener("change", (event) => {
+  fileInput.addEventListener("change", (event) => {
+    inputBusy = true;
+
     const file = event.target.files[0];
     const selected = getSelectedElement?.();
-    if (!file || !selected) return;
+
+    if (!file || !selected) {
+      inputBusy = false;
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -55,6 +64,10 @@ export function initImageUploadPreview(getSelectedElement) {
       image.classList.add("sqscraft-button-icon");
 
       applyIconToButtons(image);
+      inputBusy = false;
+    };
+    reader.onerror = () => {
+      inputBusy = false;
     };
 
     reader.readAsDataURL(file);
