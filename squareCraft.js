@@ -553,7 +553,7 @@
       async function createWidget(clickedBlock) {
         try {
           const module = await import(
-            "./html.js"
+            "html.js"
           );
           const htmlString = module.html();
 
