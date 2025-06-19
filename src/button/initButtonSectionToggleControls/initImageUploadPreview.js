@@ -2,14 +2,6 @@ export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
   if (!uploadButton) return;
 
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/*";
-  fileInput.style.display = "none";
-  document.body.appendChild(fileInput);
-
-  let isBusy = false;
-
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
     if (!selected || !iconNode) return;
@@ -34,42 +26,39 @@ export function initImageUploadPreview(getSelectedElement) {
 
   uploadButton.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (isBusy) return;
 
-    isBusy = true;
-    fileInput.value = ""; // allow same file reselect
-    setTimeout(() => {
-      fileInput.click();
-    }, 50); // delay prevents instant double trigger
-  });
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.display = "none";
+    document.body.appendChild(input);
 
-  fileInput.addEventListener("click", (e) => e.stopPropagation());
+    input.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      const selected = getSelectedElement?.();
 
-  fileInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    const selected = getSelectedElement?.();
+      if (!file || !selected) {
+        input.remove(); // clean on cancel
+        return;
+      }
 
-    if (!file || !selected) {
-      isBusy = false;
-      return;
-    }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const image = document.createElement("img");
+        image.src = e.target.result;
+        image.width = 20;
+        image.height = 20;
+        image.classList.add("sqscraft-button-icon");
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const image = document.createElement("img");
-      image.src = e.target.result;
-      image.width = 20;
-      image.height = 20;
-      image.classList.add("sqscraft-button-icon");
+        applyIconToButtons(image);
+        input.remove(); // clean after use
+      };
+      reader.onerror = () => input.remove();
 
-      applyIconToButtons(image);
-      isBusy = false;
-    };
-    reader.onerror = () => {
-      isBusy = false;
-    };
+      reader.readAsDataURL(file);
+    });
 
-    reader.readAsDataURL(file);
+    input.click(); // trigger file dialog
   });
 
   const allIcons = [
