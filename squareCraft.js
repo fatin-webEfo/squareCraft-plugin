@@ -304,7 +304,7 @@
             }
           );
           initButtonBorderRadiusControl(() => selectedElement);
-          initHoverTypoTabControls()
+      
          
         }, 50);
 
@@ -647,7 +647,36 @@
           WidgetTypoSectionStateControls();
           initImageStateTabToggle();
           WidgetImageHoverToggleControls();
-          initHoverTypoTabControls();
+          initHoverTypoTabControls([
+            {
+              buttonId: "typo-all-hover-font-button",
+              sectionId: "typo-all-hover-font-section",
+            },
+            {
+              buttonId: "typo-all-hover-border-button",
+              sectionId: "typo-all-hover-border-section",
+            },
+            {
+              buttonId: "typo-all-hover-shadow-button",
+              sectionId: "typo-all-hover-shadow-section",
+            },
+            {
+              buttonId: "typo-all-hover-effects-button",
+              sectionId: "typo-all-hover-effects-section",
+            },
+            {
+              buttonId: "typo-bold-hover-font-button",
+              sectionId: "typo-bold-hover-font-section",
+            },
+            {
+              buttonId: "typo-italic-hover-font-button",
+              sectionId: "typo-italic-hover-font-section",
+            },
+            {
+              buttonId: "typo-link-hover-font-button",
+              sectionId: "typo-link-hover-font-section",
+            },
+          ]);
           initHoverButtonSectionToggleControls();
           hoverTypoTabSelect()
           initHoverButtonEffectDropdowns();

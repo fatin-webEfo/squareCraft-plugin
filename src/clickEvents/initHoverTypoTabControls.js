@@ -1,34 +1,25 @@
-export function initHoverTypoTabControls() {
-  const buttonIds = [
-    "typo-all-hover-font-button",
-    "typo-all-hover-color-button",
-    "typo-all-hover-effects-button",
-    "typo-all-hover-border-button",
-  ];
+export function initHoverTypoTabControls(pairs = []) {
+  pairs.forEach(({ buttonId, sectionId }) => {
+    const button = document.getElementById(buttonId);
+    const section = document.getElementById(sectionId);
 
-  buttonIds.forEach((btnId) => {
-    const button = document.getElementById(btnId);
-    const sectionId = `${btnId.replace("-button", "-section")}`;
+    if (button && section) {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
 
-    if (button && document.getElementById(sectionId)) {
-      const handleInteraction = () => {
-        buttonIds.forEach((otherBtnId) => {
-          const otherSectionId = `${otherBtnId.replace("-button", "-section")}`;
-          const otherSection = document.getElementById(otherSectionId);
-          if (!otherSection) return;
+        const isHidden = section.classList.contains("sc-hidden");
 
-          if (otherBtnId === btnId) {
-            otherSection.classList.remove("sc-hidden");
-            otherSection.classList.add("sc-visible");
-            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
-          } else {
-            otherSection.classList.remove("sc-visible");
-            otherSection.classList.add("sc-hidden");
-          }
+        document.querySelectorAll("[id$='-section']").forEach((el) => {
+          el.classList.add("sc-hidden");
+          el.classList.remove("sc-visible");
         });
-      };
 
-      button.addEventListener("click", handleInteraction);
+        if (isHidden) {
+          section.classList.remove("sc-hidden");
+          section.classList.add("sc-visible");
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
     }
   });
 }
