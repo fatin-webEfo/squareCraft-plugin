@@ -7,7 +7,7 @@ export function initImageUploadPreview(getSelectedElement) {
     accept: "image/*",
     style: "display: none"
   });
-  document.body.appendChild(input);
+  uploadButton.parentNode.insertBefore(input, uploadButton.nextSibling);
 
   function applyIconToButtons(svgNode) {
     const selected = getSelectedElement?.();
