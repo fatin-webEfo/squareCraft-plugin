@@ -1,6 +1,8 @@
 export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
-  if (!uploadButton) return;
+  if (!uploadButton || uploadButton.dataset.listener === "true") return;
+
+  uploadButton.dataset.listener = "true"; // ✅ prevent double binding
 
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
@@ -38,7 +40,7 @@ export function initImageUploadPreview(getSelectedElement) {
       const selected = getSelectedElement?.();
 
       if (!file || !selected) {
-        input.remove(); // clean on cancel
+        input.remove();
         return;
       }
 
@@ -51,14 +53,14 @@ export function initImageUploadPreview(getSelectedElement) {
         image.classList.add("sqscraft-button-icon");
 
         applyIconToButtons(image);
-        input.remove(); // clean after use
+        input.remove();
       };
       reader.onerror = () => input.remove();
 
       reader.readAsDataURL(file);
     });
 
-    input.click(); // trigger file dialog
+    input.click();
   });
 
   const allIcons = [
