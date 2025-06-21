@@ -9,7 +9,7 @@ export function WidgetButtonPresetSection() {
   
       <div class="sc-grid sc-grid-cols-2 sc-gap-4" id="presetGrid">
         <div class="preset-card sc-bg-2a2a2a sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2  sc-transition-all sc-cursor-pointer" data-aos="fade-up" data-aos-delay="0">
-          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-262626" style="width: 100%; height: 160px;">
+          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-EF7C2F" style="width: 100%; height: 160px;">
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo1.gif" alt="Bold Highlight Text" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
           <div class="sc-font-medium sc-text-xs">Bold Highlight Text</div>
@@ -18,7 +18,7 @@ export function WidgetButtonPresetSection() {
         </div>
   
         <div class="preset-card sc-bg-2a2a2a sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2  sc-transition-all sc-cursor-pointer" data-aos="fade-up" data-aos-delay="100">
-          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-262626" style="width: 100%; height: 160px;">
+          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-EF7C2F" style="width: 100%; height: 160px;">
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo2.gif" alt="Minimal Button" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
           <div class="sc-font-medium sc-text-xs">Minimal Button</div>
@@ -27,7 +27,7 @@ export function WidgetButtonPresetSection() {
         </div>
   
         <div class="preset-card sc-bg-2a2a2a sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2  sc-transition-all sc-cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-262626" style="width: 100%; height: 160px;">
+          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-EF7C2F" style="width: 100%; height: 160px;">
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo3.gif" alt="Shadow Pop" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
           <div class="sc-font-medium sc-text-xs">Shadow Pop</div>
@@ -36,7 +36,7 @@ export function WidgetButtonPresetSection() {
         </div>
   
         <div class="preset-card sc-bg-2a2a2a sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2  sc-transition-all sc-cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-262626" style="width: 100%; height: 160px;">
+          <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black sc-border sc-border-EF7C2F" style="width: 100%; height: 160px;">
             <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo4.gif" alt="Slide Hover" style="width: 100%; height: 100%; object-fit: contain;">
           </div>
           <div class="sc-font-medium sc-text-xs">Slide Hover</div>
