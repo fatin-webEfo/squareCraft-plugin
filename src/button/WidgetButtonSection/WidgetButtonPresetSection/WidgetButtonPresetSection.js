@@ -26,9 +26,7 @@ export function WidgetButtonPresetSection() {
     <div id="presetSection" class="sc-p-4 sc-flex-col sc-gap-4 sc-rounded-2xl sc-bg-1e1e1e sc-text-white sc-shadow-md sc-text-sm">
       <div class="sc-flex sc-items-center sc-justify-between">
         <p class="sc-font-semibold sc-universal sc-font-size-14 sc-text-lg"> Style Presets</p>
-        <button id="applyPreset" class="sc-bg-EF7C2F sc-text-white sc-rounded-lg sc-px-4 sc-py-1.5 sc-text-xs sc-font-medium sc-transition-all hover:sc-bg-orange-600 hover:sc-scale-105">
-          Apply Selected
-        </button>
+  
       </div>
   
       <p class="sc-universal sc-font-thin sc-text-xs">Live preview of pre-built styles for typography, image, and buttons.</p>
