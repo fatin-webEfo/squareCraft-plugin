@@ -2,8 +2,10 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
- <div id="button-advance-section">
-          <div class="sc-flex sc-p-2 sc-items-center sc-justify-between">
+    <div id="button-advance-section">
+          <div
+            class="sc-flex sc-cursor-pointer sc-p-2 sc-items-center sc-justify-between"
+          >
             <div class="sc-flex sc-gap-2 sc-items-center">
               <img
                 loading="lazy"
@@ -23,12 +25,10 @@ export function WidgetButtonAdvanceSection(){
             class="sc-flex sc-px-2 sc-mt-2 sc-items-center sc-justify-between"
           >
             <div class="sc-flex sc-gap-2 sc-items-center">
-              <div class="toggle-container" >
+              <div class="toggle-container">
                 <div class="toggle-bullet"></div>
               </div>
-              <p class="sc-font-size-12 sc-universal sc-roboto">
-                Enable
-              </p>
+              <p class="sc-font-size-12 sc-universal sc-roboto">Enable</p>
             </div>
             <div
               class="sc-flex sc-gradiant-border sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-4px sc-bg sc-bg-454545"
@@ -44,7 +44,7 @@ export function WidgetButtonAdvanceSection(){
               />
             </div>
           </div>
-          <div class="sc-px-2 sc-mt-2 sc-flex-col sc-gap-2">
+         <div class="sc-px-2 sc-mt-2 sc-flex-col sc-gap-2">
             <div class="sc-flex">
               <div
                 id="button-advance-vertical"
@@ -1859,7 +1859,8 @@ export function WidgetButtonAdvanceSection(){
               </div>
             </div>
             <div class="">
-              <div   id="button-advance-blur"
+              <div
+                id="button-advance-blur"
                 class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
               >
                 <div class="sc-flex sc-items-center sc-gap-8px">
@@ -2220,7 +2221,111 @@ export function WidgetButtonAdvanceSection(){
               </div>
             </div>
           </div>
+          <div
+            class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between sc-mt-2">
+            <div class="sc-flex sc-gap-2 sc-items-center">
+              <img
+                loading="lazy"
+                src="https://fatin-webefo.github.io/squareCraft-plugin/public/structure.svg"
+                width="19px"
+                alt=""
+              />
+              <p class="sc-universal sc-roboto">Structure</p>
+            </div>
+            <img
+              src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
+              alt="sc-rotate-180"
+              class="sc-rotate-180"
+            />
+          </div>
+          <div class="sc-h-1px sc-bg-3f3f3f"></div>
+          <div
+            class="sc-mt-8 sc-flex-col sc-items-center sc-justify-center sc-gap-2"
+          >
+            <div class="sc-relative sc-mt-2 sc-items-center sc-flex-col">
+              <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="bottom: 30px"
+              >
+                0px
+              </p>
+              <div class="structure-top-box"> <div class="structure-top-fill"></div></div>
+            </div>
+            <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
+              <div class="sc-flex sc-items-center sc-relative">
+                <p
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="right: 30px"
+                >
+                  0px
+                </p>
+                <div class="structure-left-box">
+                  <div class="structure-left-fill"></div>
+                </div>
+              </div>
+              <div class="structure-allside-box sc-relative sc-bg-454545">
+                <img
+                  src="https://fatin-webefo.github.io/squareCraft-plugin/public/structure-all-select.svg"
+                  class="sc-cursor-pointer"
+                  alt=""
+                />
+                <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="right: 18px"
+              >
+                0px
+              </p>
+                <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="top: 18px"
+              >
+                0px
+              </p>
+                <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="left: 18px"
+              >
+                10px
+              </p>
+                <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="bottom: 18px"
+              >
+                10px
+              </p>
 
+              <div class="structure-all-side-left-bar sc-absolute" style="left: 2px;"></div>
+              <div class="structure-all-side-right-bar sc-absolute" style="right: 2px;"></div>
+              <div class="structure-all-side-top-bar sc-absolute" style="top: 2px;"></div>
+              <div class="structure-all-side-bottom-bar sc-absolute" style="bottom: 2px;"></div>
+              </div>
+
+              <div
+                class="sc-flex sc-items-center sc-justify-center sc-relative"
+              >
+                <div class="structure-right-box">
+                  <div class="structure-right-fill"></div>
+                </div>
+                <p
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="left: 30px"
+                >
+                 10px
+                </p>
+              </div>
+            </div>
+            <div class="sc-relative sc-items-center sc-flex-col">
+              <div class="structure-bottom-box">
+                <div class="structure-bottom-fill"></div>
+              </div>
+              <p
+                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                style="top: 30px"
+              >
+                0px
+              </p>
+            </div>
+          </div>
           <div class="sc-mt-4"></div>
         </div>
     `;
