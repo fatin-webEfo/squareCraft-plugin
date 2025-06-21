@@ -2,10 +2,7 @@ export function WidgetButtonPresetSection() {
   return `
     <div id="presetSection" class="sc-p-4 sc-flex-col sc-gap-4 sc-rounded-2xl sc-bg-1e1e1e sc-text-white sc-shadow-md sc-text-sm">
       <div class="sc-flex sc-items-center sc-justify-between">
-        <h2 class="sc-font-semibold sc-text-sm">🎨 Style Presets</h2>
-        <button id="applyPreset" class="sc-bg-EF7C2F sc-text-white sc-rounded-lg sc-px-4 sc-py-1.5 sc-text-xs sc-font-medium sc-transition-all hover:sc-bg-orange-600 hover:sc-scale-105">
-          Apply Selected
-        </button>
+        <p class="sc-universal sc-font-size-16 sc-roboto">🎨 Style Presets</p>
       </div>
   
       <div class="sc-text-gray-400 sc-text-xs">Live preview of pre-built styles for typography, image, and buttons.</div>
@@ -46,11 +43,6 @@ export function WidgetButtonPresetSection() {
           <div class="sc-text-gray-400 sc-text-2xs">Text: Slide left effect on hover</div>
           <button class="sc-bg-EF7C2F sc-text-white sc-rounded-md sc-text-xs sc-py-1 sc-mt-2 sc-w-full sc-font-medium hover:sc-bg-orange-600 transition-all">Use This Preset</button>
         </div>
-      </div>
-  
-      <div class="sc-flex sc-justify-between sc-mt-6">
-        <button class="sc-bg-EF7C2F sc-text-white sc-px-6 sc-py-1.5 sc-rounded-md sc-text-xs sc-font-semibold hover:sc-bg-orange-600">Publish</button>
-        <button class="sc-bg-444444 sc-text-white sc-px-6 sc-py-1.5 sc-rounded-md sc-text-xs hover:sc-bg-555555">Reset</button>
       </div>
     </div>
   
