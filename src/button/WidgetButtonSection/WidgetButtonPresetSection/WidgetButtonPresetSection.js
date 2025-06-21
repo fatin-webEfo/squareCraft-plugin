@@ -15,8 +15,8 @@ export function WidgetButtonPresetSection(){
   <div class="sc-grid sc-grid-cols-2 sc-gap-4" id="presetGrid">
     <!-- Preset Card Example -->
     <div class="preset-card sc-bg-1f1f1f sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2 sc-cursor-pointer sc-transition-all sc-duration-300 sc-border sc-border-transparent hover:sc-border-EF7C2F">
-      <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black" style="width: 100%; height: 160px;">
-        <video autoplay loop muted style="width: 100%; height: 100%; object-fit: contain;">
+      <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black" style="width: 100%; height: 180px;">
+        <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;">
           <source src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo1.mp4" type="video/mp4">
         </video>
       </div>
@@ -26,8 +26,8 @@ export function WidgetButtonPresetSection(){
     </div>
 
     <div class="preset-card sc-bg-1f1f1f sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2 sc-cursor-pointer sc-transition-all sc-duration-300 sc-border sc-border-transparent hover:sc-border-EF7C2F">
-      <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black" style="width: 100%; height: 160px;">
-        <video autoplay loop muted style="width: 100%; height: 100%; object-fit: contain;">
+      <div class="sc-rounded-lg sc-overflow-hidden sc-bg-black" style="width: 100%; height: 180px;">
+        <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: contain;">
           <source src="https://fatin-webefo.github.io/squareCraft-plugin/public/preset-demo2.mp4" type="video/mp4">
         </video>
       </div>
@@ -37,6 +37,7 @@ export function WidgetButtonPresetSection(){
     </div>
   </div>
 </div>
+
 
 
     `;
