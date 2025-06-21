@@ -1707,7 +1707,7 @@
   position: absolute;
   inset: 0;
   border-radius: 0 0 8px 8px;
-  padding: 1px; /* Adjust thickness */
+  padding: 0.6px; 
   background: linear-gradient(to right, #F08234 0%, #868686 100%);
   -webkit-mask:
     linear-gradient(#868686 0 0) content-box,
@@ -1719,7 +1719,7 @@
     linear-gradient(#868686 0 0);
   mask-composite: exclude;
   pointer-events: none;
-  clip-path: inset(1px 0px 0px 0px); /* Hides top border only */
+  clip-path: inset(1px 0px 0px 0px); 
 }
 
 
@@ -1737,7 +1737,7 @@
   position: absolute;
   inset: 0;
   border-radius: 0 8px 8px 0;
-  padding: 1px;
+  padding: 0.6px;
   background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
   -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
   -webkit-mask-composite: xor;
@@ -1768,7 +1768,7 @@
   position: absolute;
   inset: 0;
   border-radius: 8px;
-  padding: 1px; /* Border thickness */
+  padding: 0.6px; /* Border thickness */
   background: linear-gradient(to left, #F08234 0%, #868686 100%);
   -webkit-mask:
     linear-gradient(#868686 0 0) content-box,
@@ -1795,7 +1795,7 @@
   position: absolute;
   inset: 0;
   border-radius: 8px 0 0 8px;
-  padding: 1px;
+  padding: 0.6px;
   background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
   -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
   -webkit-mask-composite: xor;
