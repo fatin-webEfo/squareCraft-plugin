@@ -1552,6 +1552,10 @@
   width: 30px !important;
 }
 
+.sc-w-20px{
+  width: 20px !important;
+}
+
 .sc-h-toogle {
   height: 16px !important;
 }
@@ -1728,7 +1732,7 @@
   width: 24px;
   height: 133px;
   background-color: transparent;
-  border-radius: 0 8px 8px 0; /* Top-right and bottom-right corners */
+  border-radius: 0 8px 8px 0; 
   overflow: hidden;
 }
 

@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-    <div id="button-advance-section">
+      <div id="button-advance-section">
           <div
             class="sc-flex sc-cursor-pointer sc-p-2 sc-items-center sc-justify-between"
           >
@@ -44,7 +44,7 @@ export function WidgetButtonAdvanceSection(){
               />
             </div>
           </div>
-         <div class="sc-px-2 sc-mt-2 sc-flex-col sc-gap-2">
+          <!-- <div class="sc-px-2 sc-mt-2 sc-flex-col sc-gap-2">
             <div class="sc-flex">
               <div
                 id="button-advance-vertical"
@@ -2220,9 +2220,10 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div
-            class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between sc-mt-2">
+            class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between sc-mt-2"
+          >
             <div class="sc-flex sc-gap-2 sc-items-center">
               <img
                 loading="lazy"
@@ -2249,7 +2250,9 @@ export function WidgetButtonAdvanceSection(){
               >
                 0px
               </p>
-              <div class="structure-top-box"> <div class="structure-top-fill"></div></div>
+              <div class="structure-top-box">
+                <div class="structure-top-fill"></div>
+              </div>
             </div>
             <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
               <div class="sc-flex sc-items-center sc-relative">
@@ -2270,34 +2273,46 @@ export function WidgetButtonAdvanceSection(){
                   alt=""
                 />
                 <p
-                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="right: 18px"
-              >
-                0px
-              </p>
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="right: 18px"
+                >
+                  0px
+                </p>
                 <p
-                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="top: 18px"
-              >
-                0px
-              </p>
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="top: 18px"
+                >
+                  0px
+                </p>
                 <p
-                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="left: 18px"
-              >
-                10px
-              </p>
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="left: 18px"
+                >
+                  10px
+                </p>
                 <p
-                class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="bottom: 18px"
-              >
-                10px
-              </p>
+                  class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+                  style="bottom: 18px"
+                >
+                  10px
+                </p>
 
-              <div class="structure-all-side-left-bar sc-absolute" style="left: 2px;"></div>
-              <div class="structure-all-side-right-bar sc-absolute" style="right: 2px;"></div>
-              <div class="structure-all-side-top-bar sc-absolute" style="top: 2px;"></div>
-              <div class="structure-all-side-bottom-bar sc-absolute" style="bottom: 2px;"></div>
+                <div
+                  class="structure-all-side-left-bar sc-absolute"
+                  style="left: 2px"
+                ></div>
+                <div
+                  class="structure-all-side-right-bar sc-absolute"
+                  style="right: 2px"
+                ></div>
+                <div
+                  class="structure-all-side-top-bar sc-absolute"
+                  style="top: 2px"
+                ></div>
+                <div
+                  class="structure-all-side-bottom-bar sc-absolute"
+                  style="bottom: 2px"
+                ></div>
               </div>
 
               <div
@@ -2310,7 +2325,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
                   style="left: 30px"
                 >
-                 10px
+                  10px
                 </p>
               </div>
             </div>
@@ -2326,6 +2341,47 @@ export function WidgetButtonAdvanceSection(){
               </p>
             </div>
           </div>
+          <div
+            class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"
+          ></div>
+          <div class="sc-mt-4 sc-px-2">
+            <div class="sc-flex sc-items-center sc-justify-between">
+              <p class="sc-universal sc-text-md">Margin Gap</p>
+              <div class="sc-flex sc-items-center sc-gap-3">
+                <div
+                  class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                  <img
+                    src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
+                    width="10"
+                    alt="reset"
+                  />
+                </div>
+                
+
+
+
+
+
+                <div class="sc-flex  sc-z-[99999] sc-relative sc-items-center">
+                  <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-25px">
+                  <p  class="sc-universal sc-roboto sc-font-size-12">PX</p>
+                  </div>   
+               
+              
+               
+                  <div  class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+                  <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                     <span class="sc-arrow-placeholder"></span>
+                     <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                  </div>
+                  </div>
+               </div>
+              </div>
+            </div>
+          </div>
+
+          <div></div>
+
           <div class="sc-mt-4"></div>
         </div>
     `;
