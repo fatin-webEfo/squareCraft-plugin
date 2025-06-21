@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-    <div id="button-advance-section">
+     <div id="button-advance-section">
           <div
             class="sc-flex sc-cursor-pointer sc-p-2 sc-items-center sc-justify-between"
           >
@@ -2370,7 +2370,7 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
             </div>
-           <div class="sc-mt-4 sc-flex sc-items-center  sc-gap-3">
+           <div class="sc-mt-4 sc-flex sc-items-center 2 sc-gap-3">
         <div>
       <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Top</p>
       <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
@@ -2431,7 +2431,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
 
 
-
+<div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
 
             <div class="sc-mt-4 sc-px-2">
               <div>
@@ -2460,7 +2460,7 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
             </div>
-           <div class="sc-mt-4 sc-flex sc-items-center sc-gap-3">
+           <div class="sc-mt-4 sc-flex sc-items-center  sc-gap-3">
         <div>
       <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Top</p>
       <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
