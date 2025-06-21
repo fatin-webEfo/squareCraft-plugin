@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-       <div id="button-advance-section">
+    <div id="button-advance-section">
           <div
             class="sc-flex sc-cursor-pointer sc-p-2 sc-items-center sc-justify-between"
           >
@@ -2343,7 +2343,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
           <div
             class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
-          <div class="sc-mt-4 sc-px-2">
+          <div class="sc-mt-4 sc-px-2"><div >
             <div class="sc-flex sc-items-center sc-justify-between">
               <p class="sc-universal sc-text-md">Margin Gap</p>
               <div class="sc-flex sc-items-center sc-gap-3">
@@ -2369,7 +2369,33 @@ export function WidgetButtonAdvanceSection(){
               </div>
             </div>
           </div>
-<div class="sc-mt-4 sc-flex sc-items-center sc-px-2 sc-gap-3">
+          <div class="sc-mt-4 sc-px-2"><div >
+            <div class="sc-flex sc-items-center sc-justify-between">
+              <p class="sc-universal sc-text-md">Padding Gap</p>
+              <div class="sc-flex sc-items-center sc-gap-3">
+                <div
+                  class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                  <img
+                    src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
+                    width="10"
+                    alt="reset"
+                  />
+                </div>
+                <div class="sc-flex  sc-z-[99999] sc-relative sc-items-center">
+                  <div  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-25px">
+                  <p  class="sc-universal sc-roboto sc-font-size-12">PX</p>
+                  </div>   
+                  <div  class="sc-bg-454545 sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+                  <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
+                     <span class="sc-arrow-placeholder"></span>
+                     <span class="sc-arrow-placeholder sc-rotate-180"></span>
+                  </div>
+                  </div>
+               </div>
+              </div>
+            </div>
+          </div>
+         <div class="sc-mt-4 sc-flex sc-items-center sc-px-2 sc-gap-3">
   <div>
     <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">Top</p>
     <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
@@ -2426,9 +2452,10 @@ export function WidgetButtonAdvanceSection(){
       </div>
    </div>
   </div>
-</div>
+           </div></div>
 
           <div class="sc-mt-4"></div>
         </div>
+      </div>
     `;
 }
