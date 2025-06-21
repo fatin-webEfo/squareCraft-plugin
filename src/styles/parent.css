@@ -1569,6 +1569,186 @@
   border-color: #ef7c2f41 !important;
 }
 
+.structure-right-fill {
+  width: 20% !important;
+  height: 89% !important;
+  margin-top: 3px !important;
+  margin-left: 3px !important;
+  background-color: #F08234;
+  padding: 4px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  cursor: pointer;
+}
+
+.structure-top-box {
+  position: relative;
+  width: 133px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+.structure-left-box {
+  position: relative;
+  width: 133px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+.structure-bottom-box {
+  position: relative;
+  width: 133px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+
+.structure-right-box {
+  position: relative;
+  width: 133px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.structure-top-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 8px 8px;
+  padding: 1px; /* Adjust thickness */
+  background: linear-gradient(to right, #F08234 0%, #868686 100%);
+  -webkit-mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(1px 0px 0px 0px); /* Hides top border only */
+}
+
+
+.structure-left-box {
+  position: relative;
+  width: 24px;
+  height: 133px;
+  background-color: transparent;
+  border-radius: 0 8px 8px 0; /* Top-right and bottom-right corners */
+  overflow: hidden;
+}
+
+.structure-left-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0 8px 8px 0;
+  padding: 1px;
+  background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 0px 0px 2px); /* Hides left border only */
+}
+
+
+
+.structure-allside-box {
+  position: relative;
+  width: 133px;
+  height: 133px;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.structure-allside-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 1px; /* Border thickness */
+  background: linear-gradient(to left, #F08234 0%, #868686 100%);
+  -webkit-mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.structure-right-box {
+  position: relative;
+  width: 24px;
+  height: 133px;
+  background-color: transparent;
+  border-radius: 8px 0 0 8px; /* Top-left and bottom-left corners */
+  overflow: hidden;
+}
+
+.structure-right-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px 0 0 8px;
+  padding: 1px;
+  background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 2px 0px 0px); /* Hides right border only */
+}
+
+
+.structure-bottom-box {
+  position: relative;
+  width: 133px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 8px 8px 0 0; /* Top-left and top-right corners */
+  overflow: hidden;
+}
+
+.structure-bottom-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 1px;
+  background: linear-gradient(to right, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 0px 2px 0px); /* Hides bottom border only */
+}
+
+
+
+
+
+
+
+
 .sc-w-13px {
   width: 13px !important;
 }

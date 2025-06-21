@@ -2,7 +2,7 @@ export function initImageUploadPreview(getSelectedElement) {
   const uploadButton = document.getElementById("imageupload");
   if (!uploadButton || uploadButton.dataset.listener === "true") return;
 
-  uploadButton.dataset.listener = "true"; // ✅ prevent double binding
+  uploadButton.dataset.listener = "true"; 
 
   function applyIconToButtons(iconNode) {
     const selected = getSelectedElement?.();
