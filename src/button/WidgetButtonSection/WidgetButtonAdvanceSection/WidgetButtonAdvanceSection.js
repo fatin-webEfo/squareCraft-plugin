@@ -2240,7 +2240,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
           <div class="sc-h-1px sc-bg-3f3f3f"></div>
           <div
-            class="sc-mt-8 sc-flex-col sc-items-center sc-justify-center sc-gap-2"
+            class="sc-mt-8 sc-flex-col sc-pb-30px sc-items-center sc-justify-center sc-gap-2"
           >
             <div class="sc-relative sc-mt-2 sc-items-center sc-flex-col">
               <p

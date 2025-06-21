@@ -1786,7 +1786,7 @@
   width: 24px;
   height: 140px;
   background-color: transparent;
-  border-radius: 8px 0 0 8px; /* Top-left and bottom-left corners */
+  border-radius: 8px 0 0 8px; 
   overflow: hidden;
 }
 
@@ -1803,7 +1803,7 @@
   mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
   mask-composite: exclude;
   pointer-events: none;
-  clip-path: inset(0px 2px 0px 0px); /* Hides right border only */
+  clip-path: inset(0px 2px 0px 0px); 
 }
 
 
@@ -1812,7 +1812,7 @@
   width: 140px;
   height: 24px;
   background-color: transparent;
-  border-radius: 8px 8px 0 0; /* Top-left and top-right corners */
+  border-radius: 8px 8px 0 0; 
   overflow: hidden;
 }
 
@@ -1838,7 +1838,9 @@
 
 
 
-
+.sc-pb-30px{
+  padding-bottom: 30px !important;
+}
 .sc-w-13px {
   width: 13px !important;
 }
