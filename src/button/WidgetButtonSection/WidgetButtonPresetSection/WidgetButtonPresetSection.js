@@ -3,12 +3,12 @@ export function WidgetButtonPresetSection() {
     {
       title: "Bold Highlight Text",
       description: "Text: Bold + Highlight + Center",
-      video: "preset-demo1.mp4",
+      video: "preset-demo1.gif",
     },
     {
       title: "Minimal Button",
       description: "Button: No border + Thin font",
-      video: "preset-demo2.mp4",
+      video: "preset-demo2.gif",
     },
     {
       title: "Shadow Pop",
