@@ -7,7 +7,7 @@ export function ToolbarIconHtml(){
       </div>
       <div class="sc-mt-4">
         <p class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
-          Powerful Visual Editor for Customizing Squarespace Element in Real-Time.
+          Powerful Visual Editor for Customizing Squarespace Sections in Real-Time.
         </p>
       </div>
     </div>
