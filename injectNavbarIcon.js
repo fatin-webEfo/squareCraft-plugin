@@ -92,7 +92,6 @@ export function injectNavbarIcon() {
           const clientY = event.clientY || event.touches?.[0]?.clientY;
           const rect = panel.getBoundingClientRect();
 
-          // Fix offset using viewport-based `fixed` positioning
           offsetX = clientX - rect.left;
           offsetY = clientY - rect.top;
 
@@ -222,7 +221,18 @@ export function injectNavbarIcon() {
 
 
 
-
+  function injectGlobalStylesheet() {
+    const head = parent.document.head;
+    if (!head.querySelector("#sc-style-link")) {
+      const link = document.createElement("link");
+      link.id = "sc-style-link";
+      link.rel = "stylesheet";
+      link.href =
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+      head.appendChild(link);
+    }
+  }
+  
 
 
 
@@ -273,6 +283,7 @@ export function injectNavbarIcon() {
         let sectionPanel = null; // Declare outside the function scope
 
         scDiv.addEventListener("click", () => {
+          injectGlobalStylesheet()
           const mainWidget =
             parent.document.querySelector("#sc-widget-container") ||
             document.querySelector("#sc-widget-container");
