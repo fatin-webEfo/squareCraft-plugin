@@ -2,7 +2,7 @@ export function ToolbarIconHtml(section) {
   return `
     <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
       <div class="sc-flex sc-roboto sc-universal sc-items-center sc-gap-3">
-        <img class="sc-cursor-grabbing sc-universal" src="https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-text-logo-light.svg" width="140px" />
+        <img class="sc-cursor-grabbing sc-universal" src="https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-text-logo-transparent.svg" width="140px" />
         <p class="sc-font-size-14 sc-universal sc-text-gray-300 sc-font-semibold">Sections</p>
       </div>
       <div class="sc-mt-4">
