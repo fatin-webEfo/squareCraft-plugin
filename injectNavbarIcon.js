@@ -304,7 +304,7 @@ export function injectNavbarIcon() {
         </div>
         <div class="sc-mt-4">
           <p class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
-            Powerful Visual Editor for Customizing Squarespace Text Styles in
+            Powerful Visual Editor for Customizing Squarespace Element in
             Real-Time.
           </p>
         </div>
