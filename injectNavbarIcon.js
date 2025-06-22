@@ -73,9 +73,11 @@ export function injectNavbarIcon() {
         wrapper.appendChild(panel);
 
         const dragTarget = panel.querySelector("#icon-options");
+        let isDragging = false;
         let offsetX = 0,
-          offsetY = 0,
-          isDragging = false;
+          offsetY = 0;
+        let currentX = 0,
+          currentY = 0;
 
         dragTarget.style.cursor = "grab";
 
@@ -102,9 +104,12 @@ export function injectNavbarIcon() {
             top: `${rect.top}px`,
             right: "unset",
             transform: "none",
+            transition: "none",
+            willChange: "transform",
           });
 
           dragTarget.style.cursor = "grabbing";
+
           document.addEventListener("mousemove", dragMove);
           document.addEventListener("mouseup", stopDrag);
           document.addEventListener("touchmove", dragMove);
@@ -117,21 +122,34 @@ export function injectNavbarIcon() {
           const clientX = event.clientX || event.touches?.[0]?.clientX;
           const clientY = event.clientY || event.touches?.[0]?.clientY;
 
-          panel.style.left = `${clientX - offsetX}px`;
-          panel.style.top = `${clientY - offsetY}px`;
+          currentX = clientX - offsetX;
+          currentY = clientY - offsetY;
+
+          panel.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
         };
 
         const stopDrag = () => {
+          if (!isDragging) return;
+
           isDragging = false;
           dragTarget.style.cursor = "grab";
+
+          panel.style.left = `${currentX}px`;
+          panel.style.top = `${currentY}px`;
+          panel.style.transform = "none";
+          panel.style.willChange = "auto";
+
           document.removeEventListener("mousemove", dragMove);
           document.removeEventListener("mouseup", stopDrag);
           document.removeEventListener("touchmove", dragMove);
           document.removeEventListener("touchend", stopDrag);
         };
 
+        dragTarget.removeEventListener("mousedown", startDrag);
+        dragTarget.removeEventListener("touchstart", startDrag);
         dragTarget.addEventListener("mousedown", startDrag);
         dragTarget.addEventListener("touchstart", startDrag);
+        
 
         const handleOutsideClick = (e) => {
           if (!panel.contains(e.target) && !wrapper.contains(e.target)) {
