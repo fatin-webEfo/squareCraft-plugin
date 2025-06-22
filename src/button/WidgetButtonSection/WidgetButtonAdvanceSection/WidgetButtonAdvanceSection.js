@@ -410,6 +410,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
             <div class=" ">
               <div
+                id="button-advance-horizontal"
                 class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
               >
                 <div class="sc-flex sc-items-center sc-gap-8px">
@@ -424,12 +425,14 @@ export function WidgetButtonAdvanceSection(){
                   </p>
                 </div>
                 <img
+                  id="button-advance-horizontal-arrow"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180"
                   alt=""
                 />
               </div>
               <div
+                id="button-advance-horizontal-section"
                 class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
               >
                 <div class="sc-flex sc-flex-col sc-gap-2">
@@ -440,6 +443,7 @@ export function WidgetButtonAdvanceSection(){
                       Custom Timeline
                     </p>
                     <div
+                      id="icon-size-reset"
                       class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                     >
                       <img
@@ -454,19 +458,23 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px"
                   >
                     <div
+                      id="timeline-start-fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                       style="left: 0%; width: 0%"
                     ></div>
                     <div
+                      id="timeline-end-fill"
                       class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
                       style="right: 0%; width: 0%"
                     ></div>
 
                     <div
+                      id="timeline-start-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="left: 0%"
                     ></div>
                     <div
+                      id="timeline-end-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="right: 0%"
                     ></div>
@@ -476,10 +484,10 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
                   >
                     <p class="sc-universal sc-roboto">
-                      Start <span >0%</span>
+                      Start <span id="timelineStartValue">0%</span>
                     </p>
                     <p class="sc-universal sc-roboto">
-                      End <span >0%</span>
+                      End <span id="timelineEndValue">0%</span>
                     </p>
                   </div>
                 </div>
@@ -495,6 +503,7 @@ export function WidgetButtonAdvanceSection(){
                         Entry
                       </p>
                       <div
+                        id="button-advance-entry-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -508,27 +517,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-entry-count"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-entry-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-entry-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-entry-Field"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-entry-Fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-entry-Bullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -544,6 +559,7 @@ export function WidgetButtonAdvanceSection(){
                         Center
                       </p>
                       <div
+                        id="button-advance-center-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -557,27 +573,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-center-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-center-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-center-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-center-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-center-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-center-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -593,6 +615,7 @@ export function WidgetButtonAdvanceSection(){
                         Exit
                       </p>
                       <div
+                        id="button-advance-exit-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -606,27 +629,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-exit-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-exit-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-exit-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-exit-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-exit-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-exit-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -642,6 +671,7 @@ export function WidgetButtonAdvanceSection(){
                         Effect Speed
                       </p>
                       <div
+                        id="button-advance-effectSpeed-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -655,27 +685,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-effectSpeed-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-effectSpeed-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-effectSpeed-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-effectSpeed-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-effectSpeed-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-effectSpeed-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -738,6 +774,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
             <div class=" ">
               <div
+                id="button-advance-opacity"
                 class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
               >
                 <div class="sc-flex sc-items-center sc-gap-8px">
@@ -750,12 +787,14 @@ export function WidgetButtonAdvanceSection(){
                   <p class="sc-roboto sc-font-size-14 sc-universal">Opacity</p>
                 </div>
                 <img
+                  id="button-advance-opacity-arrow"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180"
                   alt=""
                 />
               </div>
               <div
+                id="button-advance-opacity-section"
                 class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
               >
                 <div class="sc-flex sc-flex-col sc-gap-2">
@@ -766,6 +805,7 @@ export function WidgetButtonAdvanceSection(){
                       Custom Timeline
                     </p>
                     <div
+                      id="icon-size-reset"
                       class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                     >
                       <img
@@ -780,19 +820,23 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px"
                   >
                     <div
+                      id="timeline-start-fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                       style="left: 0%; width: 0%"
                     ></div>
                     <div
+                      id="timeline-end-fill"
                       class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
                       style="right: 0%; width: 0%"
                     ></div>
 
                     <div
+                      id="timeline-start-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="left: 0%"
                     ></div>
                     <div
+                      id="timeline-end-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="right: 0%"
                     ></div>
@@ -802,10 +846,10 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
                   >
                     <p class="sc-universal sc-roboto">
-                      Start <span >0%</span>
+                      Start <span id="timelineStartValue">0%</span>
                     </p>
                     <p class="sc-universal sc-roboto">
-                      End <span >0%</span>
+                      End <span id="timelineEndValue">0%</span>
                     </p>
                   </div>
                 </div>
@@ -821,6 +865,7 @@ export function WidgetButtonAdvanceSection(){
                         Entry
                       </p>
                       <div
+                        id="button-advance-entry-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -834,27 +879,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-entry-count"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-entry-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-entry-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-entry-Field"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-entry-Fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-entry-Bullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -870,6 +921,7 @@ export function WidgetButtonAdvanceSection(){
                         Center
                       </p>
                       <div
+                        id="button-advance-center-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -883,27 +935,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-center-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-center-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-center-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-center-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-center-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-center-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -919,7 +977,9 @@ export function WidgetButtonAdvanceSection(){
                         Exit
                       </p>
                       <div
-                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f" >
+                        id="button-advance-exit-reset"
+                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
+                      >
                         <img
                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                           width="10"
@@ -931,27 +991,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-exit-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-exit-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-exit-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-exit-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-exit-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-exit-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -967,6 +1033,7 @@ export function WidgetButtonAdvanceSection(){
                         Effect Speed
                       </p>
                       <div
+                        id="button-advance-effectSpeed-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -977,28 +1044,36 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+                        id="button-advance-effectSpeed-radiusCount"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-effectSpeed-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-effectSpeed-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-effectSpeed-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-effectSpeed-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-effectSpeed-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1061,6 +1136,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
             <div class=" ">
               <div
+                id="button-advance-scale"
                 class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
               >
                 <div class="sc-flex sc-items-center sc-gap-8px">
@@ -1073,12 +1149,14 @@ export function WidgetButtonAdvanceSection(){
                   <p class="sc-roboto sc-font-size-14 sc-universal">Scale</p>
                 </div>
                 <img
+                  id="button-advance-scale-arro"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180"
                   alt=""
                 />
               </div>
               <div
+                id="button-advance-scale-section"
                 class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
               >
                 <div class="sc-flex sc-flex-col sc-gap-2">
@@ -1089,6 +1167,7 @@ export function WidgetButtonAdvanceSection(){
                       Custom Timeline
                     </p>
                     <div
+                      id="icon-size-reset"
                       class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                     >
                       <img
@@ -1103,19 +1182,23 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px"
                   >
                     <div
+                      id="timeline-start-fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                       style="left: 0%; width: 0%"
                     ></div>
                     <div
+                      id="timeline-end-fill"
                       class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
                       style="right: 0%; width: 0%"
                     ></div>
 
                     <div
+                      id="timeline-start-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="left: 0%"
                     ></div>
                     <div
+                      id="timeline-end-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="right: 0%"
                     ></div>
@@ -1125,10 +1208,10 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
                   >
                     <p class="sc-universal sc-roboto">
-                      Start <span >0%</span>
+                      Start <span id="timelineStartValue">0%</span>
                     </p>
                     <p class="sc-universal sc-roboto">
-                      End <span >0%</span>
+                      End <span id="timelineEndValue">0%</span>
                     </p>
                   </div>
                 </div>
@@ -1144,6 +1227,7 @@ export function WidgetButtonAdvanceSection(){
                         Entry
                       </p>
                       <div
+                        id="button-advance-entry-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1157,27 +1241,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-entry-count"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-entry-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-entry-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-entry-Field"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-entry-Fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-entry-Bullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1193,6 +1283,7 @@ export function WidgetButtonAdvanceSection(){
                         Center
                       </p>
                       <div
+                        id="button-advance-center-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1203,29 +1294,36 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
+                        id="button-advance-center-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-center-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-center-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-center-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-center-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-center-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1241,6 +1339,7 @@ export function WidgetButtonAdvanceSection(){
                         Exit
                       </p>
                       <div
+                        id="button-advance-exit-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1254,27 +1353,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-exit-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-exit-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-exit-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-exit-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-exit-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-exit-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1290,7 +1395,9 @@ export function WidgetButtonAdvanceSection(){
                         Effect Speed
                       </p>
                       <div
-                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                        id="button-advance-effectSpeed-reset"
+                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
+                      >
                         <img
                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                           width="10"
@@ -1299,28 +1406,36 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+                        id="button-advance-effectSpeed-radiusCount"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-effectSpeed-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-effectSpeed-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-effectSpeed-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-effectSpeed-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-effectSpeed-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1383,6 +1498,7 @@ export function WidgetButtonAdvanceSection(){
             </div>
             <div class="">
               <div
+                id="button-advance-rotate"
                 class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
               >
                 <div class="sc-flex sc-items-center sc-gap-8px">
@@ -1395,12 +1511,14 @@ export function WidgetButtonAdvanceSection(){
                   <p class="sc-roboto sc-font-size-14 sc-universal">Rotate</p>
                 </div>
                 <img
+                  id="button-advance-rotate-arrow"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180"
                   alt=""
                 />
               </div>
               <div
+                id="button-advance-rotate-section"
                 class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
               >
                 <div class="sc-flex sc-flex-col sc-gap-2">
@@ -1411,6 +1529,7 @@ export function WidgetButtonAdvanceSection(){
                       Custom Timeline
                     </p>
                     <div
+                      id="icon-size-reset"
                       class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                     >
                       <img
@@ -1425,19 +1544,23 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px"
                   >
                     <div
+                      id="timeline-start-fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                       style="left: 0%; width: 0%"
                     ></div>
                     <div
+                      id="timeline-end-fill"
                       class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
                       style="right: 0%; width: 0%"
                     ></div>
 
                     <div
+                      id="timeline-start-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="left: 0%"
                     ></div>
                     <div
+                      id="timeline-end-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="right: 0%"
                     ></div>
@@ -1447,10 +1570,10 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
                   >
                     <p class="sc-universal sc-roboto">
-                      Start <span >0%</span>
+                      Start <span id="timelineStartValue">0%</span>
                     </p>
                     <p class="sc-universal sc-roboto">
-                      End <span >0%</span>
+                      End <span id="timelineEndValue">0%</span>
                     </p>
                   </div>
                 </div>
@@ -1466,6 +1589,7 @@ export function WidgetButtonAdvanceSection(){
                         Entry
                       </p>
                       <div
+                        id="button-advance-entry-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1476,24 +1600,36 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11" >
+                        id="button-advance-entry-count"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
-                          class="sc-arrow-placeholder"></span>
+                          id="button-advance-entry-Increase"
+                          class="sc-arrow-placeholder"
+                        ></span>
                         <span
-                          class="sc-arrow-placeholder sc-rotate-180"></span>
+                          id="button-advance-entry-Decrease"
+                          class="sc-arrow-placeholder sc-rotate-180"
+                        ></span>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    id="button-advance-entry-Field"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  >
                     <div
-                      class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                      id="button-advance-entry-Fill"
+                      class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
+                    ></div>
                     <div
+                      id="button-advance-entry-Bullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1509,7 +1645,9 @@ export function WidgetButtonAdvanceSection(){
                         Center
                       </p>
                       <div
-                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                        id="button-advance-center-reset"
+                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
+                      >
                         <img
                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                           width="10"
@@ -1518,41 +1656,54 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f" >
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
+                        id="button-advance-center-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-center-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-center-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    id="button-advance-center-radiusField"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  >
                     <div
+                      id="button-advance-center-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
-                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+                      id="button-advance-center-radiusBullet"
+                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+                    ></div>
                   </div>
                 </div>
                 <div class="sc-w-full sc-mt-3">
                   <div
-                    class="sc-flex sc-w-full sc-items-center sc-justify-between">
+                    class="sc-flex sc-w-full sc-items-center sc-justify-between"
+                  >
                     <div class="sc-flex sc-gap-2 sc-items-center">
                       <p
-                        class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
+                        class="sc-roboto sc-font-thin sc-universal sc-font-size-14"
+                      >
                         Exit
                       </p>
                       <div
-                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                        id="button-advance-exit-reset"
+                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
+                      >
                         <img
                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                           width="10"
@@ -1561,39 +1712,54 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+                        id="button-advance-exit-radiusCount"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-exit-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-exit-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    id="button-advance-exit-radiusField"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  >
                     <div
-                      class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+                      id="button-advance-exit-radiusFill"
+                      class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
+                    ></div>
                     <div
-                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+                      id="button-advance-exit-radiusBullet"
+                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+                    ></div>
                   </div>
                 </div>
                 <div class="sc-w-full sc-mt-3">
                   <div
-                    class="sc-flex sc-w-full sc-items-center sc-justify-between">
+                    class="sc-flex sc-w-full sc-items-center sc-justify-between"
+                  >
                     <div class="sc-flex sc-gap-2 sc-items-center">
                       <p
-                        class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
+                        class="sc-roboto sc-font-thin sc-universal sc-font-size-14"
+                      >
                         Effect Speed
                       </p>
                       <div
-                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
+                        id="button-advance-effectSpeed-reset"
+                        class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
+                      >
                         <img
                           src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                           width="10"
@@ -1602,26 +1768,36 @@ export function WidgetButtonAdvanceSection(){
                       </div>
                     </div>
                     <div
-                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f">
+                      class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
+                    >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+                        id="button-advance-effectSpeed-radiusCount"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
-                          class="sc-arrow-placeholder"></span>
+                          id="button-advance-effectSpeed-Increase"
+                          class="sc-arrow-placeholder"
+                        ></span>
                         <span
+                          id="button-advance-effectSpeed-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                    id="button-advance-effectSpeed-radiusField"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  >
                     <div
+                      id="button-advance-effectSpeed-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-effectSpeed-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1684,7 +1860,9 @@ export function WidgetButtonAdvanceSection(){
             </div>
             <div class="">
               <div
-                class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
+                id="button-advance-blur"
+                class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
+              >
                 <div class="sc-flex sc-items-center sc-gap-8px">
                   <img
                     width="15px"
@@ -1695,13 +1873,16 @@ export function WidgetButtonAdvanceSection(){
                   <p class="sc-roboto sc-font-size-14 sc-universal">Blur</p>
                 </div>
                 <img
+                  id="button-advance-blur-arrow"
                   src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
                   class="sc-rotate-180"
                   alt=""
                 />
               </div>
               <div
-                class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px">
+                id="button-advance-blur-section"
+                class="sc-bg-454545 sc-hidden sc-mt-2 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
+              >
                 <div class="sc-flex sc-flex-col sc-gap-2">
                   <div class="sc-flex sc-gap-2 sc-items-center">
                     <p
@@ -1710,6 +1891,7 @@ export function WidgetButtonAdvanceSection(){
                       Custom Timeline
                     </p>
                     <div
+                      id="icon-size-reset"
                       class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                     >
                       <img
@@ -1724,31 +1906,36 @@ export function WidgetButtonAdvanceSection(){
                     class="sc-relative sc-mt-2 sc-h-2 sc-bg-F6F6F6 sc-rounded-15px"
                   >
                     <div
+                      id="timeline-start-fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                       style="left: 0%; width: 0%"
                     ></div>
                     <div
+                      id="timeline-end-fill"
                       class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
                       style="right: 0%; width: 0%"
                     ></div>
 
                     <div
+                      id="timeline-start-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-color-EF7C2F sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="left: 0%"
                     ></div>
                     <div
+                      id="timeline-end-bullet"
                       class="sc-absolute sc-w-3 sc-h-3 sc-bg-F6B67B sc-rounded-full sc-cursor-pointer sc-top-half"
                       style="right: 0%"
                     ></div>
                   </div>
 
                   <div
-                    class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300">
+                    class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
+                  >
                     <p class="sc-universal sc-roboto">
-                      Start <span >0%</span>
+                      Start <span id="timelineStartValue">0%</span>
                     </p>
                     <p class="sc-universal sc-roboto">
-                      End <span>0%</span>
+                      End <span id="timelineEndValue">0%</span>
                     </p>
                   </div>
                 </div>
@@ -1764,6 +1951,7 @@ export function WidgetButtonAdvanceSection(){
                         Entry
                       </p>
                       <div
+                        id="button-advance-entry-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1777,26 +1965,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
-                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+                        id="button-advance-entry-count"
+                        class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+                      >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-entry-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-entry-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-entry-Field"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-entry-Fill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-entry-Bullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1812,6 +2007,7 @@ export function WidgetButtonAdvanceSection(){
                         Center
                       </p>
                       <div
+                        id="button-advance-center-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1825,27 +2021,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-center-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-center-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-center-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-center-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-center-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-center-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1861,6 +2063,7 @@ export function WidgetButtonAdvanceSection(){
                         Exit
                       </p>
                       <div
+                        id="button-advance-exit-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1874,27 +2077,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-exit-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-exit-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-exit-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-exit-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-exit-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-exit-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
@@ -1910,6 +2119,7 @@ export function WidgetButtonAdvanceSection(){
                         Effect Speed
                       </p>
                       <div
+                        id="button-advance-effectSpeed-reset"
                         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                       >
                         <img
@@ -1923,27 +2133,33 @@ export function WidgetButtonAdvanceSection(){
                       class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                     >
                       <p
+                        id="button-advance-effectSpeed-radiusCount"
                         class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                       >
                         0px
                       </p>
                       <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                         <span
+                          id="button-advance-effectSpeed-Increase"
                           class="sc-arrow-placeholder"
                         ></span>
                         <span
+                          id="button-advance-effectSpeed-Decrease"
                           class="sc-arrow-placeholder sc-rotate-180"
                         ></span>
                       </div>
                     </div>
                   </div>
                   <div
+                    id="button-advance-effectSpeed-radiusField"
                     class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
                   >
                     <div
+                      id="button-advance-effectSpeed-radiusFill"
                       class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                     ></div>
                     <div
+                      id="button-advance-effectSpeed-radiusBullet"
                       class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
                     ></div>
                   </div>
