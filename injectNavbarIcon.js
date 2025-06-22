@@ -280,24 +280,32 @@ export function injectNavbarIcon() {
         scDiv.appendChild(text);
         toolbarContainer.appendChild(scDiv);
 
-        let sectionPanel = null; // Declare outside the function scope
+        let sectionPanel = null;
 
-        scDiv.addEventListener("click", () => {
-          injectGlobalStylesheet()
+        scDiv.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          injectGlobalStylesheet();
+
           const mainWidget =
             parent.document.querySelector("#sc-widget-container") ||
             document.querySelector("#sc-widget-container");
+
           const adminPanel =
             parent.document.querySelector("#sc-admin-panel") ||
             document.querySelector("#sc-admin-panel");
+
           if (mainWidget) mainWidget.style.display = "none";
           if (adminPanel) adminPanel.remove();
+
+          // Close panel if already open
           if (sectionPanel) {
             sectionPanel.remove();
             sectionPanel = null;
+            document.removeEventListener("click", outsideClickHandler);
             return;
           }
 
+          // Create panel
           sectionPanel = parent.document.createElement("div");
           sectionPanel.id = "sc-section-widget";
           sectionPanel.className =
@@ -309,7 +317,10 @@ export function injectNavbarIcon() {
             zIndex: "99999",
           });
 
-          sectionPanel.innerHTML = ToolbarIconHtml()
+          const mod = await import(
+            "https://fatin-webefo.github.io/squareCraft-plugin/ToolbarIconHtml.js"
+          );
+          sectionPanel.innerHTML = mod.ToolbarIconHtml();
 
           parent.document.body.appendChild(sectionPanel);
 
@@ -341,7 +352,21 @@ export function injectNavbarIcon() {
             document.removeEventListener("mousemove", move);
             document.removeEventListener("mouseup", stop);
           }
+
+          // Outside click close
+          function outsideClickHandler(e) {
+            if (!sectionPanel.contains(e.target) && !scDiv.contains(e.target)) {
+              sectionPanel.remove();
+              sectionPanel = null;
+              document.removeEventListener("click", outsideClickHandler);
+            }
+          }
+
+          setTimeout(() => {
+            document.addEventListener("click", outsideClickHandler);
+          }, 0);
         });
+
 
       }
     });
