@@ -289,8 +289,7 @@ export function injectNavbarIcon() {
           });
 
           panel.innerHTML = `
-            <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
-               <div
+            <div
       class="sc-p-2 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px"
     >
       <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
@@ -317,19 +316,16 @@ export function injectNavbarIcon() {
         class="sc-mt-6 sc-h-12 sc-roboto sc-flex sc-items-center sc-universal"
       >
         <p
-          id="design-tab"
           class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader"
         >
           Design
         </p>
         <p
-          id="advanced-tab"
           class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader"
         >
           Advanced
         </p>
         <p
-          id="preset-tab"
           class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader"
         >
           Presets
@@ -343,7 +339,6 @@ export function injectNavbarIcon() {
         ></div>
       </div>
       <div
-        id="tabContentWrapper"
         class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d"
       >
         <p>Section widget</p>
@@ -351,7 +346,6 @@ export function injectNavbarIcon() {
       <div class="sc-mt-3">
         <div class="sc-flex sc-items-center sc-justify-between sc-gap-2">
           <div
-            id="publish"
             class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center"
           >
             Publish
@@ -364,7 +358,6 @@ export function injectNavbarIcon() {
         </div>
       </div>
     </div>
-            </div>
           `;
 
           parent.document.body.appendChild(panel);
