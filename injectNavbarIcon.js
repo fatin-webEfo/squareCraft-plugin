@@ -11,7 +11,7 @@ export function injectNavbarIcon() {
 
       const iconSrc =
         localStorage.getItem("sc_icon") ||
-        "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+        "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
 
       const wrapper = parent.document.createElement("div");
       wrapper.classList.add("sc-admin-icon-wrapper");
@@ -245,7 +245,7 @@ export function injectNavbarIcon() {
       if (!toolbarContainer.querySelector(".sc-toolbar")) {
         const iconSrc =
           localStorage.getItem("sc_icon") ||
-          "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+          "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
 
         const scDiv = document.createElement("div");
         scDiv.classList.add("sc-toolbar");
