@@ -238,43 +238,126 @@ export function injectNavbarIcon() {
 
         const scDiv = document.createElement("div");
         scDiv.classList.add("sc-toolbar");
-        scDiv.style.display = "flex";
-        scDiv.style.alignItems = "center";
-        scDiv.style.border = "1px solid #E5E4E2";
-        scDiv.style.background = "rgba(255, 127, 23, 0.06)";
-        scDiv.style.borderRadius = "6px";
-        scDiv.style.padding = "6px";
-        scDiv.style.gap = "6px";
-
-        scDiv.addEventListener("mouseenter", () => {
-          scDiv.style.backgroundColor = "rgba(177, 176, 176, 0.2)";
-        });
-
-        scDiv.addEventListener("mouseleave", () => {
-          scDiv.style.backgroundColor = "transparent";
+        Object.assign(scDiv.style, {
+          display: "flex",
+          alignItems: "center",
+          border: "1px solid #E5E4E2",
+          background: "rgba(255, 127, 23, 0.06)",
+          borderRadius: "6px",
+          padding: "6px",
+          gap: "6px",
+          cursor: "pointer",
         });
 
         const icon = document.createElement("img");
         icon.src = iconSrc;
         icon.alt = "sc";
-        icon.style.width = "30px";
-        icon.style.height = "30px";
-        icon.style.borderRadius = "20%";
-        icon.style.cursor = "pointer";
+        Object.assign(icon.style, {
+          width: "30px",
+          height: "30px",
+          borderRadius: "20%",
+        });
 
         const text = document.createElement("span");
         text.innerText = "SquareCraft";
-        text.style.fontSize = "14px";
-        text.style.fontWeight = "bold";
-        text.style.cursor = "pointer";
+        Object.assign(text.style, {
+          fontSize: "14px",
+          fontWeight: "bold",
+        });
 
         scDiv.appendChild(icon);
         scDiv.appendChild(text);
-
         toolbarContainer.appendChild(scDiv);
+
+        let panel = null;
+
+        scDiv.addEventListener("click", () => {
+          if (panel) {
+            panel.remove();
+            panel = null;
+            return;
+          }
+
+          panel = parent.document.createElement("div");
+          panel.className =
+            "sc-p-2 z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px";
+          Object.assign(panel.style, {
+            position: "fixed",
+            top: "100px",
+            left: "100px",
+            zIndex: "99999",
+          });
+
+          panel.innerHTML = `
+            <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
+              <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
+                <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+              </div>
+              <div class="sc-mt-4">
+                <p class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
+                  Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time.
+                </p>
+              </div>
+            </div>
+            <div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
+            <div class="sc-mt-6 sc-h-12 sc-roboto sc-flex sc-items-center sc-universal">
+              <p id="design-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Design</p>
+              <p id="advanced-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
+              <p id="preset-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Presets</p>
+            </div>
+            <div class="sc-border-t sc-border-solid sc-relative sc-border-color-494949 sc-w-full">
+              <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-color-EF7C2F sc-w-16 sc-h-1px sc-tab-active-indicator"></div>
+            </div>
+            <div id="tabContentWrapper" class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+              <p>Section widget</p>
+            </div>
+            <div class="sc-mt-3">
+              <div class="sc-flex sc-items-center sc-justify-between sc-gap-2">
+                <div id="publish" class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
+                  Publish
+                </div>
+                <div class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
+                  Reset
+                </div>
+              </div>
+            </div>
+          `;
+
+          parent.document.body.appendChild(panel);
+
+          const grab = panel.querySelector("#sc-grabbing");
+          let isDragging = false;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          grab.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            const rect = panel.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            panel.style.pointerEvents = "none";
+
+            document.addEventListener("mousemove", move);
+            document.addEventListener("mouseup", stop);
+          });
+
+          function move(e) {
+            if (!isDragging) return;
+            panel.style.left = `${e.clientX - offsetX}px`;
+            panel.style.top = `${e.clientY - offsetY}px`;
+          }
+
+          function stop() {
+            isDragging = false;
+            panel.style.pointerEvents = "auto";
+            document.removeEventListener("mousemove", move);
+            document.removeEventListener("mouseup", stop);
+          }
+        });
       }
     });
   }
+  
 
   insertToolbarIcon();
   insertAdminIcon();
