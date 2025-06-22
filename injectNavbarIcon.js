@@ -3,12 +3,6 @@ import { NavbarIconHtml } from "https://fatin-webefo.github.io/squareCraft-plugi
 export function injectNavbarIcon() {
 
 
-
-
-
-
-
-
   function insertAdminIcon() {
     if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
       const navContainer = parent.document.querySelector("ul.css-1tn5iw9");
@@ -46,14 +40,18 @@ export function injectNavbarIcon() {
       icon.addEventListener("click", (e) => {
         e.stopPropagation();
 
-        // Close panel if already open
         if (panel) {
           panel.remove();
           panel = null;
           return;
         }
-
-        // Create panel
+        const mainWidget =
+          parent.document.querySelector("#sc-widget-container") ||
+          document.querySelector("#sc-widget-container");
+        if (mainWidget && mainWidget.style.display !== "none") {
+          mainWidget.style.display = "none";
+        }
+        
         panel = parent.document.createElement("div");
         panel.id = "sc-admin-panel";
         Object.assign(panel.style, {
@@ -216,22 +214,6 @@ export function injectNavbarIcon() {
     }
   }
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
