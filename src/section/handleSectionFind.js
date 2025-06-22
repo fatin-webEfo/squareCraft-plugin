@@ -15,7 +15,7 @@ export function handleSectionFind() {
       return { blockId, type };
     });
 
-    let sectionType = "block"; 
+    let sectionType = "block";
     const className = section.className.toLowerCase();
 
     if (className.includes("footer")) sectionType = "footer";
@@ -41,6 +41,7 @@ export function handleSectionFind() {
       blocks,
     });
   });
+  console.log("🧩 handleSectionFind() Output:", results); 
 
   return results;
 }
