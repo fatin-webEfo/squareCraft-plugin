@@ -95,7 +95,7 @@ export function injectNavbarIcon() {
           offsetY = clientY - rect.top;
 
           Object.assign(panel.style, {
-            position: "absolute",
+            position: "fixed",
             left: `${rect.left}px`,
             top: `${rect.top}px`,
             right: "unset",
