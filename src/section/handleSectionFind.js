@@ -15,17 +15,29 @@ export function handleSectionFind() {
       return { blockId, type };
     });
 
-    let sectionType = "normal";
-    const classes = section.className.toLowerCase();
+    let sectionType = "block"; 
+    const className = section.className.toLowerCase();
 
-    if (classes.includes("header")) sectionType = "header";
-    else if (classes.includes("footer")) sectionType = "footer";
+    if (className.includes("footer")) sectionType = "footer";
+    else if (className.includes("header")) sectionType = "header";
     else if (section.querySelector("form")) sectionType = "form";
+    else if (
+      section.querySelector(".gallery-grid") ||
+      section.querySelector(".gallery")
+    )
+      sectionType = "gallery";
+    else if (
+      section.querySelector(".sqs-block-image") &&
+      className.includes("auto")
+    )
+      sectionType = "auto-layout";
+    else if (section.closest("article[data-page-sections]"))
+      sectionType = "collection";
 
     results.push({
       sectionId,
-      blockIds,
       sectionType,
+      blockIds,
       blocks,
     });
   });

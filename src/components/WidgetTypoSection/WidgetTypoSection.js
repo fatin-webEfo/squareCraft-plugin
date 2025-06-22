@@ -3,7 +3,7 @@ import { widgetTypoNormalState } from "https://fatin-webefo.github.io/squareCraf
 import { widgetTypoHoverState } from "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/widgetTypoHoverState/widgetTypoHoverState.js";
 
 
-export function WidgetTypoSection(id) {
+export function WidgetTypoSection() {
 
 
   return `
