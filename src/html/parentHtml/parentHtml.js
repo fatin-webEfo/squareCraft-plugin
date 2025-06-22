@@ -7,7 +7,7 @@ export function parentHtml() {
             <div
                 class="sc-p-4 sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
                 <div class="sc-flex sc-items-center sc-justify-between">
-                    <img src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+                    <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-text-logo-transparent.svg" width="140px" />
                     <div
                         class="sc-flex sc-items-center sc-py-1px sc-rounded-15px sc-gap-2 sc-bg-color-3d3d3d sc-px-2">
                         <p class="sc-font-size-12">Auto Save</p>
