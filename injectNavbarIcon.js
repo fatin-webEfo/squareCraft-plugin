@@ -76,8 +76,6 @@ export function injectNavbarIcon() {
         let isDragging = false;
         let offsetX = 0,
           offsetY = 0;
-        let currentX = 0,
-          currentY = 0;
 
         dragTarget.style.cursor = "grab";
 
@@ -93,8 +91,8 @@ export function injectNavbarIcon() {
 
           const clientX = event.clientX || event.touches?.[0]?.clientX;
           const clientY = event.clientY || event.touches?.[0]?.clientY;
-          const rect = panel.getBoundingClientRect();
 
+          const rect = panel.getBoundingClientRect();
           offsetX = clientX - rect.left;
           offsetY = clientY - rect.top;
 
@@ -105,7 +103,9 @@ export function injectNavbarIcon() {
             right: "unset",
             transform: "none",
             transition: "none",
-            willChange: "transform",
+            willChange: "left, top",
+            pointerEvents: "none",
+            userSelect: "none",
           });
 
           dragTarget.style.cursor = "grabbing";
@@ -122,10 +122,11 @@ export function injectNavbarIcon() {
           const clientX = event.clientX || event.touches?.[0]?.clientX;
           const clientY = event.clientY || event.touches?.[0]?.clientY;
 
-          currentX = clientX - offsetX;
-          currentY = clientY - offsetY;
+          const x = clientX - offsetX;
+          const y = clientY - offsetY;
 
-          panel.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+          panel.style.left = `${x}px`;
+          panel.style.top = `${y}px`;
         };
 
         const stopDrag = () => {
@@ -134,10 +135,12 @@ export function injectNavbarIcon() {
           isDragging = false;
           dragTarget.style.cursor = "grab";
 
-          panel.style.left = `${currentX}px`;
-          panel.style.top = `${currentY}px`;
-          panel.style.transform = "none";
-          panel.style.willChange = "auto";
+          Object.assign(panel.style, {
+            transform: "none",
+            willChange: "auto",
+            pointerEvents: "auto",
+            userSelect: "auto",
+          });
 
           document.removeEventListener("mousemove", dragMove);
           document.removeEventListener("mouseup", stopDrag);
