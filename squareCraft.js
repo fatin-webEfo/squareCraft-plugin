@@ -85,10 +85,10 @@
 
 
 
-      function injectLaunchAnimationCSS() {
-        if (document.getElementById("sc-launch-animation-style")) return;
+      function injectLaunchAnimationCSS(targetDoc = document) {
+        if (targetDoc.getElementById("sc-launch-animation-style")) return;
 
-        const style = document.createElement("style");
+        const style = targetDoc.createElement("style");
         style.id = "sc-launch-animation-style";
         style.innerHTML = `
           @keyframes scFadeInUp {
@@ -109,19 +109,32 @@
             transform-origin: center center;
           }
         `;
-        document.head.appendChild(style);
+        targetDoc.head.appendChild(style);
       }
+      
+    
       function triggerLaunchAnimation() {
-        const liveBody = document.querySelector('body[id^="collection-"]');
-        if (!liveBody) return;
+        let iframeDoc = null;
 
-        injectLaunchAnimationCSS();
-        liveBody.classList.add("sc-launching");
+        try {
+          const iframe = document.getElementById("sqs-site-frame");
+          if (!iframe) return;
 
-        setTimeout(() => {
-          liveBody.classList.remove("sc-launching");
-        }, 1000); // match animation time
+          iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          const liveBody = iframeDoc.querySelector('body[id^="collection-"]');
+          if (!liveBody) return;
+
+          injectLaunchAnimationCSS(iframeDoc);
+          liveBody.classList.add("sc-launching");
+
+          setTimeout(() => {
+            liveBody.classList.remove("sc-launching");
+          }, 1000);
+        } catch (e) {
+          console.warn("⚠️ Could not access iframe content for animation.");
+        }
       }
+      
             
 
 
