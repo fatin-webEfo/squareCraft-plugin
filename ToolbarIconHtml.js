@@ -1,8 +1,9 @@
 export function ToolbarIconHtml(section) {
   return `
     <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
-      <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
+      <div class="sc-flex sc-roboto sc-universal sc-items-center sc-gap-3">
         <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
+        <p class="sc-font-size-14 sc-universal sc-text-gray-300 sc-font-semibold">Sections</p>
       </div>
       <div class="sc-mt-4">
         <p class="sc-font-size-12 sc-universal sc-roboto sc-font-light">
