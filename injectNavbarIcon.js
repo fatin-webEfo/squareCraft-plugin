@@ -277,9 +277,16 @@ export function injectNavbarIcon() {
   insertToolbarIcon();
   insertAdminIcon();
 
-  const observer = new MutationObserver(() => {
+  if (window.__sc_navbarObserver) {
+    window.__sc_navbarObserver.disconnect();
+  }
+  
+  window.__sc_navbarObserver = new MutationObserver(() => {
     insertToolbarIcon();
   });
-
-  observer.observe(parent.document.body, { childList: true, subtree: true });
-}
+  
+  window.__sc_navbarObserver.observe(parent.document.body, {
+    childList: true,
+    subtree: true,
+  });
+  
