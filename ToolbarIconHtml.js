@@ -20,7 +20,7 @@ export function ToolbarIconHtml(section) {
     <div class="sc-border-t sc-border-solid sc-relative sc-border-color-494949 sc-w-full">
       <div class="sc-absolute sc-top-0 sc-left-0 sc-bg-color-EF7C2F sc-w-16 sc-h-1px sc-tab-active-indicator"></div>
     </div>
-    <div class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
+    <div class="sc-rounded-4px sc-h-350 sc-p-2 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
       <div class="sc-flex ">
            <div class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                 
@@ -30,7 +30,7 @@ export function ToolbarIconHtml(section) {
             </div>
         </div>
       <div class="sc-flex ">
-           <div class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
+           <div class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                 
                   <p class="sc-roboto sc-font-size-14 sc-universal ">Background</p>
                   <img id="button-font-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
@@ -38,7 +38,7 @@ export function ToolbarIconHtml(section) {
             </div>
         </div>
       <div class="sc-flex ">
-           <div class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
+           <div class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-w-full sc-rounded-4px">
                 
                   <p class="sc-roboto sc-font-size-14 sc-universal ">Border</p>
                   <img id="button-font-arrow" src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
