@@ -83,6 +83,49 @@
       let lastAppliedAlignment = null;
       let lastActiveAlignmentElement = null;
 
+
+
+      function injectLaunchAnimationCSS() {
+        if (document.getElementById("sc-launch-animation-style")) return;
+
+        const style = document.createElement("style");
+        style.id = "sc-launch-animation-style";
+        style.innerHTML = `
+          @keyframes scFadeInUp {
+            0% {
+              filter: grayscale(100%);
+              transform: translateY(60px) scale(0.95);
+              opacity: 0.5;
+            }
+            100% {
+              filter: grayscale(0%);
+              transform: translateY(0) scale(1);
+              opacity: 1;
+            }
+          }
+      
+          body[id^="collection-"].sc-launching {
+            animation: scFadeInUp 0.8s ease-out forwards;
+            transform-origin: center center;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+      function triggerLaunchAnimation() {
+        const liveBody = document.querySelector('body[id^="collection-"]');
+        if (!liveBody) return;
+
+        injectLaunchAnimationCSS();
+        liveBody.classList.add("sc-launching");
+
+        setTimeout(() => {
+          liveBody.classList.remove("sc-launching");
+        }, 1000); // match animation time
+      }
+            
+
+
+
       function applyStylesToElement(element, css) {
         if (!element || !css) return;
 
@@ -571,6 +614,8 @@
         } catch (err) {
           console.error("🚨 Error loading HTML module:", err);
         }
+        triggerLaunchAnimation();
+
       }
 
       function waitForElement(selector, timeout = 3000) {
@@ -684,7 +729,7 @@
           hoverTypoTabSelect()
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);
-
+          triggerLaunchAnimation();
           if (clickedBlock) {
             waitForElement("#typoSection, #imageSection, #buttonSection")
               .then(() => {
