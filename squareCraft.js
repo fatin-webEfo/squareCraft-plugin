@@ -605,54 +605,6 @@
 
         detectBlockElementTypes(clickedBlock);
       }
-
-      async function createWidget(clickedBlock) {
-        try {
-          const module = await import(
-            "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-          );
-          const htmlString = module.html();
-
-          if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-            loadWidgetFromString(htmlString, clickedBlock);
-            setTimeout(() => {
-              if (typeof module.initToggleSwitch === "function") {
-                module.initToggleSwitch();
-              }
-            }, 200);
-          }
-        } catch (err) {
-          console.error("🚨 Error loading HTML module:", err);
-        }
-        triggerLaunchAnimation();
-
-      }
-
-      function waitForElement(selector, timeout = 3000) {
-        return new Promise((resolve, reject) => {
-          const el = document.querySelector(selector);
-          if (el) {
-            resolve(el);
-            return;
-          }
-
-          const observer = new MutationObserver(() => {
-            const el = document.querySelector(selector);
-            if (el) {
-              resolve(el);
-              observer.disconnect();
-            }
-          });
-
-          observer.observe(document.body, { childList: true, subtree: true });
-
-          setTimeout(() => {
-            observer.disconnect();
-            reject(new Error(`Timeout: Element ${selector} not found`));
-          }, timeout);
-        });
-      }
-
       function loadWidgetFromString(htmlString, clickedBlock) {
         if (!widgetContainer) {
           widgetContainer = document.createElement("div");
@@ -736,7 +688,7 @@
             },
           ]);
           initHoverButtonSectionToggleControls();
-          hoverTypoTabSelect()
+          hoverTypoTabSelect();
           initHoverButtonEffectDropdowns();
           initImageUploadPreview(() => selectedElement);
           triggerLaunchAnimation();
@@ -766,6 +718,54 @@
           }
         }
       }
+      async function createWidget(clickedBlock) {
+        try {
+          const module = await import(
+            "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+          );
+          const htmlString = module.html();
+
+          if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+            loadWidgetFromString(htmlString, clickedBlock);
+            setTimeout(() => {
+              if (typeof module.initToggleSwitch === "function") {
+                module.initToggleSwitch();
+              }
+            }, 200);
+          }
+        } catch (err) {
+          console.error("🚨 Error loading HTML module:", err);
+        }
+        triggerLaunchAnimation();
+
+      }
+
+      function waitForElement(selector, timeout = 3000) {
+        return new Promise((resolve, reject) => {
+          const el = document.querySelector(selector);
+          if (el) {
+            resolve(el);
+            return;
+          }
+
+          const observer = new MutationObserver(() => {
+            const el = document.querySelector(selector);
+            if (el) {
+              resolve(el);
+              observer.disconnect();
+            }
+          });
+
+          observer.observe(document.body, { childList: true, subtree: true });
+
+          setTimeout(() => {
+            observer.disconnect();
+            reject(new Error(`Timeout: Element ${selector} not found`));
+          }, timeout);
+        });
+      }
+
+     
 
       function makeWidgetDraggable() {
         if (!widgetContainer) return;
