@@ -1,4 +1,4 @@
-import { detectBlockElementTypePure } from "https://fatin-webefo.github.io/squareCraft-plugin/html.js/detectBlockElementTypePure.js";
+import { detectBlockElementTypePure } from "https://fatin-webefo.github.io/squareCraft-plugin/detectBlockElementTypePure.js";
 
 export function handleSectionFind() {
   const sections = document.querySelectorAll("section[data-section-id]");
