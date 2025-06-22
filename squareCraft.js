@@ -311,7 +311,6 @@
         const trigger = event.target.closest("#border-color-select");
 
         if (trigger) {
-          console.log("✅ border-color-select clicked");
           setTimeout(() => {
             initBorderColorPaletteToggle(themeColors);
           }, 100);
@@ -396,10 +395,8 @@
         if (dropdownTrigger) {
           if (dropdownList.classList.contains("sc-hidden")) {
             dropdownList.classList.remove("sc-hidden");
-            console.log("✅ sc-hidden removed: dropdown shown");
           } else {
             dropdownList.classList.add("sc-hidden");
-            console.log("✅ sc-hidden added: dropdown hidden");
           }
         }
       });
@@ -1030,12 +1027,5 @@
 
       checkView();
       window.addEventListener("resize", checkView);
-      console.log(
-        `🔒 Cross-origin access: ${
-          !isSameOrigin
-            ? "DISALLOWED (using fallback)"
-            : "ALLOWED (parent.document)"
-        }`
-      );
-      console.log(`selectedElement is ${selectedElement}`);
+    
     })();
