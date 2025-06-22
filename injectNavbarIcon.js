@@ -9,203 +9,192 @@ export function injectNavbarIcon() {
 
 
 
-
-
-
-
-
   function insertAdminIcon() {
     if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
       const navContainer = parent.document.querySelector("ul.css-1tn5iw9");
-      if (navContainer) {
-        const iconSrc =
-          localStorage.getItem("sc_icon") ||
-          "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+      if (!navContainer) return;
 
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("sc-admin-icon-wrapper");
-        wrapper.style.position = "relative";
-        wrapper.style.display = "inline-block";
-        wrapper.style.zIndex = "99999";
+      const iconSrc =
+        localStorage.getItem("sc_icon") ||
+        "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
 
-        const icon = document.createElement("img");
-        icon.src = iconSrc;
-        icon.alt = "sc";
-        icon.style.width = "30px";
-        icon.style.height = "30px";
-        icon.style.borderRadius = "20%";
-        icon.style.marginRight = "6px";
-        icon.style.marginTop = "8px";
-        icon.style.cursor = "pointer";
+      const wrapper = parent.document.createElement("div");
+      wrapper.classList.add("sc-admin-icon-wrapper");
+      Object.assign(wrapper.style, {
+        position: "relative",
+        display: "inline-block",
+        zIndex: "99999",
+      });
 
-        wrapper.appendChild(icon);
-        navContainer.parentNode.insertBefore(wrapper, navContainer);
+      const icon = parent.document.createElement("img");
+      icon.src = iconSrc;
+      icon.alt = "sc";
+      Object.assign(icon.style, {
+        width: "30px",
+        height: "30px",
+        borderRadius: "20%",
+        marginRight: "6px",
+        marginTop: "8px",
+        cursor: "pointer",
+      });
 
-        icon.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (document.getElementById("sc-admin-panel")) return;
+      wrapper.appendChild(icon);
+      navContainer.parentNode.insertBefore(wrapper, navContainer);
 
-          const panel = document.createElement("div");
-          panel.id = "sc-admin-panel";
-          panel.style.position = "absolute";
-          panel.style.top = "45px";
-          panel.style.right = "-10px";
-          panel.style.background = "#2c2c2c";
-          panel.style.borderRadius = "8px";
-          panel.style.padding = "0";
-          panel.style.zIndex = "99999";
-          panel.style.width = "320px";
-          panel.style.fontFamily = "'Poppins', sans-serif";
-          panel.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
-         
+      let panel = null;
 
-          panel.innerHTML = NavbarIconHtml();
+      icon.addEventListener("click", (e) => {
+        e.stopPropagation();
 
-          wrapper.appendChild(panel);
+        // Close panel if already open
+        if (panel) {
+          panel.remove();
+          panel = null;
+          return;
+        }
 
-          const dragTarget = panel.querySelector("#icon-options");
-          let offsetX = 0,
-            offsetY = 0,
-            isDragging = false;
-
-          dragTarget.style.cursor = "grab";
-
-          function startDrag(event) {
-            if (
-              panel
-                .querySelector("#viewport-sections")
-                ?.contains(event.target) ||
-              event.target.closest(".sc-dropdown")
-            )
-              return;
-
-            isDragging = true;
-            event.preventDefault();
-
-            let clientX = event.clientX || event.touches?.[0]?.clientX;
-            let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-            const rect = panel.getBoundingClientRect();
-            offsetX = clientX - rect.left;
-            offsetY = clientY - rect.top;
-
-            panel.style.position = "fixed";
-            panel.style.left = `${rect.left}px`;
-            panel.style.top = `${rect.top}px`;
-            panel.style.right = "unset";
-            panel.style.transform = "none";
-            dragTarget.style.cursor = "grabbing";
-
-            document.addEventListener("mousemove", dragMove);
-            document.addEventListener("mouseup", stopDrag);
-            document.addEventListener("touchmove", dragMove);
-            document.addEventListener("touchend", stopDrag);
-          }
-
-          function dragMove(event) {
-            if (!isDragging) return;
-
-            let clientX = event.clientX || event.touches?.[0]?.clientX;
-            let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-            const newX = clientX - offsetX;
-            const newY = clientY - offsetY;
-
-            panel.style.left = `${newX}px`;
-            panel.style.top = `${newY}px`;
-          }
-
-          function stopDrag() {
-            isDragging = false;
-            dragTarget.style.cursor = "grab";
-            document.removeEventListener("mousemove", dragMove);
-            document.removeEventListener("mouseup", stopDrag);
-            document.removeEventListener("touchmove", dragMove);
-            document.removeEventListener("touchend", stopDrag);
-          }
-
-          dragTarget.removeEventListener("mousedown", startDrag);
-          dragTarget.removeEventListener("touchstart", startDrag);
-          dragTarget.addEventListener("mousedown", startDrag);
-          dragTarget.addEventListener("touchstart", startDrag);
-
-          const hide = () => {
-            panel.remove();
-            document.removeEventListener("click", handleOutsideClick);
-          };
-
-          const handleOutsideClick = (e) => {
-            if (!panel.contains(e.target) && !wrapper.contains(e.target))
-              hide();
-          };
-
-          setTimeout(() => {
-            document.addEventListener("click", handleOutsideClick);
-          }, 0);
+        // Create panel
+        panel = parent.document.createElement("div");
+        panel.id = "sc-admin-panel";
+        Object.assign(panel.style, {
+          position: "absolute",
+          top: "45px",
+          right: "-10px",
+          background: "#2c2c2c",
+          borderRadius: "8px",
+          padding: "0",
+          zIndex: "99999",
+          width: "320px",
+          fontFamily: "'Poppins', sans-serif",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
         });
 
-        const message = document.createElement("div");
-        message.innerHTML = `
+        panel.innerHTML = NavbarIconHtml();
+        wrapper.appendChild(panel);
+
+        const dragTarget = panel.querySelector("#icon-options");
+        let offsetX = 0,
+          offsetY = 0,
+          isDragging = false;
+
+        dragTarget.style.cursor = "grab";
+
+        const startDrag = (event) => {
+          if (
+            panel.querySelector("#viewport-sections")?.contains(event.target) ||
+            event.target.closest(".sc-dropdown")
+          )
+            return;
+
+          isDragging = true;
+          event.preventDefault();
+
+          const clientX = event.clientX || event.touches?.[0]?.clientX;
+          const clientY = event.clientY || event.touches?.[0]?.clientY;
+          const rect = panel.getBoundingClientRect();
+
+          offsetX = clientX - rect.left;
+          offsetY = clientY - rect.top;
+
+          Object.assign(panel.style, {
+            position: "fixed",
+            left: `${rect.left}px`,
+            top: `${rect.top}px`,
+            right: "unset",
+            transform: "none",
+          });
+
+          dragTarget.style.cursor = "grabbing";
+          document.addEventListener("mousemove", dragMove);
+          document.addEventListener("mouseup", stopDrag);
+          document.addEventListener("touchmove", dragMove);
+          document.addEventListener("touchend", stopDrag);
+        };
+
+        const dragMove = (event) => {
+          if (!isDragging) return;
+
+          const clientX = event.clientX || event.touches?.[0]?.clientX;
+          const clientY = event.clientY || event.touches?.[0]?.clientY;
+
+          panel.style.left = `${clientX - offsetX}px`;
+          panel.style.top = `${clientY - offsetY}px`;
+        };
+
+        const stopDrag = () => {
+          isDragging = false;
+          dragTarget.style.cursor = "grab";
+          document.removeEventListener("mousemove", dragMove);
+          document.removeEventListener("mouseup", stopDrag);
+          document.removeEventListener("touchmove", dragMove);
+          document.removeEventListener("touchend", stopDrag);
+        };
+
+        dragTarget.addEventListener("mousedown", startDrag);
+        dragTarget.addEventListener("touchstart", startDrag);
+
+        const handleOutsideClick = (e) => {
+          if (!panel.contains(e.target) && !wrapper.contains(e.target)) {
+            panel.remove();
+            panel = null;
+            document.removeEventListener("click", handleOutsideClick);
+          }
+        };
+
+        setTimeout(() => {
+          document.addEventListener("click", handleOutsideClick);
+        }, 0);
+      });
+
+      const message = parent.document.createElement("div");
+      message.innerHTML = `
+        <div style="
+          position: absolute;
+          background-color: #2c2c2c;
+          color: white;
+          padding: 2rem 2rem;
+          border-radius: 8px;
+          z-index: 99999;
+          opacity: 1;
+          transition: opacity 0.5s ease-in-out;
+          animation: scFadeIn 0.5s ease-in-out;
+          white-space: nowrap;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+          top: 54px;
+          left: 40%;
+          transform: translateX(-50%);
+        ">
+          <div style="text-align: center;">
+            <p style="font-size: 13px; font-weight: 300; color: #EF7C2F; margin: 0;">SquareCraft Edits Saved</p>
+            <p style="font-weight: 300; font-size: 11px; margin: 4px 0 0;">
+              Your SquareCraft Plugin has successfully injected<br> to the Current website
+            </p>
+          </div>
+          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png"
+            width="14"
+            style="position: absolute; top: 12px; right: 12px; cursor: pointer;" alt="">
           <div style="
             position: absolute;
-            background-color: #2c2c2c;
-            color: white;
-            padding: 2rem 2rem;
-            border-radius: 8px;
-            z-index: 99999;
-            opacity: 1;
-            transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
-            animation: scFadeIn 0.5s ease-in-out;
-            white-space: nowrap;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            top: 54px;
-            left: 40%;
+            top: -8px;
+            left: 50%;
             transform: translateX(-50%);
-          ">
-            <div style="text-align: center;">
-              <p style="font-size: 13px; font-weight: 300; font-family: 'Poppins', sans-serif; color: #EF7C2F; margin: 0;">SquareCraft Edits Saved</p>
-              <p style="font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 11px; margin: 4px 0 0;">
-                Your SquareCraft Plugin has successfully injected to <br> the Current website
-              </p>
-            </div>   
-            <p style="
-                  font-family: 'Poppins', sans-serif;
-                  font-weight: 300;
-                  font-size: 8px;
-                  text-decoration: underline;
-                  position: absolute;
-                  right: 12px;
-                  bottom: 4px;
-                  color: #9ca3af;
-                  cursor: pointer;
-                ">Don't Show Again</p>
-            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/cross.png"
-                width="14"
-                style="position: absolute; top: 12px; right: 12px; cursor: pointer;"
-                alt="">
-            <div style="
-              position: absolute;
-              top: -8px;
-              left: 50%;
-              transform: translateX(-50%);
-              width: 0;
-              height: 0;
-              border-left: 8px solid transparent;
-              border-right: 8px solid transparent;
-              border-bottom: 8px solid #2c2c2c;
-            "></div>
-          </div>
-        `;
-        wrapper.appendChild(message);
-
-        const innerMsg = message.querySelector("div");
-        setTimeout(() => {
-          innerMsg.style.opacity = "0";
-          setTimeout(() => message.remove(), 500);
-        }, 5000);
-      }
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #2c2c2c;
+          "></div>
+        </div>
+      `;
+      wrapper.appendChild(message);
+      const innerMsg = message.querySelector("div");
+      setTimeout(() => {
+        innerMsg.style.opacity = "0";
+        setTimeout(() => message.remove(), 500);
+      }, 5000);
     }
   }
+  
 
 
 
