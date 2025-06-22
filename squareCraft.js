@@ -106,6 +106,9 @@
       const { initButtonAdvanceStyles } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
       );
+      const { handleSectionFind } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
+      );
       const { ButtonAdvanceToggleControls } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
       );
@@ -904,6 +907,7 @@
       }
 
       waitForNavBar();
+      handleSectionFind();
       function checkView() {
         const isMobile = window.innerWidth <= 768;
 

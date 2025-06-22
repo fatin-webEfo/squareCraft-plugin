@@ -2,10 +2,10 @@ export function WidgetButtonPresetSection() {
   return `
     <div id="presetSection" class="sc-p-4 sc-flex-col sc-gap-4 sc-rounded-2xl sc-bg-1e1e1e sc-text-white sc-shadow-md sc-text-sm">
       <div class="sc-flex sc-items-center sc-justify-between">
-        <p class="sc-universal sc-font-size-16 sc-roboto">🎨 Style Presets</p>
+        <p class="sc-universal sc-font-size-16 sc-roboto">Style Presets</p>
       </div>
   
-      <div class="sc-text-gray-400 sc-font-thin sc-text-xs">Live preview of pre-built styles for typography, image, and buttons.</div>
+      <p class="sc-text-gray-400 sc-font-thin sc-universal sc-text-xs">Live preview of pre-built styles for typography, image, and buttons.</p>
   
       <div class="sc-grid sc-mt-3 sc-grid-cols-2 sc-gap-4" id="presetGrid">
         <div class="preset-card sc-bg-2a2a2a sc-rounded-xl sc-p-3 sc-flex-col sc-gap-2  sc-transition-all sc-cursor-pointer" data-aos="fade-up" data-aos-delay="0">
