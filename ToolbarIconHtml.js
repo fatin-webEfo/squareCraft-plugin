@@ -1,4 +1,4 @@
-export function ToolbarIconHtml(handleSectionFindFn) {
+export function ToolbarIconHtml(section) {
   return `
     <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
       <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
