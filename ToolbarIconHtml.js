@@ -1,7 +1,6 @@
-export function ToolbarIconHtml(){
-    return `
- 
-   <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
+export function ToolbarIconHtml(handleSectionFindFn) {
+  return `
+    <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
       <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
         <img class="sc-cursor-grabbing sc-universal" src="https://i.ibb.co.com/pry1mVGD/Group-28-1.png" width="140px" />
       </div>
@@ -22,16 +21,19 @@ export function ToolbarIconHtml(){
     </div>
     <div class="sc-rounded-4px sc-h-350 sc-scrollBar sc-mt-6 sc-border sc-border-solid sc-border-EF7C2F sc-bg-color-3d3d3d">
       <p>Section widget</p>
+      <div id="sc-run-check" class="sc-mt-2 sc-font-size-12 sc-cursor-pointer sc-text-color-white sc-bg-color-EF7C2F sc-px-3 sc-py-1 sc-rounded-4px sc-inline-block">
+        ▶️ Run Section Check
+      </div>
     </div>
     <div class="sc-mt-3">
       <div class="sc-flex sc-items-center sc-justify-between sc-gap-2">
-        <div class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-1 sc-rounded-4px sc-text-color-white sc-justify-center">
+        <div class="sc-cursor-pointer sc-roboto sc-bg-color-EF7C2F sc-w-full sc-font-light sc-flex sc-items-center sc-font-size-12 sc-py-4px sc-rounded-4px sc-text-color-white sc-justify-center">
           Publish
         </div>
-        <div class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-1 sc-rounded-4px sc-items-center sc-justify-center">
+        <div class="sc-cursor-pointer sc-roboto sc-bg-3f3f3f sc-w-full sc-text-color-white sc-font-light sc-flex sc-font-size-12 sc-py-4px sc-rounded-4px sc-items-center sc-justify-center">
           Reset
         </div>
       </div>
     </div>
-    `;
+  `;
 }
