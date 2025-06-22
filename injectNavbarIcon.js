@@ -89,8 +89,9 @@ export function injectNavbarIcon() {
 
           const clientX = event.clientX || event.touches?.[0]?.clientX;
           const clientY = event.clientY || event.touches?.[0]?.clientY;
-
           const rect = panel.getBoundingClientRect();
+
+          // Fix offset using viewport-based `fixed` positioning
           offsetX = clientX - rect.left;
           offsetY = clientY - rect.top;
 
@@ -113,6 +114,7 @@ export function injectNavbarIcon() {
           document.addEventListener("touchmove", dragMove);
           document.addEventListener("touchend", stopDrag);
         };
+        
 
         const dragMove = (event) => {
           if (!isDragging) return;
