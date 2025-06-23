@@ -379,12 +379,14 @@
           resetAllButtonStyles(() => selectedElement);
           initButtonBorderResetHandlers(() => selectedElement);
           initButtonFontFamilyControls(() => selectedElement);
+
           initButtonAdvanceVerticalCustomTimelines(() => selectedElement),
             initButtonAdvanceVerticalEntry(() => selectedElement),
             initButtonAdvanceVerticalCenter(() => selectedElement),
             initButtonAdvanceVerticalExit(() => selectedElement),
             initButtonAdvanceVerticalEffectSpeed(() => selectedElement),
             initButtonAdvanceVerticalEffectAnimation(() => selectedElement),
+            
             initButtonBorderTypeToggle(
               () => selectedElement,
               (selected) => {
