@@ -881,7 +881,8 @@
             if (element.querySelector(".sc-toolbar-icon")) return;
 
             const clonedIcon = document.createElement("img");
-            clonedIcon.src = "https://i.ibb.co.com/kg9fn02s/Frame-33.png";
+            clonedIcon.src =
+              "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
             clonedIcon.alt = "sc";
             clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
             Object.assign(clonedIcon.style, {
