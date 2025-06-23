@@ -64,10 +64,29 @@ export function handleSectionFind() {
     else if (section.closest("article[data-page-sections]"))
       sectionType = "collection";
 
+    let currentStyles = {};
+    try {
+      currentStyles = JSON.parse(
+        section.getAttribute("data-current-styles") || "{}"
+      );
+    } catch (err) {}
+
     results.push({
       sectionId,
       sectionType,
       blocks,
+      paddingTop: section.style.paddingTop || null,
+      headerOffset: section.style.getPropertyValue("--header-offset") || null,
+      backgroundMode: currentStyles.backgroundMode || null,
+      backgroundWidth: currentStyles.backgroundWidth || null,
+      sectionHeight: currentStyles.sectionHeight || null,
+      customSectionHeight: currentStyles.customSectionHeight || null,
+      contentWidth: currentStyles.contentWidth || null,
+      horizontalAlignment: currentStyles.horizontalAlignment || null,
+      verticalAlignment: currentStyles.verticalAlignment || null,
+      sectionTheme: currentStyles.sectionTheme || null,
+      sectionAnimation: currentStyles.sectionAnimation || null,
+      typeName: currentStyles.typeName || null,
     });
   });
 
