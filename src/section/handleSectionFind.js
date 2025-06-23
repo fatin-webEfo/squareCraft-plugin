@@ -10,44 +10,41 @@ export function handleSectionFind() {
 
     const blocks = Array.from(blockEls).map((el) => {
       const blockId = el.id;
-      let foundType = detectBlockElementTypePure(el);
+      let type = detectBlockElementTypePure(el);
       const tag = el.tagName?.toLowerCase();
       const cls = el.classList;
 
-      if (!foundType && (tag === "a" || tag === "button")) {
+      if (tag === "a" || tag === "button") {
         const iconImg = el.querySelector("img");
         if (
           !iconImg ||
           (iconImg && iconImg.classList.contains("sqscraft-button-icon"))
         ) {
-          let currentButtonType;
           if (cls.contains("sqs-button-element--primary"))
-            currentButtonType = "Primary Button";
+            type = "Primary Button";
           else if (cls.contains("sqs-button-element--secondary"))
-            currentButtonType = "Secondary Button";
+            type = "Secondary Button";
           else if (cls.contains("sqs-button-element--tertiary"))
-            currentButtonType = "Tertiary Button";
-          else currentButtonType = "Button";
-
-          foundType = currentButtonType;
+            type = "Tertiary Button";
+          else type = "Button";
 
           const buttonTypeEl = document.getElementById("buttonTypeDisplay");
           if (buttonTypeEl) {
-            buttonTypeEl.textContent = currentButtonType;
+            buttonTypeEl.textContent = type;
           }
         }
       }
 
       if (
-        !foundType &&
+        !type &&
         tag === "img" &&
         el.closest(".sqs-image-content") &&
         el.closest(".fluid-image-editor-wrapper")
       ) {
-        foundType = "image";
+        type = "image";
       }
 
-      return { blockId, type: foundType };
+      return { blockId, type };
     });
 
     let sectionType = "block";
@@ -76,6 +73,6 @@ export function handleSectionFind() {
     });
   });
 
-  console.log("🧩 Sections details:", results);
+  console.log("🧩 handleSectionFind() Output:", results);
   return results;
 }

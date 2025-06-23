@@ -57,13 +57,10 @@
 </head>
 <body>
 
-  <!-- Big scroll area -->
   <div class="scroll-space"></div>
 
-  <!-- Plane -->
   <img src="../public/plane.png" class="airplane" id="airplane" />
 
-  <!-- Fixed-position SVG -->
   <svg viewBox="0 0 1000 5000">
     <path id="flightPath" class="flight-path"
       d="M 100 100
@@ -75,7 +72,6 @@
   <script>
     gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
 
-    // Animate airplane along SVG path with scroll
     gsap.to("#airplane", {
       scrollTrigger: {
         trigger: ".scroll-space",
@@ -92,7 +88,6 @@
       ease: "none"
     });
 
-    // Clouds
     for (let i = 0; i < 6; i++) {
       const cloud = document.createElement("img");
       cloud.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Cloud_icon.svg/512px-Cloud_icon.svg.png";
