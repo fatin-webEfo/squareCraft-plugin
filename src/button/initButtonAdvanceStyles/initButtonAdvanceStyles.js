@@ -1,8 +1,4 @@
-
-
-
 gsap.registerPlugin(ScrollTrigger);
-
 
 function getValidButton(el) {
   return el?.querySelector(
@@ -20,6 +16,7 @@ export function initButtonAdvanceVerticalCustomTimelines(getSelectedElement) {
     start: "10% top",
     end: "70% top",
     toggleActions: "play none none reverse",
+    markers: false,
   });
 }
 
@@ -28,21 +25,12 @@ export function initButtonAdvanceVerticalEntry(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.fromTo(
-    button,
-    { y: 60, opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.6,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    }
-  );
+  ScrollTrigger.create({
+    trigger: element,
+    start: "top 80%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-entry-animate" },
+  });
 }
 
 export function initButtonAdvanceVerticalCenter(getSelectedElement) {
@@ -50,15 +38,11 @@ export function initButtonAdvanceVerticalCenter(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.to(button, {
-    scale: 1.05,
-    duration: 0.4,
-    ease: "power1.out",
-    scrollTrigger: {
-      trigger: element,
-      start: "center center",
-      toggleActions: "play none none reverse",
-    },
+  ScrollTrigger.create({
+    trigger: element,
+    start: "center center",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-center-animate" },
   });
 }
 
@@ -67,16 +51,11 @@ export function initButtonAdvanceVerticalExit(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.to(button, {
-    y: -40,
-    opacity: 0,
-    duration: 0.5,
-    ease: "power1.in",
-    scrollTrigger: {
-      trigger: element,
-      start: "bottom 30%",
-      toggleActions: "play none none reverse",
-    },
+  ScrollTrigger.create({
+    trigger: element,
+    start: "bottom 30%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-exit-animate" },
   });
 }
 
@@ -85,49 +64,31 @@ export function initButtonAdvanceVerticalEffectSpeed(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.fromTo(
-    button,
-    { y: 20, opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 1.2, // Effect speed
-      ease: "power1.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
-    }
-  );
+  ScrollTrigger.create({
+    trigger: element,
+    start: "top 90%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-speed-animate" },
+  });
 }
 
 export function initButtonAdvanceVerticalEffectAnimation(getSelectedElement) {
   const options = document.querySelectorAll("[data-value]");
   options.forEach((opt) => {
     opt.addEventListener("click", () => {
-      const ease = opt.getAttribute("data-value") || "linear";
+      const easeClass = opt.getAttribute("data-value");
       const element = getSelectedElement();
       const button = getValidButton(element);
-      if (!button) return;
+      if (!button || !easeClass) return;
 
-      gsap.fromTo(
-        button,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease,
-          scrollTrigger: {
-            trigger: element,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        }
+      button.classList.remove(
+        "sc-ease-linear",
+        "sc-ease-in",
+        "sc-ease-out",
+        "sc-zoom-in",
+        "sc-zoom-out"
       );
+      button.classList.add(`sc-${easeClass}`);
     });
   });
 }
-
-// initButtonAdvanceStyles.js
