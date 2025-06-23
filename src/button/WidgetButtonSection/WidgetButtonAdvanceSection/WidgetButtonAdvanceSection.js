@@ -157,7 +157,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-entry-count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                    0px
+                    -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -213,7 +213,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-center-radiusCount"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                    0px
+                  -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -269,7 +269,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-exit-radiusCount"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                    0px
+                  -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -325,7 +325,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-effectSpeed-radiusCount"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                    0px
+                   -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
