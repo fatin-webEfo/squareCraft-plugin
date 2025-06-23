@@ -1,8 +1,6 @@
     (async function squareCraft() {
 
 
-
-
       let isSameOrigin = true;
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();

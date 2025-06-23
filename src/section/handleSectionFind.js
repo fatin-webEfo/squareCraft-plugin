@@ -7,11 +7,10 @@ export function handleSectionFind() {
   sections.forEach((section) => {
     const sectionId = section.getAttribute("data-section-id");
     const blockEls = section.querySelectorAll('[id^="block-"]');
-    const blockIds = Array.from(blockEls).map((el) => el.id);
 
-    const blocks = blockIds.map((blockId) => {
-      const blockEl = document.getElementById(blockId);
-      const type = detectBlockElementTypePure(blockEl);
+    const blocks = Array.from(blockEls).map((el) => {
+      const blockId = el.id;
+      const type = detectBlockElementTypePure(el);
       return { blockId, type };
     });
 
@@ -37,11 +36,11 @@ export function handleSectionFind() {
     results.push({
       sectionId,
       sectionType,
-      blockIds,
       blocks,
     });
   });
-  console.log("🧩 handleSectionFind() Output:", results); 
+
+  console.log("🧩 handleSectionFind() Output:", results);
 
   return results;
 }
