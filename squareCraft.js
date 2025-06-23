@@ -176,16 +176,7 @@
         styleTag.innerHTML = cssText;
       }
 
-      const {
-        initButtonAdvanceVerticalCustomTimelines,
-        initButtonAdvanceVerticalEntry,
-        initButtonAdvanceVerticalCenter,
-        initButtonAdvanceVerticalExit,
-        initButtonAdvanceVerticalEffectSpeed,
-        initButtonAdvanceVerticalEffectAnimation,
-      } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStyles/initButtonAdvanceStyles.js"
-      );
+    
       const { initButtonAdvanceStyles } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
       );
@@ -380,13 +371,7 @@
           initButtonBorderResetHandlers(() => selectedElement);
           initButtonFontFamilyControls(() => selectedElement);
 
-          initButtonAdvanceVerticalCustomTimelines(() => selectedElement),
-            initButtonAdvanceVerticalEntry(() => selectedElement),
-            initButtonAdvanceVerticalCenter(() => selectedElement),
-            initButtonAdvanceVerticalExit(() => selectedElement),
-            initButtonAdvanceVerticalEffectSpeed(() => selectedElement),
-            initButtonAdvanceVerticalEffectAnimation(() => selectedElement),
-            
+
             initButtonBorderTypeToggle(
               () => selectedElement,
               (selected) => {
