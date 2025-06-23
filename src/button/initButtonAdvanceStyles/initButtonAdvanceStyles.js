@@ -1,102 +1,129 @@
+gsap.registerPlugin(ScrollTrigger);
+
+function getValidButton(el) {
+  return el?.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  );
+}
+
 export function initButtonAdvanceVerticalCustomTimelines(getSelectedElement) {
-  const startBullet = document.getElementById("timeline-start-bullet");
-  const endBullet = document.getElementById("timeline-end-bullet");
-
-  if (!startBullet || !endBullet) return;
-
-  let start = 0;
-  let end = 70;
-
-  gsap.registerPlugin(ScrollTrigger);
-
   const element = getSelectedElement();
+  if (!element) return;
+
   ScrollTrigger.create({
     trigger: element,
-    start: `${start}% top`,
-    end: `${end}% top`,
+    start: "10% top",
+    end: "70% top",
     toggleActions: "play none none reverse",
   });
 }
 
 export function initButtonAdvanceVerticalEntry(getSelectedElement) {
-  const bullet = document.getElementById("button-advance-entry-Bullet");
-  if (!bullet) return;
+  const element = getSelectedElement();
+  const button = getValidButton(element);
+  if (!button) return;
 
-  bullet.addEventListener("mousedown", () => {
-    const element = getSelectedElement();
-    if (!element) return;
-    gsap.set(element, { y: 50, opacity: 0 });
-    gsap.to(element, {
+  gsap.fromTo(
+    button,
+    { y: 60, opacity: 0 },
+    {
       y: 0,
       opacity: 1,
-      duration: 0.5,
-      ease: "power1.out",
-    });
-  });
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        toggleActions: "play none none reverse",
+      },
+    }
+  );
 }
 
 export function initButtonAdvanceVerticalCenter(getSelectedElement) {
-  const bullet = document.getElementById("button-advance-center-radiusBullet");
-  if (!bullet) return;
+  const element = getSelectedElement();
+  const button = getValidButton(element);
+  if (!button) return;
 
-  bullet.addEventListener("mousedown", () => {
-    const element = getSelectedElement();
-    if (!element) return;
-    gsap.to(element, {
-      scale: 1.1,
-      duration: 0.5,
-      ease: "power1.out",
-    });
+  gsap.to(button, {
+    scale: 1.05,
+    duration: 0.4,
+    ease: "power1.out",
+    scrollTrigger: {
+      trigger: element,
+      start: "center center",
+      toggleActions: "play none none reverse",
+    },
   });
 }
+
 export function initButtonAdvanceVerticalExit(getSelectedElement) {
-  const bullet = document.getElementById("button-advance-exit-radiusBullet");
-  if (!bullet) return;
+  const element = getSelectedElement();
+  const button = getValidButton(element);
+  if (!button) return;
 
-  bullet.addEventListener("mousedown", () => {
-    const element = getSelectedElement();
-    if (!element) return;
-    gsap.to(element, {
-      y: 50,
-      opacity: 0,
-      duration: 0.5,
-      ease: "power1.in",
-    });
+  gsap.to(button, {
+    y: -40,
+    opacity: 0,
+    duration: 0.5,
+    ease: "power1.in",
+    scrollTrigger: {
+      trigger: element,
+      start: "bottom 30%",
+      toggleActions: "play none none reverse",
+    },
   });
 }
-    
+
 export function initButtonAdvanceVerticalEffectSpeed(getSelectedElement) {
-  const bullet = document.getElementById(
-    "button-advance-effectSpeed-radiusBullet"
-  );
-  if (!bullet) return;
+  const element = getSelectedElement();
+  const button = getValidButton(element);
+  if (!button) return;
 
-  bullet.addEventListener("mousedown", () => {
-    const element = getSelectedElement();
-    if (!element) return;
-    gsap.to(element, {
-      y: -10,
-      duration: 1.2,
+  gsap.fromTo(
+    button,
+    { y: 20, opacity: 0 },
+    {
+      y: 0,
+      opacity: 1,
+      duration: 1.2, // Effect speed
       ease: "power1.out",
-    });
-  });
+      scrollTrigger: {
+        trigger: element,
+        start: "top 90%",
+        toggleActions: "play none none reverse",
+      },
+    }
+  );
 }
-  
-  
+
 export function initButtonAdvanceVerticalEffectAnimation(getSelectedElement) {
   const options = document.querySelectorAll("[data-value]");
   options.forEach((opt) => {
     opt.addEventListener("click", () => {
       const ease = opt.getAttribute("data-value") || "linear";
-      const el = getSelectedElement();
-      if (!el) return;
-      gsap.to(el, {
-        opacity: 1,
-        y: 0,
-        ease: ease,
-        duration: 1,
-      });
+      const element = getSelectedElement();
+      const button = getValidButton(element);
+      if (!button) return;
+
+      gsap.fromTo(
+        button,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease,
+          scrollTrigger: {
+            trigger: element,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     });
   });
 }
-  
+
+// initButtonAdvanceStyles.js
