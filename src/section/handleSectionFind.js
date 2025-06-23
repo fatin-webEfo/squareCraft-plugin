@@ -76,6 +76,6 @@ export function handleSectionFind() {
     });
   });
 
-  console.log("🧩 handleSectionFind() Output:", results);
+  console.log("🧩 Sections details:", results);
   return results;
 }
