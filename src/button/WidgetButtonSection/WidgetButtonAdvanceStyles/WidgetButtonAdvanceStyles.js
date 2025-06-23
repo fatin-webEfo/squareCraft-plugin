@@ -58,64 +58,71 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left") =>
-    (val) => {
-      const isLeft = position === "left";
-      if (isLeft) {
-        gsap.set(bullet, { left: `${val}%` });
-        gsap.set(fill, { width: `${val}%` });
-      } else {
-        gsap.set(bullet, { right: `${100 - val}%` });
-        gsap.set(fill, {
-          right: "0%",
-          width: `${val}%`,
-          left: "auto",
-          transformOrigin: "right",
-        });
-      }
+    const updateField =
+      (bullet, fill, countEl, cssVar, position = "left") =>
+      (val) => {
+        // Ensure the value is limited to -100% to 100% range
+        val = Math.min(100, Math.max(-100, val));
 
-      countEl.textContent = `${val}${
-        countEl.id.includes("Value") ? "%" : "px"
-      }`;
-
-      const el = getSelectedElement?.();
-      if (el) {
-        const button = el.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
-            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        );
-        if (button) {
-          gsap.set(button, {
-            [cssVar]: `${val}${cssVar.includes("scroll") ? "%" : "px"}`,
-          });
+        const isLeft = position === "left";
+        if (isLeft) {
+          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(fill, { width: `${val}%` });
         } else {
-          console.warn(
-            "No button found inside selected element to apply styles."
-          );
+          gsap.set(bullet, { right: `${100 - val}%` });
+          gsap.set(fill, {
+            right: "0%",
+            width: `${val}%`,
+            left: "auto",
+            transformOrigin: "right",
+          });
         }
-      } else {
-        console.warn("No selected element found to apply styles.");
-      }
-    };
 
-  const makeDraggable = (bullet, updateFn) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      document.onmousemove = (event) => {
-        const rect = bullet.parentElement.getBoundingClientRect();
-        const percent = Math.min(
-          100,
-          Math.max(0, ((event.clientX - rect.left) / rect.width) * 100)
-        );
-        updateFn(Math.round(percent));
+        // Set count display to percentage
+        countEl.textContent = `${val}%`;
+
+        const el = getSelectedElement?.();
+        if (el) {
+          const button = el.querySelector(
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          );
+          if (button) {
+            gsap.set(button, {
+              [cssVar]: `${val}%`, // Apply percentage
+            });
+          } else {
+            console.warn(
+              "No button found inside selected element to apply styles."
+            );
+          }
+        } else {
+          console.warn("No selected element found to apply styles.");
+        }
       };
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
+
+
+      const makeDraggable = (bullet, updateFn) => {
+        bullet.onmousedown = (e) => {
+          e.preventDefault();
+          document.onmousemove = (event) => {
+            const rect = bullet.parentElement.getBoundingClientRect();
+            const percent = Math.min(
+              100,
+              Math.max(
+                -100,
+                ((event.clientX - rect.left) / rect.width) * 200 - 100
+              )
+            ); // Ensure it's between -100% and 100%
+            updateFn(Math.round(percent));
+          };
+          document.onmouseup = () => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+          };
+        };
       };
-    };
-  };
+      
 
   const updateStart = updateField(
     startBullet,
