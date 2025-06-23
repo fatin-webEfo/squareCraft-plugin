@@ -20,8 +20,6 @@ export function handleSectionFind() {
           !iconImg ||
           (iconImg && iconImg.classList.contains("sqscraft-button-icon"))
         ) {
-          foundType = "button";
-
           let currentButtonType;
           if (cls.contains("sqs-button-element--primary"))
             currentButtonType = "Primary Button";
@@ -30,6 +28,8 @@ export function handleSectionFind() {
           else if (cls.contains("sqs-button-element--tertiary"))
             currentButtonType = "Tertiary Button";
           else currentButtonType = "Button";
+
+          foundType = currentButtonType;
 
           const buttonTypeEl = document.getElementById("buttonTypeDisplay");
           if (buttonTypeEl) {
