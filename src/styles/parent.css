@@ -1723,7 +1723,7 @@
     linear-gradient(#868686 0 0);
   mask-composite: exclude;
   pointer-events: none;
-  clip-path: inset(1px 0px 0px 0px); 
+  clip-path: inset(2px 0px 0px 0px); 
 }
 
 
