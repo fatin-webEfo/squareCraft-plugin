@@ -11,16 +11,17 @@ export function handleSectionFind() {
     const blocks = Array.from(blockEls).map((el) => {
       const blockId = el.id;
       let type = detectBlockElementTypePure(el);
-      const tag = el.tagName?.toLowerCase();
       const cls = el.classList;
 
-      const isBtn = tag === "a" || tag === "button";
-      const hasBtnClass =
+      const isButtonTag =
+        el.tagName?.toLowerCase() === "a" ||
+        el.tagName?.toLowerCase() === "button";
+      const hasButtonClass =
         cls.contains("sqs-button-element--primary") ||
         cls.contains("sqs-button-element--secondary") ||
         cls.contains("sqs-button-element--tertiary");
 
-      if (isBtn && hasBtnClass) {
+      if (isButtonTag && hasButtonClass) {
         if (cls.contains("sqs-button-element--primary"))
           type = "Primary Button";
         else if (cls.contains("sqs-button-element--secondary"))
@@ -28,16 +29,11 @@ export function handleSectionFind() {
         else if (cls.contains("sqs-button-element--tertiary"))
           type = "Tertiary Button";
         else type = "Button";
-
-        const buttonTypeEl = document.getElementById("buttonTypeDisplay");
-        if (buttonTypeEl) {
-          buttonTypeEl.textContent = type;
-        }
       }
 
       if (
         !type &&
-        tag === "img" &&
+        el.tagName?.toLowerCase() === "img" &&
         el.closest(".sqs-image-content") &&
         el.closest(".fluid-image-editor-wrapper")
       ) {
