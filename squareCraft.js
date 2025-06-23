@@ -74,7 +74,25 @@
           document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
         }
       }
-    
+      function loadGSAPCDN() {
+        const scripts = [
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js",
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js",
+        ];
+
+        scripts.forEach((src) => {
+          const existing = document.querySelector(`script[src="${src}"]`);
+          if (!existing) {
+            const script = document.createElement("script");
+            script.src = src;
+            script.async = false;
+            document.head.appendChild(script);
+          }
+        });
+      }
+
+      loadGSAPCDN();
+      
 
       let lastClickedBlockId = null;
       let lastClickedElement = null;
