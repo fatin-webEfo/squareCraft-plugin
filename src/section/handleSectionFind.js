@@ -12,10 +12,9 @@ export function handleSectionFind() {
       const blockId = el.id;
       let type = detectBlockElementTypePure(el);
       const cls = el.classList;
+      const tag = el.tagName?.toLowerCase();
 
-      const isButtonTag =
-        el.tagName?.toLowerCase() === "a" ||
-        el.tagName?.toLowerCase() === "button";
+      const isButtonTag = tag === "a" || tag === "button";
       const hasButtonClass =
         cls.contains("sqs-button-element--primary") ||
         cls.contains("sqs-button-element--secondary") ||
@@ -29,11 +28,16 @@ export function handleSectionFind() {
         else if (cls.contains("sqs-button-element--tertiary"))
           type = "Tertiary Button";
         else type = "Button";
+
+        const buttonTypeEl = document.getElementById("buttonTypeDisplay");
+        if (buttonTypeEl) {
+          buttonTypeEl.textContent = type;
+        }
       }
 
       if (
         !type &&
-        el.tagName?.toLowerCase() === "img" &&
+        tag === "img" &&
         el.closest(".sqs-image-content") &&
         el.closest(".fluid-image-editor-wrapper")
       ) {
