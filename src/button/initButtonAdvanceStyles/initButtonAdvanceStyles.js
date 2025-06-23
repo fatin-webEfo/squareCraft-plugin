@@ -27,21 +27,12 @@ export function initButtonAdvanceVerticalEntry(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.fromTo(
-    button,
-    { y: 60, opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 0.6,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-    }
-  );
+  ScrollTrigger.create({
+    trigger: element,
+    start: "top 80%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-entry-animate" },
+  });
 }
 
 export function initButtonAdvanceVerticalCenter(getSelectedElement) {
@@ -49,15 +40,11 @@ export function initButtonAdvanceVerticalCenter(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.to(button, {
-    scale: 1.05,
-    duration: 0.4,
-    ease: "power1.out",
-    scrollTrigger: {
-      trigger: element,
-      start: "center center",
-      toggleActions: "play none none reverse",
-    },
+  ScrollTrigger.create({
+    trigger: element,
+    start: "center center",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-center-animate" },
   });
 }
 
@@ -66,16 +53,11 @@ export function initButtonAdvanceVerticalExit(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.to(button, {
-    y: -40,
-    opacity: 0,
-    duration: 0.5,
-    ease: "power1.in",
-    scrollTrigger: {
-      trigger: element,
-      start: "bottom 30%",
-      toggleActions: "play none none reverse",
-    },
+  ScrollTrigger.create({
+    trigger: element,
+    start: "bottom 30%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-exit-animate" },
   });
 }
 
@@ -84,21 +66,12 @@ export function initButtonAdvanceVerticalEffectSpeed(getSelectedElement) {
   const button = getValidButton(element);
   if (!button) return;
 
-  gsap.fromTo(
-    button,
-    { y: 20, opacity: 0 },
-    {
-      y: 0,
-      opacity: 1,
-      duration: 1.2,
-      ease: "power1.out",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 90%",
-        toggleActions: "play none none reverse",
-      },
-    }
-  );
+  ScrollTrigger.create({
+    trigger: element,
+    start: "top 90%",
+    toggleActions: "play none none reverse",
+    toggleClass: { targets: button, className: "sc-speed-animate" },
+  });
 }
 
 export function initButtonAdvanceVerticalEffectAnimation(getSelectedElement) {
@@ -110,73 +83,21 @@ export function initButtonAdvanceVerticalEffectAnimation(getSelectedElement) {
       const button = getValidButton(element);
       if (!element || !button || !effect) return;
 
-      let animation = {};
+      const validClasses = [
+        "sc-ease-linear",
+        "sc-ease-in",
+        "sc-ease-out",
+        "sc-zoom-in",
+        "sc-zoom-out",
+      ];
 
-      if (effect === "entry") {
-        animation = {
-          from: { y: 60, opacity: 0 },
-          to: { y: 0, opacity: 1, duration: 0.6, ease: "power2.out" },
-          start: "top 80%",
-        };
-      }
+      validClasses.forEach((cls) => button.classList.remove(cls));
 
-      if (effect === "center") {
-        animation = {
-          to: { scale: 1.05, duration: 0.4, ease: "power1.out" },
-          start: "center center",
-        };
-      }
-
-      if (effect === "exit") {
-        animation = {
-          to: { y: -40, opacity: 0, duration: 0.5, ease: "power1.in" },
-          start: "bottom 30%",
-        };
-      }
-
-      if (effect === "speed") {
-        animation = {
-          from: { y: 20, opacity: 0 },
-          to: { y: 0, opacity: 1, duration: 1.2, ease: "power1.out" },
-          start: "top 90%",
-        };
-      }
-
-      if (effect === "zoom-in") {
-        animation = {
-          from: { scale: 0.8, opacity: 0 },
-          to: { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" },
-          start: "top 85%",
-        };
-      }
-
-      if (effect === "zoom-out") {
-        animation = {
-          from: { scale: 1.2, opacity: 0 },
-          to: { scale: 1, opacity: 1, duration: 0.8, ease: "power2.out" },
-          start: "top 85%",
-        };
-      }
-
-      if (animation.from) {
-        gsap.fromTo(button, animation.from, {
-          ...animation.to,
-          scrollTrigger: {
-            trigger: element,
-            start: animation.start,
-            toggleActions: "play none none reverse",
-          },
-        });
-      } else {
-        gsap.to(button, {
-          ...animation.to,
-          scrollTrigger: {
-            trigger: element,
-            start: animation.start,
-            toggleActions: "play none none reverse",
-          },
-        });
-      }
+      if (effect === "linear") button.classList.add("sc-ease-linear");
+      if (effect === "ease-in") button.classList.add("sc-ease-in");
+      if (effect === "ease-out") button.classList.add("sc-ease-out");
+      if (effect === "zoom-in") button.classList.add("sc-zoom-in");
+      if (effect === "zoom-out") button.classList.add("sc-zoom-out");
     });
   });
 }
