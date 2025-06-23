@@ -14,24 +14,22 @@ export function handleSectionFind() {
       const tag = el.tagName?.toLowerCase();
       const cls = el.classList;
 
-      if (tag === "a" || tag === "button") {
-        const iconImg = el.querySelector("img");
-        if (
-          !iconImg ||
-          (iconImg && iconImg.classList.contains("sqscraft-button-icon"))
-        ) {
-          if (cls.contains("sqs-button-element--primary"))
-            type = "Primary Button";
-          else if (cls.contains("sqs-button-element--secondary"))
-            type = "Secondary Button";
-          else if (cls.contains("sqs-button-element--tertiary"))
-            type = "Tertiary Button";
-          else type = "Button";
+      if (
+        (type === "button" || tag === "a" || tag === "button") &&
+        (!el.querySelector("img") ||
+          el.querySelector("img")?.classList.contains("sqscraft-button-icon"))
+      ) {
+        if (cls.contains("sqs-button-element--primary"))
+          type = "Primary Button";
+        else if (cls.contains("sqs-button-element--secondary"))
+          type = "Secondary Button";
+        else if (cls.contains("sqs-button-element--tertiary"))
+          type = "Tertiary Button";
+        else type = "Button";
 
-          const buttonTypeEl = document.getElementById("buttonTypeDisplay");
-          if (buttonTypeEl) {
-            buttonTypeEl.textContent = type;
-          }
+        const buttonTypeEl = document.getElementById("buttonTypeDisplay");
+        if (buttonTypeEl) {
+          buttonTypeEl.textContent = type;
         }
       }
 
