@@ -35,6 +35,7 @@ export function initButtonAdvanceVerticalEntry(getSelectedElement) {
       opacity: 1,
       duration: 0.6,
       ease: "power2.out",
+      immediateRender: false,
       scrollTrigger: {
         trigger: element,
         start: "top 80%",
@@ -53,6 +54,7 @@ export function initButtonAdvanceVerticalCenter(getSelectedElement) {
     scale: 1.05,
     duration: 0.4,
     ease: "power1.out",
+    immediateRender: false,
     scrollTrigger: {
       trigger: element,
       start: "center center",
@@ -71,6 +73,7 @@ export function initButtonAdvanceVerticalExit(getSelectedElement) {
     opacity: 0,
     duration: 0.5,
     ease: "power1.in",
+    immediateRender: false,
     scrollTrigger: {
       trigger: element,
       start: "bottom 30%",
@@ -92,6 +95,7 @@ export function initButtonAdvanceVerticalEffectSpeed(getSelectedElement) {
       opacity: 1,
       duration: 1.2,
       ease: "power1.out",
+      immediateRender: false,
       scrollTrigger: {
         trigger: element,
         start: "top 90%",
@@ -128,6 +132,7 @@ export function initButtonAdvanceVerticalEffectAnimation(getSelectedElement) {
           opacity: 1,
           duration: 1,
           ease,
+          immediateRender: false,
           scrollTrigger: {
             trigger: element,
             start: "top 85%",
