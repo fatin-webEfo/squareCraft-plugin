@@ -1,6 +1,4 @@
     (async function squareCraft() {
-
-
       let isSameOrigin = true;
       if (!window.__squareCraftResetFlags) {
         window.__squareCraftResetFlags = new Map();
@@ -49,7 +47,6 @@
       let widgetLoaded = false;
       const widgetScript = document.getElementById("sc-script");
 
-
       let token = null;
       let userId = null;
       let widgetId = null;
@@ -92,14 +89,32 @@
       }
 
       loadGSAPCDN();
-      
 
       let lastClickedBlockId = null;
       let lastClickedElement = null;
       let lastAppliedAlignment = null;
       let lastActiveAlignmentElement = null;
 
+      function getCurrentViewport() {
+        const width = window.innerWidth;
 
+        if (width <= 640) {
+          return "mobile";
+        } else if (width <= 767) {
+          return "tablet";
+        } else if (width <= 1024) {
+          return "laptop";
+        } else {
+          return "desktop";
+        }
+      }
+      function logCurrentViewport() {
+        const viewport = getCurrentViewport();
+        console.log(`🖥️ Current Squarespace Viewport: ${viewport}`);
+      }
+
+      logCurrentViewport(); // initial log
+      window.addEventListener("resize", logCurrentViewport); // live log
 
       function injectLaunchAnimationCSS(targetDoc = document) {
         if (targetDoc.getElementById("sc-launch-animation-style")) return;
@@ -127,8 +142,7 @@
         `;
         targetDoc.head.appendChild(style);
       }
-      
-    
+
       function triggerLaunchAnimation() {
         let iframeDoc = null;
 
@@ -150,10 +164,6 @@
           console.warn("⚠️ Could not access iframe content for animation.");
         }
       }
-      
-            
-
-
 
       function applyStylesToElement(element, css) {
         if (!element || !css) return;
@@ -176,7 +186,6 @@
         styleTag.innerHTML = cssText;
       }
 
-    
       const { initButtonAdvanceStyles } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
       );
@@ -230,7 +239,7 @@
       const { WidgetTypoSectionStateControls } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSectionStateControls/WidgetTypoSectionStateControls.js"
       );
-      
+
       const { initImageSectionToggleControls } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
       );
@@ -295,8 +304,6 @@
       const themeColors = await getSquarespaceThemeStyles();
 
       document.body.addEventListener("click", (event) => {
-     
-    
         if (selectedElement) {
           initButtonStyles(selectedElement);
         }
@@ -371,19 +378,16 @@
           initButtonBorderResetHandlers(() => selectedElement);
           initButtonFontFamilyControls(() => selectedElement);
 
-
-            initButtonBorderTypeToggle(
-              () => selectedElement,
-              (selected) => {
-                if (selected) {
-                  const event = new Event("reapplyBorder");
-                  selected.dispatchEvent(event);
-                }
+          initButtonBorderTypeToggle(
+            () => selectedElement,
+            (selected) => {
+              if (selected) {
+                const event = new Event("reapplyBorder");
+                selected.dispatchEvent(event);
               }
-            );
+            }
+          );
           initButtonBorderRadiusControl(() => selectedElement);
-      
-         
         }, 50);
 
         handleAlignmentClick(event, {
@@ -410,7 +414,9 @@
 
       document.body.addEventListener("click", (event) => {
         const dropdownTrigger = event.target.closest("#font-weight-dropdown");
-        const dropdownList = document.getElementById("font-weight-dropdown-list");
+        const dropdownList = document.getElementById(
+          "font-weight-dropdown-list"
+        );
 
         if (dropdownTrigger) {
           if (dropdownList.classList.contains("sc-hidden")) {
@@ -516,7 +522,9 @@
             });
           });
 
-          const targetBody = isSameOrigin ? parent.document.body : document.body;
+          const targetBody = isSameOrigin
+            ? parent.document.body
+            : document.body;
           observer.observe(targetBody, { childList: true, subtree: true });
         } catch (error) {
           console.error("❌ Error Fetching Modifications:", error);
@@ -757,7 +765,6 @@
           console.error("🚨 Error loading HTML module:", err);
         }
         triggerLaunchAnimation();
-
       }
 
       function waitForElement(selector, timeout = 3000) {
@@ -784,8 +791,6 @@
           }, timeout);
         });
       }
-
-     
 
       function makeWidgetDraggable() {
         if (!widgetContainer) return;
@@ -946,7 +951,7 @@
           });
         }
 
-        injectIconIntoTargetElements(); 
+        injectIconIntoTargetElements();
 
         const observer = new MutationObserver(() => {
           injectIconIntoTargetElements();
@@ -955,13 +960,16 @@
         observer.observe(obsTarget, { childList: true, subtree: true });
 
         try {
-          iframe?.contentWindow?.document?.addEventListener("click", (event) => {
-            if (event.target.classList.contains("sc-admin-icon")) {
-              event.stopPropagation();
-              event.preventDefault();
-              toggleWidgetVisibility(event);
+          iframe?.contentWindow?.document?.addEventListener(
+            "click",
+            (event) => {
+              if (event.target.classList.contains("sc-admin-icon")) {
+                event.stopPropagation();
+                event.preventDefault();
+                toggleWidgetVisibility(event);
+              }
             }
-          });
+          );
         } catch (e) {
           console.warn(
             "⚠️ Could not access iframe document (likely cross-origin)"
@@ -1048,5 +1056,4 @@
 
       checkView();
       window.addEventListener("resize", checkView);
-    
     })();
