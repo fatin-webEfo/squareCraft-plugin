@@ -1,6 +1,6 @@
-export function viewportToggle() {
+export function viewportToggle(attempt = 0) {
   const iframe = document.getElementById("sqs-site-frame");
-  if (!iframe) return;
+  if (!iframe || attempt > 5) return;
 
   const views = {
     mobile: "mobile-viewport",
@@ -9,11 +9,20 @@ export function viewportToggle() {
     desktop: "dekstop-viewport",
   };
 
+  const ready = Object.values(views).every((id) =>
+    parent.document.getElementById(id)
+  );
+
+  if (!ready) {
+    setTimeout(() => viewportToggle(attempt + 1), 300);
+    return;
+  }
+
   Object.entries(views).forEach(([type, id]) => {
     const button = parent.document.getElementById(id);
     if (!button) return;
 
-    button.addEventListener("click", () => {
+    button.onclick = () => {
       switch (type) {
         case "mobile":
           iframe.style.width = "375px";
@@ -29,6 +38,6 @@ export function viewportToggle() {
           break;
       }
       console.log(`✅ Switched to ${type} view`);
-    });
+    };
   });
 }
