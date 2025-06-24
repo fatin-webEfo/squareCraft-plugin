@@ -1065,7 +1065,6 @@
               const ready = Object.values(views).every((v) =>
                 document.getElementById(v.id)
               );
-
               if (!ready && attempt < 10) {
                 setTimeout(() => viewportToggle(attempt + 1), 300);
                 return;
@@ -1076,29 +1075,31 @@
                 if (!btn) return;
 
                 btn.onclick = () => {
-                  const html = document.documentElement;
-                  const body = document.body;
-
-                  html.classList.remove(
+                  const root = document.documentElement;
+                  root.classList.remove(
                     "sc-mobile-view",
                     "sc-tablet-view",
                     "sc-laptop-view",
                     "sc-desktop-view"
                   );
-                  html.classList.add(`sc-${type}-view`);
+                  root.classList.add(`sc-${type}-view`);
 
-                  // Use setAttribute to apply !important via full style string
-                  const styleString = `
-                    --frame-width: ${width} !important;
-                    --vh: ${vh} !important;
-                    --frame-scrollbar-width: 0px !important;
-                  `.trim();
+                  // ✅ Override the inline style variables forcibly with !important
+                  root.style.setProperty("--frame-width", width, "important");
+                  root.style.setProperty("--vh", vh, "important");
+                  root.style.setProperty(
+                    "--frame-scrollbar-width",
+                    "0px",
+                    "important"
+                  );
 
-                  body.setAttribute("style", styleString);
-                  console.log(`✅ Switched to ${type} with !important styles`);
+                  console.log(
+                    `✅ Switched to ${type} with frame-width: ${width}`
+                  );
                 };
               });
             }
+            
             
             
             
