@@ -76,20 +76,6 @@
             )
               .then(({ viewportToggle }) => {
                 viewportToggle();
-                const viewportSection =
-                  parent.document.getElementById("viewport-sections");
-
-                if (viewportSection) {
-                  viewportSection.querySelectorAll("img").forEach((img) => {
-                    img.addEventListener("mousedown", (e) =>
-                      e.stopPropagation()
-                    );
-                    img.addEventListener("touchstart", (e) =>
-                      e.stopPropagation()
-                    );
-                  });
-                }
-
               })
               .catch((err) => {
                 console.error("❌ Failed to load viewportToggle.js", err);
@@ -100,7 +86,7 @@
           let offsetX = 0,
             offsetY = 0;
 
-            dragTarget.classList.add("sc-grab");
+          dragTarget.style.cursor = "grab";
 
           const startDrag = (event) => {
             if (
@@ -131,7 +117,7 @@
               userSelect: "none",
             });
 
-            dragTarget.classList.add("dragging");
+            dragTarget.style.cursor = "grabbing";
 
             document.addEventListener("mousemove", dragMove);
             document.addEventListener("mouseup", stopDrag);
@@ -157,8 +143,7 @@
             if (!isDragging) return;
 
             isDragging = false;
-            dragTarget.classList.remove("sc-cursor-grabbing");
-
+            dragTarget.style.cursor = "grab";
 
             Object.assign(panel.style, {
               transform: "none",
