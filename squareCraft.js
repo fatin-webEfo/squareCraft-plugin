@@ -95,10 +95,9 @@
       let lastAppliedAlignment = null;
       let lastActiveAlignmentElement = null;
 
-   
+  //  viewport
 
-      logCurrentViewport();
-      window.addEventListener("resize", logCurrentViewport);
+     
 
       function injectLaunchAnimationCSS(targetDoc = document) {
         if (targetDoc.getElementById("sc-launch-animation-style")) return;
@@ -173,6 +172,9 @@
       const { initButtonAdvanceStyles } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
       );
+      const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
+      logCurrentViewport();
+      window.addEventListener("resize", logCurrentViewport);
       const { handleSectionFind } = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
       );
