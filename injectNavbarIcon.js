@@ -100,7 +100,7 @@
           let offsetX = 0,
             offsetY = 0;
 
-          dragTarget.style.cursor = "grab";
+            dragTarget.classList.add("sc-grab");
 
           const startDrag = (event) => {
             if (
@@ -131,7 +131,7 @@
               userSelect: "none",
             });
 
-            dragTarget.style.cursor = "grabbing";
+            dragTarget.classList.add("sc-cursor-grabbing");
 
             document.addEventListener("mousemove", dragMove);
             document.addEventListener("mouseup", stopDrag);
