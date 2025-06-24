@@ -240,8 +240,6 @@ export function injectNavbarIcon() {
 
 
 
-
-
   function injectGlobalStylesheet() {
     const head = parent.document.head;
     if (!head.querySelector("#sc-style-link")) {
