@@ -1104,4 +1104,6 @@
             
             
             viewportToggle();
+            setTimeout(viewportToggle, 1000);
+
           })();
