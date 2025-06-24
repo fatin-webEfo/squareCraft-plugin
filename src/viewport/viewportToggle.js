@@ -1,7 +1,5 @@
 export function viewportToggle(attempt = 0) {
-    console.log("✅ viewportToggle initialized");
-  const iframe = document.getElementById("sqs-site-frame");
-  if (!iframe || attempt > 5) return;
+  console.log("✅ viewportToggle initialized");
 
   const views = {
     mobile: "mobile-viewport",
@@ -14,32 +12,43 @@ export function viewportToggle(attempt = 0) {
     parent.document.getElementById(id)
   );
 
-  if (!ready) {
+  if (!ready && attempt < 10) {
     setTimeout(() => viewportToggle(attempt + 1), 300);
     return;
   }
 
-
   Object.entries(views).forEach(([type, id]) => {
-    const button = parent.document.getElementById(id);
-    if (!button) return;
+    const btn = parent.document.getElementById(id);
+    if (!btn) return;
 
-    button.onclick = () => {
+    btn.onclick = () => {
+      let width;
+
       switch (type) {
         case "mobile":
-          iframe.style.width = "375px";
+          width = 375;
           break;
         case "tablet":
-          iframe.style.width = "768px";
+          width = 640;
           break;
         case "laptop":
-          iframe.style.width = "1024px";
+          width = 1024;
           break;
         case "desktop":
-          iframe.style.width = "100%";
-          break;
+        default:
+          width = 1440;
       }
-      console.log(`✅ Switched to ${type} view`);
+
+      // Fake the width for JS by overriding innerWidth temporarily
+      Object.defineProperty(window, "innerWidth", {
+        configurable: true,
+        value: width,
+      });
+
+      const resizeEvent = new Event("resize");
+      window.dispatchEvent(resizeEvent);
+
+      console.log(`✅ Switched to ${type} view (${width}px)`);
     };
   });
 }
