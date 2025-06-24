@@ -2,17 +2,19 @@ export function viewportToggle() {
   const iframe = document.getElementById("sqs-site-frame");
   if (!iframe) return;
 
-  const buttons = {
-    mobile: parent.document.querySelector(".mobile-viewport"),
-    tablet: parent.document.querySelector(".tab-viewport"),
-    laptop: parent.document.querySelector(".laptop-viewport"),
-    desktop: parent.document.querySelector(".dekstop-viewport"),
+  const views = {
+    mobile: "mobile-viewport",
+    tablet: "tab-viewport",
+    laptop: "laptop-viewport",
+    desktop: "dekstop-viewport",
   };
 
-  Object.entries(buttons).forEach(([viewport, button]) => {
+  Object.entries(views).forEach(([type, id]) => {
+    const button = parent.document.getElementById(id);
     if (!button) return;
+
     button.addEventListener("click", () => {
-      switch (viewport) {
+      switch (type) {
         case "mobile":
           iframe.style.width = "375px";
           break;
@@ -26,7 +28,7 @@ export function viewportToggle() {
           iframe.style.width = "100%";
           break;
       }
-      console.log(`✅ Switched to ${viewport} view`);
+      console.log(`✅ Switched to ${type} view`);
     });
   });
 }
