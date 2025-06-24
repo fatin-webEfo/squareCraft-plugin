@@ -50,7 +50,7 @@ export function WidgetButtonNormalState() {
                         </div>
                         <div id="scButtonFontSizeSelect" class="sc-bg-3f3f3f sc-cursor-pointer sc-px-1_5"
                            style="height: 28px;  margin-left: 12px;   border-radius: 0px 5px 5px 0px;">
-                           <img class=" sc-rotate-180 sc-mt-2" width="12px"
+                           <img class=" sc-rotate-180 sc-mt-3" width="12px"
                               src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" alt="">
                         </div>
                      </div>
