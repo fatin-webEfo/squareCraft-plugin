@@ -168,9 +168,7 @@
 
             styleTag.innerHTML = cssText;
           }
-          const { viewportToggle } = await import(
-            "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js"
-          );
+        
       
           
           const { initButtonAdvanceStyles } = await import(
@@ -377,7 +375,6 @@
                   }
                 }
               );
-              viewportToggle();
               initButtonBorderRadiusControl(() => selectedElement);
             }, 50);
 

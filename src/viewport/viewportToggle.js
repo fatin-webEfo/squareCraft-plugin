@@ -1,6 +1,9 @@
 export function viewportToggle(attempt = 0) {
   const iframe = document.getElementById("sqs-site-frame");
-  if (!iframe || attempt > 5) return;
+  if (!iframe || attempt > 5) {
+    console.warn("❌ iframe not found or max attempts reached");
+    return;
+  }
 
   const views = {
     mobile: "mobile-viewport",
@@ -14,6 +17,7 @@ export function viewportToggle(attempt = 0) {
   );
 
   if (!ready) {
+    console.log("🔁 Waiting for viewport buttons to be available...");
     setTimeout(() => viewportToggle(attempt + 1), 300);
     return;
   }
@@ -40,4 +44,6 @@ export function viewportToggle(attempt = 0) {
       console.log(`✅ Switched to ${type} view`);
     };
   });
+
+  console.log("✅ viewportToggle initialized");
 }
