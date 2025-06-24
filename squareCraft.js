@@ -1048,9 +1048,8 @@
 
 
 
-            function initViewportToggle(attempt = 0) {
-              const iframe = document.getElementById("sqs-site-frame");
-              if (!iframe || attempt > 10) return;
+             function viewportToggle(attempt = 0) {
+              console.log("✅ viewportToggle initialized");
 
               const views = {
                 mobile: "mobile-viewport",
@@ -1059,38 +1058,47 @@
                 desktop: "dekstop-viewport",
               };
 
-              const allExist = Object.values(views).every((id) =>
+              const ready = Object.values(views).every((id) =>
                 parent.document.getElementById(id)
               );
-              if (!allExist) {
-                setTimeout(() => initViewportToggle(attempt + 1), 300);
+
+              if (!ready && attempt < 10) {
+                setTimeout(() => viewportToggle(attempt + 1), 300);
                 return;
               }
 
               Object.entries(views).forEach(([type, id]) => {
-                const button = parent.document.getElementById(id);
-                if (!button) return;
+                const btn = parent.document.getElementById(id);
+                if (!btn) return;
 
-                button.addEventListener("click", () => {
+                btn.onclick = () => {
+                  let width;
+
                   switch (type) {
                     case "mobile":
-                      iframe.style.width = "375px";
+                      width = 375;
                       break;
                     case "tablet":
-                      iframe.style.width = "768px";
+                      width = 640;
                       break;
                     case "laptop":
-                      iframe.style.width = "1024px";
+                      width = 1024;
                       break;
                     case "desktop":
-                      iframe.style.width = "100%";
-                      break;
+                    default:
+                      width = 1440;
                   }
-                  console.log(`✅ Switched to ${type} view`);
-                });
-              });
 
-              console.log("✅ Viewport toggle initialized");
+                  Object.defineProperty(window, "innerWidth", {
+                    configurable: true,
+                    value: width,
+                  });
+
+                  window.dispatchEvent(new Event("resize"));
+                  console.log(`✅ Switched to ${type} view (${width}px)`);
+                };
+              });
             }
-            initViewportToggle();
+            
+            viewportToggle();
           })();
