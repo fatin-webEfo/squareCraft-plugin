@@ -5,7 +5,7 @@ export function NavbarIconHtml() {
       <div id="icon-options">
   <div style="padding: 12px 16px; color: white; font-size: 14px; display: flex; align-items: center; justify-content: space-between;">
     <span style="font-size: 18px; font-weight: 400;">SquareCraft</span>
-    <div id="viewport-sections" style="cursor: pointer; display: flex; align-items: center; gap: 8px; justify-content: center;">
+    <div id="viewport-sections" style="cursor: pointer; display: flex; align-items: center; gap: 10px; justify-content: center;">
       <img id="mobile-viewport" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/mobile.svg" style="width: 18px;">
       <img id="tab-viewport" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/tab.svg" style="width: 18px;">
       <img id="laptop-viewport" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/laptop.svg" style="width: 18px;">
