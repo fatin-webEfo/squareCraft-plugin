@@ -131,7 +131,7 @@
               userSelect: "none",
             });
 
-            dragTarget.classList.add("sc-cursor-grabbing");
+            dragTarget.classList.add("dragging");
 
             document.addEventListener("mousemove", dragMove);
             document.addEventListener("mouseup", stopDrag);
@@ -157,7 +157,8 @@
             if (!isDragging) return;
 
             isDragging = false;
-            dragTarget.style.cursor = "grab";
+            dragTarget.classList.remove("sc-cursor-grabbing");
+
 
             Object.assign(panel.style, {
               transform: "none",
