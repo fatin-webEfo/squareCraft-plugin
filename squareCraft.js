@@ -95,26 +95,10 @@
       let lastAppliedAlignment = null;
       let lastActiveAlignmentElement = null;
 
-      function getCurrentViewport() {
-        const width = window.innerWidth;
+   
 
-        if (width <= 640) {
-          return "mobile";
-        } else if (width <= 767) {
-          return "tablet";
-        } else if (width <= 1024) {
-          return "laptop";
-        } else {
-          return "desktop";
-        }
-      }
-      function logCurrentViewport() {
-        const viewport = getCurrentViewport();
-        console.log(`🖥️ Current Squarespace Viewport: ${viewport}`);
-      }
-
-      logCurrentViewport(); // initial log
-      window.addEventListener("resize", logCurrentViewport); // live log
+      logCurrentViewport();
+      window.addEventListener("resize", logCurrentViewport);
 
       function injectLaunchAnimationCSS(targetDoc = document) {
         if (targetDoc.getElementById("sc-launch-animation-style")) return;
