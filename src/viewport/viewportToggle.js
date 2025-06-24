@@ -2,14 +2,14 @@ export function viewportToggle(attempt = 0) {
   console.log("✅ viewportToggle initialized");
 
   const views = {
-    mobile: "mobile-viewport",
-    tablet: "tab-viewport",
-    laptop: "laptop-viewport",
-    desktop: "dekstop-viewport",
+    mobile: { id: "mobile-viewport", width: "428px", vh: "7.5px" },
+    tablet: { id: "tab-viewport", width: "768px", vh: "8.5px" },
+    laptop: { id: "laptop-viewport", width: "1024px", vh: "9px" },
+    desktop: { id: "dekstop-viewport", width: "100%", vh: "10px" },
   };
 
-  const ready = Object.values(views).every((id) =>
-    parent.document.getElementById(id)
+  const ready = Object.values(views).every((v) =>
+    document.getElementById(v.id)
   );
 
   if (!ready && attempt < 10) {
@@ -17,38 +17,25 @@ export function viewportToggle(attempt = 0) {
     return;
   }
 
-  Object.entries(views).forEach(([type, id]) => {
-    const btn = parent.document.getElementById(id);
+  Object.entries(views).forEach(([type, { id, width, vh }]) => {
+    const btn = document.getElementById(id);
     if (!btn) return;
 
     btn.onclick = () => {
-      let width;
+      const root = document.documentElement;
+      root.classList.remove(
+        "sc-mobile-view",
+        "sc-tablet-view",
+        "sc-laptop-view",
+        "sc-desktop-view"
+      );
+      root.classList.add(`sc-${type}-view`);
 
-      switch (type) {
-        case "mobile":
-          width = 375;
-          break;
-        case "tablet":
-          width = 640;
-          break;
-        case "laptop":
-          width = 1024;
-          break;
-        case "desktop":
-        default:
-          width = 1440;
-      }
+      root.style.setProperty("--frame-width", width);
+      root.style.setProperty("--vh", vh);
+      root.style.setProperty("--frame-scrollbar-width", "0px");
 
-      // Fake the width for JS by overriding innerWidth temporarily
-      Object.defineProperty(window, "innerWidth", {
-        configurable: true,
-        value: width,
-      });
-
-      const resizeEvent = new Event("resize");
-      window.dispatchEvent(resizeEvent);
-
-      console.log(`✅ Switched to ${type} view (${width}px)`);
+      console.log(`✅ Switched to ${type} with --frame-width: ${width}`);
     };
   });
 }

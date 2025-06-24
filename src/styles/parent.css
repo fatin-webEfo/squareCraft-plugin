@@ -3158,17 +3158,17 @@ left: 40%;
 
 
 html.sc-mobile-view body {
-  max-width: 375px !important;
-  margin: 0 auto !important;
+  --frame-width: 375px;
 }
+
 html.sc-tablet-view body {
-  max-width: 640px !important;
-  margin: 0 auto !important;
+  --frame-width: 640px;
 }
+
 html.sc-laptop-view body {
-  max-width: 1024px !important;
-  margin: 0 auto !important;
+  --frame-width: 1024px;
 }
+
 html.sc-desktop-view body {
-  max-width: 100% !important;
+  --frame-width: 1440px;
 }
