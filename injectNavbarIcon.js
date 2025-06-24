@@ -71,6 +71,15 @@ export function injectNavbarIcon() {
         panel.innerHTML = NavbarIconHtml();
         wrapper.appendChild(panel);
 
+        import(
+          "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js"
+        )
+          .then((mod) => mod.viewportToggle())
+          .catch((err) =>
+            console.error("Failed to load viewportToggle.js:", err)
+          );
+        
+
         const dragTarget = panel.querySelector("#icon-options");
         let isDragging = false;
         let offsetX = 0,

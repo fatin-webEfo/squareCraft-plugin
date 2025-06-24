@@ -1,37 +1,32 @@
 export function viewportToggle() {
-  const viewportContainer = document.getElementById("viewport-sections");
   const iframe = document.getElementById("sqs-site-frame");
+  if (!iframe) return;
 
-  if (!viewportContainer || !iframe) return;
-
-  const simulateViewport = (viewport) => {
-    const styles = {
-      mobile: { width: "375px", height: "667px" },
-      tablet: { width: "768px", height: "1024px" },
-      laptop: { width: "1024px", height: "768px" },
-      desktop: { width: "1440px", height: "900px" },
-    };
-
-    const style = styles[viewport];
-    if (!style) return;
-
-    iframe.style.width = style.width;
-    iframe.style.height = style.height;
-
-    console.log(
-      `📱 Switched to ${viewport} view (${style.width} × ${style.height})`
-    );
+  const buttons = {
+    mobile: parent.document.querySelector(".mobile-viewport"),
+    tablet: parent.document.querySelector(".tab-viewport"),
+    laptop: parent.document.querySelector(".laptop-viewport"),
+    desktop: parent.document.querySelector(".dekstop-viewport"),
   };
 
-  viewportContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("mobile-viewport")) {
-      simulateViewport("mobile");
-    } else if (e.target.classList.contains("tab-viewport")) {
-      simulateViewport("tablet");
-    } else if (e.target.classList.contains("laptop-viewport")) {
-      simulateViewport("laptop");
-    } else if (e.target.classList.contains("dekstop-viewport")) {
-      simulateViewport("desktop");
-    }
+  Object.entries(buttons).forEach(([viewport, button]) => {
+    if (!button) return;
+    button.addEventListener("click", () => {
+      switch (viewport) {
+        case "mobile":
+          iframe.style.width = "375px";
+          break;
+        case "tablet":
+          iframe.style.width = "768px";
+          break;
+        case "laptop":
+          iframe.style.width = "1024px";
+          break;
+        case "desktop":
+          iframe.style.width = "100%";
+          break;
+      }
+      console.log(`✅ Switched to ${viewport} view`);
+    });
   });
 }
