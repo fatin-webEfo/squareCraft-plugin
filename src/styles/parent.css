@@ -3155,3 +3155,20 @@ left: 40%;
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+
+html.sc-mobile-view body {
+  max-width: 375px !important;
+  margin: 0 auto !important;
+}
+html.sc-tablet-view body {
+  max-width: 640px !important;
+  margin: 0 auto !important;
+}
+html.sc-laptop-view body {
+  max-width: 1024px !important;
+  margin: 0 auto !important;
+}
+html.sc-desktop-view body {
+  max-width: 100% !important;
+}

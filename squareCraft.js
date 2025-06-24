@@ -1048,7 +1048,7 @@
 
 
 
-             function viewportToggle(attempt = 0) {
+            function viewportToggle(attempt = 0) {
               console.log("✅ viewportToggle initialized");
 
               const views = {
@@ -1059,7 +1059,7 @@
               };
 
               const ready = Object.values(views).every((id) =>
-                parent.document.getElementById(id)
+                document.getElementById(id)
               );
 
               if (!ready && attempt < 10) {
@@ -1068,37 +1068,23 @@
               }
 
               Object.entries(views).forEach(([type, id]) => {
-                const btn = parent.document.getElementById(id);
+                const btn = document.getElementById(id);
                 if (!btn) return;
 
                 btn.onclick = () => {
-                  let width;
+                  document.documentElement.classList.remove(
+                    "sc-mobile-view",
+                    "sc-tablet-view",
+                    "sc-laptop-view",
+                    "sc-desktop-view"
+                  );
 
-                  switch (type) {
-                    case "mobile":
-                      width = 375;
-                      break;
-                    case "tablet":
-                      width = 640;
-                      break;
-                    case "laptop":
-                      width = 1024;
-                      break;
-                    case "desktop":
-                    default:
-                      width = 1440;
-                  }
-
-                  Object.defineProperty(window, "innerWidth", {
-                    configurable: true,
-                    value: width,
-                  });
-
-                  window.dispatchEvent(new Event("resize"));
-                  console.log(`✅ Switched to ${type} view (${width}px)`);
+                  document.documentElement.classList.add(`sc-${type}-view`);
+                  console.log(`✅ Simulated ${type} layout via class`);
                 };
               });
             }
+            
             
             viewportToggle();
           })();
