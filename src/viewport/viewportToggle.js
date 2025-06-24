@@ -1,4 +1,5 @@
 export function viewportToggle(attempt = 0) {
+    console.log("✅ viewportToggle initialized");
   const iframe = document.getElementById("sqs-site-frame");
   if (!iframe || attempt > 5) return;
 
@@ -18,7 +19,6 @@ export function viewportToggle(attempt = 0) {
     return;
   }
 
-  console.log("✅ viewportToggle initialized"); // This must appear
 
   Object.entries(views).forEach(([type, id]) => {
     const button = parent.document.getElementById(id);
