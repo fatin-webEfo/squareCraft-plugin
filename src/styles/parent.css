@@ -3158,17 +3158,17 @@ left: 40%;
 
 
 html.sc-mobile-view body {
-  --frame-width: 375px;
+  --frame-width: 375px !important;
 }
 
 html.sc-tablet-view body {
-  --frame-width: 640px;
+  --frame-width: 640px !important;
 }
 
 html.sc-laptop-view body {
-  --frame-width: 1024px;
+  --frame-width: 1024px !important;
 }
 
 html.sc-desktop-view body {
-  --frame-width: 100%;
+  --frame-width: 100% !important;
 }
