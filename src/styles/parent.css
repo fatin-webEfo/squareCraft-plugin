@@ -3170,5 +3170,5 @@ html.sc-laptop-view body {
 }
 
 html.sc-desktop-view body {
-  --frame-width: 1440px;
+  --frame-width: 100%;
 }
