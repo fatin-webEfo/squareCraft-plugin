@@ -23,7 +23,7 @@ export function html() {
       <p class="sc-font-size-12  sc-universal sc-roboto sc-font-light">Powerful Visual Editor for Customizing Squarespace Text Styles in Real-Time. </p>
     </div>
   </div>
-  <div class="sc-mt-2 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949  sc-w-full"></div>
+  <div class="sc-mt-4 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949  sc-w-full"></div>
   <div class="sc-mt-6 sc-h-12 sc-roboto sc-flex  sc-items-center sc-universal">
     <p id="design-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader ">Design</p>
     <p id="advanced-tab" class="sc-font-size-12 sc-px-4 sc-cursor-pointer tabHeader">Advanced</p>
