@@ -71,27 +71,6 @@ export function injectNavbarIcon() {
         panel.innerHTML = NavbarIconHtml();
         wrapper.appendChild(panel);
 
-        function waitForViewportButtonsThenActivate(retries = 20) {
-          const mobile = parent.document.querySelector(".mobile-viewport");
-          const tablet = parent.document.querySelector(".tab-viewport");
-          const laptop = parent.document.querySelector(".laptop-viewport");
-          const desktop = parent.document.querySelector(".dekstop-viewport");
-        
-          if (mobile && tablet && laptop && desktop) {
-            import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js")
-              .then((mod) => mod.viewportToggle())
-              .catch((err) => console.error("❌ viewportToggle load failed:", err));
-          } else if (retries > 0) {
-            setTimeout(() => waitForViewportButtonsThenActivate(retries - 1), 300);
-          } else {
-            console.warn("⚠️ Viewport buttons not found in parent.document");
-          }
-        }
-        
-        waitForViewportButtonsThenActivate();
-
-        
-
         const dragTarget = panel.querySelector("#icon-options");
         let isDragging = false;
         let offsetX = 0,
@@ -237,6 +216,8 @@ export function injectNavbarIcon() {
     }
   }
   
+
+
 
 
 
