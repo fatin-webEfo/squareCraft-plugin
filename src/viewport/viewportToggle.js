@@ -5,7 +5,7 @@ export function viewportToggle(attempt = 0) {
     mobile: { id: "mobile-viewport", frameWidth: "375px" },
     tablet: { id: "tab-viewport", frameWidth: "640px" },
     laptop: { id: "laptop-viewport", frameWidth: "1024px" },
-    desktop: { id: "dekstop-viewport", frameWidth: "1440px" }, // but no set
+    desktop: { id: "dekstop-viewport", frameWidth: "1440px" }, 
   };
 
   const wrapper = parent.document.querySelector(
