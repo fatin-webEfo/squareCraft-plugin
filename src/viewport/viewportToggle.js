@@ -3,8 +3,8 @@ export function viewportToggle(attempt = 0) {
 
   const views = {
     mobile: { id: "mobile-viewport", frameWidth: "428px" },
-    tablet: { id: "tab-viewport", frameWidth: "640px" },
-    laptop: { id: "laptop-viewport", frameWidth: "1024px" },
+    tablet: { id: "tab-viewport", frameWidth: "720px" },
+    laptop: { id: "laptop-viewport", frameWidth: "1200px" },
     desktop: { id: "dekstop-viewport", frameWidth: "1440px" }, 
   };
 
