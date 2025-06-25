@@ -1129,9 +1129,6 @@
                 );
               }
 
-              // Auto-initialize after delay (in case iframe loads late)
-              viewportToggle();
-              setTimeout(viewportToggle, 1000);
               
               
               
