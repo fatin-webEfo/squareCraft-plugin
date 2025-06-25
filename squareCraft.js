@@ -1048,7 +1048,7 @@
 
 
 
-               function viewportToggle(attempt = 0) {
+              function viewportToggle(attempt = 0) {
                 console.log("✅ viewportToggle initialized");
 
                 const views = {
@@ -1093,29 +1093,45 @@
                     const btn = document.getElementById(id);
                     if (!btn) return;
 
+                    // Ensure cursor always pointer
+                    btn.style.cursor = "pointer";
+
                     btn.onclick = () => {
-                      iframe.style.setProperty("--frame-width", frameWidth);
-                      iframe.style.setProperty("--vh", vh);
-                      iframe.style.setProperty(
+                      const iframeDoc =
+                        iframe.contentDocument ||
+                        iframe.contentWindow?.document;
+                      if (!iframeDoc) return;
+
+                      const root = iframeDoc.documentElement;
+                      root.style.setProperty(
+                        "--frame-width",
+                        frameWidth,
+                        "important"
+                      );
+                      root.style.setProperty("--vh", vh, "important");
+                      root.style.setProperty(
                         "--frame-scrollbar-width",
-                        "0px"
+                        "0px",
+                        "important"
                       );
 
-                      // Optional active highlight
-                      Object.values(views).forEach(({ id }) =>
+                      // Optional: Add active highlight class
+                      Object.values(views).forEach(({ id }) => {
                         document
                           .getElementById(id)
-                          ?.classList.remove("sc-active-viewport")
-                      );
+                          ?.classList.remove("sc-active-viewport");
+                      });
                       btn.classList.add("sc-active-viewport");
 
-                      console.log(
-                        `✅ Set iframe --frame-width to ${frameWidth}`
-                      );
+                      console.log(`✅ Applied ${type} viewport: ${frameWidth}`);
                     };
                   }
                 );
               }
+
+              // Auto-initialize after delay (in case iframe loads late)
+              viewportToggle();
+              setTimeout(viewportToggle, 1000);
               
               
               
