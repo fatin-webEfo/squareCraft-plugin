@@ -1519,7 +1519,9 @@
 .sc-border-color-585858 {
   border-color: #585858 !important;
 }
-
+.sc-border-color-707070{
+  border-color: #707070 !important;
+}
 .sc-pb-2 {
   padding-bottom: 6px !important;
   /* 10px */
@@ -3177,4 +3179,12 @@ html.sc-laptop-view body {
 
 html.sc-desktop-view body {
   --frame-width: 100% !important;
+}
+
+.sc-custom-timeline {
+  width: 10px;
+  cursor: pointer;
+  height: 10px;
+  background-color: white;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }

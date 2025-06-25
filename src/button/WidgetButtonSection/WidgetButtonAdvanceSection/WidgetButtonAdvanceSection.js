@@ -116,7 +116,8 @@ export function WidgetButtonAdvanceSection(){
                   style="right: 0%"
                 ></div>
               </div>
-
+ <div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-707070 sc-w-full"></div>
+       <div class="sc-custom-timeline"></div>
               <div
                 class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
               >
