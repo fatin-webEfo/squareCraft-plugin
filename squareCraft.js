@@ -1058,53 +1058,55 @@
                   desktop: { id: "dekstop-viewport", frameWidth: "1440px" },
                 };
 
-                const ready = Object.values(views).every((v) =>
-                  document.getElementById(v.id)
+                const parentViewportWrapper = parent.document.querySelector(
+                  ".RGtXGwLT8k4vtzxS.BjStk7rFpIUNsoCd.FTIKN_0WXpoHyCfE.nGThBduWyUUM6RxV"
                 );
-                if (!ready && attempt < 10) {
+
+                if (!parentViewportWrapper || attempt > 10) {
+                  console.warn("❌ Parent viewport wrapper not found");
+                  return;
+                }
+
+                const ready = Object.values(views).every((v) =>
+                  parent.document.getElementById(v.id)
+                );
+                if (!ready) {
                   setTimeout(() => viewportToggle(attempt + 1), 300);
                   return;
                 }
 
                 Object.entries(views).forEach(([type, { id, frameWidth }]) => {
-                  const btn = document.getElementById(id);
+                  const btn = parent.document.getElementById(id);
                   if (!btn) return;
 
                   btn.style.cursor = "pointer";
+
                   btn.addEventListener("mousedown", (e) => e.stopPropagation());
                   btn.addEventListener("touchstart", (e) =>
                     e.stopPropagation()
                   );
 
                   btn.onclick = () => {
-                    const target = document.querySelector(
-                      ".RGtXGwLT8k4vtzxS.Ipc7XTyoBO0wrIPb.BjStk7rFpIUNsoCd"
+                    parentViewportWrapper.style.setProperty(
+                      "width",
+                      frameWidth,
+                      "important"
+                    );
+                    parentViewportWrapper.style.setProperty(
+                      "max-width",
+                      frameWidth,
+                      "important"
+                    );
+                    parentViewportWrapper.style.setProperty(
+                      "min-width",
+                      frameWidth,
+                      "important"
                     );
 
-                    if (target) {
-                      target.style.setProperty(
-                        "width",
-                        frameWidth,
-                        "important"
-                      );
-                      target.style.setProperty(
-                        "max-width",
-                        frameWidth,
-                        "important"
-                      );
-                      target.style.setProperty(
-                        "min-width",
-                        frameWidth,
-                        "important"
-                      );
-
-                      console.log(`✅ Viewport set to ${frameWidth}`);
-                    } else {
-                      console.warn("❌ Viewport wrapper not found");
-                    }
+                    console.log(`✅ Viewport forced to ${frameWidth}`);
 
                     Object.values(views).forEach(({ id }) =>
-                      document
+                      parent.document
                         .getElementById(id)
                         ?.classList.remove("sc-active-viewport")
                     );
@@ -1112,6 +1114,7 @@
                   };
                 });
               }
+              
               
               
               
