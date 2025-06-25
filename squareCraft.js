@@ -1093,8 +1093,14 @@
                     const btn = document.getElementById(id);
                     if (!btn) return;
 
-                    // Ensure cursor always pointer
                     btn.style.cursor = "pointer";
+
+                    btn.addEventListener("mousedown", (e) => {
+                      e.stopPropagation();
+                    });
+                    btn.addEventListener("touchstart", (e) => {
+                      e.stopPropagation();
+                    });
 
                     btn.onclick = () => {
                       const iframeDoc =
@@ -1115,7 +1121,6 @@
                         "important"
                       );
 
-                      // Optional: Add active highlight class
                       Object.values(views).forEach(({ id }) => {
                         document
                           .getElementById(id)
@@ -1128,7 +1133,6 @@
                   }
                 );
               }
-
               
               
               
