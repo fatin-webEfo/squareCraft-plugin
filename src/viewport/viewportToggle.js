@@ -53,8 +53,9 @@ export function viewportToggle(attempt = 0) {
       );
 
       if (target) {
-        target.style.width = frameWidth;
-        target.style.maxWidth = frameWidth;
+        target.style.setProperty("width", frameWidth, "important");
+        target.style.setProperty("max-width", frameWidth, "important");
+        target.style.setProperty("min-width", frameWidth, "important");
         console.log(`✅ Viewport set to ${frameWidth}`);
       } else {
         console.warn("❌ Viewport wrapper not found in iframe");
