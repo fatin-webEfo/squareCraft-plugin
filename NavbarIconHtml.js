@@ -6,10 +6,10 @@ export function NavbarIconHtml() {
   <div style="padding: 12px 16px; color: white; font-size: 14px; display: flex; align-items: center; justify-content: space-between;">
     <span style="font-size: 18px; font-weight: 400;">SquareCraft</span>
     <div id="viewport-sections" style=" display: flex; align-items: center; gap: 10px; justify-content: center;">
-      <img style="cursor:pointer, width: 18px;" id="mobile-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/mobile.svg" >
-      <img style="cursor:pointer, width: 18px;" id="tab-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/tab.svg" >
-      <img style="cursor:pointer, width: 18px;" id="laptop-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/laptop.svg" >
-      <img style="cursor:pointer, width: 18px;" id="dekstop-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" >
+      <img style="cursor:pointer; width: 18px;" id="mobile-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/mobile.svg" >
+      <img style="cursor:pointer; width: 18px;" id="tab-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/tab.svg" >
+      <img style="cursor:pointer; width: 18px;" id="laptop-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/laptop.svg" >
+      <img style="cursor:pointer; width: 18px;" id="dekstop-viewport" class="sc-cursor-pointer" src="https://fatin-webefo.github.io/squareCraft-plugin/public/viewport/monitor.svg" >
     </div>
   </div>
   <div style="background: #EF7C2F; color: white; font-size: 12px; padding: 6px 12px; text-align: center;">
