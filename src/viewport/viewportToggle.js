@@ -5,22 +5,18 @@ export function viewportToggle(attempt = 0) {
     mobile: {
       id: "mobile-viewport",
       frameWidth: "375px",
-      vh: "7.5px",
     },
     tablet: {
       id: "tab-viewport",
       frameWidth: "640px",
-      vh: "8.5px",
     },
     laptop: {
       id: "laptop-viewport",
       frameWidth: "1024px",
-      vh: "9px",
     },
     desktop: {
       id: "dekstop-viewport",
       frameWidth: "1440px",
-      vh: "10px",
     },
   };
 
@@ -38,36 +34,36 @@ export function viewportToggle(attempt = 0) {
     return;
   }
 
-  Object.entries(views).forEach(([type, { id, frameWidth, vh }]) => {
+  Object.entries(views).forEach(([type, { id, frameWidth }]) => {
     const btn = document.getElementById(id);
     if (!btn) return;
 
     btn.style.cursor = "pointer";
 
-    btn.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-    });
-    btn.addEventListener("touchstart", (e) => {
-      e.stopPropagation();
-    });
-    
+    btn.addEventListener("mousedown", (e) => e.stopPropagation());
+    btn.addEventListener("touchstart", (e) => e.stopPropagation());
 
     btn.onclick = () => {
       const iframeDoc =
         iframe.contentDocument || iframe.contentWindow?.document;
       if (!iframeDoc) return;
 
-      const root = iframeDoc.documentElement;
-      root.style.setProperty("--frame-width", frameWidth, "important");
-      root.style.setProperty("--vh", vh, "important");
-      root.style.setProperty("--frame-scrollbar-width", "0px", "important");
+      const target = iframeDoc.querySelector(
+        ".RGtXGwLT8k4vtzxS.Ipc7XTyoBO0wrIPb.BjStk7rFpIUNsoCd"
+      );
 
-      Object.values(views).forEach(({ id }) => {
-        document.getElementById(id)?.classList.remove("sc-active-viewport");
-      });
+      if (target) {
+        target.style.width = frameWidth;
+        target.style.maxWidth = frameWidth;
+        console.log(`✅ Viewport set to ${frameWidth}`);
+      } else {
+        console.warn("❌ Viewport wrapper not found in iframe");
+      }
+
+      Object.values(views).forEach(({ id }) =>
+        document.getElementById(id)?.classList.remove("sc-active-viewport")
+      );
       btn.classList.add("sc-active-viewport");
-
-      console.log(`✅ Applied ${type} viewport: ${frameWidth}`);
     };
   });
 }
