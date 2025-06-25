@@ -1055,14 +1055,14 @@
                   mobile: { id: "mobile-viewport", frameWidth: "375px" },
                   tablet: { id: "tab-viewport", frameWidth: "640px" },
                   laptop: { id: "laptop-viewport", frameWidth: "1024px" },
-                  desktop: { id: "dekstop-viewport", frameWidth: "1440px" },
+                  desktop: { id: "dekstop-viewport", frameWidth: "1440px" }, // but no set
                 };
 
-                const parentViewportWrapper = parent.document.querySelector(
+                const wrapper = parent.document.querySelector(
                   ".RGtXGwLT8k4vtzxS.BjStk7rFpIUNsoCd.FTIKN_0WXpoHyCfE.nGThBduWyUUM6RxV"
                 );
 
-                if (!parentViewportWrapper || attempt > 10) {
+                if (!wrapper || attempt > 10) {
                   console.warn("❌ Parent viewport wrapper not found");
                   return;
                 }
@@ -1080,30 +1080,40 @@
                   if (!btn) return;
 
                   btn.style.cursor = "pointer";
-
                   btn.addEventListener("mousedown", (e) => e.stopPropagation());
                   btn.addEventListener("touchstart", (e) =>
                     e.stopPropagation()
                   );
 
                   btn.onclick = () => {
-                    parentViewportWrapper.style.setProperty(
-                      "width",
-                      frameWidth,
-                      "important"
-                    );
-                    parentViewportWrapper.style.setProperty(
-                      "max-width",
-                      frameWidth,
-                      "important"
-                    );
-                    parentViewportWrapper.style.setProperty(
-                      "min-width",
-                      frameWidth,
-                      "important"
-                    );
+                    if (type === "desktop") {
+                      wrapper.style.removeProperty("width");
+                      wrapper.style.removeProperty("max-width");
+                      wrapper.style.removeProperty("min-width");
 
-                    console.log(`✅ Viewport forced to ${frameWidth}`);
+                      wrapper.style.setProperty("width", "100%", "important");
+                      wrapper.style.setProperty("height", "100%", "important");
+
+                      console.log("🖥️ Reset to desktop: 100% width/height");
+                    } else {
+                      wrapper.style.setProperty(
+                        "width",
+                        frameWidth,
+                        "important"
+                      );
+                      wrapper.style.setProperty(
+                        "max-width",
+                        frameWidth,
+                        "important"
+                      );
+                      wrapper.style.setProperty(
+                        "min-width",
+                        frameWidth,
+                        "important"
+                      );
+
+                      console.log(`✅ Viewport set to ${frameWidth}`);
+                    }
 
                     Object.values(views).forEach(({ id }) =>
                       parent.document
@@ -1114,6 +1124,7 @@
                   };
                 });
               }
+              
               
               
               
