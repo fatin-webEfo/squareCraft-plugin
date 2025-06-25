@@ -44,6 +44,14 @@ export function viewportToggle(attempt = 0) {
 
     btn.style.cursor = "pointer";
 
+    btn.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+    });
+    btn.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+    });
+    
+
     btn.onclick = () => {
       const iframeDoc =
         iframe.contentDocument || iframe.contentWindow?.document;

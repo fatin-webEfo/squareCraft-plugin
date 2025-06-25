@@ -71,16 +71,30 @@
           panel.innerHTML = NavbarIconHtml();
           wrapper.appendChild(panel);
           setTimeout(() => {
-            import(
-              "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js"
-            )
+            import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js")
               .then(({ viewportToggle }) => {
                 viewportToggle();
+          
+                const viewportSection =
+                  parent.document.getElementById("viewport-sections");
+          
+                if (viewportSection) {
+                  viewportSection.querySelectorAll("img").forEach((img) => {
+                    img.addEventListener("mousedown", (e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                    });
+                    img.addEventListener("touchstart", (e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                    });
+                  });
+                }
               })
               .catch((err) => {
                 console.error("❌ Failed to load viewportToggle.js", err);
               });
-          }, 200);
+          }, 0);          
           const dragTarget = panel.querySelector("#icon-options");
           let isDragging = false;
           let offsetX = 0,
