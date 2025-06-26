@@ -3183,6 +3183,16 @@ html.sc-desktop-view body {
 }
 
 
+#timeline-end-fill {
+  transform-origin: right center;
+  transform: scaleX(1);
+  height: 4px; /* or your desired thickness */
+  background-color: #f97316; /* or match left fill */
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: auto;
+}
 
 
 #custom-timeline-arrow {

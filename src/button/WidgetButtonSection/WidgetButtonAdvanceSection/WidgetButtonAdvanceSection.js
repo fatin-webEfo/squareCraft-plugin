@@ -101,7 +101,7 @@ export function WidgetButtonAdvanceSection(){
                 ></div>
                 <div
                   id="timeline-end-fill"
-                  class="sc-absolute sc-bg-F6B67B sc-h-2 sc-rounded-r-full"
+                  class=""
                   style="right: 0%; width: 0%"
                 ></div>
 
