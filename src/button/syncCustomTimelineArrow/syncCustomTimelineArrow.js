@@ -20,16 +20,13 @@ export function syncCustomTimelineArrow(selectedElement) {
     arrow.style.transform = "translateX(-50%)";
 
     console.log("📌 Arrow left (%):", clampedX.toFixed(2));
-    console.log(
-      "Element top:",
-      rect.top,
-      "| visible?",
-      rect.top >= 0 && rect.bottom <= window.innerHeight
-    );
   }
 
-  updateArrowPosition();
+  function trackLoop() {
+    updateArrowPosition();
+    requestAnimationFrame(trackLoop);
+  }
 
-  window.addEventListener("scroll", updateArrowPosition);
-  window.addEventListener("resize", updateArrowPosition);
+  // Start continuous tracking
+  trackLoop();
 }
