@@ -350,7 +350,7 @@
                     getTextType,
                     getHoverTextType,
                     selectedElement,
-                    setSelectedElement: (val) => {
+                    setSelectedElement: (val) => {  
                       selectedElement = val;
                     
                       setTimeout(() => {

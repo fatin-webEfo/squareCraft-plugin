@@ -15,7 +15,6 @@ export function syncCustomTimelineArrow(selectedElement) {
   const relativeX = ((elementCenterX - borderLeft) / borderWidth) * 100;
   const clampedX = Math.max(0, Math.min(100, relativeX));
 
-  arrow.style.left = `${clampedX}%`;
+  arrow.style.left = `${clampedX}%`; // 🔥 fully dynamic
   arrow.style.right = "";
-  arrow.style.transform = "translateX(-50%)";
 }
