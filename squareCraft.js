@@ -200,6 +200,13 @@
                 }
 
                 function updateArrowPosition(arrow, border) {
+                  const progressBar = document.getElementById(
+                    "custom-timeline-progress"
+                  );
+                  if (progressBar) {
+                    progressBar.style.width = `${dynamicLeft}%`;
+                  }
+
                   const rect = selectedElement.getBoundingClientRect();
                   const viewportHeight = window.innerHeight;
 
