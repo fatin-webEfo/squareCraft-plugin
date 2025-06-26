@@ -131,7 +131,7 @@ export function WidgetButtonAdvanceSection(){
                </div>
             </div>
 
-            <div class="sc-w-full sc-mt-3">
+            <div class="sc-w-full sc-mt-6">
               <div
                 class="sc-flex sc-w-full sc-items-center sc-justify-between"
               >
