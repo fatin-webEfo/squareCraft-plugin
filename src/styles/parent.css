@@ -3183,7 +3183,9 @@ html.sc-desktop-view body {
 }
 
 
-
+#custom-timeline-border {
+  position: relative;
+}
 
 #custom-timeline-arrow {
   width: 10px !important;
