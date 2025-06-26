@@ -200,9 +200,10 @@
                 }
 
                 function updateArrowPosition(arrow, border) {
-                  if (!selectedElement || !arrow || !border) return;
-
                   const rect = selectedElement.getBoundingClientRect();
+                  const viewportHeight = window.innerHeight;
+
+                  const top = rect.top;
                   const elementCenterX = rect.left + rect.width / 2;
 
                   const borderRect = border.getBoundingClientRect();
@@ -213,17 +214,22 @@
                     ((elementCenterX - borderLeft) / borderWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
-                  arrow.style.left = `${clampedX}%`;
+                  const percentFromTop = top / viewportHeight;
+                  const leftBasedOnTop = 90 - 80 * percentFromTop; // maps top: 0–vh → left: 90–10
+                  const dynamicLeft = Math.max(
+                    10,
+                    Math.min(90, leftBasedOnTop)
+                  );
 
+                  arrow.style.left = `${dynamicLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
                   console.log(
-                    `📌 Element CenterX: ${elementCenterX}px | Border Left: ${borderLeft}px | ⬅️ Arrow Left: ${clampedX.toFixed(
-                      2
-                    )}%`
+                    `📌 Top: ${top.toFixed(
+                      0
+                    )}px | ⬅️ Arrow Left: ${dynamicLeft.toFixed(2)}%`
                   );
                 }
-                
                 
                 function trackLoop(arrow, border) {
                   if (isTracking) return;
