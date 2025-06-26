@@ -324,7 +324,7 @@
                   applyHoverButtonEffects(() => selectedElement);
                 }
                 if (selectedElement){
-                  syncCustomTimelineArrow(() => selectedElement);
+                  syncCustomTimelineArrow(selectedElement);
                 }
                 initImageUploadPreview(() => selectedElement);
                 const trigger = event.target.closest("#border-color-select");
