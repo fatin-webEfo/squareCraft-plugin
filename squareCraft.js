@@ -175,56 +175,72 @@
                   return;
                 }
 
-                let isTracking = false;
+                let isTracking = false; // ✅ tracking flag
 
                 function waitForElements(callback, retries = 20) {
                   const arrow = document.getElementById(
                     "custom-timeline-arrow"
                   );
+                  const border = document.getElementById(
+                    "custom-timeline-border"
+                  );
 
-                  if (arrow) {
-                    callback(arrow);
+                  if (arrow && border) {
+                    callback(arrow, border);
                   } else if (retries > 0) {
                     setTimeout(
                       () => waitForElements(callback, retries - 1),
                       100
                     );
                   } else {
-                    console.warn("⚠️ Arrow element not found after retries.");
+                    console.warn(
+                      "⚠️ Arrow or border element not found after retries."
+                    );
                   }
                 }
 
-                function updateArrowPosition(arrow) {
-                  if (!selectedElement || !arrow) return;
+                function updateArrowPosition(arrow, border) {
+                  if (!selectedElement || !arrow || !border) return;
 
                   const rect = selectedElement.getBoundingClientRect();
                   const elementCenterX = rect.left + rect.width / 2;
 
-                  const viewportWidth = window.innerWidth;
-                  const relativeX = (elementCenterX / viewportWidth) * 100;
+                  const borderRect = border.getBoundingClientRect();
+                  const borderLeft = borderRect.left;
+                  const borderWidth = borderRect.width;
+
+                  const relativeX =
+                    ((elementCenterX - borderLeft) / borderWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
                   arrow.style.left = `${clampedX}%`;
                   arrow.style.transform = "translateX(-50%)";
-                }
 
-                function trackLoop(arrow) {
+                  console.log(
+                    `📌 Element CenterX: ${elementCenterX}px | Border Left: ${borderLeft}px | ⬅️ Arrow Left: ${clampedX.toFixed(
+                      2
+                    )}%`
+                  );
+                }
+                
+                
+                function trackLoop(arrow, border) {
                   if (isTracking) return;
                   isTracking = true;
 
                   function loop() {
-                    updateArrowPosition(arrow);
+                    updateArrowPosition(arrow, border);
                     requestAnimationFrame(loop);
                   }
 
                   loop();
                 }
+                
 
-                waitForElements((arrow) => {
-                  trackLoop(arrow);
+                waitForElements((arrow, border) => {
+                  trackLoop(arrow, border);
                 });
               }
-              
               
 
               
