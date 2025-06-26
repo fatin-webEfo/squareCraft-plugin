@@ -345,19 +345,35 @@
                       console.error(error.message);
                     });
                 }
+                let lastArrowUpdateFrame = null;
+
+                function trackArrowPosition() {
+                  if (selectedElement) {
+                    syncCustomTimelineArrow(selectedElement);
+                  }
+                  requestAnimationFrame(trackArrowPosition);
+                }
+
+                // Start the tracking loop after selection
+                function startArrowTracking() {
+                  if (lastArrowUpdateFrame)
+                    cancelAnimationFrame(lastArrowUpdateFrame);
+                  trackArrowPosition();
+                }
                 setTimeout(() => {
                   handleBlockClick(event, {
                     getTextType,
                     getHoverTextType,
                     selectedElement,
-                    setSelectedElement: (val) => {  
+
+                    setSelectedElement: (val) => {
                       selectedElement = val;
-                    
                       setTimeout(() => {
                         syncCustomTimelineArrow(selectedElement);
+                        startArrowTracking(); // 👈 Start tracking on selection
                       }, 150);
                     },
-                    
+
                     setSelectedElement: (val) => (selectedElement = val),
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
                     setLastClickedElement: (val) => (lastClickedElement = val),
@@ -1060,7 +1076,7 @@
 
 
 
-
+              trackArrowPosition();
 
 
             })();
