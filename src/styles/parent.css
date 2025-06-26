@@ -3184,29 +3184,17 @@ html.sc-desktop-view body {
 
 
 
-#custom-timeline-progress {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: auto;
-  height: 100%; /* will inherit the height of the border line visually */
-  background: #f68b1f;
-  z-index: 0;
-  pointer-events: none;
-  transition: width 0.3s ease;
-}
 
 #custom-timeline-arrow {
   position: absolute !important;
   width: 10px !important;
   height: 10px !important;
-  top: -4px !important;
+  top: 5px !important;
   background-color: white !important;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important;
   transform: translateX(-50%) !important;
   transition: left 0.3s ease !important;
-  z-index: 1;
-} 
+}
 
 #custom-timeline-border{
   position: relative !important;
