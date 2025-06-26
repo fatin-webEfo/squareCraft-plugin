@@ -201,9 +201,12 @@
 
                 function updateArrowPosition(arrow, border) {
                   const rect = selectedElement.getBoundingClientRect();
-                  const borderRect = border.getBoundingClientRect();
+                  const viewportHeight = window.innerHeight;
 
+                  const top = rect.top;
                   const elementCenterX = rect.left + rect.width / 2;
+
+                  const borderRect = border.getBoundingClientRect();
                   const borderLeft = borderRect.left;
                   const borderWidth = borderRect.width;
 
@@ -211,17 +214,25 @@
                     ((elementCenterX - borderLeft) / borderWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
-                  arrow.style.left = `${clampedX}%`;
+                  const percentFromTop = top / viewportHeight;
+                  const leftBasedOnTop = 90 - 80 * percentFromTop; // maps top: 0–vh → left: 90–10
+                  const dynamicLeft = Math.max(
+                    10,
+                    Math.min(90, leftBasedOnTop)
+                  );
+
+                  arrow.style.left = `${dynamicLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
                   console.log(
-                    "📌 Arrow position updated:",
-                    clampedX.toFixed(2) + "%"
+                    `📌 Top: ${top.toFixed(
+                      0
+                    )}px | ⬅️ Arrow Left: ${dynamicLeft.toFixed(2)}%`
                   );
                 }
-
+                
                 function trackLoop(arrow, border) {
-                  if (isTracking) return; // ✅ skip if already tracking
+                  if (isTracking) return;
                   isTracking = true;
 
                   function loop() {
@@ -231,6 +242,7 @@
 
                   loop();
                 }
+                
 
                 waitForElements((arrow, border) => {
                   trackLoop(arrow, border);
