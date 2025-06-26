@@ -352,8 +352,12 @@
                     selectedElement,
                     setSelectedElement: (val) => {
                       selectedElement = val;
-                      syncCustomTimelineArrow(selectedElement); // ✅ Sync after setting
+                    
+                      setTimeout(() => {
+                        syncCustomTimelineArrow(selectedElement);
+                      }, 150);
                     },
+                    
                     setSelectedElement: (val) => (selectedElement = val),
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
                     setLastClickedElement: (val) => (lastClickedElement = val),
