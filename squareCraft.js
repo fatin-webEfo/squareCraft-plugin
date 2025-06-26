@@ -169,13 +169,68 @@
                 styleTag.innerHTML = cssText;
               }
             
-          
+              function syncCustomTimelineArrow(selectedElement) {
+                if (!selectedElement) {
+                  console.warn("⛔ selectedElement not provided yet.");
+                  return;
+                }
+
+                function waitForElements(callback, retries = 20) {
+                  const arrow = document.getElementById(
+                    "custom-timeline-arrow"
+                  );
+                  const border = document.getElementById(
+                    "custom-timeline-border"
+                  );
+
+                  if (arrow && border) {
+                    callback(arrow, border);
+                  } else if (retries > 0) {
+                    setTimeout(
+                      () => waitForElements(callback, retries - 1),
+                      100
+                    );
+                  } else {
+                    console.warn(
+                      "⚠️ Arrow or border element not found after retries."
+                    );
+                  }
+                }
+
+                function updateArrowPosition(arrow, border) {
+                  const rect = selectedElement.getBoundingClientRect();
+                  const borderRect = border.getBoundingClientRect();
+
+                  const elementCenterX = rect.left + rect.width / 2;
+                  const borderLeft = borderRect.left;
+                  const borderWidth = borderRect.width;
+
+                  const relativeX =
+                    ((elementCenterX - borderLeft) / borderWidth) * 100;
+                  const clampedX = Math.max(0, Math.min(100, relativeX));
+
+                  arrow.style.left = `${clampedX}%`;
+                  arrow.style.transform = "translateX(-50%)";
+
+                  console.log(
+                    "📌 Arrow position updated:",
+                    clampedX.toFixed(2) + "%"
+                  );
+                }
+
+                function trackLoop(arrow, border) {
+                  updateArrowPosition(arrow, border);
+                  requestAnimationFrame(() => trackLoop(arrow, border));
+                }
+
+                waitForElements((arrow, border) => {
+                  trackLoop(arrow, border);
+                });
+              }
+
               
               const { initButtonAdvanceStyles } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
-              );
-              const { syncCustomTimelineArrow } = await import(
-                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/syncCustomTimelineArrow/syncCustomTimelineArrow.js"
               );
               const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
               logCurrentViewport();
@@ -345,21 +400,9 @@
                       console.error(error.message);
                     });
                 }
-                let lastArrowUpdateFrame = null;
+            
 
-                function trackArrowPosition() {
-                  if (selectedElement) {
-                    syncCustomTimelineArrow(selectedElement);
-                  }
-                  requestAnimationFrame(trackArrowPosition);
-                }
-
-                // Start the tracking loop after selection
-                function startArrowTracking() {
-                  if (lastArrowUpdateFrame)
-                    cancelAnimationFrame(lastArrowUpdateFrame);
-                  trackArrowPosition();
-                }
+             
                 setTimeout(() => {
                   handleBlockClick(event, {
                     getTextType,
@@ -368,13 +411,11 @@
 
                     setSelectedElement: (val) => {
                       selectedElement = val;
+
                       setTimeout(() => {
                         syncCustomTimelineArrow(selectedElement);
-                        startArrowTracking(); // 👈 Start tracking on selection
-                      }, 150);
+                      }, 300);
                     },
-
-                    setSelectedElement: (val) => (selectedElement = val),
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
                     setLastClickedElement: (val) => (lastClickedElement = val),
                     setLastAppliedAlignment: (val) =>
@@ -746,7 +787,13 @@
                             getTextType,
                             getHoverTextType,
                             selectedElement,
-                            setSelectedElement: (val) => (selectedElement = val),
+                            setSelectedElement: (val) => {
+                              selectedElement = val;
+
+                              setTimeout(() => {
+                                syncCustomTimelineArrow(selectedElement);
+                              }, 300);
+                            },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
                             setLastClickedElement: (val) => (lastClickedElement = val),
                             setLastAppliedAlignment: (val) =>
@@ -1076,8 +1123,8 @@
 
 
 
-              trackArrowPosition();
 
+             
 
             })();
   
