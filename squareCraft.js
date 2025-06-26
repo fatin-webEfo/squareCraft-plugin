@@ -175,6 +175,8 @@
                   return;
                 }
 
+                let isTracking = false; // ✅ tracking flag
+
                 function waitForElements(callback, retries = 20) {
                   const arrow = document.getElementById(
                     "custom-timeline-arrow"
@@ -219,14 +221,22 @@
                 }
 
                 function trackLoop(arrow, border) {
-                  updateArrowPosition(arrow, border);
-                  requestAnimationFrame(() => trackLoop(arrow, border));
+                  if (isTracking) return; // ✅ skip if already tracking
+                  isTracking = true;
+
+                  function loop() {
+                    updateArrowPosition(arrow, border);
+                    requestAnimationFrame(loop);
+                  }
+
+                  loop();
                 }
 
                 waitForElements((arrow, border) => {
                   trackLoop(arrow, border);
                 });
               }
+              
 
               
               const { initButtonAdvanceStyles } = await import(
