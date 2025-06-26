@@ -1,9 +1,16 @@
 export function syncCustomTimelineArrow(selectedElement) {
-  if (!selectedElement) return;
+  if (!selectedElement) {
+    console.warn("❌ No selected element provided for syncCustomTimelineArrow");
+    return;
+  };
 
   const arrow = document.getElementById("custom-timeline-arrow");
   const border = document.getElementById("custom-timeline-border");
-  if (!arrow || !border) return;
+  if (!arrow || !border) 
+    {
+    console.warn("❌ Arrow or border element not found for syncCustomTimelineArrow");
+    return;
+  }
 
   const rect = selectedElement.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
