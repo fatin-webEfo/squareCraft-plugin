@@ -215,11 +215,12 @@
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
                   const percentFromTop = top / viewportHeight;
-                  const leftBasedOnTop = 100 - 100 * percentFromTop; // maps top: 0–vh → left: 90–10
-                  const dynamicLeft = Math.max(
-                    10,
-                    Math.min(90, leftBasedOnTop)
+                  const leftBasedOnTop = Math.max(
+                    0,
+                    Math.min(100, 100 - 100 * percentFromTop)
                   );
+                  const dynamicLeft = leftBasedOnTop;
+
 
                   arrow.style.left = `${dynamicLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
