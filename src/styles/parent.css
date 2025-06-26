@@ -3192,7 +3192,7 @@ html.sc-desktop-view body {
   background-color: white !important;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important;
   position: absolute !important;
-  top: 0 !important;
+  top: 5 !important;
   transition: left 0.3s ease !important;
   transform: translateX(-50%) !important;
 }
