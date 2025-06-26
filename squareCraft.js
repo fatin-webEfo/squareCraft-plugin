@@ -213,7 +213,13 @@
                     ((elementCenterX - borderLeft) / borderWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
-                  arrow.style.left = `${clampedX}%`;
+                  let finalX = clampedX;
+                  if (clampedX <= 10) finalX = 0;
+                  else if (clampedX >= 90) finalX = 100;
+
+                  arrow.style.left = `${finalX}%`;
+
+
                   arrow.style.transform = "translateX(-50%)";
 
                   console.log(
