@@ -1,5 +1,4 @@
 export function syncCustomTimelineArrow(selectedElement) {
-  console.log("✅ syncCustomTimelineArrow initialized", selectedElement);
   if (!selectedElement) return;
 
   const arrow = document.getElementById("custom-timeline-arrow");
@@ -16,6 +15,8 @@ export function syncCustomTimelineArrow(selectedElement) {
   const relativeX = ((elementCenterX - borderLeft) / borderWidth) * 100;
   const clampedX = Math.max(0, Math.min(100, relativeX));
 
-  arrow.style.left = `${clampedX}%`; // 🔥 fully dynamic
+  arrow.style.left = ""; // fix override bug
+  arrow.style.left = `${clampedX}%`;
   arrow.style.right = "";
+  arrow.style.transform = "translateX(-50%)";
 }
