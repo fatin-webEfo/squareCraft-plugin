@@ -3182,10 +3182,17 @@ html.sc-desktop-view body {
   --frame-width: 100% !important;
 }
 
-.sc-custom-timeline-arrow {
+
+
+
+#custom-timeline-arrow {
   width: 10px;
   cursor: pointer;
   height: 10px;
   background-color: white;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  position: absolute;
+  top: 0;
+  transition: left 0.3s ease;
+  transform: translateX(-50%);
 }
