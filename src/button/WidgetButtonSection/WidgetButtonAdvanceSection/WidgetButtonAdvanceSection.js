@@ -118,8 +118,7 @@ export function WidgetButtonAdvanceSection(){
               </div>
 
               <div
-                class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
-              >
+                class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300">
                 <p class="sc-universal sc-roboto">
                   Start <span id="timelineStartValue">0%</span>
                 </p>
@@ -127,8 +126,8 @@ export function WidgetButtonAdvanceSection(){
                   End <span id="timelineEndValue">0%</span>
                 </p>
               </div>
-               <div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-707070 sc-w-full"></div>
-       <div class="sc-custom-timeline"></div>
+               <div class="sc-mt-1 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-707070 sc-w-full"></div>
+                       <div class="sc-custom-timeline"></div>
             </div>
 
             <div class="sc-w-full sc-mt-3">
