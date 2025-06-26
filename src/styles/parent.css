@@ -3181,7 +3181,7 @@ html.sc-desktop-view body {
   --frame-width: 100% !important;
 }
 
-.sc-custom-timeline {
+.sc-custom-timeline-arrow {
   width: 10px;
   cursor: pointer;
   height: 10px;

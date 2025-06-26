@@ -126,8 +126,9 @@ export function WidgetButtonAdvanceSection(){
                   End <span id="timelineEndValue">0%</span>
                 </p>
               </div>
-               <div class="sc-mt-1 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-707070 sc-w-full"></div>
-                       <div class="sc-custom-timeline"></div>
+               <div id="custom-timeline-border" class="sc-mt-1 sc-relative sc-roboto sc-border-t sc-border-t-dashed sc-border-color-707070 sc-w-full">
+               <div id="custom-timeline-arrow" class="sc-custom-timeline-arrow sc-absolute sc-top-3"></div>
+               </div>
             </div>
 
             <div class="sc-w-full sc-mt-3">
