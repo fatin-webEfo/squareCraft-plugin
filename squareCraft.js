@@ -215,11 +215,12 @@
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
                   const percentFromTop = top / viewportHeight;
-                  const leftBasedOnTop = 90 - 80 * percentFromTop; // maps top: 0–vh → left: 90–10
-                  const dynamicLeft = Math.max(
-                    10,
-                    Math.min(90, leftBasedOnTop)
-                  );
+                  const leftBasedOnTop = 90 - 80 * percentFromTop;
+                  let dynamicLeft = Math.max(10, Math.min(90, leftBasedOnTop));
+
+                  // ✅ Snap to full left or full right if near edges
+                  if (clampedX <= 5) dynamicLeft = 0;
+                  if (clampedX >= 95) dynamicLeft = 100;
 
                   arrow.style.left = `${dynamicLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
@@ -230,6 +231,7 @@
                     )}px | ⬅️ Arrow Left: ${dynamicLeft.toFixed(2)}%`
                   );
                 }
+                
                 
                 function trackLoop(arrow, border) {
                   if (isTracking) return;
