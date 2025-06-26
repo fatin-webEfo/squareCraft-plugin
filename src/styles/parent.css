@@ -3197,3 +3197,13 @@ html.sc-desktop-view body {
   transform: translateX(-50%) !important;
   transition: left 0.3s ease !important;
 }
+
+.custom-timeline-border{
+  border-top: 1px dashed #707070 !important;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  width: 100% !important;
+  position: relative !important;
+  width: 100% !important;
+}
