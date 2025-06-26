@@ -3184,15 +3184,16 @@ html.sc-desktop-view body {
 
 
 #timeline-end-fill {
-  transform-origin: right center;
-  transform: scaleX(1);
-  height: 4px; /* or your desired thickness */
-  background-color: #f97316; /* or match left fill */
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: auto;
+  transform-origin: right center !important;
+  transform: scaleX(1) !important;
+  height: 4px !important;
+  background-color: #f97316 !important; /* or match left fill */
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
 }
+
 
 
 #custom-timeline-arrow {
