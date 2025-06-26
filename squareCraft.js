@@ -174,6 +174,9 @@
               const { initButtonAdvanceStyles } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
               );
+              const { syncCustomTimelineArrow } = await import(
+                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/syncCustomTimelineArrow/syncCustomTimelineArrow.js"
+              );
               const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
               logCurrentViewport();
               window.addEventListener("resize", logCurrentViewport);
@@ -319,6 +322,9 @@
                 }
                 if (selectedElement) {
                   applyHoverButtonEffects(() => selectedElement);
+                }
+                if (selectedElement){
+                  syncCustomTimelineArrow(() => selectedElement);
                 }
                 initImageUploadPreview(() => selectedElement);
                 const trigger = event.target.closest("#border-color-select");
