@@ -199,29 +199,27 @@
                   }
                 }
 
-                function updateArrowPosition(arrow, border) {
-                  if (!selectedElement || !arrow || !border) return;
+                function updateArrowPosition(arrow) {
+                  if (!selectedElement || !arrow) return;
 
                   const rect = selectedElement.getBoundingClientRect();
                   const elementCenterX = rect.left + rect.width / 2;
 
-                  const borderRect = border.getBoundingClientRect();
-                  const borderLeft = borderRect.left;
-                  const borderWidth = borderRect.width;
+                  const viewportWidth = window.innerWidth;
 
-                  const relativeX =
-                    ((elementCenterX - borderLeft) / borderWidth) * 100;
+                  const relativeX = (elementCenterX / viewportWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
                   arrow.style.left = `${clampedX}%`;
                   arrow.style.transform = "translateX(-50%)";
 
                   console.log(
-                    `📌 Element CenterX: ${elementCenterX}px | Border Left: ${borderLeft}px | ⬅️ Arrow Left: ${clampedX.toFixed(
-                      2
-                    )}%`
+                    `📌 Element CenterX: ${elementCenterX.toFixed(
+                      0
+                    )}px | ⬅️ Arrow Left: ${clampedX.toFixed(2)}%`
                   );
                 }
+                
                 
                 
                 function trackLoop(arrow, border) {
