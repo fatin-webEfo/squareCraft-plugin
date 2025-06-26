@@ -3186,13 +3186,13 @@ html.sc-desktop-view body {
 
 
 #custom-timeline-arrow {
-  width: 10px;
-  cursor: pointer;
-  height: 10px;
-  background-color: white;
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  position: absolute;
-  top: 0;
-  transition: left 0.3s ease;
-  transform: translateX(-50%);
+  width: 10px !important;
+  cursor: pointer !important;
+  height: 10px !important;
+  background-color: white !important;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important;
+  position: absolute !important;
+  top: 0 !important;
+  transition: left 0.3s ease !important;
+  transform: translateX(-50%) !important;
 }
