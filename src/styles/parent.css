@@ -1366,15 +1366,17 @@
   gap: 10px !important;
 
 }
+.sc-top-8px {
+  top: 8px !important;
+
+}
 
 .sc-top-3 {
   top: 12px !important;
-  /* 12px */
 }
 
 .sc-right-3 {
   right: 12px !important;
-  /* 12px */
 }
 
 .sc-right-1 {
