@@ -175,27 +175,22 @@
                   return;
                 }
 
-                let isTracking = false; // ✅ tracking flag
+                let isTracking = false;
 
                 function waitForElements(callback, retries = 20) {
                   const arrow = document.getElementById(
                     "custom-timeline-arrow"
                   );
-                  const border = document.getElementById(
-                    "custom-timeline-border"
-                  );
 
-                  if (arrow && border) {
-                    callback(arrow, border);
+                  if (arrow) {
+                    callback(arrow);
                   } else if (retries > 0) {
                     setTimeout(
                       () => waitForElements(callback, retries - 1),
                       100
                     );
                   } else {
-                    console.warn(
-                      "⚠️ Arrow or border element not found after retries."
-                    );
+                    console.warn("⚠️ Arrow element not found after retries.");
                   }
                 }
 
@@ -206,39 +201,30 @@
                   const elementCenterX = rect.left + rect.width / 2;
 
                   const viewportWidth = window.innerWidth;
-
                   const relativeX = (elementCenterX / viewportWidth) * 100;
                   const clampedX = Math.max(0, Math.min(100, relativeX));
 
                   arrow.style.left = `${clampedX}%`;
                   arrow.style.transform = "translateX(-50%)";
-
-                  console.log(
-                    `📌 Element CenterX: ${elementCenterX.toFixed(
-                      0
-                    )}px | ⬅️ Arrow Left: ${clampedX.toFixed(2)}%`
-                  );
                 }
-                
-                
-                
-                function trackLoop(arrow, border) {
+
+                function trackLoop(arrow) {
                   if (isTracking) return;
                   isTracking = true;
 
                   function loop() {
-                    updateArrowPosition(arrow, border);
+                    updateArrowPosition(arrow);
                     requestAnimationFrame(loop);
                   }
 
                   loop();
                 }
-                
 
-                waitForElements((arrow, border) => {
-                  trackLoop(arrow, border);
+                waitForElements((arrow) => {
+                  trackLoop(arrow);
                 });
               }
+              
               
 
               
