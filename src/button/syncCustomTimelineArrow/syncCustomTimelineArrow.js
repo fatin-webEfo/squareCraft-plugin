@@ -1,4 +1,5 @@
 export function syncCustomTimelineArrow(selectedElement) {
+  console.log("✅ syncCustomTimelineArrow initialized", selectedElement);
   if (!selectedElement) return;
 
   const arrow = document.getElementById("custom-timeline-arrow");
