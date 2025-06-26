@@ -1,5 +1,4 @@
 export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
-  let isFirstBulletMove = true;
   let dynamicHue = 0;
   let currentTransparency = 100;
 
@@ -33,7 +32,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     )`;
     }
   }
-  console.log("clicked element", selectedElement);
   function getHueFromColorString(colorStr) {
     const tempDiv = document.createElement("div");
     tempDiv.style.color = colorStr;
