@@ -323,9 +323,7 @@
                 if (selectedElement) {
                   applyHoverButtonEffects(() => selectedElement);
                 }
-                if (selectedElement){
-                  syncCustomTimelineArrow(selectedElement);
-                }
+              
                 initImageUploadPreview(() => selectedElement);
                 const trigger = event.target.closest("#border-color-select");
 
@@ -352,10 +350,15 @@
                     getTextType,
                     getHoverTextType,
                     selectedElement,
+                    setSelectedElement: (val) => {
+                      selectedElement = val;
+                      syncCustomTimelineArrow(selectedElement); // ✅ Sync after setting
+                    },
                     setSelectedElement: (val) => (selectedElement = val),
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
                     setLastClickedElement: (val) => (lastClickedElement = val),
-                    setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
+                    setLastAppliedAlignment: (val) =>
+                      (lastAppliedAlignment = val),
                     setLastActiveAlignmentElement: (val) =>
                       (lastActiveAlignmentElement = val),
                   });
