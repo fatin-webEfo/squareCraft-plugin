@@ -1366,8 +1366,8 @@
   gap: 10px !important;
 
 }
-.sc-top-8px {
-  top: 8px !important;
+.sc-top-6px {
+  top: 6px !important;
 
 }
 
@@ -3062,9 +3062,8 @@
 .sc-w-30px {width: 30px;}
 .sc-h-30px {height: 30px;}
 .sc-rounded-20 {border-radius: 20%;}
-
 .sc-mr-6 {margin-right: 6px;}
-
+.sc-mt-25px{margin-top: 25px !important;}
 .sc-mt-8 {margin-top: 32px;}
 .sc-cursor-pointer {cursor: pointer;}
 .sc-message {position: absolute;background-color: #2c2c2c;color: white;padding: 10px 14px;border-radius: 8px;font-size: 12px;font-weight: 400;
