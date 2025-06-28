@@ -120,10 +120,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       };
     };
   
-
-
-      
-      
       
 
   const updateStart = updateField(
