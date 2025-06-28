@@ -185,7 +185,7 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-entry-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    style="left: 50%; transform: translateX(-50%)"
+
 
                 ></div>
               </div>
@@ -242,7 +242,7 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-center-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    style="left: 50%; transform: translateX(-50%)"></div>
+                 ></div>
               </div>
             </div>
             <div class="sc-w-full sc-mt-3">
@@ -297,7 +297,6 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-exit-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    style="left: 50%; transform: translateX(-50%)"
 
                 ></div>
               </div>
