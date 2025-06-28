@@ -165,12 +165,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     "left"
   );
 
-  makeDraggable(startBullet, updateStart);
-  makeDraggable(endBullet, updateEnd);
+  makeDraggable(startBullet, updateStart, "start");
+  makeDraggable(endBullet, updateEnd, "end");
   makeDraggable(entryBullet, updateEntry);
   makeDraggable(centerBullet, updateCenter);
   makeDraggable(exitBullet, updateExit);
   makeDraggable(speedBullet, updateSpeed);
+  
 
   const resetBtn = document.getElementById("icon-size-reset");
   if (resetBtn) {
