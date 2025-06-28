@@ -177,9 +177,7 @@ export function WidgetButtonAdvanceSection(){
               </div>
               <div
                 id="button-advance-entry-Field"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
-                 style="overflow: hidden"
-              >
+                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                 <div
                   id="button-advance-entry-Fill"
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
@@ -187,7 +185,7 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-entry-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    
+                    style="left: 50%; transform: translateX(-50%)"
 
                 ></div>
               </div>
@@ -236,9 +234,7 @@ export function WidgetButtonAdvanceSection(){
               </div>
               <div
                 id="button-advance-center-field"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
-                 style="overflow: hidden"
-              >
+                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                 <div
                   id="button-advance-center-Fill"
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
@@ -246,9 +242,7 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-center-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    
-
-                ></div>
+                    style="left: 50%; transform: translateX(-50%)"></div>
               </div>
             </div>
             <div class="sc-w-full sc-mt-3">
@@ -295,9 +289,7 @@ export function WidgetButtonAdvanceSection(){
               </div>
               <div
                 id="button-advance-exit-field"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
-                 style="overflow: hidden"
-              >
+                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                 <div
                   id="button-advance-exit-Fill"
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
@@ -305,7 +297,7 @@ export function WidgetButtonAdvanceSection(){
                 <div
                   id="button-advance-exit-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                    
+                    style="left: 50%; transform: translateX(-50%)"
 
                 ></div>
               </div>
