@@ -43,7 +43,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     !centerCount ||
     !exitBullet ||
     !exitFill ||
-    !exitCount ||
+    !exitCount 
   )
     return;
 
