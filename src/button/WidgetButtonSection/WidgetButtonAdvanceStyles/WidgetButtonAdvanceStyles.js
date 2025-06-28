@@ -102,23 +102,29 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       };
 
 
-  const makeDraggable = (bullet, updateFn) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      document.onmousemove = (event) => {
-        const rect = bullet.parentElement.getBoundingClientRect();
-        const percent = Math.min(
-          100,
-          Math.max(0, ((event.clientX - rect.left) / rect.width) * 100)
-        );
-        updateFn(Math.round(percent));
+      const makeDraggable = (bullet, updateFn, isStart) => {
+        bullet.onmousedown = (e) => {
+          e.preventDefault();
+          document.onmousemove = (event) => {
+            const rect = bullet.parentElement.getBoundingClientRect();
+            let percent = ((event.clientX - rect.left) / rect.width) * 100;
+            percent = Math.min(100, Math.max(0, percent));
+
+            const startPercent = parseFloat(startBullet.style.left || "0");
+            const endPercent = 100 - parseFloat(endBullet.style.right || "0");
+
+            if (isStart && percent >= endPercent) return; 
+            if (!isStart && percent <= startPercent) return; 
+
+            updateFn(Math.round(percent));
+          };
+          document.onmouseup = () => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+          };
+        };
       };
-      document.onmouseup = () => {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-  };
+      
 
   const updateStart = updateField(
     startBullet,

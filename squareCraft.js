@@ -210,7 +210,6 @@
                     0,
                     Math.min(100, 100 - 100 * percentFromTop)
                   );
-
                   arrow.style.left = `${scrollBasedLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
