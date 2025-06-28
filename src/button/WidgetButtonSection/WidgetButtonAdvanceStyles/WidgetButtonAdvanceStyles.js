@@ -102,28 +102,34 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       };
 
 
-      const makeDraggable = (bullet, updateFn, isStart) => {
+      const makeDraggable = (bullet, updateFn, type = "normal") => {
         bullet.onmousedown = (e) => {
           e.preventDefault();
+
           document.onmousemove = (event) => {
             const rect = bullet.parentElement.getBoundingClientRect();
-            let percent = ((event.clientX - rect.left) / rect.width) * 100;
-            percent = Math.min(100, Math.max(0, percent));
+            const pos = ((event.clientX - rect.left) / rect.width) * 100;
+            const clamped = Math.max(0, Math.min(100, pos));
 
-            const startPercent = parseFloat(startBullet.style.left || "0");
-            const endPercent = 100 - parseFloat(endBullet.style.right || "0");
+            if (type === "start") {
+              const endRight = parseFloat(endBullet.style.right || "0");
+              const endPos = 100 - endRight;
+              if (clamped >= endPos) return;
+            } else if (type === "end") {
+              const startLeft = parseFloat(startBullet.style.left || "0");
+              if (clamped <= startLeft) return;
+            }
 
-            if (isStart && percent >= endPercent) return; 
-            if (!isStart && percent <= startPercent) return; 
-
-            updateFn(Math.round(percent));
+            updateFn(Math.round(clamped));
           };
+
           document.onmouseup = () => {
             document.onmousemove = null;
             document.onmouseup = null;
           };
         };
       };
+      
       
 
   const updateStart = updateField(
