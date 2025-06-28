@@ -178,6 +178,7 @@ export function WidgetButtonAdvanceSection(){
               <div
                 id="button-advance-entry-Field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                 style="overflow: hidden"
               >
                 <div
                   id="button-advance-entry-Fill"
@@ -232,8 +233,9 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
               <div
-                id="button-advance-center-radiusField"
+                id="button-advance-center-field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                 style="overflow: hidden"
               >
                 <div
                   id="button-advance-center-radiusFill"
@@ -288,8 +290,9 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
               <div
-                id="button-advance-exit-radiusField"
+                id="button-advance-exit-field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                 style="overflow: hidden"
               >
                 <div
                   id="button-advance-exit-radiusFill"
