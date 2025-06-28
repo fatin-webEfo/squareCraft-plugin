@@ -199,22 +199,21 @@
                   }
                 }
 
-                function updateArrowPosition(arrow, border) {
+                function updateArrowPosition(arrow) {
                   const rect = selectedElement.getBoundingClientRect();
-                  const borderRect = border.getBoundingClientRect();
+                  const viewportHeight = window.innerHeight;
+                  const top = rect.top;
 
-                  const elementCenterX = rect.left + rect.width / 2;
-                  const borderLeft = borderRect.left;
-                  const borderWidth = borderRect.width;
+                  const percentFromTop = top / viewportHeight;
 
-                  const relativeX =
-                    ((elementCenterX - borderLeft) / borderWidth) * 100;
-                  const clampedX = Math.max(0, Math.min(100, relativeX));
-
-                  arrow.style.left = `${clampedX}%`;
+                  const scrollBasedLeft = Math.max(
+                    0,
+                    Math.min(100, 100 - 100 * percentFromTop)
+                  );
+                  arrow.style.left = `${scrollBasedLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
-                  console.log("📍 Arrow left:", arrow.style.left);
+                 console.log("📍 Arrow left:", scrollBasedLeft);
                 }
                 
                 
