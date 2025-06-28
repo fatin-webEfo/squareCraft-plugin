@@ -105,17 +105,17 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
             if (type === "start") {
               const endLeft = parseFloat(endBullet.style.left || "100");
-              if (percent >= endLeft) {
+              if (percent >= endLeft - 1) {
                 percent = endLeft - 1;
               }
             }
-
             if (type === "end") {
               const startLeft = parseFloat(startBullet.style.left || "0");
-              if (percent <= startLeft) {
+              if (percent <= startLeft + 1) {
                 percent = startLeft + 1;
               }
             }
+            
 
             updateFn(Math.round(percent));
           };
