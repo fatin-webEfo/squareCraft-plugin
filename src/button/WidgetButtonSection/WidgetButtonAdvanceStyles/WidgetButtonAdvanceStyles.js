@@ -60,6 +60,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             "--sc-scroll-exit",
           ].includes(cssVar)
         ) {
+          const center = 50;
           const clamped = Math.max(-100, Math.min(100, val));
           const fillWidth = Math.abs(clamped);
           const fillLeft = 50 + Math.min(0, clamped); 
@@ -114,9 +115,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           document.onmousemove = (event) => {
             const rect = container.getBoundingClientRect();
             let clientX = event.clientX;
+            
+            // Clamp within container bounds
             if (clientX < rect.left) clientX = rect.left;
             if (clientX > rect.right) clientX = rect.right;
-
+            
             let rawPercent = (clientX - rect.left) / rect.width;
             const actualVal = Math.round(min + rawPercent * (max - min));
             
@@ -185,9 +188,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     -100,
     100
   );
-  updateEntry(0);
-  updateCenter(0);
-  updateExit(0);
+  
 
 
   makeDraggable(startBullet, updateStart, "start");
