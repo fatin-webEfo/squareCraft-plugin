@@ -3187,7 +3187,7 @@ html.sc-desktop-view body {
   transform-origin: right center !important;
   transform: scaleX(1) !important;
   height: 4px !important;
-  background-color: #f97316 !important; /* or match left fill */
+  background-color: #f97316 !important; 
   position: absolute !important;
   top: 0 !important;
   right: 0 !important;

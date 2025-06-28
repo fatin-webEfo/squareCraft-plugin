@@ -200,44 +200,30 @@
                 }
 
                 function updateArrowPosition(arrow, border) {
-                  const progressBar = document.getElementById(
-                    "custom-timeline-progress"
-                  );
-                  if (progressBar) {
-                    progressBar.style.width = `${dynamicLeft}%`;
-                  }
-
                   const rect = selectedElement.getBoundingClientRect();
                   const viewportHeight = window.innerHeight;
 
                   const top = rect.top;
-                  const elementCenterX = rect.left + rect.width / 2;
-
                   const borderRect = border.getBoundingClientRect();
-                  const borderLeft = borderRect.left;
                   const borderWidth = borderRect.width;
 
-                  const relativeX =
-                    ((elementCenterX - borderLeft) / borderWidth) * 100;
-                  const clampedX = Math.max(0, Math.min(100, relativeX));
-
                   const percentFromTop = top / viewportHeight;
-                  const leftBasedOnTop = Math.max(
+
+                  const scrollBasedLeft = Math.max(
                     0,
                     Math.min(100, 100 - 100 * percentFromTop)
                   );
-                  const dynamicLeft = leftBasedOnTop;
 
-
-                  arrow.style.left = `${dynamicLeft}%`;
+                  arrow.style.left = `${scrollBasedLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
                   console.log(
                     `📌 Top: ${top.toFixed(
                       0
-                    )}px | ⬅️ Arrow Left: ${dynamicLeft.toFixed(2)}%`
+                    )}px | ⬅️ Arrow Left: ${scrollBasedLeft.toFixed(2)}%`
                   );
                 }
+                
                 
                 function trackLoop(arrow, border) {
                   if (isTracking) return;

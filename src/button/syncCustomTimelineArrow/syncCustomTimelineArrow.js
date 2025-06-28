@@ -4,7 +4,6 @@ export function syncCustomTimelineArrow(selectedElement) {
     return;
   }
 
-  // Waits until DOM elements are available
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("custom-timeline-arrow");
     const border = document.getElementById("custom-timeline-border");
