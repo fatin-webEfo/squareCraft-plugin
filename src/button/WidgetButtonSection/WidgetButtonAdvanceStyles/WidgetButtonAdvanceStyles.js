@@ -6,25 +6,25 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const startValue = document.getElementById("timelineStartValue");
   const endValue = document.getElementById("timelineEndValue");
 
-  const entryBullet = document.getElementById("button-advance-entry-Bullet");
+  const entryBullet = document.getElementById("button-advance-entry-bullet");
   const entryFill = document.getElementById("button-advance-entry-Fill");
   const entryCount = document.getElementById("button-advance-entry-count");
 
   const centerBullet = document.getElementById(
-    "button-advance-center-radiusBullet"
+    "button-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "button-advance-center-radiusFill"
+    "button-advance-center-Fill"
   );
   const centerCount = document.getElementById(
-    "button-advance-center-radiusCount"
+    "button-advance-center-Count"
   );
 
   const exitBullet = document.getElementById(
-    "button-advance-exit-radiusBullet"
+    "button-advance-exit-bullet"
   );
-  const exitFill = document.getElementById("button-advance-exit-radiusFill");
-  const exitCount = document.getElementById("button-advance-exit-radiusCount");
+  const exitFill = document.getElementById("button-advance-exit-Fill");
+  const exitCount = document.getElementById("button-advance-exit-Count");
 
 
 

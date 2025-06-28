@@ -185,8 +185,10 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                 ></div>
                 <div
-                  id="button-advance-entry-Bullet"
+                  id="button-advance-entry-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+                    style="left: 50%; transform: translateX(-50%)"
+
                 ></div>
               </div>
             </div>
@@ -215,7 +217,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
                   <p
-                    id="button-advance-center-radiusCount"
+                    id="button-advance-center-Count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
                   -100%
@@ -238,12 +240,14 @@ export function WidgetButtonAdvanceSection(){
                  style="overflow: hidden"
               >
                 <div
-                  id="button-advance-center-radiusFill"
+                  id="button-advance-center-Fill"
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                 ></div>
                 <div
-                  id="button-advance-center-radiusBullet"
+                  id="button-advance-center-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+                    style="left: 50%; transform: translateX(-50%)"
+
                 ></div>
               </div>
             </div>
@@ -272,7 +276,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
                   <p
-                    id="button-advance-exit-radiusCount"
+                    id="button-advance-exit-Count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
                   -100%
@@ -295,12 +299,14 @@ export function WidgetButtonAdvanceSection(){
                  style="overflow: hidden"
               >
                 <div
-                  id="button-advance-exit-radiusFill"
+                  id="button-advance-exit-Fill"
                   class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
                 ></div>
                 <div
-                  id="button-advance-exit-radiusBullet"
+                  id="button-advance-exit-bullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+                    style="left: 50%; transform: translateX(-50%)"
+
                 ></div>
               </div>
             </div>
