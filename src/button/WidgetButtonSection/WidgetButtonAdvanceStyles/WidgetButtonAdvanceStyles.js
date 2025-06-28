@@ -61,74 +61,49 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const updateField =
       (bullet, fill, countEl, cssVar, position = "left") =>
       (val) => {
-        // Ensure the value is limited to -100% to 100% range
-        val = Math.min(100, Math.max(-100, val));
-
-        const isLeft = position === "left";
-        if (isLeft) {
-          gsap.set(bullet, { left: `${val}%` });
-          gsap.set(fill, { width: `${val}%` });
-        } else {
-          gsap.set(bullet, { right: `${100 - val}%` });
-          gsap.set(fill, {
-            right: "0%",
-            scaleX: val / 100,
-            left: "auto",
-            transformOrigin: "right",
-          });
-        }
-
-        // Set count display to percentage
+        val = Math.min(100, Math.max(0, val));
         countEl.textContent = `${val}%`;
+
+        if (position === "left") {
+          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(fill, { width: `${val}%`, left: "0" });
+        } else {
+          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(fill, { left: "0", width: `${val}%` });
+        }
 
         const el = getSelectedElement?.();
         if (el) {
           const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, " +
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
               "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           );
           if (button) {
-            gsap.set(button, {
-              [cssVar]: `${val}%`, // Apply percentage
-            });
-          } else {
-            console.warn(
-              "No button found inside selected element to apply styles."
-            );
+            gsap.set(button, { [cssVar]: `${val}%` });
           }
-        } else {
-          console.warn("No selected element found to apply styles.");
         }
       };
 
 
-      const makeDraggable = (bullet, updateFn, type = "normal") => {
+
+      const makeDraggable = (bullet, updateFn) => {
         bullet.onmousedown = (e) => {
           e.preventDefault();
-
           document.onmousemove = (event) => {
             const rect = bullet.parentElement.getBoundingClientRect();
-            const pos = ((event.clientX - rect.left) / rect.width) * 100;
-            const clamped = Math.max(0, Math.min(100, pos));
-
-            if (type === "start") {
-              const endRight = parseFloat(endBullet.style.right || "0");
-              const endPos = 100 - endRight;
-              if (clamped >= endPos) return;
-            } else if (type === "end") {
-              const startLeft = parseFloat(startBullet.style.left || "0");
-              if (clamped <= startLeft) return;
-            }
-
-            updateFn(Math.round(clamped));
+            const percent = Math.min(
+              100,
+              Math.max(0, ((event.clientX - rect.left) / rect.width) * 100)
+            );
+            updateFn(Math.round(percent));
           };
-
           document.onmouseup = () => {
             document.onmousemove = null;
             document.onmouseup = null;
           };
         };
       };
+      
       
       
 
