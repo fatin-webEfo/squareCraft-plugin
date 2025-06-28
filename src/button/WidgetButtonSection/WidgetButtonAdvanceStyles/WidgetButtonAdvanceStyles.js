@@ -60,7 +60,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             "--sc-scroll-exit",
           ].includes(cssVar)
         ) {
-          const center = 50;
           const clamped = Math.max(-100, Math.min(100, val));
           const fillWidth = Math.abs(clamped);
           const fillLeft = 50 + Math.min(0, clamped); 
@@ -104,42 +103,50 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         bullet,
         updateFn,
         type = "normal",
-        min = 0,
+        min = -100,
         max = 100
       ) => {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
-          const container = bullet.parentElement;
+          const fieldId = bullet.id.replace("-bullet", "-field");
+          const field = document.getElementById(fieldId);
+          if (!field) return;
 
-          document.onmousemove = (event) => {
-            const rect = container.getBoundingClientRect();
+          const rect = field.getBoundingClientRect();
+
+          const onMouseMove = (event) => {
             let clientX = event.clientX;
             if (clientX < rect.left) clientX = rect.left;
             if (clientX > rect.right) clientX = rect.right;
 
-            let rawPercent = (clientX - rect.left) / rect.width;
-            const actualVal = Math.round(min + rawPercent * (max - min));
-            
+            const percent = (clientX - rect.left) / rect.width; // 0–1
+            const mappedValue = min + percent * (max - min); // map to -100 → 100
+            const clamped = Math.max(min, Math.min(max, mappedValue));
+            const val = Math.round(clamped);
 
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
 
-            if (type === "start" && actualVal >= endPos - 4) {
+            if (type === "start" && val >= endPos - 4) {
               updateFn(endPos - 4);
-            } else if (type === "end" && actualVal <= startPos + 4) {
+            } else if (type === "end" && val <= startPos + 4) {
               updateFn(startPos + 4);
             } else {
-              updateFn(actualVal);
+              updateFn(val);
             }
           };
 
-          document.onmouseup = () => {
-            document.onmousemove = null;
-            document.onmouseup = null;
+          const onMouseUp = () => {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
           };
+
+          document.addEventListener("mousemove", onMouseMove);
+          document.addEventListener("mouseup", onMouseUp);
         };
       };
+      
       
       
   
