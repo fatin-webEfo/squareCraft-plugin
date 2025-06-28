@@ -230,10 +230,13 @@
                   const endLeft = parseFloat(endBullet.style.left || "100");
 
                   if (scrollBasedLeft <= startLeft + 1) {
+                    arrow.style.backgroundColor = "var(--sc-bg-color-EF7C2F)";
                     console.log("🟠 Arrow is under START fill/bullet");
                   } else if (scrollBasedLeft >= endLeft - 1) {
+                    arrow.style.backgroundColor = "#F6B67B";
                     console.log("🟡 Arrow is under END fill/bullet");
                   } else {
+                    arrow.style.backgroundColor = "#FFFFFF";
                     console.log("⚪ Arrow is in NORMAL range");
                   }
                 }
@@ -254,6 +257,7 @@
                   trackLoop(arrow, border, startBullet, endBullet);
                 });
               }
+              
               
               
 

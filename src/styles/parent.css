@@ -3194,7 +3194,6 @@ html.sc-desktop-view body {
   width: 10px !important;
   height: 10px !important;
   top: 5px !important;
-  background-color: white !important;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%) !important;
   transform: translateX(-50%) !important;
   transition: left 0.3s ease !important;
