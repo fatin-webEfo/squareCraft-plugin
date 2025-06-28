@@ -70,12 +70,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         } else {
           gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, {
-            width: `${val}%`,
-            right: "0",
-            left: "auto",
+            transform: `scaleX(${val / 100})`,
             transformOrigin: "right",
+            left: "auto",
+            right: "0",
             backgroundColor: "#F6B67B",
           });
+
         }
         
 
