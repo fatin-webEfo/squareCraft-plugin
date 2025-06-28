@@ -103,50 +103,42 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         bullet,
         updateFn,
         type = "normal",
-        min = -100,
+        min = 0,
         max = 100
       ) => {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
-          const fieldId = bullet.id.replace("-bullet", "-field");
-          const field = document.getElementById(fieldId);
-          if (!field) return;
+          const container = bullet.parentElement;
 
-          const rect = field.getBoundingClientRect();
-
-          const onMouseMove = (event) => {
+          document.onmousemove = (event) => {
+            const rect = container.getBoundingClientRect();
             let clientX = event.clientX;
             if (clientX < rect.left) clientX = rect.left;
             if (clientX > rect.right) clientX = rect.right;
 
-            const percent = (clientX - rect.left) / rect.width; // 0–1
-            const mappedValue = min + percent * (max - min); // map to -100 → 100
-            const clamped = Math.max(min, Math.min(max, mappedValue));
-            const val = Math.round(clamped);
+            let rawPercent = (clientX - rect.left) / rect.width;
+            const actualVal = Math.round(min + rawPercent * (max - min));
+            
 
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
 
-            if (type === "start" && val >= endPos - 4) {
+            if (type === "start" && actualVal >= endPos - 4) {
               updateFn(endPos - 4);
-            } else if (type === "end" && val <= startPos + 4) {
+            } else if (type === "end" && actualVal <= startPos + 4) {
               updateFn(startPos + 4);
             } else {
-              updateFn(val);
+              updateFn(actualVal);
             }
           };
 
-          const onMouseUp = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseup", onMouseUp);
+          document.onmouseup = () => {
+            document.onmousemove = null;
+            document.onmouseup = null;
           };
-
-          document.addEventListener("mousemove", onMouseMove);
-          document.addEventListener("mouseup", onMouseUp);
         };
       };
-      
       
       
   
