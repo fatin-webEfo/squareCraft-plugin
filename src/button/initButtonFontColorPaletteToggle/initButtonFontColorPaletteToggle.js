@@ -573,6 +573,9 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
 
     const canvas = selectorField.querySelector("canvas");
     const ctx = canvas?.getContext("2d");
+    const defaultX = Math.round(selectorField.offsetWidth * 0.5);
+    const defaultY = Math.round(selectorField.offsetHeight * 0.5);
+
     if (ctx) {
       const data = ctx.getImageData(defaultX, defaultY, 1, 1).data;
       const rgba = formatColorOutput(data[0], data[1], data[2], currentTransparency / 100)
