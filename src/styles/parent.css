@@ -7,6 +7,11 @@
 .sc-roboto {
   font-family: 'Roboto', sans-serif !important;
 }
+:root {
+  --sc-scroll-entry: 0%;
+  --sc-scroll-center: 0%;
+  --sc-scroll-exit: 0%;
+}
 
 .sc-margin-0 {
   margin: 0 !important;

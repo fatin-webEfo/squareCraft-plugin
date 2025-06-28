@@ -63,7 +63,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           const center = 50;
           const clamped = Math.max(-100, Math.min(100, val));
           const fillWidth = Math.abs(clamped);
-          const fillLeft = 50 + Math.min(0, clamped); // handles negative correctly
+          const fillLeft = 50 + Math.min(0, clamped); 
           const bulletLeft = 50 + clamped;
 
 
@@ -114,10 +114,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
           document.onmousemove = (event) => {
             const rect = container.getBoundingClientRect();
-            let rawPercent = (event.clientX - rect.left) / rect.width;
-            rawPercent = Math.max(0, Math.min(1, rawPercent));
+            let clientX = event.clientX;
+            if (clientX < rect.left) clientX = rect.left;
+            if (clientX > rect.right) clientX = rect.right;
 
+            let rawPercent = (clientX - rect.left) / rect.width;
             const actualVal = Math.round(min + rawPercent * (max - min));
+            
 
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
