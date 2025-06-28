@@ -301,62 +301,7 @@ export function WidgetButtonAdvanceSection(){
                 ></div>
               </div>
             </div>
-            <div class="sc-w-full sc-mt-3">
-              <div
-                class="sc-flex sc-w-full sc-items-center sc-justify-between"
-              >
-                <div class="sc-flex sc-gap-2 sc-items-center">
-                  <p
-                    class="sc-roboto sc-font-thin sc-universal sc-font-size-14"
-                  >
-                    Effect Speed
-                  </p>
-                  <div
-                    id="button-advance-effectSpeed-reset"
-                    class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
-                  >
-                    <img
-                      src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
-                      width="10"
-                      alt="reset"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
-                >
-                  <p
-                    id="button-advance-effectSpeed-radiusCount"
-                    class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
-                  >
-                   -100%
-                  </p>
-                  <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
-                    <span
-                      id="button-advance-effectSpeed-Increase"
-                      class="sc-arrow-placeholder"
-                    ></span>
-                    <span
-                      id="button-advance-effectSpeed-Decrease"
-                      class="sc-arrow-placeholder sc-rotate-180"
-                    ></span>
-                  </div>
-                </div>
-              </div>
-              <div
-                id="button-advance-effectSpeed-radiusField"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
-              >
-                <div
-                  id="button-advance-effectSpeed-radiusFill"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
-                ></div>
-                <div
-                  id="button-advance-effectSpeed-radiusBullet"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                ></div>
-              </div>
-            </div>
+          
 
             <div class="sc-mt-6 sc-z-[99999]">
               <p class="sc-universal sc-roboto sc-font-size-12">
