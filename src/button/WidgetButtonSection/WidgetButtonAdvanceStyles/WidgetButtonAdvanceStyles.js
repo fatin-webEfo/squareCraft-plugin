@@ -67,17 +67,17 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           const bulletLeft = 50 + clamped;
 
 
-          gsap.set(bullet, { left: `${bulletLeft}%` });
+          gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
           gsap.set(fill, {
             left: `${fillLeft}%`,
             width: `${fillWidth}%`,
             backgroundColor: "var(--sc-theme-accent)", // or any theme color
           });
         } else if (position === "left") {
-          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
-          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
           gsap.set(fill, {
             left: "0",
             right: "auto",
@@ -113,12 +113,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           document.onmousemove = (event) => {
             const rect = bullet.parentElement.getBoundingClientRect();
             let rawPercent = (event.clientX - rect.left) / rect.width;
-            rawPercent = Math.min(1, Math.max(0, rawPercent)); // keep between 0–1
+            rawPercent = Math.max(0, Math.min(1, rawPercent)); // force [0, 1] range
 
-            // Convert to actual range
             const actualVal = Math.round(min + rawPercent * (max - min));
-
-            // Apply lock if needed
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
 
