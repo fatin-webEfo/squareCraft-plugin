@@ -194,20 +194,34 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   
   
 
-  const resetBtn = document.getElementById("icon-size-reset");
-  if (resetBtn) {
-    resetBtn.onclick = () => {
-      [
-        ["--sc-scroll-start", startBullet, startFill, startValue, 10, "left"],
-        ["--sc-scroll-end", endBullet, endFill, endValue, 30, "right"],
-        ["--sc-scroll-entry", entryBullet, entryFill, entryCount, 0, "left"],
-        ["--sc-scroll-center", centerBullet, centerFill, centerCount, 0, "left"],
-        ["--sc-scroll-exit", exitBullet, exitFill, exitCount, 0, "left"],
-      ].forEach(([cssVar, bullet, fill, countEl, val, position]) => {
-        const updater = updateField(bullet, fill, countEl, cssVar, position, -100, 100);
-        updater(val);
-      });
-      
-    };
-  }
+  [
+    {
+      id: "button-advance-entry-reset",
+      bullet: entryBullet,
+      fill: entryFill,
+      count: entryCount,
+      css: "--sc-scroll-entry",
+    },
+    {
+      id: "button-advance-center-reset",
+      bullet: centerBullet,
+      fill: centerFill,
+      count: centerCount,
+      css: "--sc-scroll-center",
+    },
+    {
+      id: "button-advance-exit-reset",
+      bullet: exitBullet,
+      fill: exitFill,
+      count: exitCount,
+      css: "--sc-scroll-exit",
+    },
+  ].forEach(({ id, bullet, fill, count, css }) => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.onclick = () => {
+        updateField(bullet, fill, count, css, "left", -100, 100)(0);
+      };
+    }
+  });
 }
