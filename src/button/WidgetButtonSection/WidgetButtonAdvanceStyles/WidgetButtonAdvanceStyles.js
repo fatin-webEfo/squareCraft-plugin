@@ -48,16 +48,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     return;
 
     const updateField =
-      (bullet, fill, countEl, cssVar, position = "left") =>
+      (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
       (val) => {
-        val = Math.min(100, Math.max(0, val));
+        val = Math.min(max, Math.max(min, val));
         countEl.textContent = `${val}%`;
 
         if (position === "left") {
           gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
-          gsap.set(bullet, { left: `${val}%` }); 
+          gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, {
             left: "0",
             right: "auto",
@@ -130,22 +130,29 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     entryFill,
     entryCount,
     "--sc-scroll-entry",
-    "left"
+    "left",
+    -100,
+    100
   );
   const updateCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
     "--sc-scroll-center",
-    "left"
+    "left",
+    -100,
+    100
   );
   const updateExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
     "--sc-scroll-exit",
-    "left"
+    "left",
+    -100,
+    100
   );
+  
 
 
   makeDraggable(startBullet, updateStart, "start");
