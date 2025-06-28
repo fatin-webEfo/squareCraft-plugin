@@ -1,40 +1,17 @@
 export function initButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("timeline-start-bullet");
-  const endBullet = document.getElementById("timeline-end-bullet");
-  const startFill = document.getElementById("timeline-start-fill");
-  const endFill = document.getElementById("timeline-end-fill");
-  const startValue = document.getElementById("timelineStartValue");
-  const endValue = document.getElementById("timelineEndValue");
-
   const entryBullet = document.getElementById("button-advance-entry-bullet");
   const entryFill = document.getElementById("button-advance-entry-Fill");
   const entryCount = document.getElementById("button-advance-entry-count");
 
-  const centerBullet = document.getElementById(
-    "button-advance-center-bullet"
-  );
-  const centerFill = document.getElementById(
-    "button-advance-center-Fill"
-  );
-  const centerCount = document.getElementById(
-    "button-advance-center-Count"
-  );
+  const centerBullet = document.getElementById("button-advance-center-bullet");
+  const centerFill = document.getElementById("button-advance-center-Fill");
+  const centerCount = document.getElementById("button-advance-center-Count");
 
-  const exitBullet = document.getElementById(
-    "button-advance-exit-bullet"
-  );
+  const exitBullet = document.getElementById("button-advance-exit-bullet");
   const exitFill = document.getElementById("button-advance-exit-Fill");
   const exitCount = document.getElementById("button-advance-exit-Count");
 
-
-
   if (
-    !startBullet ||
-    !endBullet ||
-    !startFill ||
-    !endFill ||
-    !startValue ||
-    !endValue ||
     !entryBullet ||
     !entryFill ||
     !entryCount ||
@@ -43,169 +20,83 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     !centerCount ||
     !exitBullet ||
     !exitFill ||
-    !exitCount 
+    !exitCount
   )
     return;
 
-    const updateField =
-      (
-        bullet,
-        fill,
-        countEl,
-        cssVar,
-        position = "left",
-        min = -100,
-        max = 100
-      ) =>
-      (val) => {
-        val = Math.min(max, Math.max(min, val));
-        countEl.textContent = `${val}%`;
+  const updateField = (bullet, fill, countEl, cssVar) => (val) => {
+    val = Math.max(-100, Math.min(100, val));
+    countEl.textContent = `${val}%`;
 
-        if (
-          [
-            "--sc-scroll-entry",
-            "--sc-scroll-center",
-            "--sc-scroll-exit",
-          ].includes(cssVar)
-        ) {
-          const percent = (val + 100) / 2; // Map -100..100 to 0..100
-          const bulletLeft = percent;
-          const fillLeft = val < 0 ? percent : 50;
-          const fillWidth = Math.abs(val / 2); // max 100 → 50%
+    const percent = (val + 100) / 2;
+    const bulletLeft = percent;
+    const fillLeft = val < 0 ? percent : 50;
+    const fillWidth = Math.abs(val / 2);
 
-          gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-          gsap.set(fill, {
-            left: `${fillLeft}%`,
-            width: `${fillWidth}%`,
-            backgroundColor: "var(--sc-theme-accent)",
-          });
-        } else if (position === "left") {
-          gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-          gsap.set(fill, { width: `${val}%`, left: "0" });
-        } else {
-          gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-          gsap.set(fill, {
-            left: "0",
-            right: "auto",
-            transform: `scaleX(${(100 - val) / 100})`,
-            transformOrigin: "right",
-            width: "100%",
-            backgroundColor: "#F6B67B",
-          });
-        }
+    gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+    gsap.set(fill, {
+      left: `${fillLeft}%`,
+      width: `${fillWidth}%`,
+      backgroundColor: "var(--sc-theme-accent)",
+    });
 
-        const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
-          }
-        }
+    const el = getSelectedElement?.();
+    if (el) {
+      const button = el.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      );
+      if (button) {
+        gsap.set(button, { [cssVar]: `${val}%` });
+      }
+    }
+  };
+
+  const makeDraggable = (bullet, updateFn) => {
+    bullet.onmousedown = (e) => {
+      e.preventDefault();
+      const container = bullet.parentElement;
+      const rect = container.getBoundingClientRect();
+
+      const onMove = (event) => {
+        const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+        const percent = (x / rect.width) * 200 - 100; // Map 0..width → -100..100
+        updateFn(Math.round(percent));
       };
-  
 
-      const makeDraggable = (
-        bullet,
-        updateFn,
-        type = "normal",
-        min = -100,
-        max = 100
-      ) => {
-        bullet.onmousedown = (e) => {
-          e.preventDefault();
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener(
+        "mouseup",
+        () => {
+          document.removeEventListener("mousemove", onMove);
+        },
+        { once: true }
+      );
+    };
+  };
 
-          const container = bullet.parentElement;
-          const containerRect = container.getBoundingClientRect();
-
-          const onMouseMove = (event) => {
-            const clientX = event.clientX;
-            const relativeX = clientX - containerRect.left;
-            const percent =
-              (relativeX / containerRect.width) * (max - min) + min;
-            const clamped = Math.max(min, Math.min(max, Math.round(percent)));
-
-            const startPos = parseFloat(startBullet.style.left || "0");
-            const endPos = parseFloat(endBullet.style.left || "100");
-
-            if (type === "start" && clamped >= endPos - 4) {
-              updateFn(endPos - 4);
-            } else if (type === "end" && clamped <= startPos + 4) {
-              updateFn(startPos + 4);
-            } else {
-              updateFn(clamped);
-            }
-          };
-
-          document.addEventListener("mousemove", onMouseMove);
-          document.addEventListener(
-            "mouseup",
-            () => {
-              document.removeEventListener("mousemove", onMouseMove);
-            },
-            { once: true }
-          );
-        };
-      };
-      
-      
-      
-  
-      
-
-  const updateStart = updateField(
-    startBullet,
-    startFill,
-    startValue,
-    "--sc-scroll-start",
-    "left"
-  );
-  const updateEnd = updateField(
-    endBullet,
-    endFill,
-    endValue,
-    "--sc-scroll-end",
-    "right"
-  );
   const updateEntry = updateField(
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-scroll-entry",
-    "left",
-    -100,
-    100
+    "--sc-scroll-entry"
   );
   const updateCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-scroll-center",
-    "left",
-    -100,
-    100
+    "--sc-scroll-center"
   );
   const updateExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-scroll-exit",
-    "left",
-    -100,
-    100
+    "--sc-scroll-exit"
   );
-  
 
-
-  makeDraggable(startBullet, updateStart, "start");
-  makeDraggable(endBullet, updateEnd, "end");
-  makeDraggable(entryBullet, updateEntry, "normal", -100, 100);
-  makeDraggable(centerBullet, updateCenter, "normal", -100, 100);
-  makeDraggable(exitBullet, updateExit, "normal", -100, 100);
-  
-  
+  makeDraggable(entryBullet, updateEntry);
+  makeDraggable(centerBullet, updateCenter);
+  makeDraggable(exitBullet, updateExit);
 
   [
     {
@@ -233,7 +124,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const btn = document.getElementById(id);
     if (btn) {
       btn.onclick = () => {
-        updateField(bullet, fill, count, css, "left", -100, 100)(0);
+        updateField(bullet, fill, count, css)(0);
       };
     }
   });
