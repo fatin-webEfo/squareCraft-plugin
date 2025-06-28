@@ -103,11 +103,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           const startPos = parseFloat(startBullet.style.left || "0");
           const endPos = parseFloat(endBullet.style.left || "100");
 
-          if (type === "start" && percent >= endPos - 3) {
-            percent = endPos - 3;
+          if (type === "start" && percent >= endPos - 4) {
+            percent = endPos - 4;
           }
-          if (type === "end" && percent <= startPos + 3) {
-            percent = startPos + 3;
+          if (type === "end" && percent <= startPos + 4) {
+            percent = startPos + 4;
           }
 
           updateFn(Math.round(percent));
