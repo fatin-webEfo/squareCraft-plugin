@@ -26,15 +26,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const exitFill = document.getElementById("button-advance-exit-radiusFill");
   const exitCount = document.getElementById("button-advance-exit-radiusCount");
 
-  const speedBullet = document.getElementById(
-    "button-advance-effectSpeed-radiusBullet"
-  );
-  const speedFill = document.getElementById(
-    "button-advance-effectSpeed-radiusFill"
-  );
-  const speedCount = document.getElementById(
-    "button-advance-effectSpeed-radiusCount"
-  );
+
 
   if (
     !startBullet ||
@@ -52,9 +44,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     !exitBullet ||
     !exitFill ||
     !exitCount ||
-    !speedBullet ||
-    !speedFill ||
-    !speedCount
   )
     return;
 
@@ -157,20 +146,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     "--sc-scroll-exit",
     "left"
   );
-  const updateSpeed = updateField(
-    speedBullet,
-    speedFill,
-    speedCount,
-    "--sc-scroll-speed",
-    "left"
-  );
+
 
   makeDraggable(startBullet, updateStart, "start");
   makeDraggable(endBullet, updateEnd, "end");
   makeDraggable(entryBullet, updateEntry);
   makeDraggable(centerBullet, updateCenter);
   makeDraggable(exitBullet, updateExit);
-  makeDraggable(speedBullet, updateSpeed);
   
 
   const resetBtn = document.getElementById("icon-size-reset");
@@ -189,7 +171,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           "left",
         ],
         ["--sc-scroll-exit", exitBullet, exitFill, exitCount, 0, "left"],
-        ["--sc-scroll-speed", speedBullet, speedFill, speedCount, 0, "left"],
       ].forEach(([cssVar, bullet, fill, countEl, val, position]) => {
         const updater = updateField(bullet, fill, countEl, cssVar, position);
         updater(val);
