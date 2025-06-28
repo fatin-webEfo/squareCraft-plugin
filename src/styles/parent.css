@@ -3184,11 +3184,13 @@ html.sc-desktop-view body {
 
 
 #timeline-end-fill {
-  position: absolute;
-  height: 4px;
-  top: 0;
-  background-color: #F6B67B !important; /* fallback */
+  position: absolute !important;
+  height: 4px !important;
+  background-color: #F6B67B !important;
+  right: 0 !important;
+  transform-origin: right !important;
 }
+
 
 
 

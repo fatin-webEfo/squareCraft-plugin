@@ -69,8 +69,15 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
           gsap.set(bullet, { left: `${val}%` });
-          gsap.set(fill, { right: "0", width: `${val}%` });
+          gsap.set(fill, {
+            width: `${val}%`,
+            right: "0",
+            left: "auto",
+            transformOrigin: "right",
+            backgroundColor: "#F6B67B",
+          });
         }
+        
 
         const el = getSelectedElement?.();
         if (el) {
