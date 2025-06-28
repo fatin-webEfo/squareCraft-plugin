@@ -53,27 +53,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         val = Math.min(max, Math.max(min, val));
         countEl.textContent = `${val}%`;
 
-        if (
-          [
-            "--sc-scroll-entry",
-            "--sc-scroll-center",
-            "--sc-scroll-exit",
-          ].includes(cssVar)
-        ) {
-          const center = 50;
-          const clamped = Math.max(-100, Math.min(100, val));
-          const fillWidth = Math.abs(clamped);
-          const fillLeft = 50 + Math.min(0, clamped); // handles negative correctly
-          const bulletLeft = 50 + clamped;
-
-
-          gsap.set(bullet, { left: `${bulletLeft}%` });
-          gsap.set(fill, {
-            left: `${fillLeft}%`,
-            width: `${fillWidth}%`,
-            backgroundColor: "var(--sc-theme-accent)", // or any theme color
-          });
-        } else if (position === "left") {
+        if (position === "left") {
           gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
@@ -87,7 +67,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             backgroundColor: "#F6B67B",
           });
         }
-        
+
         const el = getSelectedElement?.();
         if (el) {
           const button = el.querySelector(
@@ -200,13 +180,19 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         ["--sc-scroll-start", startBullet, startFill, startValue, 10, "left"],
         ["--sc-scroll-end", endBullet, endFill, endValue, 30, "right"],
         ["--sc-scroll-entry", entryBullet, entryFill, entryCount, 0, "left"],
-        ["--sc-scroll-center", centerBullet, centerFill, centerCount, 0, "left"],
+        [
+          "--sc-scroll-center",
+          centerBullet,
+          centerFill,
+          centerCount,
+          0,
+          "left",
+        ],
         ["--sc-scroll-exit", exitBullet, exitFill, exitCount, 0, "left"],
       ].forEach(([cssVar, bullet, fill, countEl, val, position]) => {
-        const updater = updateField(bullet, fill, countEl, cssVar, position, -100, 100);
+        const updater = updateField(bullet, fill, countEl, cssVar, position);
         updater(val);
       });
-      
     };
   }
 }
