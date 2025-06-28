@@ -57,7 +57,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
-          gsap.set(bullet, { left: `${val}%` }); // For bullet positioning from left side
+          gsap.set(bullet, { left: `${val}%` }); 
           gsap.set(fill, {
             left: "0",
             right: "auto",

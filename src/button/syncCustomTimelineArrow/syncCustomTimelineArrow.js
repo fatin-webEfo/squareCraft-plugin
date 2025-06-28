@@ -31,8 +31,27 @@ export function syncCustomTimelineArrow(selectedElement) {
     arrow.style.left = `${clampedX}%`;
     arrow.style.transform = "translateX(-50%)";
 
-    console.log("📌 Arrow position updated:", clampedX.toFixed(2) + "%");
+    const startBullet = document.getElementById("timeline-start-bullet");
+    const endBullet = document.getElementById("timeline-end-bullet");
+
+    if (!startBullet || !endBullet) return;
+
+    const startPercent = parseFloat(startBullet.style.left || "0");
+    const endPercent = parseFloat(endBullet.style.left || "100");
+
+    if (clampedX <= startPercent) {
+      arrow.style.backgroundColor = "var(--sc-bg-color-EF7C2F)";
+      console.log("🟢 Arrow is under Start region");
+    } else if (clampedX >= endPercent) {
+      arrow.style.backgroundColor = "#F6B67B";
+      console.log("🔴 Arrow is under End region");
+    } else {
+      arrow.style.backgroundColor = "#FFFFFF";
+      console.log("⚪ Arrow is in the Middle region (normal style)");
+    }
   }
+  
+  
 
   function trackLoop(arrow, border) {
     updateArrowPosition(arrow, border);
