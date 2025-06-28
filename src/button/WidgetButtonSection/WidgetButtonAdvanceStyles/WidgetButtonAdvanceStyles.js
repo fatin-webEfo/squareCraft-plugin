@@ -110,18 +110,17 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
-          const fieldId = bullet.id.replace("-bullet", "-field"); // smart way
-          const container = document.getElementById(fieldId);
+          const container = bullet.parentElement;
 
           document.onmousemove = (event) => {
             const rect = container.getBoundingClientRect();
             let clientX = event.clientX;
-
             if (clientX < rect.left) clientX = rect.left;
             if (clientX > rect.right) clientX = rect.right;
 
-            const rawPercent = (clientX - rect.left) / rect.width;
+            let rawPercent = (clientX - rect.left) / rect.width;
             const actualVal = Math.round(min + rawPercent * (max - min));
+            
 
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
@@ -141,8 +140,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           };
         };
       };
-      
-      
       
       
   
