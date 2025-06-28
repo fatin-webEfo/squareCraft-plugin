@@ -48,7 +48,15 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     return;
 
     const updateField =
-      (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
+      (
+        bullet,
+        fill,
+        countEl,
+        cssVar,
+        position = "left",
+        min = -100,
+        max = 100
+      ) =>
       (val) => {
         val = Math.min(max, Math.max(min, val));
         countEl.textContent = `${val}%`;
@@ -60,18 +68,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             "--sc-scroll-exit",
           ].includes(cssVar)
         ) {
-          const center = 50;
-          const clamped = Math.max(-100, Math.min(100, val));
-          const fillWidth = Math.abs(clamped);
-          const fillLeft = 50 + Math.min(0, clamped); 
-          const bulletLeft = 50 + clamped;
-
+          const percent = (val + 100) / 2; // Map -100..100 to 0..100
+          const bulletLeft = percent;
+          const fillLeft = val < 0 ? percent : 50;
+          const fillWidth = Math.abs(val / 2); // max 100 → 50%
 
           gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
           gsap.set(fill, {
             left: `${fillLeft}%`,
             width: `${fillWidth}%`,
-            backgroundColor: "var(--sc-theme-accent)", // or any theme color
+            backgroundColor: "var(--sc-theme-accent)",
           });
         } else if (position === "left") {
           gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
@@ -87,7 +93,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
             backgroundColor: "#F6B67B",
           });
         }
-        
+
         const el = getSelectedElement?.();
         if (el) {
           const button = el.querySelector(
@@ -99,49 +105,51 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           }
         }
       };
+  
 
       const makeDraggable = (
         bullet,
         updateFn,
         type = "normal",
-        min = 0,
+        min = -100,
         max = 100
       ) => {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
           const container = bullet.parentElement;
+          const containerRect = container.getBoundingClientRect();
 
-          document.onmousemove = (event) => {
-            const rect = container.getBoundingClientRect();
-            let clientX = event.clientX;
-            
-            // Clamp within container bounds
-            if (clientX < rect.left) clientX = rect.left;
-            if (clientX > rect.right) clientX = rect.right;
-            
-            let rawPercent = (clientX - rect.left) / rect.width;
-            const actualVal = Math.round(min + rawPercent * (max - min));
-            
+          const onMouseMove = (event) => {
+            const clientX = event.clientX;
+            const relativeX = clientX - containerRect.left;
+            const percent =
+              (relativeX / containerRect.width) * (max - min) + min;
+            const clamped = Math.max(min, Math.min(max, Math.round(percent)));
 
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
 
-            if (type === "start" && actualVal >= endPos - 4) {
+            if (type === "start" && clamped >= endPos - 4) {
               updateFn(endPos - 4);
-            } else if (type === "end" && actualVal <= startPos + 4) {
+            } else if (type === "end" && clamped <= startPos + 4) {
               updateFn(startPos + 4);
             } else {
-              updateFn(actualVal);
+              updateFn(clamped);
             }
           };
 
-          document.onmouseup = () => {
-            document.onmousemove = null;
-            document.onmouseup = null;
-          };
+          document.addEventListener("mousemove", onMouseMove);
+          document.addEventListener(
+            "mouseup",
+            () => {
+              document.removeEventListener("mousemove", onMouseMove);
+            },
+            { once: true }
+          );
         };
       };
+      
       
       
   
