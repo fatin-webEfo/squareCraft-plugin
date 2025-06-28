@@ -175,7 +175,7 @@
                   return;
                 }
 
-                let isTracking = false; // ✅ tracking flag
+                let isTracking = false;
 
                 function waitForElements(callback, retries = 20) {
                   const arrow = document.getElementById(
@@ -184,9 +184,15 @@
                   const border = document.getElementById(
                     "custom-timeline-border"
                   );
+                  const startBullet = document.getElementById(
+                    "timeline-start-bullet"
+                  );
+                  const endBullet = document.getElementById(
+                    "timeline-end-bullet"
+                  );
 
-                  if (arrow && border) {
-                    callback(arrow, border);
+                  if (arrow && border && startBullet && endBullet) {
+                    callback(arrow, border, startBullet, endBullet);
                   } else if (retries > 0) {
                     setTimeout(
                       () => waitForElements(callback, retries - 1),
@@ -194,46 +200,61 @@
                     );
                   } else {
                     console.warn(
-                      "⚠️ Arrow or border element not found after retries."
+                      "⚠️ Required elements not found after retries."
                     );
                   }
                 }
 
-                function updateArrowPosition(arrow) {
+                function updateArrowPosition(
+                  arrow,
+                  border,
+                  startBullet,
+                  endBullet
+                ) {
                   const rect = selectedElement.getBoundingClientRect();
                   const viewportHeight = window.innerHeight;
                   const top = rect.top;
 
                   const percentFromTop = top / viewportHeight;
-
                   const scrollBasedLeft = Math.max(
                     0,
                     Math.min(100, 100 - 100 * percentFromTop)
                   );
+
                   arrow.style.left = `${scrollBasedLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
-                 console.log("📍 Arrow left:", scrollBasedLeft);
+                  console.log("📍 Arrow left %:", scrollBasedLeft.toFixed(2));
+
+                  const startLeft = parseFloat(startBullet.style.left || "0");
+                  const endLeft = parseFloat(endBullet.style.left || "100");
+
+                  if (scrollBasedLeft <= startLeft + 1) {
+                    console.log("🟠 Arrow is under START fill/bullet");
+                  } else if (scrollBasedLeft >= endLeft - 1) {
+                    console.log("🟡 Arrow is under END fill/bullet");
+                  } else {
+                    console.log("⚪ Arrow is in NORMAL range");
+                  }
                 }
-                
-                
-                function trackLoop(arrow, border) {
+
+                function trackLoop(arrow, border, startBullet, endBullet) {
                   if (isTracking) return;
                   isTracking = true;
 
                   function loop() {
-                    updateArrowPosition(arrow, border);
+                    updateArrowPosition(arrow, border, startBullet, endBullet);
                     requestAnimationFrame(loop);
                   }
 
                   loop();
                 }
-                
 
-                waitForElements((arrow, border) => {
-                  trackLoop(arrow, border);
+                waitForElements((arrow, border, startBullet, endBullet) => {
+                  trackLoop(arrow, border, startBullet, endBullet);
                 });
               }
+              
               
 
               
