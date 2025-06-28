@@ -110,12 +110,15 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
+          const container = bullet.parentElement;
+
           document.onmousemove = (event) => {
-            const rect = bullet.parentElement.getBoundingClientRect();
+            const rect = container.getBoundingClientRect();
             let rawPercent = (event.clientX - rect.left) / rect.width;
-            rawPercent = Math.max(0, Math.min(1, rawPercent)); // force [0, 1] range
+            rawPercent = Math.max(0, Math.min(1, rawPercent));
 
             const actualVal = Math.round(min + rawPercent * (max - min));
+
             const startPos = parseFloat(startBullet.style.left || "0");
             const endPos = parseFloat(endBullet.style.left || "100");
 
@@ -134,6 +137,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           };
         };
       };
+      
       
   
       
