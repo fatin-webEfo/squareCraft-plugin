@@ -199,13 +199,10 @@
                   }
                 }
 
-                function updateArrowPosition(arrow, border) {
+                function updateArrowPosition(arrow) {
                   const rect = selectedElement.getBoundingClientRect();
                   const viewportHeight = window.innerHeight;
-
                   const top = rect.top;
-                  const borderRect = border.getBoundingClientRect();
-                  const borderWidth = borderRect.width;
 
                   const percentFromTop = top / viewportHeight;
 
