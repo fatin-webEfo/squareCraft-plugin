@@ -110,7 +110,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         bullet.onmousedown = (e) => {
           e.preventDefault();
 
-          const fieldId = bullet.id.replace("-bullet", "-Field"); // smart way
+          const fieldId = bullet.id.replace("-bullet", "-field"); // smart way
           const container = document.getElementById(fieldId);
 
           document.onmousemove = (event) => {

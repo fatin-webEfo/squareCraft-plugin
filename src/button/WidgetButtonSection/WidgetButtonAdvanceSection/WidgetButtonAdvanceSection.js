@@ -176,7 +176,7 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
               <div
-                id="button-advance-entry-Field"
+                id="button-advance-entry-field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                 <div
                   id="button-advance-entry-Fill"
