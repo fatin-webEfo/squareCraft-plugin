@@ -80,34 +80,44 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         }
       };
 
-    const makeDraggable = (bullet, updateFn, type = "normal") => {
-      bullet.onmousedown = (e) => {
-        e.preventDefault();
+      const makeDraggable = (
+        bullet,
+        updateFn,
+        type = "normal",
+        min = 0,
+        max = 100
+      ) => {
+        bullet.onmousedown = (e) => {
+          e.preventDefault();
 
-        document.onmousemove = (event) => {
-          const rect = bullet.parentElement.getBoundingClientRect();
-          let percent = ((event.clientX - rect.left) / rect.width) * 100;
-          percent = Math.min(100, Math.max(0, percent));
+          document.onmousemove = (event) => {
+            const rect = bullet.parentElement.getBoundingClientRect();
+            let rawPercent = (event.clientX - rect.left) / rect.width;
+            rawPercent = Math.min(1, Math.max(0, rawPercent)); // keep between 0–1
 
-          const startPos = parseFloat(startBullet.style.left || "0");
-          const endPos = parseFloat(endBullet.style.left || "100");
+            // Convert to actual range
+            const actualVal = Math.round(min + rawPercent * (max - min));
 
-          if (type === "start" && percent >= endPos - 4) {
-            percent = endPos - 4;
-          }
-          if (type === "end" && percent <= startPos + 4) {
-            percent = startPos + 4;
-          }
+            // Apply lock if needed
+            const startPos = parseFloat(startBullet.style.left || "0");
+            const endPos = parseFloat(endBullet.style.left || "100");
 
-          updateFn(Math.round(percent));
-        };
+            if (type === "start" && actualVal >= endPos - 4) {
+              updateFn(endPos - 4);
+            } else if (type === "end" && actualVal <= startPos + 4) {
+              updateFn(startPos + 4);
+            } else {
+              updateFn(actualVal);
+            }
+          };
 
-        document.onmouseup = () => {
-          document.onmousemove = null;
-          document.onmouseup = null;
+          document.onmouseup = () => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+          };
         };
       };
-    };
+      
   
       
 
@@ -157,9 +167,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
   makeDraggable(startBullet, updateStart, "start");
   makeDraggable(endBullet, updateEnd, "end");
-  makeDraggable(entryBullet, updateEntry);
-  makeDraggable(centerBullet, updateCenter);
-  makeDraggable(exitBullet, updateExit);
+  makeDraggable(entryBullet, updateEntry, "normal", -100, 100);
+  makeDraggable(centerBullet, updateCenter, "normal", -100, 100);
+  makeDraggable(exitBullet, updateExit, "normal", -100, 100);
+  
   
 
   const resetBtn = document.getElementById("icon-size-reset");
