@@ -107,7 +107,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const centerY = Math.floor(canvas.height / 2);
       const data = ctx.getImageData(centerX, centerY, 1, 1).data;
       const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
-      console.log(`🖼️ Canvas rendered (center pixel): ${rgba}`);
     });
   }
 
@@ -271,7 +270,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     allButtons.forEach((btn) => {
       btn.dataset.scButtonBg = color;
     });
-    console.log("🖌️ APPLYING COLOR:", rgbaColor, "on", buttonType);
   }
 
   if (
@@ -336,7 +334,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
         document.onmousemove = null;
         document.onmouseup = null;
       };
-      console.log("🎨 Updated dynamicHue from palette:", dynamicHue);
     };
   }
 
@@ -476,7 +473,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       const color = swatch.style.backgroundColor;
 
       updateSelectorField(color);
-      console.log(`🎯 Swatch clicked: ${color}`);
 
       if (allColorField && allColorBullet) {
         const rect = allColorField.getBoundingClientRect();
@@ -566,7 +562,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       palette.style.backgroundColor = rgba;
       applyButtonBackgroundColor(rgba);
 
-      console.log(`✅ Bullet synced after canvas painted → ${rgba}`);
     }
 
     requestAnimationFrame(waitAndCenterBullet);
@@ -589,7 +584,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
     function waitForCanvasReadyAndSyncBullet(x, y) {
       const canvas = selectorField.querySelector("canvas");
       if (!canvas) {
-        console.log("⏳ Canvas not found yet");
         requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
         return;
       }
@@ -609,7 +603,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       }
 
       if (!painted) {
-        console.log("🕐 Canvas not fully painted, retrying...");
         requestAnimationFrame(() => waitForCanvasReadyAndSyncBullet(x, y));
         return;
       }
@@ -619,7 +612,6 @@ export function initButtonFontColorPaletteToggle(themeColors, selectedElement) {
       bullet.style.top = `${y}px`;
       colorCode.textContent = rgba;
       applyButtonBackgroundColor(rgba);
-      console.log(`✅ Bullet synced at (${x}, ${y}) → ${rgba} (initial load)`);
     }
 
     waitForCanvasReadyAndSyncBullet(defaultX, defaultY);
