@@ -213,11 +213,7 @@
                   arrow.style.left = `${scrollBasedLeft}%`;
                   arrow.style.transform = "translateX(-50%)";
 
-                  console.log(
-                    `📌 Top: ${top.toFixed(
-                      0
-                    )}px | ⬅️ Arrow Left: ${scrollBasedLeft.toFixed(2)}%`
-                  );
+                 
                 }
                 
                 
