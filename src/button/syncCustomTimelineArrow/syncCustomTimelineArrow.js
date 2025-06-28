@@ -40,16 +40,23 @@ export function syncCustomTimelineArrow(selectedElement) {
     const endLeft = parseFloat(endBullet.style.left || "100");
 
     if (clampedX <= startLeft + 1) {
+      if (arrow.style.backgroundColor !== "var(--sc-bg-color-EF7C2F)") {
+        console.log("🟠 Arrow is under START fill/bullet");
+      }
       arrow.style.backgroundColor = "var(--sc-bg-color-EF7C2F)";
-      console.log("🟠 Arrow is under START fill/bullet");
     } else if (clampedX >= endLeft - 1) {
+      if (arrow.style.backgroundColor !== "#F6B67B") {
+        console.log("🟡 Arrow is under END fill/bullet");
+      }
       arrow.style.backgroundColor = "#F6B67B";
-      console.log("🟡 Arrow is under END fill/bullet");
     } else {
+      if (arrow.style.backgroundColor !== "#FFFFFF") {
+        console.log("⚪ Arrow is in between start and end (normal region)");
+      }
       arrow.style.backgroundColor = "#FFFFFF";
-      console.log("⚪ Arrow is in between start and end (normal region)");
     }
   }
+  
   
   
   
