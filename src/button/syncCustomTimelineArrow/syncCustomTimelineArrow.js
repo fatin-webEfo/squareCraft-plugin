@@ -36,27 +36,32 @@ export function syncCustomTimelineArrow(selectedElement) {
 
     if (!startBullet || !endBullet) return;
 
-    const startPercent = parseFloat(startBullet.style.left || "0");
-    const endPercent = parseFloat(endBullet.style.left || "100");
+    const startLeft = parseFloat(startBullet.style.left || "0");
+    const endLeft = parseFloat(endBullet.style.left || "100");
 
-    if (clampedX <= startPercent) {
+    if (clampedX <= startLeft + 1) {
       arrow.style.backgroundColor = "var(--sc-bg-color-EF7C2F)";
-      console.log("🟢 Arrow is under Start region");
-    } else if (clampedX >= endPercent) {
+      console.log("🟠 Arrow is under START fill/bullet");
+    } else if (clampedX >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
-      console.log("🔴 Arrow is under End region");
+      console.log("🟡 Arrow is under END fill/bullet");
     } else {
       arrow.style.backgroundColor = "#FFFFFF";
-      console.log("⚪ Arrow is in the Middle region (normal style)");
+      console.log("⚪ Arrow is in between start and end (normal region)");
     }
   }
   
   
+  
 
   function trackLoop(arrow, border) {
-    updateArrowPosition(arrow, border);
-    requestAnimationFrame(() => trackLoop(arrow, border));
+    function loop() {
+      updateArrowPosition(arrow, border);
+      requestAnimationFrame(loop);
+    }
+    loop();
   }
+  
 
   waitForElements((arrow, border) => {
     trackLoop(arrow, border);
