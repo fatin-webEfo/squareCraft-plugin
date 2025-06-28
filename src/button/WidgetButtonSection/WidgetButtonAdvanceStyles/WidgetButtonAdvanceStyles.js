@@ -68,17 +68,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           gsap.set(bullet, { left: `${val}%` });
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
-          gsap.set(bullet, { left: `${val}%` });
+          gsap.set(bullet, { left: `${val}%` }); // For bullet positioning from left side
           gsap.set(fill, {
-            transform: `scaleX(${val / 100})`,
+            left: "0",
+            right: "auto",
+            transform: `scaleX(${(100 - val) / 100})`,
             transformOrigin: "right",
-            left: "auto",
-            right: "0",
+            width: "100%",
             backgroundColor: "#F6B67B",
           });
-
         }
-        
 
         const el = getSelectedElement?.();
         if (el) {
@@ -92,41 +91,37 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         }
       };
 
+    const makeDraggable = (bullet, updateFn, type = "normal") => {
+      bullet.onmousedown = (e) => {
+        e.preventDefault();
 
+        document.onmousemove = (event) => {
+          const rect = bullet.parentElement.getBoundingClientRect();
+          let percent = ((event.clientX - rect.left) / rect.width) * 100;
+          percent = Math.min(100, Math.max(0, percent));
 
-      const makeDraggable = (bullet, updateFn, type = "normal") => {
-        bullet.onmousedown = (e) => {
-          e.preventDefault();
+          const startPos = parseFloat(startBullet.style.left || "0");
+          const endPos = parseFloat(endBullet.style.left || "100");
 
-          document.onmousemove = (event) => {
-            const rect = bullet.parentElement.getBoundingClientRect();
-            let percent = ((event.clientX - rect.left) / rect.width) * 100;
-            percent = Math.min(100, Math.max(0, percent));
+          if (type === "start" && percent >= endPos - 1) {
+            percent = endPos - 1;
+          }
+          if (type === "end" && percent <= startPos + 1) {
+            percent = startPos + 1;
+          }
 
-            if (type === "start") {
-              const endLeft = parseFloat(endBullet.style.left || "100");
-              if (percent >= endLeft - 1) {
-                percent = endLeft - 1;
-              }
-            }
-            if (type === "end") {
-              const startLeft = parseFloat(startBullet.style.left || "0");
-              if (percent <= startLeft + 1) {
-                percent = startLeft + 1;
-              }
-            }
-            
+          updateFn(Math.round(percent));
+        };
 
-            updateFn(Math.round(percent));
-          };
-
-          document.onmouseup = () => {
-            document.onmousemove = null;
-            document.onmouseup = null;
-          };
+        document.onmouseup = () => {
+          document.onmousemove = null;
+          document.onmouseup = null;
         };
       };
-      
+    };
+  
+
+
       
       
       

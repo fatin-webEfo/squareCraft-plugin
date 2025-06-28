@@ -3183,13 +3183,7 @@ html.sc-desktop-view body {
 }
 
 
-#timeline-end-fill {
-  position: absolute !important;
-  height: 4px !important;
-  background-color: #F6B67B !important;
-  right: 0 ;
-  transform-origin: right !important;
-}
+
 
 
 
