@@ -161,7 +161,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-entry-count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                    0
+                    -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -176,7 +176,7 @@ export function WidgetButtonAdvanceSection(){
                 </div>
               </div>
               <div
-                id="button-advance-entry-field"
+                id="button-advance-entry-Field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
                 <div
                   id="button-advance-entry-Fill"
@@ -218,7 +218,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-center-Count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                  0
+                  -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -273,7 +273,7 @@ export function WidgetButtonAdvanceSection(){
                     id="button-advance-exit-Count"
                     class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                   >
-                  0
+                  -100%
                   </p>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
