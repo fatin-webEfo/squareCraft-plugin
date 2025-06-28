@@ -179,14 +179,17 @@ export function WidgetButtonAdvanceSection(){
                 id="button-advance-entry-Field"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
               >
-                <div
-                  id="button-advance-entry-Fill"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
-                ></div>
-                <div
-                  id="button-advance-entry-Bullet"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                ></div>
+               <div
+  id="button-advance-center-radiusFill"
+  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
+  style="left: 50%; width: 0%"
+></div>
+<div
+  id="button-advance-center-radiusBullet"
+  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+  style="left: 50%"
+></div>
+
               </div>
             </div>
             <div class="sc-w-full sc-mt-3">
@@ -236,13 +239,16 @@ export function WidgetButtonAdvanceSection(){
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
               >
                 <div
-                  id="button-advance-center-radiusFill"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
-                ></div>
-                <div
-                  id="button-advance-center-radiusBullet"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                ></div>
+  id="button-advance-center-radiusFill"
+  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
+  style="left: 50%; width: 0%"
+></div>
+<div
+  id="button-advance-center-radiusBullet"
+  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+  style="left: 50%"
+></div>
+
               </div>
             </div>
             <div class="sc-w-full sc-mt-3">
@@ -291,14 +297,17 @@ export function WidgetButtonAdvanceSection(){
                 id="button-advance-exit-radiusField"
                 class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
               >
-                <div
-                  id="button-advance-exit-radiusFill"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
-                ></div>
-                <div
-                  id="button-advance-exit-radiusBullet"
-                  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
-                ></div>
+               <div
+  id="button-advance-exit-radiusFill"
+  class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
+  style="left: 50%; width: 0%"
+></div>
+<div
+  id="button-advance-exit-radiusBullet"
+  class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
+  style="left: 50%"
+></div>
+
               </div>
             </div>
           
