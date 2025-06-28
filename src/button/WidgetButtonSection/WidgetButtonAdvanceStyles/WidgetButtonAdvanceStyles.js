@@ -63,8 +63,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           const center = 50;
           const clamped = Math.max(-100, Math.min(100, val));
           const fillWidth = Math.abs(clamped);
-          const fillLeft = clamped < 0 ? center - fillWidth : center;
-          const bulletLeft = center + clamped;
+          const fillLeft = 50 + Math.min(0, clamped); // handles negative correctly
+          const bulletLeft = 50 + clamped;
+
 
           gsap.set(bullet, { left: `${bulletLeft}%` });
           gsap.set(fill, {
