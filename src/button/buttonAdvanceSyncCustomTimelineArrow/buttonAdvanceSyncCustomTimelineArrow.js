@@ -1,19 +1,19 @@
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
-  if (!selectedElement) {
-    return;
-  }
+  if (!selectedElement) return;
 
   let isTracking = false;
   let lastY = null;
+  let transitionEase = "power2.out";
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("custom-timeline-arrow");
     const border = document.getElementById("custom-timeline-border");
     const startBullet = document.getElementById("timeline-start-bullet");
     const endBullet = document.getElementById("timeline-end-bullet");
+    const list = document.getElementById("effect-animation-type-list");
 
-    if (arrow && border && startBullet && endBullet) {
-      callback(arrow, border, startBullet, endBullet);
+    if (arrow && border && startBullet && endBullet && list) {
+      callback(arrow, border, startBullet, endBullet, list);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
@@ -28,6 +28,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       0,
       Math.min(100, 100 - 100 * percentFromTop)
     );
+
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
@@ -97,8 +98,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     if (lastY !== finalY) {
       gsap.to(btn, {
-        duration: 0.3,
-        ease: "power2.out",
+        duration: 0.4,
+        ease: transitionEase,
         transform: `translateY(${finalY.toFixed(2)}vh)`,
       });
       lastY = finalY;
@@ -108,14 +109,25 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function trackLoop(arrow, border, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
+
     function loop() {
       updateArrowPosition(arrow, border, startBullet, endBullet);
       requestAnimationFrame(loop);
     }
+
     loop();
   }
 
-  waitForElements((arrow, border, startBullet, endBullet) => {
+  waitForElements((arrow, border, startBullet, endBullet, list) => {
     trackLoop(arrow, border, startBullet, endBullet);
+
+    list.querySelectorAll("[data-value]").forEach((item) => {
+      item.addEventListener("click", () => {
+        const val = item.getAttribute("data-value");
+        transitionEase =
+          val === "none" ? "none" : val === "linear" ? "linear" : val;
+        list.classList.add("sc-hidden");
+      });
+    });
   });
 }
