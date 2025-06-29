@@ -729,7 +729,7 @@ export function WidgetButtonAdvanceSection(){
 </div>
 </div>
         <div
-          class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between">
+          class="sc-flex sc-p-2 sc-cursor-pointer sc-mt-2 sc-items-center sc-justify-between">
           <div class="sc-flex sc-gap-2 sc-items-center">
             <img
               loading="lazy"
