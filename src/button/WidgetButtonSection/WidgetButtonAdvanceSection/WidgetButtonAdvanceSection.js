@@ -315,29 +315,46 @@ export function WidgetButtonAdvanceSection(){
                   <p id="effect-animation-value" class="sc-universal sc-roboto sc-font-size-12">None</p>
                 </div>
 
-                <div id="effect-animation-type-list"
-                  class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid  sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]">
-                  <div
-                    class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
-                    data-value="none" >
-                    None
+              <div id="effect-animation-type-list"
+                    class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]">
+                    
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
+                         data-value="none">None</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="linear">Linear</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="ease-in">Ease In</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="ease-out">Ease Out</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="ease-in-out">Ease In Out</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="power1.out">Power1</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="power2.out">Power2</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="power3.out">Power3</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="power4.out">Power4</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="expo.out">Expo</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="elastic.out">Elastic</div>
+                         
+                    <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
+                         data-value="bounce.out">Bounce</div>
                   </div>
-                  <div
-                    class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="linear">
-                    Linear
-                  </div>
-                  <div
-                    class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-in">
-                    ease-in
-                  </div>
-                  <div
-                    class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-out">
-                    ease-out
-                  </div>
-                </div>
+                  
 
                 <div id="effect-animation-type-arrow"
                   class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px">

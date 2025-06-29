@@ -3,7 +3,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   let isTracking = false;
   let lastY = null;
-  let transitionEase = "power2.out"; // default fallback
+  const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("custom-timeline-arrow");
@@ -103,7 +103,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
-        ease: transitionEase,
+        ease: transition.ease,
         transform: `translateY(${finalY.toFixed(2)}vh)`,
       });
       lastY = finalY;
@@ -146,7 +146,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           if (display?.querySelector("p")) {
             display.querySelector("p").textContent = selectedEffect;
           }
-          transitionEase = selectedEffect || "power2.out";
+          transition.ease = selectedEffect || "power2.out";
           dropdown.classList.add("sc-hidden");
         });
       });
