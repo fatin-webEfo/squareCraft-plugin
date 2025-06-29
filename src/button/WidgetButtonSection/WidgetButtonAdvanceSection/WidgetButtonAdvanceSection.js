@@ -312,7 +312,7 @@ export function WidgetButtonAdvanceSection(){
                 class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
                 <div
                   class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-full">
-                  <p class="sc-universal sc-roboto sc-font-size-12">None</p>
+                  <p id="effect-animation-value" class="sc-universal sc-roboto sc-font-size-12">None</p>
                 </div>
 
                 <div id="effect-animation-type-list"

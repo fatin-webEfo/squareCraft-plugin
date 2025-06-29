@@ -82,13 +82,34 @@ function attachCustomTimelineReset(
 function initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("effect-animation-type-arrow");
   const dropdown = document.getElementById("effect-animation-type-list");
+  const displayValue = document.getElementById("effect-animation-value");
 
-  if (arrow && dropdown) {
-    arrow.addEventListener("click", () => {
+  if (arrow && dropdown && displayValue) {
+    arrow.addEventListener("click", (e) => {
+      e.stopPropagation();
       dropdown.classList.toggle("sc-hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        !arrow.contains(e.target) &&
+        !dropdown.contains(e.target) &&
+        !dropdown.classList.contains("sc-hidden")
+      ) {
+        dropdown.classList.add("sc-hidden");
+      }
+    });
+
+    dropdown.querySelectorAll("[data-value]").forEach((item) => {
+      item.addEventListener("click", () => {
+        const selected = item.getAttribute("data-value");
+        displayValue.textContent = selected;
+        dropdown.classList.add("sc-hidden");
+      });
     });
   }
 }
+
 
   
   export function initButtonAdvanceStyles(getSelectedElement) {
