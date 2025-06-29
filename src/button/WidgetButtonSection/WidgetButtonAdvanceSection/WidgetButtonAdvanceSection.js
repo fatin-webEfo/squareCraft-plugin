@@ -80,7 +80,7 @@ export function WidgetButtonAdvanceSection(){
                   Custom Timeline
                 </p>
                 <div
-                  id=""
+                  id="custom-timeline-reset"
                   class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
                 >
                   <img

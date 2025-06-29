@@ -61,6 +61,24 @@ function attachAdvanceTimelineIncrementDecrement(
     updateExit
   );
 }
+function attachCustomTimelineReset(
+  updateStart,
+  updateEnd,
+  updateEntry,
+  updateCenter,
+  updateExit
+) {
+  const resetBtn = document.getElementById("custom-timeline-reset");
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      updateStart(0);
+      updateEnd(100);
+      updateEntry(0);
+      updateCenter(0);
+      updateExit(0);
+    };
+  }
+}
 
   
   export function initButtonAdvanceStyles(getSelectedElement) {
@@ -297,6 +315,13 @@ function attachAdvanceTimelineIncrementDecrement(
       }
     });
     attachAdvanceTimelineIncrementDecrement(
+      updateEntry,
+      updateCenter,
+      updateExit
+    );
+    attachCustomTimelineReset(
+      updateStart,
+      updateEnd,
       updateEntry,
       updateCenter,
       updateExit
