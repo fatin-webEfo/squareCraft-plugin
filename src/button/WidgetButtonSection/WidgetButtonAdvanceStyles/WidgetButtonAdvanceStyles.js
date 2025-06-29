@@ -84,6 +84,13 @@ function initEffectAnimationDropdownToggle() {
   const dropdown = document.getElementById("effect-animation-type-list");
 
   if (arrow && dropdown) {
+    // ✅ Toggle visibility on arrow click
+    arrow.addEventListener("click", function (e) {
+      e.stopPropagation();
+      dropdown.classList.toggle("sc-hidden");
+    });
+
+    // ✅ Hide dropdown on outside click
     document.addEventListener("click", function (e) {
       if (
         !arrow.contains(e.target) &&
@@ -93,8 +100,6 @@ function initEffectAnimationDropdownToggle() {
         dropdown.classList.add("sc-hidden");
       }
     });
-    ;
-    
   }
 }
 
