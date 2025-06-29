@@ -315,7 +315,7 @@ export function WidgetButtonAdvanceSection(){
                   <p class="sc-universal sc-roboto sc-font-size-12">None</p>
                 </div>
 
-                <div
+                <div id="effect-animation-type-list"
                   class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-[35px] sc-z-[99999]">
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -339,7 +339,7 @@ export function WidgetButtonAdvanceSection(){
                   </div>
                 </div>
 
-                <div
+                <div id="effect-animation-type-arrow"
                   class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                     <span class="sc-arrow-placeholder"></span>

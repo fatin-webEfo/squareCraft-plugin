@@ -79,6 +79,16 @@ function attachCustomTimelineReset(
     };
   }
 }
+function initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("effect-animation-type-arrow");
+  const dropdown = document.getElementById("effect-animation-type-list");
+
+  if (arrow && dropdown) {
+    arrow.addEventListener("click", () => {
+      dropdown.classList.toggle("sc-hidden");
+    });
+  }
+}
 
   
   export function initButtonAdvanceStyles(getSelectedElement) {
@@ -326,5 +336,5 @@ function attachCustomTimelineReset(
       updateCenter,
       updateExit
     );
-
+    initEffectAnimationDropdownToggle();
   }
