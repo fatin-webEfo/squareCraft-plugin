@@ -66,19 +66,29 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         y = exitY;
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
+
         if (scrollBasedLeft < centerLeft) {
           const progress =
             (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
+          const delta = centerY - entryY;
+
+          y = entryY === 0 && centerY === 0 ? 0 : entryY + delta * progress;
         } else {
           const progress =
             (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
+          const delta = exitY - centerY;
+
+          y = centerY === 0 && exitY === 0 ? 0 : centerY + delta * progress;
         }
       }
 
-      gsap.set(btn, { transform: `translateY(${y.toFixed(2)}vh)` });
+      if (y !== 0) {
+        gsap.set(btn, { transform: `translateY(${y.toFixed(2)}vh)` });
+      } else {
+        btn.style.transform = "translateY(0vh)";
+      }
     }
+    
     
     
     
