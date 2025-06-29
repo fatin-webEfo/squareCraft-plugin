@@ -51,35 +51,35 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     };
 
     if (btn) {
+      const entryY = getVHFromCSSVar("--sc-scroll-entry");
+      const centerY = getVHFromCSSVar("--sc-scroll-center");
+      const exitY = getVHFromCSSVar("--sc-scroll-exit");
+
+      const centerLeft = (startLeft + endLeft) / 2;
+
+      let y = 0;
+
       if (scrollBasedLeft <= startLeft + 1) {
         arrow.style.backgroundColor = "#EF7C2F";
-        const y = getVHFromCSSVar("--sc-scroll-entry");
-        gsap.to(btn, {
-          duration: 0.4,
-          ease: "power2.out",
-          transform: `translateY(${y}vh)`,
-        });
-        console.log("🟠 Entry Y →", y);
+        y = entryY;
       } else if (scrollBasedLeft >= endLeft - 1) {
         arrow.style.backgroundColor = "#F6B67B";
-        const y = getVHFromCSSVar("--sc-scroll-exit");
-        gsap.to(btn, {
-          duration: 0.4,
-          ease: "power2.out",
-          transform: `translateY(${y}vh)`,
-        });
-        console.log("🟡 Exit Y →", y);
+        y = exitY;
+      } else if (scrollBasedLeft < centerLeft) {
+        arrow.style.backgroundColor = "#EF7C2F";
+        const progress =
+          (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+        y = entryY + (centerY - entryY) * progress;
       } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-        const y = getVHFromCSSVar("--sc-scroll-center");
-        gsap.to(btn, {
-          duration: 0.4,
-          ease: "power2.out",
-          transform: `translateY(${y}vh)`,
-        });
-        console.log("⚪ Center Y →", y);
+        arrow.style.backgroundColor = "#F6B67B";
+        const progress =
+          (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+        y = centerY + (exitY - centerY) * progress;
       }
+
+      btn.style.transform = `translateY(${y.toFixed(2)}vh)`;
     }
+    
     
   }
 
