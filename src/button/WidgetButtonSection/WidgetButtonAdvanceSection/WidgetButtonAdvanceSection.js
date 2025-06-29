@@ -309,46 +309,38 @@ export function WidgetButtonAdvanceSection(){
               </p>
 
               <div
-                class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
-              >
+                class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]">
                 <div
-                  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-full"
-                >
+                  class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-full">
                   <p class="sc-universal sc-roboto sc-font-size-12">None</p>
                 </div>
 
                 <div
-                  class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-[35px] sc-z-[99999]"
-                >
+                  class="sc-absolute sc-rounded-4px sc-hidden sc-border sc-border-solid sc-h-dropdown sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-[35px] sc-z-[99999]">
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
-                    data-value="none"
-                  >
+                    data-value="none" >
                     None
                   </div>
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="linear"
-                  >
+                    data-value="linear">
                     Linear
                   </div>
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-in"
-                  >
+                    data-value="ease-in">
                     ease-in
                   </div>
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-px-2 sc-font-size-12 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-out"
-                  >
+                    data-value="ease-out">
                     ease-out
                   </div>
                 </div>
 
                 <div
-                  class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
-                >
+                  class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                     <span class="sc-arrow-placeholder"></span>
                     <span class="sc-arrow-placeholder sc-rotate-180"></span>
@@ -360,32 +352,27 @@ export function WidgetButtonAdvanceSection(){
          
         </div>
         <div
-          class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between sc-mt-2"
-        >
+          class="sc-flex sc-p-2 sc-cursor-pointer sc-items-center sc-justify-between sc-mt-2">
           <div class="sc-flex sc-gap-2 sc-items-center">
             <img
               loading="lazy"
               src="https://fatin-webefo.github.io/squareCraft-plugin/public/structure.svg"
               width="19px"
-              alt=""
-            />
+              alt=""/>
             <p class="sc-universal sc-roboto">Structure</p>
           </div>
           <img
             src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
             alt="sc-rotate-180"
-            class="sc-rotate-180"
-          />
+            class="sc-rotate-180"/>
         </div>
         <div class="sc-h-1px sc-bg-3f3f3f"></div>
         <div
-          class="sc-mt-8 sc-flex-col sc-pb-30px sc-items-center sc-justify-center sc-gap-2"
-        >
+          class="sc-mt-8 sc-flex-col sc-pb-30px sc-items-center sc-justify-center sc-gap-2">
           <div class="sc-relative sc-mt-2 sc-items-center sc-flex-col">
             <p
               class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="bottom: 30px"
-            >
+              style="bottom: 30px">
               0px
             </p>
             <div class="structure-top-box">
@@ -396,8 +383,7 @@ export function WidgetButtonAdvanceSection(){
             <div class="sc-flex sc-items-center sc-relative">
               <p
                 class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="right: 30px"
-              >
+                style="right: 30px">
                 0px
               </p>
               <div class="structure-left-box">
@@ -412,8 +398,7 @@ export function WidgetButtonAdvanceSection(){
               />
               <p
                 class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-                style="right: 18px"
-              >
+                style="right: 18px">
                 0px
               </p>
               <p
