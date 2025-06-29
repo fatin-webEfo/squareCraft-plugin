@@ -50,10 +50,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           "--sc-scroll-exit",
         ].includes(cssVar)
       ) {
-        const percent = (val + 100) / 2; // Map -100..100 to 0..100
+        const percent = (val + 100) / 2;
         const bulletLeft = percent;
         const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2); // max 100 → 50%
+        const fillWidth = Math.abs(val / 2);
 
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
         gsap.set(fill, {
@@ -97,15 +97,17 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   ) => {
     bullet.onmousedown = (e) => {
       e.preventDefault();
-
       const container = bullet.parentElement;
       const containerRect = container.getBoundingClientRect();
 
       const onMouseMove = (event) => {
         const clientX = event.clientX;
-        const relativeX = clientX - containerRect.left;
+        const relativeX = Math.max(
+          0,
+          Math.min(containerRect.width, clientX - containerRect.left)
+        );
         const percent = (relativeX / containerRect.width) * (max - min) + min;
-        const clamped = Math.max(min, Math.min(max, Math.round(percent)));
+        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
 
         const startPos = parseFloat(startBullet.style.left || "0");
         const endPos = parseFloat(endBullet.style.left || "100");
@@ -135,48 +137,43 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     startFill,
     startValue,
     "--sc-scroll-start",
-    "left"
+    "left",
+    0,
+    100
   );
   const updateEnd = updateField(
     endBullet,
     endFill,
     endValue,
     "--sc-scroll-end",
-    "right"
+    "right",
+    0,
+    100
   );
   const updateEntry = updateField(
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-scroll-entry",
-    "left",
-    -100,
-    100
+    "--sc-scroll-entry"
   );
   const updateCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-scroll-center",
-    "left",
-    -100,
-    100
+    "--sc-scroll-center"
   );
   const updateExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-scroll-exit",
-    "left",
-    -100,
-    100
+    "--sc-scroll-exit"
   );
 
-  makeDraggable(startBullet, updateStart, "start");
-  makeDraggable(endBullet, updateEnd, "end");
-  makeDraggable(entryBullet, updateEntry, "normal", -100, 100);
-  makeDraggable(centerBullet, updateCenter, "normal", -100, 100);
-  makeDraggable(exitBullet, updateExit, "normal", -100, 100);
+  makeDraggable(startBullet, updateStart, "start", 0, 100);
+  makeDraggable(endBullet, updateEnd, "end", 0, 100);
+  makeDraggable(entryBullet, updateEntry);
+  makeDraggable(centerBullet, updateCenter);
+  makeDraggable(exitBullet, updateExit);
 
   [
     {
@@ -204,7 +201,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const btn = document.getElementById(id);
     if (btn) {
       btn.onclick = () => {
-        updateField(bullet, fill, count, css, "left", -100, 100)(0);
+        updateField(bullet, fill, count, css)(0);
       };
     }
   });
