@@ -56,7 +56,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const exitY = getVHFromCSSVar("--sc-scroll-exit");
 
       const centerLeft = (startLeft + endLeft) / 2;
-
       let y = 0;
 
       if (scrollBasedLeft <= startLeft + 1) {
@@ -65,20 +64,23 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else if (scrollBasedLeft >= endLeft - 1) {
         arrow.style.backgroundColor = "#F6B67B";
         y = exitY;
-      } else if (scrollBasedLeft < centerLeft) {
-        arrow.style.backgroundColor = "#EF7C2F";
-        const progress =
-          (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-        y = entryY + (centerY - entryY) * progress;
       } else {
-        arrow.style.backgroundColor = "#F6B67B";
-        const progress =
-          (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-        y = centerY + (exitY - centerY) * progress;
+        arrow.style.backgroundColor = "#FFFFFF";
+        if (scrollBasedLeft < centerLeft) {
+          const progress =
+            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+          y = entryY + (centerY - entryY) * progress;
+        } else {
+          const progress =
+            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+          y = centerY + (exitY - centerY) * progress;
+        }
       }
 
-      btn.style.transform = `translateY(${y.toFixed(2)}vh)`;
+      gsap.set(btn, { transform: `translateY(${y.toFixed(2)}vh)` });
     }
+    
+    
     
     
   }
