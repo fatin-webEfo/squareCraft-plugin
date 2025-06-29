@@ -3,23 +3,29 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   let isTracking = false;
   let lastY = null;
-  let transitionEase = "power2.out";
+  let transitionEase = "power2.out"; // default fallback
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("custom-timeline-arrow");
     const border = document.getElementById("custom-timeline-border");
     const startBullet = document.getElementById("timeline-start-bullet");
     const endBullet = document.getElementById("timeline-end-bullet");
-    const list = document.getElementById("effect-animation-type-list");
+    const dropdown = document.getElementById("effect-animation-type-list");
 
-    if (arrow && border && startBullet && endBullet && list) {
-      callback(arrow, border, startBullet, endBullet, list);
+    if (arrow && border && startBullet && endBullet && dropdown) {
+      callback(arrow, border, startBullet, endBullet, dropdown);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
   }
 
-  function updateArrowPosition(arrow, border, startBullet, endBullet) {
+  function updateArrowPosition(
+    arrow,
+    border,
+    startBullet,
+    endBullet,
+    dropdown
+  ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const top = rect.top;
@@ -28,7 +34,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       0,
       Math.min(100, 100 - 100 * percentFromTop)
     );
-
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
@@ -40,7 +45,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
@@ -98,7 +102,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     if (lastY !== finalY) {
       gsap.to(btn, {
-        duration: 0.4,
+        duration: 0.3,
         ease: transitionEase,
         transform: `translateY(${finalY.toFixed(2)}vh)`,
       });
@@ -106,28 +110,48 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function trackLoop(arrow, border, startBullet, endBullet) {
+  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
     isTracking = true;
-
     function loop() {
-      updateArrowPosition(arrow, border, startBullet, endBullet);
+      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
       requestAnimationFrame(loop);
     }
-
     loop();
   }
 
-  waitForElements((arrow, border, startBullet, endBullet, list) => {
-    trackLoop(arrow, border, startBullet, endBullet);
+  waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
+    const arrowTrigger = document.getElementById("effect-animation-type-arrow");
 
-    list.querySelectorAll("[data-value]").forEach((item) => {
-      item.addEventListener("click", () => {
-        const val = item.getAttribute("data-value");
-        transitionEase =
-          val === "none" ? "none" : val === "linear" ? "linear" : val;
-        list.classList.add("sc-hidden");
+    if (arrowTrigger && dropdown) {
+      arrowTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("sc-hidden");
       });
-    });
+
+      document.addEventListener("click", (e) => {
+        if (
+          !arrowTrigger.contains(e.target) &&
+          !dropdown.contains(e.target) &&
+          !dropdown.classList.contains("sc-hidden")
+        ) {
+          dropdown.classList.add("sc-hidden");
+        }
+      });
+
+      dropdown.querySelectorAll("[data-value]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const selectedEffect = item.getAttribute("data-value");
+          const display = dropdown.previousElementSibling;
+          if (display?.querySelector("p")) {
+            display.querySelector("p").textContent = selectedEffect;
+          }
+          transitionEase = selectedEffect || "power2.out";
+          dropdown.classList.add("sc-hidden");
+        });
+      });
+    }
+
+    trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
