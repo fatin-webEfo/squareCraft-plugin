@@ -92,17 +92,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
 
       if (apply) {
-        gsap.set(btn, { transform: `translateY(${y.toFixed(2)}vh)` });
+        gsap.to(btn, {
+          duration: 0.15,
+          ease: "none",
+          transform: `translateY(${y.toFixed(2)}vh)`,
+        });
       } else {
         btn.style.transform = "translateY(0vh)";
       }
     }
-    
-    
-    
-    
-    
-    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet) {
