@@ -1,4 +1,4 @@
-export function syncCustomTimelineArrow(selectedElement) {
+export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) {
     console.warn("⛔ selectedElement not provided yet.");
     return;

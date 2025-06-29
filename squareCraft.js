@@ -176,8 +176,8 @@
               const { initButtonAdvanceStyles } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
               );
-              const { syncCustomTimelineArrow } = await import(
-                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/syncCustomTimelineArrow/syncCustomTimelineArrow.js"
+              const { buttonAdvanceSyncCustomTimelineArrow } = await import(
+                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
               );
               const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
               logCurrentViewport();
@@ -360,7 +360,7 @@
                       selectedElement = val;
 
                       setTimeout(() => {
-                        syncCustomTimelineArrow(selectedElement);
+                        buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -738,7 +738,7 @@
                               selectedElement = val;
 
                               setTimeout(() => {
-                                syncCustomTimelineArrow(selectedElement);
+                                buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
