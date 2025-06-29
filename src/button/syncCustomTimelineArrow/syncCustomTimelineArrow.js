@@ -35,20 +35,38 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
-    console.log("📍 Arrow left %:", scrollBasedLeft.toFixed(2));
-
     const startLeft = parseFloat(startBullet.style.left || "0");
     const endLeft = parseFloat(endBullet.style.left || "100");
 
-    if (scrollBasedLeft <= startLeft + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      console.log("🟠 Arrow is under START fill/bullet");
-    } else if (scrollBasedLeft >= endLeft - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      console.log("🟡 Arrow is under END fill/bullet");
-    } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-      console.log("⚪ Arrow is in NORMAL range");
+    const btn = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+
+    const getVHFromCSSVar = (cssVar) => {
+      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      return value.endsWith("%")
+        ? (parseFloat(value) / 100) * 100
+        : parseFloat(value) || 0;
+    };
+
+    if (btn) {
+      if (scrollBasedLeft <= startLeft + 1) {
+        arrow.style.backgroundColor = "#EF7C2F";
+        const y = getVHFromCSSVar("--sc-scroll-entry");
+        btn.style.transform = `translateY(${y}vh)`;
+        console.log("🟠 Entry Y →", y);
+      } else if (scrollBasedLeft >= endLeft - 1) {
+        arrow.style.backgroundColor = "#F6B67B";
+        const y = getVHFromCSSVar("--sc-scroll-exit");
+        btn.style.transform = `translateY(${y}vh)`;
+        console.log("🟡 Exit Y →", y);
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+        const y = getVHFromCSSVar("--sc-scroll-center");
+        btn.style.transform = `translateY(${y}vh)`;
+        console.log("⚪ Center Y →", y);
+      }
     }
   }
 
