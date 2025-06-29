@@ -84,21 +84,27 @@ function attachCustomTimelineReset(
 function initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("effect-animation-type-arrow");
   const dropdown = document.getElementById("effect-animation-type-list");
-  const container = document.getElementById(
-    "effect-animation-dropdown-container"
-  );
   const displayValue = document.getElementById("effect-animation-value");
 
-  if (!arrow || !dropdown || !container || !displayValue) return;
+  if (!arrow || !dropdown || !displayValue) return;
+
+  let isVisible = false;
 
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
+    if (!isVisible) {
+      dropdown.classList.remove("sc-hidden");
+      isVisible = true;
+    } else {
+      dropdown.classList.add("sc-hidden");
+      isVisible = false;
+    }
   });
 
   document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) {
+    if (!arrow.contains(e.target) && !dropdown.contains(e.target)) {
       dropdown.classList.add("sc-hidden");
+      isVisible = false;
     }
   });
 
@@ -107,9 +113,11 @@ function initEffectAnimationDropdownToggle() {
       const selected = item.getAttribute("data-value");
       displayValue.textContent = selected;
       dropdown.classList.add("sc-hidden");
+      isVisible = false;
     });
   });
 }
+
 
 
 
