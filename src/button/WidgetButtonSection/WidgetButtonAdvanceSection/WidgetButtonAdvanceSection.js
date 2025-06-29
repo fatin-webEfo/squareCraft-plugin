@@ -358,6 +358,7 @@ export function WidgetButtonAdvanceSection(){
                           
                       <div class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                           data-value="bounce.out">Bounce</div>
+                          </div>
   </div>
 </div>
 
