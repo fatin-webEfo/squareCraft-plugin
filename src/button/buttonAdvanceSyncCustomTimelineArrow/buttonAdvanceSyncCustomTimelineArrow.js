@@ -57,37 +57,47 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       const centerLeft = (startLeft + endLeft) / 2;
       let y = 0;
+      let apply = false;
 
       if (scrollBasedLeft <= startLeft + 1) {
         arrow.style.backgroundColor = "#EF7C2F";
-        y = entryY;
+        if (entryY !== 0) {
+          y = entryY;
+          apply = true;
+        }
       } else if (scrollBasedLeft >= endLeft - 1) {
         arrow.style.backgroundColor = "#F6B67B";
-        y = exitY;
+        if (exitY !== 0) {
+          y = exitY;
+          apply = true;
+        }
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
 
         if (scrollBasedLeft < centerLeft) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          const delta = centerY - entryY;
-
-          y = entryY === 0 && centerY === 0 ? 0 : entryY + delta * progress;
+          if (entryY !== 0 && centerY !== 0) {
+            const progress =
+              (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+            y = entryY + (centerY - entryY) * progress;
+            apply = true;
+          }
         } else {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          const delta = exitY - centerY;
-
-          y = centerY === 0 && exitY === 0 ? 0 : centerY + delta * progress;
+          if (centerY !== 0 && exitY !== 0) {
+            const progress =
+              (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+            y = centerY + (exitY - centerY) * progress;
+            apply = true;
+          }
         }
       }
 
-      if (y !== 0) {
+      if (apply) {
         gsap.set(btn, { transform: `translateY(${y.toFixed(2)}vh)` });
       } else {
         btn.style.transform = "translateY(0vh)";
       }
     }
+    
     
     
     
