@@ -1,3 +1,68 @@
+function attachAdvanceTimelineIncrementDecrement(
+  updateEntry,
+  updateCenter,
+  updateExit
+) {
+  function setup(idIncrease, idDecrease, getCurrent, updateFn) {
+    const btnInc = document.getElementById(idIncrease);
+    const btnDec = document.getElementById(idDecrease);
+
+    if (btnInc) {
+      btnInc.onclick = () => {
+        const val = getCurrent();
+        updateFn(val + 1);
+      };
+    }
+
+    if (btnDec) {
+      btnDec.onclick = () => {
+        const val = getCurrent();
+        updateFn(val - 1);
+      };
+    }
+  }
+
+  const getEntry = () => {
+    const text =
+      document.getElementById("button-advance-entry-count")?.textContent ||
+      "0%";
+    return parseInt(text.replace("%", "")) || 0;
+  };
+
+  const getCenter = () => {
+    const text =
+      document.getElementById("button-advance-center-Count")?.textContent ||
+      "0%";
+    return parseInt(text.replace("%", "")) || 0;
+  };
+
+  const getExit = () => {
+    const text =
+      document.getElementById("button-advance-exit-Count")?.textContent || "0%";
+    return parseInt(text.replace("%", "")) || 0;
+  };
+
+  setup(
+    "button-advance-entry-increase",
+    "button-advance-entry-decrease",
+    getEntry,
+    updateEntry
+  );
+  setup(
+    "button-advance-center-increase",
+    "button-advance-center-decrease",
+    getCenter,
+    updateCenter
+  );
+  setup(
+    "button-advance-exit-increase",
+    "button-advance-exit-decrease",
+    getExit,
+    updateExit
+  );
+}
+
+  
   export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("timeline-start-bullet");
     const endBullet = document.getElementById("timeline-end-bullet");
@@ -179,8 +244,6 @@
       "--sc-scroll-exit"
     );
 
-    // ✅ Set default to center for scroll effects
-    // ✅ Utility to get value from button's CSS var
     const getCurrentPercentage = (cssVar) => {
       const el = getSelectedElement?.();
       if (!el) return 0;
@@ -193,7 +256,6 @@
       return parseFloat(val.replace("%", "")) || 0;
     };
 
-    // ✅ Sync bullet with current values
     updateEntry(getCurrentPercentage("--sc-scroll-entry"));
     updateCenter(getCurrentPercentage("--sc-scroll-center"));
     updateExit(getCurrentPercentage("--sc-scroll-exit"));
@@ -234,4 +296,10 @@
         };
       }
     });
+    attachAdvanceTimelineIncrementDecrement(
+      updateEntry,
+      updateCenter,
+      updateExit
+    );
+
   }
