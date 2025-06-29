@@ -169,11 +169,17 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     "--sc-scroll-exit"
   );
 
+  // ✅ Set default to center for scroll effects
+  updateEntry(0);
+  updateCenter(0);
+  updateExit(0);
+
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
   makeDraggable(entryBullet, updateEntry, "normal");
   makeDraggable(centerBullet, updateCenter, "normal");
   makeDraggable(exitBullet, updateExit, "normal");
+  
 
   [
     {
