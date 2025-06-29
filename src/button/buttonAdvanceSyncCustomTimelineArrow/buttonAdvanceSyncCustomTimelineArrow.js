@@ -54,20 +54,33 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (scrollBasedLeft <= startLeft + 1) {
         arrow.style.backgroundColor = "#EF7C2F";
         const y = getVHFromCSSVar("--sc-scroll-entry");
-        btn.style.transform = `translateY(${y}vh)`;
+        gsap.to(btn, {
+          duration: 0.4,
+          ease: "power2.out",
+          transform: `translateY(${y}vh)`,
+        });
         console.log("🟠 Entry Y →", y);
       } else if (scrollBasedLeft >= endLeft - 1) {
         arrow.style.backgroundColor = "#F6B67B";
         const y = getVHFromCSSVar("--sc-scroll-exit");
-        btn.style.transform = `translateY(${y}vh)`;
+        gsap.to(btn, {
+          duration: 0.4,
+          ease: "power2.out",
+          transform: `translateY(${y}vh)`,
+        });
         console.log("🟡 Exit Y →", y);
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
         const y = getVHFromCSSVar("--sc-scroll-center");
-        btn.style.transform = `translateY(${y}vh)`;
+        gsap.to(btn, {
+          duration: 0.4,
+          ease: "power2.out",
+          transform: `translateY(${y}vh)`,
+        });
         console.log("⚪ Center Y →", y);
       }
     }
+    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet) {
