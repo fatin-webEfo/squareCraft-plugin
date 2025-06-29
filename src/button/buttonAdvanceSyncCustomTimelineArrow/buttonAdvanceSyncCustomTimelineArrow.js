@@ -5,6 +5,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   let isTracking = false;
+  let lastY = null;
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("custom-timeline-arrow");
@@ -37,11 +38,14 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const startLeft = parseFloat(startBullet.style.left || "0");
     const endLeft = parseFloat(endBullet.style.left || "100");
+    const centerLeft = (startLeft + endLeft) / 2;
 
     const btn = selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
+
+    if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
       const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
@@ -50,56 +54,67 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    if (btn) {
-      const entryY = getVHFromCSSVar("--sc-scroll-entry");
-      const centerY = getVHFromCSSVar("--sc-scroll-center");
-      const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-scroll-exit");
 
-      const centerLeft = (startLeft + endLeft) / 2;
-      let y = 0;
-      let apply = false;
+    let y = 0;
+    let apply = false;
 
-      if (scrollBasedLeft <= startLeft + 1) {
-        arrow.style.backgroundColor = "#EF7C2F";
-        if (entryY !== 0) {
-          y = entryY;
+    // Entry zone
+    if (scrollBasedLeft <= startLeft + 1) {
+      arrow.style.backgroundColor = "#EF7C2F";
+      if (entryY !== 0) {
+        y = entryY;
+        apply = true;
+      }
+    }
+    // Exit zone
+    else if (scrollBasedLeft >= endLeft - 1) {
+      arrow.style.backgroundColor = "#F6B67B";
+      if (exitY !== 0) {
+        y = exitY;
+        apply = true;
+      }
+    }
+    // Interpolated zone
+    else {
+      arrow.style.backgroundColor = "#FFFFFF";
+
+      // Between Entry and Center
+      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+          y = entryY + (centerY - entryY) * progress;
           apply = true;
-        }
-      } else if (scrollBasedLeft >= endLeft - 1) {
-        arrow.style.backgroundColor = "#F6B67B";
-        if (exitY !== 0) {
-          y = exitY;
-          apply = true;
-        }
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-
-        if (scrollBasedLeft < centerLeft) {
-          if (entryY !== 0 && centerY !== 0) {
-            const progress =
-              (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-            y = entryY + (centerY - entryY) * progress;
-            apply = true;
-          }
-        } else {
-          if (centerY !== 0 && exitY !== 0) {
-            const progress =
-              (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-            y = centerY + (exitY - centerY) * progress;
-            apply = true;
-          }
         }
       }
 
-      if (apply) {
-        gsap.to(btn, {
-          duration: 0.15,
-          ease: "none",
-          transform: `translateY(${y.toFixed(2)}vh)`,
-        });
-      } else {
-        btn.style.transform = "translateY(0vh)";
+      // Between Center and Exit
+      else if (
+        scrollBasedLeft > centerLeft + 1 &&
+        scrollBasedLeft < endLeft - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+          y = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
       }
+    }
+
+    // Animate smoothly to final Y
+    const finalY = apply ? y : 0;
+
+    if (lastY !== finalY) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: "power2.out",
+        transform: `translateY(${finalY.toFixed(2)}vh)`,
+      });
+      lastY = finalY;
     }
   }
 
