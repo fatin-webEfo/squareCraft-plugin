@@ -1,6 +1,5 @@
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) {
-    console.warn("⛔ selectedElement not provided yet.");
     return;
   }
 
@@ -17,8 +16,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       callback(arrow, border, startBullet, endBullet);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    } else {
-      console.warn("⚠️ Required elements not found after retries.");
     }
   }
 
@@ -26,13 +23,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const top = rect.top;
-
     const percentFromTop = top / viewportHeight;
     const scrollBasedLeft = Math.max(
       0,
       Math.min(100, 100 - 100 * percentFromTop)
     );
-
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
@@ -61,27 +56,23 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     let y = 0;
     let apply = false;
 
-    // Entry zone
     if (scrollBasedLeft <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
       if (entryY !== 0) {
-        y = entryY;
+        const progress = scrollBasedLeft / (startLeft + 1);
+        y = entryY * progress;
         apply = true;
       }
-    }
-    // Exit zone
-    else if (scrollBasedLeft >= endLeft - 1) {
+    } else if (scrollBasedLeft >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
       if (exitY !== 0) {
-        y = exitY;
+        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
+        y = exitY * progress;
         apply = true;
       }
-    }
-    // Interpolated zone
-    else {
+    } else {
       arrow.style.backgroundColor = "#FFFFFF";
 
-      // Between Entry and Center
       if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
         if (entryY !== 0 && centerY !== 0) {
           const progress =
@@ -89,10 +80,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           y = entryY + (centerY - entryY) * progress;
           apply = true;
         }
-      }
-
-      // Between Center and Exit
-      else if (
+      } else if (
         scrollBasedLeft > centerLeft + 1 &&
         scrollBasedLeft < endLeft - 1
       ) {
@@ -105,7 +93,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
     }
 
-    // Animate smoothly to final Y
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
@@ -121,12 +108,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function trackLoop(arrow, border, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
-
     function loop() {
       updateArrowPosition(arrow, border, startBullet, endBullet);
       requestAnimationFrame(loop);
     }
-
     loop();
   }
 
