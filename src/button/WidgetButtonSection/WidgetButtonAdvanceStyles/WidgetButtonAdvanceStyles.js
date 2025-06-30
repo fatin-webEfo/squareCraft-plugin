@@ -121,17 +121,17 @@ function initEffectAnimationDropdownToggle() {
     const endValue = document.getElementById("vertical-timelineEndValue");
 
     const entryBullet = document.getElementById("vertical-button-advance-entry-bullet");
-    const entryFill = document.getElementById("vertical-button-advance-entry-Fill");
+    const entryFill = document.getElementById("vertical-button-advance-entry-fill");
     const entryCount = document.getElementById("vertical-button-advance-entry-count");
 
     const centerBullet = document.getElementById(
       "vertical-button-advance-center-bullet"
     );
-    const centerFill = document.getElementById("vertical-button-advance-center-Fill");
+    const centerFill = document.getElementById("vertical-button-advance-center-fill");
     const centerCount = document.getElementById("vertical-button-advance-center-Count");
 
     const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
-    const exitFill = document.getElementById("vertical-button-advance-exit-Fill");
+    const exitFill = document.getElementById("vertical-button-advance-exit-fill");
     const exitCount = document.getElementById("vertical-button-advance-exit-Count");
 
     if (
