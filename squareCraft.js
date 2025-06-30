@@ -176,9 +176,16 @@
               const { initButtonAdvanceStyles } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
               );
+              const { horizontalinitButtonAdvanceStyles } = await import(
+                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/horizontalinitButtonAdvanceStyles.js"
+              );
               const { buttonAdvanceSyncCustomTimelineArrow } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
               );
+              const { horizontalbuttonAdvanceSyncCustomTimelineArrow } =
+                await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/horizontalbuttonAdvanceSyncCustomTimelineArrow.js"
+                );
               const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
               logCurrentViewport();
               window.addEventListener("resize", logCurrentViewport);
@@ -302,6 +309,7 @@
                 }
                 if (selectedElement) {
                   initButtonAdvanceStyles(() => selectedElement);
+                  horizontalinitButtonAdvanceStyles(() => selectedElement);
                 }
 
                 if (selectedElement) {
@@ -361,6 +369,9 @@
 
                       setTimeout(() => {
                         buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                        horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                          selectedElement
+                        );
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -739,6 +750,9 @@
 
                               setTimeout(() => {
                                 buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                                horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
