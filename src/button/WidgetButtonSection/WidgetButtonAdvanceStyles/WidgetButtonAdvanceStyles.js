@@ -55,8 +55,9 @@ function attachAdvanceTimelineIncrementDecrement(
     updateCenter
   );
   setup(
-    "button-advance-exit-increase",
-    "button-advance-exit-decrease",
+    "vertical-button-advance-exit-increase",
+    "vertical-
+    button-advance-exit-decrease",
     getExit,
     updateExit
   );
