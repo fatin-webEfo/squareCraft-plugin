@@ -87,7 +87,9 @@ function initEffectAnimationDropdownToggle() {
   const container = document.getElementById(
     "vertical-effect-animation-dropdown-container"
   );
-  const displayValue = document.getElementById("effect-animation-value");
+  const displayValue = document.getElementById(
+    "vertical-effect-animation-value"
+  );
 
   if (!arrow || !dropdown || !container || !displayValue) return;
 
