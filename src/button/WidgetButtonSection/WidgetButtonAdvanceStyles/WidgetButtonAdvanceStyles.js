@@ -68,7 +68,7 @@ function attachCustomTimelineReset(
   updateCenter,
   updateExit
 ) {
-  const resetBtn = document.getElementById("custom-timeline-reset");
+  const resetBtn = document.getElementById("vertical-custom-timeline-reset");
   if (resetBtn) {
     resetBtn.onclick = () => {
       updateStart(0);
@@ -333,7 +333,7 @@ function initEffectAnimationDropdownToggle() {
         css: "--sc-scroll-center",
       },
       {
-        id: "button-advance-exit-reset",
+        id: "vertical-button-advance-exit-reset",
         bullet: exitBullet,
         fill: exitFill,
         count: exitCount,
