@@ -121,7 +121,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById("effect-animation-type-arrow");
+    const arrowTrigger = document.getElementById("vertical-effect-animation-type-arrow");
 
     if (arrowTrigger && dropdown) {
       arrowTrigger.addEventListener("click", (e) => {
