@@ -120,7 +120,6 @@ function initEffectAnimationDropdownToggle(effect) {
   });
 }
 
-
 export function initButtonAdvanceStyles(effect, getSelectedElement) {
   const startBullet = document.getElementById(
     `${effect}-timeline-start-bullet`
@@ -350,4 +349,3 @@ export function initButtonAdvanceStyles(effect, getSelectedElement) {
   );
   initEffectAnimationDropdownToggle(effect);
 }
-
