@@ -121,7 +121,7 @@ export function WidgetButtonAdvanceSection(){
             End <span id="vertical-timelineEndValue">0%</span>
           </p>
         </div>
-        <div id="vertical-custom-timeline-border" class="sc-mt-1 vertical-custom-timeline-border">
+        <div id="vertical-custom-timeline-border" class="sc-mt-1 custom-timeline-border">
           <div id="vertical-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
         </div>
       </div>
@@ -475,6 +475,9 @@ export function WidgetButtonAdvanceSection(){
             <p class="sc-universal sc-roboto">
               End <span id="horizontal-timelineEndValue">0%</span>
             </p>
+          </div>
+          <div id="horizontal-custom-timeline-border" class="sc-mt-1 horizontal-custom-timeline-border">
+            <div id="horizontal-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
           </div>
         </div>
 
@@ -883,6 +886,9 @@ export function WidgetButtonAdvanceSection(){
               End <span id="opacity-timelineEndValue">0%</span>
             </p>
           </div>
+          <div id="opacity-custom-timeline-border" class="sc-mt-1 opacity-custom-timeline-border">
+            <div id="opacity-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          </div>
         </div>
 
         <div class="sc-w-full sc-mt-3">
@@ -1289,6 +1295,9 @@ export function WidgetButtonAdvanceSection(){
             <p class="sc-universal sc-roboto">
               End <span id="scale-timelineEndValue">0%</span>
             </p>
+          </div>
+          <div id="scale-custom-timeline-border" class="sc-mt-1 scale-custom-timeline-border">
+            <div id="rotate-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
           </div>
         </div>
 
@@ -1697,6 +1706,9 @@ export function WidgetButtonAdvanceSection(){
               End <span id="rotate-timelineEndValue">0%</span>
             </p>
           </div>
+          <div id="rotate-custom-timeline-border" class="sc-mt-1 rotate-custom-timeline-border">
+            <div id="rotate-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          </div>
         </div>
 
         <div class="sc-w-full sc-mt-3">
@@ -2103,6 +2115,9 @@ export function WidgetButtonAdvanceSection(){
             <p class="sc-universal sc-roboto">
               End <span id="blur-timelineEndValue">0%</span>
             </p>
+          </div>
+          <div id="blur-custom-timeline-border" class="sc-mt-1 blur-custom-timeline-border">
+            <div id="blur-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
           </div>
         </div>
 
