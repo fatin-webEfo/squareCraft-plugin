@@ -116,55 +116,27 @@ function initEffectAnimationDropdownToggle() {
   
 
   
-export function initButtonAdvanceStyles(getSelectedElement) {
-  const effects = [
-    "vertical",
-    "horizontal",
-    "opacity",
-    "scale",
-    "rotate",
-    "blur",
-  ];
+  export function initButtonAdvanceStyles(getSelectedElement) {
+    const startBullet = document.getElementById("vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("vertical-timeline-end-bullet");
+    const startFill = document.getElementById("vertical-timeline-start-fill");
+    const endFill = document.getElementById("vertical-timeline-end-fill");
+    const startValue = document.getElementById("vertical-timelineStartValue");
+    const endValue = document.getElementById("vertical-timelineEndValue");
 
-  effects.forEach((effect) => {
-    const startBullet = document.getElementById(
-      `${effect}-timeline-start-bullet`
-    );
-    const endBullet = document.getElementById(`${effect}-timeline-end-bullet`);
-    const startFill = document.getElementById(`${effect}-timeline-start-fill`);
-    const endFill = document.getElementById(`${effect}-timeline-end-fill`);
-    const startValue = document.getElementById(`${effect}-timelineStartValue`);
-    const endValue = document.getElementById(`${effect}-timelineEndValue`);
-
-    const entryBullet = document.getElementById(
-      `${effect}-button-advance-entry-bullet`
-    );
-    const entryFill = document.getElementById(
-      `${effect}-button-advance-entry-Fill`
-    );
-    const entryCount = document.getElementById(
-      `${effect}-button-advance-entry-count`
-    );
+    const entryBullet = document.getElementById("vertical-button-advance-entry-bullet");
+    const entryFill = document.getElementById("vertical-button-advance-entry-Fill");
+    const entryCount = document.getElementById("vertical-button-advance-entry-count");
 
     const centerBullet = document.getElementById(
-      `${effect}-button-advance-center-bullet`
+      "vertical-button-advance-center-bullet"
     );
-    const centerFill = document.getElementById(
-      `${effect}-button-advance-center-Fill`
-    );
-    const centerCount = document.getElementById(
-      `${effect}-button-advance-center-Count`
-    );
+    const centerFill = document.getElementById("vertical-button-advance-center-Fill");
+    const centerCount = document.getElementById("vertical-button-advance-center-Count");
 
-    const exitBullet = document.getElementById(
-      `${effect}-button-advance-exit-bullet`
-    );
-    const exitFill = document.getElementById(
-      `${effect}-button-advance-exit-Fill`
-    );
-    const exitCount = document.getElementById(
-      `${effect}-button-advance-exit-Count`
-    );
+    const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
+    const exitFill = document.getElementById("vertical-button-advance-exit-Fill");
+    const exitCount = document.getElementById("vertical-button-advance-exit-Count");
 
     if (
       !startBullet ||
@@ -292,7 +264,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       startBullet,
       startFill,
       startValue,
-      `--sc-${effect}-start`,
+      "--sc-scroll-start",
       "left",
       0,
       100
@@ -301,7 +273,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       endBullet,
       endFill,
       endValue,
-      `--sc-${effect}-end`,
+      "--sc-scroll-end",
       "right",
       0,
       100
@@ -310,19 +282,19 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       entryBullet,
       entryFill,
       entryCount,
-      `--sc-${effect}-entry`
+      "--sc-scroll-entry"
     );
     const updateCenter = updateField(
       centerBullet,
       centerFill,
       centerCount,
-      `--sc-${effect}-center`
+      "--sc-scroll-center"
     );
     const updateExit = updateField(
       exitBullet,
       exitFill,
       exitCount,
-      `--sc-${effect}-exit`
+      "--sc-scroll-exit"
     );
 
     const getCurrentPercentage = (cssVar) => {
@@ -337,9 +309,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       return parseFloat(val.replace("%", "")) || 0;
     };
 
-    updateEntry(getCurrentPercentage(`--sc-${effect}-entry`));
-    updateCenter(getCurrentPercentage(`--sc-${effect}-center`));
-    updateExit(getCurrentPercentage(`--sc-${effect}-exit`));
+    updateEntry(getCurrentPercentage("--sc-scroll-entry"));
+    updateCenter(getCurrentPercentage("--sc-scroll-center"));
+    updateExit(getCurrentPercentage("--sc-scroll-exit"));
 
     makeDraggable(startBullet, updateStart, "start", 0, 100);
     makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -347,6 +319,36 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     makeDraggable(centerBullet, updateCenter, "normal");
     makeDraggable(exitBullet, updateExit, "normal");
 
+    [
+      {
+        id: "vertical-button-advance-entry-reset",
+        bullet: entryBullet,
+        fill: entryFill,
+        count: entryCount,
+        css: "--sc-scroll-entry",
+      },
+      {
+        id: "vertical-button-advance-center-reset",
+        bullet: centerBullet,
+        fill: centerFill,
+        count: centerCount,
+        css: "--sc-scroll-center",
+      },
+      {
+        id: "vertical-button-advance-exit-reset",
+        bullet: exitBullet,
+        fill: exitFill,
+        count: exitCount,
+        css: "--sc-scroll-exit",
+      },
+    ].forEach(({ id, bullet, fill, count, css }) => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        btn.onclick = () => {
+          updateField(bullet, fill, count, css)(0);
+        };
+      }
+    });
     attachAdvanceTimelineIncrementDecrement(
       updateEntry,
       updateCenter,
@@ -360,6 +362,4 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       updateExit
     );
     initEffectAnimationDropdownToggle();
-  });
-}
-
+  }
