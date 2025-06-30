@@ -1,211 +1,165 @@
-export function initButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("timeline-start-bullet");
-  const endBullet = document.getElementById("timeline-end-bullet");
-  const startFill = document.getElementById("timeline-start-fill");
-  const endFill = document.getElementById("timeline-end-fill");
-  const startValue = document.getElementById("timelineStartValue");
-  const endValue = document.getElementById("timelineEndValue");
+export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
+  selectedElement
+) {
+  if (!selectedElement) return;
 
-  const entryBullet = document.getElementById("button-advance-entry-bullet");
-  const entryFill = document.getElementById("button-advance-entry-Fill");
-  const entryCount = document.getElementById("button-advance-entry-count");
+  let isTracking = false;
+  let lastX = null;
+  const transition = { ease: "power2.out" };
 
-  const centerBullet = document.getElementById("button-advance-center-bullet");
-  const centerFill = document.getElementById("button-advance-center-Fill");
-  const centerCount = document.getElementById("button-advance-center-Count");
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
+    const border = document.getElementById("horizontal-custom-timeline-border");
+    const startBullet = document.getElementById(
+      "horizontal-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    const dropdown = document.getElementById(
+      "horizontal-effect-animation-type-list"
+    );
 
-  const exitBullet = document.getElementById("button-advance-exit-bullet");
-  const exitFill = document.getElementById("button-advance-exit-Fill");
-  const exitCount = document.getElementById("button-advance-exit-Count");
-
-  if (
-    !startBullet ||
-    !endBullet ||
-    !startFill ||
-    !endFill ||
-    !startValue ||
-    !endValue ||
-    !entryBullet ||
-    !entryFill ||
-    !entryCount ||
-    !centerBullet ||
-    !centerFill ||
-    !centerCount ||
-    !exitBullet ||
-    !exitFill ||
-    !exitCount
-  )
-    return;
-
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.min(max, Math.max(min, val));
-      countEl.textContent = `${val}%`;
-
-      if (
-        [
-          "--sc-scroll-entry",
-          "--sc-scroll-center",
-          "--sc-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2; // Map -100..100 to 0..100
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2); // max 100 → 50%
-
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-      } else if (position === "left") {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, { width: `${val}%`, left: "0" });
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0",
-          right: "auto",
-          transform: `scaleX(${(100 - val) / 100})`,
-          transformOrigin: "right",
-          width: "100%",
-          backgroundColor: "#F6B67B",
-        });
-      }
-
-      const el = getSelectedElement?.();
-      if (el) {
-        const button = el.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        );
-        if (button) {
-          gsap.set(button, { [cssVar]: `${val}%` });
-        }
-      }
-    };
-
-  const makeDraggable = (
-    bullet,
-    updateFn,
-    type = "normal",
-    min = -100,
-    max = 100
-  ) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-
-      const container = bullet.parentElement;
-      const containerRect = container.getBoundingClientRect();
-
-      const onMouseMove = (event) => {
-        const clientX = event.clientX;
-        const relativeX = clientX - containerRect.left;
-        const percent = (relativeX / containerRect.width) * (max - min) + min;
-        const clamped = Math.max(min, Math.min(max, Math.round(percent)));
-
-        const startPos = parseFloat(startBullet.style.left || "0");
-        const endPos = parseFloat(endBullet.style.left || "100");
-
-        if (type === "start" && clamped >= endPos - 4) {
-          updateFn(endPos - 4);
-        } else if (type === "end" && clamped <= startPos + 4) {
-          updateFn(startPos + 4);
-        } else {
-          updateFn(clamped);
-        }
-      };
-
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", onMouseMove);
-        },
-        { once: true }
-      );
-    };
-  };
-
-  const updateStart = updateField(
-    startBullet,
-    startFill,
-    startValue,
-    "--sc-scroll-start",
-    "left"
-  );
-  const updateEnd = updateField(
-    endBullet,
-    endFill,
-    endValue,
-    "--sc-scroll-end",
-    "right"
-  );
-  const updateEntry = updateField(
-    entryBullet,
-    entryFill,
-    entryCount,
-    "--sc-scroll-entry",
-    "left",
-    -100,
-    100
-  );
-  const updateCenter = updateField(
-    centerBullet,
-    centerFill,
-    centerCount,
-    "--sc-scroll-center",
-    "left",
-    -100,
-    100
-  );
-  const updateExit = updateField(
-    exitBullet,
-    exitFill,
-    exitCount,
-    "--sc-scroll-exit",
-    "left",
-    -100,
-    100
-  );
-
-  makeDraggable(startBullet, updateStart, "start");
-  makeDraggable(endBullet, updateEnd, "end");
-  makeDraggable(entryBullet, updateEntry, "normal", -100, 100);
-  makeDraggable(centerBullet, updateCenter, "normal", -100, 100);
-  makeDraggable(exitBullet, updateExit, "normal", -100, 100);
-
-  [
-    {
-      id: "button-advance-entry-reset",
-      bullet: entryBullet,
-      fill: entryFill,
-      count: entryCount,
-      css: "--sc-scroll-entry",
-    },
-    {
-      id: "button-advance-center-reset",
-      bullet: centerBullet,
-      fill: centerFill,
-      count: centerCount,
-      css: "--sc-scroll-center",
-    },
-    {
-      id: "button-advance-exit-reset",
-      bullet: exitBullet,
-      fill: exitFill,
-      count: exitCount,
-      css: "--sc-scroll-exit",
-    },
-  ].forEach(({ id, bullet, fill, count, css }) => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.onclick = () => {
-        updateField(bullet, fill, count, css, "left", -100, 100)(0);
-      };
+    if (arrow && border && startBullet && endBullet && dropdown) {
+      callback(arrow, border, startBullet, endBullet, dropdown);
+    } else if (retries > 0) {
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
+  }
+
+  function updateArrowPosition(
+    arrow,
+    border,
+    startBullet,
+    endBullet,
+    dropdown
+  ) {
+    const rect = selectedElement.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const top = rect.top;
+    const percentFromTop = top / viewportHeight;
+    const scrollBasedLeft = Math.max(
+      0,
+      Math.min(100, 100 - 100 * percentFromTop)
+    );
+    arrow.style.left = `${scrollBasedLeft}%`;
+    arrow.style.transform = "translateX(-50%)";
+
+    const startLeft = parseFloat(startBullet.style.left || "0");
+    const endLeft = parseFloat(endBullet.style.left || "100");
+    const centerLeft = (startLeft + endLeft) / 2;
+
+    const btn = selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    const getVHFromCSSVar = (cssVar) => {
+      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      return value.endsWith("%")
+        ? (parseFloat(value) / 100) * 100
+        : parseFloat(value) || 0;
+    };
+
+    const entryY = getVHFromCSSVar("--sc-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+
+    let X = 0;
+    let apply = false;
+
+    if (scrollBasedLeft <= startLeft + 1) {
+      arrow.style.backgroundColor = "#EF7C2F";
+      if (entryY !== 0) {
+        const progress = scrollBasedLeft / (startLeft + 1);
+        X = entryY * progress;
+        apply = true;
+      }
+    } else if (scrollBasedLeft >= endLeft - 1) {
+      arrow.style.backgroundColor = "#F6B67B";
+      if (exitY !== 0) {
+        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
+        X = exitY * progress;
+        apply = true;
+      }
+    } else {
+      arrow.style.backgroundColor = "#FFFFFF";
+
+      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+          X = entryY + (centerY - entryY) * progress;
+          apply = true;
+        }
+      } else if (
+        scrollBasedLeft > centerLeft + 1 &&
+        scrollBasedLeft < endLeft - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+          X = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
+      }
+    }
+
+    const finalX = apply ? X : 0;
+
+    if (lastX !== finalX) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateX(${finalX.toFixed(2)}vw)`,
+      });
+      lastX = finalX;
+    }
+  }
+
+  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
+    if (isTracking) return;
+    isTracking = true;
+    function loop() {
+      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
+    const arrowTrigger = document.getElementById(
+      "horizontal-effect-animation-type-arrow"
+    );
+
+    if (arrowTrigger && dropdown) {
+      arrowTrigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle("sc-hidden");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (
+          !arrowTrigger.contains(e.target) &&
+          !dropdown.contains(e.target) &&
+          !dropdown.classList.contains("sc-hidden")
+        ) {
+          dropdown.classList.add("sc-hidden");
+        }
+      });
+
+      dropdown.querySelectorAll("[data-value]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const selectedEffect = item.getAttribute("data-value");
+          const display = dropdown.previousElementSibling;
+          if (display?.querySelector("p")) {
+            display.querySelector("p").textContent = selectedEffect;
+          }
+          transition.ease = selectedEffect || "power2.out";
+          dropdown.classList.add("sc-hidden");
+        });
+      });
+    }
+
+    trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }

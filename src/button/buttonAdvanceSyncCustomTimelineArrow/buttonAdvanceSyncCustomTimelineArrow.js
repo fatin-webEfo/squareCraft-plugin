@@ -157,11 +157,13 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 
-export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
+  selectedElement
+) {
   if (!selectedElement) return;
 
   let isTracking = false;
-  let lastY = null;
+  let lastX = null;
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
@@ -221,21 +223,21 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
     const centerY = getVHFromCSSVar("--sc-scroll-center");
     const exitY = getVHFromCSSVar("--sc-scroll-exit");
 
-    let y = 0;
+    let X = 0;
     let apply = false;
 
     if (scrollBasedLeft <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
       if (entryY !== 0) {
         const progress = scrollBasedLeft / (startLeft + 1);
-        y = entryY * progress;
+        X = entryY * progress;
         apply = true;
       }
     } else if (scrollBasedLeft >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
       if (exitY !== 0) {
         const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = exitY * progress;
+        X = exitY * progress;
         apply = true;
       }
     } else {
@@ -245,7 +247,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
         if (entryY !== 0 && centerY !== 0) {
           const progress =
             (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
+          X = entryY + (centerY - entryY) * progress;
           apply = true;
         }
       } else if (
@@ -255,24 +257,22 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
         if (centerY !== 0 && exitY !== 0) {
           const progress =
             (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
+          X = centerY + (exitY - centerY) * progress;
           apply = true;
         }
       }
     }
 
-    const finalY = apply ? y : 0;
+    const finalX = apply ? X : 0;
 
-    if (lastY !== finalY) {
+    if (lastX !== finalX) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        left: `${finalY}%`,
-        xPercent: -50,
+        transform: `translateX(${finalX.toFixed(2)}vw)`,
       });
-      lastY = finalY;
+      lastX = finalX;
     }
-    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
@@ -322,6 +322,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
 
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(
