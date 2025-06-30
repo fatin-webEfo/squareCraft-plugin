@@ -319,14 +319,14 @@ function initEffectAnimationDropdownToggle() {
 
     [
       {
-        id: "button-advance-entry-reset",
+        id: "vertical-button-advance-entry-reset",
         bullet: entryBullet,
         fill: entryFill,
         count: entryCount,
         css: "--sc-scroll-entry",
       },
       {
-        id: "button-advance-center-reset",
+        id: "vertical-button-advance-center-reset",
         bullet: centerBullet,
         fill: centerFill,
         count: centerCount,
