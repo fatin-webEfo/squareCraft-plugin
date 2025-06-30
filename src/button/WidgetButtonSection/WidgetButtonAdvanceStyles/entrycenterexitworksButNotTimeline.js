@@ -1,22 +1,22 @@
 export function initButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("timeline-start-bullet");
-  const endBullet = document.getElementById("timeline-end-bullet");
+  const startBullet = document.getElementById("vertical-timeline-start-bullet");
+  const endBullet = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
-  const endFill = document.getElementById("timeline-end-fill");
-  const startValue = document.getElementById("timelineStartValue");
-  const endValue = document.getElementById("timelineEndValue");
+  const endFill = document.getElementById("vertical-timeline-end-fill");
+  const startValue = document.getElementById("vertical-timelineStartValue");
+  const endValue = document.getElementById("vertical-timelineEndValue");
 
-  const entryBullet = document.getElementById("button-advance-entry-bullet");
-  const entryFill = document.getElementById("button-advance-entry-Fill");
-  const entryCount = document.getElementById("button-advance-entry-count");
+  const entryBullet = document.getElementById("vertical-button-advance-entry-bullet");
+  const entryFill = document.getElementById("vertical-button-advance-entry-Fill");
+  const entryCount = document.getElementById("vertical-button-advance-entry-count");
 
-  const centerBullet = document.getElementById("button-advance-center-bullet");
-  const centerFill = document.getElementById("button-advance-center-Fill");
-  const centerCount = document.getElementById("button-advance-center-Count");
+  const centerBullet = document.getElementById("vertical-button-advance-center-bullet");
+  const centerFill = document.getElementById("vertical-button-advance-center-Fill");
+  const centerCount = document.getElementById("vertical-button-advance-center-Count");
 
-  const exitBullet = document.getElementById("button-advance-exit-bullet");
-  const exitFill = document.getElementById("button-advance-exit-Fill");
-  const exitCount = document.getElementById("button-advance-exit-Count");
+  const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
+  const exitFill = document.getElementById("vertical-button-advance-exit-Fill");
+  const exitCount = document.getElementById("vertical-button-advance-exit-Count");
 
   if (
     !startBullet ||
