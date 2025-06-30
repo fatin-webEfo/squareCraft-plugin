@@ -205,7 +205,7 @@ export function WidgetButtonAdvanceSection(){
             class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
           >
             <p
-              id="vertical-button-advance-center-Count"
+              id="vertical-button-advance-center-count"
               class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
             >
               -100%
@@ -257,7 +257,7 @@ export function WidgetButtonAdvanceSection(){
             class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
           >
             <p
-              id="vertical-button-advance-exit-Count"
+              id="vertical-button-advance-exit-count"
               class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
             >
               -100%
