@@ -173,19 +173,18 @@
               
 
               
-              const { initButtonAdvanceStyles } = await import(
+              const {
+                initButtonAdvanceStyles,
+                horizontalinitButtonAdvanceStyles,
+              } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
               );
-              const { horizontalinitButtonAdvanceStyles } = await import(
-                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/horizontalinitButtonAdvanceStyles.js"
-              );
-              const { buttonAdvanceSyncCustomTimelineArrow } = await import(
+              const {
+                buttonAdvanceSyncCustomTimelineArrow,
+                horizontalbuttonAdvanceSyncCustomTimelineArrow,
+              } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
               );
-              const { horizontalbuttonAdvanceSyncCustomTimelineArrow } =
-                await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/horizontalbuttonAdvanceSyncCustomTimelineArrow.js"
-                );
               const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
               logCurrentViewport();
               window.addEventListener("resize", logCurrentViewport);

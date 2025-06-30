@@ -366,39 +366,6 @@ function initEffectAnimationDropdownToggle() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // horizontal
   function horizontalattachAdvanceTimelineIncrementDecrement(
     updateEntry,
