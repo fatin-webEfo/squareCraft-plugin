@@ -31,14 +31,14 @@ function attachAdvanceTimelineIncrementDecrement(
 
   const getCenter = () => {
     const text =
-      document.getElementById("vertical-button-advance-center-Count")?.textContent ||
+      document.getElementById("vertical-button-advance-center-count")?.textContent ||
       "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getExit = () => {
     const text =
-      document.getElementById("vertical-button-advance-exit-Count")?.textContent || "0%";
+      document.getElementById("vertical-button-advance-exit-count")?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
@@ -130,11 +130,11 @@ function initEffectAnimationDropdownToggle() {
       "vertical-button-advance-center-bullet"
     );
     const centerFill = document.getElementById("vertical-button-advance-center-Fill");
-    const centerCount = document.getElementById("vertical-button-advance-center-Count");
+    const centerCount = document.getElementById("vertical-button-advance-center-count");
 
     const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
     const exitFill = document.getElementById("vertical-button-advance-exit-Fill");
-    const exitCount = document.getElementById("vertical-button-advance-exit-Count");
+    const exitCount = document.getElementById("vertical-button-advance-exit-count");
 
     if (
       !startBullet ||
