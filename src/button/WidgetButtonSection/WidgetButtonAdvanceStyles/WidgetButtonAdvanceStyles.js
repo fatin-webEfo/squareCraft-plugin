@@ -24,39 +24,39 @@ function attachAdvanceTimelineIncrementDecrement(
 
   const getEntry = () => {
     const text =
-      document.getElementById("vertical-button-advance-entry-count")?.textContent ||
+      document.getElementById("horizontal-button-advance-entry-count")?.textContent ||
       "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getCenter = () => {
     const text =
-      document.getElementById("vertical-button-advance-center-Count")?.textContent ||
+      document.getElementById("horizontal-button-advance-center-Count")?.textContent ||
       "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getExit = () => {
     const text =
-      document.getElementById("vertical-button-advance-exit-Count")?.textContent || "0%";
+      document.getElementById("horizontal-button-advance-exit-Count")?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   setup(
-    "vertical-button-advance-entry-increase",
-    "vertical-button-advance-entry-decrease",
+    "horizontal-button-advance-entry-increase",
+    "horizontal-button-advance-entry-decrease",
     getEntry,
     updateEntry
   );
   setup(
-    "vertical-button-advance-center-increase",
-    "vertical-button-advance-center-decrease",
+    "horizontal-button-advance-center-increase",
+    "horizontal-button-advance-center-decrease",
     getCenter,
     updateCenter
   );
   setup(
-    "vertical-button-advance-exit-increase",
-    "vertical-button-advance-exit-decrease",
+    "horizontal-button-advance-exit-increase",
+    "horizontal-button-advance-exit-decrease",
     getExit,
     updateExit
   );
@@ -68,7 +68,7 @@ function attachCustomTimelineReset(
   updateCenter,
   updateExit
 ) {
-  const resetBtn = document.getElementById("vertical-custom-timeline-reset");
+  const resetBtn = document.getElementById("horizontal-custom-timeline-reset");
   if (resetBtn) {
     resetBtn.onclick = () => {
       updateStart(0);
@@ -80,15 +80,14 @@ function attachCustomTimelineReset(
   }
 }
 
-
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
-  const dropdown = document.getElementById("vertical-effect-animation-type-list");
+  const arrow = document.getElementById("horizontal-effect-animation-type-arrow");
+  const dropdown = document.getElementById("horizontal-effect-animation-type-list");
   const container = document.getElementById(
-    "vertical-effect-animation-dropdown-container"
+    "horizontal-effect-animation-dropdown-container"
   );
   const displayValue = document.getElementById(
-    "vertical-effect-animation-value"
+    "horizontal-effect-animation-value"
   );
 
   if (!arrow || !dropdown || !container || !displayValue) return;
@@ -113,30 +112,27 @@ function initEffectAnimationDropdownToggle() {
   });
 }
 
-  
-
-  
   export function initButtonAdvanceStyles(getSelectedElement) {
-    const startBullet = document.getElementById("vertical-timeline-start-bullet");
-    const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    const startFill = document.getElementById("vertical-timeline-start-fill");
-    const endFill = document.getElementById("vertical-timeline-end-fill");
-    const startValue = document.getElementById("vertical-timelineStartValue");
-    const endValue = document.getElementById("vertical-timelineEndValue");
+    const startBullet = document.getElementById("horizontal-timeline-start-bullet");
+    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    const startFill = document.getElementById("horizontal-timeline-start-fill");
+    const endFill = document.getElementById("horizontal-timeline-end-fill");
+    const startValue = document.getElementById("horizontal-timelineStartValue");
+    const endValue = document.getElementById("horizontal-timelineEndValue");
 
-    const entryBullet = document.getElementById("vertical-button-advance-entry-bullet");
-    const entryFill = document.getElementById("vertical-button-advance-entry-Fill");
-    const entryCount = document.getElementById("vertical-button-advance-entry-count");
+    const entryBullet = document.getElementById("horizontal-button-advance-entry-bullet");
+    const entryFill = document.getElementById("horizontal-button-advance-entry-Fill");
+    const entryCount = document.getElementById("horizontal-button-advance-entry-count");
 
     const centerBullet = document.getElementById(
-      "vertical-button-advance-center-bullet"
+      "horizontal-button-advance-center-bullet"
     );
-    const centerFill = document.getElementById("vertical-button-advance-center-Fill");
-    const centerCount = document.getElementById("vertical-button-advance-center-Count");
+    const centerFill = document.getElementById("horizontal-button-advance-center-Fill");
+    const centerCount = document.getElementById("horizontal-button-advance-center-Count");
 
-    const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
-    const exitFill = document.getElementById("vertical-button-advance-exit-Fill");
-    const exitCount = document.getElementById("vertical-button-advance-exit-Count");
+    const exitBullet = document.getElementById("horizontal-button-advance-exit-bullet");
+    const exitFill = document.getElementById("horizontal-button-advance-exit-Fill");
+    const exitCount = document.getElementById("horizontal-button-advance-exit-Count");
 
     if (
       !startBullet ||
@@ -321,21 +317,21 @@ function initEffectAnimationDropdownToggle() {
 
     [
       {
-        id: "vertical-button-advance-entry-reset",
+        id: "horizontal-button-advance-entry-reset",
         bullet: entryBullet,
         fill: entryFill,
         count: entryCount,
         css: "--sc-scroll-entry",
       },
       {
-        id: "vertical-button-advance-center-reset",
+        id: "horizontal-button-advance-center-reset",
         bullet: centerBullet,
         fill: centerFill,
         count: centerCount,
         css: "--sc-scroll-center",
       },
       {
-        id: "vertical-button-advance-exit-reset",
+        id: "horizontal-button-advance-exit-reset",
         bullet: exitBullet,
         fill: exitFill,
         count: exitCount,
