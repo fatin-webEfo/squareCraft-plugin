@@ -301,7 +301,7 @@
                   initButtonStyles(selectedElement);
                 }
                 if (selectedElement) {
-                  initButtonAdvanceStyles(effect, () => selectedElement);
+                  initButtonAdvanceStyles(() => selectedElement);
                 }
 
                 if (selectedElement) {
@@ -360,10 +360,7 @@
                       selectedElement = val;
 
                       setTimeout(() => {
-                        buttonAdvanceSyncCustomTimelineArrow(
-                          effect,
-                          selectedElement
-                        );
+                        buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -741,10 +738,7 @@
                               selectedElement = val;
 
                               setTimeout(() => {
-                                buttonAdvanceSyncCustomTimelineArrow(
-                                  effect,
-                                  selectedElement
-                                );
+                                buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
