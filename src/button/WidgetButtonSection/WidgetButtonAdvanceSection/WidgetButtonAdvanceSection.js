@@ -171,11 +171,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
         <div
-          id="vertical-button-advance-entry-Field"
+          id="vertical-button-advance-entry-field"
           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
         >
           <div
-            id="vertical-button-advance-entry-Fill"
+            id="vertical-button-advance-entry-fill"
             class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
           ></div>
           <div
@@ -227,7 +227,7 @@ export function WidgetButtonAdvanceSection(){
           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
         >
           <div
-            id="vertical-button-advance-center-Fill"
+            id="vertical-button-advance-center-fill"
             class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
           ></div>
           <div
@@ -279,7 +279,7 @@ export function WidgetButtonAdvanceSection(){
           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
         >
           <div
-            id="vertical-button-advance-exit-Fill"
+            id="vertical-button-advance-exit-fill"
             class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
           ></div>
           <div
@@ -534,11 +534,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="horizontal-button-advance-entry-Field"
+            id="horizontal-button-advance-entry-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="horizontal-button-advance-entry-Fill"
+              id="horizontal-button-advance-entry-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -950,11 +950,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="opacity-button-advance-entry-Field"
+            id="opacity-button-advance-entry-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="opacity-button-advance-entry-Fill"
+              id="opacity-button-advance-entry-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1366,11 +1366,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="scale-button-advance-entry-Field"
+            id="scale-button-advance-entry-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="scale-button-advance-entry-Fill"
+              id="scale-button-advance-entry-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1782,11 +1782,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="rotate-button-advance-entry-Field"
+            id="rotate-button-advance-entry-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="rotate-button-advance-entry-Fill"
+              id="rotate-button-advance-entry-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -2198,11 +2198,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="blur-button-advance-entry-Field"
+            id="blur-button-advance-entry-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="blur-button-advance-entry-Fill"
+              id="blur-button-advance-entry-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
