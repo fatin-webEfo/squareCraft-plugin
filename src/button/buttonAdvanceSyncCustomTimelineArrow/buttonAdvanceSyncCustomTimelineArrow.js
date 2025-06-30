@@ -21,10 +21,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function updateArrowPosition(
     arrow,
-    border,
     startBullet,
     endBullet,
-    dropdown
   ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
