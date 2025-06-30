@@ -859,7 +859,7 @@ export function WidgetButtonAdvanceSection(){
         class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
       ></div>
       <div
-        id="button-advance-entry-Bullet"
+        id="button-advance-entry-bullet"
         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
       ></div>
     </div>
@@ -1221,7 +1221,7 @@ export function WidgetButtonAdvanceSection(){
         class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
       ></div>
       <div
-        id="button-advance-entry-Bullet"
+        id="button-advance-entry-bullet"
         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
       ></div>
     </div>
@@ -1583,7 +1583,7 @@ export function WidgetButtonAdvanceSection(){
         class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
       ></div>
       <div
-        id="button-advance-entry-Bullet"
+        id="button-advance-entry-bullet"
         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
       ></div>
     </div>
@@ -1945,7 +1945,7 @@ export function WidgetButtonAdvanceSection(){
         class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
       ></div>
       <div
-        id="button-advance-entry-Bullet"
+        id="button-advance-entry-bullet"
         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
       ></div>
     </div>

@@ -1,7 +1,7 @@
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("timeline-start-bullet");
   const endBullet = document.getElementById("timeline-end-bullet");
-  const startFill = document.getElementById("timeline-start-fill");
+  const startFill = document.getElementById("-vertical-timeline-start-fill");
   const endFill = document.getElementById("timeline-end-fill");
   const startValue = document.getElementById("timelineStartValue");
   const endValue = document.getElementById("timelineEndValue");
