@@ -24,21 +24,21 @@ function attachAdvanceTimelineIncrementDecrement(
 
   const getEntry = () => {
     const text =
-      document.getElementById("button-advance-entry-count")?.textContent ||
+      document.getElementById("vertical-button-advance-entry-count")?.textContent ||
       "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getCenter = () => {
     const text =
-      document.getElementById("button-advance-center-Count")?.textContent ||
+      document.getElementById("vertical-button-advance-center-Count")?.textContent ||
       "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getExit = () => {
     const text =
-      document.getElementById("button-advance-exit-Count")?.textContent || "0%";
+      document.getElementById("vertical-button-advance-exit-Count")?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
