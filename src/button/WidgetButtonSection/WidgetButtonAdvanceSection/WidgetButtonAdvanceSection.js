@@ -2781,8 +2781,7 @@ export function WidgetButtonAdvanceSection(){
         </p>
         <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
           <div
-            class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
-          >
+            class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px">
             <p class="sc-universal sc-roboto sc-font-size-12 sc-font-light">
               10 px
             </p>
