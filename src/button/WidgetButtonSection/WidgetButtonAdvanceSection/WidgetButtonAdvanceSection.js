@@ -527,7 +527,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="horizontal-button-advance-entry-Decrease"
+                  id="horizontal-button-advance-entry-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -579,7 +579,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="horizontal-button-advance-center-Decrease"
+                  id="horizontal-button-advance-center-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -631,7 +631,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="horizontal-button-advance-exit-Decrease"
+                  id="horizontal-button-advance-exit-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -683,7 +683,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="horizontal-button-advance-effectSpeed-Decrease"
+                  id="horizontal-button-advance-effectSpeed-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -943,7 +943,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="opacity-button-advance-entry-Decrease"
+                  id="opacity-button-advance-entry-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -995,7 +995,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="opacity-button-advance-center-Decrease"
+                  id="opacity-button-advance-center-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1047,7 +1047,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="opacity-button-advance-exit-Decrease"
+                  id="opacity-button-advance-exit-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1099,7 +1099,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="opacity-button-advance-effectSpeed-Decrease"
+                  id="opacity-button-advance-effectSpeed-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1359,7 +1359,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="scale-button-advance-entry-Decrease"
+                  id="scale-button-advance-entry-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1411,7 +1411,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="scale-button-advance-center-Decrease"
+                  id="scale-button-advance-center-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1463,7 +1463,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="scale-button-advance-exit-Decrease"
+                  id="scale-button-advance-exit-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1515,7 +1515,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="scale-button-advance-effectSpeed-Decrease"
+                  id="scale-button-advance-effectSpeed-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1775,7 +1775,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="rotate-button-advance-entry-Decrease"
+                  id="rotate-button-advance-entry-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1827,7 +1827,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="rotate-button-advance-center-Decrease"
+                  id="rotate-button-advance-center-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1879,7 +1879,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="rotate-button-advance-exit-Decrease"
+                  id="rotate-button-advance-exit-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -1931,7 +1931,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="rotate-button-advance-effectSpeed-Decrease"
+                  id="rotate-button-advance-effectSpeed-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -2191,7 +2191,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="blur-button-advance-entry-Decrease"
+                  id="blur-button-advance-entry-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -2243,7 +2243,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="blur-button-advance-center-Decrease"
+                  id="blur-button-advance-center-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -2295,7 +2295,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="blur-button-advance-exit-Decrease"
+                  id="blur-button-advance-exit-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
@@ -2347,7 +2347,7 @@ export function WidgetButtonAdvanceSection(){
                   class="sc-arrow-placeholder"
                 ></span>
                 <span
-                  id="blur-button-advance-effectSpeed-Decrease"
+                  id="blur-button-advance-effectSpeed-decrease"
                   class="sc-arrow-placeholder sc-rotate-180"
                 ></span>
               </div>
