@@ -267,10 +267,12 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        x: `${finalY}vw`,
+        left: `${finalY}%`,
+        xPercent: -50,
       });
       lastY = finalY;
     }
+    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
