@@ -1,4 +1,4 @@
-export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+export function buttonAdvanceSyncCustomTimelineArrow(effect, selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -6,11 +6,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("vertical-custom-timeline-arrow");
-    const border = document.getElementById("vertical-custom-timeline-border");
-    const startBullet = document.getElementById("vertical-timeline-start-bullet");
-    const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    const dropdown = document.getElementById("vertical-effect-animation-type-list");
+    const arrow = document.getElementById(`${effect}-custom-timeline-arrow`);
+    const border = document.getElementById(`${effect}-custom-timeline-border`);
+    const startBullet = document.getElementById(
+      `${effect}-timeline-start-bullet`
+    );
+    const endBullet = document.getElementById(`${effect}-timeline-end-bullet`);
+    const dropdown = document.getElementById(
+      `${effect}-effect-animation-type-list`
+    );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
@@ -121,7 +125,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById("vertical-effect-animation-type-arrow");
+    const arrowTrigger = document.getElementById(
+      `${effect}-effect-animation-type-arrow`
+    );
 
     if (arrowTrigger && dropdown) {
       arrowTrigger.addEventListener("click", (e) => {
