@@ -269,7 +269,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) 
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `translateX(${finalY.toFixed(2)}vh)`,
+        transform: `translateX(${finalY.toFixed(2)}vw)`,
       });
       lastY = finalY;
     }
