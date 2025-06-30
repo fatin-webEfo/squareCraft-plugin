@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-  <div id="button-advance-section">
+ <div id="button-advance-section">
   <div
     class="sc-flex sc-cursor-pointer sc-p-2 sc-items-center sc-justify-between"
   >
@@ -121,8 +121,14 @@ export function WidgetButtonAdvanceSection(){
             End <span id="vertical-timelineEndValue">0%</span>
           </p>
         </div>
-        <div id="vertical-custom-timeline-border" class="sc-mt-1 vertical-custom-timeline-border">
-          <div id="vertical-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+        <div
+          id="vertical-custom-timeline-border"
+          class="sc-mt-1 vertical-custom-timeline-border"
+        >
+          <div
+            id="vertical-custom-timeline-arrow"
+            class="sc-absolute sc-top-6px"
+          ></div>
         </div>
       </div>
 
@@ -148,7 +154,8 @@ export function WidgetButtonAdvanceSection(){
           >
             <p
               id="vertical-button-advance-entry-count"
-              class="sc-font-thin sc-roboto sc-universal sc-font-size-11">
+              class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
+            >
               -100%
             </p>
             <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
@@ -170,7 +177,7 @@ export function WidgetButtonAdvanceSection(){
           <div
             id="vertical-button-advance-entry-Fill"
             class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
-          ></div> 
+          ></div>
           <div
             id="vertical-button-advance-entry-bullet"
             class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
@@ -312,7 +319,7 @@ export function WidgetButtonAdvanceSection(){
 
           <div
             id="vertical-effect-animation-type-list"
-            class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
+            class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
           >
             <div
               class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -404,7 +411,8 @@ export function WidgetButtonAdvanceSection(){
     <div class="">
       <div
         id="button-advance-horizontal"
-        class="sc-bg-3f3f3f sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
+        class="sc-bg-3f3f3f sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
+      >
         <div class="sc-flex sc-items-center sc-gap-8px">
           <img
             width="18px"
@@ -476,8 +484,14 @@ export function WidgetButtonAdvanceSection(){
               End <span id="horizontal-timelineEndValue">0%</span>
             </p>
           </div>
-          <div id="horizontal-custom-timeline-border" class="sc-mt-1 horizontal-custom-timeline-border">
-            <div id="horizontal-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          <div
+            id="horizontal-custom-timeline-border"
+            class="sc-mt-1 horizontal-custom-timeline-border"
+          >
+            <div
+              id="horizontal-custom-timeline-arrow"
+              class="sc-absolute sc-top-6px"
+            ></div>
           </div>
         </div>
 
@@ -580,7 +594,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="horizontal-button-advance-center-radiusBullet"
+              id="horizontal-button-advance-center-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -632,7 +646,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="horizontal-button-advance-exit-radiusBullet"
+              id="horizontal-button-advance-exit-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -684,7 +698,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="horizontal-button-advance-effectSpeed-radiusBullet"
+              id="horizontal-button-advance-effectSpeed-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -692,7 +706,7 @@ export function WidgetButtonAdvanceSection(){
 
         <div class="sc-mt-6 sc-z-[99999]">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
-  
+
           <div
             class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
             id="horizontal-effect-animation-dropdown-container"
@@ -707,7 +721,7 @@ export function WidgetButtonAdvanceSection(){
                 None
               </p>
             </div>
-  
+
             <div
               id="horizontal-effect-animation-type-arrow"
               class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
@@ -717,7 +731,7 @@ export function WidgetButtonAdvanceSection(){
                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
               </div>
             </div>
-  
+
             <div
               id="horizontal-effect-animation-type-list"
               class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
@@ -728,77 +742,77 @@ export function WidgetButtonAdvanceSection(){
               >
                 None
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="linear"
               >
                 Linear
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in"
               >
                 Ease In
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-out"
               >
                 Ease Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in-out"
               >
                 Ease In Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power1.out"
               >
                 Power1
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power2.out"
               >
                 Power2
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power3.out"
               >
                 Power3
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power4.out"
               >
                 Power4
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="expo.out"
               >
                 Expo
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="elastic.out"
               >
                 Elastic
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="bounce.out"
@@ -841,7 +855,7 @@ export function WidgetButtonAdvanceSection(){
               Custom Timeline
             </p>
             <div
-            id="opacity-custom-timeline-reset"
+              id="opacity-custom-timeline-reset"
               class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
             >
               <img
@@ -886,8 +900,14 @@ export function WidgetButtonAdvanceSection(){
               End <span id="opacity-timelineEndValue">0%</span>
             </p>
           </div>
-          <div id="opacity-custom-timeline-border" class="sc-mt-1 opacity-custom-timeline-border">
-            <div id="opacity-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          <div
+            id="opacity-custom-timeline-border"
+            class="sc-mt-1 opacity-custom-timeline-border"
+          >
+            <div
+              id="opacity-custom-timeline-arrow"
+              class="sc-absolute sc-top-6px"
+            ></div>
           </div>
         </div>
 
@@ -990,7 +1010,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="opacity-button-advance-center-radiusBullet"
+              id="opacity-button-advance-center-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1042,7 +1062,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="opacity-button-advance-exit-radiusBullet"
+              id="opacity-button-advance-exit-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1094,7 +1114,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="opacity-button-advance-effectSpeed-radiusBullet"
+              id="opacity-button-advance-effectSpeed-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1102,7 +1122,7 @@ export function WidgetButtonAdvanceSection(){
 
         <div class="sc-mt-6 sc-z-[99999]">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
-  
+
           <div
             class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
             id="opacity-effect-animation-dropdown-container"
@@ -1117,7 +1137,7 @@ export function WidgetButtonAdvanceSection(){
                 None
               </p>
             </div>
-  
+
             <div
               id="opacity-effect-animation-type-arrow"
               class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
@@ -1127,7 +1147,7 @@ export function WidgetButtonAdvanceSection(){
                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
               </div>
             </div>
-  
+
             <div
               id="opacity-effect-animation-type-list"
               class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
@@ -1138,77 +1158,77 @@ export function WidgetButtonAdvanceSection(){
               >
                 None
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="linear"
               >
                 Linear
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in"
               >
                 Ease In
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-out"
               >
                 Ease Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in-out"
               >
                 Ease In Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power1.out"
               >
                 Power1
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power2.out"
               >
                 Power2
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power3.out"
               >
                 Power3
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power4.out"
               >
                 Power4
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="expo.out"
               >
                 Expo
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="elastic.out"
               >
                 Elastic
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="bounce.out"
@@ -1296,8 +1316,14 @@ export function WidgetButtonAdvanceSection(){
               End <span id="scale-timelineEndValue">0%</span>
             </p>
           </div>
-          <div id="scale-custom-timeline-border" class="sc-mt-1 scale-custom-timeline-border">
-            <div id="rotate-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          <div
+            id="scale-custom-timeline-border"
+            class="sc-mt-1 scale-custom-timeline-border"
+          >
+            <div
+              id="rotate-custom-timeline-arrow"
+              class="sc-absolute sc-top-6px"
+            ></div>
           </div>
         </div>
 
@@ -1400,7 +1426,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="scale-button-advance-center-radiusBullet"
+              id="scale-button-advance-center-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1452,7 +1478,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="scale-button-advance-exit-radiusBullet"
+              id="scale-button-advance-exit-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1504,7 +1530,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="scale-button-advance-effectSpeed-radiusBullet"
+              id="scale-button-advance-effectSpeed-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1512,7 +1538,7 @@ export function WidgetButtonAdvanceSection(){
 
         <div class="sc-mt-6 sc-z-[99999]">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
-  
+
           <div
             class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
             id="scale-effect-animation-dropdown-container"
@@ -1527,7 +1553,7 @@ export function WidgetButtonAdvanceSection(){
                 None
               </p>
             </div>
-  
+
             <div
               id="scale-effect-animation-type-arrow"
               class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
@@ -1537,7 +1563,7 @@ export function WidgetButtonAdvanceSection(){
                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
               </div>
             </div>
-  
+
             <div
               id="scale-effect-animation-type-list"
               class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
@@ -1548,77 +1574,77 @@ export function WidgetButtonAdvanceSection(){
               >
                 None
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="linear"
               >
                 Linear
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in"
               >
                 Ease In
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-out"
               >
                 Ease Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in-out"
               >
                 Ease In Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power1.out"
               >
                 Power1
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power2.out"
               >
                 Power2
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power3.out"
               >
                 Power3
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power4.out"
               >
                 Power4
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="expo.out"
               >
                 Expo
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="elastic.out"
               >
                 Elastic
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="bounce.out"
@@ -1706,8 +1732,14 @@ export function WidgetButtonAdvanceSection(){
               End <span id="rotate-timelineEndValue">0%</span>
             </p>
           </div>
-          <div id="rotate-custom-timeline-border" class="sc-mt-1 rotate-custom-timeline-border">
-            <div id="rotate-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          <div
+            id="rotate-custom-timeline-border"
+            class="sc-mt-1 rotate-custom-timeline-border"
+          >
+            <div
+              id="rotate-custom-timeline-arrow"
+              class="sc-absolute sc-top-6px"
+            ></div>
           </div>
         </div>
 
@@ -1810,7 +1842,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="rotate-button-advance-center-radiusBullet"
+              id="rotate-button-advance-center-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1862,7 +1894,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="rotate-button-advance-exit-radiusBullet"
+              id="rotate-button-advance-exit-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1914,7 +1946,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="rotate-button-advance-effectSpeed-radiusBullet"
+              id="rotate-button-advance-effectSpeed-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -1922,7 +1954,7 @@ export function WidgetButtonAdvanceSection(){
 
         <div class="sc-mt-6 sc-z-[99999]">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
-  
+
           <div
             class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
             id="rotate-effect-animation-dropdown-container"
@@ -1937,7 +1969,7 @@ export function WidgetButtonAdvanceSection(){
                 None
               </p>
             </div>
-  
+
             <div
               id="rotate-effect-animation-type-arrow"
               class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
@@ -1947,7 +1979,7 @@ export function WidgetButtonAdvanceSection(){
                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
               </div>
             </div>
-  
+
             <div
               id="rotate-effect-animation-type-list"
               class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
@@ -1958,77 +1990,77 @@ export function WidgetButtonAdvanceSection(){
               >
                 None
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="linear"
               >
                 Linear
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in"
               >
                 Ease In
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-out"
               >
                 Ease Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in-out"
               >
                 Ease In Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power1.out"
               >
                 Power1
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power2.out"
               >
                 Power2
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power3.out"
               >
                 Power3
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power4.out"
               >
                 Power4
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="expo.out"
               >
                 Expo
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="elastic.out"
               >
                 Elastic
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="bounce.out"
@@ -2116,8 +2148,14 @@ export function WidgetButtonAdvanceSection(){
               End <span id="blur-timelineEndValue">0%</span>
             </p>
           </div>
-          <div id="blur-custom-timeline-border" class="sc-mt-1 blur-custom-timeline-border">
-            <div id="blur-custom-timeline-arrow" class="sc-absolute sc-top-6px"></div>
+          <div
+            id="blur-custom-timeline-border"
+            class="sc-mt-1 blur-custom-timeline-border"
+          >
+            <div
+              id="blur-custom-timeline-arrow"
+              class="sc-absolute sc-top-6px"
+            ></div>
           </div>
         </div>
 
@@ -2220,7 +2258,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="blur-button-advance-center-radiusBullet"
+              id="blur-button-advance-center-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -2272,7 +2310,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="blur-button-advance-exit-radiusBullet"
+              id="blur-button-advance-exit-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -2324,7 +2362,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
-              id="blur-button-advance-effectSpeed-radiusBullet"
+              id="blur-button-advance-effectSpeed-bullet"
               class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"
             ></div>
           </div>
@@ -2332,106 +2370,113 @@ export function WidgetButtonAdvanceSection(){
 
         <div class="sc-mt-6 sc-z-[99999]">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
-  
+
           <div
             class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
-            id="blur-effect-animation-dropdown-container">
+            id="blur-effect-animation-dropdown-container"
+          >
             <div
-              class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-full">
+              class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-full"
+            >
               <p
                 id="blur-effect-animation-value"
-                class="sc-universal sc-roboto sc-font-size-12">
+                class="sc-universal sc-roboto sc-font-size-12"
+              >
                 None
               </p>
             </div>
-  
+
             <div
               id="blur-effect-animation-type-arrow"
-              class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px">
+              class="sc-bg-color-2c2c2c sc-cursor-pointer sc-px-2_5 sc-py-0_5px"
+            >
               <div class="sc-flex sc-flex-col sc-items-center sc-gap-2">
                 <span class="sc-arrow-placeholder"></span>
                 <span class="sc-arrow-placeholder sc-rotate-180"></span>
               </div>
             </div>
-  
+
             <div
               id="blur-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]">
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+            >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
-                data-value="none">
+                data-value="none"
+              >
                 None
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                data-value="linear">
+                data-value="linear"
+              >
                 Linear
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in"
               >
                 Ease In
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-out"
               >
                 Ease Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="ease-in-out"
               >
                 Ease In Out
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power1.out"
               >
                 Power1
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power2.out"
               >
                 Power2
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power3.out"
               >
                 Power3
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="power4.out"
               >
                 Power4
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="expo.out"
               >
                 Expo
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="elastic.out"
               >
                 Elastic
               </div>
-  
+
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
                 data-value="bounce.out"
@@ -2781,7 +2826,8 @@ export function WidgetButtonAdvanceSection(){
         </p>
         <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
           <div
-            class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px">
+            class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
+          >
             <p class="sc-universal sc-roboto sc-font-size-12 sc-font-light">
               10 px
             </p>
@@ -2799,6 +2845,7 @@ export function WidgetButtonAdvanceSection(){
 
   <div class="sc-mt-4"></div>
 </div>
+
 
     `;
 }
