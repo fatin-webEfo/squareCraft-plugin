@@ -3200,7 +3200,7 @@ html.sc-desktop-view body {
   transition: left 0.3s ease !important;
 }
 
-.custom-timeline-border{
+.vertical-custom-timeline-border{
   position: relative;
   border-top: 1px dashed #707070 !important;
   border-bottom: none;
