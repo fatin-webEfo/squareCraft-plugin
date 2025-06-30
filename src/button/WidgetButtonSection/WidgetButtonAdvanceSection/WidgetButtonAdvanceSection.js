@@ -495,7 +495,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-w-full sc-mt-3">
+        <div class="sc-w-full sc-mt-8">
           <div class="sc-flex sc-w-full sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
               <p class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
@@ -911,7 +911,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-w-full sc-mt-3">
+        <div class="sc-w-full sc-mt-8">
           <div class="sc-flex sc-w-full sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
               <p class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
@@ -1327,7 +1327,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-w-full sc-mt-3">
+        <div class="sc-w-full sc-mt-8">
           <div class="sc-flex sc-w-full sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
               <p class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
@@ -1743,7 +1743,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-w-full sc-mt-3">
+        <div class="sc-w-full sc-mt-8">
           <div class="sc-flex sc-w-full sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
               <p class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
@@ -2159,7 +2159,7 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-w-full sc-mt-3">
+        <div class="sc-w-full sc-mt-8">
           <div class="sc-flex sc-w-full sc-items-center sc-justify-between">
             <div class="sc-flex sc-gap-2 sc-items-center">
               <p class="sc-roboto sc-font-thin sc-universal sc-font-size-14">
