@@ -586,11 +586,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="horizontal-button-advance-center-radiusField"
+            id="horizontal-button-advance-center-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="horizontal-button-advance-center-radiusFill"
+              id="horizontal-button-advance-center-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -638,11 +638,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="horizontal-button-advance-exit-radiusField"
+            id="horizontal-button-advance-exit-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="horizontal-button-advance-exit-radiusFill"
+              id="horizontal-button-advance-exit-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -690,11 +690,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="horizontal-button-advance-effectSpeed-radiusField"
+            id="horizontal-button-advance-effectSpeed-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="horizontal-button-advance-effectSpeed-radiusFill"
+              id="horizontal-button-advance-effectSpeed-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1002,11 +1002,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="opacity-button-advance-center-radiusField"
+            id="opacity-button-advance-center-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="opacity-button-advance-center-radiusFill"
+              id="opacity-button-advance-center-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1054,11 +1054,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="opacity-button-advance-exit-radiusField"
+            id="opacity-button-advance-exit-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="opacity-button-advance-exit-radiusFill"
+              id="opacity-button-advance-exit-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1106,11 +1106,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="opacity-button-advance-effectSpeed-radiusField"
+            id="opacity-button-advance-effectSpeed-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="opacity-button-advance-effectSpeed-radiusFill"
+              id="opacity-button-advance-effectSpeed-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1418,11 +1418,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="scale-button-advance-center-radiusField"
+            id="scale-button-advance-center-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="scale-button-advance-center-radiusFill"
+              id="scale-button-advance-center-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1470,11 +1470,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="scale-button-advance-exit-radiusField"
+            id="scale-button-advance-exit-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="scale-button-advance-exit-radiusFill"
+              id="scale-button-advance-exit-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1522,11 +1522,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="scale-button-advance-effectSpeed-radiusField"
+            id="scale-button-advance-effectSpeed-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="scale-button-advance-effectSpeed-radiusFill"
+              id="scale-button-advance-effectSpeed-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1834,11 +1834,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="rotate-button-advance-center-radiusField"
+            id="rotate-button-advance-center-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="rotate-button-advance-center-radiusFill"
+              id="rotate-button-advance-center-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1886,11 +1886,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="rotate-button-advance-exit-radiusField"
+            id="rotate-button-advance-exit-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="rotate-button-advance-exit-radiusFill"
+              id="rotate-button-advance-exit-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -1938,11 +1938,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="rotate-button-advance-effectSpeed-radiusField"
+            id="rotate-button-advance-effectSpeed-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="rotate-button-advance-effectSpeed-radiusFill"
+              id="rotate-button-advance-effectSpeed-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -2250,11 +2250,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="blur-button-advance-center-radiusField"
+            id="blur-button-advance-center-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="blur-button-advance-center-radiusFill"
+              id="blur-button-advance-center-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -2302,11 +2302,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="blur-button-advance-exit-radiusField"
+            id="blur-button-advance-exit-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="blur-button-advance-exit-radiusFill"
+              id="blur-button-advance-exit-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
@@ -2354,11 +2354,11 @@ export function WidgetButtonAdvanceSection(){
             </div>
           </div>
           <div
-            id="blur-button-advance-effectSpeed-radiusField"
+            id="blur-button-advance-effectSpeed-field"
             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
           >
             <div
-              id="blur-button-advance-effectSpeed-radiusFill"
+              id="blur-button-advance-effectSpeed-fill"
               class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"
             ></div>
             <div
