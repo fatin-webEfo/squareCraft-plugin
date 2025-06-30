@@ -43,14 +43,14 @@ function attachAdvanceTimelineIncrementDecrement(
   };
 
   setup(
-    "button-advance-entry-increase",
-    "button-advance-entry-decrease",
+    "vertical-button-advance-entry-increase",
+    "vertical-button-advance-entry-decrease",
     getEntry,
     updateEntry
   );
   setup(
-    "button-advance-center-increase",
-    "button-advance-center-decrease",
+    "vertical-button-advance-center-increase",
+    "vertical-button-advance-center-decrease",
     getCenter,
     updateCenter
   );
@@ -82,10 +82,10 @@ function attachCustomTimelineReset(
 
 
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("effect-animation-type-arrow");
-  const dropdown = document.getElementById("effect-animation-type-list");
+  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById("vertical-effect-animation-type-list");
   const container = document.getElementById(
-    "effect-animation-dropdown-container"
+    "vertical-effect-animation-dropdown-container"
   );
   const displayValue = document.getElementById("effect-animation-value");
 
