@@ -568,7 +568,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="horizontal-button-advance-center-radiusCount"
+                id="horizontal-button-advance-center-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -620,7 +620,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="horizontal-button-advance-exit-radiusCount"
+                id="horizontal-button-advance-exit-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -672,7 +672,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="horizontal-button-advance-effectSpeed-radiusCount"
+                id="horizontal-button-advance-effectSpeed-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -984,7 +984,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="opacity-button-advance-center-radiusCount"
+                id="opacity-button-advance-center-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1036,7 +1036,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="opacity-button-advance-exit-radiusCount"
+                id="opacity-button-advance-exit-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1088,7 +1088,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="opacity-button-advance-effectSpeed-radiusCount"
+                id="opacity-button-advance-effectSpeed-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1400,7 +1400,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="scale-button-advance-center-radiusCount"
+                id="scale-button-advance-center-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1452,7 +1452,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="scale-button-advance-exit-radiusCount"
+                id="scale-button-advance-exit-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1504,7 +1504,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="scale-button-advance-effectSpeed-radiusCount"
+                id="scale-button-advance-effectSpeed-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1816,7 +1816,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="rotate-button-advance-center-radiusCount"
+                id="rotate-button-advance-center-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1868,7 +1868,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="rotate-button-advance-exit-radiusCount"
+                id="rotate-button-advance-exit-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -1920,7 +1920,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="rotate-button-advance-effectSpeed-radiusCount"
+                id="rotate-button-advance-effectSpeed-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -2232,7 +2232,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="blur-button-advance-center-radiusCount"
+                id="blur-button-advance-center-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -2284,7 +2284,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="blur-button-advance-exit-radiusCount"
+                id="blur-button-advance-exit-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
@@ -2336,7 +2336,7 @@ export function WidgetButtonAdvanceSection(){
               class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
             >
               <p
-                id="blur-button-advance-effectSpeed-radiusCount"
+                id="blur-button-advance-effectSpeed-count"
                 class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
               >
                 0px
