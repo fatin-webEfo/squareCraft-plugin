@@ -289,11 +289,11 @@ export function WidgetButtonAdvanceSection(){
         </div>
       </div>
 
-      <div class="sc-mt-6 sc-z-[99999]">
+      <div class="sc-mt-6 sc-z-99999">
         <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
         <div
-          class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+          class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
           id="vertical-effect-animation-dropdown-container"
         >
           <div
@@ -319,7 +319,7 @@ export function WidgetButtonAdvanceSection(){
 
           <div
             id="vertical-effect-animation-type-list"
-            class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+            class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
           >
             <div
               class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -704,11 +704,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-mt-6 sc-z-[99999]">
+        <div class="sc-mt-6 sc-z-99999">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
           <div
-            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
             id="horizontal-effect-animation-dropdown-container"
           >
             <div
@@ -734,7 +734,7 @@ export function WidgetButtonAdvanceSection(){
 
             <div
               id="horizontal-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
             >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -1120,11 +1120,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-mt-6 sc-z-[99999]">
+        <div class="sc-mt-6 sc-z-99999">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
           <div
-            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
             id="opacity-effect-animation-dropdown-container"
           >
             <div
@@ -1150,7 +1150,7 @@ export function WidgetButtonAdvanceSection(){
 
             <div
               id="opacity-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
             >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -1536,11 +1536,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-mt-6 sc-z-[99999]">
+        <div class="sc-mt-6 sc-z-99999">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
           <div
-            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
             id="scale-effect-animation-dropdown-container"
           >
             <div
@@ -1566,7 +1566,7 @@ export function WidgetButtonAdvanceSection(){
 
             <div
               id="scale-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
             >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -1952,11 +1952,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-mt-6 sc-z-[99999]">
+        <div class="sc-mt-6 sc-z-99999">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
           <div
-            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
             id="rotate-effect-animation-dropdown-container"
           >
             <div
@@ -1982,7 +1982,7 @@ export function WidgetButtonAdvanceSection(){
 
             <div
               id="rotate-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
             >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -2368,11 +2368,11 @@ export function WidgetButtonAdvanceSection(){
           </div>
         </div>
 
-        <div class="sc-mt-6 sc-z-[99999]">
+        <div class="sc-mt-6 sc-z-99999">
           <p class="sc-universal sc-roboto sc-font-size-12">Effect Animation</p>
 
           <div
-            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-[99999]"
+            class="sc-flex sc-mt-2 sc-relative sc-items-center sc-z-99999"
             id="blur-effect-animation-dropdown-container"
           >
             <div
@@ -2398,7 +2398,7 @@ export function WidgetButtonAdvanceSection(){
 
             <div
               id="blur-effect-animation-type-list"
-              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-[99999]"
+              class="sc-absolute sc-rounded-4px sc-max-h-140px sc-hidden sc-border sc-border-solid sc-scrollBar sc-border-EF7C2F sc-left-0 sc-top-4px sc-z-99999"
             >
               <div
                 class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-bg-colo-EF7C2F-hover sc-cursor-pointer"
@@ -2625,7 +2625,7 @@ export function WidgetButtonAdvanceSection(){
               alt="reset"
             />
           </div>
-          <div class="sc-flex sc-z-[99999] sc-relative sc-items-center">
+          <div class="sc-flex sc-z-99999 sc-relative sc-items-center">
             <div
               class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-25px"
             >
@@ -2646,7 +2646,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Top
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2666,7 +2666,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Right
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2686,7 +2686,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Bottom
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2706,7 +2706,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Left
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2743,7 +2743,7 @@ export function WidgetButtonAdvanceSection(){
               alt="reset"
             />
           </div>
-          <div class="sc-flex sc-z-[99999] sc-relative sc-items-center">
+          <div class="sc-flex sc-z-99999 sc-relative sc-items-center">
             <div
               class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-2 sc-w-25px"
             >
@@ -2764,7 +2764,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Top
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2784,7 +2784,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Right
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2804,7 +2804,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Bottom
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
@@ -2824,7 +2824,7 @@ export function WidgetButtonAdvanceSection(){
         <p class="sc-universal sc-font-size-12 sc-font-light sc-text-gray-300">
           Left
         </p>
-        <div class="sc-flex sc-mt-2 sc-z-[99999] sc-relative sc-items-center">
+        <div class="sc-flex sc-mt-2 sc-z-99999 sc-relative sc-items-center">
           <div
             class="sc-bg-3f3f3f sc-relative sc-py-1 sc-rounded-l sc-px-1 sc-w-25px"
           >
