@@ -6,11 +6,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("custom-timeline-arrow");
-    const border = document.getElementById("custom-timeline-border");
-    const startBullet = document.getElementById("timeline-start-bullet");
-    const endBullet = document.getElementById("timeline-end-bullet");
-    const dropdown = document.getElementById("effect-animation-type-list");
+    const arrow = document.getElementById("vertical-custom-timeline-arrow");
+    const border = document.getElementById("vertical-custom-timeline-border");
+    const startBullet = document.getElementById("vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("vertical-timeline-end-bullet");
+    const dropdown = document.getElementById("vertical-effect-animation-type-list");
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
