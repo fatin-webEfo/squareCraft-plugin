@@ -390,7 +390,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
     if (entryY === 0 && centerY === 0 && exitY === 0 && !apply) {
       gsap.set(btn, { opacity: 1 });
-      return;
     }
     let y = 0;
     let apply = false;
