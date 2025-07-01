@@ -9,29 +9,29 @@
 }
 
 :root {
-  --sc-vertical-entry: 0%;
-  --sc-vertical-center: 0%;
-  --sc-vertical-exit: 0%;
+  --sc-vertical-scroll-entry: 0%;
+  --sc-vertical-scroll-center: 0%;
+  --sc-vertical-scroll-exit: 0%;
 
-  --sc-horizontal-entry: 0%;
-  --sc-horizontal-center: 0%;
-  --sc-horizontal-exit: 0%;
+  --sc-horizontal-scroll-entry: 0%;
+  --sc-horizontal-scroll-center: 0%;
+  --sc-horizontal-scroll-exit: 0%;
 
-  --sc-opacity-entry: 0%;
-  --sc-opacity-center: 0%;
-  --sc-opacity-exit: 0%;
+  --sc-opacity-scroll-entry: 0%;
+  --sc-opacity-scroll-center: 0%;
+  --sc-opacity-scroll-exit: 0%;
 
-  --sc-scale-entry: 0%;
-  --sc-scale-center: 0%;
-  --sc-scale-exit: 0%;
+  --sc-scale-scroll-entry: 0%;
+  --sc-scale-scroll-center: 0%;
+  --sc-scale-scroll-exit: 0%;
 
-  --sc-rotate-entry: 0%;
-  --sc-rotate-center: 0%;
-  --sc-rotate-exit: 0%;
+  --sc-rotate-scroll-entry: 0%;
+  --sc-rotate-scroll-center: 0%;
+  --sc-rotate-scroll-exit: 0%;
 
-  --sc-blur-entry: 0%;
-  --sc-blur-center: 0%;
-  --sc-blur-exit: 0%;
+  --sc-blur-scroll-entry: 0%;
+  --sc-blur-scroll-center: 0%;
+  --sc-blur-scroll-exit: 0%;
 }
 
 .sc-margin-0 {
