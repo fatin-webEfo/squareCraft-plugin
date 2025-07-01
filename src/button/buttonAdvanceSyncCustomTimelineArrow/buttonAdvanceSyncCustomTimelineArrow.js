@@ -589,26 +589,33 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
 
     const finalY = apply ? y : 0;
+    const scaleValue = Math.max(0.01, 1 + finalY / 100);
 
     if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `scale(${1 + finalY / 100})`,
+        transform: `scale(${scaleValue})`,
       });
+      
       lastY = finalY;
     }
   }
-
-  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
+  arrow.style.display = "block";
+  arrow.style.backgroundColor = "#ffffff";
+  arrow.style.left = "50%";
+  arrow.style.transform = "translateX(-50%)";
+  
+  function trackLoop(arrow, border, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
     function loop() {
-      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
+      updateArrowPosition(arrow, startBullet, endBullet);
       requestAnimationFrame(loop);
     }
     loop();
   }
+  
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
