@@ -352,10 +352,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function updateArrowPosition(
     arrow,
-    border,
     startBullet,
     endBullet,
-    dropdown
   ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -390,7 +388,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
     const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
     const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
-    if (entryY === 0 && centerY === 0 && exitY === 0) {
+    if (entryY === 0 && centerY === 0 && exitY === 0 && !apply) {
       gsap.set(btn, { opacity: 1 });
       return;
     }
@@ -514,10 +512,8 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function updateArrowPosition(
     arrow,
-    border,
     startBullet,
     endBullet,
-    dropdown
   ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
