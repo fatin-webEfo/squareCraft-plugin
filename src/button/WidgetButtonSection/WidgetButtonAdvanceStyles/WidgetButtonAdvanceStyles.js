@@ -2138,7 +2138,7 @@ function initEffectAnimationDropdownToggle() {
       bullet,
       updateFn,
       type = "normal",
-      min = -100,
+      min = 0,
       max = 100
     ) => {
       bullet.onmousedown = (e) => {
