@@ -225,6 +225,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
     let X = 0;
     let apply = false;
+    
 
     if (scrollBasedLeft <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
