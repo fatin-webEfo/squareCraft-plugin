@@ -1333,9 +1333,9 @@ function initEffectAnimationDropdownToggle() {
 
         if (
           [
-            "--sc-scroll-entry",
-            "--sc-scroll-center",
-            "--sc-scroll-exit",
+            "--sc-scale-scroll-entry",
+            "--sc-scale-scroll-center",
+            "--sc-scale-scroll-exit",
           ].includes(cssVar)
         ) {
           const percent = (val + 100) / 2;
@@ -1424,7 +1424,7 @@ function initEffectAnimationDropdownToggle() {
       startBullet,
       startFill,
       startValue,
-      "--sc-scroll-start",
+      "--sc-scale-scroll-start",
       "left",
       0,
       100
@@ -1433,7 +1433,7 @@ function initEffectAnimationDropdownToggle() {
       endBullet,
       endFill,
       endValue,
-      "--sc-scroll-end",
+      "--sc-scale-scroll-end",
       "right",
       0,
       100
@@ -1442,19 +1442,19 @@ function initEffectAnimationDropdownToggle() {
       entryBullet,
       entryFill,
       entryCount,
-      "--sc-scroll-entry"
+      "--sc-scale-scroll-entry"
     );
     const updateCenter = updateField(
       centerBullet,
       centerFill,
       centerCount,
-      "--sc-scroll-center"
+      "--sc-scale-scroll-center"
     );
     const updateExit = updateField(
       exitBullet,
       exitFill,
       exitCount,
-      "--sc-scroll-exit"
+      "--sc-scale-scroll-exit"
     );
 
     const getCurrentPercentage = (cssVar) => {
@@ -1469,9 +1469,9 @@ function initEffectAnimationDropdownToggle() {
       return parseFloat(val.replace("%", "")) || 0;
     };
 
-    updateEntry(getCurrentPercentage("--sc-scroll-entry"));
-    updateCenter(getCurrentPercentage("--sc-scroll-center"));
-    updateExit(getCurrentPercentage("--sc-scroll-exit"));
+    updateEntry(getCurrentPercentage("--sc-scale-scroll-entry"));
+    updateCenter(getCurrentPercentage("--sc-scale-scroll-center"));
+    updateExit(getCurrentPercentage("--sc-scale-scroll-exit"));
 
     makeDraggable(startBullet, updateStart, "start", 0, 100);
     makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -1485,21 +1485,21 @@ function initEffectAnimationDropdownToggle() {
         bullet: entryBullet,
         fill: entryFill,
         count: entryCount,
-        css: "--sc-scroll-entry",
+        css: "--sc-scale-scroll-entry",
       },
       {
         id: "scale-button-advance-center-reset",
         bullet: centerBullet,
         fill: centerFill,
         count: centerCount,
-        css: "--sc-scroll-center",
+        css: "--sc-scale-scroll-center",
       },
       {
         id: "scale-button-advance-exit-reset",
         bullet: exitBullet,
         fill: exitFill,
         count: exitCount,
-        css: "--sc-scroll-exit",
+        css: "--sc-scale-scroll-exit",
       },
     ].forEach(({ id, bullet, fill, count, css }) => {
       const btn = document.getElementById(id);
