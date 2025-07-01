@@ -376,11 +376,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-    if (entryY === 0 && centerY === 0 && exitY === 0) {
-      gsap.set(btn, { opacity: 1 });
-      return;
-    }
-    
+  
+
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
@@ -393,7 +390,10 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
     const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
     const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
-
+    if (entryY === 0 && centerY === 0 && exitY === 0) {
+      gsap.set(btn, { opacity: 1 });
+      return;
+    }
     let y = 0;
     let apply = false;
 
