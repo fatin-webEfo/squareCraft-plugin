@@ -599,10 +599,11 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
+        transform: `scale(${Math.max(0.01, 1 + finalY / 100)})`,
       });
       lastY = finalY;
     }
+    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
