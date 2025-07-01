@@ -394,40 +394,31 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     if (scrollBasedLeft <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = scrollBasedLeft / (startLeft + 1);
-        y = entryY * progress;
-        apply = true;
-      }
+      y = (entryY / 100) * (scrollBasedLeft / (startLeft + 1));
+      apply = true;
     } else if (scrollBasedLeft >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = exitY * progress;
-        apply = true;
-      }
+      y = (exitY / 100) * (1 - (100 - scrollBasedLeft) / (100 - endLeft + 1));
+      apply = true;
+    } else if (
+      scrollBasedLeft > startLeft + 1 &&
+      scrollBasedLeft < centerLeft - 1
+    ) {
+      const progress = (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+      y = (entryY + (centerY - entryY) * progress) / 100;
+      apply = true;
+    } else if (
+      scrollBasedLeft > centerLeft + 1 &&
+      scrollBasedLeft < endLeft - 1
+    ) {
+      const progress = (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+      y = (centerY + (exitY - centerY) * progress) / 100;
+      apply = true;
     } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
-      }
+      y = centerY / 100;
+      apply = true;
     }
+    
 
     const finalY = apply ? y : 0;
 
@@ -435,8 +426,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        opacity: Math.max(0, Math.min(1, finalY / 100)),
+        opacity: Math.max(0, Math.min(1, y)),
       });
+      
       lastY = finalY;
     }
   }
