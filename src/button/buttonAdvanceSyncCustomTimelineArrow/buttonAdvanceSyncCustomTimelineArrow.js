@@ -668,14 +668,14 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-    const border = document.getElementById("horizontal-custom-timeline-border");
+    const arrow = document.getElementById("rotate-custom-timeline-arrow");
+    const border = document.getElementById("rotate-custom-timeline-border");
     const startBullet = document.getElementById(
-      "horizontal-timeline-start-bullet"
+      "rotate-timeline-start-bullet"
     );
-    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    const endBullet = document.getElementById("rotate-timeline-end-bullet");
     const dropdown = document.getElementById(
-      "horizontal-effect-animation-type-list"
+      "rotate-effect-animation-type-list"
     );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
@@ -720,9 +720,9 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-rotate-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-rotate-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-rotate-scroll-exit");
 
     let y = 0;
     let apply = false;
@@ -788,7 +788,7 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
-      "horizontal-effect-animation-type-arrow"
+      "rotate-effect-animation-type-arrow"
     );
 
     if (arrowTrigger && dropdown) {
