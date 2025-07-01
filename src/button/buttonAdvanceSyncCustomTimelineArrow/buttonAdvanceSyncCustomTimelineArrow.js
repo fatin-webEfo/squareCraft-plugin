@@ -423,15 +423,20 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const finalY = apply ? y : 0;
 
-    if (apply && lastY !== finalY) {
+    if (!apply) {
+      arrow.style.backgroundColor = "#ffffff";
+    }
+
+    if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        opacity: Math.max(0, Math.min(1, y)),
+        opacity: Math.max(0, Math.min(1, finalY)),
       });
-      
+
       lastY = finalY;
     }
+    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
