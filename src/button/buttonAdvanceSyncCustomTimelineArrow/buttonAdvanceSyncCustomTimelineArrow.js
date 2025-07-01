@@ -724,72 +724,57 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
     const centerY = getVHFromCSSVar("--sc-rotate-scroll-center");
     const exitY = getVHFromCSSVar("--sc-rotate-scroll-exit");
 
-    let color = "#FFFFFF";
     let y = 0;
     let apply = false;
 
     if (scrollBasedLeft <= startLeft + 1) {
-      color = "#EF7C2F";
+      arrow.style.backgroundColor = "#EF7C2F";
       if (entryY !== 0) {
         const progress = scrollBasedLeft / (startLeft + 1);
         y = entryY * progress;
         apply = true;
       }
     } else if (scrollBasedLeft >= endLeft - 1) {
-      color = "#F6B67B";
+      arrow.style.backgroundColor = "#F6B67B";
       if (exitY !== 0) {
         const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
         y = exitY * progress;
         apply = true;
       }
-    } else if (
-      scrollBasedLeft > startLeft + 1 &&
-      scrollBasedLeft < centerLeft - 1
-    ) {
-      color = "#EF7C2F";
-      if (entryY !== 0 && centerY !== 0) {
-        const progress =
-          (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-        y = entryY + (centerY - entryY) * progress;
-        apply = true;
-      }
-    } else if (
-      scrollBasedLeft >= centerLeft - 1 &&
-      scrollBasedLeft <= centerLeft + 1
-    ) {
-      color = "#FFFFFF";
-      y = centerY;
-      apply = true;
-    } else if (
-      scrollBasedLeft > centerLeft + 1 &&
-      scrollBasedLeft < endLeft - 1
-    ) {
-      color = "#F6B67B";
-      if (centerY !== 0 && exitY !== 0) {
-        const progress =
-          (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-        y = centerY + (exitY - centerY) * progress;
-        apply = true;
+    } else {
+      arrow.style.backgroundColor = "#FFFFFF";
+
+      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+          y = entryY + (centerY - entryY) * progress;
+          apply = true;
+        }
+      } else if (
+        scrollBasedLeft > centerLeft + 1 &&
+        scrollBasedLeft < endLeft - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+          y = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
       }
     }
 
-    arrow.style.backgroundColor = color;
-    
-
     const finalY = apply ? y : 0;
-
 
     if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        // Example for rotate:
-        rotation: finalY,
-        transformOrigin: "center center",
+        rotation: finalY, // or multiply like `finalY * 3` for stronger effect
+        transformOrigin: "center center", // or e.g., "left 50%" for left-middle
       });
       lastY = finalY;
     }
-    
     
   }
 
