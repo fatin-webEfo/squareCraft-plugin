@@ -420,6 +420,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       y = (centerY + (exitY - centerY) * progress) / 100;
       apply = true;
     } else {
+      arrow.style.backgroundColor = "#FFFFFF";
       y = centerY / 100;
       apply = true;
     }
