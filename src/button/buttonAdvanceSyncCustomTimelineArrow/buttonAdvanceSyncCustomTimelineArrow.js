@@ -516,8 +516,10 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function updateArrowPosition(
     arrow,
+    border,
     startBullet,
     endBullet,
+    dropdown
   ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -547,7 +549,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    
     const entryY = getVHFromCSSVar("--sc-scale-scroll-entry");
     const centerY = getVHFromCSSVar("--sc-scale-scroll-center");
     const exitY = getVHFromCSSVar("--sc-scale-scroll-exit");
@@ -593,28 +594,22 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
 
     const finalY = apply ? y : 0;
-    const scaleValue = Math.max(0.01, 1 + finalY / 100);
 
     if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        scale: scaleValue,
+        transform: `translateY(${finalY.toFixed(2)}vh)`,
       });
       lastY = finalY;
     }
-    
   }
-  arrow.style.display = "block";
-  arrow.style.backgroundColor = "#ffffff";
-  arrow.style.left = "50%";
-  arrow.style.transform = "translateX(-50%)";
-  
-  function trackLoop(arrow, border, startBullet, endBullet) {
+
+  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
     isTracking = true;
     function loop() {
-      updateArrowPosition(arrow,border, startBullet, endBullet);
+      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
       requestAnimationFrame(loop);
     }
     loop();
