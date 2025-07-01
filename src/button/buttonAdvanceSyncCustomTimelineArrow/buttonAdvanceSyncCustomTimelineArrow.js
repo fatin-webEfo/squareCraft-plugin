@@ -431,7 +431,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const finalY = apply ? y : 0;
 
-    if (lastY !== finalY) {
+    if (apply && lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
