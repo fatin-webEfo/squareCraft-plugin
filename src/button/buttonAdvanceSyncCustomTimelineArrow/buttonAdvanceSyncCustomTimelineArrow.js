@@ -385,9 +385,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
 
     let y = 0;
     let apply = false;
