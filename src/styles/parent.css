@@ -17,9 +17,9 @@
   --sc-horizontal-scroll-center: 0%;
   --sc-horizontal-scroll-exit: 0%;
 
-  --sc-opacity-scroll-entry: 0%;
-  --sc-opacity-scroll-center: 0%;
-  --sc-opacity-scroll-exit: 0%;
+  --sc-opacity-scroll-entry: 100%;
+  --sc-opacity-scroll-center: 100%;
+  --sc-opacity-scroll-exit: 100%;
 
   --sc-scale-scroll-entry: 0%;
   --sc-scale-scroll-center: 0%;
