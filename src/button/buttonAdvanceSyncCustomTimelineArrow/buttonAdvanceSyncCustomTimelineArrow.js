@@ -770,10 +770,11 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `rotate(${finalY}deg)`,
+        rotation: finalY,
       });
       lastY = finalY;
     }
+    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
@@ -785,6 +786,7 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
     }
     loop();
   }
+
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
