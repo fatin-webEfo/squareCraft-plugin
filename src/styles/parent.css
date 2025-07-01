@@ -20,6 +20,18 @@
   --sc-opacity-entry: 0%;
   --sc-opacity-center: 0%;
   --sc-opacity-exit: 0%;
+
+  --sc-scale-entry: 0%;
+  --sc-scale-center: 0%;
+  --sc-scale-exit: 0%;
+
+  --sc-rotate-entry: 0%;
+  --sc-rotate-center: 0%;
+  --sc-rotate-exit: 0%;
+
+  --sc-blur-entry: 0%;
+  --sc-blur-center: 0%;
+  --sc-blur-exit: 0%;
 }
 
 .sc-margin-0 {
