@@ -2092,9 +2092,9 @@ function initEffectAnimationDropdownToggle() {
 
         if (
           [
-            "--sc-scroll-entry",
-            "--sc-scroll-center",
-            "--sc-scroll-exit",
+            "--sc-blur-scroll-entry",
+            "--sc-blur-scroll-center",
+            "--sc-blur-scroll-exit",
           ].includes(cssVar)
         ) {
           const percent = (val + 100) / 2;
@@ -2183,7 +2183,7 @@ function initEffectAnimationDropdownToggle() {
       startBullet,
       startFill,
       startValue,
-      "--sc-scroll-start",
+      "--sc-blur-scroll-start",
       "left",
       0,
       100
@@ -2192,7 +2192,7 @@ function initEffectAnimationDropdownToggle() {
       endBullet,
       endFill,
       endValue,
-      "--sc-scroll-end",
+      "--sc-blur-scroll-end",
       "right",
       0,
       100
@@ -2201,19 +2201,19 @@ function initEffectAnimationDropdownToggle() {
       entryBullet,
       entryFill,
       entryCount,
-      "--sc-scroll-entry"
+      "--sc-blur-scroll-entry"
     );
     const updateCenter = updateField(
       centerBullet,
       centerFill,
       centerCount,
-      "--sc-scroll-center"
+      "--sc-blur-scroll-center"
     );
     const updateExit = updateField(
       exitBullet,
       exitFill,
       exitCount,
-      "--sc-scroll-exit"
+      "--sc-blur-scroll-exit"
     );
 
     const getCurrentPercentage = (cssVar) => {
@@ -2228,9 +2228,9 @@ function initEffectAnimationDropdownToggle() {
       return parseFloat(val.replace("%", "")) || 0;
     };
 
-    updateEntry(getCurrentPercentage("--sc-scroll-entry"));
-    updateCenter(getCurrentPercentage("--sc-scroll-center"));
-    updateExit(getCurrentPercentage("--sc-scroll-exit"));
+    updateEntry(getCurrentPercentage("--sc-blur-scroll-entry"));
+    updateCenter(getCurrentPercentage("--sc-blur-scroll-center"));
+    updateExit(getCurrentPercentage("--sc-blur-scroll-exit"));
 
     makeDraggable(startBullet, updateStart, "start", 0, 100);
     makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -2244,21 +2244,21 @@ function initEffectAnimationDropdownToggle() {
         bullet: entryBullet,
         fill: entryFill,
         count: entryCount,
-        css: "--sc-scroll-entry",
+        css: "--sc-blur-scroll-entry",
       },
       {
         id: "blur-button-advance-center-reset",
         bullet: centerBullet,
         fill: centerFill,
         count: centerCount,
-        css: "--sc-scroll-center",
+        css: "--sc-blur-scroll-center",
       },
       {
         id: "blur-button-advance-exit-reset",
         bullet: exitBullet,
         fill: exitFill,
         count: exitCount,
-        css: "--sc-scroll-exit",
+        css: "--sc-blur-scroll-exit",
       },
     ].forEach(({ id, bullet, fill, count, css }) => {
       const btn = document.getElementById(id);

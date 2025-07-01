@@ -883,9 +883,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-blur-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-blur-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-blur-scroll-exit");
 
     let y = 0;
     let apply = false;

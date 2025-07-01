@@ -320,7 +320,7 @@
                   opacityinitButtonAdvanceStyles(() => selectedElement);
                     scaleinitButtonAdvanceStyles(() => selectedElement);
                     rotateinitButtonAdvanceStyles(() => selectedElement);
-                    // blurinitButtonAdvanceStyles(() => selectedElement);
+                    blurinitButtonAdvanceStyles(() => selectedElement);
                 }
 
                 if (selectedElement) {
@@ -383,7 +383,7 @@
                         opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                          // blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -772,9 +772,9 @@
                                 rotatebuttonAdvanceSyncCustomTimelineArrow(
                                   selectedElement
                                 );
-                                // blurbuttonAdvanceSyncCustomTimelineArrow(
-                                //   selectedElement
-                                // );
+                                blurbuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
