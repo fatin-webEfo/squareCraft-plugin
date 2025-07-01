@@ -368,7 +368,6 @@
                 }
             
 
-             
                 setTimeout(() => {
                   handleBlockClick(event, {
                     getTextType,
