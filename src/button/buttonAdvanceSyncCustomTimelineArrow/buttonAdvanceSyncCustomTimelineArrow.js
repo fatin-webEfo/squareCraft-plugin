@@ -837,9 +837,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
     const border = document.getElementById("blur-custom-timeline-border");
-    const startBullet = document.getElementById("blur-timeline-start-bullet");
+    const startBullet = document.getElementById(
+      "blur-timeline-start-bullet"
+    );
     const endBullet = document.getElementById("blur-timeline-end-bullet");
-    const dropdown = document.getElementById("blur-effect-animation-type-list");
+    const dropdown = document.getElementById(
+      "blur-effect-animation-type-list"
+    );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
