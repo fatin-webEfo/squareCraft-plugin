@@ -7,10 +7,19 @@
 .sc-roboto {
   font-family: 'Roboto', sans-serif !important;
 }
+
 :root {
-  --sc-scroll-entry: 0%;
-  --sc-scroll-center: 0%;
-  --sc-scroll-exit: 0%;
+  --sc-vertical-entry: 0%;
+  --sc-vertical-center: 0%;
+  --sc-vertical-exit: 0%;
+
+  --sc-horizontal-entry: 0%;
+  --sc-horizontal-center: 0%;
+  --sc-horizontal-exit: 0%;
+
+  --sc-opacity-entry: 0%;
+  --sc-opacity-center: 0%;
+  --sc-opacity-exit: 0%;
 }
 
 .sc-margin-0 {
