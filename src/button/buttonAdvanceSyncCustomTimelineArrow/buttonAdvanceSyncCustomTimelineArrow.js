@@ -352,8 +352,10 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function updateArrowPosition(
     arrow,
+    border,
     startBullet,
     endBullet,
+    dropdown
   ) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
@@ -374,8 +376,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-  
-
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
@@ -385,9 +385,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
 
     let y = 0;
     let apply = false;
@@ -428,15 +428,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         }
       }
     }
-    
-    
-    
 
     const finalY = apply ? y : 0;
-
-    if (!apply) {
-      arrow.style.backgroundColor = "#ffffff";
-    }
 
     if (lastY !== finalY) {
       gsap.to(btn, {
@@ -444,10 +437,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         ease: transition.ease,
         opacity: Math.max(0, Math.min(1, finalY)),
       });
-
       lastY = finalY;
     }
-    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
