@@ -1011,9 +1011,8 @@ function initEffectAnimationDropdownToggle() {
             rect.left,
             Math.min(rect.right, event.clientX)
           );
-          const percent =
-            ((clientX - rect.left) / rect.width) * (max - min) + min;
-          const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+          const percent = ((clientX - rect.left) / rect.width) * 100;
+          const clamped = Math.round(Math.max(0, Math.min(100, percent)));
 
           const startPos = parseFloat(startBullet.style.left || "0");
           const endPos = parseFloat(endBullet.style.left || "100");
