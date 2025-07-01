@@ -376,58 +376,67 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
+    if (entryY === 0 && centerY === 0 && exitY === 0) {
+      gsap.set(btn, { opacity: 1 });
+      return;
+    }
+    
     if (!btn) return;
 
-    const getVal = (cssVar) => {
-      const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return val.endsWith("%") ? parseFloat(val) : 0;
+    const getVHFromCSSVar = (cssVar) => {
+      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      return value.endsWith("%")
+        ? (parseFloat(value) / 100) * 100
+        : parseFloat(value) || 0;
     };
 
-    const entry = getVal("--sc-opacity-scroll-entry");
-    const center = getVal("--sc-opacity-scroll-center");
-    const exit = getVal("--sc-opacity-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
 
-    const hasCustom = entry !== 0 || center !== 0 || exit !== 0;
+    let y = 0;
+    let apply = false;
 
-    let y = 1;
-    let bg = "#FFFFFF";
-
-    if (hasCustom) {
-      if (scrollBasedLeft <= startLeft + 1) {
-        const progress = scrollBasedLeft / (startLeft + 1);
-        y = (entry * progress) / 100;
-        bg = "#EF7C2F";
-      } else if (scrollBasedLeft >= endLeft - 1) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = (exit * progress) / 100;
-        bg = "#F6B67B";
-      } else if (scrollBasedLeft < centerLeft - 1) {
-        const progress =
-          (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-        y = (entry + (center - entry) * progress) / 100;
-        bg = "#EF7C2F";
-      } else if (scrollBasedLeft < endLeft - 1) {
-        const progress =
-          (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-        y = (center + (exit - center) * progress) / 100;
-        bg = "#F6B67B";
-      } else {
-        y = center / 100;
-      }
+    if (scrollBasedLeft <= startLeft + 1) {
+      arrow.style.backgroundColor = "#EF7C2F";
+      y = (entryY / 100) * (scrollBasedLeft / (startLeft + 1));
+      apply = true;
+    } else if (scrollBasedLeft >= endLeft - 1) {
+      arrow.style.backgroundColor = "#F6B67B";
+      y = (exitY / 100) * (1 - (100 - scrollBasedLeft) / (100 - endLeft + 1));
+      apply = true;
+    } else if (
+      scrollBasedLeft > startLeft + 1 &&
+      scrollBasedLeft < centerLeft - 1
+    ) {
+      const progress = (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+      y = (entryY + (centerY - entryY) * progress) / 100;
+      apply = true;
+    } else if (
+      scrollBasedLeft > centerLeft + 1 &&
+      scrollBasedLeft < endLeft - 1
+    ) {
+      const progress = (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+      y = (centerY + (exitY - centerY) * progress) / 100;
+      apply = true;
+    } else {
+      y = centerY / 100;
+      apply = true;
     }
+    
 
-    arrow.style.backgroundColor = bg;
+    const finalY = apply ? y : 0;
 
-    if (lastY !== y) {
+    if (apply && lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
         opacity: Math.max(0, Math.min(1, y)),
       });
-      lastY = y;
+      
+      lastY = finalY;
     }
   }
-  
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
