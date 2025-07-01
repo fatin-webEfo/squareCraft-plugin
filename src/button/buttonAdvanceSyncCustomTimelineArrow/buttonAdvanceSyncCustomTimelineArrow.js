@@ -770,7 +770,8 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        rotation: finalY,
+        rotation: finalY, // or multiply like `finalY * 3` for stronger effect
+        transformOrigin: "center center", // or e.g., "left 50%" for left-middle
       });
       lastY = finalY;
     }
@@ -786,7 +787,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
     }
     loop();
   }
-
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
