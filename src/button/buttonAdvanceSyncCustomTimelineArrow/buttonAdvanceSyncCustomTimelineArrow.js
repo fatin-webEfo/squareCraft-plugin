@@ -597,9 +597,9 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         ease: transition.ease,
         scale: scaleValue,
       });
-      
       lastY = finalY;
     }
+    
   }
   arrow.style.display = "block";
   arrow.style.backgroundColor = "#ffffff";
