@@ -407,10 +407,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         apply = true;
       }
     } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-
       if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
         if (entryY !== 0 && centerY !== 0) {
+          arrow.style.backgroundColor = "#EF7C2F";
           const progress =
             (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
           y = entryY + (centerY - entryY) * progress;
@@ -421,13 +420,19 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         scrollBasedLeft < endLeft - 1
       ) {
         if (centerY !== 0 && exitY !== 0) {
+          arrow.style.backgroundColor = "#F6B67B";
           const progress =
             (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
           y = centerY + (exitY - centerY) * progress;
           apply = true;
         }
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+        y = centerY;
+        apply = true;
       }
     }
+    
     
     
 
