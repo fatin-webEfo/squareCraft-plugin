@@ -756,6 +756,8 @@ function initEffectAnimationDropdownToggle() {
 
 
   // Opacity
+  
+  
   function opacityattachAdvanceTimelineIncrementDecrement(
     updateEntry,
     updateCenter,

@@ -325,9 +325,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
 
 
-export function opacitybuttonAdvanceSyncCustomTimelineArrow(
-  selectedElement
-) {
+export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -335,14 +333,14 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-    const border = document.getElementById("horizontal-custom-timeline-border");
+    const arrow = document.getElementById("opacity-custom-timeline-arrow");
+    const border = document.getElementById("opacity-custom-timeline-border");
     const startBullet = document.getElementById(
-      "horizontal-timeline-start-bullet"
+      "opacity-timeline-start-bullet"
     );
-    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    const endBullet = document.getElementById("opacity-timeline-end-bullet");
     const dropdown = document.getElementById(
-      "horizontal-effect-animation-type-list"
+      "opacity-effect-animation-type-list"
     );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
@@ -455,7 +453,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
-      "horizontal-effect-animation-type-arrow"
+      "opacity-effect-animation-type-arrow"
     );
 
     if (arrowTrigger && dropdown) {
@@ -492,9 +490,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(
 }
 
 
-export function scalebuttonAdvanceSyncCustomTimelineArrow(
-  selectedElement
-) {
+
+export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -502,14 +499,12 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-    const border = document.getElementById("horizontal-custom-timeline-border");
-    const startBullet = document.getElementById(
-      "horizontal-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    const arrow = document.getElementById("scale-custom-timeline-arrow");
+    const border = document.getElementById("scale-custom-timeline-border");
+    const startBullet = document.getElementById("scale-timeline-start-bullet");
+    const endBullet = document.getElementById("scale-timeline-end-bullet");
     const dropdown = document.getElementById(
-      "horizontal-effect-animation-type-list"
+      "scale-effect-animation-type-list"
     );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
@@ -622,7 +617,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
-      "horizontal-effect-animation-type-arrow"
+      "scale-effect-animation-type-arrow"
     );
 
     if (arrowTrigger && dropdown) {
@@ -657,6 +652,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
 
 
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(
@@ -826,9 +822,7 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
 }
 
 
-export function blurbuttonAdvanceSyncCustomTimelineArrow(
-  selectedElement
-) {
+export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -836,15 +830,11 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-    const border = document.getElementById("horizontal-custom-timeline-border");
-    const startBullet = document.getElementById(
-      "horizontal-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
-    const dropdown = document.getElementById(
-      "horizontal-effect-animation-type-list"
-    );
+    const arrow = document.getElementById("blur-custom-timeline-arrow");
+    const border = document.getElementById("blur-custom-timeline-border");
+    const startBullet = document.getElementById("blur-timeline-start-bullet");
+    const endBullet = document.getElementById("blur-timeline-end-bullet");
+    const dropdown = document.getElementById("blur-effect-animation-type-list");
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
@@ -956,7 +946,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
-      "horizontal-effect-animation-type-arrow"
+      "blur-effect-animation-type-arrow"
     );
 
     if (arrowTrigger && dropdown) {
