@@ -176,12 +176,20 @@
               const {
                 initButtonAdvanceStyles,
                 horizontalinitButtonAdvanceStyles,
+                opacityinitButtonAdvanceStyles,
+                scaleinitButtonAdvanceStyles,
+                rotateinitButtonAdvanceStyles,
+                blurinitButtonAdvanceStyles,
               } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
               );
               const {
                 buttonAdvanceSyncCustomTimelineArrow,
                 horizontalbuttonAdvanceSyncCustomTimelineArrow,
+                opacitybuttonAdvanceSyncCustomTimelineArrow,
+                scalebuttonAdvanceSyncCustomTimelineArrow,
+                rotatebuttonAdvanceSyncCustomTimelineArrow,
+                blurbuttonAdvanceSyncCustomTimelineArrow,
               } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
               );
@@ -309,6 +317,10 @@
                 if (selectedElement) {
                   initButtonAdvanceStyles(() => selectedElement);
                   horizontalinitButtonAdvanceStyles(() => selectedElement);
+                  opacityinitButtonAdvanceStyles(() => selectedElement);
+                    scaleinitButtonAdvanceStyles(() => selectedElement);
+                    rotateinitButtonAdvanceStyles(() => selectedElement);
+                    blurinitButtonAdvanceStyles(() => selectedElement);
                 }
 
                 if (selectedElement) {
@@ -368,9 +380,11 @@
 
                       setTimeout(() => {
                         buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                        horizontalbuttonAdvanceSyncCustomTimelineArrow(
-                          selectedElement
-                        );
+                        horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                        opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -749,7 +763,17 @@
 
                               setTimeout(() => {
                                 buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                                horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                                horizontalbuttonAdvanceSyncCustomTimelineArrow( selectedElement);
+                                opacitybuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
+                                scalebuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
+                                rotatebuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
+                                blurbuttonAdvanceSyncCustomTimelineArrow(
                                   selectedElement
                                 );
                               }, 300);
