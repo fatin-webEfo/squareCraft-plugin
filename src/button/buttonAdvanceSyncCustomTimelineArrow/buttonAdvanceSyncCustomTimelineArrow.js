@@ -376,6 +376,11 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
+    if (entryY === 0 && centerY === 0 && exitY === 0) {
+      gsap.set(btn, { opacity: 1 });
+      return;
+    }
+    
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
