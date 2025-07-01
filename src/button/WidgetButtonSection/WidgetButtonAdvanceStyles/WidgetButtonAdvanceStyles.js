@@ -957,14 +957,13 @@ function initEffectAnimationDropdownToggle() {
             "--sc-scroll-exit",
           ].includes(cssVar)
         ) {
-          const percent = (val + 100) / 2;
+          const percent = val;
           const bulletLeft = percent;
-          const fillLeft = val < 0 ? percent : 50;
-          const fillWidth = Math.abs(val / 2);
+          const fillWidth = percent;
 
           gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
           gsap.set(fill, {
-            left: `${fillLeft}%`,
+            left: "0%",
             width: `${fillWidth}%`,
             backgroundColor: "var(--sc-theme-accent)",
           });
