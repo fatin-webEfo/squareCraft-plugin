@@ -319,7 +319,7 @@
                   horizontalinitButtonAdvanceStyles(() => selectedElement);
                   opacityinitButtonAdvanceStyles(() => selectedElement);
                     scaleinitButtonAdvanceStyles(() => selectedElement);
-                    // rotateinitButtonAdvanceStyles(() => selectedElement);
+                    rotateinitButtonAdvanceStyles(() => selectedElement);
                     // blurinitButtonAdvanceStyles(() => selectedElement);
                 }
 
@@ -382,7 +382,7 @@
                         horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
                         opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                          // rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           // blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                       }, 300);
                     },
@@ -769,9 +769,9 @@
                                 scalebuttonAdvanceSyncCustomTimelineArrow(
                                   selectedElement
                                 );
-                                // rotatebuttonAdvanceSyncCustomTimelineArrow(
-                                //   selectedElement
-                                // );
+                                rotatebuttonAdvanceSyncCustomTimelineArrow(
+                                  selectedElement
+                                );
                                 // blurbuttonAdvanceSyncCustomTimelineArrow(
                                 //   selectedElement
                                 // );
