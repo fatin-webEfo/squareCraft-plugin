@@ -318,9 +318,9 @@
                   initButtonAdvanceStyles(() => selectedElement);
                   horizontalinitButtonAdvanceStyles(() => selectedElement);
                   opacityinitButtonAdvanceStyles(() => selectedElement);
-                    scaleinitButtonAdvanceStyles(() => selectedElement);
-                    rotateinitButtonAdvanceStyles(() => selectedElement);
-                    blurinitButtonAdvanceStyles(() => selectedElement);
+                    // scaleinitButtonAdvanceStyles(() => selectedElement);
+                    // rotateinitButtonAdvanceStyles(() => selectedElement);
+                    // blurinitButtonAdvanceStyles(() => selectedElement);
                 }
 
                 if (selectedElement) {
@@ -767,15 +767,15 @@
                                 opacitybuttonAdvanceSyncCustomTimelineArrow(
                                   selectedElement
                                 );
-                                scalebuttonAdvanceSyncCustomTimelineArrow(
-                                  selectedElement
-                                );
-                                rotatebuttonAdvanceSyncCustomTimelineArrow(
-                                  selectedElement
-                                );
-                                blurbuttonAdvanceSyncCustomTimelineArrow(
-                                  selectedElement
-                                );
+                                // scalebuttonAdvanceSyncCustomTimelineArrow(
+                                //   selectedElement
+                                // );
+                                // rotatebuttonAdvanceSyncCustomTimelineArrow(
+                                //   selectedElement
+                                // );
+                                // blurbuttonAdvanceSyncCustomTimelineArrow(
+                                //   selectedElement
+                                // );
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
