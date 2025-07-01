@@ -212,69 +212,56 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     );
     if (!btn) return;
 
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%")
-        ? (parseFloat(value) / 100) * 100
-        : parseFloat(value) || 0;
+    const getVal = (cssVar) => {
+      const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      return val.endsWith("%") ? parseFloat(val) : 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-horizontal-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-horizontal-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-horizontal-scroll-exit");
+    const entry = getVal("--sc-opacity-scroll-entry");
+    const center = getVal("--sc-opacity-scroll-center");
+    const exit = getVal("--sc-opacity-scroll-exit");
 
-    let X = 0;
-    let apply = false;
-    
+    const hasCustom = entry !== 0 || center !== 0 || exit !== 0;
 
-    if (scrollBasedLeft <= startLeft + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
+    let y = 1;
+    let bg = "#FFFFFF";
+
+    if (hasCustom) {
+      if (scrollBasedLeft <= startLeft + 1) {
         const progress = scrollBasedLeft / (startLeft + 1);
-        X = entryY * progress;
-        apply = true;
-      }
-    } else if (scrollBasedLeft >= endLeft - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
+        y = (entry * progress) / 100;
+        bg = "#EF7C2F";
+      } else if (scrollBasedLeft >= endLeft - 1) {
         const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        X = exitY * progress;
-        apply = true;
-      }
-    } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          X = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          X = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
+        y = (exit * progress) / 100;
+        bg = "#F6B67B";
+      } else if (scrollBasedLeft < centerLeft - 1) {
+        const progress =
+          (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+        y = (entry + (center - entry) * progress) / 100;
+        bg = "#EF7C2F";
+      } else if (scrollBasedLeft < endLeft - 1) {
+        const progress =
+          (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+        y = (center + (exit - center) * progress) / 100;
+        bg = "#F6B67B";
+      } else {
+        y = center / 100;
       }
     }
 
-    const finalX = apply ? X : 0;
+    arrow.style.backgroundColor = bg;
 
-    if (lastX !== finalX) {
+    if (lastY !== y) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `translateX(${finalX.toFixed(2)}vw)`,
+        opacity: Math.max(0, Math.min(1, y)),
       });
-      lastX = finalX;
+      lastY = y;
     }
   }
+  
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
