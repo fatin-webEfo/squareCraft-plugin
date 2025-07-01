@@ -429,7 +429,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
     }
 
-    const finalY = apply ? y : 0;
+    const finalY = apply ? y : 1;
 
     if (lastY !== finalY) {
       gsap.to(btn, {
