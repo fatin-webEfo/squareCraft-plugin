@@ -54,9 +54,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
 
     let y = 0;
     let apply = false;
@@ -219,9 +219,9 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-horizontal-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-horizontal-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-horizontal-scroll-exit");
 
     let X = 0;
     let apply = false;
@@ -385,9 +385,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-opacity-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-opacity-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-opacity-scroll-exit");
 
     let y = 0;
     let apply = false;
