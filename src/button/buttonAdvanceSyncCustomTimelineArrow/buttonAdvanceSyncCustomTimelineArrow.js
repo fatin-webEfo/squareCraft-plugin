@@ -394,31 +394,41 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     if (scrollBasedLeft <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
-      y = (entryY / 100) * (scrollBasedLeft / (startLeft + 1));
-      apply = true;
+      if (entryY !== 0) {
+        const progress = scrollBasedLeft / (startLeft + 1);
+        y = entryY * progress;
+        apply = true;
+      }
     } else if (scrollBasedLeft >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
-      y = (exitY / 100) * (1 - (100 - scrollBasedLeft) / (100 - endLeft + 1));
-      apply = true;
-    } else if (
-      scrollBasedLeft > startLeft + 1 &&
-      scrollBasedLeft < centerLeft - 1
-    ) {
-      const progress = (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-      y = (entryY + (centerY - entryY) * progress) / 100;
-      apply = true;
-    } else if (
-      scrollBasedLeft > centerLeft + 1 &&
-      scrollBasedLeft < endLeft - 1
-    ) {
-      const progress = (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-      y = (centerY + (exitY - centerY) * progress) / 100;
-      apply = true;
+      if (exitY !== 0) {
+        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
+        y = exitY * progress;
+        apply = true;
+      }
     } else {
       arrow.style.backgroundColor = "#FFFFFF";
-      y = centerY / 100;
-      apply = true;
+
+      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+          y = entryY + (centerY - entryY) * progress;
+          apply = true;
+        }
+      } else if (
+        scrollBasedLeft > centerLeft + 1 &&
+        scrollBasedLeft < endLeft - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+          y = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
+      }
     }
+    
     
 
     const finalY = apply ? y : 0;
