@@ -1217,7 +1217,7 @@ export function WidgetButtonAdvanceSection(){
             class="sc-mt-1 scale-custom-timeline-border"
           >
             <div
-              id="rotate-custom-timeline-arrow"
+              id="scale-custom-timeline-arrow"
               class="sc-absolute sc-top-6px"
             ></div>
           </div>

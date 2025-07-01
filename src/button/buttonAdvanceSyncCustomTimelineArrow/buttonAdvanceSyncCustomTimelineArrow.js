@@ -595,7 +595,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `scale(${scaleValue})`,
+        scale: scaleValue,
       });
       
       lastY = finalY;
@@ -610,7 +610,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (isTracking) return;
     isTracking = true;
     function loop() {
-      updateArrowPosition(arrow, startBullet, endBullet);
+      updateArrowPosition(arrow,border, startBullet, endBullet);
       requestAnimationFrame(loop);
     }
     loop();
