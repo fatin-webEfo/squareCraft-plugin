@@ -2097,14 +2097,13 @@ function initEffectAnimationDropdownToggle() {
             "--sc-blur-scroll-exit",
           ].includes(cssVar)
         ) {
-          const percent = (val + 100) / 2;
+          const percent = val;
           const bulletLeft = percent;
-          const fillLeft = val < 0 ? percent : 50;
-          const fillWidth = Math.abs(val / 2);
+          const fillWidth = percent;
 
           gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
           gsap.set(fill, {
-            left: `${fillLeft}%`,
+            left: "0%",
             width: `${fillWidth}%`,
             backgroundColor: "var(--sc-theme-accent)",
           });
@@ -2116,7 +2115,7 @@ function initEffectAnimationDropdownToggle() {
           gsap.set(fill, {
             left: "0",
             right: "auto",
-            transform: `blurX(${(100 - val) / 100})`,
+            transform: `scaleX(${(100 - val) / 100})`,
             transformOrigin: "right",
             width: "100%",
             backgroundColor: "#F6B67B",
