@@ -547,6 +547,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
+    
     const entryY = getVHFromCSSVar("--sc-scale-scroll-entry");
     const centerY = getVHFromCSSVar("--sc-scale-scroll-center");
     const exitY = getVHFromCSSVar("--sc-scale-scroll-exit");
