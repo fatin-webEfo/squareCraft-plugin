@@ -53,6 +53,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     document.head.appendChild(style);
   }
   
+  
 
   function updateArrowPosition(
     arrow,
