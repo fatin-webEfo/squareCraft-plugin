@@ -1,3 +1,7 @@
+
+
+
+
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -8,15 +12,52 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("vertical-custom-timeline-arrow");
     const border = document.getElementById("vertical-custom-timeline-border");
-    const startBullet = document.getElementById("vertical-timeline-start-bullet");
+    const startBullet = document.getElementById(
+      "vertical-timeline-start-bullet"
+    );
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    const dropdown = document.getElementById("vertical-effect-animation-type-list");
+    const dropdown = document.getElementById(
+      "vertical-effect-animation-type-list"
+    );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
+  }
+
+  function updateExternalScrollVars(blockId, updates = {}) {
+    if (!verticalScrollVarsMap.has(blockId))
+      verticalScrollVarsMap.set(blockId, {});
+    Object.assign(verticalScrollVarsMap.get(blockId), updates);
+
+    const styleId = `sc-style-${blockId}`;
+    const styleTag = document.getElementById(styleId);
+    if (!styleTag) return;
+
+    const lines = styleTag.textContent
+      .replace(/[\n\r]+/g, "")
+      .replace(/}/g, "")
+      .split(";")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    const cssMap = {};
+    lines.forEach((line) => {
+      const [prop, val] = line.split(":").map((p) => p.trim());
+      cssMap[prop] = val;
+    });
+
+    Object.entries(updates).forEach(([k, v]) => {
+      cssMap[k] = `${v}%`;
+    });
+
+    const cssString = Object.entries(cssMap)
+      .map(([k, v]) => `  ${k}: ${v}`)
+      .join(";\n");
+
+    styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n${cssString};\n}`;
   }
 
   function updateArrowPosition(
@@ -54,9 +95,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
+    const varStore = verticalScrollVarsMap.get(selectedElement.id) || {};
+    const entryY = parseFloat(varStore["--sc-vertical-scroll-entry"]) || 0;
+    const centerY = parseFloat(varStore["--sc-vertical-scroll-center"]) || 0;
+    const exitY = parseFloat(varStore["--sc-vertical-scroll-exit"]) || 0;
 
     let y = 0;
     let apply = false;
@@ -101,11 +143,23 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
-      gsap.to(btn, {
+      const blockId = selectedElement.id;
+      const entry = getVHFromCSSVar("--sc-vertical-scroll-entry");
+      const center = getVHFromCSSVar("--sc-vertical-scroll-center");
+      const exit = getVHFromCSSVar("--sc-vertical-scroll-exit");
+
+      updateExternalScrollVars(blockId, {
+        "--sc-vertical-scroll-entry": entry,
+        "--sc-vertical-scroll-center": center,
+        "--sc-vertical-scroll-exit": exit,
+      });
+
+      gsap.to(`#${blockId} a.sqs-block-button-element`, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
+        "--sc-translate-y": `${finalY.toFixed(2)}vh`,
       });
+
       lastY = finalY;
     }
   }
@@ -121,7 +175,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById("vertical-effect-animation-type-arrow");
+    const arrowTrigger = document.getElementById(
+      "vertical-effect-animation-type-arrow"
+    );
 
     if (arrowTrigger && dropdown) {
       arrowTrigger.addEventListener("click", (e) => {
@@ -155,6 +211,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
+
+
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
