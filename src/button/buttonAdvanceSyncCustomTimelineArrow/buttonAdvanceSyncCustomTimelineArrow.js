@@ -1,3 +1,7 @@
+
+
+
+
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -8,9 +12,13 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("vertical-custom-timeline-arrow");
     const border = document.getElementById("vertical-custom-timeline-border");
-    const startBullet = document.getElementById("vertical-timeline-start-bullet");
+    const startBullet = document.getElementById(
+      "vertical-timeline-start-bullet"
+    );
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    const dropdown = document.getElementById("vertical-effect-animation-type-list");
+    const dropdown = document.getElementById(
+      "vertical-effect-animation-type-list"
+    );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
@@ -101,6 +109,13 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      const blockId = selectedElement.id;
+      const entry = getVHFromCSSVar("--sc-vertical-scroll-entry");
+      const center = getVHFromCSSVar("--sc-vertical-scroll-center");
+      const exit = getVHFromCSSVar("--sc-vertical-scroll-exit");
+
+      injectVerticalScrollCSS(blockId, entry, center, exit);
+
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -108,6 +123,21 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
       lastY = finalY;
     }
+  }
+  function injectVerticalScrollCSS(blockId, entry, center, exit) {
+    const styleId = `sc-style-${blockId}`;
+    document.getElementById(styleId)?.remove();
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #${blockId} a.sqs-block-button-element {
+        --sc-vertical-scroll-entry: ${entry}%;
+        --sc-vertical-scroll-center: ${center}%;
+        --sc-vertical-scroll-exit: ${exit}%;
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
@@ -121,7 +151,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById("vertical-effect-animation-type-arrow");
+    const arrowTrigger = document.getElementById(
+      "vertical-effect-animation-type-arrow"
+    );
 
     if (arrowTrigger && dropdown) {
       arrowTrigger.addEventListener("click", (e) => {
@@ -155,6 +187,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(

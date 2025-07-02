@@ -1,4 +1,6 @@
-export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+
+
+export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -6,14 +8,14 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("blur-custom-timeline-arrow");
-    const border = document.getElementById("blur-custom-timeline-border");
+    const arrow = document.getElementById("vertical-custom-timeline-arrow");
+    const border = document.getElementById("vertical-custom-timeline-border");
     const startBullet = document.getElementById(
-      "blur-timeline-start-bullet"
+      "vertical-timeline-start-bullet"
     );
-    const endBullet = document.getElementById("blur-timeline-end-bullet");
+    const endBullet = document.getElementById("vertical-timeline-end-bullet");
     const dropdown = document.getElementById(
-      "blur-effect-animation-type-list"
+      "vertical-effect-animation-type-list"
     );
 
     if (arrow && border && startBullet && endBullet && dropdown) {
@@ -58,9 +60,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scroll-exit");
+    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
 
     let y = 0;
     let apply = false;
@@ -105,15 +107,38 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      const blockId = selectedElement.id;
+      const entry = getVHFromCSSVar("--sc-vertical-scroll-entry");
+      const center = getVHFromCSSVar("--sc-vertical-scroll-center");
+      const exit = getVHFromCSSVar("--sc-vertical-scroll-exit");
+
+      injectVerticalScrollCSS(blockId, entry, center, exit);
+
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        filter: `blur(${Math.abs(finalY / 10)}px)`,
+        transform: `translateY(${finalY.toFixed(2)}vh)`,
       });
       lastY = finalY;
     }
+    
   }
+  function injectVerticalScrollCSS(blockId, entry, center, exit) {
+    const styleId = `sc-style-${blockId}`;
+    document.getElementById(styleId)?.remove();
 
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #${blockId} a.sqs-block-button-element {
+        --sc-vertical-scroll-entry: ${entry}%;
+        --sc-vertical-scroll-center: ${center}%;
+        --sc-vertical-scroll-exit: ${exit}%;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
     isTracking = true;
@@ -126,7 +151,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
-      "blur-effect-animation-type-arrow"
+      "vertical-effect-animation-type-arrow"
     );
 
     if (arrowTrigger && dropdown) {

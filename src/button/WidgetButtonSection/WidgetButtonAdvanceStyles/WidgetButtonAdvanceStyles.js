@@ -113,8 +113,7 @@ function initEffectAnimationDropdownToggle() {
 }
 
 
-  
-  export function initButtonAdvanceStyles(getSelectedElement) {
+export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
     const startFill = document.getElementById("vertical-timeline-start-fill");
