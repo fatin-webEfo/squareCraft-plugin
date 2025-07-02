@@ -600,15 +600,22 @@ function initEffectAnimationDropdownToggle() {
         }
 
         const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
+        if (el && el.id?.startsWith("block-")) {
+          const styleId = `sc-style-${el.id}-${cssVar.replace(
+            /[^a-z0-9]/gi,
+            ""
+          )}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
           }
+
+          const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
         }
+        
       };
 
     const makeDraggable = (
@@ -989,15 +996,22 @@ function initEffectAnimationDropdownToggle() {
         }
 
         const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
+        if (el && el.id?.startsWith("block-")) {
+          const styleId = `sc-style-${el.id}-${cssVar.replace(
+            /[^a-z0-9]/gi,
+            ""
+          )}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
           }
+
+          const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
         }
+        
       };
 
     const makeDraggable = (
@@ -1372,15 +1386,22 @@ function initEffectAnimationDropdownToggle() {
         }
 
         const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
+        if (el && el.id?.startsWith("block-")) {
+          const styleId = `sc-style-${el.id}-${cssVar.replace(
+            /[^a-z0-9]/gi,
+            ""
+          )}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
           }
+
+          const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
         }
+        
       };
 
     const makeDraggable = (
@@ -1756,15 +1777,22 @@ function initEffectAnimationDropdownToggle() {
         }
 
         const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
+        if (el && el.id?.startsWith("block-")) {
+          const styleId = `sc-style-${el.id}-${cssVar.replace(
+            /[^a-z0-9]/gi,
+            ""
+          )}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
           }
+
+          const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
         }
+        
       };
 
     const makeDraggable = (
@@ -2130,15 +2158,22 @@ function initEffectAnimationDropdownToggle() {
         }
 
         const el = getSelectedElement?.();
-        if (el) {
-          const button = el.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-              "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          );
-          if (button) {
-            gsap.set(button, { [cssVar]: `${val}%` });
+        if (el && el.id?.startsWith("block-")) {
+          const styleId = `sc-style-${el.id}-${cssVar.replace(
+            /[^a-z0-9]/gi,
+            ""
+          )}`;
+          let styleTag = document.getElementById(styleId);
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
           }
+
+          const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
         }
+        
       };
 
     const makeDraggable = (
