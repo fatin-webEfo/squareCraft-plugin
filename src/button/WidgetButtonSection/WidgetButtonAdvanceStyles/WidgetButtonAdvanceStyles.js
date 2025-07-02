@@ -364,7 +364,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
 
 
-
   // horizontal
   function horizontalattachAdvanceTimelineIncrementDecrement(
     updateEntry,
