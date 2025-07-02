@@ -26,20 +26,24 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
 
-  function injectVerticalScrollTransformCSS(blockId, translateY) {
-    const styleId = `sc-translate-style-${blockId}`;
+  function injectVerticalScrollCSS(blockId, entry, center, exit) {
+    const styleId = `sc-style-${blockId}`;
     document.getElementById(styleId)?.remove();
 
     const style = document.createElement("style");
     style.id = styleId;
     style.textContent = `
       #${blockId} a.sqs-block-button-element {
-        --sc-translate-y: ${translateY}vh;
+        --sc-vertical-scroll-entry: ${entry}%;
+        --sc-vertical-scroll-center: ${center}%;
+        --sc-vertical-scroll-exit: ${exit}%;
+        --sc-translate-y: 0;
         transform: translateY(var(--sc-translate-y, 0));
       }
     `;
     document.head.appendChild(style);
   }
+  
 
   function updateArrowPosition(
     arrow,
@@ -130,8 +134,12 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       injectVerticalScrollCSS(blockId, entry, center, exit);
 
-      injectVerticalScrollTransformCSS(selectedElement.id, finalY.toFixed(2));
-
+      gsap.to(selectedElement, {
+        duration: 0.3,
+        ease: transition.ease,
+        [`--sc-translate-y`]: `${finalY.toFixed(2)}vh`,
+      });
+      
       
       
       lastY = finalY;
