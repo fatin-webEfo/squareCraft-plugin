@@ -1082,7 +1082,9 @@ function initEffectAnimationDropdownToggle() {
       );
       if (!btn) return 0;
       const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return parseFloat(val.replace("%", "")) || 0;
+      const percent = parseFloat(val.replace("%", ""));
+      return isNaN(percent) ? 100 : percent;
+      
     };
 
     updateEntry(getCurrentPercentage("--sc-opacity-scroll-entry"));
