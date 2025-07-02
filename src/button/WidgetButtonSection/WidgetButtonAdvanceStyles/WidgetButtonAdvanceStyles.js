@@ -1085,9 +1085,9 @@ function initEffectAnimationDropdownToggle() {
       return parseFloat(val.replace("%", "")) || 0;
     };
 
-    updateEntry(getCurrentPercentage("--sc-opacity-scroll-entry"));
-    updateCenter(getCurrentPercentage("--sc-opacity-scroll-center"));
-    updateExit(getCurrentPercentage("--sc-opacity-scroll-exit"));
+    updateEntry(getCurrentPercentage("--sc-opacity-scroll-entry") || 100);
+    updateCenter(getCurrentPercentage("--sc-opacity-scroll-center") || 100);
+    updateExit(getCurrentPercentage("--sc-opacity-scroll-exit") || 100);
 
     makeDraggable(startBullet, updateStart, "start", 0, 100);
     makeDraggable(endBullet, updateEnd, "end", 0, 100);
