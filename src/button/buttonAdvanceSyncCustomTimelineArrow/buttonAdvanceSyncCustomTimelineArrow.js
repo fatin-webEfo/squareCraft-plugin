@@ -137,8 +137,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.to(selectedElement, {
         duration: 0.3,
         ease: transition.ease,
-        [`--sc-translate-y`]: `${finalY.toFixed(2)}vh`,
+        "--sc-translate-y": `${finalY.toFixed(2)}vh`,
       });
+      
 
       lastY = finalY;
     }
