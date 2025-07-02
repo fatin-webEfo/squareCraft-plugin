@@ -101,12 +101,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
-      btn.style.removeProperty("translate");
-      btn.style.removeProperty("rotate");
-      btn.style.removeProperty("scale");
-      btn.style.removeProperty("transform");
-      btn.style.removeProperty("transform-origin");
-      btn.style.removeProperty("filter");
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -272,6 +267,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     const finalX = apply ? X : 0;
 
     if (lastX !== finalX) {
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -438,6 +434,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -602,6 +599,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -773,6 +771,7 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
@@ -940,6 +939,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
+      btn.removeAttribute("style");
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
