@@ -134,11 +134,12 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       injectVerticalScrollCSS(blockId, entry, center, exit);
 
-      gsap.to(selectedElement, {
+      gsap.to(`#${blockId} a.sqs-block-button-element`, {
         duration: 0.3,
         ease: transition.ease,
         "--sc-translate-y": `${finalY.toFixed(2)}vh`,
       });
+      
       
 
       lastY = finalY;
