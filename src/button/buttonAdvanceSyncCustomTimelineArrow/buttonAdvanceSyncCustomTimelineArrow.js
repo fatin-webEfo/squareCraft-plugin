@@ -101,7 +101,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
-      btn.removeAttribute("style");
+      gsap.set(btn, {
+        clearProps: "transform,scale,rotate,translate,transformOrigin,filter",
+      });
+
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
