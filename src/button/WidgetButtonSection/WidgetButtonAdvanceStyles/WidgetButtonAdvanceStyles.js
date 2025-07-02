@@ -154,23 +154,7 @@ function initEffectAnimationDropdownToggle() {
       !exitCount
     )
       return;
-      function updateExternalScrollVars(blockId, updates = {}) {
-        const styleId = `sc-style-${blockId}`;
-        let styleTag = document.getElementById(styleId);
 
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
-
-        const cssVars = Object.entries(updates)
-          .map(([key, val]) => `  ${key}: ${val}%;`)
-          .join("\n");
-
-        styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n${cssVars}\n}`;
-      }
-      
     const updateField =
       (
         bullet,
@@ -225,9 +209,8 @@ function initEffectAnimationDropdownToggle() {
               "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           );
           if (button) {
-            const blockId = el.id;
-            updateExternalScrollVars(blockId, { [cssVar]: val });
-                      }
+            gsap.set(button, { [cssVar]: `${val}%` });
+          }
         }
       };
 
