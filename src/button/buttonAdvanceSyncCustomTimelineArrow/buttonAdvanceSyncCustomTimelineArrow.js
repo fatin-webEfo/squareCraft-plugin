@@ -82,10 +82,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endLeft = parseFloat(endBullet.style.left || "100");
     const centerLeft = (startLeft + endLeft) / 2;
 
-    const btn = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
+    const btn = selectedElement.querySelector("a.sqs-block-button-element");
+
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
