@@ -830,9 +830,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       resetBtn.onclick = () => {
         updateStart(0);
         updateEnd(100);
-        updateEntry(0);
-        updateCenter(0);
-        updateExit(0);
+        updateEntry(100);
+        updateCenter(100);
+        updateExit(100);
+        
       };
     }
   }
