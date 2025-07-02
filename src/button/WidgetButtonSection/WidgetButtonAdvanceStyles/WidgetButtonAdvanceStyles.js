@@ -113,7 +113,8 @@ function initEffectAnimationDropdownToggle() {
 }
 
 
-export function initButtonAdvanceStyles(getSelectedElement) {
+  
+  export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
     const startFill = document.getElementById("vertical-timeline-start-fill");
@@ -687,8 +688,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const getCurrentPercentage = (cssVar) => {
       const el = getSelectedElement?.();
       if (!el) return 0;
-      const btn = el.querySelector("a.sqs-block-button-element");
-
+      const btn = el.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      );
       if (!btn) return 0;
       const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
       return parseFloat(val.replace("%", "")) || 0;
@@ -830,10 +833,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       resetBtn.onclick = () => {
         updateStart(0);
         updateEnd(100);
-        updateEntry(100);
-        updateCenter(100);
-        updateExit(100);
-        
+        updateEntry(0);
+        updateCenter(0);
+        updateExit(0);
       };
     }
   }
