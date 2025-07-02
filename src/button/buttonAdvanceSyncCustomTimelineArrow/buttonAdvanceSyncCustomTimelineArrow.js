@@ -1,7 +1,5 @@
 
 
-
-
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -25,6 +23,21 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
+  }
+
+  function injectVerticalScrollTransformCSS(blockId, translateY) {
+    const styleId = `sc-translate-style-${blockId}`;
+    document.getElementById(styleId)?.remove();
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #${blockId} a.sqs-block-button-element {
+        --sc-translate-y: ${translateY}vh;
+        transform: translateY(var(--sc-translate-y, 0));
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   function updateArrowPosition(
@@ -116,28 +129,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       injectVerticalScrollCSS(blockId, entry, center, exit);
 
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
-      });
+      injectVerticalScrollTransformCSS(selectedElement.id, finalY.toFixed(2));
+
       lastY = finalY;
     }
-  }
-  function injectVerticalScrollCSS(blockId, entry, center, exit) {
-    const styleId = `sc-style-${blockId}`;
-    document.getElementById(styleId)?.remove();
-
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `
-      #${blockId} a.sqs-block-button-element {
-        --sc-vertical-scroll-entry: ${entry}%;
-        --sc-vertical-scroll-center: ${center}%;
-        --sc-vertical-scroll-exit: ${exit}%;
-      }
-    `;
-    document.head.appendChild(style);
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
@@ -187,6 +182,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
 
 
 
