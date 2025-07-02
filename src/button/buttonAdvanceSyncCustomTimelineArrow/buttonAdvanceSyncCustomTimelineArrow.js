@@ -29,7 +29,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   function injectVerticalScrollCSS(blockId, entry, center, exit) {
     const styleId = `sc-style-${blockId}`;
-    document.getElementById(styleId)?.remove();
+    const existing = document.getElementById(styleId);
+
+    const currentTranslateY = (() => {
+      if (!existing) return "0vh";
+      const match = existing.textContent.match(/--sc-translate-y:\s*([^;]+);/);
+      return match ? match[1].trim() : "0vh";
+    })();
+
+    if (existing) existing.remove();
 
     const style = document.createElement("style");
     style.id = styleId;
@@ -38,12 +46,13 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         --sc-vertical-scroll-entry: ${entry}%;
         --sc-vertical-scroll-center: ${center}%;
         --sc-vertical-scroll-exit: ${exit}%;
-        --sc-translate-y: 0;
+        --sc-translate-y: ${currentTranslateY};
         transform: translateY(var(--sc-translate-y, 0));
       }
     `;
     document.head.appendChild(style);
   }
+  
 
   function updateArrowPosition(
     arrow,
