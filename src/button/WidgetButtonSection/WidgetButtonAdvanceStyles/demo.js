@@ -23,23 +23,35 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function injectVerticalScrollCSS(blockId, entry, center, exit) {
+  function updateExternalScrollVars(blockId, updates = {}) {
     const styleId = `sc-style-${blockId}`;
-    document.getElementById(styleId)?.remove();
+    const styleTag = document.getElementById(styleId);
+    if (!styleTag) return;
 
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `
-      #${blockId} a.sqs-block-button-element {
-        --sc-vertical-scroll-entry: ${entry}%;
-        --sc-vertical-scroll-center: ${center}%;
-        --sc-vertical-scroll-exit: ${exit}%;
-        --sc-translate-y: 0;
-        transform: translateY(var(--sc-translate-y, 0));
-      }
-    `;
-    document.head.appendChild(style);
+    const lines = styleTag.textContent
+      .replace(/[\n\r]+/g, "")
+      .replace(/}/g, "")
+      .split(";")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    const cssMap = {};
+    lines.forEach((line) => {
+      const [prop, val] = line.split(":").map((p) => p.trim());
+      cssMap[prop] = val;
+    });
+
+    Object.entries(updates).forEach(([k, v]) => {
+      cssMap[k] = `${v}%`;
+    });
+
+    const cssString = Object.entries(cssMap)
+      .map(([k, v]) => `  ${k}: ${v}`)
+      .join(";\n");
+
+    styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n${cssString};\n}`;
   }
+  
 
   function updateArrowPosition(
     arrow,
@@ -128,7 +140,12 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const center = getVHFromCSSVar("--sc-vertical-scroll-center");
       const exit = getVHFromCSSVar("--sc-vertical-scroll-exit");
 
-      injectVerticalScrollCSS(blockId, entry, center, exit);
+      updateExternalScrollVars(blockId, {
+        "--sc-vertical-scroll-entry": entry,
+        "--sc-vertical-scroll-center": center,
+        "--sc-vertical-scroll-exit": exit,
+      });
+      
 
       gsap.to(`#${blockId} a.sqs-block-button-element`, {
         duration: 0.3,
@@ -433,7 +450,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         if (blockId) {
           updateExternalScrollVar(blockId, cssVar, val);
         }
-        
       }
     };
 
