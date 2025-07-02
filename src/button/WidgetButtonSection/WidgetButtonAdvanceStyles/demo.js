@@ -24,6 +24,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function updateExternalScrollVars(blockId, updates = {}) {
+    if (!verticalScrollVarsMap.has(blockId))
+      verticalScrollVarsMap.set(blockId, {});
+    Object.assign(verticalScrollVarsMap.get(blockId), updates);
+
     const styleId = `sc-style-${blockId}`;
     const styleTag = document.getElementById(styleId);
     if (!styleTag) return;
@@ -51,6 +55,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n${cssString};\n}`;
   }
+  
   
 
   function updateArrowPosition(
@@ -88,9 +93,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : parseFloat(value) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
+    const varStore = verticalScrollVarsMap.get(selectedElement.id) || {};
+    const entryY = parseFloat(varStore["--sc-vertical-scroll-entry"]) || 0;
+    const centerY = parseFloat(varStore["--sc-vertical-scroll-center"]) || 0;
+    const exitY = parseFloat(varStore["--sc-vertical-scroll-exit"]) || 0;
+
 
     let y = 0;
     let apply = false;
@@ -206,9 +213,12 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 function updateExternalScrollVar(blockId, cssVar, value) {
+  if (!verticalScrollVarsMap.has(blockId))
+    verticalScrollVarsMap.set(blockId, {});
+  verticalScrollVarsMap.get(blockId)[cssVar] = value;
+
   const styleId = `sc-style-${blockId}`;
   const styleTag = document.getElementById(styleId);
-
   if (!styleTag) return;
 
   const lines = styleTag.textContent
@@ -232,6 +242,7 @@ function updateExternalScrollVar(blockId, cssVar, value) {
 
   styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n${cssString};\n}`;
 }
+
 
 function attachAdvanceTimelineIncrementDecrement(
   updateEntry,

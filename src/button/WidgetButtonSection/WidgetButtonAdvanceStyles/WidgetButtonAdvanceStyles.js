@@ -1,7 +1,10 @@
 function updateExternalScrollVar(blockId, cssVar, value) {
+  if (!verticalScrollVarsMap.has(blockId))
+    verticalScrollVarsMap.set(blockId, {});
+  verticalScrollVarsMap.get(blockId)[cssVar] = value;
+
   const styleId = `sc-style-${blockId}`;
   const styleTag = document.getElementById(styleId);
-
   if (!styleTag) return;
 
   const lines = styleTag.textContent
@@ -141,7 +144,10 @@ function initEffectAnimationDropdownToggle() {
       dropdown.classList.add("sc-hidden");
     });
   });
+  
 }
+
+
 
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
