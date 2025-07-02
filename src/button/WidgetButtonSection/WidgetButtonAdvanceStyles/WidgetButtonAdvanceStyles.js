@@ -80,39 +80,6 @@ function attachCustomTimelineReset(
   }
 }
 
-function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
-  const dropdown = document.getElementById("vertical-effect-animation-type-list");
-  const container = document.getElementById(
-    "vertical-effect-animation-dropdown-container"
-  );
-  const displayValue = document.getElementById(
-    "vertical-effect-animation-value"
-  );
-
-  if (!arrow || !dropdown || !container || !displayValue) return;
-
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) {
-      dropdown.classList.add("sc-hidden");
-    }
-  });
-
-  dropdown.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selected = item.getAttribute("data-value");
-      displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
-    });
-  });
-}
-
-
 export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -358,7 +325,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       updateCenter,
       updateExit
     );
-    initEffectAnimationDropdownToggle();
   }
 
 
@@ -687,10 +653,8 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const getCurrentPercentage = (cssVar) => {
       const el = getSelectedElement?.();
       if (!el) return 0;
-      const btn = el.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      );
+      const btn = el.querySelector("a.sqs-block-button-element");
+
       if (!btn) return 0;
       const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
       return parseFloat(val.replace("%", "")) || 0;
