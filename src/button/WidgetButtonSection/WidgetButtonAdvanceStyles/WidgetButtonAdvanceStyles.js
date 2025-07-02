@@ -80,6 +80,39 @@ function attachCustomTimelineReset(
   }
 }
 
+function initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById("vertical-effect-animation-type-list");
+  const container = document.getElementById(
+    "vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "vertical-effect-animation-value"
+  );
+
+  if (!arrow || !dropdown || !container || !displayValue) return;
+
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!container.contains(e.target)) {
+      dropdown.classList.add("sc-hidden");
+    }
+  });
+
+  dropdown.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selected = item.getAttribute("data-value");
+      displayValue.textContent = selected;
+      dropdown.classList.add("sc-hidden");
+    });
+  });
+}
+
+
 export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -325,6 +358,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       updateCenter,
       updateExit
     );
+    initEffectAnimationDropdownToggle();
   }
 
 

@@ -9,23 +9,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   let lastY = null;
   const transition = { ease: "power2.out" };
 
-  function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("vertical-custom-timeline-arrow");
-    const border = document.getElementById("vertical-custom-timeline-border");
-    const startBullet = document.getElementById(
-      "vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    const dropdown = document.getElementById(
-      "vertical-effect-animation-type-list"
-    );
-
-    if (arrow && border && startBullet && endBullet && dropdown) {
-      callback(arrow, border, startBullet, endBullet, dropdown);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
-  }
 
   function updateExternalScrollVars(blockId, updates = {}) {
     if (!verticalScrollVarsMap.has(blockId))
@@ -172,42 +155,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     loop();
   }
 
-  waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById(
-      "vertical-effect-animation-type-arrow"
-    );
-
-    if (arrowTrigger && dropdown) {
-      arrowTrigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle("sc-hidden");
-      });
-
-      document.addEventListener("click", (e) => {
-        if (
-          !arrowTrigger.contains(e.target) &&
-          !dropdown.contains(e.target) &&
-          !dropdown.classList.contains("sc-hidden")
-        ) {
-          dropdown.classList.add("sc-hidden");
-        }
-      });
-
-      dropdown.querySelectorAll("[data-value]").forEach((item) => {
-        item.addEventListener("click", () => {
-          const selectedEffect = item.getAttribute("data-value");
-          const display = dropdown.previousElementSibling;
-          if (display?.querySelector("p")) {
-            display.querySelector("p").textContent = selectedEffect;
-          }
-          transition.ease = selectedEffect || "power2.out";
-          dropdown.classList.add("sc-hidden");
-        });
-      });
-    }
-
-    trackLoop(arrow, border, startBullet, endBullet, dropdown);
-  });
+  
 }
 
 
