@@ -101,18 +101,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const finalY = apply ? y : 0;
 
     if (lastY !== finalY) {
-      const blockId = selectedElement.id;
-      const styleId = `sc-style-${blockId}`;
-      let styleTag = document.getElementById(styleId);
-      if (!styleTag) {
-        styleTag = document.createElement("style");
-        styleTag.id = styleId;
-        document.head.appendChild(styleTag);
-      }
-      styleTag.textContent = `#${blockId} a.sqs-block-button-element {\n  transform: translateY(${finalY.toFixed(
-        2
-      )}vh);\n}`;
-      
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateY(${finalY.toFixed(2)}vh)`,
+      });
       lastY = finalY;
     }
   }
