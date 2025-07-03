@@ -84,10 +84,6 @@ export function ButtonAdvanceToggleControls() {
 
     structureFillIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (!el) {
-        allFound = false;
-        return;
-      }
 
       if (!el.dataset.listenerAttached) {
         el.addEventListener("click", () => {
