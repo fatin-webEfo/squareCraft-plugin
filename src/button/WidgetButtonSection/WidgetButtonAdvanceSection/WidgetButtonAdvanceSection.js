@@ -107,33 +107,33 @@ export function WidgetButtonAdvanceSection(){
                        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
                        style="left: 18px"
                      >
-                       10px
+                       0px
                      </p>
                      <p
                        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
                        style="bottom: 18px"
                      >
-                       10px
+                       0px
                      </p>
              
                      <div
                      id="structure-all-side-left-bar"
-                       class="structure-all-side-left-bar sc-absolute"
+                       class="structure-all-side-left-bar sc-absolute sc-cursor-pointer"
                        style="left: 2px"
                      ></div>
                      <div
                      id="structure-all-side-right-bar"
-                       class="structure-all-side-right-bar sc-absolute"
+                       class="structure-all-side-right-bar sc-absolute sc-cursor-pointer"
                        style="right: 2px"
                      ></div>
                      <div
                      id="structure-all-side-top-bar"
-                       class="structure-all-side-top-bar sc-absolute"
+                       class="structure-all-side-top-bar sc-absolute sc-cursor-pointer"
                        style="top: 2px"
                      ></div>
                      <div
                      id="structure-all-side-bottom-bar"
-                       class="structure-all-side-bottom-bar sc-absolute"
+                       class="structure-all-side-bottom-bar sc-absolute sc-cursor-pointer"
                        style="bottom: 2px"
                      ></div>
                    </div>
@@ -146,7 +146,7 @@ export function WidgetButtonAdvanceSection(){
                        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
                        style="left: 30px"
                      >
-                       10px
+                       0px
                      </p>
                    </div>
                  </div>
