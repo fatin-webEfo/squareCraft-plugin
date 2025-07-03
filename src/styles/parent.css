@@ -1859,6 +1859,17 @@
 }
 
 
+#structure-top-fill:hover,
+#structure-left-fill:hover,
+#structure-right-fill:hover,
+#structure-bottom-fill:hover,
+#structure-all-side-left-bar:hover,
+#structure-all-side-right-bar:hover,
+#structure-all-side-top-bar:hover,
+#structure-all-side-bottom-bar:hover {
+  outline: 1px dashed #f082340e;
+  outline-offset: 2px;
+}
 
 
 
