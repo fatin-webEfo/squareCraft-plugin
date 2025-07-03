@@ -81,15 +81,19 @@ export function ButtonAdvanceToggleControls() {
 
   structureFillIds.forEach((id) => {
     const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener("click", () => {
-        if (el.classList.contains(id)) {
-          el.classList.remove(id);
-        } else {
-          el.classList.add(id);
-        }
-      });
-    }
+    if (!el) return;
+
+    el.addEventListener("click", () => {
+      const currentClasses = el.className.split(" ").filter(Boolean);
+      const hasTarget = currentClasses.includes(id);
+
+      if (hasTarget) {
+        el.className = currentClasses.filter((c) => c !== id).join(" ");
+      } else {
+        el.className += ` ${id}`;
+      }
+    });
   });
+  
   
 }
