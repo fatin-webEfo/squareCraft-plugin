@@ -704,13 +704,14 @@
                       cloneClassList.forEach((cls) => svg.classList.add(cls));
                       span.replaceWith(svg);
                     });
-                    ButtonAdvanceToggleControls();
+                
 
                   }, 100);
                   widgetLoaded = true;
                   initImageSectionToggleControls();
                   ButtonAdvanceToggleControls();
                   buttonTooltipControls();
+                  ButtonAdvanceToggleControls();
                   initButtonSectionToggleControls();
                   WidgetTypoSectionStateControls();
                   initImageStateTabToggle();
