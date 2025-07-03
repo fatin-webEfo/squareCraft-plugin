@@ -68,42 +68,37 @@ export function ButtonAdvanceToggleControls() {
     });
   }
 
-  function attachStructureFillToggleListeners() {
-    const structureFillIds = [
-      "structure-top-fill",
-      "structure-left-fill",
-      "structure-right-fill",
-      "structure-bottom-fill",
-      "structure-all-side-left-bar",
-      "structure-all-side-right-bar",
-      "structure-all-side-top-bar",
-      "structure-all-side-bottom-bar",
-    ];
+  const structureFillIds = [
+    "structure-top-fill",
+    "structure-left-fill",
+    "structure-right-fill",
+    "structure-bottom-fill",
+    "structure-all-side-left-bar",
+    "structure-all-side-right-bar",
+    "structure-all-side-top-bar",
+    "structure-all-side-bottom-bar",
+  ];
+
+  const waitForStructureElements = setInterval(() => {
+    let allFound = true;
 
     structureFillIds.forEach((id) => {
-      const tryAttach = () => {
-        const el = document.getElementById(id);
-        if (!el) {
-          setTimeout(tryAttach, 100); // Retry until element is found
-          return;
-        }
+      const el = document.getElementById(id);
+      if (!el) {
+        allFound = false;
+        return;
+      }
 
-        if (!el.dataset.listenerAttached) {
-          el.addEventListener("click", () => {
-            el.classList.toggle(id);
-          });
-          el.dataset.listenerAttached = "true"; // Prevent duplicate listeners
-        }
-      };
-
-      tryAttach();
+      if (!el.dataset.listenerAttached) {
+        el.addEventListener("click", () => {
+          el.classList.toggle(id);
+        });
+        el.dataset.listenerAttached = "true";
+      }
     });
-  }
-  
-  
-  setTimeout(() => {
-    attachStructureFillToggleListeners();
-  }, 300);
-  
-  
+
+    if (allFound) {
+      clearInterval(waitForStructureElements);
+    }
+  }, 100);
 }
