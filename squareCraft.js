@@ -312,6 +312,7 @@
               const themeColors = await getSquarespaceThemeStyles();
 
               document.body.addEventListener("click", (event) => {
+                ButtonAdvanceToggleControls();
                 if (selectedElement) {
                   initButtonStyles(selectedElement);
                 }
@@ -370,6 +371,7 @@
             
 
                 setTimeout(() => {
+                  ButtonAdvanceToggleControls();
                   handleBlockClick(event, {
                     getTextType,
                     getHoverTextType,
@@ -417,6 +419,7 @@
                     }
                   );
                   initButtonBorderRadiusControl(() => selectedElement);
+                  
                 }, 50);
 
                 handleAlignmentClick(event, {
@@ -705,7 +708,7 @@
                       cloneClassList.forEach((cls) => svg.classList.add(cls));
                       span.replaceWith(svg);
                     });
-                
+                    ButtonAdvanceToggleControls();
 
                   }, 100);
                   widgetLoaded = true;
