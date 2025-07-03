@@ -2,7 +2,8 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
- <div id="button-advance-section">
+  <div id="advancedButtonSection">
+            <div id="button-advance-section">
                <div class="sc-flex sc-cursor-pointer sc-px-2 sc-mt-3 sc-items-center sc-justify-between">
                   <div class="sc-flex sc-gap-2 sc-items-center">
                     <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance.png" width="19px" alt="">
@@ -74,7 +75,7 @@ export function WidgetButtonAdvanceSection(){
                      0px
                    </p>
                    <div class="structure-top-box">
-                     <div class="structure-top-fill"></div>
+                     <div id="structure-top-fill" class="structure-top-fill"></div>
                    </div>
                  </div>
                  <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
@@ -86,7 +87,7 @@ export function WidgetButtonAdvanceSection(){
                        0px
                      </p>
                      <div class="structure-left-box">
-                       <div class="structure-left-fill"></div>
+                       <div id="structure-left-fill" class="structure-left-fill"></div>
                      </div>
                    </div>
                    <div class="structure-allside-box sc-relative sc-bg-454545">
@@ -121,18 +122,22 @@ export function WidgetButtonAdvanceSection(){
                      </p>
              
                      <div
+                     id="structure-all-side-left-bar"
                        class="structure-all-side-left-bar sc-absolute"
                        style="left: 2px"
                      ></div>
                      <div
+                     id="structure-all-side-right-bar"
                        class="structure-all-side-right-bar sc-absolute"
                        style="right: 2px"
                      ></div>
                      <div
+                     id="structure-all-side-top-bar"
                        class="structure-all-side-top-bar sc-absolute"
                        style="top: 2px"
                      ></div>
                      <div
+                     id="structure-all-side-bottom-bar"
                        class="structure-all-side-bottom-bar sc-absolute"
                        style="bottom: 2px"
                      ></div>
@@ -140,7 +145,7 @@ export function WidgetButtonAdvanceSection(){
              
                    <div class="sc-flex sc-items-center sc-justify-center sc-relative">
                      <div class="structure-right-box">
-                       <div class="structure-right-fill"></div>
+                       <div id="structure-right-fill" class="structure-right-fill"></div>
                      </div>
                      <p
                        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
@@ -152,7 +157,7 @@ export function WidgetButtonAdvanceSection(){
                  </div>
                  <div class="sc-relative sc-items-center sc-flex-col">
                    <div class="structure-bottom-box">
-                     <div class="structure-bottom-fill"></div>
+                     <div id="structure-bottom-fill" class="structure-bottom-fill"></div>
                    </div>
                    <p
                      class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
@@ -199,7 +204,7 @@ export function WidgetButtonAdvanceSection(){
               <div class="sc-grid sc-grid-cols-12 sc-mt-2">
                  <div></div>
                  <div style="padding: 2px 0px;" class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
-                    <div  class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-bg-454545 sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+                    <div  class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-bg-454545 sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy" alt="all-border">
                        <p class="sc-font-thin sc-roboto sc-universal ">All</p>
                     </div>
@@ -262,7 +267,7 @@ export function WidgetButtonAdvanceSection(){
                  <div class="sc-grid sc-grid-cols-12 sc-mt-2">
                     <div></div>
                     <div style="padding: 2px 0px;" class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-center  sc-px-1 sc-rounded-4px">
-                       <div  class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-bg-454545 sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+                       <div  class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-bg-454545 sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
                           <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy" alt="all-border">
                           <p class="sc-font-thin sc-roboto sc-universal ">All</p>
                        </div>
@@ -2516,6 +2521,7 @@ export function WidgetButtonAdvanceSection(){
              
                <div class="sc-mt-3"></div>
              </div>
+          </div>
 
 
     `;

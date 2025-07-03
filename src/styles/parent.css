@@ -1693,9 +1693,6 @@
   cursor: pointer;
 }
 
-
-
-
 .structure-top-box {
   cursor: pointer;
   position: relative;
@@ -1723,7 +1720,6 @@
   border-radius: 0 0 8px 8px;
   overflow: hidden;
 }
-
 
 .structure-right-box {
   cursor: pointer;
@@ -1781,8 +1777,6 @@
   clip-path: inset(0px 0px 0px 2px); /* Hides left border only */
 }
 
-
-
 .structure-allside-box {
   position: relative;
   width: 140px;
@@ -1794,7 +1788,6 @@
   align-items: center;
   justify-content: center;
 }
-
 
 .structure-allside-box::before {
   content: "";
