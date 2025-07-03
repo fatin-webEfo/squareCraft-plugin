@@ -2,7 +2,7 @@ export function WidgetButtonAdvanceSection(){
 
 
     return `
-  <div id="button-advance-section">
+ <div id="button-advance-section">
                <div class="sc-flex sc-cursor-pointer sc-px-2 sc-mt-3 sc-items-center sc-justify-between">
                   <div class="sc-flex sc-gap-2 sc-items-center">
                     <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance.png" width="19px" alt="">
@@ -287,6 +287,7 @@ export function WidgetButtonAdvanceSection(){
                </div>
               </div></div>
                  </div>
+                 <div class="sc-h-1px  sc-bg-3f3f3f"></div>
               <div id="button-advance-scrollEffects" class="sc-px-2 sc-mt-2">
                <div class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
                   <div class="sc-flex sc-gap-2 sc-items-center">
