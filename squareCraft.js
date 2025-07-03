@@ -406,6 +406,7 @@
                   initButtonBorderControl(() => selectedElement);
                   initButtonShadowControls(() => selectedElement);
                   resetAllButtonStyles(() => selectedElement);
+                  initStructureFillToggle();
                   initButtonBorderResetHandlers(() => selectedElement);
                   initButtonFontFamilyControls(() => selectedElement);
 
