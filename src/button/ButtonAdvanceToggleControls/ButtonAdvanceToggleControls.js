@@ -82,16 +82,18 @@ export function ButtonAdvanceToggleControls() {
 
     structureFillIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (!el) {
-        console.warn(`❌ Element not found: ${id}`);
-        return;
-      }
+      if (!el) return;
 
       el.addEventListener("click", () => {
-        el.classList.toggle(id);
+        if (el.classList.contains(id)) {
+          el.classList.remove(id);
+        } else {
+          el.classList.add(id);
+        }
       });
     });
   }, 300);
+  
   
   
 }
