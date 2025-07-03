@@ -90,12 +90,7 @@ export function initStructureFillToggle() {
 
     if (!el.dataset.listenerAttached) {
       el.addEventListener("click", () => {
-        const classExists = Array.from(el.classList).includes(id);
-        if (classExists) {
-          el.classList.remove(id);
-        } else {
-          el.classList.add(id);
-        }
+        el.classList.toggle(id);
       });
 
       el.dataset.listenerAttached = "true";
