@@ -89,6 +89,7 @@ export function WidgetButtonAdvanceSection(){
                        <div id="structure-left-fill" class="structure-left-fill"></div>
                      </div>
                    </div>
+                   
                    <div class="structure-allside-box sc-relative sc-bg-454545">
                      <img
                        src="https://fatin-webefo.github.io/squareCraft-plugin/public/structure-all-select.svg"
