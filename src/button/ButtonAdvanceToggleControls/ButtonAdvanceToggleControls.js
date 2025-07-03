@@ -88,13 +88,10 @@ export function ButtonAdvanceToggleControls() {
       }
 
       el.addEventListener("click", () => {
-        if (el.classList.contains(id)) {
-          el.classList.remove(id);
-        } else {
-          el.classList.add(id);
-        }
+        el.classList.toggle(id);
       });
     });
   }, 300);
+  
   
 }
