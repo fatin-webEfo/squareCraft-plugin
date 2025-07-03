@@ -68,7 +68,7 @@ export function ButtonAdvanceToggleControls() {
     });
   }
 
-  setTimeout(() => {
+  function attachStructureFillToggleListeners() {
     const structureFillIds = [
       "structure-top-fill",
       "structure-left-fill",
@@ -81,18 +81,29 @@ export function ButtonAdvanceToggleControls() {
     ];
 
     structureFillIds.forEach((id) => {
-      const el = document.getElementById(id);
-
-      el.addEventListener("click", () => {
-        if (el.classList.contains(id)) {
-          el.classList.remove(id);
-        } else {
-          el.classList.add(id);
+      const tryAttach = () => {
+        const el = document.getElementById(id);
+        if (!el) {
+          setTimeout(tryAttach, 100); // Retry until element is found
+          return;
         }
-      });
+
+        if (!el.dataset.listenerAttached) {
+          el.addEventListener("click", () => {
+            el.classList.toggle(id);
+          });
+          el.dataset.listenerAttached = "true"; // Prevent duplicate listeners
+        }
+      };
+
+      tryAttach();
     });
-  }, 300);
+  }
   
+  
+  setTimeout(() => {
+    attachStructureFillToggleListeners();
+  }, 300);
   
   
 }
