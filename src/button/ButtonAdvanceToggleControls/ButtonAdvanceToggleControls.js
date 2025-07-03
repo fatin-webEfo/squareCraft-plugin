@@ -27,6 +27,19 @@ export function ButtonAdvanceToggleControls() {
             otherSection.classList.add("sc-hidden");
           }
         });
+
+        const structureSection = document.getElementById(
+          "button-advance-structure-section"
+        );
+        if (structureSection) {
+          const anyVisible = buttonIds.some((id) => {
+            const el = document.getElementById(`${id}-section`);
+            return el && !el.classList.contains("sc-hidden");
+          });
+          if (anyVisible) {
+            structureSection.classList.add("sc-hidden");
+          }
+        }
       };
 
       button.addEventListener("click", handleInteraction);
