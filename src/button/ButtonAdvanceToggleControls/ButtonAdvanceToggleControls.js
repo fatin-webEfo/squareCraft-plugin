@@ -84,16 +84,30 @@ export function initStructureFillToggle() {
     "structure-all-side-bottom-bar",
   ];
 
-  structureFillIds.forEach((id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
+  const tryAttachListeners = () => {
+    structureFillIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
 
-    if (!el.dataset.listenerAttached) {
-      el.addEventListener("click", () => {
-        el.classList.toggle(id);
-      });
+      if (!el.dataset.listenerAttached) {
+        el.addEventListener("click", () => {
+          el.classList.toggle(id);
+        });
+        el.dataset.listenerAttached = "true";
+      }
+    });
+  };
 
-      el.dataset.listenerAttached = "true";
+  const waitForStructureElements = () => {
+    const allExist = structureFillIds.every((id) =>
+      document.getElementById(id)
+    );
+    if (allExist) {
+      tryAttachListeners();
+    } else {
+      setTimeout(waitForStructureElements, 200);
     }
-  });
+  };
+
+  waitForStructureElements();
 }
