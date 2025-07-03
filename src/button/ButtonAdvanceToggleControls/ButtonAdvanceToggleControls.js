@@ -68,6 +68,11 @@ export function ButtonAdvanceToggleControls() {
     });
   }
 
+
+  
+  
+}
+export function initStructureFillToggle() {
   const structureFillIds = [
     "structure-top-fill",
     "structure-left-fill",
@@ -100,5 +105,4 @@ export function ButtonAdvanceToggleControls() {
       clearInterval(waitForStructureElements);
     }
   }, 100);
-  
 }
