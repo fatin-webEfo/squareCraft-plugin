@@ -68,32 +68,35 @@ export function ButtonAdvanceToggleControls() {
     });
   }
 
-  const structureFillIds = [
-    "structure-top-fill",
-    "structure-left-fill",
-    "structure-right-fill",
-    "structure-bottom-fill",
-    "structure-all-side-left-bar",
-    "structure-all-side-right-bar",
-    "structure-all-side-top-bar",
-    "structure-all-side-bottom-bar",
-  ];
+  setTimeout(() => {
+    const structureFillIds = [
+      "structure-top-fill",
+      "structure-left-fill",
+      "structure-right-fill",
+      "structure-bottom-fill",
+      "structure-all-side-left-bar",
+      "structure-all-side-right-bar",
+      "structure-all-side-top-bar",
+      "structure-all-side-bottom-bar",
+    ];
 
-  structureFillIds.forEach((id) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    el.addEventListener("click", () => {
-      const currentClasses = el.className.split(" ").filter(Boolean);
-      const hasTarget = currentClasses.includes(id);
-
-      if (hasTarget) {
-        el.className = currentClasses.filter((c) => c !== id).join(" ");
-      } else {
-        el.className += ` ${id}`;
+    structureFillIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) {
+        console.warn(`❌ Element not found: ${id}`);
+        return;
       }
+
+      el.addEventListener("click", () => {
+        const currentClasses = el.className.split(" ").filter(Boolean);
+        const hasTarget = currentClasses.includes(id);
+
+        if (hasTarget) {
+          el.className = currentClasses.filter((c) => c !== id).join(" ");
+        } else {
+          el.className += ` ${id}`;
+        }
+      });
     });
-  });
-  
-  
+  }, 300); // delay ensures DOM is ready
 }
