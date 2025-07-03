@@ -80,10 +80,11 @@ export function ButtonAdvanceToggleControls() {
   ];
 
   const waitForStructureElements = setInterval(() => {
-    let allFound = true;
+    let attachedCount = 0;
 
     structureFillIds.forEach((id) => {
       const el = document.getElementById(id);
+      if (!el) return;
 
       if (!el.dataset.listenerAttached) {
         el.addEventListener("click", () => {
@@ -91,10 +92,13 @@ export function ButtonAdvanceToggleControls() {
         });
         el.dataset.listenerAttached = "true";
       }
+
+      attachedCount++;
     });
 
-    if (allFound) {
+    if (attachedCount === structureFillIds.length) {
       clearInterval(waitForStructureElements);
     }
   }, 100);
+  
 }
