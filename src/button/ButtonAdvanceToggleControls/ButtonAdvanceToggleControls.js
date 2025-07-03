@@ -82,7 +82,6 @@ export function ButtonAdvanceToggleControls() {
 
     structureFillIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (!el) return;
 
       el.addEventListener("click", () => {
         if (el.classList.contains(id)) {
