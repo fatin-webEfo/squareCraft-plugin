@@ -45,4 +45,26 @@ export function ButtonAdvanceToggleControls() {
       button.addEventListener("click", handleInteraction);
     }
   });
+
+  const structureBtn = document.getElementById(
+    "button-advance-structure-button"
+  );
+  const structureSection = document.getElementById(
+    "button-advance-structure-section"
+  );
+
+  if (structureBtn && structureSection) {
+    structureBtn.addEventListener("click", () => {
+      buttonIds.forEach((id) => {
+        const el = document.getElementById(`${id}-section`);
+        if (el && !el.classList.contains("sc-hidden")) {
+          el.classList.remove("sc-visible");
+          el.classList.add("sc-hidden");
+        }
+      });
+      structureSection.classList.remove("sc-hidden");
+      structureSection.classList.add("sc-visible");
+      structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 }
