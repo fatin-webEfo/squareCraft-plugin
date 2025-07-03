@@ -67,4 +67,24 @@ export function ButtonAdvanceToggleControls() {
       structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
+
+  const structureFillIds = [
+    "structure-top-fill",
+    "structure-left-fill",
+    "structure-right-fill",
+    "structure-bottom-fill",
+    "structure-all-side-left-bar",
+    "structure-all-side-right-bar",
+    "structure-all-side-top-bar",
+    "structure-all-side-bottom-bar",
+  ];
+
+  structureFillIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", () => {
+        el.classList.toggle(id);
+      });
+    }
+  });
 }
