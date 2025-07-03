@@ -84,25 +84,21 @@ export function initStructureFillToggle() {
     "structure-all-side-bottom-bar",
   ];
 
-  const waitForStructureElements = setInterval(() => {
-    let attachedCount = 0;
+  structureFillIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
 
-    structureFillIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
+    if (!el.dataset.listenerAttached) {
+      el.addEventListener("click", () => {
+        const classExists = Array.from(el.classList).includes(id);
+        if (classExists) {
+          el.classList.remove(id);
+        } else {
+          el.classList.add(id);
+        }
+      });
 
-      if (!el.dataset.listenerAttached) {
-        el.addEventListener("click", () => {
-          el.classList.toggle(id);
-        });
-        el.dataset.listenerAttached = "true";
-      }
-
-      attachedCount++;
-    });
-
-    if (attachedCount === structureFillIds.length) {
-      clearInterval(waitForStructureElements);
+      el.dataset.listenerAttached = "true";
     }
-  }, 100);
+  });
 }
