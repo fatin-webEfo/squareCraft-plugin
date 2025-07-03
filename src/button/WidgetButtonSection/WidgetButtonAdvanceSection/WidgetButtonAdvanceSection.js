@@ -74,7 +74,7 @@ export function WidgetButtonAdvanceSection(){
                      0px
                    </p>
                    <div class="structure-top-box">
-                     <div id="structure-top-fill" class=""></div>
+                     <div id="structure-top-fill" class="structure-top-fill"></div>
                    </div>
                  </div>
                  <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
@@ -85,7 +85,7 @@ export function WidgetButtonAdvanceSection(){
                        0px
                      </p>
                      <div class="structure-left-box">
-                       <div id="structure-left-fill" class=""></div>
+                       <div id="structure-left-fill" class="structure-left-fill"></div>
                      </div>
                    </div>
                    <div class="structure-allside-box sc-relative sc-bg-454545">
@@ -118,29 +118,29 @@ export function WidgetButtonAdvanceSection(){
              
                      <div
                      id="structure-all-side-left-bar"
-                       class=" sc-absolute"
+                       class="structure-all-side-left-bar sc-absolute"
                        style="left: 2px"
                      ></div>
                      <div
                      id="structure-all-side-right-bar"
-                       class=" sc-absolute"
+                       class="structure-all-side-right-bar sc-absolute"
                        style="right: 2px"
                      ></div>
                      <div
                      id="structure-all-side-top-bar"
-                       class=" sc-absolute"
+                       class="structure-all-side-top-bar sc-absolute"
                        style="top: 2px"
                      ></div>
                      <div
                      id="structure-all-side-bottom-bar"
-                       class=" sc-absolute"
+                       class="structure-all-side-bottom-bar sc-absolute"
                        style="bottom: 2px"
                      ></div>
                    </div>
              
                    <div class="sc-flex sc-items-center sc-justify-center sc-relative">
                      <div class="structure-right-box">
-                       <div id="structure-right-fill" class=""></div>
+                       <div id="structure-right-fill" class="structure-right-fill"></div>
                      </div>
                      <p
                        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
@@ -152,7 +152,7 @@ export function WidgetButtonAdvanceSection(){
                  </div>
                  <div class="sc-relative sc-items-center sc-flex-col">
                    <div class="structure-bottom-box">
-                     <div id="structure-bottom-fill" class=""></div>
+                     <div id="structure-bottom-fill" class="structure-bottom-fill"></div>
                    </div>
                    <p
                      class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
