@@ -1,4 +1,4 @@
-export function ButtonAdvanceScrollEffecthorizontalSection(){
+export function ButtonAdvanceScrollEffectHorizontalSection(){
     return `
     <div
          id="button-advance-horizontal-section"
