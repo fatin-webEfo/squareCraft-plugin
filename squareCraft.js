@@ -199,7 +199,7 @@
               const { handleSectionFind } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
               );
-              const { ButtonAdvanceToggleControls, initStructureFillToggle } =
+              const { ButtonAdvanceToggleControls } =
                 await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
                 );
@@ -406,7 +406,6 @@
                   initButtonBorderControl(() => selectedElement);
                   initButtonShadowControls(() => selectedElement);
                   resetAllButtonStyles(() => selectedElement);
-                  initStructureFillToggle();
                   initButtonBorderResetHandlers(() => selectedElement);
                   initButtonFontFamilyControls(() => selectedElement);
 
@@ -716,7 +715,6 @@
                   initImageSectionToggleControls();
                   buttonTooltipControls();
                   ButtonAdvanceToggleControls();
-                  initStructureFillToggle();
                   initButtonSectionToggleControls();
                   WidgetTypoSectionStateControls();
                   initImageStateTabToggle();

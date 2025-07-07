@@ -72,42 +72,4 @@ export function ButtonAdvanceToggleControls() {
   
   
 }
-export function initStructureFillToggle() {
-  const structureFillIds = [
-    "structure-top-fill",
-    "structure-left-fill",
-    "structure-right-fill",
-    "structure-bottom-fill",
-    "structure-all-side-left-bar",
-    "structure-all-side-right-bar",
-    "structure-all-side-top-bar",
-    "structure-all-side-bottom-bar",
-  ];
 
-  const tryAttachListeners = () => {
-    structureFillIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      if (!el.dataset.listenerAttached) {
-        el.addEventListener("click", () => {
-          el.classList.toggle(id);
-        });
-        el.dataset.listenerAttached = "true";
-      }
-    });
-  };
-
-  const waitForStructureElements = () => {
-    const allExist = structureFillIds.every((id) =>
-      document.getElementById(id)
-    );
-    if (allExist) {
-      tryAttachListeners();
-    } else {
-      setTimeout(waitForStructureElements, 200);
-    }
-  };
-
-  waitForStructureElements();
-}
