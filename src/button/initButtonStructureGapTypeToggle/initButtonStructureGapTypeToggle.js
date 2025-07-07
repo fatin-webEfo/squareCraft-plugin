@@ -221,6 +221,7 @@ export function initButtonStructureGapTypeToggle() {
 
     bullet.addEventListener("mousedown", () => {
       isDragging = true;
+      setTabHeight(true);
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", stopDrag);
     });
