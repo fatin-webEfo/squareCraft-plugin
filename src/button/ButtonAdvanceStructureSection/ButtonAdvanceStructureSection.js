@@ -46,8 +46,8 @@ export function ButtonAdvanceStructureSection(){
      style="bottom: 30px">
      0px
    </p>
-   <div class="structure-top-box">
-     <div id="structure-top-fill" class="structure-top-fill"></div>
+   <div class="button-structure-margin-top-box">
+     <div id="button-structure-margin-top-fill" class="button-structure-margin-top-fill"></div>
    </div>
  </div>
  <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
@@ -57,8 +57,8 @@ export function ButtonAdvanceStructureSection(){
        style="right: 30px">
        0px
      </p>
-     <div class="structure-left-box">
-       <div id="structure-left-fill" class="structure-left-fill"></div>
+     <div class="button-structure-margin-left-box">
+       <div id="button-structure-margin-left-fill" class="button-structure-margin-left-fill"></div>
      </div>
    </div>
    
@@ -107,8 +107,8 @@ export function ButtonAdvanceStructureSection(){
    </div>
 
    <div class="sc-flex sc-items-center sc-justify-center sc-relative">
-     <div class="structure-right-box">
-       <div id="structure-right-fill" class="structure-right-fill"></div>
+     <div class="button-structure-margin-right-box">
+       <div id="button-structure-margin-right-fill" class="button-structure-margin-right-fill"></div>
      </div>
      <p
        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
@@ -118,8 +118,8 @@ export function ButtonAdvanceStructureSection(){
    </div>
  </div>
  <div class="sc-relative sc-items-center sc-flex-col">
-   <div class="structure-bottom-box">
-     <div id="structure-bottom-fill" class="structure-bottom-fill"></div>
+   <div class="button-structure-margin-bottom-box">
+     <div id="button-structure-margin-bottom-fill" class="button-structure-margin-bottom-fill"></div>
    </div>
    <p
      class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"

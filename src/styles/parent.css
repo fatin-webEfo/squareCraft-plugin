@@ -1602,7 +1602,7 @@
   border-color: #ef7c2f41 !important;
 }
 
-.structure-right-fill {
+.button-structure-margin-right-fill {
   width: 8% !important;
   height: 89% !important;
   margin-top: 3px !important;
@@ -1613,7 +1613,7 @@
   border-bottom-left-radius: 5px !important;
   cursor: pointer;
 }
-.structure-left-fill {
+.button-structure-margin-left-fill {
   width: 8% !important;
   height: 89% !important;
   margin-top: 3px !important;
@@ -1625,7 +1625,7 @@
   cursor: pointer;
 }
 
-.structure-top-fill{
+.button-structure-margin-top-fill{
   height: 8% !important;
   width: 90% !important;
   margin-top: 11px !important;
@@ -1636,7 +1636,7 @@
   border-bottom-right-radius: 4px !important;
   cursor: pointer;
 }
-.structure-bottom-fill{
+.button-structure-margin-bottom-fill{
   height: 8% !important;
   width: 90% !important;
   margin-top: 3px !important;
@@ -1693,7 +1693,7 @@
   cursor: pointer;
 }
 
-.structure-top-box {
+.button-structure-margin-top-box {
   cursor: pointer;
   position: relative;
   width: 140px;
@@ -1702,7 +1702,7 @@
   border-radius: 0 0 8px 8px;
   overflow: hidden;
 }
-.structure-left-box {
+.button-structure-margin-left-box {
   cursor: pointer;
   position: relative;
   width: 140px;
@@ -1711,17 +1711,7 @@
   border-radius: 0 0 8px 8px;
   overflow: hidden;
 }
-.structure-bottom-box {
-  cursor: pointer;
-  position: relative;
-  width: 140px;
-  height: 24px;
-  background-color: transparent;
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
-}
-
-.structure-right-box {
+.button-structure-margin-bottom-box {
   cursor: pointer;
   position: relative;
   width: 140px;
@@ -1731,7 +1721,17 @@
   overflow: hidden;
 }
 
-.structure-top-box::before {
+.button-structure-margin-right-box {
+  cursor: pointer;
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.button-structure-margin-top-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1752,7 +1752,7 @@
 }
 
 
-.structure-left-box {
+.button-structure-margin-left-box {
   position: relative;
   width: 24px;
   height: 133px;
@@ -1761,7 +1761,7 @@
   overflow: hidden;
 }
 
-.structure-left-box::before {
+.button-structure-margin-left-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1807,7 +1807,7 @@
   mask-composite: exclude;
   pointer-events: none;
 }
-.structure-right-box {
+.button-structure-margin-right-box {
   position: relative;
   width: 24px;
   height: 140px;
@@ -1816,7 +1816,7 @@
   overflow: hidden;
 }
 
-.structure-right-box::before {
+.button-structure-margin-right-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1833,7 +1833,7 @@
 }
 
 
-.structure-bottom-box {
+.button-structure-margin-bottom-box {
   position: relative;
   width: 140px;
   height: 24px;
@@ -1842,7 +1842,7 @@
   overflow: hidden;
 }
 
-.structure-bottom-box::before {
+.button-structure-margin-bottom-box::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1859,10 +1859,10 @@
 }
 
 
-#structure-top-fill:hover,
-#structure-left-fill:hover,
-#structure-right-fill:hover,
-#structure-bottom-fill:hover,
+#button-structure-margin-top-fill:hover,
+#button-structure-margin-left-fill:hover,
+#button-structure-margin-right-fill:hover,
+#button-structure-margin-bottom-fill:hover,
 #button-structure-padding-left:hover,
 #button-structure-padding-right:hover,
 #button-structure-padding-top:hover,
