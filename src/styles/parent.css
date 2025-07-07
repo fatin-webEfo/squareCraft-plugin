@@ -1459,6 +1459,10 @@
   height: 380px !important;
   overflow-y: scroll !important;
 }
+.sc-h-375{
+  height: 420px !important;
+  overflow-y: scroll !important;
+}
 
 .sc-text-hover-EF7C2F:hover {
   color: #EF7C2F !important;
