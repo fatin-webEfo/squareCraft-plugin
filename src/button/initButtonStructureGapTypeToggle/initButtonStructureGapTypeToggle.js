@@ -116,9 +116,12 @@ export function initButtonStructureGapTypeToggle() {
   });
 
   document.addEventListener("click", (e) => {
-    const clickedId = e.target?.id;
+    const clickedButton = e.target.closest("div[id]");
+    const clickedId = clickedButton?.id;
+
     if (!allAllowedIds.includes(clickedId)) {
       setTabHeight(false);
     }
   });
+
 }
