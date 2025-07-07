@@ -207,6 +207,10 @@
                 await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStructureGapTypeToggle/initButtonStructureGapTypeToggle.js"
                 );
+              const { initButtonAdvanceStructureStyles } =
+                await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStructureStyles/initButtonAdvanceStructureStyles.js"
+                );
               const { getTextType } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
               );
@@ -350,6 +354,10 @@
                 if (selectedElement) {
                   applyHoverButtonEffects(() => selectedElement);
                 }
+                if (selectedElement) {
+                  initButtonAdvanceStructureStyles(() => selectedElement);
+                }
+                
               
                 initImageUploadPreview(() => selectedElement);
                 const trigger = event.target.closest("#border-color-select");
