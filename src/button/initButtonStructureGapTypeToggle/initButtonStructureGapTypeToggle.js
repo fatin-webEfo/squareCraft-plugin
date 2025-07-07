@@ -53,7 +53,6 @@ export function initButtonStructureGapTypeToggle() {
   function setTabHeight(active = true) {
     const tabWrapper = document.getElementById("tabContentWrapper");
     if (!tabWrapper) return;
-
     tabWrapper.classList.remove("sc-h-350", "sc-h-375");
     tabWrapper.classList.add(active ? "sc-h-375" : "sc-h-350");
   }
@@ -61,7 +60,6 @@ export function initButtonStructureGapTypeToggle() {
   marginIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
-
     el.addEventListener("click", () => {
       marginIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
@@ -100,7 +98,6 @@ export function initButtonStructureGapTypeToggle() {
   paddingIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
-
     el.addEventListener("click", () => {
       paddingIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
@@ -139,5 +136,65 @@ export function initButtonStructureGapTypeToggle() {
     if (!allAllowedIds.includes(clickedId)) {
       setTabHeight(false);
     }
+  });
+
+  const sliders = [
+    {
+      bulletId: "button-advance-margin-gap-bullet",
+      fillId: "button-advance-margin-gap-fill",
+      countIds: [
+        "button-structure-margin-top-count",
+        "button-structure-margin-bottom-count",
+        "button-structure-margin-left-count",
+        "button-structure-margin-right-count",
+      ],
+    },
+    {
+      bulletId: "button-advance-padding-gap-bullet",
+      fillId: "button-advance-padding-gap-fill",
+      countIds: [
+        "button-structure-padding-top-count",
+        "button-structure-padding-bottom-count",
+        "button-structure-padding-left-count",
+        "button-structure-padding-right-count",
+      ],
+    },
+  ];
+
+  sliders.forEach(({ bulletId, fillId, countIds }) => {
+    const bullet = document.getElementById(bulletId);
+    const fill = document.getElementById(fillId);
+    const bar = bullet?.parentElement;
+    if (!bullet || !fill || !bar) return;
+
+    let isDragging = false;
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      const rect = bar.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      x = Math.max(0, Math.min(x, rect.width));
+      const percent = (x / rect.width) * 100;
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+
+      const value = Math.round((percent / 100) * 100); // 0–100px
+      countIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = `${value}px`;
+      });
+    };
+
+    const stopDrag = () => {
+      isDragging = false;
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", stopDrag);
+    };
+
+    bullet.addEventListener("mousedown", () => {
+      isDragging = true;
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", stopDrag);
+    });
   });
 }
