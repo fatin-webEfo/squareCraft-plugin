@@ -225,15 +225,17 @@ export function initButtonStructureGapTypeToggle() {
       document.addEventListener("mouseup", stopDrag);
     });
   });
+ 
+  
   document.addEventListener("click", (e) => {
-    const target = e.target;
-    const clickedId =
-      target?.id ||
-      target?.closest("div[id]")?.id ||
-      target?.closest("p[id]")?.id;
+    const clickedInsideAllowed = allAllowedIds.some((id) => {
+      const el = document.getElementById(id);
+      return el && el.contains(e.target);
+    });
 
-    if (!allAllowedIds.includes(clickedId)) {
+    if (!clickedInsideAllowed) {
       setTabHeight(false);
     }
   });
+
 }
