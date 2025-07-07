@@ -1,4 +1,3 @@
-
 export function initButtonStructureGapTypeToggle() {
   const marginIds = [
     "button-advance-margin-gap-all",
@@ -15,6 +14,8 @@ export function initButtonStructureGapTypeToggle() {
     "button-advance-padding-gap-left",
     "button-advance-padding-gap-right",
   ];
+
+  const allAllowedIds = [...marginIds, ...paddingIds];
 
   const marginFillIds = {
     "button-advance-margin-gap-all": [
@@ -42,19 +43,19 @@ export function initButtonStructureGapTypeToggle() {
     "button-advance-padding-gap-right": ["button-structure-padding-right"],
   };
 
-  function updateTabContentHeight() {
+  function setTabHeight(active = true) {
     const tabWrapper = document.getElementById("tabContentWrapper");
-    if (tabWrapper && tabWrapper.classList.contains("sc-h-350")) {
-      tabWrapper.classList.remove("sc-h-350");
-      tabWrapper.classList.add("sc-h-375");
-    }
+    if (!tabWrapper) return;
+
+    tabWrapper.classList.remove("sc-h-350", "sc-h-375");
+    tabWrapper.classList.add(active ? "sc-h-375" : "sc-h-350");
   }
 
   marginIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
 
-    el.addEventListener("click", () => {
+    el.addEventListener("click", (e) => {
       marginIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
@@ -78,7 +79,7 @@ export function initButtonStructureGapTypeToggle() {
         if (fill) fill.style.display = "block";
       });
 
-      updateTabContentHeight();
+      setTabHeight(true);
     });
   });
 
@@ -86,7 +87,7 @@ export function initButtonStructureGapTypeToggle() {
     const el = document.getElementById(id);
     if (!el) return;
 
-    el.addEventListener("click", () => {
+    el.addEventListener("click", (e) => {
       paddingIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
@@ -110,7 +111,14 @@ export function initButtonStructureGapTypeToggle() {
         if (fill) fill.style.display = "block";
       });
 
-      updateTabContentHeight();
+      setTabHeight(true);
     });
+  });
+
+  document.addEventListener("click", (e) => {
+    const clickedId = e.target?.id;
+    if (!allAllowedIds.includes(clickedId)) {
+      setTabHeight(false);
+    }
   });
 }

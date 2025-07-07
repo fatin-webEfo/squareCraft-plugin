@@ -1444,7 +1444,9 @@
 .sc-h-2px {
   height: 2px !important;
 }
-
+.sc-transition-height {
+  transition: height 0.3s ease-in-out !important;
+}
 .sc-h-dropdown {
   height: 140px !important;
   overflow-y: auto !important;
