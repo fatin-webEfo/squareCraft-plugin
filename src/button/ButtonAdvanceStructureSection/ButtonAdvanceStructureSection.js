@@ -128,7 +128,7 @@ export function ButtonAdvanceStructureSection(){
    </p>
  </div>
 </div>
-
+  
 <div
  class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
 <div class="sc-mt-4 ">
