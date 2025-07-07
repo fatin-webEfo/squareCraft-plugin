@@ -208,6 +208,12 @@ export function initButtonStructureGapTypeToggle() {
       const countIds = idMap[activeTab] || [];
 
       countIds.forEach((id) => {
+        if (typeof window.initButtonAdvanceStructureStyles === "function") {
+          window.initButtonAdvanceStructureStyles(() =>
+            document.getElementById(selectedBlockId)
+          );
+        }
+          
         const el = document.getElementById(id);
         if (el) el.innerText = `${value}px`;
       });
@@ -215,7 +221,6 @@ export function initButtonStructureGapTypeToggle() {
 
     const stopDrag = () => {
       isDragging = false;
-      
       setTabHeight(true);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", stopDrag);
