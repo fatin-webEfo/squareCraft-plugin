@@ -50,9 +50,13 @@ export function initButtonStructureGapTypeToggle() {
     "button-advance-padding-gap-right": ["button-structure-padding-right"],
   };
 
+  let activeMarginTab = "button-advance-margin-gap-all";
+  let activePaddingTab = "button-advance-padding-gap-all";
+
   function setTabHeight(active = true) {
     const tabWrapper = document.getElementById("tabContentWrapper");
     if (!tabWrapper) return;
+    tabWrapper.classList.add("sc-transition-all");
     tabWrapper.classList.remove("sc-h-350", "sc-h-375");
     tabWrapper.classList.add(active ? "sc-h-375" : "sc-h-350");
   }
@@ -61,6 +65,8 @@ export function initButtonStructureGapTypeToggle() {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener("click", () => {
+      activeMarginTab = id;
+
       marginIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
@@ -99,6 +105,8 @@ export function initButtonStructureGapTypeToggle() {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener("click", () => {
+      activePaddingTab = id;
+
       paddingIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
@@ -142,26 +150,54 @@ export function initButtonStructureGapTypeToggle() {
     {
       bulletId: "button-advance-margin-gap-bullet",
       fillId: "button-advance-margin-gap-fill",
-      countIds: [
-        "button-structure-margin-top-count",
-        "button-structure-margin-bottom-count",
-        "button-structure-margin-left-count",
-        "button-structure-margin-right-count",
-      ],
+      tabKey: () => activeMarginTab,
+      idMap: {
+        "button-advance-margin-gap-top": ["button-structure-margin-top-count"],
+        "button-advance-margin-gap-bottom": [
+          "button-structure-margin-bottom-count",
+        ],
+        "button-advance-margin-gap-left": [
+          "button-structure-margin-left-count",
+        ],
+        "button-advance-margin-gap-right": [
+          "button-structure-margin-right-count",
+        ],
+        "button-advance-margin-gap-all": [
+          "button-structure-margin-top-count",
+          "button-structure-margin-bottom-count",
+          "button-structure-margin-left-count",
+          "button-structure-margin-right-count",
+        ],
+      },
     },
     {
       bulletId: "button-advance-padding-gap-bullet",
       fillId: "button-advance-padding-gap-fill",
-      countIds: [
-        "button-structure-padding-top-count",
-        "button-structure-padding-bottom-count",
-        "button-structure-padding-left-count",
-        "button-structure-padding-right-count",
-      ],
+      tabKey: () => activePaddingTab,
+      idMap: {
+        "button-advance-padding-gap-top": [
+          "button-structure-padding-top-count",
+        ],
+        "button-advance-padding-gap-bottom": [
+          "button-structure-padding-bottom-count",
+        ],
+        "button-advance-padding-gap-left": [
+          "button-structure-padding-left-count",
+        ],
+        "button-advance-padding-gap-right": [
+          "button-structure-padding-right-count",
+        ],
+        "button-advance-padding-gap-all": [
+          "button-structure-padding-top-count",
+          "button-structure-padding-bottom-count",
+          "button-structure-padding-left-count",
+          "button-structure-padding-right-count",
+        ],
+      },
     },
   ];
 
-  sliders.forEach(({ bulletId, fillId, countIds }) => {
+  sliders.forEach(({ bulletId, fillId, tabKey, idMap }) => {
     const bullet = document.getElementById(bulletId);
     const fill = document.getElementById(fillId);
     const bar = bullet?.parentElement;
@@ -178,7 +214,10 @@ export function initButtonStructureGapTypeToggle() {
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
 
-      const value = Math.round((percent / 100) * 100); // 0–100px
+      const value = Math.round((percent / 100) * 100);
+      const activeTab = tabKey();
+      const countIds = idMap[activeTab] || [];
+
       countIds.forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.innerText = `${value}px`;
