@@ -1,5 +1,5 @@
 import { ButtonAdvanceScrollEffectVerticalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectVerticalSection/ButtonAdvanceScrollEffectVerticalSection.js";
-import { ButtonAdvanceScrollEffecthorizontalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectHorizontalSection/ButtonAdvanceScrollEffectHorizontalSection.js";
+import { ButtonAdvanceScrollEffectHorizontalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectHorizontalSection/ButtonAdvanceScrollEffectHorizontalSection.js";
 import { ButtonAdvanceScrollEffectOpacitySection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectOpacitySection/ButtonAdvanceScrollEffectOpacitySection.js";
 import { ButtonAdvanceScrollEffectScaleSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectScaleSection/ButtonAdvanceScrollEffectScaleSection.js";
 import { ButtonAdvanceScrollEffectRotateSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceScrollEffectRotateSection/ButtonAdvanceScrollEffectRotateSection.js";
@@ -89,7 +89,7 @@ export function ButtonAdvanceScrollEffectSection() {
            alt=""
          />
        </div>
-      ${ButtonAdvanceScrollEffecthorizontalSection()}
+      ${ButtonAdvanceScrollEffectHorizontalSection()}
      </div>
      <div class=" ">
        <div
