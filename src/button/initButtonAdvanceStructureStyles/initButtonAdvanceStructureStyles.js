@@ -35,7 +35,7 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       })
       .filter(Boolean)
       .join(", ");
-      
+
     const styleId = `sc-structure-style-${blockId}`;
 
     let styleTag = document.getElementById(styleId);
@@ -82,5 +82,6 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     }
   });
 
-  updateStyles(); // initial run
+  updateStyles();
+  initButtonAdvanceStructureStyles.updateStyles = updateStyles;
 }
