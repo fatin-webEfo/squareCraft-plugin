@@ -18,7 +18,24 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     if (!block) return;
 
     const blockId = block.id;
-    const buttonSelector = `#${blockId} a.sqs-button-element--primary`;
+    const blockButtons = block.querySelectorAll(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+    );
+
+    const buttonSelector = Array.from(blockButtons)
+      .map((btn) => {
+        if (
+          btn.classList.contains("sqs-button-element--primary") ||
+          btn.classList.contains("sqs-button-element--secondary") ||
+          btn.classList.contains("sqs-button-element--tertiary")
+        ) {
+          return `#${blockId} a.${btn.classList[1]}`;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .join(", ");
+      
     const styleId = `sc-structure-style-${blockId}`;
 
     let styleTag = document.getElementById(styleId);
