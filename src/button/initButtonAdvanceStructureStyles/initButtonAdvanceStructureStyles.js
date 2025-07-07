@@ -46,7 +46,10 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       }
     });
 
-    styleTag.innerHTML = `${buttonSelector} { ${cssParts.join(";")} }`;
+    const cssString = `${buttonSelector} { ${cssParts.join("; ")} }`;
+    styleTag.innerHTML = cssString;
+
+    console.log("🔄 Real-time Button Styles Applied:\n", cssString);
   };
 
   const observer = new MutationObserver(updateStyles);
