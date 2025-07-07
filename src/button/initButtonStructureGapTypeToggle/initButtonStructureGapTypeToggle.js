@@ -41,6 +41,14 @@ export function initButtonStructureGapTypeToggle() {
     "button-advance-padding-gap-right": ["button-structure-padding-right"],
   };
 
+  function updateTabContentHeight() {
+    const tabWrapper = document.getElementById("tabContentWrapper");
+    if (tabWrapper && tabWrapper.classList.contains("sc-h-350")) {
+      tabWrapper.classList.remove("sc-h-350");
+      tabWrapper.classList.add("sc-h-375");
+    }
+  }
+
   marginIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -58,7 +66,6 @@ export function initButtonStructureGapTypeToggle() {
         "button-structure-margin-left-fill",
         "button-structure-margin-right-fill",
       ];
-
       allMarginFills.forEach((id) => {
         const fill = document.getElementById(id);
         if (fill) fill.style.display = "none";
@@ -69,6 +76,8 @@ export function initButtonStructureGapTypeToggle() {
         const fill = document.getElementById(fillId);
         if (fill) fill.style.display = "block";
       });
+
+      updateTabContentHeight();
     });
   });
 
@@ -89,7 +98,6 @@ export function initButtonStructureGapTypeToggle() {
         "button-structure-padding-left",
         "button-structure-padding-right",
       ];
-
       allPaddingFills.forEach((id) => {
         const fill = document.getElementById(id);
         if (fill) fill.style.display = "none";
@@ -100,6 +108,8 @@ export function initButtonStructureGapTypeToggle() {
         const fill = document.getElementById(fillId);
         if (fill) fill.style.display = "block";
       });
+
+      updateTabContentHeight();
     });
   });
 }
