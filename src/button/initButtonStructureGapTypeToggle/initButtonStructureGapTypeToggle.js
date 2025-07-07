@@ -1,3 +1,4 @@
+
 export function initButtonStructureGapTypeToggle() {
   const marginIds = [
     "button-advance-margin-gap-all",
