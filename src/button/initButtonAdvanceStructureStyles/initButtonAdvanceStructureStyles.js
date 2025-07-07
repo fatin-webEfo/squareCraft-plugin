@@ -24,18 +24,17 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
 
     const buttonSelector = Array.from(blockButtons)
       .map((btn) => {
-        const base = "sqs-button-element";
-        const modifier = [...btn.classList].find((c) =>
-          c.startsWith("sqs-button-element--")
-        );
-        if (modifier) {
-          return `#${blockId} a.${base}.${modifier}`;
+        if (
+          btn.classList.contains("sqs-button-element--primary") ||
+          btn.classList.contains("sqs-button-element--secondary") ||
+          btn.classList.contains("sqs-button-element--tertiary")
+        ) {
+          return `#${blockId} a.${btn.classList[1]}`;
         }
         return null;
       })
       .filter(Boolean)
       .join(", ");
-
 
     const styleId = `sc-structure-style-${blockId}`;
 
