@@ -134,17 +134,6 @@ export function initButtonStructureGapTypeToggle() {
     });
   });
 
-  document.addEventListener("click", (e) => {
-    const target = e.target;
-    const clickedId =
-      target?.id ||
-      target?.closest("div[id]")?.id ||
-      target?.closest("p[id]")?.id;
-
-    if (!allAllowedIds.includes(clickedId)) {
-      setTabHeight(false);
-    }
-  });
 
   const sliders = [
     {
@@ -235,5 +224,16 @@ export function initButtonStructureGapTypeToggle() {
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", stopDrag);
     });
+  });
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    const clickedId =
+      target?.id ||
+      target?.closest("div[id]")?.id ||
+      target?.closest("p[id]")?.id;
+
+    if (!allAllowedIds.includes(clickedId)) {
+      setTabHeight(false);
+    }
   });
 }
