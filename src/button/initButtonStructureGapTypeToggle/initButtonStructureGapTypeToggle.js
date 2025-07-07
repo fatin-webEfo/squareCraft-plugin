@@ -215,6 +215,8 @@ export function initButtonStructureGapTypeToggle() {
 
     const stopDrag = () => {
       isDragging = false;
+      
+      setTabHeight(true);
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", stopDrag);
     };
