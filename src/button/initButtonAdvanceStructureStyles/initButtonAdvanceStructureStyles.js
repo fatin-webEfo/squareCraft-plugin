@@ -113,16 +113,12 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
 
     marginIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (el) {
-        el.classList.remove("sc-bg-454545");
-      }
+      if (el) el.classList.remove("sc-bg-454545");
     });
 
     paddingIds.forEach((id) => {
       const el = document.getElementById(id);
-      if (el) {
-        el.classList.remove("sc-bg-454545");
-      }
+      if (el) el.classList.remove("sc-bg-454545");
     });
 
     const marginAll = document.getElementById("button-advance-margin-gap-all");
@@ -132,6 +128,28 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
 
     if (marginAll) marginAll.classList.add("sc-bg-454545");
     if (paddingAll) paddingAll.classList.add("sc-bg-454545");
+
+    const allMarginFills = [
+      "button-structure-margin-top-fill",
+      "button-structure-margin-bottom-fill",
+      "button-structure-margin-left-fill",
+      "button-structure-margin-right-fill",
+    ];
+    allMarginFills.forEach((id) => {
+      const fill = document.getElementById(id);
+      if (fill) fill.style.display = "block";
+    });
+
+    const allPaddingFills = [
+      "button-structure-padding-top",
+      "button-structure-padding-bottom",
+      "button-structure-padding-left",
+      "button-structure-padding-right",
+    ];
+    allPaddingFills.forEach((id) => {
+      const fill = document.getElementById(id);
+      if (fill) fill.style.display = "block";
+    });
 
     updateStyles();
   }
@@ -144,15 +162,9 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     "button-advance-structure-reset-all"
   );
 
-  if (marginResetBtn) {
+  if (marginResetBtn)
     marginResetBtn.addEventListener("click", resetStructureStyles);
-  }
-
-  if (paddingResetBtn) {
+  if (paddingResetBtn)
     paddingResetBtn.addEventListener("click", resetStructureStyles);
-  }
-
-  if (allResetBtn) {
-    allResetBtn.addEventListener("click", resetStructureStyles);
-  }
+  if (allResetBtn) allResetBtn.addEventListener("click", resetStructureStyles);
 }
