@@ -29,14 +29,15 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
           btn.classList.contains("sqs-button-element--secondary") ||
           btn.classList.contains("sqs-button-element--tertiary")
         ) {
-          return `#${blockId} > a.sqs-button-element.${btn.classList[1]}, #${blockId} .sqs-block-button-container > a.sqs-button-element.${btn.classList[1]}`;
+          return `#${blockId} a.${btn.classList[1]}`;
         }
         return null;
       })
       .filter(Boolean)
       .join(", ");
-
+      
     const styleId = `sc-structure-style-${blockId}`;
+
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
@@ -81,6 +82,5 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     }
   });
 
-  updateStyles();
-  initButtonAdvanceStructureStyles.updateStyles = updateStyles;
+  updateStyles(); // initial run
 }
