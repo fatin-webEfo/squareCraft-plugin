@@ -51,7 +51,7 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       const el = document.getElementById(id);
       if (el) {
         const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`margin-${side}:${value}px`);
+        cssParts.push(`margin-${side}:${value}px !important`);
       }
     });
 
@@ -59,7 +59,7 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       const el = document.getElementById(id);
       if (el) {
         const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`padding-${side}:${value}px`);
+        cssParts.push(`padding-${side}:${value}px !important`);
       }
     });
 
