@@ -66,4 +66,56 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
   });
 
   updateStyles();
+
+  function resetStructureStyles() {
+    Object.values(marginMap).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = "0px";
+    });
+
+    Object.values(paddingMap).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = "0px";
+    });
+
+    const marginFill = document.getElementById(
+      "button-advance-margin-gap-fill"
+    );
+    const marginBullet = document.getElementById(
+      "button-advance-margin-gap-bullet"
+    );
+    const paddingFill = document.getElementById(
+      "button-advance-padding-gap-fill"
+    );
+    const paddingBullet = document.getElementById(
+      "button-advance-padding-gap-bullet"
+    );
+
+    if (marginFill) marginFill.style.width = "0%";
+    if (marginBullet) marginBullet.style.left = "0%";
+    if (paddingFill) paddingFill.style.width = "0%";
+    if (paddingBullet) paddingBullet.style.left = "0%";
+
+    updateStyles();
+  }
+
+  const marginResetBtn = document.getElementById("button-advance-margin-reset");
+  const paddingResetBtn = document.getElementById(
+    "button-advance-padding-reset"
+  );
+  const allResetBtn = document.getElementById(
+    "button-advance-structure-reset-all"
+  );
+
+  if (marginResetBtn) {
+    marginResetBtn.addEventListener("click", resetStructureStyles);
+  }
+
+  if (paddingResetBtn) {
+    paddingResetBtn.addEventListener("click", resetStructureStyles);
+  }
+
+  if (allResetBtn) {
+    allResetBtn.addEventListener("click", resetStructureStyles);
+  }
 }
