@@ -96,6 +96,43 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     if (paddingFill) paddingFill.style.width = "0%";
     if (paddingBullet) paddingBullet.style.left = "0%";
 
+    const marginIds = [
+      "button-advance-margin-gap-all",
+      "button-advance-margin-gap-top",
+      "button-advance-margin-gap-bottom",
+      "button-advance-margin-gap-left",
+      "button-advance-margin-gap-right",
+    ];
+    const paddingIds = [
+      "button-advance-padding-gap-all",
+      "button-advance-padding-gap-top",
+      "button-advance-padding-gap-bottom",
+      "button-advance-padding-gap-left",
+      "button-advance-padding-gap-right",
+    ];
+
+    marginIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("sc-bg-454545");
+      }
+    });
+
+    paddingIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("sc-bg-454545");
+      }
+    });
+
+    const marginAll = document.getElementById("button-advance-margin-gap-all");
+    const paddingAll = document.getElementById(
+      "button-advance-padding-gap-all"
+    );
+
+    if (marginAll) marginAll.classList.add("sc-bg-454545");
+    if (paddingAll) paddingAll.classList.add("sc-bg-454545");
+
     updateStyles();
   }
 
