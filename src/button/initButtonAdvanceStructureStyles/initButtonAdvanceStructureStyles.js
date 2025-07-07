@@ -29,7 +29,7 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
           btn.classList.contains("sqs-button-element--secondary") ||
           btn.classList.contains("sqs-button-element--tertiary")
         ) {
-          return `#${blockId} a.${btn.classList[1]}`;
+          return `#${blockId} a.sqs-button-element.${btn.classList[1]}`;
         }
         return null;
       })
@@ -37,7 +37,6 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       .join(", ");
 
     const styleId = `sc-structure-style-${blockId}`;
-
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
