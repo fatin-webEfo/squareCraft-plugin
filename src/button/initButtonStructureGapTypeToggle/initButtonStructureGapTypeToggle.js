@@ -196,6 +196,7 @@ export function initButtonStructureGapTypeToggle() {
 
     const onMouseMove = (e) => {
       if (!isDragging) return;
+      setTabHeight(true);
       const rect = bar.getBoundingClientRect();
       let x = e.clientX - rect.left;
       x = Math.max(0, Math.min(x, rect.width));
