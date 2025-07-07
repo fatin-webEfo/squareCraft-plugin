@@ -14,8 +14,7 @@ export function ButtonAdvanceStructureSection(){
   <img
     src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg"
     alt="sc-rotate-180"
-    class="sc-rotate-180"
-  />
+    class="sc-rotate-180"/>
 </div>
 <div id="button-advance-structure-section"> <div class="sc-mt-2"> <p class="sc-universal sc-roboto sc-text-gray-300 sc-text-sm sc-font-thin" >Adjust button margin and padding with individual or global controls. </p></div>
 
@@ -44,8 +43,7 @@ export function ButtonAdvanceStructureSection(){
  <div class="sc-relative sc-mt-2 sc-items-center sc-flex-col">
    <p
      class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-     style="bottom: 30px"
-   >
+     style="bottom: 30px">
      0px
    </p>
    <div class="structure-top-box">
@@ -81,37 +79,31 @@ export function ButtonAdvanceStructureSection(){
      </p>
      <p
        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-       style="left: 18px"
-     >
+       style="left: 18px">
        0px
      </p>
      <p
        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-       style="bottom: 18px"
-     >
+       style="bottom: 18px">
        0px
      </p>
 
      <div
      id="structure-all-side-left-bar"
        class="structure-all-side-left-bar sc-absolute sc-cursor-pointer"
-       style="left: 2px"
-     ></div>
+       style="left: 2px"></div>
      <div
      id="structure-all-side-right-bar"
        class="structure-all-side-right-bar sc-absolute sc-cursor-pointer"
-       style="right: 2px"
-     ></div>
+       style="right: 2px"></div>
      <div
      id="structure-all-side-top-bar"
        class="structure-all-side-top-bar sc-absolute sc-cursor-pointer"
-       style="top: 2px"
-     ></div>
+       style="top: 2px"></div>
      <div
      id="structure-all-side-bottom-bar"
        class="structure-all-side-bottom-bar sc-absolute sc-cursor-pointer"
-       style="bottom: 2px"
-     ></div>
+       style="bottom: 2px"></div>
    </div>
 
    <div class="sc-flex sc-items-center sc-justify-center sc-relative">
@@ -120,8 +112,7 @@ export function ButtonAdvanceStructureSection(){
      </div>
      <p
        class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-       style="left: 30px"
-     >
+       style="left: 30px">
        0px
      </p>
    </div>
@@ -132,8 +123,7 @@ export function ButtonAdvanceStructureSection(){
    </div>
    <p
      class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-     style="top: 30px"
-   >
+     style="top: 30px">
      0px
    </p>
  </div>
@@ -150,8 +140,7 @@ export function ButtonAdvanceStructureSection(){
          <img
            src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
            width="10"
-           alt="reset"
-         />
+           alt="reset"/>
        </div>
        <div class="sc-flex sc-z-99999 sc-relative sc-items-center">
           <div class="sc-bg-3f3f3f sc-relative sc-py-1px sc-rounded-l sc-px-2 sc-w-25px">
@@ -196,11 +185,9 @@ export function ButtonAdvanceStructureSection(){
        <p class="sc-font-thin sc-roboto sc-universal ">Right</p>
     </div>
  </div>
-</div></div>
-</div>
+</div></div></div>
 
-<div
- class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
+<div class="sc-mt-6 sc-roboto sc-border-t sc-border-t-dashed sc-border-color-494949 sc-w-full"></div>
 
 <div class="sc-mt-4 ">
  <div>
@@ -208,13 +195,11 @@ export function ButtonAdvanceStructureSection(){
      <p class="sc-universal sc-text-md">Padding Gap</p>
      <div class="sc-flex sc-items-center sc-gap-3">
        <div
-         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
-       >
+         class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
          <img
            src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
            width="10"
-           alt="reset"
-         />
+           alt="reset"/>
        </div>
        <div class="sc-flex sc-z-99999 sc-relative sc-items-center">
           <div class="sc-bg-3f3f3f sc-relative sc-py-1px sc-rounded-l sc-px-2 sc-w-25px">
