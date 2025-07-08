@@ -1,5 +1,4 @@
    (async function squareCraft() {
-     
      let selectedElement = null;
      let widgetContainer = null;
      try {
@@ -17,8 +16,10 @@
      } else {
        requestAnimationFrame(() => injectNavbarIcon());
      }
-    
-     await createWidget(); 
+
+     await createWidget();
+     widgetContainer = document.getElementById("sc-widget-container"); // ✅ ensures global reference
+
      widgetContainer.style.display = "none";
      widgetContainer.style.opacity = "0";
      widgetContainer.style.height = "0px";
@@ -103,8 +104,8 @@
      let lastClickedElement = null;
      let lastAppliedAlignment = null;
      let lastActiveAlignmentElement = null;
- //  viewport
-   
+     //  viewport
+
      function injectLaunchAnimationCSS(targetDoc = document) {
        if (targetDoc.getElementById("sc-launch-animation-style")) return;
        const style = targetDoc.createElement("style");
@@ -163,10 +164,7 @@
        cssText += "}";
        styleTag.innerHTML = cssText;
      }
-     
-     
-     
-     
+
      const {
        initButtonAdvanceStyles,
        horizontalinitButtonAdvanceStyles,
@@ -188,24 +186,23 @@
      } = await import(
        "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
      );
-     const{logCurrentViewport} = await import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js");
+     const { logCurrentViewport } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js"
+     );
      logCurrentViewport();
      window.addEventListener("resize", logCurrentViewport);
      const { handleSectionFind } = await import(
        "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
      );
-     const { ButtonAdvanceToggleControls } =
-       await import(
-         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
-       );
-     const { initButtonStructureGapTypeToggle } =
-       await import(
-         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStructureGapTypeToggle/initButtonStructureGapTypeToggle.js"
-       );
-     const { initButtonAdvanceStructureStyles } =
-       await import(
-         "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStructureStyles/initButtonAdvanceStructureStyles.js"
-       );
+     const { ButtonAdvanceToggleControls } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
+     );
+     const { initButtonStructureGapTypeToggle } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStructureGapTypeToggle/initButtonStructureGapTypeToggle.js"
+     );
+     const { initButtonAdvanceStructureStyles } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStructureStyles/initButtonAdvanceStructureStyles.js"
+     );
      const { getTextType } = await import(
        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
      );
@@ -319,22 +316,22 @@
          initButtonAdvanceStyles(() => selectedElement);
          horizontalinitButtonAdvanceStyles(() => selectedElement);
          opacityinitButtonAdvanceStyles(() => selectedElement);
-           scaleinitButtonAdvanceStyles(() => selectedElement);
-           rotateinitButtonAdvanceStyles(() => selectedElement);
-           initHoverButtonIconRotationControl(() => selectedElement);
-           initHoverButtonIconSizeControl(() => selectedElement);
-           initHoverButtonIconSpacingControl(() => selectedElement);
-           initHoverButtonBorderRadiusControl(() => selectedElement);
-           initHoverButtonBorderTypeToggle(() => selectedElement);
-           initHoverButtonBorderControl(() => selectedElement);
-           applyHoverButtonEffects(() => selectedElement);
-           initButtonAdvanceStructureStyles(() => selectedElement);
-           blurinitButtonAdvanceStyles(() => selectedElement);
-           initButtonAdvanceScrollEffectReset(() =>
-             document.getElementById(window.selectedBlockId)
-           );
+         scaleinitButtonAdvanceStyles(() => selectedElement);
+         rotateinitButtonAdvanceStyles(() => selectedElement);
+         initHoverButtonIconRotationControl(() => selectedElement);
+         initHoverButtonIconSizeControl(() => selectedElement);
+         initHoverButtonIconSpacingControl(() => selectedElement);
+         initHoverButtonBorderRadiusControl(() => selectedElement);
+         initHoverButtonBorderTypeToggle(() => selectedElement);
+         initHoverButtonBorderControl(() => selectedElement);
+         applyHoverButtonEffects(() => selectedElement);
+         initButtonAdvanceStructureStyles(() => selectedElement);
+         blurinitButtonAdvanceStyles(() => selectedElement);
+         initButtonAdvanceScrollEffectReset(() =>
+           document.getElementById(window.selectedBlockId)
+         );
        }
-     
+
        initImageUploadPreview(() => selectedElement);
        const trigger = event.target.closest("#border-color-select");
        if (trigger) {
@@ -354,7 +351,7 @@
              console.error(error.message);
            });
        }
-   
+
        setTimeout(() => {
          ButtonAdvanceToggleControls();
          handleBlockClick(event, {
@@ -366,17 +363,16 @@
              setTimeout(() => {
                buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-               opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                 scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                 rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                 blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
-                 initButtonAdvanceScrollEffectReset(selectedElement)
+               opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+               scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+               rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+               blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+               initButtonAdvanceScrollEffectReset(selectedElement);
              }, 300);
            },
            setLastClickedBlockId: (val) => (lastClickedBlockId = val),
            setLastClickedElement: (val) => (lastClickedElement = val),
-           setLastAppliedAlignment: (val) =>
-             (lastAppliedAlignment = val),
+           setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
            setLastActiveAlignmentElement: (val) =>
              (lastActiveAlignmentElement = val),
          });
@@ -401,7 +397,6 @@
            }
          );
          initButtonBorderRadiusControl(() => selectedElement);
-         
        }, 50);
        handleAlignmentClick(event, {
          lastClickedElement,
@@ -514,9 +509,7 @@
              }
            });
          });
-         const targetBody = isSameOrigin
-           ? parent.document.body
-           : document.body;
+         const targetBody = isSameOrigin ? parent.document.body : document.body;
          observer.observe(targetBody, { childList: true, subtree: true });
        } catch (error) {
          console.error("❌ Error Fetching Modifications:", error);
@@ -559,7 +552,7 @@
      const obsTarget = isSameOrigin ? parent.document.body : document.body;
      observer.observe(obsTarget, { childList: true, subtree: true });
      addHeadingEventListeners();
-    
+
      async function toggleWidgetVisibility(event) {
        event.stopPropagation();
        const clickedBlock = event?.target?.closest('[id^="block-"]');
@@ -594,7 +587,7 @@
              widgetContainer.style.display = "none";
            }, 400);
          }
-         
+
          waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
            .then(() => {
              handleAndDetect(clickedBlock);
@@ -718,7 +711,9 @@
                      selectedElement = val;
                      setTimeout(() => {
                        buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                       horizontalbuttonAdvanceSyncCustomTimelineArrow( selectedElement);
+                       horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                         selectedElement
+                       );
                        opacitybuttonAdvanceSyncCustomTimelineArrow(
                          selectedElement
                        );
@@ -768,6 +763,9 @@
          console.error("🚨 Error loading HTML module:", err);
        }
        triggerLaunchAnimation();
+       if (!widgetContainer) {
+         widgetContainer = document.getElementById("sc-widget-container");
+       }
      }
      function waitForElement(selector, timeout = 3000) {
        return new Promise((resolve, reject) => {
@@ -928,16 +926,13 @@
        const obsTarget = isSameOrigin ? parent.document.body : document.body;
        observer.observe(obsTarget, { childList: true, subtree: true });
        try {
-         iframe?.contentWindow?.document?.addEventListener(
-           "click",
-           (event) => {
-             if (event.target.classList.contains("sc-admin-icon")) {
-               event.stopPropagation();
-               event.preventDefault();
-               toggleWidgetVisibility(event);
-             }
+         iframe?.contentWindow?.document?.addEventListener("click", (event) => {
+           if (event.target.classList.contains("sc-admin-icon")) {
+             event.stopPropagation();
+             event.preventDefault();
+             toggleWidgetVisibility(event);
            }
-         );
+         });
        } catch (e) {
          console.warn(
            "⚠️ Could not access iframe document (likely cross-origin)"
@@ -1009,5 +1004,4 @@
      }
      checkView();
      window.addEventListener("resize", checkView);
-    
    })();
