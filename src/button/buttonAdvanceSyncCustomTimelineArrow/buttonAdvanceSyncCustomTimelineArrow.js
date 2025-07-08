@@ -770,16 +770,14 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
 
     const finalY = apply ? y : 0;
 
-   if (lastY !== finalY) {
-     btn.removeAttribute("style");
-     gsap.to(btn, {
-       duration: 0.3,
-       ease: transition.ease,
-       rotation: finalY, // or multiply like `finalY * 3` for stronger effect
-       transformOrigin: "center center", // or e.g., "left 50%" for left-middle
-     });
-     lastY = finalY;
-   }
+    if (lastY !== finalY) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateY(${finalY.toFixed(2)}vh)`,
+      });
+      lastY = finalY;
+    }
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
