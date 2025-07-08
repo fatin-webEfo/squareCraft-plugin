@@ -551,9 +551,8 @@
      async function toggleWidgetVisibility(event) {
        event.stopPropagation();
        const clickedBlock = event?.target?.closest('[id^="block-"]');
-       if (!clickedBlock) {
-         return;
-       }
+       if (!clickedBlock) return;
+
        if (!widgetLoaded) {
          await createWidget(clickedBlock);
          waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
@@ -566,18 +565,32 @@
        } else {
          if (widgetContainer.style.display === "none") {
            widgetContainer.style.display = "block";
+           const scrollHeight = widgetContainer.scrollHeight + "px";
+           widgetContainer.style.height = "0px";
+           widgetContainer.style.opacity = "0";
+           widgetContainer.style.overflow = "hidden";
+
            setTimeout(() => {
+             widgetContainer.style.transition = "all 0.4s ease";
+             widgetContainer.style.height = scrollHeight;
              widgetContainer.style.opacity = "1";
-             widgetContainer.style.height = "375px"; // or auto if dynamic
            }, 10);
+
            setTimeout(() => {
              widgetContainer.style.height = "auto";
              widgetContainer.style.overflow = "visible";
            }, 400);
          } else {
-           widgetContainer.style.opacity = "0";
-           widgetContainer.style.height = "0px";
+           const currentHeight = widgetContainer.scrollHeight + "px";
+           widgetContainer.style.height = currentHeight;
            widgetContainer.style.overflow = "hidden";
+           widgetContainer.style.transition = "all 0.4s ease";
+
+           setTimeout(() => {
+             widgetContainer.style.height = "0px";
+             widgetContainer.style.opacity = "0";
+           }, 10);
+
            setTimeout(() => {
              widgetContainer.style.display = "none";
            }, 400);
@@ -592,6 +605,7 @@
            });
        }
      }
+    
      function handleAndDetect(clickedBlock) {
        handleBlockClick(
          { target: clickedBlock },
