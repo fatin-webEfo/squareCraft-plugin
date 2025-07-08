@@ -1,10 +1,4 @@
 export function initButtonStructureGapTypeToggle() {
-  if (!window.savedCountsPerBlock) {
-    window.savedCountsPerBlock = {};
-  }
-  const savedCountsPerBlock = window.savedCountsPerBlock;
-  
-
   const marginIds = [
     "button-advance-margin-gap-all",
     "button-advance-margin-gap-top",
@@ -67,63 +61,42 @@ export function initButtonStructureGapTypeToggle() {
     tabWrapper.classList.add(active ? "sc-h-375" : "sc-h-350");
   }
 
-  function applySavedCount(tabKey, bulletId, fillId, isMargin) {
-    const currentBlockId = window.selectedBlockId;
-    const savedCounts = savedCountsPerBlock[currentBlockId] || {};
-
-    const countIds =
-      sliders.find((s) => s.bulletId === bulletId).idMap[tabKey] || [];
-    const value = savedCounts[tabKey] || 0;
-    countIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = `${value}px`;
-    });
-    const bullet = document.getElementById(bulletId);
-    const fill = document.getElementById(fillId);
-    const bar = bullet?.parentElement;
-    if (!bullet || !fill || !bar) return;
-    const percent = (value / 100) * 100;
-    bullet.style.left = `${percent}%`;
-    fill.style.width = `${percent}%`;
-    if (typeof window.initButtonAdvanceStructureStyles === "function") {
-      window.initButtonAdvanceStructureStyles(() =>
-        document.getElementById(window.selectedBlockId)
-      );
-    }
-    window.initButtonAdvanceStructureStyles.updateStyles?.();
-  }
-
   marginIds.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener("click", () => {
       activeMarginTab = id;
+
       marginIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
       });
       el.classList.add("sc-bg-454545");
-      Object.values(marginFillIds)
-        .flat()
-        .forEach((id) => {
-          const fill = document.getElementById(id);
-          if (fill) fill.style.display = "none";
-        });
-      (marginFillIds[id] || []).forEach((fillId) => {
+
+      const allMarginFills = [
+        "button-structure-margin-top-fill",
+        "button-structure-margin-bottom-fill",
+        "button-structure-margin-left-fill",
+        "button-structure-margin-right-fill",
+      ];
+      allMarginFills.forEach((id) => {
+        const fill = document.getElementById(id);
+        if (fill) fill.style.display = "none";
+      });
+
+      const activeFills = marginFillIds[id] || [];
+      activeFills.forEach((fillId) => {
         const fill = document.getElementById(fillId);
         if (fill) fill.style.display = "block";
       });
-      document.getElementById("button-advance-margin-gap-fill").style.display =
-        "block";
-      document.getElementById(
+
+      const fillBar = document.getElementById("button-advance-margin-gap-fill");
+      const bullet = document.getElementById(
         "button-advance-margin-gap-bullet"
-      ).style.display = "block";
-      applySavedCount(
-        id,
-        "button-advance-margin-gap-bullet",
-        "button-advance-margin-gap-fill",
-        true
       );
+      if (fillBar) fillBar.style.display = "block";
+      if (bullet) bullet.style.display = "block";
+
       setTabHeight(true);
     });
   });
@@ -133,35 +106,34 @@ export function initButtonStructureGapTypeToggle() {
     if (!el) return;
     el.addEventListener("click", () => {
       activePaddingTab = id;
+
       paddingIds.forEach((btnId) => {
         const btn = document.getElementById(btnId);
         if (btn) btn.classList.remove("sc-bg-454545");
       });
       el.classList.add("sc-bg-454545");
-      Object.values(paddingFillIds)
-        .flat()
-        .forEach((id) => {
-          const fill = document.getElementById(id);
-          if (fill) fill.style.display = "none";
-        });
-      (paddingFillIds[id] || []).forEach((fillId) => {
+
+      const allPaddingFills = [
+        "button-structure-padding-top",
+        "button-structure-padding-bottom",
+        "button-structure-padding-left",
+        "button-structure-padding-right",
+      ];
+      allPaddingFills.forEach((id) => {
+        const fill = document.getElementById(id);
+        if (fill) fill.style.display = "none";
+      });
+
+      const activeFills = paddingFillIds[id] || [];
+      activeFills.forEach((fillId) => {
         const fill = document.getElementById(fillId);
         if (fill) fill.style.display = "block";
       });
-      document.getElementById("button-advance-padding-gap-fill").style.display =
-        "block";
-      document.getElementById(
-        "button-advance-padding-gap-bullet"
-      ).style.display = "block";
-      applySavedCount(
-        id,
-        "button-advance-padding-gap-bullet",
-        "button-advance-padding-gap-fill",
-        false
-      );
+
       setTabHeight(true);
     });
   });
+
 
   const sliders = [
     {
@@ -231,24 +203,21 @@ export function initButtonStructureGapTypeToggle() {
       const percent = (x / rect.width) * 100;
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
+
       const value = Math.round((percent / 100) * 100);
       const activeTab = tabKey();
-      const currentBlockId = window.selectedBlockId;
-      if (!savedCountsPerBlock[currentBlockId]) {
-        savedCountsPerBlock[currentBlockId] = {};
-      }
-      savedCountsPerBlock[currentBlockId][activeTab] = value;
-            const countIds = idMap[activeTab] || [];
+      const countIds = idMap[activeTab] || [];
+
       countIds.forEach((id) => {
+        if (typeof window.initButtonAdvanceStructureStyles === "function") {
+          window.initButtonAdvanceStructureStyles(() =>
+            document.getElementById(selectedBlockId)
+          );
+        }
+          
         const el = document.getElementById(id);
         if (el) el.innerText = `${value}px`;
       });
-      if (typeof window.initButtonAdvanceStructureStyles === "function") {
-        window.initButtonAdvanceStructureStyles(() =>
-          document.getElementById(window.selectedBlockId)
-        );
-      }
-      window.initButtonAdvanceStructureStyles.updateStyles?.();
     };
 
     const stopDrag = () => {
@@ -265,14 +234,17 @@ export function initButtonStructureGapTypeToggle() {
       document.addEventListener("mouseup", stopDrag);
     });
   });
-
+ 
+  
   document.addEventListener("click", (e) => {
     const clickedInsideAllowed = allAllowedIds.some((id) => {
       const el = document.getElementById(id);
       return el && el.contains(e.target);
     });
+
     if (!clickedInsideAllowed) {
       setTabHeight(false);
     }
   });
+
 }
