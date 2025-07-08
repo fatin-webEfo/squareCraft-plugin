@@ -1,5 +1,9 @@
 export function initButtonStructureGapTypeToggle() {
-  let savedCountsPerBlock = {};
+  if (!window.savedCountsPerBlock) {
+    window.savedCountsPerBlock = {};
+  }
+  const savedCountsPerBlock = window.savedCountsPerBlock;
+  
 
   const marginIds = [
     "button-advance-margin-gap-all",
@@ -54,7 +58,6 @@ export function initButtonStructureGapTypeToggle() {
 
   let activeMarginTab = "button-advance-margin-gap-all";
   let activePaddingTab = "button-advance-padding-gap-all";
-  const savedCounts = {};
 
   function setTabHeight(active = true) {
     const tabWrapper = document.getElementById("tabContentWrapper");
