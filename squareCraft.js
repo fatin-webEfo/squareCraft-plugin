@@ -18,13 +18,8 @@
      }
 
      await createWidget();
-     widgetContainer = document.getElementById("sc-widget-container"); // ✅ ensures global reference
 
-     widgetContainer.style.display = "none";
-     widgetContainer.style.opacity = "0";
-     widgetContainer.style.height = "0px";
-     widgetContainer.style.overflow = "hidden";
-     widgetContainer.style.transition = "all 0.4s ease";
+ 
      let isSameOrigin = true;
      if (!window.__squareCraftResetFlags) {
        window.__squareCraftResetFlags = new Map();
@@ -745,6 +740,7 @@
          }
        }
      }
+   
      async function createWidget(clickedBlock) {
        try {
          const module = await import(
@@ -762,11 +758,21 @@
        } catch (err) {
          console.error("🚨 Error loading HTML module:", err);
        }
+
        triggerLaunchAnimation();
-       if (!widgetContainer) {
-         widgetContainer = document.getElementById("sc-widget-container");
+       widgetContainer = document.getElementById("sc-widget-container");
+
+       if (widgetContainer) {
+         widgetContainer.style.display = "none";
+         widgetContainer.style.opacity = "0";
+         widgetContainer.style.height = "0px";
+         widgetContainer.style.overflow = "hidden";
+         widgetContainer.style.transition = "all 0.4s ease";
        }
      }
+    
+
+
      function waitForElement(selector, timeout = 3000) {
        return new Promise((resolve, reject) => {
          const el = document.querySelector(selector);
