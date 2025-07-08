@@ -153,8 +153,13 @@
 
       const currentBlockId = getSelectedElement()?.id;
       if (currentBlockId && window.savedCountsPerBlock) {
-        delete window.savedCountsPerBlock[currentBlockId];
+        Object.keys(window.savedCountsPerBlock[currentBlockId] || {}).forEach(
+          (key) => {
+            window.savedCountsPerBlock[currentBlockId][key] = 0;
+          }
+        );
       }
+      
       const styleTag = document.getElementById(
         `sc-structure-style-${currentBlockId}`
       );
