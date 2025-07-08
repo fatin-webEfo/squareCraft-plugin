@@ -18,7 +18,7 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     if (!block) return;
 
     const blockId = block.id;
-    const buttonSelector = `#${blockId}`;
+    const buttonSelector = `#${blockId} a`;
 
     const styleId = `sc-structure-style-${blockId}`;
     let styleTag = document.getElementById(styleId);
