@@ -1,4 +1,21 @@
             (async function squareCraft() {
+
+              try {
+                const { injectNavbarIcon } = await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
+                );
+                injectNavbarIcon();
+              } catch (error) {
+                console.error("🚨 Failed to load navbar icon script", error);
+              }
+              if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", () => {
+                  requestAnimationFrame(() => injectNavbarIcon());
+                });
+              } else {
+                requestAnimationFrame(() => injectNavbarIcon());
+              }
+
               let isSameOrigin = true;
               if (!window.__squareCraftResetFlags) {
                 window.__squareCraftResetFlags = new Map();
@@ -609,21 +626,7 @@
 
               addHeadingEventListeners();
 
-              try {
-                const { injectNavbarIcon } = await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
-                );
-                injectNavbarIcon();
-              } catch (error) {
-                console.error("🚨 Failed to load navbar icon script", error);
-              }
-              if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", () => {
-                  requestAnimationFrame(() => injectNavbarIcon());
-                });
-              } else {
-                requestAnimationFrame(() => injectNavbarIcon());
-              }
+              
 
               async function toggleWidgetVisibility(event) {
                 event.stopPropagation();
