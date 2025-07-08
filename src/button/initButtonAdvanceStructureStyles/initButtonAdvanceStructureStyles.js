@@ -123,8 +123,14 @@
       const styleTag = document.getElementById(
         `sc-structure-style-${getSelectedElement()?.id}`
       );
-      if (styleTag) styleTag.remove();
-    }
+      if (styleTag) {
+        const cssLines = styleTag.innerHTML.split(";");
+        const filteredLines = cssLines.filter((line) =>
+          isMargin ? !line.includes("margin-") : !line.includes("padding-")
+        );
+        styleTag.innerHTML = filteredLines.join(";").trim();
+      }
+          }
     
     function resetPaddingStyles() {
       Object.values(paddingMap).forEach((id) => {
