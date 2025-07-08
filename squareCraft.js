@@ -1169,11 +1169,12 @@
 
               if (document.readyState === "loading") {
                 document.addEventListener("DOMContentLoaded", () => {
-                  requestAnimationFrame(() => injectIcon());
+                  injectIcon();
                 });
               } else {
-                requestAnimationFrame(() => injectIcon());
+                injectIcon();
               }
+              
               
               handleSectionFind();
               function checkView() {
