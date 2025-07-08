@@ -151,7 +151,11 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
       if (fill) fill.style.display = "block";
     });
 
-    updateStyles();
+    const styleTag = document.getElementById(
+      `sc-structure-style-${getSelectedElement()?.id}`
+    );
+    if (styleTag) styleTag.remove();
+    
   }
 
   const marginResetBtn = document.getElementById("button-advance-margin-reset");
