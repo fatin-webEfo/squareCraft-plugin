@@ -712,8 +712,13 @@
                       console.error(error.message);
                     });
                 } else {
-                  widgetContainer.style.display =
-                    widgetContainer.style.display === "none" ? "block" : "none";
+                  if (widgetContainer.style.height === "0px") {
+                    widgetContainer.style.height =
+                      widgetContainer.scrollHeight + "px";
+                  } else {
+                    widgetContainer.style.height = "0px";
+                  }
+                  
                   waitForElement(
                     "#typoSection, #imageSection, #buttonSection",
                     4000
@@ -756,6 +761,10 @@
                     "sc-universal",
                     "sc-z-999999"
                   );
+                  widgetContainer.style.height = "0px";
+                  widgetContainer.style.overflow = "hidden";
+                  widgetContainer.style.transition = "height 0.4s ease-in-out";
+
 
                   const styleLink = document.createElement("link");
                   styleLink.rel = "stylesheet";
@@ -892,29 +901,31 @@
                   }
                 }
               }
-              async function createWidget(clickedBlock) {
+              async function createWidget(clickedBlock, htmlString) {
                 try {
-                  const module = await import(
-                    "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-                  );
-                  const htmlString = module.html();
-
-                  if (
-                    typeof htmlString === "string" &&
-                    htmlString.trim().length > 0
-                  ) {
-                    loadWidgetFromString(htmlString, clickedBlock);
+                  if (!htmlString) {
+                    const module = await import(
+                      "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+                    );
+                    htmlString = module.html();
                     setTimeout(() => {
                       if (typeof module.initToggleSwitch === "function") {
                         module.initToggleSwitch();
                       }
                     }, 200);
                   }
+
+                  if (
+                    typeof htmlString === "string" &&
+                    htmlString.trim().length > 0
+                  ) {
+                    loadWidgetFromString(htmlString, clickedBlock);
+                  }
                 } catch (err) {
                   console.error("🚨 Error loading HTML module:", err);
                 }
-                triggerLaunchAnimation();
               }
+              
 
               function waitForElement(selector, timeout = 3000) {
                 return new Promise((resolve, reject) => {
