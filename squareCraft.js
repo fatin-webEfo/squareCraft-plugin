@@ -1,5 +1,4 @@
             (async function squareCraft() {
-              
               let isSameOrigin = true;
               if (!window.__squareCraftResetFlags) {
                 window.__squareCraftResetFlags = new Map();
@@ -617,6 +616,13 @@
                 injectNavbarIcon();
               } catch (error) {
                 console.error("🚨 Failed to load navbar icon script", error);
+              }
+              if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", () => {
+                  requestAnimationFrame(() => injectNavbarIcon());
+                });
+              } else {
+                requestAnimationFrame(() => injectNavbarIcon());
               }
 
               async function toggleWidgetVisibility(event) {
