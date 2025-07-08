@@ -17,7 +17,7 @@
        requestAnimationFrame(() => injectNavbarIcon());
      }
 
-     await createWidget();
+   
 
  
      let isSameOrigin = true;
@@ -302,6 +302,7 @@
        "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js"
      );
      const themeColors = await getSquarespaceThemeStyles();
+     await createWidget();
      document.body.addEventListener("click", (event) => {
        ButtonAdvanceToggleControls();
        if (selectedElement) {
