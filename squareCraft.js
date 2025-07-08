@@ -332,6 +332,10 @@
                     scaleinitButtonAdvanceStyles(() => selectedElement);
                     rotateinitButtonAdvanceStyles(() => selectedElement);
                     blurinitButtonAdvanceStyles(() => selectedElement);
+                    initButtonAdvanceScrollEffectReset(() =>
+                      document.getElementById(window.selectedBlockId)
+                    );
+
                 }
 
                 if (selectedElement) {
