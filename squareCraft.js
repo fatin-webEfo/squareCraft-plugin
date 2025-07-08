@@ -1,4 +1,11 @@
             (async function squareCraft() {
+              await createWidget(); 
+              widgetContainer.style.display = "none";
+              widgetContainer.style.opacity = "0";
+              widgetContainer.style.height = "0px";
+              widgetContainer.style.overflow = "hidden";
+              widgetContainer.style.transition = "all 0.4s ease";
+
               let isSameOrigin = true;
               if (!window.__squareCraftResetFlags) {
                 window.__squareCraftResetFlags = new Map();
@@ -635,8 +642,27 @@
                       console.error(error.message);
                     });
                 } else {
-                  widgetContainer.style.display =
-                    widgetContainer.style.display === "none" ? "block" : "none";
+                  if (widgetContainer.style.display === "none") {
+                    widgetContainer.style.display = "block";
+                    setTimeout(() => {
+                      widgetContainer.style.opacity = "1";
+                      widgetContainer.style.height = "375px"; // or auto if dynamic
+                    }, 10);
+
+                    setTimeout(() => {
+                      widgetContainer.style.height = "auto";
+                      widgetContainer.style.overflow = "visible";
+                    }, 400);
+                  } else {
+                    widgetContainer.style.opacity = "0";
+                    widgetContainer.style.height = "0px";
+                    widgetContainer.style.overflow = "hidden";
+
+                    setTimeout(() => {
+                      widgetContainer.style.display = "none";
+                    }, 400);
+                  }
+                  
                   waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
                     .then(() => {
                       handleAndDetect(clickedBlock);
