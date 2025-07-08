@@ -202,6 +202,7 @@
     const allResetBtn = document.getElementById(
       "button-advance-structure-reset-all"
     );
+    
 
     if (marginResetBtn)
       marginResetBtn.addEventListener("click", resetMarginStyles);
