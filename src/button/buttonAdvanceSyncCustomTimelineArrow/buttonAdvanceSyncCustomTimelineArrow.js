@@ -995,3 +995,60 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
+
+export function initButtonAdvanceScrollEffectReset(getSelectedElement) {
+  const resetBtn = document.getElementById("button-advance-scroll-reset");
+  if (!resetBtn) return;
+
+  resetBtn.addEventListener("click", () => {
+    const block = getSelectedElement();
+    if (!block) return;
+
+    const btn = block.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    if (!btn) return;
+
+    btn.removeAttribute("style");
+    btn.style.transform = "";
+    btn.style.opacity = "";
+    btn.style.filter = "";
+    btn.style.scale = "";
+    btn.style.rotate = "";
+    btn.style.transformOrigin = "";
+
+    btn.style.removeProperty("transform");
+    btn.style.removeProperty("opacity");
+    btn.style.removeProperty("filter");
+    btn.style.removeProperty("scale");
+    btn.style.removeProperty("rotate");
+    btn.style.removeProperty("transform-origin");
+
+    btn.style.removeProperty("--sc-vertical-scroll-entry");
+    btn.style.removeProperty("--sc-vertical-scroll-center");
+    btn.style.removeProperty("--sc-vertical-scroll-exit");
+
+    btn.style.removeProperty("--sc-horizontal-scroll-entry");
+    btn.style.removeProperty("--sc-horizontal-scroll-center");
+    btn.style.removeProperty("--sc-horizontal-scroll-exit");
+
+    btn.style.removeProperty("--sc-opacity-scroll-entry");
+    btn.style.removeProperty("--sc-opacity-scroll-center");
+    btn.style.removeProperty("--sc-opacity-scroll-exit");
+
+    btn.style.removeProperty("--sc-scale-scroll-entry");
+    btn.style.removeProperty("--sc-scale-scroll-center");
+    btn.style.removeProperty("--sc-scale-scroll-exit");
+
+    btn.style.removeProperty("--sc-rotate-scroll-entry");
+    btn.style.removeProperty("--sc-rotate-scroll-center");
+    btn.style.removeProperty("--sc-rotate-scroll-exit");
+
+    btn.style.removeProperty("--sc-blur-scroll-entry");
+    btn.style.removeProperty("--sc-blur-scroll-center");
+    btn.style.removeProperty("--sc-blur-scroll-exit");
+
+    console.log("🎯 Scroll Effects Reset for", btn);
+  });
+}

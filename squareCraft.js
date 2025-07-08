@@ -190,6 +190,7 @@
                 scalebuttonAdvanceSyncCustomTimelineArrow,
                 rotatebuttonAdvanceSyncCustomTimelineArrow,
                 blurbuttonAdvanceSyncCustomTimelineArrow,
+                initButtonAdvanceScrollEffectReset,
               } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
               );
@@ -399,6 +400,7 @@
                           scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement)
                           blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement)
+                          initButtonAdvanceScrollEffectReset(selectedElement)
                       }, 300);
                     },
                     setLastClickedBlockId: (val) => (lastClickedBlockId = val),
@@ -794,6 +796,7 @@
                                 blurbuttonAdvanceSyncCustomTimelineArrow(
                                   selectedElement
                                 );
+                                initButtonAdvanceScrollEffectReset(selectedElement);
                               }, 300);
                             },
                             setLastClickedBlockId: (val) => (lastClickedBlockId = val),

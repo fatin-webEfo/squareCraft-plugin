@@ -34,7 +34,7 @@ export function ButtonAdvanceScrollEffectSection() {
        </div>
        <p class="sc-font-size-12 sc-universal sc-roboto">Enable</p>
      </div>
-     <div
+     <div id="button-advance-scroll-reset"
        class="sc-flex sc-gradiant-border sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-px-2 sc-py-4px sc-bg sc-bg-454545">
        <p
          class="sc-font-thin sc-universal sc-font-size-12 sc-font-size-11 sc-roboto">
