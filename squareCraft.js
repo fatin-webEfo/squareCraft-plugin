@@ -331,38 +331,20 @@
                   opacityinitButtonAdvanceStyles(() => selectedElement);
                     scaleinitButtonAdvanceStyles(() => selectedElement);
                     rotateinitButtonAdvanceStyles(() => selectedElement);
+                    initHoverButtonIconRotationControl(() => selectedElement);
+                    initHoverButtonIconSizeControl(() => selectedElement);
+                    initHoverButtonIconSpacingControl(() => selectedElement);
+                    initHoverButtonBorderRadiusControl(() => selectedElement);
+                    initHoverButtonBorderTypeToggle(() => selectedElement);
+                    initHoverButtonBorderControl(() => selectedElement);
+                    applyHoverButtonEffects(() => selectedElement);
+                    initButtonAdvanceStructureStyles(() => selectedElement);
                     blurinitButtonAdvanceStyles(() => selectedElement);
                     initButtonAdvanceScrollEffectReset(() =>
                       document.getElementById(window.selectedBlockId)
                     );
 
                 }
-
-                if (selectedElement) {
-                  initHoverButtonIconRotationControl(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initHoverButtonIconSizeControl(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initHoverButtonIconSpacingControl(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initHoverButtonBorderRadiusControl(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initHoverButtonBorderTypeToggle(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initHoverButtonBorderControl(() => selectedElement);
-                }
-                if (selectedElement) {
-                  applyHoverButtonEffects(() => selectedElement);
-                }
-                if (selectedElement) {
-                  initButtonAdvanceStructureStyles(() => selectedElement);
-                }
-                
               
                 initImageUploadPreview(() => selectedElement);
                 const trigger = event.target.closest("#border-color-select");
