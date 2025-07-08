@@ -1161,21 +1161,7 @@
                 }
               }
 
-              try {
-                injectIcon();
-              } catch (error) {
-                console.error("🚨 Failed to inject toolbar icon:", error);
-              }
-
-              if (document.readyState === "loading") {
-                document.addEventListener("DOMContentLoaded", () => {
-                  injectIcon();
-                });
-              } else {
-                injectIcon();
-              }
-              
-              
+              waitForNavBar();
               handleSectionFind();
               function checkView() {
                 const isMobile = window.innerWidth <= 768;
