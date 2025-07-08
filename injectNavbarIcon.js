@@ -400,17 +400,13 @@
     insertToolbarIcon();
     insertAdminIcon();
 
-    if (window.__sc_navbarObserver) {
-      window.__sc_navbarObserver.disconnect();
-    }
-
-    window.__sc_navbarObserver = new MutationObserver(() => {
-      insertToolbarIcon();
-    });
-
-    window.__sc_navbarObserver.observe(parent.document.body, {
-      childList: true,
-      subtree: true,
-    });
+    new MutationObserver(() => insertToolbarIcon()).observe(
+      parent.document.body,
+      {
+        childList: true,
+        subtree: true,
+      }
+    );
+    
     
   }

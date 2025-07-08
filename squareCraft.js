@@ -2,7 +2,22 @@
      
      let selectedElement = null;
      let widgetContainer = null;
-     
+     try {
+       const { injectNavbarIcon } = await import(
+         "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
+       );
+       injectNavbarIcon();
+     } catch (error) {
+       console.error("🚨 Failed to load navbar icon script", error);
+     }
+     if (document.readyState === "loading") {
+       document.addEventListener("DOMContentLoaded", () => {
+         requestAnimationFrame(() => injectNavbarIcon());
+       });
+     } else {
+       requestAnimationFrame(() => injectNavbarIcon());
+     }
+    
      await createWidget(); 
      widgetContainer.style.display = "none";
      widgetContainer.style.opacity = "0";
@@ -544,14 +559,7 @@
      const obsTarget = isSameOrigin ? parent.document.body : document.body;
      observer.observe(obsTarget, { childList: true, subtree: true });
      addHeadingEventListeners();
-     try {
-       const { injectNavbarIcon } = await import(
-         "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
-       );
-       injectNavbarIcon();
-     } catch (error) {
-       console.error("🚨 Failed to load navbar icon script", error);
-     }
+    
      async function toggleWidgetVisibility(event) {
        event.stopPropagation();
        const clickedBlock = event?.target?.closest('[id^="block-"]');
