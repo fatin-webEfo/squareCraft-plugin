@@ -1,4 +1,6 @@
 export function initButtonStructureGapTypeToggle() {
+  let savedCountsPerBlock = {};
+
   const marginIds = [
     "button-advance-margin-gap-all",
     "button-advance-margin-gap-top",
@@ -63,6 +65,9 @@ export function initButtonStructureGapTypeToggle() {
   }
 
   function applySavedCount(tabKey, bulletId, fillId, isMargin) {
+    const currentBlockId = window.selectedBlockId;
+    const savedCounts = savedCountsPerBlock[currentBlockId] || {};
+
     const countIds =
       sliders.find((s) => s.bulletId === bulletId).idMap[tabKey] || [];
     const value = savedCounts[tabKey] || 0;
@@ -225,8 +230,12 @@ export function initButtonStructureGapTypeToggle() {
       fill.style.width = `${percent}%`;
       const value = Math.round((percent / 100) * 100);
       const activeTab = tabKey();
-      savedCounts[activeTab] = value;
-      const countIds = idMap[activeTab] || [];
+      const currentBlockId = window.selectedBlockId;
+      if (!savedCountsPerBlock[currentBlockId]) {
+        savedCountsPerBlock[currentBlockId] = {};
+      }
+      savedCountsPerBlock[currentBlockId][activeTab] = value;
+            const countIds = idMap[activeTab] || [];
       countIds.forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.innerText = `${value}px`;
