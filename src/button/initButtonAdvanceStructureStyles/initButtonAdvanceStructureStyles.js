@@ -67,13 +67,8 @@
 
     updateStyles();
 
-    function resetStructureStyles() {
+    function resetMarginStyles() {
       Object.values(marginMap).forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = "0px";
-      });
-
-      Object.values(paddingMap).forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.innerText = "0px";
       });
@@ -84,17 +79,8 @@
       const marginBullet = document.getElementById(
         "button-advance-margin-gap-bullet"
       );
-      const paddingFill = document.getElementById(
-        "button-advance-padding-gap-fill"
-      );
-      const paddingBullet = document.getElementById(
-        "button-advance-padding-gap-bullet"
-      );
-
       if (marginFill) marginFill.style.width = "0%";
       if (marginBullet) marginBullet.style.left = "0%";
-      if (paddingFill) paddingFill.style.width = "0%";
-      if (paddingBullet) paddingBullet.style.left = "0%";
 
       const marginIds = [
         "button-advance-margin-gap-all",
@@ -103,31 +89,14 @@
         "button-advance-margin-gap-left",
         "button-advance-margin-gap-right",
       ];
-      const paddingIds = [
-        "button-advance-padding-gap-all",
-        "button-advance-padding-gap-top",
-        "button-advance-padding-gap-bottom",
-        "button-advance-padding-gap-left",
-        "button-advance-padding-gap-right",
-      ];
-
       marginIds.forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.classList.remove("sc-bg-454545");
       });
-
-      paddingIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.classList.remove("sc-bg-454545");
-      });
-
-      const marginAll = document.getElementById("button-advance-margin-gap-all");
-      const paddingAll = document.getElementById(
-        "button-advance-padding-gap-all"
+      const marginAll = document.getElementById(
+        "button-advance-margin-gap-all"
       );
-
       if (marginAll) marginAll.classList.add("sc-bg-454545");
-      if (paddingAll) paddingAll.classList.add("sc-bg-454545");
 
       const allMarginFills = [
         "button-structure-margin-top-fill",
@@ -139,6 +108,54 @@
         const fill = document.getElementById(id);
         if (fill) fill.style.display = "block";
       });
+
+      const currentBlockId = getSelectedElement()?.id;
+      if (currentBlockId && window.savedCountsPerBlock) {
+        Object.keys(window.savedCountsPerBlock[currentBlockId] || {}).forEach(
+          (key) => {
+            if (key.includes("margin")) {
+              window.savedCountsPerBlock[currentBlockId][key] = 0;
+            }
+          }
+        );
+      }
+
+      const styleTag = document.getElementById(
+        `sc-structure-style-${getSelectedElement()?.id}`
+      );
+      if (styleTag) styleTag.remove();
+    }
+    
+    function resetPaddingStyles() {
+      Object.values(paddingMap).forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = "0px";
+      });
+
+      const paddingFill = document.getElementById(
+        "button-advance-padding-gap-fill"
+      );
+      const paddingBullet = document.getElementById(
+        "button-advance-padding-gap-bullet"
+      );
+      if (paddingFill) paddingFill.style.width = "0%";
+      if (paddingBullet) paddingBullet.style.left = "0%";
+
+      const paddingIds = [
+        "button-advance-padding-gap-all",
+        "button-advance-padding-gap-top",
+        "button-advance-padding-gap-bottom",
+        "button-advance-padding-gap-left",
+        "button-advance-padding-gap-right",
+      ];
+      paddingIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove("sc-bg-454545");
+      });
+      const paddingAll = document.getElementById(
+        "button-advance-padding-gap-all"
+      );
+      if (paddingAll) paddingAll.classList.add("sc-bg-454545");
 
       const allPaddingFills = [
         "button-structure-padding-top",
@@ -155,19 +172,23 @@
       if (currentBlockId && window.savedCountsPerBlock) {
         Object.keys(window.savedCountsPerBlock[currentBlockId] || {}).forEach(
           (key) => {
-            window.savedCountsPerBlock[currentBlockId][key] = 0;
+            if (key.includes("padding")) {
+              window.savedCountsPerBlock[currentBlockId][key] = 0;
+            }
           }
         );
       }
-      
+
       const styleTag = document.getElementById(
-        `sc-structure-style-${currentBlockId}`
+        `sc-structure-style-${getSelectedElement()?.id}`
       );
       if (styleTag) styleTag.remove();
-      
-      
     }
-
+    function resetStructureStyles() {
+      resetMarginStyles();
+      resetPaddingStyles();
+    }
+    
     const marginResetBtn = document.getElementById("button-advance-margin-reset");
     const paddingResetBtn = document.getElementById(
       "button-advance-padding-reset"
@@ -177,8 +198,10 @@
     );
 
     if (marginResetBtn)
-      marginResetBtn.addEventListener("click", resetStructureStyles);
+      marginResetBtn.addEventListener("click", resetMarginStyles);
     if (paddingResetBtn)
-      paddingResetBtn.addEventListener("click", resetStructureStyles);
-    if (allResetBtn) allResetBtn.addEventListener("click", resetStructureStyles);
+      paddingResetBtn.addEventListener("click", resetPaddingStyles);
+    if (allResetBtn)
+      allResetBtn.addEventListener("click", resetStructureStyles);
+    
   }
