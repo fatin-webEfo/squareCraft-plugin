@@ -3249,8 +3249,10 @@ html.sc-desktop-view body {
   background: #585858 !important;
 width: 100% !important;
   border-radius: 5px !important;
-  padding: 5px 8px 5px 8px !important;
+  padding: 8px 10px 8px 10px !important;
   margin-top: 8px !important;
+  font-weight: 300 !important;
+  font-size: 13px !important;
   
 }
 input::placeholder {
