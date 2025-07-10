@@ -1,3 +1,8 @@
+
+import { ButtonPresetMyPresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/ButtonPresetMyPresetSection/ButtonPresetMyPresetSection.js";
+import { ButtonPresetLibrarySection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/ButtonPresetLibrarySection/ButtonPresetLibrarySection.js";
+
+
 export function WidgetButtonPresetSection() {
   return `
    <div id="button-presetSection">
@@ -11,7 +16,8 @@ export function WidgetButtonPresetSection() {
             </div>
 
             <div class="sc-px-2">
-             <!-- preset sections -->
+            ${ButtonPresetMyPresetSection()}
+            ${ButtonPresetLibrarySection()}
             </div>
     </div>
   
