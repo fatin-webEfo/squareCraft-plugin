@@ -7,7 +7,7 @@ export function ButtonPresetLibrarySection (){
                   <p class="sc-universal sc-text-sm sc-font-thin sc-text-center">
                     Design this block to save as a preset
                   </p>
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/white-plus.svg" alt="">
+                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/white-plus.svg" alt="">
 
                 </div>
 
@@ -28,7 +28,7 @@ export function ButtonPresetLibrarySection (){
 
                 <div class="sc-w-full sc-flex sc-justify-between sc-mt-2">
                   <p class="sc-universal sc-text-sm sc-font-thin sc-text-gray-300">Button(1)</p>
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/white-threeDot.svg" class="sc-cursor-pointer sc-bg-3f3f3f sc-rounded-full sc-px-1 sc-py-1" alt="">
+                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/white-threeDot.svg" class="sc-cursor-pointer sc-bg-3f3f3f sc-rounded-full sc-px-1 sc-py-1" alt="">
 
                 </div>
 
@@ -36,7 +36,7 @@ export function ButtonPresetLibrarySection (){
 
                 <div class="sc-w-full sc-flex sc-justify-between sc-mt-2">
                   <p class="sc-universal sc-text-sm sc-font-thin sc-text-gray-300">Button(1)</p>
-                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/white-threeDot.svg" class="sc-cursor-pointer sc-bg-3f3f3f sc-rounded-full sc-px-1 sc-py-1" alt="">
+                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/white-threeDot.svg" class="sc-cursor-pointer sc-bg-3f3f3f sc-rounded-full sc-px-1 sc-py-1" alt="">
 
                 </div>
               </div>
