@@ -3241,3 +3241,27 @@ html.sc-desktop-view body {
   position: relative !important;
   width: 100% !important;
 }
+
+
+
+.button-preset-name{
+  all: unset !important;
+  background: #585858 !important;
+width: 100% !important;
+  border-radius: 5px !important;
+  padding: 5px 8px 5px 8px !important;
+  margin-top: 8px !important;
+  
+}
+input::placeholder {
+  color: #d1d5db !important;
+  font-size: 13px !important;
+}
+
+.sc-right-2{
+  right: 8px !important;
+}
+
+.sc-top-4{
+  top: 16px !important;
+}
