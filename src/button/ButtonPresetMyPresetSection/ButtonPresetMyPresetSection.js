@@ -7,7 +7,7 @@ export function ButtonPresetMyPresetSection() {
                   <p class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-text-center">
                     Design this block to save as a preset
                   </p>
-                  <img src="./public/orange-plus.svg" alt="">
+                  <img src="https://fatin-webefo.github.io/squareCraft-plugin/orange-plus.svg" alt="">
         </div>
      </div>
   `;
