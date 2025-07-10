@@ -257,6 +257,9 @@
               const { ButtonAdvanceToggleControls } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
               );
+              const { WidgetButtonPresetTabControls } = await import(
+                "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonPresetTabControls/WidgetButtonPresetTabControls.js"
+              );
               const { initButtonStructureGapTypeToggle } = await import(
                 "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStructureGapTypeToggle/initButtonStructureGapTypeToggle.js"
               );
@@ -373,6 +376,7 @@
 
               document.body.addEventListener("click", (event) => {
                 ButtonAdvanceToggleControls();
+                WidgetButtonPresetTabControls();
                 if (selectedElement) {
                   initButtonStyles(selectedElement);
                 }
