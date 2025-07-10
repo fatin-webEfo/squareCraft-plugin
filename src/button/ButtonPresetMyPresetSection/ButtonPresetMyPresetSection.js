@@ -1,6 +1,6 @@
 export function ButtonPresetMyPresetSection() {
   return `
-    <div id="button-my-preset-section" class="sc-hidden">
+    <div id="button-my-preset-section" class="">
                 <p class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin">Save the current block’s styles from your library.</p>
 
                 <div style="padding: 8px 0px 8px 0px;" class="sc-mt-2 sc-flex sc-justify-center sc-gap-3 sc-bg-color-EF7C2F sc-border sc-text-color-white sc-cursor-pointer sc-border-585858  sc-rounded-4px sc-border-solid">
