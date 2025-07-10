@@ -332,8 +332,8 @@
                 const { getSquarespaceThemeStyles } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js"
                 );
-                const { buttonTooltipControls } = await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonTooltipControls/buttonTooltipControls.js"
+                const { tooltipControls } = await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/tooltipControls/tooltipControls.js"
                 );
                 const { initBorderColorPaletteToggle } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
@@ -798,7 +798,7 @@
                     }, 100);
                     widgetLoaded = true;
                     initImageSectionToggleControls();
-                    buttonTooltipControls();
+                    tooltipControls();
                     ButtonAdvanceToggleControls();
                     initButtonSectionToggleControls();
                     WidgetTypoSectionStateControls();

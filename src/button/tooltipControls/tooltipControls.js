@@ -1,4 +1,4 @@
-export function buttonTooltipControls() {
+export function tooltipControls() {
     const tooltipTargets = document.querySelectorAll('.sc-tooltip-target');
   
     tooltipTargets.forEach(el => {
