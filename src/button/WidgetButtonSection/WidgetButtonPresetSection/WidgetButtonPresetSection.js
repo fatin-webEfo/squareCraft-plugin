@@ -1,6 +1,6 @@
 
-import { ButtonPresetMyPresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/ButtonPresetMyPresetSection/ButtonPresetMyPresetSection.js";
-import { ButtonPresetLibrarySection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/ButtonPresetLibrarySection/ButtonPresetLibrarySection.js";
+import { ButtonPresetMyPresetSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonPresetMyPresetSection/ButtonPresetMyPresetSection.js";
+import { ButtonPresetLibrarySection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonPresetLibrarySection/ButtonPresetLibrarySection.js";
 
 
 export function WidgetButtonPresetSection() {
