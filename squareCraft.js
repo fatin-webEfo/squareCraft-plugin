@@ -1152,18 +1152,14 @@
                 }
               }
 
-              function waitForNavBar(attempts = 0) {
-                if (attempts > 10) {
-                  console.error("❌ Failed to find Squarespace nav bar.");
-                  return;
-                }
-                const nav = safeQuerySelector("ul.css-1tn5iw9");
-                if (!nav) {
-                  setTimeout(() => waitForNavBar(attempts + 1), 500);
-                } else {
-                  injectIcon();
-                }
+              if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", () => {
+                  requestAnimationFrame(() => injectIcon());
+                });
+              } else {
+                requestAnimationFrame(() => injectIcon());
               }
+              
 
               waitForNavBar();
               handleSectionFind();
