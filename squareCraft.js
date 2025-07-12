@@ -261,7 +261,7 @@
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
                 );
                 const { TypoAdvanceToggleControls } = await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
                 );
                 const { WidgetButtonPresetTabControls } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonPresetTabControls/WidgetButtonPresetTabControls.js"
@@ -432,6 +432,7 @@
 
                   setTimeout(() => {
                     ButtonAdvanceToggleControls();
+                    TypoAdvanceToggleControls()
                     handleBlockClick(event, {
                       getTextType,
                       getHoverTextType,
