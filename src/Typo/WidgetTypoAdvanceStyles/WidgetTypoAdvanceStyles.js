@@ -24,40 +24,40 @@ function attachAdvanceTimelineIncrementDecrement(
 
   const getEntry = () => {
     const text =
-      document.getElementById("vertical-button-advance-entry-count")
+      document.getElementById("Typo-vertical-advance-entry-count")
         ?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getCenter = () => {
     const text =
-      document.getElementById("vertical-button-advance-center-count")
+      document.getElementById("Typo-vertical-advance-center-count")
         ?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   const getExit = () => {
     const text =
-      document.getElementById("vertical-button-advance-exit-count")
+      document.getElementById("Typo-vertical-advance-exit-count")
         ?.textContent || "0%";
     return parseInt(text.replace("%", "")) || 0;
   };
 
   setup(
-    "vertical-button-advance-entry-increase",
-    "vertical-button-advance-entry-decrease",
+    "Typo-vertical-advance-entry-increase",
+    "Typo-vertical-advance-entry-decrease",
     getEntry,
     updateEntry
   );
   setup(
-    "vertical-button-advance-center-increase",
-    "vertical-button-advance-center-decrease",
+    "Typo-vertical-advance-center-increase",
+    "Typo-vertical-advance-center-decrease",
     getCenter,
     updateCenter
   );
   setup(
-    "vertical-button-advance-exit-increase",
-    "vertical-button-advance-exit-decrease",
+    "Typo-vertical-advance-exit-increase",
+    "Typo-vertical-advance-exit-decrease",
     getExit,
     updateExit
   );
@@ -115,7 +115,7 @@ function initEffectAnimationDropdownToggle() {
   });
 }
 
-export function initButtonAdvanceStyles(getSelectedElement) {
+export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
   const endBullet = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
@@ -124,31 +124,31 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const endValue = document.getElementById("vertical-timelineEndValue");
 
   const entryBullet = document.getElementById(
-    "vertical-button-advance-entry-bullet"
+    "Typo-vertical-advance-entry-bullet"
   );
   const entryFill = document.getElementById(
-    "vertical-button-advance-entry-fill"
+    "Typo-vertical-advance-entry-fill"
   );
   const entryCount = document.getElementById(
-    "vertical-button-advance-entry-count"
+    "Typo-vertical-advance-entry-count"
   );
 
   const centerBullet = document.getElementById(
-    "vertical-button-advance-center-bullet"
+    "Typo-vertical-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "vertical-button-advance-center-fill"
+    "Typo-vertical-advance-center-fill"
   );
   const centerCount = document.getElementById(
-    "vertical-button-advance-center-count"
+    "Typo-vertical-advance-center-count"
   );
 
   const exitBullet = document.getElementById(
-    "vertical-button-advance-exit-bullet"
+    "Typo-vertical-advance-exit-bullet"
   );
-  const exitFill = document.getElementById("vertical-button-advance-exit-fill");
+  const exitFill = document.getElementById("Typo-vertical-advance-exit-fill");
   const exitCount = document.getElementById(
-    "vertical-button-advance-exit-count"
+    "Typo-vertical-advance-exit-count"
   );
 
   if (
@@ -222,7 +222,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           document.head.appendChild(styleTag);
         }
 
-        const cssRule = `#${el.id} a.sqs-block-button-element {\n  ${cssVar}: ${val}%;\n}`;
+        const cssRule = `#${el.id} a.sqs-Typo-block-element {\n  ${cssVar}: ${val}%;\n}`;
         styleTag.textContent = cssRule;
       }
     };
@@ -312,8 +312,8 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const el = getSelectedElement?.();
     if (!el) return 0;
     const btn = el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      "a.Typo-sqs-element--primary, a.Typo-sqs-element--secondary, a.Typo-sqs-element--tertiary," +
+        "button.Typo-sqs-element--primary, button.Typo-sqs-element--secondary, button.Typo-sqs-element--tertiary"
     );
     if (!btn) return 0;
     const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
@@ -332,21 +332,21 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
   [
     {
-      id: "vertical-button-advance-entry-reset",
+      id: "Typo-vertical-advance-entry-reset",
       bullet: entryBullet,
       fill: entryFill,
       count: entryCount,
       css: "--sc-vertical-scroll-entry",
     },
     {
-      id: "vertical-button-advance-center-reset",
+      id: "Typo-vertical-advance-center-reset",
       bullet: centerBullet,
       fill: centerFill,
       count: centerCount,
       css: "--sc-vertical-scroll-center",
     },
     {
-      id: "vertical-button-advance-exit-reset",
+      id: "Typo-vertical-advance-exit-reset",
       bullet: exitBullet,
       fill: exitFill,
       count: exitCount,
