@@ -1890,7 +1890,266 @@
   pointer-events: none;
   clip-path: inset(0px 0px 2px 0px); /* Hides bottom border only */
 }
+/* Typo */
 
+.Typo-structure-margin-right-fill {
+  width: 8% !important;
+  height: 90% !important;
+  margin-top: 3px !important;
+  margin-left: 3px !important;
+  background-color: #F08234;
+  padding: 4px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  cursor: pointer;
+}
+.Typo-structure-margin-left-fill {
+  width: 8% !important;
+  height: 89% !important;
+  margin-top: 3px !important;
+  margin-left: 11px !important;
+  background-color: #F08234;
+  padding: 4px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  cursor: pointer;
+}
+
+.Typo-structure-margin-top-fill{
+  height: 8% !important;
+  width: 90% !important;
+  margin-top: 11px !important;
+  margin-left: 3px !important;
+  background-color: #F08234;
+  padding: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  cursor: pointer;
+}
+.Typo-structure-margin-bottom-fill{
+  height: 8% !important;
+  width: 90% !important;
+  margin-top: 3px !important;
+  margin-left: 3px !important;
+  background-color: #F08234;
+  padding: 4px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  cursor: pointer;
+}
+
+.Typo-structure-padding-left{
+  width: 1% !important;
+  height: 89% !important;
+  margin-top: 0px !important;
+  margin-left: 1px !important;
+  background-color: #FAD4AE;
+  padding: 4px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  cursor: pointer;
+}
+.Typo-structure-padding-right{
+  width: 1% !important;
+  height: 89% !important;
+  margin-top:  0px !important;
+  margin-right: 1px !important;
+  background-color: #FAD4AE;
+  padding: 4px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  cursor: pointer;
+}
+.Typo-structure-padding-top{
+  width: 89% !important;
+  height: 1% !important;
+  margin-top:  1px !important;
+  margin-right: 1px !important;
+  background-color: #FAD4AE;
+  padding: 4px !important;
+  border-top-right-radius: 5px !important;
+  border-top-left-radius: 5px !important;
+  cursor: pointer;
+}
+.Typo-structure-padding-bottom{
+  width: 89% !important;
+  height: 1% !important;
+  margin-top:  1px !important;
+  margin-right: 1px !important;
+  background-color: #FAD4AE;
+  padding: 4px !important;
+  border-bottom-right-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  cursor: pointer;
+}
+
+.Typo-structure-margin-top-box {
+  cursor: pointer;
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+.Typo-structure-margin-left-box {
+  cursor: pointer;
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+.Typo-structure-margin-bottom-box {
+  cursor: pointer;
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.Typo-structure-margin-right-box {
+  cursor: pointer;
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.Typo-structure-margin-top-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 8px 8px;
+  padding: 0.6px; 
+  background: linear-gradient(to right, #F08234 0%, #868686 100%);
+  -webkit-mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(2px 0px 0px 0px); 
+}
+
+
+.Typo-structure-margin-left-box {
+  position: relative;
+  width: 24px;
+  height: 133px;
+  background-color: transparent;
+  border-radius: 0 8px 8px 0; 
+  overflow: hidden;
+}
+
+.Typo-structure-margin-left-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0 8px 8px 0;
+  padding: 0.6px;
+  background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 0px 0px 2px); /* Hides left border only */
+}
+
+.Typo-structure-allside-box {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Typo-structure-allside-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  padding: 0.6px; /* Border thickness */
+  background: linear-gradient(to left, #F08234 0%, #868686 100%);
+  -webkit-mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask:
+    linear-gradient(#868686 0 0) content-box,
+    linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.Typo-structure-margin-right-box {
+  position: relative;
+  width: 24px;
+  height: 140px;
+  background-color: transparent;
+  border-radius: 8px 0 0 8px; 
+  overflow: hidden;
+}
+
+.Typo-structure-margin-right-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px 0 0 8px;
+  padding: 0.6px;
+  background: linear-gradient(to bottom, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 2px 0px 0px); 
+}
+
+
+.Typo-structure-margin-bottom-box {
+  position: relative;
+  width: 140px;
+  height: 24px;
+  background-color: transparent;
+  border-radius: 8px 8px 0 0; 
+  overflow: hidden;
+}
+
+.Typo-structure-margin-bottom-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 1px;
+  background: linear-gradient(to right, #F08234 0%, #868686 100%);
+  -webkit-mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  mask: linear-gradient(#868686 0 0) content-box, linear-gradient(#868686 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  clip-path: inset(0px 0px 2px 0px); /* Hides bottom border only */
+}
+
+
+/* Typo */
 
 #button-structure-margin-top-fill:hover,
 #button-structure-margin-left-fill:hover,
