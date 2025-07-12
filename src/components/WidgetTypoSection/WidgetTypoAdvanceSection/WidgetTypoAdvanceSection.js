@@ -4,7 +4,7 @@ import { TypoAdvanceScrollEffectSection } from "https://fatin-webefo.github.io/s
 export function WidgetTypoAdvanceSection() {
   return `
      <div id="advancedTypoSection">
-     <div id="typo-advance-section">
+     <div id="Typo-advance-section">
         <div class="sc-flex sc-cursor-pointer sc-px-2 sc-mt-3 sc-items-center sc-justify-between">
            <div class="sc-flex sc-gap-2 sc-items-center">
              <img loading="lazy" src="https://fatin-webefo.github.io/squareCraft-plugin/public/button-advance.png" width="19px" alt="">
