@@ -385,6 +385,7 @@
                   }
                   if (selectedElement) {
                     initButtonAdvanceStyles(() => selectedElement);
+                    initTypoAdvanceStyles(() => selectedElement);
                     horizontalinitButtonAdvanceStyles(() => selectedElement);
                     opacityinitButtonAdvanceStyles(() => selectedElement);
                     scaleinitButtonAdvanceStyles(() => selectedElement);
