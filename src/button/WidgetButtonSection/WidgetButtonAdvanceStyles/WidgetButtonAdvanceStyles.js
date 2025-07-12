@@ -766,7 +766,7 @@ function initEffectAnimationDropdownToggle() {
     horizontalinitEffectAnimationDropdownToggle();
   }
   // horizontal
-
+  
 
 
   
