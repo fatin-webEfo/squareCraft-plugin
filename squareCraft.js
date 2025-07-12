@@ -1174,8 +1174,6 @@
                 fastInjectIconWhenDOMReady();
                 
                 
-
-                waitForNavBar();
                 handleSectionFind();
                 function checkView() {
                   const isMobile = window.innerWidth <= 768;
