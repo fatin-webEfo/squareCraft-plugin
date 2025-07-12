@@ -47,7 +47,7 @@ export function TypoAdvanceToggleControls() {
   });
 
   const structureBtn = document.getElementById(
-    "Typo-advance-structure-Typo"
+    "Typo-advance-structure"
   );
   const structureSection = document.getElementById(
     "Typo-advance-structure-section"

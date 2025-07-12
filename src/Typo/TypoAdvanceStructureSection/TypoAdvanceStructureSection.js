@@ -2,7 +2,7 @@ export function TypoAdvanceStructureSection() {
   return `
  <div id="Typo-advance-structure" class="sc-p-2">
 <div
-  id="Typo-advance-structure-typo"
+  id="Typo-advance-structure-section"
   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
 >
   <div class="sc-flex sc-gap-2 sc-items-center">
