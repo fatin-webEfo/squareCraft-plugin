@@ -32,6 +32,33 @@
   --sc-blur-scroll-entry: 0%;
   --sc-blur-scroll-center: 0%;
   --sc-blur-scroll-exit: 0%;
+
+  
+  /* Typo */
+  --sc-Typo-vertical-scroll-entry: 0%;
+  --sc-Typo-vertical-scroll-center: 0%;
+  --sc-Typo-vertical-scroll-exit: 0%;
+
+  --sc-Typo-horizontal-scroll-entry: 0%;
+  --sc-Typo-horizontal-scroll-center: 0%;
+  --sc-Typo-horizontal-scroll-exit: 0%;
+
+  --sc-Typo-opacity-scroll-entry: 100%;
+  --sc-Typo-opacity-scroll-center: 100%;
+  --sc-Typo-opacity-scroll-exit: 100%;
+
+  --sc-Typo-scale-scroll-entry: 0%;
+  --sc-Typo-scale-scroll-center: 0%;
+  --sc-Typo-scale-scroll-exit: 0%;
+
+  --sc-Typo-rotate-scroll-entry: 0%;
+  --sc-Typo-rotate-scroll-center: 0%;
+  --sc-Typo-rotate-scroll-exit: 0%;
+
+  --sc-Typo-blur-scroll-entry: 0%;
+  --sc-Typo-blur-scroll-center: 0%;
+  --sc-Typo-blur-scroll-exit: 0%;
+  /* Typo */
 }
 
 .sc-margin-0 {
