@@ -18,32 +18,73 @@
                 }
                 // icon set fast
                 // toolbar icon set fast
-                function attachGlobalClickListener() {
+                function fastInjectIconWhenDOMReady() {
+                  if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", injectIcon);
+                  } else {
+                    injectIcon();
+                  }
+                }
+
+                function injectIcon() {
+                  const targetSelectors = [
+                    '[data-block-json="image"]',
+                    '[data-block-json*="image"]',
+                    '[data-block-json*="Image"]',
+                    '[data-type="image"]',
+                  ];
+
+                  const targets = Array.from(
+                    document.querySelectorAll(targetSelectors.join(","))
+                  );
+
+                  targets.forEach((target) => {
+                    const existingIcon =
+                      target.querySelector(".sc-toolbar-icon");
+                    if (existingIcon) return;
+
+                    const icon = document.createElement("div");
+                    icon.className = "sc-toolbar-icon";
+                    icon.title = "Open SquareCraft";
+                    icon.innerHTML = `<img src="https://fatin-webefo.github.io/squareCraft-plugin/assets/icon.svg" width="16" height="16" />`;
+
+                    Object.assign(icon.style, {
+                      position: "absolute",
+                      top: "4px",
+                      right: "4px",
+                      zIndex: "9999",
+                      cursor: "pointer",
+                    });
+
+                    icon.addEventListener("click", (e) => {
+                      e.stopPropagation();
+                      window.dispatchEvent(
+                        new CustomEvent("squareCraft:toggleWidget", {
+                          detail: { target },
+                        })
+                      );
+                    });
+
+                    target.style.position = "relative";
+                    target.appendChild(icon);
+                  });
+                }
+
+                function attachGlobalClickListener(widgetContainer) {
                   document.body.addEventListener("click", (e) => {
                     const isInsideWidget = widgetContainer?.contains(e.target);
                     const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-                    const isHiddenInput =
-                      e.target.tagName === "INPUT" && e.target.type === "file";
 
-                    if (
-                      !isInsideWidget &&
-                      !isToolbarIcon &&
-                      !isHiddenInput &&
-                      widgetContainer?.style.display === "block"
-                    ) {
-                      widgetContainer.style.display = "none";
+                    if (!isInsideWidget && !isToolbarIcon) {
+                      window.dispatchEvent(
+                        new Event("squareCraft:closeWidget")
+                      );
                     }
                   });
                 }
 
-                if (document.readyState === "loading") {
-                  document.addEventListener("DOMContentLoaded", () => {
-                    requestAnimationFrame(() => attachGlobalClickListener());
-                  });
-                } else {
-                  requestAnimationFrame(() => attachGlobalClickListener());
-                }
-                
+                fastInjectIconWhenDOMReady();
+
                 // toolbar icon set fast
                 let isSameOrigin = true;
                 if (!window.__squareCraftResetFlags) {
@@ -413,7 +454,9 @@
                   setTimeout(initImageSectionControls, 100);
                   const clickedBlock = event.target.closest('[id^="block-"]');
                   if (clickedBlock) {
-                    waitForElement("#typoSection, #imageSection, #buttonSection")
+                    waitForElement(
+                      "#typoSection, #imageSection, #buttonSection"
+                    )
                       .then(() => {
                         detectBlockElementTypes(clickedBlock);
                       })
@@ -452,8 +495,10 @@
                           initButtonAdvanceScrollEffectReset(selectedElement);
                         }, 300);
                       },
-                      setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                      setLastClickedElement: (val) => (lastClickedElement = val),
+                      setLastClickedBlockId: (val) =>
+                        (lastClickedBlockId = val),
+                      setLastClickedElement: (val) =>
+                        (lastClickedElement = val),
                       setLastAppliedAlignment: (val) =>
                         (lastAppliedAlignment = val),
                       setLastActiveAlignmentElement: (val) =>
@@ -589,7 +634,9 @@
                       !data.modifications ||
                       !Array.isArray(data.modifications)
                     ) {
-                      console.warn("⚠️ No modifications found or invalid format");
+                      console.warn(
+                        "⚠️ No modifications found or invalid format"
+                      );
                       return;
                     }
 
@@ -659,12 +706,15 @@
                   );
                   if (!widgetContainer) return;
 
-                  if (widgetContainer.dataset.listenerAttached === "true") return;
+                  if (widgetContainer.dataset.listenerAttached === "true")
+                    return;
 
                   widgetContainer.dataset.listenerAttached = "true";
 
                   function toggleTabClass(targetElement) {
-                    if (targetElement.classList.contains("sc-activeTab-border")) {
+                    if (
+                      targetElement.classList.contains("sc-activeTab-border")
+                    ) {
                       targetElement.classList.remove("sc-activeTab-border");
                       targetElement.classList.add("sc-inActiveTab-border");
                     } else {
@@ -717,7 +767,9 @@
                       });
                   } else {
                     widgetContainer.style.display =
-                      widgetContainer.style.display === "none" ? "block" : "none";
+                      widgetContainer.style.display === "none"
+                        ? "block"
+                        : "none";
                     waitForElement(
                       "#typoSection, #imageSection, #buttonSection",
                       4000
@@ -739,8 +791,10 @@
                       getHoverTextType,
                       selectedElement,
                       setSelectedElement: (val) => (selectedElement = val),
-                      setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                      setLastClickedElement: (val) => (lastClickedElement = val),
+                      setLastClickedBlockId: (val) =>
+                        (lastClickedBlockId = val),
+                      setLastClickedElement: (val) =>
+                        (lastClickedElement = val),
                       setLastAppliedAlignment: (val) =>
                         (lastAppliedAlignment = val),
                       setLastActiveAlignmentElement: (val) =>
@@ -783,7 +837,8 @@
                       );
 
                       placeholders.forEach((span) => {
-                        const isRotate = span.classList.contains("sc-rotate-180");
+                        const isRotate =
+                          span.classList.contains("sc-rotate-180");
                         const cloneClassList = Array.from(span.classList);
                         const originalId = span.getAttribute("id") || "";
                         const id =
@@ -943,7 +998,9 @@
 
                     setTimeout(() => {
                       observer.disconnect();
-                      reject(new Error(`Timeout: Element ${selector} not found`));
+                      reject(
+                        new Error(`Timeout: Element ${selector} not found`)
+                      );
                     }, timeout);
                   });
                 }
@@ -961,8 +1018,12 @@
                     isDragging = false;
 
                   function startDrag(event) {
-                    const draggableElement = event.target.closest("#sc-grabbing");
-                    if (!draggableElement || event.target.closest(".sc-dropdown"))
+                    const draggableElement =
+                      event.target.closest("#sc-grabbing");
+                    if (
+                      !draggableElement ||
+                      event.target.closest(".sc-dropdown")
+                    )
                       return;
 
                     event.preventDefault();
@@ -1010,22 +1071,6 @@
                   widgetContainer.addEventListener("touchstart", startDrag);
                 }
 
-                document.body.addEventListener("click", (e) => {
-                  const isInsideWidget = widgetContainer?.contains(e.target);
-                  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-                  const isHiddenInput =
-                    e.target.tagName === "INPUT" && e.target.type === "file";
-
-                  if (
-                    !isInsideWidget &&
-                    !isToolbarIcon &&
-                    !isHiddenInput &&
-                    widgetContainer?.style.display === "block"
-                  ) {
-                    widgetContainer.style.display = "none";
-                  }
-                });
-
                 function adjustWidgetPosition() {
                   if (!widgetContainer) return;
 
@@ -1062,73 +1107,6 @@
                     });
                   }
 
-                  async function injectIconIntoTargetElements() {
-                    const targets = await waitForTargets(
-                      ".tidILMJ7AVANuKwS:not(.sc-processed)"
-                    );
-
-                    targets.forEach((element) => {
-                      element.classList.add("sc-processed");
-
-                      const deleteButton = element.querySelector(
-                        '[aria-label="Remove"]'
-                      );
-                      if (!deleteButton) {
-                        console.warn(
-                          "❌ Delete button not found, skipping:",
-                          element
-                        );
-                        return;
-                      }
-
-                      if (element.querySelector(".sc-toolbar-icon")) return;
-
-                      const clonedIcon = document.createElement("img");
-                      clonedIcon.src =
-                        "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
-                      clonedIcon.alt = "sc";
-                      clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
-                      Object.assign(clonedIcon.style, {
-                        width: "35px",
-                        height: "35px",
-                        borderRadius: "20%",
-                        cursor: "pointer",
-                        backgroundColor: "white",
-                        marginLeft: "6px",
-                      });
-
-                      deleteButton.parentNode.insertBefore(
-                        clonedIcon,
-                        deleteButton.nextSibling
-                      );
-
-                      clonedIcon.addEventListener("click", function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        toggleWidgetVisibility(event);
-                        if (!widgetLoaded) {
-                          createWidget().then(() => {
-                            widgetContainer = document.getElementById(
-                              "sc-widget-container"
-                            );
-                            if (widgetContainer) {
-                              widgetContainer.style.display = "block";
-                            } else {
-                              console.error(
-                                "❌ Widget container not found after creation."
-                              );
-                            }
-                          });
-                        } else {
-                          widgetContainer.style.display =
-                            widgetContainer.style.display === "none"
-                              ? "block"
-                              : "none";
-                        }
-                      });
-                    });
-                  }
-
                   injectIconIntoTargetElements();
 
                   const observer = new MutationObserver(() => {
@@ -1137,7 +1115,10 @@
                   const obsTarget = isSameOrigin
                     ? parent.document.body
                     : document.body;
-                  observer.observe(obsTarget, { childList: true, subtree: true });
+                  observer.observe(obsTarget, {
+                    childList: true,
+                    subtree: true,
+                  });
 
                   try {
                     iframe?.contentWindow?.document?.addEventListener(
@@ -1156,24 +1137,6 @@
                     );
                   }
                 }
-
-                function fastInjectIconWhenDOMReady() {
-                  const run = () => requestIdleCallback(() => injectIcon());
-
-                  if (
-                    document.readyState === "complete" ||
-                    document.readyState === "interactive"
-                  ) {
-                    run();
-                  } else {
-                    document.addEventListener("readystatechange", () => {
-                      if (document.readyState === "interactive") run();
-                    });
-                  }
-                }
-                fastInjectIconWhenDOMReady();
-                
-                
 
                 waitForNavBar();
                 handleSectionFind();
