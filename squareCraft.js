@@ -124,14 +124,20 @@
                 } else {
                   requestAnimationFrame(() => attachGlobalClickListener());
                 }
-                  function fastInjectIconWhenDOMReady() {
-                    if (document.readyState === "loading") {
-                      document.addEventListener("DOMContentLoaded", injectIcon);
-                    } else {
-                      injectIcon();
-                    }
-                  }
+                    function fastInjectIconWhenDOMReady() {
+                      const run = () => requestIdleCallback(() => injectIcon());
 
+                      if (
+                        document.readyState === "complete" ||
+                        document.readyState === "interactive"
+                      ) {
+                        run();
+                      } else {
+                        document.addEventListener("readystatechange", () => {
+                          if (document.readyState === "interactive") run();
+                        });
+                      }
+                    }
                     fastInjectIconWhenDOMReady();
                 // toolbar icon set fast
                 let isSameOrigin = true;
