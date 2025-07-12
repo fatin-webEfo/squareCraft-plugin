@@ -35,87 +35,6 @@
                     }
                   });
                 }
-                 document.body.addEventListener("click", (e) => {
-                   const isInsideWidget = widgetContainer?.contains(e.target);
-                   const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-                   const isHiddenInput =
-                     e.target.tagName === "INPUT" && e.target.type === "file";
-
-                   if (
-                     !isInsideWidget &&
-                     !isToolbarIcon &&
-                     !isHiddenInput &&
-                     widgetContainer?.style.display === "block"
-                   ) {
-                     widgetContainer.style.display = "none";
-                   }
-                 });
-                  async function injectIconIntoTargetElements() {
-                    const targets = await waitForTargets(
-                      ".tidILMJ7AVANuKwS:not(.sc-processed)"
-                    );
-
-                    targets.forEach((element) => {
-                      element.classList.add("sc-processed");
-
-                      const deleteButton = element.querySelector(
-                        '[aria-label="Remove"]'
-                      );
-                      if (!deleteButton) {
-                        console.warn(
-                          "❌ Delete button not found, skipping:",
-                          element
-                        );
-                        return;
-                      }
-
-                      if (element.querySelector(".sc-toolbar-icon")) return;
-
-                      const clonedIcon = document.createElement("img");
-                      clonedIcon.src =
-                        "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
-                      clonedIcon.alt = "sc";
-                      clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
-                      Object.assign(clonedIcon.style, {
-                        width: "35px",
-                        height: "35px",
-                        borderRadius: "20%",
-                        cursor: "pointer",
-                        backgroundColor: "white",
-                        marginLeft: "6px",
-                      });
-
-                      deleteButton.parentNode.insertBefore(
-                        clonedIcon,
-                        deleteButton.nextSibling
-                      );
-
-                      clonedIcon.addEventListener("click", function (event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        toggleWidgetVisibility(event);
-                        if (!widgetLoaded) {
-                          createWidget().then(() => {
-                            widgetContainer = document.getElementById(
-                              "sc-widget-container"
-                            );
-                            if (widgetContainer) {
-                              widgetContainer.style.display = "block";
-                            } else {
-                              console.error(
-                                "❌ Widget container not found after creation."
-                              );
-                            }
-                          });
-                        } else {
-                          widgetContainer.style.display =
-                            widgetContainer.style.display === "none"
-                              ? "block"
-                              : "none";
-                        }
-                      });
-                    });
-                  }
 
                 if (document.readyState === "loading") {
                   document.addEventListener("DOMContentLoaded", () => {
@@ -124,21 +43,7 @@
                 } else {
                   requestAnimationFrame(() => attachGlobalClickListener());
                 }
-                    function fastInjectIconWhenDOMReady() {
-                      const run = () => requestIdleCallback(() => injectIcon());
-
-                      if (
-                        document.readyState === "complete" ||
-                        document.readyState === "interactive"
-                      ) {
-                        run();
-                      } else {
-                        document.addEventListener("readystatechange", () => {
-                          if (document.readyState === "interactive") run();
-                        });
-                      }
-                    }
-                    fastInjectIconWhenDOMReady();
+                
                 // toolbar icon set fast
                 let isSameOrigin = true;
                 if (!window.__squareCraftResetFlags) {
@@ -1105,7 +1010,21 @@
                   widgetContainer.addEventListener("touchstart", startDrag);
                 }
 
-               
+                document.body.addEventListener("click", (e) => {
+                  const isInsideWidget = widgetContainer?.contains(e.target);
+                  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+                  const isHiddenInput =
+                    e.target.tagName === "INPUT" && e.target.type === "file";
+
+                  if (
+                    !isInsideWidget &&
+                    !isToolbarIcon &&
+                    !isHiddenInput &&
+                    widgetContainer?.style.display === "block"
+                  ) {
+                    widgetContainer.style.display = "none";
+                  }
+                });
 
                 function adjustWidgetPosition() {
                   if (!widgetContainer) return;
@@ -1143,7 +1062,72 @@
                     });
                   }
 
-                 
+                  async function injectIconIntoTargetElements() {
+                    const targets = await waitForTargets(
+                      ".tidILMJ7AVANuKwS:not(.sc-processed)"
+                    );
+
+                    targets.forEach((element) => {
+                      element.classList.add("sc-processed");
+
+                      const deleteButton = element.querySelector(
+                        '[aria-label="Remove"]'
+                      );
+                      if (!deleteButton) {
+                        console.warn(
+                          "❌ Delete button not found, skipping:",
+                          element
+                        );
+                        return;
+                      }
+
+                      if (element.querySelector(".sc-toolbar-icon")) return;
+
+                      const clonedIcon = document.createElement("img");
+                      clonedIcon.src =
+                        "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
+                      clonedIcon.alt = "sc";
+                      clonedIcon.classList.add("sc-toolbar-icon", "sc-z-99999");
+                      Object.assign(clonedIcon.style, {
+                        width: "35px",
+                        height: "35px",
+                        borderRadius: "20%",
+                        cursor: "pointer",
+                        backgroundColor: "white",
+                        marginLeft: "6px",
+                      });
+
+                      deleteButton.parentNode.insertBefore(
+                        clonedIcon,
+                        deleteButton.nextSibling
+                      );
+
+                      clonedIcon.addEventListener("click", function (event) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        toggleWidgetVisibility(event);
+                        if (!widgetLoaded) {
+                          createWidget().then(() => {
+                            widgetContainer = document.getElementById(
+                              "sc-widget-container"
+                            );
+                            if (widgetContainer) {
+                              widgetContainer.style.display = "block";
+                            } else {
+                              console.error(
+                                "❌ Widget container not found after creation."
+                              );
+                            }
+                          });
+                        } else {
+                          widgetContainer.style.display =
+                            widgetContainer.style.display === "none"
+                              ? "block"
+                              : "none";
+                        }
+                      });
+                    });
+                  }
 
                   injectIconIntoTargetElements();
 
@@ -1173,7 +1157,21 @@
                   }
                 }
 
-            
+                function fastInjectIconWhenDOMReady() {
+                  const run = () => requestIdleCallback(() => injectIcon());
+
+                  if (
+                    document.readyState === "complete" ||
+                    document.readyState === "interactive"
+                  ) {
+                    run();
+                  } else {
+                    document.addEventListener("readystatechange", () => {
+                      if (document.readyState === "interactive") run();
+                    });
+                  }
+                }
+                fastInjectIconWhenDOMReady();
                 
                 
 
