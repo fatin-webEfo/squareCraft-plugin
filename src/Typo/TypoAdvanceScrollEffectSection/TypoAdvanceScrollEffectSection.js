@@ -1,5 +1,5 @@
 import { TypoAdvanceScrollEffectVerticalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffectVerticalSection/TypoAdvanceScrollEffectVerticalSection.js";
-import { TypoAdvanceScrollEffectHorizontalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffecthorizontalSection/TypoAdvanceScrollEffectHorizontalSection.js";
+import { TypoAdvanceScrollEffectHorizontalSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffectHorizontalSection/TypoAdvanceScrollEffectHorizontalSection.js";
 import { TypoAdvanceScrollEffectOpacitySection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffectOpacitySection/TypoAdvanceScrollEffectOpacitySection.js";
 import { TypoAdvanceScrollEffectScaleSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffectScaleSection/TypoAdvanceScrollEffectScaleSection.js";
 import { TypoAdvanceScrollEffectRotateSection } from "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceScrollEffectRotateSection/TypoAdvanceScrollEffectRotateSection.js";
