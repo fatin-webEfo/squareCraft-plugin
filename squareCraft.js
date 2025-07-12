@@ -117,17 +117,13 @@
                     });
                   }
 
-               requestAnimationFrame(() => {
-                 if (document.readyState === "loading") {
-                   document.addEventListener(
-                     "DOMContentLoaded",
-                     attachGlobalClickListener
-                   );
-                 } else {
-                   attachGlobalClickListener();
-                 }
-               });
-
+                if (document.readyState === "loading") {
+                  document.addEventListener("DOMContentLoaded", () => {
+                    requestAnimationFrame(() => attachGlobalClickListener());
+                  });
+                } else {
+                  requestAnimationFrame(() => attachGlobalClickListener());
+                }
                   function fastInjectIconWhenDOMReady() {
                     if (document.readyState === "loading") {
                       document.addEventListener("DOMContentLoaded", injectIcon);
