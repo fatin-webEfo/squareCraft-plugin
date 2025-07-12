@@ -43,7 +43,21 @@
                 } else {
                   requestAnimationFrame(() => attachGlobalClickListener());
                 }
-                
+                 document.body.addEventListener("click", (e) => {
+                   const isInsideWidget = widgetContainer?.contains(e.target);
+                   const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+                   const isHiddenInput =
+                     e.target.tagName === "INPUT" && e.target.type === "file";
+
+                   if (
+                     !isInsideWidget &&
+                     !isToolbarIcon &&
+                     !isHiddenInput &&
+                     widgetContainer?.style.display === "block"
+                   ) {
+                     widgetContainer.style.display = "none";
+                   }
+                 });
                 // toolbar icon set fast
                 let isSameOrigin = true;
                 if (!window.__squareCraftResetFlags) {
@@ -1010,21 +1024,7 @@
                   widgetContainer.addEventListener("touchstart", startDrag);
                 }
 
-                document.body.addEventListener("click", (e) => {
-                  const isInsideWidget = widgetContainer?.contains(e.target);
-                  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-                  const isHiddenInput =
-                    e.target.tagName === "INPUT" && e.target.type === "file";
-
-                  if (
-                    !isInsideWidget &&
-                    !isToolbarIcon &&
-                    !isHiddenInput &&
-                    widgetContainer?.style.display === "block"
-                  ) {
-                    widgetContainer.style.display = "none";
-                  }
-                });
+               
 
                 function adjustWidgetPosition() {
                   if (!widgetContainer) return;
