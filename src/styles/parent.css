@@ -1810,7 +1810,7 @@
   clip-path: inset(0px 0px 0px 2px); /* Hides left border only */
 }
 
-.structure-allside-box {
+.button-structure-allside-box {
   position: relative;
   width: 140px;
   height: 140px;
@@ -1822,7 +1822,7 @@
   justify-content: center;
 }
 
-.structure-allside-box::before {
+.button-structure-allside-box::before {
   content: "";
   position: absolute;
   inset: 0;

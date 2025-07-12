@@ -85,7 +85,7 @@ export function TypoAdvanceStructureSection() {
           </div>
         </div>
 
-        <div class="structure-allside-box sc-relative sc-bg-454545">
+        <div class="Typo-structure-allside-box sc-relative sc-bg-454545">
           <img
             src="https://fatin-webefo.github.io/squareCraft-plugin/public/structure-all-select.svg"
             class="sc-cursor-pointer"
