@@ -82,15 +82,15 @@ function attachCustomTimelineReset(
 }
 
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const arrow = document.getElementById("Typo-vertical-effect-animation-type-arrow");
   const dropdown = document.getElementById(
-    "vertical-effect-animation-type-list"
+    "Typo-vertical-effect-animation-type-list"
   );
   const container = document.getElementById(
-    "vertical-effect-animation-dropdown-container"
+    "Typo-vertical-effect-animation-dropdown-container"
   );
   const displayValue = document.getElementById(
-    "vertical-effect-animation-value"
+    "Typo-vertical-effect-animation-value"
   );
 
   if (!arrow || !dropdown || !container || !displayValue) return;
@@ -116,12 +116,12 @@ function initEffectAnimationDropdownToggle() {
 }
 
 export function initTypoAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("vertical-timeline-start-bullet");
-  const endBullet = document.getElementById("vertical-timeline-end-bullet");
-  const startFill = document.getElementById("vertical-timeline-start-fill");
-  const endFill = document.getElementById("vertical-timeline-end-fill");
-  const startValue = document.getElementById("vertical-timelineStartValue");
-  const endValue = document.getElementById("vertical-timelineEndValue");
+  const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
+  const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
+  const startFill = document.getElementById("Typo-vertical-timeline-start-fill");
+  const endFill = document.getElementById("Typo-vertical-timeline-end-fill");
+  const startValue = document.getElementById("Typo-vertical-timelineStartValue");
+  const endValue = document.getElementById("Typo-vertical-timelineEndValue");
 
   const entryBullet = document.getElementById(
     "Typo-vertical-advance-entry-bullet"
@@ -315,7 +315,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
-   const btn = selectedElement.querySelector(".sqs-block-content");
+   const btn = getSelectedElement.querySelector(".sqs-block-content");
 
 
     if (!btn) return 0;
