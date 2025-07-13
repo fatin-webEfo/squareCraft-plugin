@@ -6,6 +6,7 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     right: "Typo-structure-margin-right-count",
   };
 
+  
   const paddingMap = {
     top: "Typo-structure-padding-top-count",
     bottom: "Typo-structure-padding-bottom-count",
