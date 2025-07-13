@@ -401,7 +401,7 @@
                     initHoverButtonBorderTypeToggle(() => selectedElement);
                     initHoverButtonBorderControl(() => selectedElement);
                     applyHoverButtonEffects(() => selectedElement);
-                    // initButtonAdvanceStructureStyles(() => selectedElement);
+                    initButtonAdvanceStructureStyles(() => selectedElement);
                     blurinitButtonAdvanceStyles(() => selectedElement);
                     initButtonAdvanceScrollEffectReset(() =>
                       document.getElementById(window.selectedBlockId)
