@@ -236,9 +236,7 @@
                 } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
                 );
-                const { initTypoAdvanceStyles } = await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
-                );
+               
                 const {
                   buttonAdvanceSyncCustomTimelineArrow,
                   horizontalbuttonAdvanceSyncCustomTimelineArrow,
@@ -261,9 +259,7 @@
                 const { ButtonAdvanceToggleControls } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
                 );
-                const { TypoAdvanceToggleControls } = await import(
-                  "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
-                );
+              
                 const { WidgetButtonPresetTabControls } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonPresetTabControls/WidgetButtonPresetTabControls.js"
                 );
@@ -383,14 +379,13 @@
 
                 document.body.addEventListener("click", (event) => {
                   ButtonAdvanceToggleControls();
-                  TypoAdvanceToggleControls()
+       
                   WidgetButtonPresetTabControls();
                   if (selectedElement) {
                     initButtonStyles(selectedElement);
                   }
                   if (selectedElement) {
                     initButtonAdvanceStyles(() => selectedElement);
-                    initTypoAdvanceStyles(() => selectedElement);
                     horizontalinitButtonAdvanceStyles(() => selectedElement);
                     opacityinitButtonAdvanceStyles(() => selectedElement);
                     scaleinitButtonAdvanceStyles(() => selectedElement);
@@ -433,7 +428,6 @@
 
                   setTimeout(() => {
                     ButtonAdvanceToggleControls();
-                    TypoAdvanceToggleControls()
                     handleBlockClick(event, {
                       getTextType,
                       getHoverTextType,
