@@ -1,12 +1,18 @@
 export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
+  console.log(
+    "selectedElement from TypoAdvanceSyncCustomTimelineArrow",
+    selectedElement
+  ); // Add this for testing
 
   let isTracking = false;
   let lastY = null;
   const transition = { ease: "power2.out" };
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const arrow = document.getElementById(
+      "Typo-vertical-custom-timeline-arrow"
+    );
     const border = document.getElementById(
       "Typo-vertical-custom-timeline-border"
     );
@@ -27,11 +33,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function updateArrowPosition(
-    arrow,
-    startBullet,
-    endBullet,
-  ) {
+  function updateArrowPosition(arrow, startBullet, endBullet) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     const top = rect.top;
@@ -47,10 +49,10 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endLeft = parseFloat(endBullet.style.left || "100");
     const centerLeft = (startLeft + endLeft) / 2;
 
-   const btn =
-     selectedElement.nextElementSibling?.tagName === "DIV"
-       ? selectedElement.nextElementSibling
-       : null;
+    const btn =
+      selectedElement.nextElementSibling?.tagName === "DIV"
+        ? selectedElement.nextElementSibling
+        : null;
 
     if (!btn) return;
 
