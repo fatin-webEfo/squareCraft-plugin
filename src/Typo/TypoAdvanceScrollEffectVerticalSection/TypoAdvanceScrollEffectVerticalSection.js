@@ -52,7 +52,8 @@ export function TypoAdvanceScrollEffectVerticalSection() {
            class="sc-mt-1 vertical-custom-timeline-border">
            <div
              id="Typo-vertical-custom-timeline-arrow"
-             class="sc-absolute sc-top-6px"></div>
+             class="sc-absolute sc-top-6px">
+             </div>
          </div>
        </div>
  

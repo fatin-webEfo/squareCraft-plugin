@@ -1,4 +1,4 @@
-export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;

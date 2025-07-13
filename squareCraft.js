@@ -249,6 +249,12 @@
                 } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/buttonAdvanceSyncCustomTimelineArrow/buttonAdvanceSyncCustomTimelineArrow.js"
                 );
+                const {
+                  TypoAdvanceSyncCustomTimelineArrow,
+                 
+                } = await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceSyncCustomTimelineArrow/TypoAdvanceSyncCustomTimelineArrow.js"
+                );
                 const { logCurrentViewport } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewport.js"
                 );
@@ -449,6 +455,7 @@
                           horizontalbuttonAdvanceSyncCustomTimelineArrow(
                             selectedElement
                           );
+                          TypoAdvanceSyncCustomTimelineArrow(selectedElement);
                           opacitybuttonAdvanceSyncCustomTimelineArrow(
                             selectedElement
                           );
@@ -872,6 +879,9 @@
                                     selectedElement
                                   );
                                   horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                                    selectedElement
+                                  );
+                                  TypoAdvanceSyncCustomTimelineArrow(
                                     selectedElement
                                   );
                                   opacitybuttonAdvanceSyncCustomTimelineArrow(
