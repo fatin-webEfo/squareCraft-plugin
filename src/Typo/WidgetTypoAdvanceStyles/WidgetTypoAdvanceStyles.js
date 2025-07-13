@@ -62,6 +62,7 @@ function attachAdvanceTimelineIncrementDecrement(
     updateExit
   );
 }
+
 function attachCustomTimelineReset(
   updateStart,
   updateEnd,
