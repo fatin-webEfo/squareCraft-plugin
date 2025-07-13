@@ -49,10 +49,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endLeft = parseFloat(endBullet.style.left || "100");
     const centerLeft = (startLeft + endLeft) / 2;
 
-    const btn =
-      selectedElement.nextElementSibling?.tagName === "DIV"
-        ? selectedElement.nextElementSibling
-        : null;
+   const btn = selectedElement.querySelector(".sqs-block-content");
+
 
     if (!btn) return;
 

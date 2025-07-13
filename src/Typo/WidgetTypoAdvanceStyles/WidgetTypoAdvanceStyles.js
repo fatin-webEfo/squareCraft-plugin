@@ -315,10 +315,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
-   const btn =
-     getSelectedElement.nextElementSibling?.tagName === "DIV"
-       ? getSelectedElement.nextElementSibling
-       : null;
+   const btn = selectedElement.querySelector(".sqs-block-content");
+
 
     if (!btn) return 0;
     const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
