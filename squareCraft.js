@@ -269,6 +269,9 @@
                 const { initButtonStructureGapTypeToggle } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStructureGapTypeToggle/initButtonStructureGapTypeToggle.js"
                 );
+                const { initTypoStructureGapTypeToggle } = await import(
+                  "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/initTypoStructureGapTypeToggle/initTypoStructureGapTypeToggle.js"
+                );
                 const { initButtonAdvanceStructureStyles } = await import(
                   "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStructureStyles/initButtonAdvanceStructureStyles.js"
                 );
@@ -813,6 +816,7 @@
                     WidgetTypoSectionStateControls();
                     initImageStateTabToggle();
                     initButtonStructureGapTypeToggle();
+                    initTypoStructureGapTypeToggle()
                     WidgetImageHoverToggleControls();
                     initHoverTypoTabControls([
                       {
