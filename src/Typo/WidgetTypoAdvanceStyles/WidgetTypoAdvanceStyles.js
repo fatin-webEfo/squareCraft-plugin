@@ -222,8 +222,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           document.head.appendChild(styleTag);
         }
 
-        const cssRule = `#${el.id} a.sqs-Typo-block-element {\n  ${cssVar}: ${val}%;\n}`;
-        styleTag.textContent = cssRule;
+        const nextEl = el.nextElementSibling;
+        if (nextEl && nextEl.tagName === "DIV") {
+          const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
+        }
+
       }
     };
 
