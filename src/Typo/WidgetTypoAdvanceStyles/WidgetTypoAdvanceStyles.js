@@ -311,10 +311,11 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
-    const btn = el.querySelector(
-      "a.Typo-sqs-element--primary, a.Typo-sqs-element--secondary, a.Typo-sqs-element--tertiary," +
-        "button.Typo-sqs-element--primary, button.Typo-sqs-element--secondary, button.Typo-sqs-element--tertiary"
-    );
+   const btn =
+     getSelectedElement.nextElementSibling?.tagName === "DIV"
+       ? getSelectedElement.nextElementSibling
+       : null;
+
     if (!btn) return 0;
     const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
     return parseFloat(val.replace("%", "")) || 0;
