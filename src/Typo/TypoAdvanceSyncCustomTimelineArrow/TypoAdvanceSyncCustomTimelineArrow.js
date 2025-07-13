@@ -16,6 +16,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const border = document.getElementById(
       "Typo-vertical-custom-timeline-border"
     );
+    
     const startBullet = document.getElementById(
       "Typo-vertical-timeline-start-bullet"
     );
