@@ -1,6 +1,6 @@
 export function TypoAdvanceStructureSection() {
   return `
- <div id="Typo-advance-structure" class="sc-p-2">
+ <div  class="sc-p-2">
 <div
   id="Typo-advance-structure"
   class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px"
@@ -51,7 +51,7 @@ export function TypoAdvanceStructureSection() {
     </div>
   </div>
   <div class="sc-h-1px sc-mt-2 sc-bg-3f3f3f"></div>
-  <div id="Typo-advance-structure-section" class="">
+  <div  class="">
     <div
       class="sc-mt-8 sc-flex-col sc-pb-30px sc-items-center sc-justify-center sc-gap-2"
     >
