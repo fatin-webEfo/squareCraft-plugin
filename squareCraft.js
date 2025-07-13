@@ -204,6 +204,7 @@
                   }
                 }
 
+                
                 function applyStylesToElement(element, css) {
                   if (!element || !css) return;
 
