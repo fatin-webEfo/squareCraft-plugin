@@ -49,7 +49,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endLeft = parseFloat(endBullet.style.left || "100");
     const centerLeft = (startLeft + endLeft) / 2;
 
-   const btn = selectedElement.querySelector(".sqs-block-content");
+const btn = selectedElement.nextElementSibling;
 
 
     if (!btn) return;
