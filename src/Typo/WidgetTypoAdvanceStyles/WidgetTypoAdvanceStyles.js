@@ -178,9 +178,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
 
       if (
         [
-          "--sc-vertical-scroll-entry",
-          "--sc-vertical-scroll-center",
-          "--sc-vertical-scroll-exit",
+          "--sc-Typo-vertical-scroll-entry",
+          "--sc-Typo-vertical-scroll-center",
+          "--sc-Typo-vertical-scroll-exit",
         ].includes(cssVar)
       ) {
         const percent = (val + 100) / 2;
@@ -192,7 +192,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
+          backgroundColor: "var(--sc-Typo-theme-accent)",
         });
       } else if (position === "left") {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
@@ -275,7 +275,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     startBullet,
     startFill,
     startValue,
-    "--sc-vertical-scroll-start",
+    "--sc-Typo-vertical-scroll-start",
     "left",
     0,
     100
@@ -284,7 +284,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     endBullet,
     endFill,
     endValue,
-    "--sc-vertical-scroll-end",
+    "--sc-Typo-vertical-scroll-end",
     "right",
     0,
     100
@@ -293,19 +293,19 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-vertical-scroll-entry"
+    "--sc-Typo-vertical-scroll-entry"
   );
   const updateCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-vertical-scroll-center"
+    "--sc-Typo-vertical-scroll-center"
   );
   const updateExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-vertical-scroll-exit"
+    "--sc-Typo-vertical-scroll-exit"
   );
 
   const getCurrentPercentage = (cssVar) => {
@@ -321,9 +321,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     return parseFloat(val.replace("%", "")) || 0;
   };
 
-  updateEntry(getCurrentPercentage("--sc-vertical-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-vertical-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-vertical-scroll-exit"));
+  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+  updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+  updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -337,21 +337,21 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       bullet: entryBullet,
       fill: entryFill,
       count: entryCount,
-      css: "--sc-vertical-scroll-entry",
+      css: "--sc-Typo-vertical-scroll-entry",
     },
     {
       id: "Typo-vertical-advance-center-reset",
       bullet: centerBullet,
       fill: centerFill,
       count: centerCount,
-      css: "--sc-vertical-scroll-center",
+      css: "--sc-Typo-vertical-scroll-center",
     },
     {
       id: "Typo-vertical-advance-exit-reset",
       bullet: exitBullet,
       fill: exitFill,
       count: exitCount,
-      css: "--sc-vertical-scroll-exit",
+      css: "--sc-Typo-vertical-scroll-exit",
     },
   ].forEach(({ id, bullet, fill, count, css }) => {
     const btn = document.getElementById(id);
