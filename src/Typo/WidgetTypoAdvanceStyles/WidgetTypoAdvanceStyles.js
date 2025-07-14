@@ -3,33 +3,83 @@ function attachAdvanceTimelineIncrementDecrement(
   updateCenter,
   updateExit
 ) {
-  function setup(idIncrease, idDecrease, getCurrent, updateFn) {
+  let lastFocused = null;
+
+  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
     const btnDec = document.getElementById(idDecrease);
-    if (btnInc) btnInc.onclick = () => updateFn(getCurrent() + 1);
-    if (btnDec) btnDec.onclick = () => updateFn(getCurrent() - 1);
+    let interval;
+
+    const startHold = (type) => {
+      if (interval) clearInterval(interval);
+      interval = setInterval(() => {
+        const val = getCurrent();
+        updateFn(type === "inc" ? val + 1 : val - 1);
+      }, 100);
+    };
+    const stopHold = () => clearInterval(interval);
+
+    if (btnInc) {
+      btnInc.onmousedown = () => startHold("inc");
+      btnInc.onmouseup = stopHold;
+      btnInc.onmouseleave = stopHold;
+      btnInc.onclick = () => updateFn(getCurrent() + 1);
+    }
+    if (btnDec) {
+      btnDec.onmousedown = () => startHold("dec");
+      btnDec.onmouseup = stopHold;
+      btnDec.onmouseleave = stopHold;
+      btnDec.onclick = () => updateFn(getCurrent() - 1);
+    }
+
+    const bullet = document.getElementById(bulletId);
+    if (bullet) {
+      bullet.setAttribute("tabindex", "0");
+      bullet.addEventListener("click", () => (lastFocused = bulletId));
+      bullet.addEventListener("focus", () => (lastFocused = bulletId));
+    }
   }
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+
   setup(
     "Typo-vertical-advance-entry-increase",
     "Typo-vertical-advance-entry-decrease",
     () => getVal("Typo-vertical-advance-entry-count"),
-    updateEntry
+    updateEntry,
+    "Typo-vertical-advance-entry-bullet"
   );
   setup(
     "Typo-vertical-advance-center-increase",
     "Typo-vertical-advance-center-decrease",
     () => getVal("Typo-vertical-advance-center-count"),
-    updateCenter
+    updateCenter,
+    "Typo-vertical-advance-center-bullet"
   );
   setup(
     "Typo-vertical-advance-exit-increase",
     "Typo-vertical-advance-exit-decrease",
     () => getVal("Typo-vertical-advance-exit-count"),
-    updateExit
+    updateExit,
+    "Typo-vertical-advance-exit-bullet"
   );
+
+  // keyboard control
+  document.addEventListener("keydown", (e) => {
+    if (!lastFocused) return;
+    const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+
+    if (e.key === "ArrowRight") {
+      if (lastFocused.includes("entry")) updateEntry(val + 1);
+      if (lastFocused.includes("center")) updateCenter(val + 1);
+      if (lastFocused.includes("exit")) updateExit(val + 1);
+    } else if (e.key === "ArrowLeft") {
+      if (lastFocused.includes("entry")) updateEntry(val - 1);
+      if (lastFocused.includes("center")) updateCenter(val - 1);
+      if (lastFocused.includes("exit")) updateExit(val - 1);
+    }
+  });
 }
 
 function attachCustomTimelineReset(
@@ -75,7 +125,6 @@ function initEffectAnimationDropdownToggle() {
     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
   }
 }
-
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
@@ -166,7 +215,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-        
         if (cssVar === "--sc-Typo-vertical-scroll-entry") {
           document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
@@ -194,11 +242,10 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           styleTag.id = styleId;
           document.head.appendChild(styleTag);
         }
-      const contentEl = el.querySelector(".sqs-block-content");
-      if (contentEl) {
-        styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-      }
-
+        const contentEl = el.querySelector(".sqs-block-content");
+        if (contentEl) {
+          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
+        }
       }
     };
 
@@ -232,17 +279,16 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     };
   };
 
-const getCurrentPercentage = (cssVar) => {
-  const el = getSelectedElement?.();
-  if (!el) return 0;
+  const getCurrentPercentage = (cssVar) => {
+    const el = getSelectedElement?.();
+    if (!el) return 0;
 
-  const contentEl = el.querySelector(".sqs-block-content");
-  if (!contentEl) return 0;
+    const contentEl = el.querySelector(".sqs-block-content");
+    if (!contentEl) return 0;
 
-  const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
-  return parseFloat(val.replace("%", "")) || 0;
-};
-
+    const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
+    return parseFloat(val.replace("%", "")) || 0;
+  };
 
   const updateStart = updateField(
     startBullet,
