@@ -65,44 +65,32 @@ function attachAdvanceTimelineIncrementDecrement(
     "Typo-vertical-advance-exit-bullet"
   );
 
-  // keyboard controllet arrowKeyCooldown = false;
 
-let arrowKeyCooldown = false;
 
 document.addEventListener("keydown", (e) => {
   if (!lastFocused) return;
-  if (arrowKeyCooldown) return;
-  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
 
-  arrowKeyCooldown = true;
+  if (e.repeat) return;
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
   const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
-  const clamp = (num, min = -100, max = 100) =>
-    Math.max(min, Math.min(max, num));
 
   if (e.key === "ArrowRight") {
-    if (lastFocused.includes("entry")) updateEntry(clamp(val + 1));
-    if (lastFocused.includes("center")) updateCenter(clamp(val + 1));
-    if (lastFocused.includes("exit")) updateExit(clamp(val + 1));
+    if (lastFocused.includes("entry")) updateEntry(val + 1);
+    if (lastFocused.includes("center")) updateCenter(val + 1);
+    if (lastFocused.includes("exit")) updateExit(val + 1);
   }
 
   if (e.key === "ArrowLeft") {
-    if (lastFocused.includes("entry")) updateEntry(clamp(val - 1));
-    if (lastFocused.includes("center")) updateCenter(clamp(val - 1));
-    if (lastFocused.includes("exit")) updateExit(clamp(val - 1));
+    if (lastFocused.includes("entry")) updateEntry(val - 1);
+    if (lastFocused.includes("center")) updateCenter(val - 1);
+    if (lastFocused.includes("exit")) updateExit(val - 1);
   }
-
-  setTimeout(() => {
-    arrowKeyCooldown = false;
-  }, 150);
 });
 
-document.addEventListener("keyup", () => {
-  arrowKeyCooldown = false;
-});
+
 
 }
 
