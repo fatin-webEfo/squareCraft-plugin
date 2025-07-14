@@ -71,7 +71,9 @@ let keyHoldInterval = null;
 
 document.addEventListener("keydown", (e) => {
   if (!lastFocused) return;
-  if (keyHoldInterval) return; // already holding
+
+  // 🔐 Prevent multiple triggers on hold or fast taps
+  if (e.repeat || keyHoldInterval) return;
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
@@ -93,16 +95,14 @@ document.addEventListener("keydown", (e) => {
   };
 
   if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-    update(); // Immediate first step
-    keyHoldInterval = setInterval(update, 100); // Auto repeat
+    update(); // immediate
+    keyHoldInterval = setInterval(update, 100);
   }
 });
 
-document.addEventListener("keyup", (e) => {
-  if (keyHoldInterval) {
-    clearInterval(keyHoldInterval);
-    keyHoldInterval = null;
-  }
+document.addEventListener("keyup", () => {
+  clearInterval(keyHoldInterval);
+  keyHoldInterval = null;
 });
 
 
