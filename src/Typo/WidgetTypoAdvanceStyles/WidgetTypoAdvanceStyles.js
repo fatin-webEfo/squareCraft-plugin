@@ -70,7 +70,7 @@ function attachCustomTimelineReset(
   updateCenter,
   updateExit
 ) {
-  const resetBtn = document.getElementById("vertical-custom-timeline-reset");
+  const resetBtn = document.getElementById("Typo-vertical-custom-timeline-reset");
   if (resetBtn) {
     resetBtn.onclick = () => {
       updateStart(0);
@@ -316,7 +316,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
-   const btn = getSelectedElement.querySelector(".sqs-block-content");
+ const btn = getSelectedElement()?.querySelector(".sqs-block-content");
 
 
     if (!btn) return 0;
