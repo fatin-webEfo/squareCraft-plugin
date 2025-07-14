@@ -198,6 +198,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         const fillWidth = Math.abs(val / 2);
 
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
+          document.getElementById(
+            "Typo-vertical-custom-timeline-arrow"
+          ).style.left = `${bulletLeft}%`;
+        }
+
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
