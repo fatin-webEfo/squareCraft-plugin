@@ -4,9 +4,9 @@ Copy and paste the following script into your Squarespace Code Injection section
 
 ```html
 <script id="sc-script"
-src="https://fatin-webefo.github.io/squareCraft-plugin/squareCraft.js"
-data-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWM2OTg0M2UyZDBjMTA2ZTc4MDg4YSIsImVtYWlsIjoiamFtZXNAZ21haWwuY29tIiwidmVyaWZpZWQiOmZhbHNlLCJpYXQiOjE3MzkzNTI0NTQsImV4cCI6MTc0MTk0NDQ1NH0.WhFo_SGGVHaWpXGr5w3Mexh7b9g-Uj16-WCQQKZWUQU"
-data-u-id="67ac69843e2d0c106e78088a"
-data-w-id="67ac69873e2d0c106e78088e"
-defer
+    src="https://fatin-webefo.github.io/squareCraft-plugin/squareCraft.js"
+    data-token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWZkMjY1MzQ5NWI5NjhhMjE4ZjQxNyIsImVtYWlsIjoiYXNmQGdtYWlsLmNvbSIsInZlcmlmaWVkIjpmYWxzZSwiaWF0IjoxNzUyNDY4OTMxLCJleHAiOjE3NTI1NTUzMzF9.Wcl4cFSrb1zeEnD_LXaRYmlVyI3chP2m7lDCouqKbAM"
+    data-u-id="685fd2653495b968a218f417"
+    data-w-id="68748dc660d58a363cb616ff"
+    defer
 ></script>
