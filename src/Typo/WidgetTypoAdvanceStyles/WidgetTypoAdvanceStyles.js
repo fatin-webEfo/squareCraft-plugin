@@ -83,40 +83,41 @@ function attachCustomTimelineReset(
 }
 
 function initEffectAnimationDropdownToggle() {
- const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
- const startBullet = document.getElementById(
-   "Typo-vertical-timeline-start-bullet"
- );
- const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
+  const arrow = document.getElementById(
+    "Typo-vertical-effect-animation-type-arrow"
+  );
+  const dropdown = document.getElementById(
+    "Typo-vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "Typo-vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "Typo-vertical-effect-animation-value"
+  );
 
- if (arrow && startBullet && endBullet) {
-   const arrowBox = arrow.getBoundingClientRect();
-   const startBox = startBullet.getBoundingClientRect();
-   const endBox = endBullet.getBoundingClientRect();
+  if (!arrow || !dropdown || !container || !displayValue) return;
 
-   const arrowCenter = arrowBox.left + arrowBox.width / 2;
-   const startCenter = startBox.left + startBox.width / 2;
-   const endCenter = endBox.left + endBox.width / 2;
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  });
 
-   const distFromStart = Math.abs(arrowCenter - startCenter);
-   const distFromEnd = Math.abs(arrowCenter - endCenter);
+  document.addEventListener("click", (e) => {
+    if (!container.contains(e.target)) {
+      dropdown.classList.add("sc-hidden");
+    }
+  });
 
-   if (distFromStart <= 4) {
-     gsap.to(arrow, {
-       backgroundColor: "rgb(239, 124, 47)",
-       duration: 0.3,
-     });
-   } else if (distFromEnd <= 4) {
-     gsap.to(arrow, {
-       backgroundColor: "rgb(246, 182, 123)",
-       duration: 0.3,
-     });
-   } else {
-     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-   }
- }
-
+  dropdown.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selected = item.getAttribute("data-value");
+      displayValue.textContent = selected;
+      dropdown.classList.add("sc-hidden");
+    });
+  });
 }
+
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
@@ -230,15 +231,15 @@ export function initTypoAdvanceStyles(getSelectedElement) {
            if (Math.abs(arrowLeft - startLeft) <= 1) {
              gsap.to(arrow, {
                backgroundColor: "rgb(239, 124, 47)",
-               duration: 0.3,
+               
              });
            } else if (Math.abs(arrowLeft - endLeft) <= 1) {
              gsap.to(arrow, {
                backgroundColor: "rgb(246, 182, 123)",
-               duration: 0.3,
+               
              });
            } else {
-             gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+             gsap.to(arrow, { backgroundColor: "#FFFFFF", });
            }
          }
        } else if (position === "left") {
