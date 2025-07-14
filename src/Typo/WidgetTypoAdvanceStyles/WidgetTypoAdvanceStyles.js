@@ -59,14 +59,13 @@ function initEffectAnimationDropdownToggle() {
 
   const parent = arrow.parentElement;
   const parentBox = parent.getBoundingClientRect();
-
-  const arrowLeft = parseFloat(arrow.style.left || "0");
-  const arrowCenter = (parentBox.width * arrowLeft) / 100;
-
+  const arrowBox = arrow.getBoundingClientRect();
   const startBox = start.getBoundingClientRect();
   const endBox = end.getBoundingClientRect();
-  const startCenter = startBox.left + startBox.width / 2 - parentBox.left;
-  const endCenter = endBox.left + endBox.width / 2 - parentBox.left;
+
+  const arrowCenter = arrowBox.left + arrowBox.width / 2;
+  const startCenter = startBox.left + startBox.width / 2;
+  const endCenter = endBox.left + endBox.width / 2;
 
   if (arrowCenter <= startCenter + 1) {
     gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
@@ -76,6 +75,7 @@ function initEffectAnimationDropdownToggle() {
     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
   }
 }
+
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
@@ -170,8 +170,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
           ).style.left = `${bulletLeft}%`;
-           initEffectAnimationDropdownToggle();
         }
+        initEffectAnimationDropdownToggle();
 
         initEffectAnimationDropdownToggle(startBullet, endBullet);
       } else {
