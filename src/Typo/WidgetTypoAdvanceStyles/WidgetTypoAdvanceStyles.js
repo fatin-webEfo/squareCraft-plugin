@@ -54,17 +54,29 @@ function initEffectAnimationDropdownToggle(startBullet, endBullet) {
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   if (!arrow || !startBullet || !endBullet) return;
 
-  const arrowLeft = parseFloat(arrow.style.left || "0");
-  const startLeft = parseFloat(startBullet.style.left || "0");
-  const endLeft = parseFloat(endBullet.style.left || "100");
+  const parent = arrow.parentElement;
+  const parentBox = parent.getBoundingClientRect();
 
-  if (arrowLeft <= startLeft + 0.5) {
-    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-  } else if (arrowLeft >= endLeft - 0.5) {
-    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-  } else {
-    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-  }
+  const arrowBox = arrow.getBoundingClientRect();
+  const startBox = startBullet.getBoundingClientRect();
+  const endBox = endBullet.getBoundingClientRect();
+
+  const arrowCenter = arrowBox.left + arrowBox.width / 2;
+  const startCenter = startBox.left + startBox.width / 2;
+  const endCenter = endBox.left + endBox.width / 2;
+
+  const arrowPercent = ((arrowCenter - parentBox.left) / parentBox.width) * 100;
+  const startPercent = ((startCenter - parentBox.left) / parentBox.width) * 100;
+  const endPercent = ((endCenter - parentBox.left) / parentBox.width) * 100;
+
+if (arrowPercent <= startPercent + 0.5) {
+  gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+} else if (arrowPercent >= endPercent - 0.5) {
+  gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+} else {
+  gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+}
+
 }
 
 export function initTypoAdvanceStyles(getSelectedElement) {
