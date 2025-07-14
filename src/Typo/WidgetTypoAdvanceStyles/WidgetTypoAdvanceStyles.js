@@ -171,66 +171,105 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-      countEl.textContent = `${val}%`;
+   const updateField =
+     (
+       bullet,
+       fill,
+       countEl,
+       cssVar,
+       position = "left",
+       min = -100,
+       max = 100
+     ) =>
+     (val) => {
+       val = Math.max(min, Math.min(max, val));
+       countEl.textContent = `${val}%`;
 
-      if (
-        [
-          "--sc-Typo-vertical-scroll-entry",
-          "--sc-Typo-vertical-scroll-center",
-          "--sc-Typo-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
+       const el = getSelectedElement?.();
+       const styleId = el?.id
+         ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+         : null;
 
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-Typo-theme-accent)",
-        });
-      } else if (position === "left") {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, { width: `${val}%`, left: "0" });
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0",
-          right: "auto",
-          transform: `scaleX(${(100 - val) / 100})`,
-          transformOrigin: "right",
-          width: "100%",
-          backgroundColor: "#F6B67B",
-        });
-      }
+       if (
+         [
+           "--sc-Typo-vertical-scroll-entry",
+           "--sc-Typo-vertical-scroll-center",
+           "--sc-Typo-vertical-scroll-exit",
+         ].includes(cssVar)
+       ) {
+         const percent = (val + 100) / 2;
+         const bulletLeft = percent;
+         const fillLeft = val < 0 ? percent : 50;
+         const fillWidth = Math.abs(val / 2);
 
-      const el = getSelectedElement?.();
-      if (el && el.id?.startsWith("block-")) {
-        const styleId = `sc-style-${el.id}-${cssVar.replace(
-          /[^a-z0-9]/gi,
-          ""
-        )}`;
-        let styleTag = document.getElementById(styleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
+         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+         gsap.set(fill, {
+           left: `${fillLeft}%`,
+           width: `${fillWidth}%`,
+           backgroundColor: "var(--sc-Typo-theme-accent)",
+         });
 
-        const nextEl = el.nextElementSibling;
-        if (nextEl && nextEl.tagName === "DIV") {
-          const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
-          styleTag.textContent = cssRule;
-        }
+         // 🟠 Arrow color sync logic
+         const arrow = document.getElementById(
+           "Typo-vertical-custom-timeline-arrow"
+         );
+         const startBullet = document.getElementById(
+           "Typo-vertical-timeline-start-bullet"
+         );
+         const endBullet = document.getElementById(
+           "Typo-vertical-timeline-end-bullet"
+         );
 
-      }
-    };
+         if (arrow && startBullet && endBullet) {
+           const arrowLeft = parseFloat(arrow.style.left || "0");
+           const startLeft = parseFloat(startBullet.style.left || "0");
+           const endLeft = parseFloat(endBullet.style.left || "100");
+
+           if (Math.abs(arrowLeft - startLeft) <= 1) {
+             gsap.to(arrow, {
+               backgroundColor: "rgb(239, 124, 47)",
+               duration: 0.3,
+             });
+           } else if (Math.abs(arrowLeft - endLeft) <= 1) {
+             gsap.to(arrow, {
+               backgroundColor: "rgb(246, 182, 123)",
+               duration: 0.3,
+             });
+           } else {
+             gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+           }
+         }
+       } else if (position === "left") {
+         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+         gsap.set(fill, { width: `${val}%`, left: "0" });
+       } else {
+         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+         gsap.set(fill, {
+           left: "0",
+           right: "auto",
+           transform: `scaleX(${(100 - val) / 100})`,
+           transformOrigin: "right",
+           width: "100%",
+           backgroundColor: "#F6B67B",
+         });
+       }
+
+       if (el && el.id?.startsWith("block-")) {
+         let styleTag = document.getElementById(styleId);
+         if (!styleTag) {
+           styleTag = document.createElement("style");
+           styleTag.id = styleId;
+           document.head.appendChild(styleTag);
+         }
+
+         const nextEl = el.nextElementSibling;
+         if (nextEl && nextEl.tagName === "DIV") {
+           const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
+           styleTag.textContent = cssRule;
+         }
+       }
+     };
+
 
   const makeDraggable = (
     bullet,
