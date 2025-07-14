@@ -68,25 +68,22 @@ function attachAdvanceTimelineIncrementDecrement(
   // keyboard controllet arrowKeyCooldown = false;
 
 let keyHoldInterval = null;
+let keyHoldTimeout = null;
 
 document.addEventListener("keydown", (e) => {
   if (!lastFocused) return;
-
-  // 🔐 Prevent multiple triggers on hold or fast taps
-  if (e.repeat || keyHoldInterval) return;
+  if (e.repeat || keyHoldInterval || keyHoldTimeout) return;
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
   const update = () => {
     const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
-
     if (e.key === "ArrowRight") {
       if (lastFocused.includes("entry")) updateEntry(val + 1);
       if (lastFocused.includes("center")) updateCenter(val + 1);
       if (lastFocused.includes("exit")) updateExit(val + 1);
     }
-
     if (e.key === "ArrowLeft") {
       if (lastFocused.includes("entry")) updateEntry(val - 1);
       if (lastFocused.includes("center")) updateCenter(val - 1);
@@ -95,15 +92,26 @@ document.addEventListener("keydown", (e) => {
   };
 
   if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-    update(); // immediate
-    keyHoldInterval = setInterval(update, 100);
+    update(); // Run once immediately
+
+    // ⏱ Start interval ONLY if key is held after 300ms
+    keyHoldTimeout = setTimeout(() => {
+      keyHoldInterval = setInterval(update, 100);
+    }, 300);
   }
 });
 
 document.addEventListener("keyup", () => {
-  clearInterval(keyHoldInterval);
-  keyHoldInterval = null;
+  if (keyHoldInterval) {
+    clearInterval(keyHoldInterval);
+    keyHoldInterval = null;
+  }
+  if (keyHoldTimeout) {
+    clearTimeout(keyHoldTimeout);
+    keyHoldTimeout = null;
+  }
 });
+
 
 
 }
