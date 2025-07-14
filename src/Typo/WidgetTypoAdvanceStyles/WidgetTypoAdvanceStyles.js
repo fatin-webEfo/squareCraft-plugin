@@ -83,39 +83,28 @@ function attachCustomTimelineReset(
 }
 
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "Typo-vertical-effect-animation-type-arrow"
-  );
-  const dropdown = document.getElementById(
-    "Typo-vertical-effect-animation-type-list"
-  );
-  const container = document.getElementById(
-    "Typo-vertical-effect-animation-dropdown-container"
-  );
-  const displayValue = document.getElementById(
-    "Typo-vertical-effect-animation-value"
-  );
+ const arrow = document.getElementById("vertical-custom-timeline-arrow");
+ if (arrow && startBullet && endBullet) {
+   const arrowBox = arrow.getBoundingClientRect();
+   const startBox = startBullet.getBoundingClientRect();
+   const endBox = endBullet.getBoundingClientRect();
 
-  if (!arrow || !dropdown || !container || !displayValue) return;
+   const arrowCenter = arrowBox.left + arrowBox.width / 2;
+   const startCenter = startBox.left + startBox.width / 2;
+   const endCenter = endBox.left + endBox.width / 2;
 
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
-  });
+   const distFromStart = Math.abs(arrowCenter - startCenter);
+   const distFromEnd = Math.abs(arrowCenter - endCenter);
 
-  document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) {
-      dropdown.classList.add("sc-hidden");
-    }
-  });
+   if (distFromStart <= 4) {
+     gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+   } else if (distFromEnd <= 4) {
+     gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+   } else {
+     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+   }
+ }
 
-  dropdown.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selected = item.getAttribute("data-value");
-      displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
-    });
-  });
 }
 
 
@@ -290,55 +279,31 @@ export function initTypoAdvanceStyles(getSelectedElement) {
    min = -100,
    max = 100
  ) => {
-   bullet.onmousedown = (e) => {
-     e.preventDefault();
-     const container = bullet.parentElement;
-     const rect = container.getBoundingClientRect();
+  bullet.onmousedown = (e) => {
+    e.preventDefault();
+    const container = bullet.parentElement;
+    const rect = container.getBoundingClientRect();
 
-     const startBox = document
-       .getElementById("Typo-vertical-timeline-start-bullet")
-       ?.getBoundingClientRect();
-     const endBox = document
-       .getElementById("Typo-vertical-timeline-end-bullet")
-       ?.getBoundingClientRect();
+    const bulletRect = bullet.getBoundingClientRect();
+    const initialOffset = bulletRect.left + bulletRect.width / 2;
 
-     const onMouseMove = (event) => {
-       const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
-       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
-       const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+    const onMouseMove = (event) => {
+      const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
+      const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
+      const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+      updateFn(clamped); // live update
+    };
 
-       if (type === "start" && endBox) {
-         const endLeft = endBox.left + endBox.width / 2;
-         if (clientX >= endLeft - 4) {
-           updateFn(
-             ((endLeft - rect.left) / rect.width) * (max - min) + min - 4
-           );
-           return;
-         }
-       }
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener(
+      "mouseup",
+      () => {
+        document.removeEventListener("mousemove", onMouseMove);
+      },
+      { once: true }
+    );
+  };
 
-       if (type === "end" && startBox) {
-         const startLeft = startBox.left + startBox.width / 2;
-         if (clientX <= startLeft + 4) {
-           updateFn(
-             ((startLeft - rect.left) / rect.width) * (max - min) + min + 4
-           );
-           return;
-         }
-       }
-
-       updateFn(clamped);
-     };
-
-     document.addEventListener("mousemove", onMouseMove);
-     document.addEventListener(
-       "mouseup",
-       () => {
-         document.removeEventListener("mousemove", onMouseMove);
-       },
-       { once: true }
-     );
-   };
  };
 
 
