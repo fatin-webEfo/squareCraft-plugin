@@ -66,49 +66,62 @@ function attachAdvanceTimelineIncrementDecrement(
   );
 
   // keyboard controllet arrowKeyCooldown = false;
-
 let keyHoldInterval = null;
 let keyHoldTimeout = null;
+let lastPressedKey = null;
 
 document.addEventListener("keydown", (e) => {
   if (!lastFocused) return;
-  if (e.repeat || keyHoldInterval || keyHoldTimeout) return;
+
+  // Only run if it's a left/right key and no key is already active
+  if (
+    (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
+    keyHoldInterval ||
+    keyHoldTimeout
+  )
+    return;
+
+  lastPressedKey = e.key;
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
   const update = () => {
     const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
-    if (e.key === "ArrowRight") {
-      if (lastFocused.includes("entry")) updateEntry(val + 1);
-      if (lastFocused.includes("center")) updateCenter(val + 1);
-      if (lastFocused.includes("exit")) updateExit(val + 1);
+
+    if (lastFocused.includes("entry")) {
+      if (e.key === "ArrowRight") updateEntry(val + 1);
+      if (e.key === "ArrowLeft") updateEntry(val - 1);
     }
-    if (e.key === "ArrowLeft") {
-      if (lastFocused.includes("entry")) updateEntry(val - 1);
-      if (lastFocused.includes("center")) updateCenter(val - 1);
-      if (lastFocused.includes("exit")) updateExit(val - 1);
+    if (lastFocused.includes("center")) {
+      if (e.key === "ArrowRight") updateCenter(val + 1);
+      if (e.key === "ArrowLeft") updateCenter(val - 1);
+    }
+    if (lastFocused.includes("exit")) {
+      if (e.key === "ArrowRight") updateExit(val + 1);
+      if (e.key === "ArrowLeft") updateExit(val - 1);
     }
   };
 
-  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-    update(); // Run once immediately
+  update(); // Immediate single-step on key press
 
-    // ⏱ Start interval ONLY if key is held after 300ms
-    keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(update, 100);
-    }, 300);
-  }
+  // Only start interval if key is still held after 300ms
+  keyHoldTimeout = setTimeout(() => {
+    keyHoldInterval = setInterval(update, 100);
+  }, 300);
 });
 
-document.addEventListener("keyup", () => {
-  if (keyHoldInterval) {
-    clearInterval(keyHoldInterval);
-    keyHoldInterval = null;
-  }
-  if (keyHoldTimeout) {
-    clearTimeout(keyHoldTimeout);
-    keyHoldTimeout = null;
+document.addEventListener("keyup", (e) => {
+  if (e.key === lastPressedKey) {
+    if (keyHoldInterval) {
+      clearInterval(keyHoldInterval);
+      keyHoldInterval = null;
+    }
+    if (keyHoldTimeout) {
+      clearTimeout(keyHoldTimeout);
+      keyHoldTimeout = null;
+    }
+    lastPressedKey = null;
   }
 });
 
