@@ -66,37 +66,32 @@ function attachAdvanceTimelineIncrementDecrement(
   );
 
   // keyboard control
+ let isKeyPressed = false;
+
  document.addEventListener("keydown", (e) => {
-   // keyboard control
-   let isKeyPressed = false;
+   if (!lastFocused) return;
+   if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+   if (isKeyPressed) return; // prevent holding key from repeating
+   isKeyPressed = true;
 
-   document.addEventListener("keydown", (e) => {
-     if (!lastFocused) return;
-     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-     if (isKeyPressed) return; // prevent holding key from repeating
-     isKeyPressed = true;
+   const getVal = (id) =>
+     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
-     const getVal = (id) =>
-       parseInt(
-         document.getElementById(id)?.textContent.replace("%", "") || "0"
-       );
+   const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
 
-     const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+   if (e.key === "ArrowRight") {
+     if (lastFocused.includes("entry")) updateEntry(val + 1);
+     if (lastFocused.includes("center")) updateCenter(val + 1);
+     if (lastFocused.includes("exit")) updateExit(val + 1);
+   } else if (e.key === "ArrowLeft") {
+     if (lastFocused.includes("entry")) updateEntry(val - 1);
+     if (lastFocused.includes("center")) updateCenter(val - 1);
+     if (lastFocused.includes("exit")) updateExit(val - 1);
+   }
+ });
 
-     if (e.key === "ArrowRight") {
-       if (lastFocused.includes("entry")) updateEntry(val + 1);
-       if (lastFocused.includes("center")) updateCenter(val + 1);
-       if (lastFocused.includes("exit")) updateExit(val + 1);
-     } else if (e.key === "ArrowLeft") {
-       if (lastFocused.includes("entry")) updateEntry(val - 1);
-       if (lastFocused.includes("center")) updateCenter(val - 1);
-       if (lastFocused.includes("exit")) updateExit(val - 1);
-     }
-   });
-
-   document.addEventListener("keyup", () => {
-     isKeyPressed = false;
-   });
+ document.addEventListener("keyup", () => {
+   isKeyPressed = false;
  });
 
 }
