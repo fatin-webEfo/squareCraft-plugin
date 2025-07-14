@@ -66,29 +66,38 @@ function attachAdvanceTimelineIncrementDecrement(
   );
 
   // keyboard control
- let isKeyPressed = false;
+let arrowKeyCooldown = false;
 
- document.addEventListener("keydown", (e) => {
-   if (!lastFocused) return;
-   if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-   if (isKeyPressed) return; // prevent holding key from repeating
-   isKeyPressed = true;
+document.addEventListener("keydown", (e) => {
+  if (!lastFocused) return;
+  if (arrowKeyCooldown) return;
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
 
-   const getVal = (id) =>
-     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+  arrowKeyCooldown = true;
 
-   const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+  const getVal = (id) =>
+    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
-   if (e.key === "ArrowRight") {
-     if (lastFocused.includes("entry")) updateEntry(val + 1);
-     if (lastFocused.includes("center")) updateCenter(val + 1);
-     if (lastFocused.includes("exit")) updateExit(val + 1);
-   } else if (e.key === "ArrowLeft") {
-     if (lastFocused.includes("entry")) updateEntry(val - 1);
-     if (lastFocused.includes("center")) updateCenter(val - 1);
-     if (lastFocused.includes("exit")) updateExit(val - 1);
-   }
- });
+  const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+
+  if (e.key === "ArrowRight") {
+    if (lastFocused.includes("entry")) updateEntry(val + 1);
+    if (lastFocused.includes("center")) updateCenter(val + 1);
+    if (lastFocused.includes("exit")) updateExit(val + 1);
+  }
+
+  if (e.key === "ArrowLeft") {
+    if (lastFocused.includes("entry")) updateEntry(val - 1);
+    if (lastFocused.includes("center")) updateCenter(val - 1);
+    if (lastFocused.includes("exit")) updateExit(val - 1);
+  }
+
+  // prevent rapid fire
+  setTimeout(() => {
+    arrowKeyCooldown = false;
+  }, 150); // adjust this for faster/slower response to hold
+});
+
 
  document.addEventListener("keyup", () => {
    isKeyPressed = false;
