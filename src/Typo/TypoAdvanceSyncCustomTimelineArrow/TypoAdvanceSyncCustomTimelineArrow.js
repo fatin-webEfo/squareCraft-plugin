@@ -43,17 +43,20 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       0,
       Math.min(100, 100 - 100 * percentFromTop)
     );
+
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
-    const startLeft = parseFloat(startBullet.style.left || "0");
-    const endLeft = parseFloat(endBullet.style.left || "100");
-    const centerLeft = (startLeft + endLeft) / 2;
+    const arrowBox = arrow.getBoundingClientRect();
+    const startBox = startBullet.getBoundingClientRect();
+    const endBox = endBullet.getBoundingClientRect();
+
+    const arrowCenter = arrowBox.left + arrowBox.width / 2;
+    const startCenter = startBox.left + startBox.width / 2;
+    const endCenter = endBox.left + endBox.width / 2;
+    const centerCenter = (startCenter + endCenter) / 2;
 
     const btn = selectedElement.querySelector(".sqs-block-content");
-
-
-
     if (!btn) return;
 
     const getVHFromCSSVar = (cssVar) => {
@@ -70,37 +73,36 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     let y = 0;
     let apply = false;
 
-    if (scrollBasedLeft <= startLeft + 1) {
+    if (arrowCenter <= startCenter + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
       if (entryY !== 0) {
-        const progress = scrollBasedLeft / (startLeft + 1);
+        const progress = (arrowCenter - startCenter + 1) / 2;
         y = entryY * progress;
         apply = true;
       }
-    } else if (scrollBasedLeft >= endLeft - 1) {
+    } else if (arrowCenter >= endCenter - 1) {
       arrow.style.backgroundColor = "#F6B67B";
       if (exitY !== 0) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
+        const progress = 1 - (endCenter - arrowCenter + 1) / 2;
         y = exitY * progress;
         apply = true;
       }
     } else {
       arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
+      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
         if (entryY !== 0 && centerY !== 0) {
           const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
+            (arrowCenter - startCenter) / (centerCenter - startCenter);
           y = entryY + (centerY - entryY) * progress;
           apply = true;
         }
       } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
+        arrowCenter > centerCenter + 1 &&
+        arrowCenter < endCenter - 1
       ) {
         if (centerY !== 0 && exitY !== 0) {
           const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
+            (arrowCenter - centerCenter) / (endCenter - centerCenter);
           y = centerY + (exitY - centerY) * progress;
           apply = true;
         }
@@ -108,7 +110,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
 
     const finalY = apply ? y : 0;
-
     if (lastY !== finalY) {
       gsap.to(btn, {
         duration: 0.3,
@@ -118,6 +119,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       lastY = finalY;
     }
   }
+
 
  function trackLoop(arrow, startBullet, endBullet) {
    if (isTracking) return;
