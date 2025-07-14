@@ -19,7 +19,8 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     if (!block) return;
 
     const blockId = block.id;
-    const TypoSelector = `#${blockId} + div`;
+   const TypoSelector = `#${blockId} .sqs-block-content`;
+;
     console.log("🔄 Updating Typo Styles for:", TypoSelector);
 
     const styleId = `sc-structure-style-${blockId}`;
