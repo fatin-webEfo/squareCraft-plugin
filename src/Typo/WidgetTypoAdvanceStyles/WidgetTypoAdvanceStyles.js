@@ -200,45 +200,30 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         });
 
         // ✅ Fixed Arrow Color Syncing
-        const arrow = document.getElementById(
-          "Typo-vertical-custom-timeline-arrow"
-        );
-        const startBullet = document.getElementById(
-          "Typo-vertical-timeline-start-bullet"
-        );
-        const endBullet = document.getElementById(
-          "Typo-vertical-timeline-end-bullet"
-        );
+      const arrow = document.getElementById("vertical-custom-timeline-arrow");
+      if (arrow && startBullet && endBullet) {
+        const arrowPercent = parseFloat(arrow.style.left || "0");
+        const startPercent = parseFloat(startBullet.style.left || "0");
+        const endPercent = parseFloat(endBullet.style.left || "100");
 
-        if (arrow && startBullet && endBullet) {
-          const arrowBox = arrow.getBoundingClientRect();
-          const startBox = startBullet.getBoundingClientRect();
-          const endBox = endBullet.getBoundingClientRect();
-
-          const arrowCenter = arrowBox.left + arrowBox.width / 2;
-          const startCenter = startBox.left + startBox.width / 2;
-          const endCenter = endBox.left + endBox.width / 2;
-
-          const distFromStart = Math.abs(arrowCenter - startCenter);
-          const distFromEnd = Math.abs(arrowCenter - endCenter);
-
-          if (distFromStart <= 4) {
-            gsap.to(arrow, {
-              backgroundColor: "rgb(239, 124, 47)",
-              duration: 0.3,
-            });
-          } else if (distFromEnd <= 4) {
-            gsap.to(arrow, {
-              backgroundColor: "rgb(246, 182, 123)",
-              duration: 0.3,
-            });
-          } else {
-            gsap.to(arrow, {
-              backgroundColor: "#FFFFFF",
-              duration: 0.3,
-            });
-          }
+        if (arrowPercent <= startPercent + 0.5) {
+          gsap.to(arrow, {
+            backgroundColor: "rgb(239, 124, 47)",
+            duration: 0.3,
+          });
+        } else if (arrowPercent >= endPercent - 0.5) {
+          gsap.to(arrow, {
+            backgroundColor: "rgb(246, 182, 123)",
+            duration: 0.3,
+          });
+        } else {
+          gsap.to(arrow, {
+            backgroundColor: "#FFFFFF",
+            duration: 0.3,
+          });
         }
+      }
+
       } else if (position === "left") {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         gsap.set(fill, { width: `${val}%`, left: "0" });
