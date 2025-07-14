@@ -50,33 +50,31 @@ function attachCustomTimelineReset(
     };
 }
 
-function initEffectAnimationDropdownToggle(startBullet, endBullet) {
-  const arrow = document.getElementById("vertical-custom-timeline-arrow");
-  if (!arrow || !startBullet || !endBullet) return;
+function initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+  const start = document.getElementById("Typo-vertical-timeline-start-bullet");
+  const end = document.getElementById("Typo-vertical-timeline-end-bullet");
+
+  if (!arrow || !start || !end) return;
 
   const parent = arrow.parentElement;
   const parentBox = parent.getBoundingClientRect();
 
-  const arrowBox = arrow.getBoundingClientRect();
-  const startBox = startBullet.getBoundingClientRect();
-  const endBox = endBullet.getBoundingClientRect();
+  const arrowLeft = parseFloat(arrow.style.left || "0");
+  const arrowCenter = (parentBox.width * arrowLeft) / 100;
 
-  const arrowCenter = arrowBox.left + arrowBox.width / 2;
-  const startCenter = startBox.left + startBox.width / 2;
-  const endCenter = endBox.left + endBox.width / 2;
+  const startBox = start.getBoundingClientRect();
+  const endBox = end.getBoundingClientRect();
+  const startCenter = startBox.left + startBox.width / 2 - parentBox.left;
+  const endCenter = endBox.left + endBox.width / 2 - parentBox.left;
 
-  const arrowPercent = ((arrowCenter - parentBox.left) / parentBox.width) * 100;
-  const startPercent = ((startCenter - parentBox.left) / parentBox.width) * 100;
-  const endPercent = ((endCenter - parentBox.left) / parentBox.width) * 100;
-
-if (arrowPercent <= startPercent + 0.5) {
-  gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-} else if (arrowPercent >= endPercent - 0.5) {
-  gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-} else {
-  gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-}
-
+  if (arrowCenter <= startCenter + 1) {
+    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+  } else if (arrowCenter >= endCenter - 1) {
+    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+  } else {
+    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+  }
 }
 
 export function initTypoAdvanceStyles(getSelectedElement) {
