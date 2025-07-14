@@ -67,42 +67,43 @@ function attachAdvanceTimelineIncrementDecrement(
 
   // keyboard controllet arrowKeyCooldown = false;
 
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused) return;
-    if (arrowKeyCooldown) return;
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+let arrowKeyCooldown = false;
 
-    arrowKeyCooldown = true;
+document.addEventListener("keydown", (e) => {
+  if (!lastFocused) return;
+  if (arrowKeyCooldown) return;
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
 
-    const getVal = (id) =>
-      parseInt(
-        document.getElementById(id)?.textContent.replace("%", "") || "0"
-      );
+  arrowKeyCooldown = true;
 
-    const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
-    const clamp = (num, min = -100, max = 100) =>
-      Math.max(min, Math.min(max, num));
+  const getVal = (id) =>
+    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
-    if (e.key === "ArrowRight") {
-      if (lastFocused.includes("entry")) updateEntry(clamp(val + 1));
-      if (lastFocused.includes("center")) updateCenter(clamp(val + 1));
-      if (lastFocused.includes("exit")) updateExit(clamp(val + 1));
-    }
+  const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+  const clamp = (num, min = -100, max = 100) =>
+    Math.max(min, Math.min(max, num));
 
-    if (e.key === "ArrowLeft") {
-      if (lastFocused.includes("entry")) updateEntry(clamp(val - 1));
-      if (lastFocused.includes("center")) updateCenter(clamp(val - 1));
-      if (lastFocused.includes("exit")) updateExit(clamp(val - 1));
-    }
+  if (e.key === "ArrowRight") {
+    if (lastFocused.includes("entry")) updateEntry(clamp(val + 1));
+    if (lastFocused.includes("center")) updateCenter(clamp(val + 1));
+    if (lastFocused.includes("exit")) updateExit(clamp(val + 1));
+  }
 
-    setTimeout(() => {
-      arrowKeyCooldown = false;
-    }, 150);
-  });
+  if (e.key === "ArrowLeft") {
+    if (lastFocused.includes("entry")) updateEntry(clamp(val - 1));
+    if (lastFocused.includes("center")) updateCenter(clamp(val - 1));
+    if (lastFocused.includes("exit")) updateExit(clamp(val - 1));
+  }
 
-  document.addEventListener("keyup", () => {
+  setTimeout(() => {
     arrowKeyCooldown = false;
-  });
+  }, 150);
+});
+
+document.addEventListener("keyup", () => {
+  arrowKeyCooldown = false;
+});
+
 }
 
 function attachCustomTimelineReset(
