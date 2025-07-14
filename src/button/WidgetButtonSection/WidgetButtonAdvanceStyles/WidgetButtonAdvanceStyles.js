@@ -266,7 +266,7 @@ function initEffectAnimationDropdownToggle() {
     };
 
     const updateStart = updateField(
-      startBullet,
+      startBullet, 
       startFill,
       startValue,
       "--sc-vertical-scroll-start",
