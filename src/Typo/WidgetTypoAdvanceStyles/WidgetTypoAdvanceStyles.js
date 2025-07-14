@@ -92,16 +92,12 @@ document.addEventListener("keydown", (e) => {
     if (lastFocused.includes("exit")) updateExit(val - 1);
   }
 
-  // prevent rapid fire
   setTimeout(() => {
     arrowKeyCooldown = false;
   }, 150); // adjust this for faster/slower response to hold
 });
 
 
- document.addEventListener("keyup", () => {
-   isKeyPressed = false;
- });
 
 }
 
