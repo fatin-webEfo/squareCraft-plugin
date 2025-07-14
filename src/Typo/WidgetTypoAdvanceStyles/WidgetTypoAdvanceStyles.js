@@ -174,149 +174,167 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-   const updateField =
-     (
-       bullet,
-       fill,
-       countEl,
-       cssVar,
-       position = "left",
-       min = -100,
-       max = 100
-     ) =>
-     (val) => {
-       val = Math.max(min, Math.min(max, val));
-       countEl.textContent = `${val}%`;
+  const updateField =
+    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+    (val) => {
+      val = Math.max(min, Math.min(max, val));
+      countEl.textContent = `${val}%`;
 
-       const el = getSelectedElement?.();
-       const styleId = el?.id
-         ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
-         : null;
+      const el = getSelectedElement?.();
+      const styleId = el?.id
+        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+        : null;
 
-       if (
-         [
-           "--sc-Typo-vertical-scroll-entry",
-           "--sc-Typo-vertical-scroll-center",
-           "--sc-Typo-vertical-scroll-exit",
-         ].includes(cssVar)
-       ) {
-         const percent = (val + 100) / 2;
-         const bulletLeft = percent;
-         const fillLeft = val < 0 ? percent : 50;
-         const fillWidth = Math.abs(val / 2);
+      if (
+        [
+          "--sc-Typo-vertical-scroll-entry",
+          "--sc-Typo-vertical-scroll-center",
+          "--sc-Typo-vertical-scroll-exit",
+        ].includes(cssVar)
+      ) {
+        const percent = (val + 100) / 2;
+        const bulletLeft = percent;
+        const fillLeft = val < 0 ? percent : 50;
+        const fillWidth = Math.abs(val / 2);
 
-         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-         gsap.set(fill, {
-           left: `${fillLeft}%`,
-           width: `${fillWidth}%`,
-           backgroundColor: "var(--sc-Typo-theme-accent)",
-         });
+        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+        gsap.set(fill, {
+          left: `${fillLeft}%`,
+          width: `${fillWidth}%`,
+          backgroundColor: "var(--sc-Typo-theme-accent)",
+        });
 
-         // 🟠 Arrow color sync logic
-         const arrow = document.getElementById(
-           "Typo-vertical-custom-timeline-arrow"
-         );
-         const startBullet = document.getElementById(
-           "Typo-vertical-timeline-start-bullet"
-         );
-         const endBullet = document.getElementById(
-           "Typo-vertical-timeline-end-bullet"
-         );
+        // ✅ Fixed Arrow Color Syncing
+        const arrow = document.getElementById(
+          "Typo-vertical-custom-timeline-arrow"
+        );
+        const startBullet = document.getElementById(
+          "Typo-vertical-timeline-start-bullet"
+        );
+        const endBullet = document.getElementById(
+          "Typo-vertical-timeline-end-bullet"
+        );
 
-         if (arrow && startBullet && endBullet) {
-           const arrowLeft = parseFloat(arrow.style.left || "0");
-           const startLeft = parseFloat(startBullet.style.left || "0");
-           const endLeft = parseFloat(endBullet.style.left || "100");
+        if (arrow && startBullet && endBullet) {
+          const arrowBox = arrow.getBoundingClientRect();
+          const startBox = startBullet.getBoundingClientRect();
+          const endBox = endBullet.getBoundingClientRect();
 
-           if (Math.abs(arrowLeft - startLeft) <= 1) {
-             gsap.to(arrow, {
-               backgroundColor: "rgb(239, 124, 47)",
-               
-             });
-           } else if (Math.abs(arrowLeft - endLeft) <= 1) {
-             gsap.to(arrow, {
-               backgroundColor: "rgb(246, 182, 123)",
-               
-             });
-           } else {
-             gsap.to(arrow, { backgroundColor: "#FFFFFF", });
-           }
+          const arrowCenter = arrowBox.left + arrowBox.width / 2;
+          const startCenter = startBox.left + startBox.width / 2;
+          const endCenter = endBox.left + endBox.width / 2;
+
+          const distFromStart = Math.abs(arrowCenter - startCenter);
+          const distFromEnd = Math.abs(arrowCenter - endCenter);
+
+          if (distFromStart <= 4) {
+            gsap.to(arrow, {
+              backgroundColor: "rgb(239, 124, 47)",
+              duration: 0.3,
+            });
+          } else if (distFromEnd <= 4) {
+            gsap.to(arrow, {
+              backgroundColor: "rgb(246, 182, 123)",
+              duration: 0.3,
+            });
+          } else {
+            gsap.to(arrow, {
+              backgroundColor: "#FFFFFF",
+              duration: 0.3,
+            });
+          }
+        }
+      } else if (position === "left") {
+        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+        gsap.set(fill, { width: `${val}%`, left: "0" });
+      } else {
+        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+        gsap.set(fill, {
+          left: "0",
+          right: "auto",
+          transform: `scaleX(${(100 - val) / 100})`,
+          transformOrigin: "right",
+          width: "100%",
+          backgroundColor: "#F6B67B",
+        });
+      }
+
+      if (el && el.id?.startsWith("block-")) {
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+
+        const nextEl = el.nextElementSibling;
+        if (nextEl && nextEl.tagName === "DIV") {
+          const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
+          styleTag.textContent = cssRule;
+        }
+      }
+    };
+
+
+
+ const makeDraggable = (
+   bullet,
+   updateFn,
+   type = "normal",
+   min = -100,
+   max = 100
+ ) => {
+   bullet.onmousedown = (e) => {
+     e.preventDefault();
+     const container = bullet.parentElement;
+     const rect = container.getBoundingClientRect();
+
+     const startBox = document
+       .getElementById("Typo-vertical-timeline-start-bullet")
+       ?.getBoundingClientRect();
+     const endBox = document
+       .getElementById("Typo-vertical-timeline-end-bullet")
+       ?.getBoundingClientRect();
+
+     const onMouseMove = (event) => {
+       const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
+       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
+       const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+
+       if (type === "start" && endBox) {
+         const endLeft = endBox.left + endBox.width / 2;
+         if (clientX >= endLeft - 4) {
+           updateFn(
+             ((endLeft - rect.left) / rect.width) * (max - min) + min - 4
+           );
+           return;
          }
-       } else if (position === "left") {
-         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-         gsap.set(fill, { width: `${val}%`, left: "0" });
-       } else {
-         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-         gsap.set(fill, {
-           left: "0",
-           right: "auto",
-           transform: `scaleX(${(100 - val) / 100})`,
-           transformOrigin: "right",
-           width: "100%",
-           backgroundColor: "#F6B67B",
-         });
        }
 
-       if (el && el.id?.startsWith("block-")) {
-         let styleTag = document.getElementById(styleId);
-         if (!styleTag) {
-           styleTag = document.createElement("style");
-           styleTag.id = styleId;
-           document.head.appendChild(styleTag);
-         }
-
-         const nextEl = el.nextElementSibling;
-         if (nextEl && nextEl.tagName === "DIV") {
-           const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
-           styleTag.textContent = cssRule;
+       if (type === "end" && startBox) {
+         const startLeft = startBox.left + startBox.width / 2;
+         if (clientX <= startLeft + 4) {
+           updateFn(
+             ((startLeft - rect.left) / rect.width) * (max - min) + min + 4
+           );
+           return;
          }
        }
+
+       updateFn(clamped);
      };
 
+     document.addEventListener("mousemove", onMouseMove);
+     document.addEventListener(
+       "mouseup",
+       () => {
+         document.removeEventListener("mousemove", onMouseMove);
+       },
+       { once: true }
+     );
+   };
+ };
 
-  const makeDraggable = (
-    bullet,
-    updateFn,
-    type = "normal",
-    min = -100,
-    max = 100
-  ) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      const container = bullet.parentElement;
-      const rect = container.getBoundingClientRect();
-
-      const onMouseMove = (event) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, event.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-
-        const startPos = parseFloat(startBullet.style.left || "0");
-        const endPos = parseFloat(endBullet.style.left || "100");
-
-        if (type === "start" && clamped >= endPos - 4) {
-          updateFn(endPos - 4);
-        } else if (type === "end" && clamped <= startPos + 4) {
-          updateFn(startPos + 4);
-        } else {
-          updateFn(clamped);
-        }
-      };
-
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", onMouseMove);
-        },
-        { once: true }
-      );
-    };
-  };
 
   const updateStart = updateField(
     startBullet,
