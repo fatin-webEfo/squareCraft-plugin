@@ -170,6 +170,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
           ).style.left = `${bulletLeft}%`;
+           initEffectAnimationDropdownToggle();
         }
 
         initEffectAnimationDropdownToggle(startBullet, endBullet);
