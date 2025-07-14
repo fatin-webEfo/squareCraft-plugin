@@ -6,59 +6,28 @@ function attachAdvanceTimelineIncrementDecrement(
   function setup(idIncrease, idDecrease, getCurrent, updateFn) {
     const btnInc = document.getElementById(idIncrease);
     const btnDec = document.getElementById(idDecrease);
-
-    if (btnInc) {
-      btnInc.onclick = () => {
-        const val = getCurrent();
-        updateFn(val + 1);
-      };
-    }
-
-    if (btnDec) {
-      btnDec.onclick = () => {
-        const val = getCurrent();
-        updateFn(val - 1);
-      };
-    }
+    if (btnInc) btnInc.onclick = () => updateFn(getCurrent() + 1);
+    if (btnDec) btnDec.onclick = () => updateFn(getCurrent() - 1);
   }
 
-  const getEntry = () => {
-    const text =
-      document.getElementById("Typo-vertical-advance-entry-count")
-        ?.textContent || "0%";
-    return parseInt(text.replace("%", "")) || 0;
-  };
-
-  const getCenter = () => {
-    const text =
-      document.getElementById("Typo-vertical-advance-center-count")
-        ?.textContent || "0%";
-    return parseInt(text.replace("%", "")) || 0;
-  };
-
-  const getExit = () => {
-    const text =
-      document.getElementById("Typo-vertical-advance-exit-count")
-        ?.textContent || "0%";
-    return parseInt(text.replace("%", "")) || 0;
-  };
-
+  const getVal = (id) =>
+    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
   setup(
     "Typo-vertical-advance-entry-increase",
     "Typo-vertical-advance-entry-decrease",
-    getEntry,
+    () => getVal("Typo-vertical-advance-entry-count"),
     updateEntry
   );
   setup(
     "Typo-vertical-advance-center-increase",
     "Typo-vertical-advance-center-decrease",
-    getCenter,
+    () => getVal("Typo-vertical-advance-center-count"),
     updateCenter
   );
   setup(
     "Typo-vertical-advance-exit-increase",
     "Typo-vertical-advance-exit-decrease",
-    getExit,
+    () => getVal("Typo-vertical-advance-exit-count"),
     updateExit
   );
 }
@@ -70,51 +39,54 @@ function attachCustomTimelineReset(
   updateCenter,
   updateExit
 ) {
-  const resetBtn = document.getElementById("Typo-vertical-custom-timeline-reset");
-  if (resetBtn) {
-    resetBtn.onclick = () => {
+  const btn = document.getElementById("Typo-vertical-custom-timeline-reset");
+  if (btn)
+    btn.onclick = () => {
       updateStart(0);
       updateEnd(100);
       updateEntry(0);
       updateCenter(0);
       updateExit(0);
     };
-  }
 }
 
 function initEffectAnimationDropdownToggle(startBullet, endBullet) {
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
-  if (arrow && startBullet && endBullet) {
-    const arrowPercent = parseFloat(arrow.style.left || "0");
-    const startPercent = parseFloat(startBullet.style.left || "0");
-    const endPercent = parseFloat(endBullet.style.left || "100");
+  if (!arrow || !startBullet || !endBullet) return;
 
-    if (arrowPercent <= startPercent + 0.5) {
-      gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-    } else if (arrowPercent >= endPercent - 0.5) {
-      gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-    } else {
-      gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-    }
+  const arrowLeft = parseFloat(arrow.style.left || "0");
+  const startLeft = parseFloat(startBullet.style.left || "0");
+  const endLeft = parseFloat(endBullet.style.left || "100");
+
+  if (arrowLeft <= startLeft + 0.5) {
+    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+  } else if (arrowLeft >= endLeft - 0.5) {
+    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+  } else {
+    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
   }
 }
 
-
-
 export function initTypoAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
-  const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
-  const startFill = document.getElementById("Typo-vertical-timeline-start-fill");
+  const startBullet = document.getElementById(
+    "Typo-vertical-timeline-start-bullet"
+  );
+  const endBullet = document.getElementById(
+    "Typo-vertical-timeline-end-bullet"
+  );
+  const startFill = document.getElementById(
+    "Typo-vertical-timeline-start-fill"
+  );
   const endFill = document.getElementById("Typo-vertical-timeline-end-fill");
-  const startValue = document.getElementById("Typo-vertical-timelineStartValue");
+  const startValue = document.getElementById(
+    "Typo-vertical-timelineStartValue"
+  );
   const endValue = document.getElementById("Typo-vertical-timelineEndValue");
 
   const entryBullet = document.getElementById(
     "Typo-vertical-advance-entry-bullet"
   );
-  const entryFill = document.getElementById(
-    "Typo-vertical-advance-entry-fill"
-  );
+  const entryFill = document.getElementById("Typo-vertical-advance-entry-fill");
   const entryCount = document.getElementById(
     "Typo-vertical-advance-entry-count"
   );
@@ -133,9 +105,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "Typo-vertical-advance-exit-bullet"
   );
   const exitFill = document.getElementById("Typo-vertical-advance-exit-fill");
-  const exitCount = document.getElementById(
-    "Typo-vertical-advance-exit-count"
-  );
+  const exitCount = document.getElementById("Typo-vertical-advance-exit-count");
 
   if (
     !startBullet ||
@@ -178,58 +148,33 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         const bulletLeft = percent;
         const fillLeft = val < 0 ? percent : 50;
         const fillWidth = Math.abs(val / 2);
-
+        bullet.style.left = `${bulletLeft}%`; // sync
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
-          document.getElementById(
-            "Typo-vertical-custom-timeline-arrow"
-          ).style.left = `${bulletLeft}%`;
-        }
-
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-      // ✅ Fixed Arrow Color Syncing
-      const arrow = document.getElementById("vertical-custom-timeline-arrow");
-      if (arrow && startBullet && endBullet) {
-        const arrowPercent = parseFloat(arrow.style.left || "0");
-        const startPercent = parseFloat(startBullet.style.left || "0");
-        const endPercent = parseFloat(endBullet.style.left || "100");
-
-        if (arrowPercent <= startPercent + 0.5) {
-          gsap.to(arrow, {
-            backgroundColor: "rgb(239, 124, 47)",
-            duration: 0.3,
-          });
-        } else if (arrowPercent >= endPercent - 0.5) {
-          gsap.to(arrow, {
-            backgroundColor: "rgb(246, 182, 123)",
-            duration: 0.3,
-          });
-        } else {
-          gsap.to(arrow, {
-            backgroundColor: "#FFFFFF",
-            duration: 0.3,
-          });
+        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
+          document.getElementById(
+            "Typo-vertical-custom-timeline-arrow"
+          ).style.left = `${bulletLeft}%`;
         }
-      }
 
-      } else if (position === "left") {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, { width: `${val}%`, left: "0" });
+        initEffectAnimationDropdownToggle(startBullet, endBullet);
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0",
-          right: "auto",
-          transform: `scaleX(${(100 - val) / 100})`,
-          transformOrigin: "right",
-          width: "100%",
-          backgroundColor: "#F6B67B",
-        });
+        position === "left"
+          ? gsap.set(fill, { width: `${val}%`, left: "0" })
+          : gsap.set(fill, {
+              left: "0",
+              right: "auto",
+              transform: `scaleX(${(100 - val) / 100})`,
+              transformOrigin: "right",
+              width: "100%",
+              backgroundColor: "#F6B67B",
+            });
       }
 
       if (el && el.id?.startsWith("block-")) {
@@ -239,51 +184,49 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           styleTag.id = styleId;
           document.head.appendChild(styleTag);
         }
-
         const nextEl = el.nextElementSibling;
         if (nextEl && nextEl.tagName === "DIV") {
-          const cssRule = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
-          styleTag.textContent = cssRule;
+          styleTag.textContent = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
         }
       }
     };
 
-
-
- const makeDraggable = (
-   bullet,
-   updateFn,
-   type = "normal",
-   min = -100,
-   max = 100
- ) => {
-  bullet.onmousedown = (e) => {
-    e.preventDefault();
-    const container = bullet.parentElement;
-    const rect = container.getBoundingClientRect();
-
-    const bulletRect = bullet.getBoundingClientRect();
-    const initialOffset = bulletRect.left + bulletRect.width / 2;
-
-    const onMouseMove = (event) => {
-      const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
-      const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
-      const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-      updateFn(clamped); // live update
+  const makeDraggable = (
+    bullet,
+    updateFn,
+    type = "normal",
+    min = -100,
+    max = 100
+  ) => {
+    bullet.onmousedown = (e) => {
+      e.preventDefault();
+      const container = bullet.parentElement;
+      const rect = container.getBoundingClientRect();
+      const onMouseMove = (event) => {
+        const clientX = Math.max(
+          rect.left,
+          Math.min(rect.right, event.clientX)
+        );
+        const percent =
+          ((clientX - rect.left) / rect.width) * (max - min) + min;
+        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+        updateFn(clamped);
+      };
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener(
+        "mouseup",
+        () => document.removeEventListener("mousemove", onMouseMove),
+        { once: true }
+      );
     };
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener(
-      "mouseup",
-      () => {
-        document.removeEventListener("mousemove", onMouseMove);
-      },
-      { once: true }
-    );
   };
 
- };
-
+  const getCurrentPercentage = (cssVar) => {
+    const el = getSelectedElement?.();
+    const btn = el?.querySelector(".sqs-block-content");
+    const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+    return parseFloat(val.replace("%", "")) || 0;
+  };
 
   const updateStart = updateField(
     startBullet,
@@ -322,17 +265,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "--sc-Typo-vertical-scroll-exit"
   );
 
-  const getCurrentPercentage = (cssVar) => {
-    const el = getSelectedElement?.();
-    if (!el) return 0;
-const btn = el?.querySelector(".sqs-block-content");
-
-
-    if (!btn) return 0;
-    const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-    return parseFloat(val.replace("%", "")) || 0;
-  };
-
   updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
@@ -367,12 +299,9 @@ const btn = el?.querySelector(".sqs-block-content");
     },
   ].forEach(({ id, bullet, fill, count, css }) => {
     const btn = document.getElementById(id);
-    if (btn) {
-      btn.onclick = () => {
-        updateField(bullet, fill, count, css)(0);
-      };
-    }
+    if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
   });
+
   attachAdvanceTimelineIncrementDecrement(
     updateEntry,
     updateCenter,
@@ -385,5 +314,5 @@ const btn = el?.querySelector(".sqs-block-content");
     updateCenter,
     updateExit
   );
-  initEffectAnimationDropdownToggle();
+  initEffectAnimationDropdownToggle(startBullet, endBullet);
 }
