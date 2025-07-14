@@ -82,30 +82,23 @@ function attachCustomTimelineReset(
   }
 }
 
-function initEffectAnimationDropdownToggle() {
- const arrow = document.getElementById("vertical-custom-timeline-arrow");
- if (arrow && startBullet && endBullet) {
-   const arrowBox = arrow.getBoundingClientRect();
-   const startBox = startBullet.getBoundingClientRect();
-   const endBox = endBullet.getBoundingClientRect();
+function initEffectAnimationDropdownToggle(startBullet, endBullet) {
+  const arrow = document.getElementById("vertical-custom-timeline-arrow");
+  if (arrow && startBullet && endBullet) {
+    const arrowPercent = parseFloat(arrow.style.left || "0");
+    const startPercent = parseFloat(startBullet.style.left || "0");
+    const endPercent = parseFloat(endBullet.style.left || "100");
 
-   const arrowCenter = arrowBox.left + arrowBox.width / 2;
-   const startCenter = startBox.left + startBox.width / 2;
-   const endCenter = endBox.left + endBox.width / 2;
-
-   const distFromStart = Math.abs(arrowCenter - startCenter);
-   const distFromEnd = Math.abs(arrowCenter - endCenter);
-
-   if (distFromStart <= 4) {
-     gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-   } else if (distFromEnd <= 4) {
-     gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-   } else {
-     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-   }
- }
-
+    if (arrowPercent <= startPercent + 0.5) {
+      gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+    } else if (arrowPercent >= endPercent - 0.5) {
+      gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+    } else {
+      gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+    }
+  }
 }
+
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
@@ -199,7 +192,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-        // ✅ Fixed Arrow Color Syncing
+      // ✅ Fixed Arrow Color Syncing
       const arrow = document.getElementById("vertical-custom-timeline-arrow");
       if (arrow && startBullet && endBullet) {
         const arrowPercent = parseFloat(arrow.style.left || "0");
@@ -332,7 +325,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
- const btn = getSelectedElement()?.querySelector(".sqs-block-content");
+const btn = el?.querySelector(".sqs-block-content");
 
 
     if (!btn) return 0;
