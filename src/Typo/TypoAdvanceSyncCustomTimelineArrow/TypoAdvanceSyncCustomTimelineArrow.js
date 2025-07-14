@@ -119,15 +119,16 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
+ function trackLoop(arrow, startBullet, endBullet) {
+   if (isTracking) return;
+   isTracking = true;
+   function loop() {
+     updateArrowPosition(arrow, startBullet, endBullet);
+     requestAnimationFrame(loop);
+   }
+   loop();
+ }
+
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
