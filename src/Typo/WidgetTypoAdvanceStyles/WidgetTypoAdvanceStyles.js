@@ -66,20 +66,26 @@ function attachAdvanceTimelineIncrementDecrement(
   );
 
   // keyboard control
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused) return;
-    const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+ document.addEventListener("keydown", (e) => {
+   if (!lastFocused) return;
+   if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
 
-    if (e.key === "ArrowRight") {
-      if (lastFocused.includes("entry")) updateEntry(val + 1);
-      if (lastFocused.includes("center")) updateCenter(val + 1);
-      if (lastFocused.includes("exit")) updateExit(val + 1);
-    } else if (e.key === "ArrowLeft") {
-      if (lastFocused.includes("entry")) updateEntry(val - 1);
-      if (lastFocused.includes("center")) updateCenter(val - 1);
-      if (lastFocused.includes("exit")) updateExit(val - 1);
-    }
-  });
+   const getVal = (id) =>
+     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+
+   const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+
+   if (e.key === "ArrowRight") {
+     if (lastFocused.includes("entry")) updateEntry(val + 1);
+     if (lastFocused.includes("center")) updateCenter(val + 1);
+     if (lastFocused.includes("exit")) updateExit(val + 1);
+   } else if (e.key === "ArrowLeft") {
+     if (lastFocused.includes("entry")) updateEntry(val - 1);
+     if (lastFocused.includes("center")) updateCenter(val - 1);
+     if (lastFocused.includes("exit")) updateExit(val - 1);
+   }
+ });
+
 }
 
 function attachCustomTimelineReset(
