@@ -275,6 +275,9 @@
         const { initButtonAdvanceStructureStyles } = await import(
           "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonAdvanceStructureStyles/initButtonAdvanceStructureStyles.js"
         );
+        const { initTypoAdvanceStructureStyles } = await import(
+          "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/initTypoAdvanceStructureStyles/initTypoAdvanceStructureStyles.js"
+        );
         const { getTextType } = await import(
           "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getTextType.js"
         );
@@ -404,6 +407,7 @@ TypoAdvanceToggleControls()
             initHoverButtonBorderControl(() => selectedElement);
             applyHoverButtonEffects(() => selectedElement);
             initButtonAdvanceStructureStyles(() => selectedElement);
+            initTypoAdvanceStructureStyles(() => selectedElement);
             blurinitButtonAdvanceStyles(() => selectedElement);
             initButtonAdvanceScrollEffectReset(() =>
               document.getElementById(window.selectedBlockId)

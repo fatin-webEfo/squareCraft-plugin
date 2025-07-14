@@ -20,6 +20,7 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
 
     const blockId = block.id;
     const TypoSelector = `#${blockId} + div`;
+    console.log("🔄 Updating Typo Styles for:", TypoSelector);
 
     const styleId = `sc-structure-style-${blockId}`;
     let styleTag = document.getElementById(styleId);
