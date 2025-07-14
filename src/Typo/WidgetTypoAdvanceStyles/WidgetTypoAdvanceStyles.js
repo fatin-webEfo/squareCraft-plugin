@@ -196,10 +196,11 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           styleTag.id = styleId;
           document.head.appendChild(styleTag);
         }
-        const nextEl = el.nextElementSibling;
-        if (nextEl && nextEl.tagName === "DIV") {
-          styleTag.textContent = `#${el.id} + div {\n  ${cssVar}: ${val}%;\n}`;
-        }
+      const contentEl = el.querySelector(".sqs-block-content");
+      if (contentEl) {
+        styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
+      }
+
       }
     };
 
@@ -233,12 +234,17 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     };
   };
 
-  const getCurrentPercentage = (cssVar) => {
-    const el = getSelectedElement?.();
-    const btn = el?.querySelector(".sqs-block-content");
-    const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-    return parseFloat(val.replace("%", "")) || 0;
-  };
+const getCurrentPercentage = (cssVar) => {
+  const el = getSelectedElement?.();
+  if (!el) return 0;
+
+  const contentEl = el.querySelector(".sqs-block-content");
+  if (!contentEl) return 0;
+
+  const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
+  return parseFloat(val.replace("%", "")) || 0;
+};
+
 
   const updateStart = updateField(
     startBullet,
