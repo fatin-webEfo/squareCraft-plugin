@@ -262,3 +262,135 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, startBullet, endBullet);
   });
 }
+
+
+
+export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
+  if (!selectedElement) return;
+
+  let isTracking = false;
+  let lastY = null;
+  const transition = { ease: "power2.out" };
+
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "Typo-opacity-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById(
+      "Typo-opacity-timeline-end-bullet"
+    );
+
+    if (arrow && startBullet && endBullet) {
+      callback(arrow, startBullet, endBullet);
+    } else if (retries > 0) {
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
+    }
+  }
+
+  function updateArrowPosition(arrow, startBullet, endBullet) {
+    const rect = selectedElement.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const top = rect.top;
+    const percentFromTop = top / viewportHeight;
+    const scrollBasedLeft = Math.max(
+      0,
+      Math.min(100, 100 - 100 * percentFromTop)
+    );
+
+    arrow.style.left = `${scrollBasedLeft}%`;
+    arrow.style.transform = "translateX(-50%)";
+
+    const startBox = startBullet.getBoundingClientRect();
+    const endBox = endBullet.getBoundingClientRect();
+    const arrowBox = arrow.getBoundingClientRect();
+
+    const arrowCenter = arrowBox.left + arrowBox.width / 2;
+    const startCenter = startBox.left + startBox.width / 2;
+    const endCenter = endBox.left + endBox.width / 2;
+    const centerCenter = (startCenter + endCenter) / 2;
+
+    const btn = selectedElement.querySelector(".sqs-block-content");
+    if (!btn) return;
+
+    const getVHFromCSSVar = (cssVar) => {
+      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
+    };
+
+    const entryY = getVHFromCSSVar("--sc-Typo-opacity-scroll-entry");
+    const centerY = getVHFromCSSVar("--sc-Typo-opacity-scroll-center");
+    const exitY = getVHFromCSSVar("--sc-Typo-opacity-scroll-exit");
+
+    let y = 0;
+    let apply = false;
+
+    if (arrowCenter <= startCenter + 1) {
+      arrow.style.backgroundColor = "#EF7C2F";
+      if (entryY !== 0) {
+        const progress = Math.max(
+          0,
+          Math.min(1, (arrowCenter - startCenter + 1) / 2)
+        );
+        y = entryY * progress;
+        apply = true;
+      }
+    } else if (arrowCenter >= endCenter - 1) {
+      arrow.style.backgroundColor = "#F6B67B";
+      if (exitY !== 0) {
+        const progress = Math.max(
+          0,
+          Math.min(1, (endCenter - arrowCenter + 1) / 2)
+        );
+        y = exitY * (1 - progress);
+        apply = true;
+      }
+    } else {
+      arrow.style.backgroundColor = "#FFFFFF";
+
+      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (arrowCenter - startCenter) / (centerCenter - startCenter);
+          y = entryY + (centerY - entryY) * progress;
+          apply = true;
+        }
+      } else if (
+        arrowCenter > centerCenter + 1 &&
+        arrowCenter < endCenter - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (arrowCenter - centerCenter) / (endCenter - centerCenter);
+          y = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
+      }
+    }
+
+    const finalY = apply ? y : 0;
+
+    if (lastY !== finalY) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        opacity: Math.max(0, Math.min(1, finalY)),
+      });
+      lastY = finalY;
+    }
+  }
+
+  function trackLoop(arrow, startBullet, endBullet) {
+    if (isTracking) return;
+    isTracking = true;
+    function loop() {
+      updateArrowPosition(arrow, startBullet, endBullet);
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  waitForElements((arrow, startBullet, endBullet) => {
+    trackLoop(arrow, startBullet, endBullet);
+  });
+}

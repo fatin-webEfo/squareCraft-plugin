@@ -1,4 +1,4 @@
-function horizontalattachAdvanceTimelineIncrementDecrement(
+function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit
@@ -44,25 +44,25 @@ function horizontalattachAdvanceTimelineIncrementDecrement(
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
   setup(
-    "Typo-horizontal-advance-entry-increase",
-    "Typo-horizontal-advance-entry-decrease",
-    () => getVal("Typo-horizontal-advance-entry-count"),
+    "Typo-opacity-advance-entry-increase",
+    "Typo-opacity-advance-entry-decrease",
+    () => getVal("Typo-opacity-advance-entry-count"),
     updateEntry,
-    "Typo-horizontal-advance-entry-bullet"
+    "Typo-opacity-advance-entry-bullet"
   );
   setup(
-    "Typo-horizontal-advance-center-increase",
-    "Typo-horizontal-advance-center-decrease",
-    () => getVal("Typo-horizontal-advance-center-count"),
+    "Typo-opacity-advance-center-increase",
+    "Typo-opacity-advance-center-decrease",
+    () => getVal("Typo-opacity-advance-center-count"),
     updateCenter,
-    "Typo-horizontal-advance-center-bullet"
+    "Typo-opacity-advance-center-bullet"
   );
   setup(
-    "Typo-horizontal-advance-exit-increase",
-    "Typo-horizontal-advance-exit-decrease",
-    () => getVal("Typo-horizontal-advance-exit-count"),
+    "Typo-opacity-advance-exit-increase",
+    "Typo-opacity-advance-exit-decrease",
+    () => getVal("Typo-opacity-advance-exit-count"),
     updateExit,
-    "Typo-horizontal-advance-exit-bullet"
+    "Typo-opacity-advance-exit-bullet"
   );
 
   // keyboard controllet arrowKeyCooldown = false;
@@ -128,14 +128,14 @@ function horizontalattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function horizontalattachCustomTimelineReset(
+function opacityattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
   updateCenter,
   updateExit
 ) {
-  const btn = document.getElementById("Typo-horizontal-custom-timeline-reset");
+  const btn = document.getElementById("Typo-opacity-custom-timeline-reset");
   if (btn)
     btn.onclick = () => {
       updateStart(0);
@@ -146,10 +146,10 @@ function horizontalattachCustomTimelineReset(
     };
 }
 
-function horizontalinitEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("Typo-horizontal-custom-timeline-arrow");
-  const start = document.getElementById("Typo-horizontal-timeline-start-bullet");
-  const end = document.getElementById("Typo-horizontal-timeline-end-bullet");
+function opacityinitEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
+  const start = document.getElementById("Typo-opacity-timeline-start-bullet");
+  const end = document.getElementById("Typo-opacity-timeline-end-bullet");
 
   if (!arrow || !start || !end) return;
 
@@ -172,45 +172,45 @@ function horizontalinitEffectAnimationDropdownToggle() {
   }
 }
 
-export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
+export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
-    "Typo-horizontal-timeline-start-bullet"
+    "Typo-opacity-timeline-start-bullet"
   );
   const endBullet = document.getElementById(
-    "Typo-horizontal-timeline-end-bullet"
+    "Typo-opacity-timeline-end-bullet"
   );
   const startFill = document.getElementById(
-    "Typo-horizontal-timeline-start-fill"
+    "Typo-opacity-timeline-start-fill"
   );
-  const endFill = document.getElementById("Typo-horizontal-timeline-end-fill");
+  const endFill = document.getElementById("Typo-opacity-timeline-end-fill");
   const startValue = document.getElementById(
-    "Typo-horizontal-timelineStartValue"
+    "Typo-opacity-timelineStartValue"
   );
-  const endValue = document.getElementById("Typo-horizontal-timelineEndValue");
+  const endValue = document.getElementById("Typo-opacity-timelineEndValue");
 
   const entryBullet = document.getElementById(
-    "Typo-horizontal-advance-entry-bullet"
+    "Typo-opacity-advance-entry-bullet"
   );
-  const entryFill = document.getElementById("Typo-horizontal-advance-entry-fill");
+  const entryFill = document.getElementById("Typo-opacity-advance-entry-fill");
   const entryCount = document.getElementById(
-    "Typo-horizontal-advance-entry-count"
+    "Typo-opacity-advance-entry-count"
   );
 
   const centerBullet = document.getElementById(
-    "Typo-horizontal-advance-center-bullet"
+    "Typo-opacity-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "Typo-horizontal-advance-center-fill"
+    "Typo-opacity-advance-center-fill"
   );
   const centerCount = document.getElementById(
-    "Typo-horizontal-advance-center-count"
+    "Typo-opacity-advance-center-count"
   );
 
   const exitBullet = document.getElementById(
-    "Typo-horizontal-advance-exit-bullet"
+    "Typo-opacity-advance-exit-bullet"
   );
-  const exitFill = document.getElementById("Typo-horizontal-advance-exit-fill");
-  const exitCount = document.getElementById("Typo-horizontal-advance-exit-count");
+  const exitFill = document.getElementById("Typo-opacity-advance-exit-fill");
+  const exitCount = document.getElementById("Typo-opacity-advance-exit-count");
 
   if (
     !startBullet ||
@@ -244,9 +244,9 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
 
       if (
         [
-          "--sc-Typo-horizontal-scroll-entry",
-          "--sc-Typo-horizontal-scroll-center",
-          "--sc-Typo-horizontal-scroll-exit",
+          "--sc-Typo-opacity-scroll-entry",
+          "--sc-Typo-opacity-scroll-center",
+          "--sc-Typo-opacity-scroll-exit",
         ].includes(cssVar)
       ) {
         const percent = (val + 100) / 2;
@@ -261,12 +261,12 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-        if (cssVar === "--sc-Typo-horizontal-scroll-entry") {
+        if (cssVar === "--sc-Typo-opacity-scroll-entry") {
           document.getElementById(
-            "Typo-horizontal-custom-timeline-arrow"
+            "Typo-opacity-custom-timeline-arrow"
           ).style.left = `${bulletLeft}%`;
         }
-        horizontalinitEffectAnimationDropdownToggle();
+        opacityinitEffectAnimationDropdownToggle();
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         position === "left"
@@ -274,8 +274,9 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
           : gsap.set(fill, {
               left: "0",
               right: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
-              transformOrigin: "right",
+              duration: 0.3,
+              ease: transition.ease,
+              opacity: Math.max(0, Math.min(1, finalY)),
               width: "100%",
               backgroundColor: "#F6B67B",
             });
@@ -340,7 +341,7 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
     startBullet,
     startFill,
     startValue,
-    "--sc-Typo-horizontal-scroll-start",
+    "--sc-Typo-opacity-scroll-start",
     "left",
     0,
     100
@@ -349,7 +350,7 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
     endBullet,
     endFill,
     endValue,
-    "--sc-Typo-horizontal-scroll-end",
+    "--sc-Typo-opacity-scroll-end",
     "right",
     0,
     100
@@ -358,24 +359,24 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-Typo-horizontal-scroll-entry"
+    "--sc-Typo-opacity-scroll-entry"
   );
   const updateCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-Typo-horizontal-scroll-center"
+    "--sc-Typo-opacity-scroll-center"
   );
   const updateExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-Typo-horizontal-scroll-exit"
+    "--sc-Typo-opacity-scroll-exit"
   );
 
-  updateEntry(getCurrentPercentage("--sc-Typo-horizontal-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-Typo-horizontal-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-Typo-horizontal-scroll-exit"));
+  updateEntry(getCurrentPercentage("--sc-Typo-opacity-scroll-entry"));
+  updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center"));
+  updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -385,42 +386,42 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
 
   [
     {
-      id: "Typo-horizontal-advance-entry-reset",
+      id: "Typo-opacity-advance-entry-reset",
       bullet: entryBullet,
       fill: entryFill,
       count: entryCount,
-      css: "--sc-Typo-horizontal-scroll-entry",
+      css: "--sc-Typo-opacity-scroll-entry",
     },
     {
-      id: "Typo-horizontal-advance-center-reset",
+      id: "Typo-opacity-advance-center-reset",
       bullet: centerBullet,
       fill: centerFill,
       count: centerCount,
-      css: "--sc-Typo-horizontal-scroll-center",
+      css: "--sc-Typo-opacity-scroll-center",
     },
     {
-      id: "Typo-horizontal-advance-exit-reset",
+      id: "Typo-opacity-advance-exit-reset",
       bullet: exitBullet,
       fill: exitFill,
       count: exitCount,
-      css: "--sc-Typo-horizontal-scroll-exit",
+      css: "--sc-Typo-opacity-scroll-exit",
     },
   ].forEach(({ id, bullet, fill, count, css }) => {
     const btn = document.getElementById(id);
     if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
   });
 
-  horizontalattachAdvanceTimelineIncrementDecrement(
+  opacityattachAdvanceTimelineIncrementDecrement(
     updateEntry,
     updateCenter,
     updateExit
   );
-  horizontalattachCustomTimelineReset(
+  opacityattachCustomTimelineReset(
     updateStart,
     updateEnd,
     updateEntry,
     updateCenter,
     updateExit
   );
-  horizontalinitEffectAnimationDropdownToggle(startBullet, endBullet);
+  opacityinitEffectAnimationDropdownToggle(startBullet, endBullet);
 }
