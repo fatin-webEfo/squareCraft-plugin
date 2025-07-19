@@ -17,7 +17,6 @@
     requestAnimationFrame(() => injectNavbarIcon());
   }
   // icon set fast
-  // toolbar icon set fast
   function attachGlobalClickListener() {
     document.body.addEventListener("click", (e) => {
       const isInsideWidget = widgetContainer?.contains(e.target);
