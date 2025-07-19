@@ -223,6 +223,7 @@
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
     // opacityinitTypoAdvanceStyles,
+    scaleinitTypoAdvanceStyles,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
   );
@@ -242,6 +243,7 @@
     TypoAdvanceSyncCustomTimelineArrow,
     TypoHorizontalAdvanceSyncCustomTimelineArrow,
     TypoOpacityAdvanceSyncCustomTimelineArrow,
+    TypoScaleAdvanceSyncCustomTimelineArrow,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceSyncCustomTimelineArrow/TypoAdvanceSyncCustomTimelineArrow.js"
   );
@@ -395,6 +397,7 @@
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
+      scaleinitTypoAdvanceStyles(() => selectedElement);
       // opacityinitTypoAdvanceStyles(() => selectedElement);
       opacityinitButtonAdvanceStyles(() => selectedElement);
       scaleinitButtonAdvanceStyles(() => selectedElement);
@@ -451,6 +454,7 @@
             horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+            TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
             // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -831,6 +835,7 @@
                       selectedElement
                     );
                     TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+                    TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
                     // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
                     TypoHorizontalAdvanceSyncCustomTimelineArrow(
                       selectedElement
