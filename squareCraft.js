@@ -224,6 +224,7 @@
     horizontalinitTypoAdvanceStyles,
     // opacityinitTypoAdvanceStyles,
     scaleinitTypoAdvanceStyles,
+    rotateinitTypoAdvanceStyles,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
   );
@@ -244,6 +245,7 @@
     TypoHorizontalAdvanceSyncCustomTimelineArrow,
     TypoOpacityAdvanceSyncCustomTimelineArrow,
     TypoScaleAdvanceSyncCustomTimelineArrow,
+    TypoRotateAdvanceSyncCustomTimelineArrow,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceSyncCustomTimelineArrow/TypoAdvanceSyncCustomTimelineArrow.js"
   );
@@ -398,6 +400,7 @@
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
       scaleinitTypoAdvanceStyles(() => selectedElement);
+      rotateinitTypoAdvanceStyles(() => selectedElement);
       // opacityinitTypoAdvanceStyles(() => selectedElement);
       opacityinitButtonAdvanceStyles(() => selectedElement);
       scaleinitButtonAdvanceStyles(() => selectedElement);
@@ -455,6 +458,7 @@
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+            TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
             // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -836,6 +840,7 @@
                     );
                     TypoAdvanceSyncCustomTimelineArrow(selectedElement);
                     TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+                    TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
                     // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
                     TypoHorizontalAdvanceSyncCustomTimelineArrow(
                       selectedElement
