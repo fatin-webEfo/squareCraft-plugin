@@ -1101,7 +1101,7 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   const updateField =
     (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
-      val = Math.max(min, Math.min(max, val));
+      val = Math.max(0, Math.min(100, val));
       countEl.textContent = `${val}%`;
 
       const el = getSelectedElement?.();
@@ -1116,10 +1116,10 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
           "--sc-Typo-opacity-scroll-exit",
         ].includes(cssVar)
       ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
+        const bulletLeft = val; // from 0 to 100
+        const fillLeft = 0;
+        const fillWidth = val;
+
         bullet.style.left = `${bulletLeft}%`; // sync
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
         gsap.set(fill, {

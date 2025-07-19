@@ -282,6 +282,8 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     );
 
     if (arrow && startBullet && endBullet) {
+      arrow.style.left = "0%";
+      arrow.style.transform = "translateX(-50%)";
       callback(arrow, startBullet, endBullet);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
@@ -374,7 +376,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        opacity: Math.max(0, Math.min(1, finalY)),
+        opacity: Math.max(0, Math.min(1, finalY / 100)),
       });
       lastY = finalY;
     }
