@@ -222,7 +222,7 @@
   const {
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
-    opacityinitTypoAdvanceStyles,
+    // opacityinitTypoAdvanceStyles,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
   );
@@ -395,7 +395,7 @@
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
-      opacityinitTypoAdvanceStyles(() => selectedElement);
+      // opacityinitTypoAdvanceStyles(() => selectedElement);
       opacityinitButtonAdvanceStyles(() => selectedElement);
       scaleinitButtonAdvanceStyles(() => selectedElement);
       rotateinitButtonAdvanceStyles(() => selectedElement);
@@ -451,7 +451,7 @@
             horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
-            TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
+            // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -831,7 +831,7 @@
                       selectedElement
                     );
                     TypoAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
+                    // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
                     TypoHorizontalAdvanceSyncCustomTimelineArrow(
                       selectedElement
                     );
