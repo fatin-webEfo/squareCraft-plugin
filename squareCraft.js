@@ -219,11 +219,10 @@
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
   );
-  const {
-    initTypoAdvanceStyles,
-  } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
-  );
+  const { initTypoAdvanceStyles, horizontalinitTypoAdvanceStyles } =
+    await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/WidgetTypoAdvanceStyles/WidgetTypoAdvanceStyles.js"
+    );
 
   const {
     buttonAdvanceSyncCustomTimelineArrow,
@@ -388,6 +387,7 @@
       initButtonAdvanceStyles(() => selectedElement);
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
+      horizontalinitTypoAdvanceStyles(() => selectedElement);
       opacityinitButtonAdvanceStyles(() => selectedElement);
       scaleinitButtonAdvanceStyles(() => selectedElement);
       rotateinitButtonAdvanceStyles(() => selectedElement);
