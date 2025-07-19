@@ -275,7 +275,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           : gsap.set(fill, {
               left: "0",
               right: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
+              transform: `scaleY(${(100 - val) / 100})`,
               transformOrigin: "right",
               width: "100%",
               backgroundColor: "#F6B67B",
