@@ -262,6 +262,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
+        
         if (cssVar === "--sc-Typo-vertical-scroll-entry") {
           document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
