@@ -274,7 +274,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         position === "left"
           ? gsap.set(fill, { width: `${val}%`, left: "0" })
           : gsap.set(fill, {
-              right: "0",
+              left: "0",
               left: "auto",
               transform: `scaleX(${(100 - val) / 100})`,
               transformOrigin: "right",
