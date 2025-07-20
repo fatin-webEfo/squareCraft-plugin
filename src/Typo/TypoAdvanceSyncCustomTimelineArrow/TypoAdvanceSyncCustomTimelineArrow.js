@@ -55,7 +55,8 @@
       const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
       const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
-      // Set arrow background color more accurately
+      
+        arrow.style.backgroundColor = "#FFFFFF";
       if (scrollBasedLeft < startPercent) {
         arrow.style.backgroundColor = "#EF7C2F";
       } else if (scrollBasedLeft > endPercent) {
