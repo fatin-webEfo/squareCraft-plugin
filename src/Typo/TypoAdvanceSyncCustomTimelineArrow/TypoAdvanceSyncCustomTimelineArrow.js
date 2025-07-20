@@ -36,104 +36,57 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
-    const startBox = startBullet.getBoundingClientRect();
-    const endBox = endBullet.getBoundingClientRect();
-    const arrowBox = arrow.getBoundingClientRect();
-
-    const arrowCenter = arrowBox.left + arrowBox.width / 2;
-    const startCenter = startBox.left + startBox.width / 2;
-    const endCenter = endBox.left + endBox.width / 2;
-    const centerCenter = (startCenter + endCenter) / 2;
-
     const btn = selectedElement.querySelector(".sqs-block-content");
     if (!btn) return;
 
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
+    const getVar = (v) => {
+      const val = getComputedStyle(btn).getPropertyValue(v).trim();
+      return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
     };
 
-    const entryY = getVHFromCSSVar("--sc-Typo-vertical-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-Typo-vertical-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-Typo-vertical-scroll-exit");
+    const entryY = getVar("--sc-Typo-vertical-scroll-entry");
+    const centerY = getVar("--sc-Typo-vertical-scroll-center");
+    const exitY = getVar("--sc-Typo-vertical-scroll-exit");
+    const startPercent = getVar("--sc-Typo-vertical-scroll-start");
+    const endPercent = getVar("--sc-Typo-vertical-scroll-end");
 
-
-
-    if (arrowCenter <= startCenter + 1) {
+    // Set arrow background color
+    if (scrollBasedLeft <= startPercent + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (arrowCenter - startCenter + 1) / 2)
-        );
-        y = entryY * progress;
-        apply = true;
-      }
-    } else if (arrowCenter >= endCenter - 1) {
+    } else if (scrollBasedLeft >= endPercent - 1) {
       arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (endCenter - arrowCenter + 1) / 2)
-        );
-        y = exitY * (1 - progress);
-        apply = true;
-      }
     } else {
       arrow.style.backgroundColor = "#FFFFFF";
-
-      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (arrowCenter - startCenter) / (centerCenter - startCenter);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        arrowCenter > centerCenter + 1 &&
-        arrowCenter < endCenter - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (arrowCenter - centerCenter) / (endCenter - centerCenter);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
-      }
     }
 
-  const getPercentage = (cssVar) => {
-    const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-    return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
-  };
+    const segment1 = startPercent;
+    const segment2 = (startPercent + endPercent) / 3; // entry
+    const segment3 = ((startPercent + endPercent) * 2) / 3; // center
+    const segment4 = endPercent; // exit
 
-  const startPercent = getPercentage("--sc-Typo-vertical-scroll-start");
-  const endPercent = getPercentage("--sc-Typo-vertical-scroll-end");
+    let activeY;
 
-  const progress = Math.max(
-    0,
-    Math.min(1, (scrollBasedLeft - startPercent) / (endPercent - startPercent))
-  );
+    if (scrollBasedLeft <= segment2) {
+      const p = (scrollBasedLeft - segment1) / (segment2 - segment1);
+      activeY = entryY * p;
+    } else if (scrollBasedLeft <= segment3) {
+      const p = (scrollBasedLeft - segment2) / (segment3 - segment2);
+      activeY = entryY + (centerY - entryY) * p;
+    } else if (scrollBasedLeft <= segment4) {
+      const p = (scrollBasedLeft - segment3) / (segment4 - segment3);
+      activeY = centerY + (exitY - centerY) * p;
+    } else {
+      activeY = exitY;
+    }
 
-  // Smooth interpolation across 3 segments: entry → center → exit
-  let activeY;
-  if (progress <= 0.5) {
-    const p = progress / 0.5;
-    activeY = entryY + (centerY - entryY) * p;
-  } else {
-    const p = (progress - 0.5) / 0.5;
-    activeY = centerY + (exitY - centerY) * p;
-  }
-
-  if (lastY !== activeY) {
-    gsap.to(btn, {
-      duration: 0.3,
-      ease: transition.ease,
-      transform: `translateY(${activeY.toFixed(2)}vh)`,
-    });
-    lastY = activeY;
-  }
-
+    if (lastY !== activeY) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateY(${activeY.toFixed(2)}vh)`,
+      });
+      lastY = activeY;
+    }
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
@@ -150,7 +103,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, startBullet, endBullet);
   });
 }
-
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
@@ -284,7 +236,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -417,7 +368,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -546,7 +496,6 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
 export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -652,15 +601,14 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const finalY = apply ? y : 0;
 
-   if (lastY !== finalY) {
-     gsap.to(btn, {
-       duration: lastY === null ? 0 : 0.3,
-       ease: transition.ease,
-       rotate: finalY,
-     });
-     lastY = finalY;
-   }
-
+    if (lastY !== finalY) {
+      gsap.to(btn, {
+        duration: lastY === null ? 0 : 0.3,
+        ease: transition.ease,
+        rotate: finalY,
+      });
+      lastY = finalY;
+    }
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
