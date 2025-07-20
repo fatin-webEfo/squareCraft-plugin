@@ -282,6 +282,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
               backgroundColor: "#F6B67B",
             });
 
+
       }
 
       if (el && el.id?.startsWith("block-")) {
