@@ -56,14 +56,21 @@
       const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
       
-        arrow.style.backgroundColor = "#FFFFFF";
-      if (scrollBasedLeft < startPercent) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollBasedLeft > endPercent) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
+   const arrowCenter =
+     arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
+   const startCenter =
+     startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2;
+   const endCenter =
+     endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2;
+
+   if (arrowCenter <= startCenter + 1) {
+     arrow.style.backgroundColor = "#EF7C2F"; // before start
+   } else if (arrowCenter >= endCenter - 1) {
+     arrow.style.backgroundColor = "#F6B67B"; // after end
+   } else {
+     arrow.style.backgroundColor = "#FFFFFF"; // in between
+   }
+
 
       const segment1 = startPercent;
       const segment2 = (startPercent + endPercent) / 3;
