@@ -41,8 +41,12 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const getVar = (v) => {
       const val = getComputedStyle(btn).getPropertyValue(v).trim();
-      return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
+      const percent = val.endsWith("%")
+        ? parseFloat(val)
+        : parseFloat(val) || 0;
+      return ((percent / 100) * window.innerHeight) / 100; // convert % to vh units
     };
+
 
     const entryY = getVar("--sc-Typo-vertical-scroll-entry");
     const centerY = getVar("--sc-Typo-vertical-scroll-center");
