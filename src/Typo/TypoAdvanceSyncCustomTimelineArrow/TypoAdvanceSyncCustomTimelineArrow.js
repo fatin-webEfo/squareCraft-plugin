@@ -57,8 +57,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const centerY = getVHFromCSSVar("--sc-Typo-vertical-scroll-center");
     const exitY = getVHFromCSSVar("--sc-Typo-vertical-scroll-exit");
 
-    let y = 0;
-    let apply = false;
+
 
     if (arrowCenter <= startCenter + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
@@ -103,16 +102,38 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
     }
 
-    const finalY = apply ? y : 0;
+  const getPercentage = (cssVar) => {
+    const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+    return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
+  };
 
-    if (lastY !== finalY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
-      });
-      lastY = finalY;
-    }
+  const startPercent = getPercentage("--sc-Typo-vertical-scroll-start");
+  const endPercent = getPercentage("--sc-Typo-vertical-scroll-end");
+
+  const progress = Math.max(
+    0,
+    Math.min(1, (scrollBasedLeft - startPercent) / (endPercent - startPercent))
+  );
+
+  // Smooth interpolation across 3 segments: entry → center → exit
+  let activeY;
+  if (progress <= 0.5) {
+    const p = progress / 0.5;
+    activeY = entryY + (centerY - entryY) * p;
+  } else {
+    const p = (progress - 0.5) / 0.5;
+    activeY = centerY + (exitY - centerY) * p;
+  }
+
+  if (lastY !== activeY) {
+    gsap.to(btn, {
+      duration: 0.3,
+      ease: transition.ease,
+      transform: `translateY(${activeY.toFixed(2)}vh)`,
+    });
+    lastY = activeY;
+  }
+
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
