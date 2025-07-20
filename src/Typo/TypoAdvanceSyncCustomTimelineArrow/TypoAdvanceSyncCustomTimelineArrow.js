@@ -24,89 +24,89 @@
     }
 
     function updateArrowPosition(arrow, startBullet, endBullet) {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const top = rect.top;
-      const percentFromTop = top / viewportHeight;
-      const scrollBasedLeft = Math.max(
-        0,
-        Math.min(100, 100 - 100 * percentFromTop)
-      );
+   const rect = selectedElement.getBoundingClientRect();
+   const viewportHeight = window.innerHeight;
+   const top = rect.top;
+   const percentFromTop = top / viewportHeight;
+   const scrollBasedLeft = Math.max(
+     0,
+     Math.min(100, 100 - 100 * percentFromTop)
+   );
 
-      arrow.style.left = `${scrollBasedLeft}%`;
-      arrow.style.transform = "translateX(-50%)";
+   arrow.style.left = `${scrollBasedLeft}%`;
+   arrow.style.transform = "translateX(-50%)";
 
-      const btn = selectedElement.querySelector(".sqs-block-content");
-      if (!btn) return;
+   const btn = selectedElement.querySelector(".sqs-block-content");
+   if (!btn) return;
 
-      const getVarPercent = (v) => {
-        const val = getComputedStyle(btn).getPropertyValue(v).trim();
-        return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
-      };
+   const getVarPercent = (v) => {
+     const val = getComputedStyle(btn).getPropertyValue(v).trim();
+     return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
+   };
 
-      const getVarVH = (v) => {
-        const val = getComputedStyle(btn).getPropertyValue(v).trim();
-        return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
-      };
+   const getVarVH = (v) => {
+     const val = getComputedStyle(btn).getPropertyValue(v).trim();
+     return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
+   };
 
-      const entryY = getVarVH("--sc-Typo-vertical-scroll-entry") / 2;
-      const centerY = getVarVH("--sc-Typo-vertical-scroll-center") / 2;
-      const exitY = getVarVH("--sc-Typo-vertical-scroll-exit") / 2;
+   const entryY = getVarVH("--sc-Typo-vertical-scroll-entry") / 2;
+   const centerY = getVarVH("--sc-Typo-vertical-scroll-center") / 2;
+   const exitY = getVarVH("--sc-Typo-vertical-scroll-exit") / 2;
 
-      const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
-      const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
+   const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
+   const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
-      const arrowCenter =
-        arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
-      const startCenter =
-        startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2;
-      const endCenter =
-        endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2;
+   const arrowCenter =
+     arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
+   const startCenter =
+     startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2;
+   const endCenter =
+     endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2;
 
-      let activeY;
-      let arrowColor;
+   let activeY;
+   let arrowColor;
 
-      // Entry Zone
-      if (scrollBasedLeft <= startPercent) {
-        arrowColor = "#EF7C2F";
-        arrow.style.backgroundColor = arrowColor;
-        const range = startPercent;
-        const p = Math.max(0, scrollBasedLeft / range);
-        activeY = entryY * p;
-      }
-      // Exit Zone
-      else if (scrollBasedLeft >= endPercent) {
-        arrowColor = "#F6B67B";
-        arrow.style.backgroundColor = arrowColor;
-        const range = 100 - endPercent;
-        const p = Math.min(1, (scrollBasedLeft - endPercent) / range);
-        activeY = exitY * (1 - p);
-      }
-      // Center Zone
-      else {
-        arrowColor = "#FFFFFF";
-        arrow.style.backgroundColor = arrowColor;
+   // Entry Zone
+   if (scrollBasedLeft <= startPercent) {
+     arrowColor = "#EF7C2F";
+     arrow.style.backgroundColor = arrowColor;
+     const range = startPercent;
+     const p = Math.max(0, scrollBasedLeft / range);
+     activeY = entryY * p;
+   }
+   // Exit Zone
+   else if (scrollBasedLeft >= endPercent) {
+     arrowColor = "#F6B67B";
+     arrow.style.backgroundColor = arrowColor;
+     const range = 100 - endPercent;
+     const p = Math.min(1, (scrollBasedLeft - endPercent) / range);
+     activeY = exitY * (1 - p);
+   }
+   // Center Zone
+   else {
+     arrowColor = "#FFFFFF";
+     arrow.style.backgroundColor = arrowColor;
 
-        const mid1 = startPercent + (endPercent - startPercent) / 2;
+     const mid1 = startPercent + (endPercent - startPercent) / 2;
 
-        if (scrollBasedLeft < mid1) {
-          const p = (scrollBasedLeft - startPercent) / (mid1 - startPercent);
-          activeY = entryY + (centerY - entryY) * p;
-        } else {
-          const p = (scrollBasedLeft - mid1) / (endPercent - mid1);
-          activeY = centerY + (exitY - centerY) * p;
-        }
-      }
+     if (scrollBasedLeft < mid1) {
+       const p = (scrollBasedLeft - startPercent) / (mid1 - startPercent);
+       activeY = entryY + (centerY - entryY) * p;
+     } else {
+       const p = (scrollBasedLeft - mid1) / (endPercent - mid1);
+       activeY = centerY + (exitY - centerY) * p;
+     }
+   }
 
-      if (lastY !== activeY) {
-        gsap.to(btn, {
-          duration: 0.3,
-          ease: transition.ease,
-          transform: `translateY(${activeY.toFixed(2)}vh)`,
-        });
-        lastY = activeY;
-      }
-    }
+   if (lastY !== activeY) {
+     gsap.to(btn, {
+       duration: 0.3,
+       ease: transition.ease,
+       transform: `translateY(${activeY.toFixed(2)}vh)`,
+     });
+     lastY = activeY;
+   }
+ }
 
 
     function trackLoop(arrow, startBullet, endBullet) {
