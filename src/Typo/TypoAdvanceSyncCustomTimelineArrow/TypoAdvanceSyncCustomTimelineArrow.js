@@ -39,22 +39,22 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const btn = selectedElement.querySelector(".sqs-block-content");
     if (!btn) return;
 
-    const getVar = (v) => {
+    const getVarPercent = (v) => {
       const val = getComputedStyle(btn).getPropertyValue(v).trim();
-      const percent = val.endsWith("%")
-        ? parseFloat(val)
-        : parseFloat(val) || 0;
-      return ((percent / 100) * window.innerHeight) / 100; // convert % to vh units
+      return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
     };
 
+    const getVarVH = (v) => {
+      const val = getComputedStyle(btn).getPropertyValue(v).trim();
+      return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
+    };
 
-    const entryY = getVar("--sc-Typo-vertical-scroll-entry");
-    const centerY = getVar("--sc-Typo-vertical-scroll-center");
-    const exitY = getVar("--sc-Typo-vertical-scroll-exit");
-    const startPercent = getVar("--sc-Typo-vertical-scroll-start");
-    const endPercent = getVar("--sc-Typo-vertical-scroll-end");
+    const entryY = getVarVH("--sc-Typo-vertical-scroll-entry");
+    const centerY = getVarVH("--sc-Typo-vertical-scroll-center");
+    const exitY = getVarVH("--sc-Typo-vertical-scroll-exit");
+    const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
+    const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
-    // Set arrow background color
     if (scrollBasedLeft <= startPercent + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
     } else if (scrollBasedLeft >= endPercent - 1) {
@@ -64,9 +64,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
 
     const segment1 = startPercent;
-    const segment2 = (startPercent + endPercent) / 3; // entry
-    const segment3 = ((startPercent + endPercent) * 2) / 3; // center
-    const segment4 = endPercent; // exit
+    const segment2 = (startPercent + endPercent) / 3;
+    const segment3 = ((startPercent + endPercent) * 2) / 3;
+    const segment4 = endPercent;
 
     let activeY;
 
