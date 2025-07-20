@@ -49,9 +49,9 @@
         return val.endsWith("%") ? parseFloat(val) : parseFloat(val) || 0;
       };
 
-      const entryY = getVarVH("--sc-Typo-vertical-scroll-entry");
-      const centerY = getVarVH("--sc-Typo-vertical-scroll-center");
-      const exitY = getVarVH("--sc-Typo-vertical-scroll-exit");
+      const entryY = getVarVH("--sc-Typo-vertical-scroll-entry") / 2;
+      const centerY = getVarVH("--sc-Typo-vertical-scroll-center") / 2;
+      const exitY = getVarVH("--sc-Typo-vertical-scroll-exit") / 2;
       const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
       const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
