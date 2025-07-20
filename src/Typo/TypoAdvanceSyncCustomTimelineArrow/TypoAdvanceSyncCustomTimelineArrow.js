@@ -93,7 +93,10 @@
      }
 
 
-      if (lastY !== activeY) {
+      const isInRange =
+        arrowCenter > startCenter + 1 && arrowCenter < endCenter - 1;
+
+      if (isInRange && lastY !== activeY) {
         gsap.to(btn, {
           duration: 0.3,
           ease: transition.ease,
@@ -101,6 +104,7 @@
         });
         lastY = activeY;
       }
+
     }
 
     function trackLoop(arrow, startBullet, endBullet) {
