@@ -2,8 +2,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
+  let gsapTransformTo = null;
+  let gsapBgTo = null;
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById(
@@ -38,6 +38,19 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const btn = selectedElement.querySelector(".sqs-block-content");
     if (!btn) return;
 
+    if (!gsapTransformTo) {
+      gsapTransformTo = gsap.quickTo(btn, "transform", {
+        duration: 0.15,
+        ease: "power1.out",
+      });
+    }
+    if (!gsapBgTo) {
+      gsapBgTo = gsap.quickTo(arrow, "backgroundColor", {
+        duration: 0.15,
+        ease: "power1.out",
+      });
+    }
+
     const getValue = (cssVar) => {
       const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
       return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
@@ -66,28 +79,17 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       activeY = centerY + (exitY - centerY) * p;
     }
 
-    let targetColor =
+    const targetColor =
       progress <= 0.05 ? "#EF7C2F" : progress >= 0.95 ? "#F6B67B" : "#FFFFFF";
 
-    gsap.to(arrow, {
-      backgroundColor: targetColor,
-      duration: 0.3,
-      ease: transition.ease,
-    });
-
-    if (lastY !== activeY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${activeY.toFixed(2)}vh)`,
-      });
-      lastY = activeY;
-    }
+    gsapBgTo(targetColor);
+    gsapTransformTo(`translateY(${activeY.toFixed(2)}vh)`);
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
+
     function loop() {
       updateArrowPosition(arrow, startBullet, endBullet);
       requestAnimationFrame(loop);
