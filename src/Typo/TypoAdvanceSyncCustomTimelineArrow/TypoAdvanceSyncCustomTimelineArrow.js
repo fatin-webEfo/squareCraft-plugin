@@ -79,18 +79,19 @@
 
       let activeY;
 
-      if (scrollBasedLeft <= segment2) {
-        const p = (scrollBasedLeft - segment1) / (segment2 - segment1);
-        activeY = entryY * p;
-      } else if (scrollBasedLeft <= segment3) {
-        const p = (scrollBasedLeft - segment2) / (segment3 - segment2);
-        activeY = entryY + (centerY - entryY) * p;
-      } else if (scrollBasedLeft <= segment4) {
-        const p = (scrollBasedLeft - segment3) / (segment4 - segment3);
-        activeY = centerY + (exitY - centerY) * p;
-      } else {
-        activeY = exitY;
-      }
+     if (scrollBasedLeft <= segment2) {
+       const p = (scrollBasedLeft - segment1) / (segment2 - segment1);
+       activeY = entryY * p;
+     } else if (scrollBasedLeft <= segment3) {
+       const p = (scrollBasedLeft - segment2) / (segment3 - segment2);
+       activeY = entryY + (centerY - entryY) * p;
+     } else if (scrollBasedLeft <= segment4) {
+       const p = (scrollBasedLeft - segment3) / (segment4 - segment3);
+       activeY = centerY + (exitY - centerY) * p;
+     } else {
+       activeY = exitY;
+     }
+
 
       if (lastY !== activeY) {
         gsap.to(btn, {
