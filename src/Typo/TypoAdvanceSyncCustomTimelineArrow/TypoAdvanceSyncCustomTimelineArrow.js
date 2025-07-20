@@ -2,6 +2,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
+  let lastY = null;
   let gsapTransformTo = null;
   let gsapBgTo = null;
 
@@ -35,6 +36,15 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.left = `${scrollBasedLeft}%`;
     arrow.style.transform = "translateX(-50%)";
 
+    const startBox = startBullet.getBoundingClientRect();
+    const endBox = endBullet.getBoundingClientRect();
+    const arrowBox = arrow.getBoundingClientRect();
+
+    const arrowCenter = arrowBox.left + arrowBox.width / 2;
+    const startCenter = startBox.left + startBox.width / 2;
+    const endCenter = endBox.left + endBox.width / 2;
+    const centerCenter = (startCenter + endCenter) / 2;
+
     const btn = selectedElement.querySelector(".sqs-block-content");
     if (!btn) return;
 
@@ -44,6 +54,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         ease: "power1.out",
       });
     }
+
     if (!gsapBgTo) {
       gsapBgTo = gsap.quickTo(arrow, "backgroundColor", {
         duration: 0.15,
@@ -59,37 +70,64 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = getValue("--sc-Typo-vertical-scroll-entry");
     const centerY = getValue("--sc-Typo-vertical-scroll-center");
     const exitY = getValue("--sc-Typo-vertical-scroll-exit");
-    const startPercent = getValue("--sc-Typo-vertical-scroll-start");
-    const endPercent = getValue("--sc-Typo-vertical-scroll-end");
 
-    const progress = Math.max(
-      0,
-      Math.min(
-        1,
-        (scrollBasedLeft - startPercent) / (endPercent - startPercent)
-      )
-    );
+    let y = 0;
+    let apply = false;
 
-    let activeY;
-    if (progress <= 0.5) {
-      const p = progress / 0.5;
-      activeY = entryY + (centerY - entryY) * p;
+    if (arrowCenter <= startCenter + 1) {
+      gsapBgTo("#EF7C2F");
+      if (entryY !== 0) {
+        const progress = Math.max(
+          0,
+          Math.min(1, (arrowCenter - startCenter + 1) / 2)
+        );
+        y = entryY * progress;
+        apply = true;
+      }
+    } else if (arrowCenter >= endCenter - 1) {
+      gsapBgTo("#F6B67B");
+      if (exitY !== 0) {
+        const progress = Math.max(
+          0,
+          Math.min(1, (endCenter - arrowCenter + 1) / 2)
+        );
+        y = exitY * (1 - progress);
+        apply = true;
+      }
     } else {
-      const p = (progress - 0.5) / 0.5;
-      activeY = centerY + (exitY - centerY) * p;
+      gsapBgTo("#FFFFFF");
+
+      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
+        if (entryY !== 0 && centerY !== 0) {
+          const progress =
+            (arrowCenter - startCenter) / (centerCenter - startCenter);
+          y = entryY + (centerY - entryY) * progress;
+          apply = true;
+        }
+      } else if (
+        arrowCenter > centerCenter + 1 &&
+        arrowCenter < endCenter - 1
+      ) {
+        if (centerY !== 0 && exitY !== 0) {
+          const progress =
+            (arrowCenter - centerCenter) / (endCenter - centerCenter);
+          y = centerY + (exitY - centerY) * progress;
+          apply = true;
+        }
+      }
     }
 
-    const targetColor =
-      progress <= 0.05 ? "#EF7C2F" : progress >= 0.95 ? "#F6B67B" : "#FFFFFF";
+    const finalY = apply ? y : 0;
 
-    gsapBgTo(targetColor);
-    gsapTransformTo(`translateY(${activeY.toFixed(2)}vh)`);
+    if (lastY !== finalY) {
+      gsapTransformTo(`translateY(${finalY.toFixed(2)}vh)`);
+      lastY = finalY;
+    }
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
-
     function loop() {
       updateArrowPosition(arrow, startBullet, endBullet);
       requestAnimationFrame(loop);
