@@ -631,14 +631,15 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const finalY = apply ? y : 0;
 
-    if (lastY !== finalY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        rotate: Math.max(0.01, 1 + finalY / 100),
-      });
-      lastY = finalY;
-    }
+   if (lastY !== finalY) {
+     gsap.to(btn, {
+       duration: lastY === null ? 0 : 0.3,
+       ease: transition.ease,
+       rotate: finalY,
+     });
+     lastY = finalY;
+   }
+
   }
 
   function trackLoop(arrow, startBullet, endBullet) {
