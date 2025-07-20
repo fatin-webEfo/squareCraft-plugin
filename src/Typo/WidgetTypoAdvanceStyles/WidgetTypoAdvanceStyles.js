@@ -274,13 +274,14 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         position === "left"
           ? gsap.set(fill, { width: `${val}%`, left: "0" })
           : gsap.set(fill, {
-              left: "0",
-              right: "auto",
-              transform: `scaleY(${(100 - val) / 100})`,
+              right: "0",
+              left: "auto",
+              transform: `scaleX(${val / 100})`,
               transformOrigin: "right",
               width: "100%",
               backgroundColor: "#F6B67B",
             });
+
       }
 
       if (el && el.id?.startsWith("block-")) {
