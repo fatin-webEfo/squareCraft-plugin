@@ -251,6 +251,23 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     !exitCount
   )
     return;
+function getArrowZone() {
+  const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+  const start = document.getElementById("Typo-vertical-timeline-start-bullet");
+  const end = document.getElementById("Typo-vertical-timeline-end-bullet");
+
+  if (!arrow || !start || !end) return "center";
+
+  const arrowCenter =
+    arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
+  const startCenter =
+    start.getBoundingClientRect().left + start.offsetWidth / 2;
+  const endCenter = end.getBoundingClientRect().left + end.offsetWidth / 2;
+
+  if (arrowCenter <= startCenter + 1) return "entry";
+  if (arrowCenter >= endCenter - 1) return "exit";
+  return "center";
+}
 
  const updateField =
    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
