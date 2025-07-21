@@ -4,6 +4,13 @@ function attachAdvanceTimelineIncrementDecrement(
   updateExit
 ) {
   let lastFocused = null;
+let keyHoldInterval = null;
+let keyHoldTimeout = null;
+let lastPressedKey = null;
+
+let entryVal = 0;
+let centerVal = 0;
+let exitVal = 0;
 
   function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
@@ -36,7 +43,12 @@ function attachAdvanceTimelineIncrementDecrement(
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
       bullet.addEventListener("click", () => (lastFocused = bulletId));
-      bullet.addEventListener("focus", () => (lastFocused = bulletId));
+bullet.addEventListener("focus", () => {
+  lastFocused = bulletId;
+  if (bulletId.includes("entry")) entryVal = getCurrent();
+  if (bulletId.includes("center")) centerVal = getCurrent();
+  if (bulletId.includes("exit")) exitVal = getCurrent();
+});
     }
   }
 
@@ -66,14 +78,10 @@ function attachAdvanceTimelineIncrementDecrement(
   );
 
   // keyboard controllet arrowKeyCooldown = false;
-let keyHoldInterval = null;
-let keyHoldTimeout = null;
-let lastPressedKey = null;
+
 
 document.addEventListener("keydown", (e) => {
   if (!lastFocused) return;
-
-  // Only run if it's a left/right key and no key is already active
   if (
     (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
     keyHoldInterval ||
@@ -81,35 +89,36 @@ document.addEventListener("keydown", (e) => {
   )
     return;
 
+  const direction = e.key === "ArrowRight" ? 1 : -1;
   lastPressedKey = e.key;
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
 
-  const update = () => {
-    const val = getVal(`${lastFocused.replace("-bullet", "-count")}`);
+ const update = () => {
+   if (lastFocused.includes("entry")) {
+     entryVal += direction;
+     updateEntry(entryVal);
+   }
+   if (lastFocused.includes("center")) {
+     centerVal += direction;
+     updateCenter(centerVal);
+   }
+   if (lastFocused.includes("exit")) {
+     exitVal += direction;
+     updateExit(exitVal);
+   }
+ };
 
-    if (lastFocused.includes("entry")) {
-      if (e.key === "ArrowRight") updateEntry(val + 1);
-      if (e.key === "ArrowLeft") updateEntry(val - 1);
-    }
-    if (lastFocused.includes("center")) {
-      if (e.key === "ArrowRight") updateCenter(val + 1);
-      if (e.key === "ArrowLeft") updateCenter(val - 1);
-    }
-    if (lastFocused.includes("exit")) {
-      if (e.key === "ArrowRight") updateExit(val + 1);
-      if (e.key === "ArrowLeft") updateExit(val - 1);
-    }
-  };
 
-  update(); // Immediate single-step on key press
+  update();
 
-  // Only start interval if key is still held after 300ms
   keyHoldTimeout = setTimeout(() => {
     keyHoldInterval = setInterval(update, 100);
   }, 300);
 });
+
+
 
 document.addEventListener("keyup", (e) => {
   if (e.key === lastPressedKey) {
@@ -310,16 +319,13 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
-      const onMouseMove = (event) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, event.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-        updateFn(clamped);
-      };
+     const onMouseMove = (event) => {
+       const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
+       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
+       const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+       updateFn(clamped);
+     };
+
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener(
         "mouseup",
