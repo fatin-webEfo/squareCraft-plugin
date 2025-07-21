@@ -140,54 +140,7 @@
 
   //  viewport
 
-  function injectLaunchAnimationCSS(targetDoc = document) {
-    if (targetDoc.getElementById("sc-launch-animation-style")) return;
 
-    const style = targetDoc.createElement("style");
-    style.id = "sc-launch-animation-style";
-    style.innerHTML = `
-            @keyframes scFadeInUp {
-              0% {
-                filter: grayscale(100%);
-                transform: translateY(60px) scale(0.95);
-                opacity: 0.5;
-              }
-              100% {
-                filter: grayscale(0%);
-                transform: translateY(0) scale(1);
-                opacity: 1;
-              }
-            }
-        
-            body[id^="collection-"].sc-launching {
-              animation: scFadeInUp 0.8s ease-out forwards;
-              transform-origin: center center;
-            }
-          `;
-    targetDoc.head.appendChild(style);
-  }
-
-  function triggerLaunchAnimation() {
-    let iframeDoc = null;
-
-    try {
-      const iframe = document.getElementById("sqs-site-frame");
-      if (!iframe) return;
-
-      iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      const liveBody = iframeDoc.querySelector('body[id^="collection-"]');
-      if (!liveBody) return;
-
-      injectLaunchAnimationCSS(iframeDoc);
-      liveBody.classList.add("sc-launching");
-
-      setTimeout(() => {
-        liveBody.classList.remove("sc-launching");
-      }, 1000);
-    } catch (e) {
-      console.warn("⚠️ Could not access iframe content for animation.");
-    }
-  }
 
   function applyStylesToElement(element, css) {
     if (!element || !css) return;
