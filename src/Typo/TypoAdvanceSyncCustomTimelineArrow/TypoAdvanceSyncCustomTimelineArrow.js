@@ -172,40 +172,22 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
    const endCenter =
      endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2;
 
-   let activeY;
-   let arrowColor;
+    let activeY;
+    let arrowColor;
 
-   // Entry Zone
-   if (scrollBasedLeft <= startPercent) {
-     arrowColor = "#EF7C2F";
-     arrow.style.backgroundColor = arrowColor;
-     const range = startPercent;
-     const p = Math.max(0, scrollBasedLeft / range);
-     activeY = entryY * p;
-   }
-   // Exit Zone
-   else if (scrollBasedLeft >= endPercent) {
-     arrowColor = "#F6B67B";
-     arrow.style.backgroundColor = arrowColor;
-     const range = 100 - endPercent;
-     const p = Math.min(1, (scrollBasedLeft - endPercent) / range);
-     activeY = exitY * (1 - p);
-   }
-   // Center Zone
-   else {
-     arrowColor = "#FFFFFF";
-     arrow.style.backgroundColor = arrowColor;
-
-     const mid1 = startPercent + (endPercent - startPercent) / 2;
-
-     if (scrollBasedLeft < mid1) {
-       const p = (scrollBasedLeft - startPercent) / (mid1 - startPercent);
-       activeY = entryY + (centerY - entryY) * p;
-     } else {
-       const p = (scrollBasedLeft - mid1) / (endPercent - mid1);
-       activeY = centerY + (exitY - centerY) * p;
-     }
-   }
+    if (arrowCenter <= startCenter + 1) {
+      arrowColor = "#EF7C2F";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = entryY;
+    } else if (arrowCenter >= endCenter - 1) {
+      arrowColor = "#F6B67B";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = exitY;
+    } else {
+      arrowColor = "#FFFFFF";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = centerY;
+    }
 
    if (lastY !== activeY) {
      gsap.to(btn, {
