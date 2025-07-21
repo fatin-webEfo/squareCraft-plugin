@@ -1,4 +1,4 @@
-  export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
+ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!selectedElement) return;
 
     let isTracking = false;
@@ -80,14 +80,19 @@
        activeY = centerY;
      }
 
-     if (lastY !== activeY) {
-       gsap.to(btn, {
-         duration: 0.3,
-         ease: transition.ease,
-         transform: `translateY(${activeY.toFixed(2)}vh)`,
-       });
-       lastY = activeY;
-     }
+    if (lastY !== activeY) {
+      const y = activeY.toFixed(2);
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateY(${y}vh)`,
+        onComplete: () => {
+          btn.style.transform = `translateY(${y}vh)`;
+        },
+      });
+      lastY = activeY;
+    }
+
    }
 
 
@@ -105,7 +110,7 @@
       arrow.style.backgroundColor = "#FFFFFF";
       trackLoop(arrow, startBullet, endBullet);
     });
-  }
+ }
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
