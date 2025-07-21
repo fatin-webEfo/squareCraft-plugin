@@ -251,99 +251,69 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     !exitCount
   )
     return;
-function getArrowZone() {
-  const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
-  const start = document.getElementById("Typo-vertical-timeline-start-bullet");
-  const end = document.getElementById("Typo-vertical-timeline-end-bullet");
 
-  if (!arrow || !start || !end) return "center";
+  const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+    (val) => {
+      val = Math.max(min, Math.min(max, val));
+      countEl.textContent = `${val}%`;
 
-  
-  const arrowCenter =
-    arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
-  const startCenter =
-    start.getBoundingClientRect().left + start.offsetWidth / 2;
-  const endCenter = end.getBoundingClientRect().left + end.offsetWidth / 2;
+      const el = getSelectedElement?.();
+      const styleId = el?.id
+        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+        : null;
 
-  if (arrowCenter <= startCenter + 1) return "entry";
-  if (arrowCenter >= endCenter - 1) return "exit";
-  return "center";
-}
+      if (
+        [
+          "--sc-Typo-vertical-scroll-entry",
+          "--sc-Typo-vertical-scroll-center",
+          "--sc-Typo-vertical-scroll-exit",
+        ].includes(cssVar)
+      ) {
+        const percent = (val + 100) / 2;
+        const bulletLeft = percent;
+        const fillLeft = val < 0 ? percent : 50;
+        const fillWidth = Math.abs(val / 2);
+        bullet.style.left = `${bulletLeft}%`; // sync
+        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+        gsap.set(fill, {
+          left: `${fillLeft}%`,
+          width: `${fillWidth}%`,
+          backgroundColor: "var(--sc-Typo-theme-accent)",
+        });
 
- const updateField =
-   (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-   (val) => {
-     val = Math.max(min, Math.min(max, val));
-     countEl.textContent = `${val}%`;
+        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
+          document.getElementById(
+            "Typo-vertical-custom-timeline-arrow"
+          ).style.left = `${bulletLeft}%`;
+        }
+        initEffectAnimationDropdownToggle();
+      } else {
+        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+        position === "left"
+          ? gsap.set(fill, { width: `${val}%`, left: "0" })
+          : gsap.set(fill, {
+              left: "0",
+              left: "auto",
+              transform: `scaleX(${(100 - val) / 100})`,
+              transformOrigin: "right",
+              width: "100%",
+              backgroundColor: "#F6B67B",
+            });
+      }
 
-     const el = getSelectedElement?.();
-     const styleId = el?.id
-       ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
-       : null;
-
-     const currentZone = getArrowZone();
-     const isEntry = cssVar === "--sc-Typo-vertical-scroll-entry";
-     const isCenter = cssVar === "--sc-Typo-vertical-scroll-center";
-     const isExit = cssVar === "--sc-Typo-vertical-scroll-exit";
-
-     if (
-       (isEntry && currentZone === "entry") ||
-       (isCenter && currentZone === "center") ||
-       (isExit && currentZone === "exit")
-     ) {
-       const percent = (val + 100) / 2;
-       const bulletLeft = percent;
-       const fillLeft = val < 0 ? percent : 50;
-       const fillWidth = Math.abs(val / 2);
-       bullet.style.left = `${bulletLeft}%`;
-       gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-       gsap.set(fill, {
-         left: `${fillLeft}%`,
-         width: `${fillWidth}%`,
-         backgroundColor: "var(--sc-Typo-theme-accent)",
-       });
-
-       if (isEntry) {
-         const arrow = document.getElementById(
-           "Typo-vertical-custom-timeline-arrow"
-         );
-         if (arrow) arrow.style.left = `${bulletLeft}%`;
-       }
-
-       initEffectAnimationDropdownToggle();
-
-       if (el && el.id?.startsWith("block-")) {
-         let styleTag = document.getElementById(styleId);
-         if (!styleTag) {
-           styleTag = document.createElement("style");
-           styleTag.id = styleId;
-           document.head.appendChild(styleTag);
-         }
-         const contentEl = el.querySelector(".sqs-block-content");
-         if (contentEl) {
-           styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-         }
-       }
-     } else if (
-       cssVar === "--sc-Typo-vertical-scroll-start" ||
-       cssVar === "--sc-Typo-vertical-scroll-end"
-     ) {
-       gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-       if (position === "left") {
-         gsap.set(fill, { width: `${val}%`, left: "0" });
-       } else {
-         gsap.set(fill, {
-           left: "0",
-           left: "auto",
-           transform: `scaleX(${(100 - val) / 100})`,
-           transformOrigin: "right",
-           width: "100%",
-           backgroundColor: "#F6B67B",
-         });
-       }
-     }
-   };
-
+      if (el && el.id?.startsWith("block-")) {
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+        const contentEl = el.querySelector(".sqs-block-content");
+        if (contentEl) {
+          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
+        }
+      }
+    };
 
   const makeDraggable = (
     bullet,
