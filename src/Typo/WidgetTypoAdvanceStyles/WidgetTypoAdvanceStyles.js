@@ -4,13 +4,13 @@ function attachAdvanceTimelineIncrementDecrement(
   updateExit
 ) {
   let lastFocused = null;
-let keyHoldInterval = null;
-let keyHoldTimeout = null;
-let lastPressedKey = null;
+  let keyHoldInterval = null;
+  let keyHoldTimeout = null;
+  let lastPressedKey = null;
 
-let entryVal = 0;
-let centerVal = 0;
-let exitVal = 0;
+  let entryVal = 0;
+  let centerVal = 0;
+  let exitVal = 0;
 
   function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
@@ -21,7 +21,11 @@ let exitVal = 0;
       if (interval) clearInterval(interval);
       interval = setInterval(() => {
         const val = getCurrent();
-        updateFn(type === "inc" ? val + 1 : val - 1);
+        const newVal = type === "inc" ? val + 1 : val - 1;
+        updateFn(newVal);
+        if (bulletId.includes("entry")) entryVal = newVal;
+        if (bulletId.includes("center")) centerVal = newVal;
+        if (bulletId.includes("exit")) exitVal = newVal;
       }, 100);
     };
     const stopHold = () => clearInterval(interval);
@@ -30,25 +34,37 @@ let exitVal = 0;
       btnInc.onmousedown = () => startHold("inc");
       btnInc.onmouseup = stopHold;
       btnInc.onmouseleave = stopHold;
-      btnInc.onclick = () => updateFn(getCurrent() + 1);
+      btnInc.onclick = () => {
+        const newVal = getCurrent() + 1;
+        updateFn(newVal);
+        if (bulletId.includes("entry")) entryVal = newVal;
+        if (bulletId.includes("center")) centerVal = newVal;
+        if (bulletId.includes("exit")) exitVal = newVal;
+      };
     }
     if (btnDec) {
       btnDec.onmousedown = () => startHold("dec");
       btnDec.onmouseup = stopHold;
       btnDec.onmouseleave = stopHold;
-      btnDec.onclick = () => updateFn(getCurrent() - 1);
+      btnDec.onclick = () => {
+        const newVal = getCurrent() - 1;
+        updateFn(newVal);
+        if (bulletId.includes("entry")) entryVal = newVal;
+        if (bulletId.includes("center")) centerVal = newVal;
+        if (bulletId.includes("exit")) exitVal = newVal;
+      };
     }
 
     const bullet = document.getElementById(bulletId);
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
       bullet.addEventListener("click", () => (lastFocused = bulletId));
-bullet.addEventListener("focus", () => {
-  lastFocused = bulletId;
-  if (bulletId.includes("entry")) entryVal = getCurrent();
-  if (bulletId.includes("center")) centerVal = getCurrent();
-  if (bulletId.includes("exit")) exitVal = getCurrent();
-});
+      bullet.addEventListener("focus", () => {
+        lastFocused = bulletId;
+        if (bulletId.includes("entry")) entryVal = getCurrent();
+        if (bulletId.includes("center")) centerVal = getCurrent();
+        if (bulletId.includes("exit")) exitVal = getCurrent();
+      });
     }
   }
 
@@ -79,63 +95,58 @@ bullet.addEventListener("focus", () => {
 
   // keyboard controllet arrowKeyCooldown = false;
 
+  document.addEventListener("keydown", (e) => {
+    if (!lastFocused) return;
+    if (
+      (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
+      keyHoldInterval ||
+      keyHoldTimeout
+    )
+      return;
 
-document.addEventListener("keydown", (e) => {
-  if (!lastFocused) return;
-  if (
-    (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
-    keyHoldInterval ||
-    keyHoldTimeout
-  )
-    return;
+    const direction = e.key === "ArrowRight" ? 1 : -1;
+    lastPressedKey = e.key;
 
-  const direction = e.key === "ArrowRight" ? 1 : -1;
-  lastPressedKey = e.key;
+    const getVal = (id) =>
+      parseInt(
+        document.getElementById(id)?.textContent.replace("%", "") || "0"
+      );
 
-  const getVal = (id) =>
-    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+    const update = () => {
+      if (lastFocused.includes("entry")) {
+        entryVal += direction;
+        updateEntry(entryVal);
+      }
+      if (lastFocused.includes("center")) {
+        centerVal += direction;
+        updateCenter(centerVal);
+      }
+      if (lastFocused.includes("exit")) {
+        exitVal += direction;
+        updateExit(exitVal);
+      }
+    };
 
- const update = () => {
-   if (lastFocused.includes("entry")) {
-     entryVal += direction;
-     updateEntry(entryVal);
-   }
-   if (lastFocused.includes("center")) {
-     centerVal += direction;
-     updateCenter(centerVal);
-   }
-   if (lastFocused.includes("exit")) {
-     exitVal += direction;
-     updateExit(exitVal);
-   }
- };
+    update();
 
+    keyHoldTimeout = setTimeout(() => {
+      keyHoldInterval = setInterval(update, 100);
+    }, 300);
+  });
 
-  update();
-
-  keyHoldTimeout = setTimeout(() => {
-    keyHoldInterval = setInterval(update, 100);
-  }, 300);
-});
-
-
-
-document.addEventListener("keyup", (e) => {
-  if (e.key === lastPressedKey) {
-    if (keyHoldInterval) {
-      clearInterval(keyHoldInterval);
-      keyHoldInterval = null;
+  document.addEventListener("keyup", (e) => {
+    if (e.key === lastPressedKey) {
+      if (keyHoldInterval) {
+        clearInterval(keyHoldInterval);
+        keyHoldInterval = null;
+      }
+      if (keyHoldTimeout) {
+        clearTimeout(keyHoldTimeout);
+        keyHoldTimeout = null;
+      }
+      lastPressedKey = null;
     }
-    if (keyHoldTimeout) {
-      clearTimeout(keyHoldTimeout);
-      keyHoldTimeout = null;
-    }
-    lastPressedKey = null;
-  }
-});
-
-
-
+  });
 }
 
 function attachCustomTimelineReset(
@@ -271,7 +282,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-
         if (cssVar === "--sc-Typo-vertical-scroll-entry") {
           document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
@@ -290,8 +300,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
               width: "100%",
               backgroundColor: "#F6B67B",
             });
-
-
       }
 
       if (el && el.id?.startsWith("block-")) {
@@ -319,12 +327,16 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
-     const onMouseMove = (event) => {
-       const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
-       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
-       const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-       updateFn(clamped);
-     };
+      const onMouseMove = (event) => {
+        const clientX = Math.max(
+          rect.left,
+          Math.min(rect.right, event.clientX)
+        );
+        const percent =
+          ((clientX - rect.left) / rect.width) * (max - min) + min;
+        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+        updateFn(clamped);
+      };
 
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener(
@@ -435,10 +447,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   initEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-
-// 
-
-
+//
 
 function horizontalattachAdvanceTimelineIncrementDecrement(
   updateEntry,
@@ -875,9 +884,7 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
   horizontalinitEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-
-// 
-
+//
 
 function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
@@ -1301,7 +1308,7 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   opacityinitEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-// 
+//
 
 function scaleattachAdvanceTimelineIncrementDecrement(
   updateEntry,
@@ -1717,8 +1724,7 @@ export function scaleinitTypoAdvanceStyles(getSelectedElement) {
   scaleinitEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-// 
-
+//
 
 function rotateattachAdvanceTimelineIncrementDecrement(
   updateEntry,
