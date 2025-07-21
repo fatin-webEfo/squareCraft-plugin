@@ -340,6 +340,12 @@
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js"
   );
   const themeColors = await getSquarespaceThemeStyles();
+window.addEventListener("scroll", () => {
+  const selected = document.querySelector('[id^="block-"].sc-font-modified');
+  if (selected) {
+    TypoAdvanceSyncCustomTimelineArrow(selected);
+  }
+});
 
   document.body.addEventListener("click", (event) => {
     ButtonAdvanceToggleControls();
@@ -415,6 +421,8 @@
             TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
             // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+            TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -426,6 +434,7 @@
         setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
         setLastActiveAlignmentElement: (val) =>
           (lastActiveAlignmentElement = val),
+        
       });
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
