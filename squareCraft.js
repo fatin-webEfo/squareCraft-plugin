@@ -340,12 +340,19 @@
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonHoverStyles.js"
   );
   const themeColors = await getSquarespaceThemeStyles();
+
+  
+let isTrackingArrow = false;
+
 window.addEventListener("scroll", () => {
   const selected = document.querySelector('[id^="block-"].sc-font-modified');
-  if (selected) {
+  if (selected && !isTrackingArrow) {
     TypoAdvanceSyncCustomTimelineArrow(selected);
+    isTrackingArrow = true;
   }
 });
+
+
 
   document.body.addEventListener("click", (event) => {
     ButtonAdvanceToggleControls();
