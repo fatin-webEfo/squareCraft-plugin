@@ -258,6 +258,7 @@ function getArrowZone() {
 
   if (!arrow || !start || !end) return "center";
 
+  
   const arrowCenter =
     arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
   const startCenter =
