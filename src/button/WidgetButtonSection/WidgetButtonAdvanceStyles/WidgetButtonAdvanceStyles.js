@@ -776,7 +776,7 @@ export function initEffectAnimationDropdownToggle() {
   
 
 
-  
+
     // Opacity
   function opacityattachAdvanceTimelineIncrementDecrement(
     updateEntry,
