@@ -168,29 +168,37 @@ function attachCustomTimelineReset(
 }
 
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
-  const start = document.getElementById("Typo-vertical-timeline-start-bullet");
-  const end = document.getElementById("Typo-vertical-timeline-end-bullet");
+  const arrow = document.getElementById("Typo-vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById(
+    "Typo-vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "Typo-vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "Typo-vertical-effect-animation-value"
+  );
 
-  if (!arrow || !start || !end) return;
+  if (!arrow || !dropdown || !container || !displayValue) return;
 
-  const parent = arrow.parentElement;
-  const parentBox = parent.getBoundingClientRect();
-  const arrowBox = arrow.getBoundingClientRect();
-  const startBox = start.getBoundingClientRect();
-  const endBox = end.getBoundingClientRect();
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  });
 
-  const arrowCenter = arrowBox.left + arrowBox.width / 2;
-  const startCenter = startBox.left + startBox.width / 2;
-  const endCenter = endBox.left + endBox.width / 2;
+  document.addEventListener("click", (e) => {
+    if (!container.contains(e.target)) {
+      dropdown.classList.add("sc-hidden");
+    }
+  });
 
-  if (arrowCenter <= startCenter + 1) {
-    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-  } else if (arrowCenter >= endCenter - 1) {
-    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-  } else {
-    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-  }
+  dropdown.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selected = item.getAttribute("data-value");
+      displayValue.textContent = selected;
+      dropdown.classList.add("sc-hidden");
+    });
+  });
 }
 
 export function initTypoAdvanceStyles(getSelectedElement) {
