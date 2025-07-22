@@ -365,6 +365,8 @@ window.addEventListener("scroll", () => {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
+          initEffectAnimationDropdownToggle();
+
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
