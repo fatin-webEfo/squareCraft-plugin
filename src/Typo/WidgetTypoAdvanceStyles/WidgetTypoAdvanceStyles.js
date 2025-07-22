@@ -445,26 +445,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   );
   initEffectAnimationDropdownToggle(startBullet, endBullet);
 
-  const isActiveZone = () => {
-    const activeZone = window.__typoActiveZone;
-    if (cssVar.includes("entry") && activeZone === "entry") return true;
-    if (cssVar.includes("center") && activeZone === "center") return true;
-    if (cssVar.includes("exit") && activeZone === "exit") return true;
-    return false;
-  };
-
-  if (isActiveZone()) {
-    const el = getSelectedElement?.();
-    const btn = el?.querySelector(".sqs-block-content");
-    const y = val / 2;
-    gsap.to(btn, {
-      duration: 0.3,
-      ease: "power2.out",
-      transform: `translateY(${y.toFixed(2)}vh)`,
-    });
-    lastY = y;
-  }
-
+  
 }
 
 //

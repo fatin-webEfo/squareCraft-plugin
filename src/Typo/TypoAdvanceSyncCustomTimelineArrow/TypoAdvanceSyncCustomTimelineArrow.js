@@ -66,19 +66,25 @@
      let activeY;
      let arrowColor;
 
-     if (arrowCenter <= startCenter + 1) {
-       arrowColor = "#EF7C2F";
-       arrow.style.backgroundColor = arrowColor;
-       activeY = entryY;
-     } else if (arrowCenter >= endCenter - 1) {
-       arrowColor = "#F6B67B";
-       arrow.style.backgroundColor = arrowColor;
-       activeY = exitY;
-     } else {
-       arrowColor = "#FFFFFF";
-       arrow.style.backgroundColor = arrowColor;
-       activeY = centerY;
-     }
+    window.__typoActiveZone = "entry"; // fallback if undefined
+
+    if (arrowCenter <= startCenter + 1) {
+      arrowColor = "#EF7C2F";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = entryY;
+      window.__typoActiveZone = "entry";
+    } else if (arrowCenter >= endCenter - 1) {
+      arrowColor = "#F6B67B";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = exitY;
+      window.__typoActiveZone = "exit";
+    } else {
+      arrowColor = "#FFFFFF";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = centerY;
+      window.__typoActiveZone = "center";
+    }
+
 
     if (lastY !== activeY) {
       gsap.to(btn, {
