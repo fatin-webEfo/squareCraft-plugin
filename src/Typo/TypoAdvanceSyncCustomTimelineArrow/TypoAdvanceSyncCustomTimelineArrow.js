@@ -81,14 +81,10 @@
      }
 
     if (lastY !== activeY) {
-      const y = activeY.toFixed(2);
       gsap.to(btn, {
         duration: 0.3,
         ease: transition.ease,
-        transform: `translateY(${y}vh)`,
-        onComplete: () => {
-          btn.style.transform = `translateY(${y}vh)`;
-        },
+        transform: `translateY(${activeY.toFixed(2)}vh)`,
       });
       lastY = activeY;
     }
