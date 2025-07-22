@@ -80,7 +80,7 @@ function attachCustomTimelineReset(
   }
 }
 
-function initEffectAnimationDropdownToggle() {
+export function initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("vertical-effect-animation-type-arrow");
   const dropdown = document.getElementById("vertical-effect-animation-type-list");
   const container = document.getElementById(
@@ -112,8 +112,6 @@ function initEffectAnimationDropdownToggle() {
   });
 }
 
-
-  
   export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -366,7 +364,6 @@ function initEffectAnimationDropdownToggle() {
       updateCenter,
       updateExit
     );
-    initEffectAnimationDropdownToggle();
   }
 
 

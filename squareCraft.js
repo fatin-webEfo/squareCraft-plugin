@@ -165,6 +165,7 @@
 
   const {
     initButtonAdvanceStyles,
+    initEffectAnimationDropdownToggle,
     horizontalinitButtonAdvanceStyles,
     opacityinitButtonAdvanceStyles,
     scaleinitButtonAdvanceStyles,
@@ -355,6 +356,7 @@ window.addEventListener("scroll", () => {
 
 
   document.body.addEventListener("click", (event) => {
+    initEffectAnimationDropdownToggle()
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
