@@ -168,7 +168,9 @@ function attachCustomTimelineReset(
 }
 
 function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("Typo-vertical-effect-animation-type-arrow");
+  const arrow = document.getElementById(
+    "Typo-vertical-effect-animation-type-arrow"
+  );
   const dropdown = document.getElementById(
     "Typo-vertical-effect-animation-type-list"
   );
@@ -179,7 +181,10 @@ function initEffectAnimationDropdownToggle() {
     "Typo-vertical-effect-animation-value"
   );
 
-  if (!arrow || !dropdown || !container || !displayValue) return;
+  if (!arrow || !dropdown || !container || !displayValue) {
+    console.warn("Dropdown elements not found. Maybe widget not visible yet?");
+    return;
+  }
 
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -200,6 +205,7 @@ function initEffectAnimationDropdownToggle() {
     });
   });
 }
+
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
