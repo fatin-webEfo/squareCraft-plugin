@@ -165,7 +165,6 @@
 
   const {
     initButtonAdvanceStyles,
-    initEffectAnimationDropdownToggle,
     horizontalinitButtonAdvanceStyles,
     opacityinitButtonAdvanceStyles,
     scaleinitButtonAdvanceStyles,
@@ -177,6 +176,8 @@
   const {
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
+
+    initEffectAnimationDropdownToggle,
     // opacityinitTypoAdvanceStyles,
     scaleinitTypoAdvanceStyles,
     rotateinitTypoAdvanceStyles,

@@ -167,7 +167,7 @@ function attachCustomTimelineReset(
     };
 }
 
-function initEffectAnimationDropdownToggle() {
+export function initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById(
     "Typo-vertical-effect-animation-type-arrow"
   );
@@ -182,7 +182,9 @@ function initEffectAnimationDropdownToggle() {
   );
 
   if (!arrow || !dropdown || !container || !displayValue) {
-    console.warn("Dropdown elements not found. Maybe widget not visible yet?");
+    console.warn(
+      "❌ Effect animation dropdown not initialized: elements not found"
+    );
     return;
   }
 

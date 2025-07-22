@@ -80,26 +80,17 @@ function attachCustomTimelineReset(
   }
 }
 
-export function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "Typo-vertical-effect-animation-type-arrow"
-  );
-  const dropdown = document.getElementById(
-    "Typo-vertical-effect-animation-type-list"
-  );
+function initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById("vertical-effect-animation-type-list");
   const container = document.getElementById(
-    "Typo-vertical-effect-animation-dropdown-container"
+    "vertical-effect-animation-dropdown-container"
   );
   const displayValue = document.getElementById(
-    "Typo-vertical-effect-animation-value"
+    "vertical-effect-animation-value"
   );
 
-  if (!arrow || !dropdown || !container || !displayValue) {
-    console.warn(
-      "❌ Effect animation dropdown not initialized: elements not found"
-    );
-    return;
-  }
+  if (!arrow || !dropdown || !container || !displayValue) return;
 
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -122,6 +113,7 @@ export function initEffectAnimationDropdownToggle() {
 }
 
 
+  
   export function initButtonAdvanceStyles(getSelectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -374,6 +366,7 @@ export function initEffectAnimationDropdownToggle() {
       updateCenter,
       updateExit
     );
+    initEffectAnimationDropdownToggle();
   }
 
 
@@ -776,7 +769,7 @@ export function initEffectAnimationDropdownToggle() {
   
 
 
-
+  
     // Opacity
   function opacityattachAdvanceTimelineIncrementDecrement(
     updateEntry,
