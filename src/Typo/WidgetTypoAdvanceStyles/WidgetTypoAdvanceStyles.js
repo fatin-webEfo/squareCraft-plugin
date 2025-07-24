@@ -170,9 +170,6 @@ function attachCustomTimelineReset(
 export function initEffectAnimationDropdownToggle() {
   const TypoEffectIds = [
     "Typo-vertical-effect-animation-type-arrow",
-    "Typo-horizontal-effect-animation-type-arrow",
-    "Typo-scale-effect-animation-type-arrow",
-    "Typo-rotate-effect-animation-type-arrow",
   ];
 
   TypoEffectIds.forEach((btnId) => {
