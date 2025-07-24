@@ -167,64 +167,7 @@ function attachCustomTimelineReset(
     };
 }
 
-export function initEffectAnimationDropdownToggle(getSelectedElement) {
-  const arrow = document.getElementById(
-    "Typo-vertical-effect-animation-type-arrow"
-  );
-  const list = document.getElementById(
-    "Typo-vertical-effect-animation-type-list"
-  );
-  const display = document.getElementById(
-    "Typo-vertical-effect-animation-value"
-  );
-
-  if (!arrow || !list || !display) return;
-
-  const effectMap = {
-    linear: { duration: 1, ease: "linear" },
-    "ease-in": { duration: 1, ease: "ease.in" },
-    "ease-out": { duration: 1, ease: "ease.out" },
-    "ease-in-out": { duration: 1, ease: "ease.inOut" },
-    "power1.out": { duration: 1, ease: "power1.out" },
-    "power2.out": { duration: 1, ease: "power2.out" },
-    "power3.out": { duration: 1, ease: "power3.out" },
-    "power4.out": { duration: 1, ease: "power4.out" },
-    "expo.out": { duration: 1, ease: "expo.out" },
-    "elastic.out": { duration: 1.2, ease: "elastic.out(1, 0.3)" },
-    "bounce.out": { duration: 1, ease: "bounce.out" },
-    none: null,
-  };
-
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    list.classList.toggle("sc-hidden");
-  });
-
-  list.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const value = item.getAttribute("data-value");
-      display.textContent = value;
-      list.classList.add("sc-hidden");
-
-      const selectedElement = getSelectedElement?.();
-      const target = selectedElement?.querySelector(".sqs-block-content");
-
-      if (target && value && value !== "none") {
-        const anim = effectMap[value];
-        if (anim) {
-          gsap.fromTo(target, { opacity: 0 }, { ...anim, opacity: 1 });
-        }
-      }
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!list.contains(e.target) && !arrow.contains(e.target)) {
-      list.classList.add("sc-hidden");
-    }
-  });
-}
+export function initEffectAnimationDropdownToggle() {}
 
 
 
