@@ -205,22 +205,25 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     list.classList.toggle("sc-hidden");
   });
 
-  list.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const value = item.getAttribute("data-value");
-      display.textContent = value;
-      list.classList.add("sc-hidden");
+list.querySelectorAll("[data-value]").forEach((item) => {
+  item.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const value = item.getAttribute("data-value");
+    display.textContent = value;
+    list.classList.add("sc-hidden");
 
-      const selectedElement = getSelectedElement?.();
-      if (selectedElement && value && value !== "none") {
-        const anim = effectMap[value];
-        if (anim) {
-          gsap.fromTo(selectedElement, anim, { ...anim, opacity: 1 });
-        }
+    const selectedElement = getSelectedElement?.();
+    const target = selectedElement?.querySelector(".sqs-block-content");
+
+    if (target && value && value !== "none") {
+      const anim = effectMap[value];
+      if (anim) {
+        gsap.fromTo(target, anim, { ...anim, opacity: 1 });
       }
-    });
+    }
   });
+});
+
 
   document.addEventListener("click", (e) => {
     if (!list.contains(e.target) && !arrow.contains(e.target)) {
@@ -228,12 +231,6 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     }
   });
 }
-
-
-
-
-
-
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
