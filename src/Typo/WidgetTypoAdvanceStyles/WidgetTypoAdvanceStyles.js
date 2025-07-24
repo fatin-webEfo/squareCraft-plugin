@@ -168,33 +168,87 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "Typo-vertical-effect-animation-type-arrow"
-  );
-  const list = document.getElementById(
-    "Typo-vertical-effect-animation-type-list"
-  );
+  const TypoEffectIds = ["Typo-vertical-effect-animation-type-arrow"];
 
-  if (!arrow || !list) return;
+  TypoEffectIds.forEach((btnId) => {
+    const btn = document.getElementById(btnId);
+    const sectionId = `${btnId}-list`;
+    const section = document.getElementById(sectionId);
+    const container = document.getElementById(
+      btnId.replace("arrow", "dropdown-container")
+    );
+    const displayValue = document.getElementById(
+      btnId.replace("arrow", "value")
+    );
 
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const isHidden = list.classList.contains("sc-hidden");
-    if (isHidden) {
-      list.classList.remove("sc-hidden");
-    } else {
-      list.classList.add("sc-hidden");
-    }
+    if (!btn || !section || !container || !displayValue) return;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const isOpen = section.classList.contains("sc-visible");
+
+      TypoEffectIds.forEach((otherBtnId) => {
+        const otherSection = document.getElementById(`${otherBtnId}-list`);
+        if (otherBtnId !== btnId && otherSection) {
+          otherSection.classList.remove("sc-visible");
+          otherSection.classList.add("sc-hidden");
+        }
+      });
+
+      if (isOpen) {
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      } else {
+        section.classList.add("sc-visible");
+        section.classList.remove("sc-hidden");
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+
+    section.querySelectorAll("[data-value]").forEach((item) => {
+      item.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const selected = item.getAttribute("data-value");
+        displayValue.textContent = selected;
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        !container.contains(e.target) &&
+        section.classList.contains("sc-visible")
+      ) {
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      }
+    });
   });
 
-  document.addEventListener("click", (e) => {
-    if (!list.contains(e.target) && !arrow.contains(e.target)) {
-      list.classList.add("sc-hidden");
-    }
-  });
+  const structureBtn = document.getElementById(
+    "Typo-effect-structure-type-arrow"
+  );
+  const structureSection = document.getElementById(
+    "Typo-effect-structure-type-arrow-list"
+  );
+
+  if (structureBtn && structureSection) {
+    structureBtn.addEventListener("click", () => {
+      TypoEffectIds.forEach((id) => {
+        const el = document.getElementById(`${id}-list`);
+        if (el) {
+          el.classList.remove("sc-visible");
+          el.classList.add("sc-hidden");
+        }
+      });
+      structureSection.classList.remove("sc-hidden");
+      structureSection.classList.add("sc-visible");
+      structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 }
-
-
 
 
 
