@@ -168,45 +168,85 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "Typo-vertical-effect-animation-type-arrow"
+  const TypoEffectIds = ["Typo-vertical-effect-animation-type-arrow"];
+
+  TypoEffectIds.forEach((btnId) => {
+    const btn = document.getElementById(btnId);
+    const sectionId = `${btnId}-list`;
+    const section = document.getElementById(sectionId);
+    const displayValue = document.getElementById(
+      btnId.replace("arrow", "value")
+    );
+
+    if (!btn || !section) return;
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      TypoEffectIds.forEach((otherBtnId) => {
+        const otherSection = document.getElementById(`${otherBtnId}-list`);
+        if (otherBtnId !== btnId && otherSection) {
+          otherSection.classList.add("sc-hidden");
+          otherSection.classList.remove("sc-visible");
+        }
+      });
+
+      const isHidden = section.classList.contains("sc-hidden");
+      section.classList.toggle("sc-hidden", !isHidden);
+      section.classList.toggle("sc-visible", isHidden);
+
+      if (isHidden) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      section.querySelectorAll("[data-value]").forEach((item) => {
+        item.onclick = (event) => {
+          event.stopPropagation();
+          const selected = item.getAttribute("data-value");
+          if (displayValue) displayValue.textContent = selected;
+          section.classList.add("sc-hidden");
+          section.classList.remove("sc-visible");
+        };
+      });
+    });
+  });
+
+  const structureBtn = document.getElementById(
+    "Typo-effect-structure-type-arrow"
   );
-  const dropdown = document.getElementById(
-    "Typo-vertical-effect-animation-type-list"
-  );
-  const container = document.getElementById(
-    "Typo-vertical-effect-animation-dropdown-container"
-  );
-  const displayValue = document.getElementById(
-    "Typo-vertical-effect-animation-value"
+  const structureSection = document.getElementById(
+    "Typo-effect-structure-type-arrow-list"
   );
 
-  if (!arrow || !dropdown || !container || !displayValue) {
-    console.warn(
-      "❌ Effect animation dropdown not initialized: elements not found"
-    );
-    return;
+  if (structureBtn && structureSection) {
+    structureBtn.addEventListener("click", () => {
+      TypoEffectIds.forEach((id) => {
+        const el = document.getElementById(`${id}-list`);
+        if (el) {
+          el.classList.add("sc-hidden");
+          el.classList.remove("sc-visible");
+        }
+      });
+      structureSection.classList.remove("sc-hidden");
+      structureSection.classList.add("sc-visible");
+      structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
-  });
-
   document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) {
-      dropdown.classList.add("sc-hidden");
-    }
-  });
-
-  dropdown.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selected = item.getAttribute("data-value");
-      displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
+    TypoEffectIds.forEach((btnId) => {
+      const container = document.getElementById(
+        `${btnId.replace("arrow", "dropdown-container")}`
+      );
+      const section = document.getElementById(`${btnId}-list`);
+      if (container && section && !container.contains(e.target)) {
+        section.classList.add("sc-hidden");
+        section.classList.remove("sc-visible");
+      }
     });
   });
 }
+
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
