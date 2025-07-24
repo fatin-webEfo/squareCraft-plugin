@@ -208,7 +208,6 @@ export function initEffectAnimationDropdownToggle() {
   });
 }
 
-
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-vertical-timeline-start-bullet"
@@ -302,7 +301,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
             "Typo-vertical-custom-timeline-arrow"
           ).style.left = `${bulletLeft}%`;
         }
-        initEffectAnimationDropdownToggle();
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         position === "left"
