@@ -179,7 +179,12 @@ export function initEffectAnimationDropdownToggle() {
 
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
-    list.classList.toggle("sc-hidden");
+    const isHidden = list.classList.contains("sc-hidden");
+    if (isHidden) {
+      list.classList.remove("sc-hidden");
+    } else {
+      list.classList.add("sc-hidden");
+    }
   });
 
   document.addEventListener("click", (e) => {
@@ -188,6 +193,7 @@ export function initEffectAnimationDropdownToggle() {
     }
   });
 }
+
 
 
 
