@@ -188,10 +188,17 @@ export function initEffectAnimationDropdownToggle() {
     return;
   }
 
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
-  });
+ arrow.addEventListener("click", (e) => {
+   e.stopPropagation();
+
+   const dropdown = document.getElementById(
+     "Typo-vertical-effect-animation-type-list"
+   );
+   if (dropdown) {
+     dropdown.classList.toggle("sc-hidden");
+   }
+ });
+
 
   document.addEventListener("click", (e) => {
     if (!container.contains(e.target)) {
