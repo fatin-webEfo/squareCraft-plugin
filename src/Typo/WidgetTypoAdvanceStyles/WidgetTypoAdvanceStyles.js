@@ -168,88 +168,45 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {
-  const TypoEffectIds = ["Typo-vertical-effect-animation-type-arrow"];
+  const arrow = document.getElementById(
+    "Typo-vertical-effect-animation-type-arrow"
+  );
+  const dropdown = document.getElementById(
+    "Typo-vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "Typo-vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "Typo-vertical-effect-animation-value"
+  );
 
-  TypoEffectIds.forEach((btnId) => {
-    const btn = document.getElementById(btnId);
-    const sectionId = `${btnId}-list`;
-    const section = document.getElementById(sectionId);
-    const displayValue = document.getElementById(
-      btnId.replace("arrow", "value")
+  if (!arrow || !dropdown || !container || !displayValue) {
+    console.warn(
+      "❌ Effect animation dropdown not initialized: elements not found"
     );
-
-    if (!btn || !section) return;
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-
-      TypoEffectIds.forEach((otherBtnId) => {
-        const otherSection = document.getElementById(`${otherBtnId}-list`);
-        if (otherBtnId !== btnId && otherSection) {
-          otherSection.classList.remove("sc-visible");
-          otherSection.classList.add("sc-hidden");
-        }
-      });
-
-      const isVisible = section.classList.contains("sc-visible");
-      if (isVisible) {
-        section.classList.remove("sc-visible");
-        section.classList.add("sc-hidden");
-      } else {
-        section.classList.remove("sc-hidden");
-        section.classList.add("sc-visible");
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-
-      section.querySelectorAll("[data-value]").forEach((item) => {
-        item.onclick = (event) => {
-          event.stopPropagation();
-          const selected = item.getAttribute("data-value");
-          if (displayValue) displayValue.textContent = selected;
-          section.classList.remove("sc-visible");
-          section.classList.add("sc-hidden");
-        };
-      });
-    });
-  });
-
-  const structureBtn = document.getElementById(
-    "Typo-effect-structure-type-arrow"
-  );
-  const structureSection = document.getElementById(
-    "Typo-effect-structure-type-arrow-list"
-  );
-
-  if (structureBtn && structureSection) {
-    structureBtn.addEventListener("click", () => {
-      TypoEffectIds.forEach((id) => {
-        const el = document.getElementById(`${id}-list`);
-        if (el) {
-          el.classList.remove("sc-visible");
-          el.classList.add("sc-hidden");
-        }
-      });
-      structureSection.classList.remove("sc-hidden");
-      structureSection.classList.add("sc-visible");
-      structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    return;
   }
 
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  });
+
   document.addEventListener("click", (e) => {
-    TypoEffectIds.forEach((btnId) => {
-      const container = document.getElementById(
-        `${btnId.replace("arrow", "dropdown-container")}`
-      );
-      const section = document.getElementById(`${btnId}-list`);
-      if (container && section && !container.contains(e.target)) {
-        section.classList.remove("sc-visible");
-        section.classList.add("sc-hidden");
-      }
+    if (!container.contains(e.target)) {
+      dropdown.classList.add("sc-hidden");
+    }
+  });
+
+  dropdown.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selected = item.getAttribute("data-value");
+      displayValue.textContent = selected;
+      dropdown.classList.add("sc-hidden");
     });
   });
 }
-
-
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
@@ -345,6 +302,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
             "Typo-vertical-custom-timeline-arrow"
           ).style.left = `${bulletLeft}%`;
         }
+        initEffectAnimationDropdownToggle();
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         position === "left"
@@ -501,12 +459,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateCenter,
     updateExit
   );
+  initEffectAnimationDropdownToggle(startBullet, endBullet);
 
   
 }
 
 //
-
 
 function horizontalattachAdvanceTimelineIncrementDecrement(
   updateEntry,
@@ -944,8 +902,6 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
 }
 
 //
-
-
 
 function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
