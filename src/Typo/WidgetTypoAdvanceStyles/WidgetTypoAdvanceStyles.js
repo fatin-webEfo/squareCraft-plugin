@@ -174,40 +174,56 @@ export function initEffectAnimationDropdownToggle() {
     const btn = document.getElementById(btnId);
     const sectionId = `${btnId}-list`;
     const section = document.getElementById(sectionId);
+    const container = document.getElementById(
+      btnId.replace("arrow", "dropdown-container")
+    );
     const displayValue = document.getElementById(
       btnId.replace("arrow", "value")
     );
 
-    if (!btn || !section) return;
+    if (!btn || !section || !container || !displayValue) return;
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
 
+      const isOpen = section.classList.contains("sc-visible");
+
       TypoEffectIds.forEach((otherBtnId) => {
         const otherSection = document.getElementById(`${otherBtnId}-list`);
         if (otherBtnId !== btnId && otherSection) {
-          otherSection.classList.add("sc-hidden");
           otherSection.classList.remove("sc-visible");
+          otherSection.classList.add("sc-hidden");
         }
       });
 
-      const isHidden = section.classList.contains("sc-hidden");
-      section.classList.toggle("sc-hidden", !isHidden);
-      section.classList.toggle("sc-visible", isHidden);
-
-      if (isHidden) {
+      if (isOpen) {
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      } else {
+        section.classList.add("sc-visible");
+        section.classList.remove("sc-hidden");
         section.scrollIntoView({ behavior: "smooth", block: "start" });
       }
+    });
 
-      section.querySelectorAll("[data-value]").forEach((item) => {
-        item.onclick = (event) => {
-          event.stopPropagation();
-          const selected = item.getAttribute("data-value");
-          if (displayValue) displayValue.textContent = selected;
-          section.classList.add("sc-hidden");
-          section.classList.remove("sc-visible");
-        };
+    section.querySelectorAll("[data-value]").forEach((item) => {
+      item.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const selected = item.getAttribute("data-value");
+        displayValue.textContent = selected;
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
       });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        !container.contains(e.target) &&
+        section.classList.contains("sc-visible")
+      ) {
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      }
     });
   });
 
@@ -223,8 +239,8 @@ export function initEffectAnimationDropdownToggle() {
       TypoEffectIds.forEach((id) => {
         const el = document.getElementById(`${id}-list`);
         if (el) {
-          el.classList.add("sc-hidden");
           el.classList.remove("sc-visible");
+          el.classList.add("sc-hidden");
         }
       });
       structureSection.classList.remove("sc-hidden");
@@ -232,20 +248,8 @@ export function initEffectAnimationDropdownToggle() {
       structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
-
-  document.addEventListener("click", (e) => {
-    TypoEffectIds.forEach((btnId) => {
-      const container = document.getElementById(
-        `${btnId.replace("arrow", "dropdown-container")}`
-      );
-      const section = document.getElementById(`${btnId}-list`);
-      if (container && section && !container.contains(e.target)) {
-        section.classList.add("sc-hidden");
-        section.classList.remove("sc-visible");
-      }
-    });
-  });
 }
+
 
 
 
