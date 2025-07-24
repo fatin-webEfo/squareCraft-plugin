@@ -188,32 +188,32 @@ export function initEffectAnimationDropdownToggle() {
     return;
   }
 
- arrow.addEventListener("click", (e) => {
-   e.stopPropagation();
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
 
-   const dropdown = document.getElementById(
-     "Typo-vertical-effect-animation-type-list"
-   );
-   if (dropdown) {
-     dropdown.classList.toggle("sc-hidden");
-   }
- });
+    const freshDropdown = document.getElementById(
+      "Typo-vertical-effect-animation-type-list"
+    );
+    if (freshDropdown) {
+      freshDropdown.classList.toggle("sc-hidden");
 
+      freshDropdown.querySelectorAll("[data-value]").forEach((item) => {
+        item.onclick = () => {
+          const selected = item.getAttribute("data-value");
+          displayValue.textContent = selected;
+          freshDropdown.classList.add("sc-hidden");
+        };
+      });
+    }
+  });
 
   document.addEventListener("click", (e) => {
     if (!container.contains(e.target)) {
       dropdown.classList.add("sc-hidden");
     }
   });
-
-  dropdown.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selected = item.getAttribute("data-value");
-      displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
-    });
-  });
 }
+
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
