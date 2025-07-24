@@ -470,6 +470,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
 
 //
 
+
 function horizontalattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
