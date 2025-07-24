@@ -167,100 +167,52 @@ function attachCustomTimelineReset(
     };
 }
 
-export function TypoEffectAnimationToggleControls() {
-  const TypoEffectIds = [
-    "Typo-vertical-effect-animation-type-arrow",
-    "Typo-horizontal-effect-animation-type-arrow",
-    "Typo-scale-effect-animation-type-arrow",
-    "Typo-rotate-effect-animation-type-arrow",
-  ];
+export function initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById(
+    "Typo-vertical-effect-animation-type-arrow"
+  );
+  const dropdown = document.getElementById(
+    "Typo-vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "Typo-vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "Typo-vertical-effect-animation-value"
+  );
 
-  TypoEffectIds.forEach((btnId) => {
-    const btn = document.getElementById(btnId);
-    const sectionId = `${btnId}-list`;
+  if (!arrow || !dropdown || !container || !displayValue) {
+    console.warn(
+      "❌ Effect animation dropdown not initialized: elements not found"
+    );
+    return;
+  }
 
-    if (btn && document.getElementById(sectionId)) {
-      const handleInteraction = () => {
-        TypoEffectIds.forEach((otherBtnId) => {
-          const otherSection = document.getElementById(`${otherBtnId}-list`);
-          if (!otherSection) return;
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
 
-          if (otherBtnId === btnId) {
-            otherSection.classList.remove("sc-hidden");
-            otherSection.classList.add("sc-visible");
-            otherSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    const freshDropdown = document.getElementById(
+      "Typo-vertical-effect-animation-type-list"
+    );
+    if (freshDropdown) {
+      freshDropdown.classList.toggle("sc-hidden");
 
-            otherSection.querySelectorAll("[data-value]").forEach((item) => {
-              item.onclick = () => {
-                const selected = item.getAttribute("data-value");
-                const displayValue = document.getElementById(
-                  btnId.replace("arrow", "value")
-                );
-                if (displayValue) displayValue.textContent = selected;
-                otherSection.classList.add("sc-hidden");
-                otherSection.classList.remove("sc-visible");
-              };
-            });
-          } else {
-            otherSection.classList.remove("sc-visible");
-            otherSection.classList.add("sc-hidden");
-          }
-        });
-
-        const structureSection = document.getElementById(
-          "Typo-effect-structure-type-arrow-list"
-        );
-        if (structureSection) {
-          const anyVisible = TypoEffectIds.some((id) => {
-            const el = document.getElementById(`${id}-list`);
-            return el && !el.classList.contains("sc-hidden");
-          });
-          if (anyVisible) {
-            structureSection.classList.add("sc-hidden");
-          }
-        }
-      };
-
-      btn.addEventListener("click", handleInteraction);
+      freshDropdown.querySelectorAll("[data-value]").forEach((item) => {
+        item.onclick = () => {
+          const selected = item.getAttribute("data-value");
+          displayValue.textContent = selected;
+          freshDropdown.classList.add("sc-hidden");
+        };
+      });
     }
   });
 
-  const structureBtn = document.getElementById(
-    "Typo-effect-structure-type-arrow"
-  );
-  const structureSection = document.getElementById(
-    "Typo-effect-structure-type-arrow-list"
-  );
-
-  if (structureBtn && structureSection) {
-    structureBtn.addEventListener("click", () => {
-      TypoEffectIds.forEach((id) => {
-        const el = document.getElementById(`${id}-list`);
-        if (el && !el.classList.contains("sc-hidden")) {
-          el.classList.remove("sc-visible");
-          el.classList.add("sc-hidden");
-        }
-      });
-      structureSection.classList.remove("sc-hidden");
-      structureSection.classList.add("sc-visible");
-      structureSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
-
   document.addEventListener("click", (e) => {
-    TypoEffectIds.forEach((btnId) => {
-      const container = document.getElementById(
-        `${btnId.replace("arrow", "dropdown-container")}`
-      );
-      const section = document.getElementById(`${btnId}-list`);
-      if (container && section && !container.contains(e.target)) {
-        section.classList.add("sc-hidden");
-        section.classList.remove("sc-visible");
-      }
-    });
+    if (!container.contains(e.target)) {
+      dropdown.classList.add("sc-hidden");
+    }
   });
 }
-
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
