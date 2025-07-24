@@ -457,7 +457,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateCenter,
     updateExit
   );
-  initEffectAnimationDropdownToggle(startBullet, endBullet);
 
   
 }
