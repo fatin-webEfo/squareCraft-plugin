@@ -181,22 +181,17 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
   if (!arrow || !list || !display) return;
 
   const effectMap = {
-    linear: { y: 50, opacity: 0, duration: 1, ease: "linear" },
-    "ease-in": { y: 50, opacity: 0, duration: 1, ease: "ease.in" },
-    "ease-out": { y: 50, opacity: 0, duration: 1, ease: "ease.out" },
-    "ease-in-out": { y: 50, opacity: 0, duration: 1, ease: "ease.inOut" },
-    "power1.out": { y: 50, opacity: 0, duration: 1, ease: "power1.out" },
-    "power2.out": { y: 50, opacity: 0, duration: 1, ease: "power2.out" },
-    "power3.out": { y: 50, opacity: 0, duration: 1, ease: "power3.out" },
-    "power4.out": { y: 50, opacity: 0, duration: 1, ease: "power4.out" },
-    "expo.out": { y: 50, opacity: 0, duration: 1, ease: "expo.out" },
-    "elastic.out": {
-      y: 50,
-      opacity: 0,
-      duration: 1.2,
-      ease: "elastic.out(1, 0.3)",
-    },
-    "bounce.out": { y: 50, opacity: 0, duration: 1, ease: "bounce.out" },
+    linear: { duration: 1, ease: "linear" },
+    "ease-in": { duration: 1, ease: "ease.in" },
+    "ease-out": { duration: 1, ease: "ease.out" },
+    "ease-in-out": { duration: 1, ease: "ease.inOut" },
+    "power1.out": { duration: 1, ease: "power1.out" },
+    "power2.out": { duration: 1, ease: "power2.out" },
+    "power3.out": { duration: 1, ease: "power3.out" },
+    "power4.out": { duration: 1, ease: "power4.out" },
+    "expo.out": { duration: 1, ease: "expo.out" },
+    "elastic.out": { duration: 1.2, ease: "elastic.out(1, 0.3)" },
+    "bounce.out": { duration: 1, ease: "bounce.out" },
     none: null,
   };
 
@@ -205,25 +200,24 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     list.classList.toggle("sc-hidden");
   });
 
-list.querySelectorAll("[data-value]").forEach((item) => {
-  item.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const value = item.getAttribute("data-value");
-    display.textContent = value;
-    list.classList.add("sc-hidden");
+  list.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const value = item.getAttribute("data-value");
+      display.textContent = value;
+      list.classList.add("sc-hidden");
 
-    const selectedElement = getSelectedElement?.();
-    const target = selectedElement?.querySelector(".sqs-block-content");
+      const selectedElement = getSelectedElement?.();
+      const target = selectedElement?.querySelector(".sqs-block-content");
 
-    if (target && value && value !== "none") {
-      const anim = effectMap[value];
-      if (anim) {
-        gsap.fromTo(target, anim, { ...anim, opacity: 1 });
+      if (target && value && value !== "none") {
+        const anim = effectMap[value];
+        if (anim) {
+          gsap.fromTo(target, { opacity: 0 }, { ...anim, opacity: 1 });
+        }
       }
-    }
+    });
   });
-});
-
 
   document.addEventListener("click", (e) => {
     if (!list.contains(e.target) && !arrow.contains(e.target)) {
@@ -231,6 +225,7 @@ list.querySelectorAll("[data-value]").forEach((item) => {
     }
   });
 }
+
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
