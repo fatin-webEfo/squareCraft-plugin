@@ -174,8 +174,11 @@ export function initEffectAnimationDropdownToggle() {
   const list = document.getElementById(
     "Typo-vertical-effect-animation-type-list"
   );
+  const display = document.getElementById(
+    "Typo-vertical-effect-animation-value"
+  );
 
-  if (!arrow || !list) return;
+  if (!arrow || !list || !display) return;
 
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -187,12 +190,22 @@ export function initEffectAnimationDropdownToggle() {
     }
   });
 
+  list.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const value = item.getAttribute("data-value");
+      display.textContent = value;
+      list.classList.add("sc-hidden");
+    });
+  });
+
   document.addEventListener("click", (e) => {
     if (!list.contains(e.target) && !arrow.contains(e.target)) {
       list.classList.add("sc-hidden");
     }
   });
 }
+
 
 
 
