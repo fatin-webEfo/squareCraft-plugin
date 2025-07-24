@@ -168,9 +168,7 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {
-  const TypoEffectIds = [
-    "Typo-vertical-effect-animation-type-arrow",
-  ];
+  const TypoEffectIds = ["Typo-vertical-effect-animation-type-arrow"];
 
   TypoEffectIds.forEach((btnId) => {
     const btn = document.getElementById(btnId);
@@ -185,21 +183,21 @@ export function initEffectAnimationDropdownToggle() {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
 
-      // Hide all other dropdowns
       TypoEffectIds.forEach((otherBtnId) => {
         const otherSection = document.getElementById(`${otherBtnId}-list`);
         if (otherBtnId !== btnId && otherSection) {
-          otherSection.classList.add("sc-hidden");
           otherSection.classList.remove("sc-visible");
+          otherSection.classList.add("sc-hidden");
         }
       });
 
-      // Toggle current dropdown
       const isVisible = section.classList.contains("sc-visible");
-      section.classList.toggle("sc-hidden", isVisible);
-      section.classList.toggle("sc-visible", !isVisible);
-
-      if (!isVisible) {
+      if (isVisible) {
+        section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
+      } else {
+        section.classList.remove("sc-hidden");
+        section.classList.add("sc-visible");
         section.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
@@ -208,8 +206,8 @@ export function initEffectAnimationDropdownToggle() {
           event.stopPropagation();
           const selected = item.getAttribute("data-value");
           if (displayValue) displayValue.textContent = selected;
-          section.classList.add("sc-hidden");
           section.classList.remove("sc-visible");
+          section.classList.add("sc-hidden");
         };
       });
     });
@@ -227,8 +225,8 @@ export function initEffectAnimationDropdownToggle() {
       TypoEffectIds.forEach((id) => {
         const el = document.getElementById(`${id}-list`);
         if (el) {
-          el.classList.add("sc-hidden");
           el.classList.remove("sc-visible");
+          el.classList.add("sc-hidden");
         }
       });
       structureSection.classList.remove("sc-hidden");
@@ -244,12 +242,13 @@ export function initEffectAnimationDropdownToggle() {
       );
       const section = document.getElementById(`${btnId}-list`);
       if (container && section && !container.contains(e.target)) {
-        section.classList.add("sc-hidden");
         section.classList.remove("sc-visible");
+        section.classList.add("sc-hidden");
       }
     });
   });
 }
+
 
 
 
