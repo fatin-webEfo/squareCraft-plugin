@@ -357,7 +357,7 @@ window.addEventListener("scroll", () => {
 
 
   document.body.addEventListener("click", (event) => {
-    initEffectAnimationDropdownToggle()
+    
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
@@ -366,7 +366,7 @@ window.addEventListener("scroll", () => {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
-          initEffectAnimationDropdownToggle();
+
 
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
@@ -756,6 +756,7 @@ window.addEventListener("scroll", () => {
       tooltipControls();
       ButtonAdvanceToggleControls();
       initButtonSectionToggleControls();
+      initEffectAnimationDropdownToggle();
       WidgetTypoSectionStateControls();
       initImageStateTabToggle();
       initButtonStructureGapTypeToggle();
