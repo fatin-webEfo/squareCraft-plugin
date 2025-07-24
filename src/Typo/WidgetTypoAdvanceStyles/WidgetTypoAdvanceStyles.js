@@ -167,7 +167,7 @@ function attachCustomTimelineReset(
     };
 }
 
-export function initEffectAnimationDropdownToggle() {
+export function initEffectAnimationDropdownToggle(getSelectedElement) {
   const arrow = document.getElementById(
     "Typo-vertical-effect-animation-type-arrow"
   );
@@ -180,14 +180,29 @@ export function initEffectAnimationDropdownToggle() {
 
   if (!arrow || !list || !display) return;
 
+  const effectMap = {
+    linear: { y: 50, opacity: 0, duration: 1, ease: "linear" },
+    "ease-in": { y: 50, opacity: 0, duration: 1, ease: "ease.in" },
+    "ease-out": { y: 50, opacity: 0, duration: 1, ease: "ease.out" },
+    "ease-in-out": { y: 50, opacity: 0, duration: 1, ease: "ease.inOut" },
+    "power1.out": { y: 50, opacity: 0, duration: 1, ease: "power1.out" },
+    "power2.out": { y: 50, opacity: 0, duration: 1, ease: "power2.out" },
+    "power3.out": { y: 50, opacity: 0, duration: 1, ease: "power3.out" },
+    "power4.out": { y: 50, opacity: 0, duration: 1, ease: "power4.out" },
+    "expo.out": { y: 50, opacity: 0, duration: 1, ease: "expo.out" },
+    "elastic.out": {
+      y: 50,
+      opacity: 0,
+      duration: 1.2,
+      ease: "elastic.out(1, 0.3)",
+    },
+    "bounce.out": { y: 50, opacity: 0, duration: 1, ease: "bounce.out" },
+    none: null,
+  };
+
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
-    const isHidden = list.classList.contains("sc-hidden");
-    if (isHidden) {
-      list.classList.remove("sc-hidden");
-    } else {
-      list.classList.add("sc-hidden");
-    }
+    list.classList.toggle("sc-hidden");
   });
 
   list.querySelectorAll("[data-value]").forEach((item) => {
@@ -196,6 +211,14 @@ export function initEffectAnimationDropdownToggle() {
       const value = item.getAttribute("data-value");
       display.textContent = value;
       list.classList.add("sc-hidden");
+
+      const selectedElement = getSelectedElement?.();
+      if (selectedElement && value && value !== "none") {
+        const anim = effectMap[value];
+        if (anim) {
+          gsap.fromTo(selectedElement, anim, { ...anim, opacity: 1 });
+        }
+      }
     });
   });
 
@@ -205,6 +228,7 @@ export function initEffectAnimationDropdownToggle() {
     }
   });
 }
+
 
 
 

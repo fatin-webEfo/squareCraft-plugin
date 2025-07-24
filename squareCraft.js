@@ -451,6 +451,8 @@ window.addEventListener("scroll", () => {
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
       initButtonIconPositionToggle(() => selectedElement);
+      initEffectAnimationDropdownToggle(() => selectedElement);
+
       initHoverButtonShadowControls(() => selectedElement);
       initButtonIconRotationControl(() => selectedElement);
       initButtonIconSizeControl(() => selectedElement);
@@ -796,6 +798,8 @@ window.addEventListener("scroll", () => {
       hoverTypoTabSelect();
       initHoverButtonEffectDropdowns();
       initImageUploadPreview(() => selectedElement);
+      initEffectAnimationDropdownToggle(() => selectedElement);
+
       triggerLaunchAnimation();
       if (clickedBlock) {
         waitForElement("#typoSection, #imageSection, #buttonSection")
