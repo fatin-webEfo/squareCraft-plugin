@@ -237,6 +237,7 @@
 
 .sc-input {
   all: unset;
+  outline: none !important;
   appearance: textfield;          /* ✅ Standard */
   -webkit-appearance: none;       /* ✅ Chrome, Safari */
   -moz-appearance: textfield;     /* ✅ Firefox */

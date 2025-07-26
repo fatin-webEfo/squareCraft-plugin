@@ -2,7 +2,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
   return `
     <div
             id="Typo-advance-vertical-section"
-            class="sc-bg-454545 sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
+            class="sc-bg-454545 sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-p-2 sc-rounded-4px"
           >
             <div class="sc-flex sc-flex-col sc-gap-2">
               <div class="sc-flex sc-gap-2 sc-items-center">
