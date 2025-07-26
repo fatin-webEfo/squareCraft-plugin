@@ -379,20 +379,22 @@ updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 [entryCount, centerCount, exitCount].forEach((input, i) => {
   const updateFn = [updateEntry, updateCenter, updateExit][i];
 
-  input.addEventListener("input", (e) => {
-    let val = parseInt(e.target.value || "0");
-    if (isNaN(val)) val = 0;
-    val = Math.max(-100, Math.min(100, val));
-    e.target.value = val;
-  });
+input.addEventListener("input", (e) => {
+  let val = parseInt(e.target.value || "0");
+  if (isNaN(val)) val = 0;
+  val = Math.max(-100, Math.min(100, val));
+  e.target.value = val;
+  updateFn(val); // 🔥 real-time sync
+});
 
-  input.addEventListener("blur", (e) => {
-    let val = parseInt(e.target.value || "0");
-    if (isNaN(val)) val = 0;
-    val = Math.max(-100, Math.min(100, val));
-    e.target.value = val;
-    updateFn(val);
-  });
+input.addEventListener("blur", (e) => {
+  let val = parseInt(e.target.value || "0");
+  if (isNaN(val)) val = 0;
+  val = Math.max(-100, Math.min(100, val));
+  e.target.value = val;
+  updateFn(val); // 🔒 safety update
+});
+
 });
 
 
