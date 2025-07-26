@@ -171,7 +171,6 @@ export function initEffectAnimationDropdownToggle() {}
 
 
 
-
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-vertical-timeline-start-bullet"
@@ -231,11 +230,10 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+  const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.value = `${val}%`;
+      countEl.textContent = `${val}%`;
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -253,18 +251,18 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         const bulletLeft = percent;
         const fillLeft = val < 0 ? percent : 50;
         const fillWidth = Math.abs(val / 2);
-        bullet.style.left = `${bulletLeft}%`;
+        bullet.style.left = `${bulletLeft}%`; // sync
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
           backgroundColor: "var(--sc-Typo-theme-accent)",
         });
+
         if (cssVar === "--sc-Typo-vertical-scroll-entry") {
-          const arrow = document.getElementById(
+          document.getElementById(
             "Typo-vertical-custom-timeline-arrow"
-          );
-          if (arrow) arrow.style.left = `${bulletLeft}%`;
+          ).style.left = `${bulletLeft}%`;
         }
         initEffectAnimationDropdownToggle();
       } else {
@@ -272,6 +270,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         position === "left"
           ? gsap.set(fill, { width: `${val}%`, left: "0" })
           : gsap.set(fill, {
+              left: "0",
               left: "auto",
               transform: `scaleX(${(100 - val) / 100})`,
               transformOrigin: "right",
@@ -314,8 +313,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           ((clientX - rect.left) / rect.width) * (max - min) + min;
         const clamped = Math.round(Math.max(min, Math.min(max, percent)));
         updateFn(clamped);
-        bullet.parentElement.querySelector("input").value = `${clamped}%`;
       };
+
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener(
         "mouseup",
@@ -328,22 +327,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
+
     const contentEl = el.querySelector(".sqs-block-content");
     if (!contentEl) return 0;
+
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
     return parseFloat(val.replace("%", "")) || 0;
-  };
-
-  const attachInputSync = (inputEl, updateFn) => {
-    inputEl.addEventListener("blur", () => {
-      let raw = inputEl.value.replace("%", "").trim();
-      let num = parseFloat(raw);
-      if (!isNaN(num)) {
-        num = Math.max(-100, Math.min(100, num));
-        updateFn(num);
-        inputEl.value = `${num}%`;
-      }
-    });
   };
 
   const updateStart = updateField(
@@ -389,13 +378,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
-  makeDraggable(entryBullet, updateEntry);
-  makeDraggable(centerBullet, updateCenter);
-  makeDraggable(exitBullet, updateExit);
-
-  attachInputSync(entryCount, updateEntry);
-  attachInputSync(centerCount, updateCenter);
-  attachInputSync(exitCount, updateExit);
+  makeDraggable(entryBullet, updateEntry, "normal");
+  makeDraggable(centerBullet, updateCenter, "normal");
+  makeDraggable(exitBullet, updateExit, "normal");
 
   [
     {
@@ -437,8 +422,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateExit
   );
   initEffectAnimationDropdownToggle(startBullet, endBullet);
-}
 
+  
+}
 
 //
 
