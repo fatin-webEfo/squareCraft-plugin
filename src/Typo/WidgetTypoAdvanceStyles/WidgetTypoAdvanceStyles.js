@@ -21,7 +21,9 @@ function attachAdvanceTimelineIncrementDecrement(
       if (interval) clearInterval(interval);
       interval = setInterval(() => {
         const val = getCurrent();
-        const newVal = type === "inc" ? val + 1 : val - 1;
+        const newVal =
+          type === "inc" ? Math.min(100, val + 1) : Math.max(-100, val - 1);
+
         updateFn(newVal);
         if (bulletId.includes("entry")) entryVal = newVal;
         if (bulletId.includes("center")) centerVal = newVal;
@@ -34,25 +36,25 @@ function attachAdvanceTimelineIncrementDecrement(
       btnInc.onmousedown = () => startHold("inc");
       btnInc.onmouseup = stopHold;
       btnInc.onmouseleave = stopHold;
-      btnInc.onclick = () => {
-        const newVal = getCurrent() + 1;
-        updateFn(newVal);
-        if (bulletId.includes("entry")) entryVal = newVal;
-        if (bulletId.includes("center")) centerVal = newVal;
-        if (bulletId.includes("exit")) exitVal = newVal;
-      };
+     btnInc.onclick = () => {
+       const newVal = Math.min(100, getCurrent() + 1);
+       updateFn(newVal);
+       if (bulletId.includes("entry")) entryVal = newVal;
+       if (bulletId.includes("center")) centerVal = newVal;
+       if (bulletId.includes("exit")) exitVal = newVal;
+     };
     }
     if (btnDec) {
       btnDec.onmousedown = () => startHold("dec");
       btnDec.onmouseup = stopHold;
       btnDec.onmouseleave = stopHold;
-      btnDec.onclick = () => {
-        const newVal = getCurrent() - 1;
-        updateFn(newVal);
-        if (bulletId.includes("entry")) entryVal = newVal;
-        if (bulletId.includes("center")) centerVal = newVal;
-        if (bulletId.includes("exit")) exitVal = newVal;
-      };
+     btnDec.onclick = () => {
+       const newVal = Math.max(-100, getCurrent() - 1);
+       updateFn(newVal);
+       if (bulletId.includes("entry")) entryVal = newVal;
+       if (bulletId.includes("center")) centerVal = newVal;
+       if (bulletId.includes("exit")) exitVal = newVal;
+     };
     }
 
     const bullet = document.getElementById(bulletId);
@@ -68,7 +70,10 @@ function attachAdvanceTimelineIncrementDecrement(
     }
   }
 
-const getVal = (id) => parseInt(document.getElementById(id)?.value || "0");
+const getVal = (id) => {
+  const val = parseInt(document.getElementById(id)?.value || "0");
+  return Math.max(-100, Math.min(100, val));
+};
 
   setup(
     "Typo-vertical-advance-entry-increase",
@@ -106,10 +111,6 @@ const getVal = (id) => parseInt(document.getElementById(id)?.value || "0");
     const direction = e.key === "ArrowRight" ? 1 : -1;
     lastPressedKey = e.key;
 
-    const getVal = (id) =>
-      parseInt(
-        document.getElementById(id)?.textContent.replace("%", "") || "0"
-      );
 
     const update = () => {
       if (lastFocused.includes("entry")) {
@@ -167,8 +168,6 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {}
-
-
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
@@ -229,10 +228,11 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+  const updateField =
+    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
-      val = Math.max(min, Math.min(max, val));
-countEl.value = `${val}`;
+val = Math.max(min, Math.min(max, val));
+      countEl.value = `${val}`;
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -421,8 +421,6 @@ countEl.value = `${val}`;
     updateExit
   );
   initEffectAnimationDropdownToggle(startBullet, endBullet);
-
-  
 }
 
 //
