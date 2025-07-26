@@ -231,8 +231,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const updateField =
     (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
-val = Math.max(min, Math.min(max, val));
+      val = Math.max(min, Math.min(max, val));
       countEl.value = `${val}`;
+      countEl.setAttribute("value", val); // preserve default
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -371,9 +372,29 @@ val = Math.max(min, Math.min(max, val));
     "--sc-Typo-vertical-scroll-exit"
   );
 
-  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+
+[entryCount, centerCount, exitCount].forEach((input, i) => {
+  const updateFn = [updateEntry, updateCenter, updateExit][i];
+
+  input.addEventListener("input", (e) => {
+    let val = parseInt(e.target.value || "0");
+    if (isNaN(val)) val = 0;
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = val;
+  });
+
+  input.addEventListener("blur", (e) => {
+    let val = parseInt(e.target.value || "0");
+    if (isNaN(val)) val = 0;
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = val;
+    updateFn(val);
+  });
+});
+
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
