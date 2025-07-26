@@ -68,8 +68,7 @@ function attachAdvanceTimelineIncrementDecrement(
     }
   }
 
-  const getVal = (id) =>
-    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+const getVal = (id) => parseInt(document.getElementById(id)?.value || "0");
 
   setup(
     "Typo-vertical-advance-entry-increase",
@@ -233,7 +232,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.textContent = `${val}%`;
+countEl.value = `${val}`;
 
       const el = getSelectedElement?.();
       const styleId = el?.id

@@ -9,8 +9,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                 </p>
                 <div
                   id="Typo-vertical-custom-timeline-reset"
-                  class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f"
-                >
+                  class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5 sc-bg-3f3f3f">
                   <img
                     src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg"
                     width="10"
