@@ -12,61 +12,72 @@ function attachAdvanceTimelineIncrementDecrement(
   let centerVal = 0;
   let exitVal = 0;
 
-  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
-    const btnInc = document.getElementById(idIncrease);
-    const btnDec = document.getElementById(idDecrease);
-    let interval;
+function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
+  const btnInc = document.getElementById(idIncrease);
+  const btnDec = document.getElementById(idDecrease);
+  let holdInterval = null;
 
-    const startHold = (type) => {
-      if (interval) clearInterval(interval);
-      interval = setInterval(() => {
-        const val = getCurrent();
-        const newVal = type === "inc" ? val + 1 : val - 1;
-        updateFn(newVal);
-        if (bulletId.includes("entry")) entryVal = newVal;
-        if (bulletId.includes("center")) centerVal = newVal;
-        if (bulletId.includes("exit")) exitVal = newVal;
-      }, 100);
+  const startHold = (type) => {
+    stopHold();
+    holdInterval = setInterval(() => {
+      let val = getCurrent();
+      val = type === "inc" ? val + 1 : val - 1;
+      val = Math.max(-100, Math.min(100, val));
+      updateFn(val);
+      document.getElementById(
+        bulletId.replace("bullet", "count")
+      ).value = `${val}%`;
+    }, 100);
+  };
+
+  const stopHold = () => {
+    if (holdInterval) {
+      clearInterval(holdInterval);
+      holdInterval = null;
+    }
+  };
+
+  if (btnInc) {
+    btnInc.onmousedown = () => startHold("inc");
+    btnInc.onmouseup = stopHold;
+    btnInc.onmouseleave = stopHold;
+    btnInc.onclick = () => {
+      let val = getCurrent() + 1;
+      val = Math.max(-100, Math.min(100, val));
+      updateFn(val);
+      document.getElementById(
+        bulletId.replace("bullet", "count")
+      ).value = `${val}%`;
     };
-    const stopHold = () => clearInterval(interval);
-
-    if (btnInc) {
-      btnInc.onmousedown = () => startHold("inc");
-      btnInc.onmouseup = stopHold;
-      btnInc.onmouseleave = stopHold;
-      btnInc.onclick = () => {
-        const newVal = getCurrent() + 1;
-        updateFn(newVal);
-        if (bulletId.includes("entry")) entryVal = newVal;
-        if (bulletId.includes("center")) centerVal = newVal;
-        if (bulletId.includes("exit")) exitVal = newVal;
-      };
-    }
-    if (btnDec) {
-      btnDec.onmousedown = () => startHold("dec");
-      btnDec.onmouseup = stopHold;
-      btnDec.onmouseleave = stopHold;
-      btnDec.onclick = () => {
-        const newVal = getCurrent() - 1;
-        updateFn(newVal);
-        if (bulletId.includes("entry")) entryVal = newVal;
-        if (bulletId.includes("center")) centerVal = newVal;
-        if (bulletId.includes("exit")) exitVal = newVal;
-      };
-    }
-
-    const bullet = document.getElementById(bulletId);
-    if (bullet) {
-      bullet.setAttribute("tabindex", "0");
-      bullet.addEventListener("click", () => (lastFocused = bulletId));
-      bullet.addEventListener("focus", () => {
-        lastFocused = bulletId;
-        if (bulletId.includes("entry")) entryVal = getCurrent();
-        if (bulletId.includes("center")) centerVal = getCurrent();
-        if (bulletId.includes("exit")) exitVal = getCurrent();
-      });
-    }
   }
+
+  if (btnDec) {
+    btnDec.onmousedown = () => startHold("dec");
+    btnDec.onmouseup = stopHold;
+    btnDec.onmouseleave = stopHold;
+    btnDec.onclick = () => {
+      let val = getCurrent() - 1;
+      val = Math.max(-100, Math.min(100, val));
+      updateFn(val);
+      document.getElementById(
+        bulletId.replace("bullet", "count")
+      ).value = `${val}%`;
+    };
+  }
+
+  const bullet = document.getElementById(bulletId);
+  if (bullet) {
+    bullet.setAttribute("tabindex", "0");
+    bullet.addEventListener("click", () => (lastFocused = bulletId));
+    bullet.addEventListener("focus", () => {
+      lastFocused = bulletId;
+      if (bulletId.includes("entry")) entryVal = getCurrent();
+      if (bulletId.includes("center")) centerVal = getCurrent();
+      if (bulletId.includes("exit")) exitVal = getCurrent();
+    });
+  }
+}
+
 
   const getVal = (id) =>
     parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
@@ -168,8 +179,6 @@ function attachCustomTimelineReset(
 }
 
 export function initEffectAnimationDropdownToggle() {}
-
-
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
