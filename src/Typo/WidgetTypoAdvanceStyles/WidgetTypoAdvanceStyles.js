@@ -233,7 +233,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.textContent = `${val}%`;
+     countEl.value = `${val}%`;
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -313,6 +313,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           ((clientX - rect.left) / rect.width) * (max - min) + min;
         const clamped = Math.round(Math.max(min, Math.min(max, percent)));
         updateFn(clamped);
+        bullet.parentElement.querySelector("input").value = `${clamped}%`;
+
       };
 
       document.addEventListener("mousemove", onMouseMove);
@@ -379,6 +381,22 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
   makeDraggable(entryBullet, updateEntry, "normal");
+  entryCount.addEventListener("blur", () => {
+    const raw = entryCount.value.replace("%", "");
+    const num = parseFloat(raw);
+    if (!isNaN(num)) updateEntry(num);
+  });
+  centerCount.addEventListener("blur", () => {
+    const raw = centerCount.value.replace("%", "");
+    const num = parseFloat(raw);
+    if (!isNaN(num)) updateCenter(num);
+  });
+  exitCount.addEventListener("blur", () => {
+    const raw = exitCount.value.replace("%", "");
+    const num = parseFloat(raw);
+    if (!isNaN(num)) updateExit(num);
+  });
+
   makeDraggable(centerBullet, updateCenter, "normal");
   makeDraggable(exitBullet, updateExit, "normal");
 
