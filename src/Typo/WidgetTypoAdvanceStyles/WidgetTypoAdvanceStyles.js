@@ -383,7 +383,7 @@ input.addEventListener("input", (e) => {
   let val = parseInt(e.target.value || "0");
   if (isNaN(val)) val = 0;
   val = Math.max(-100, Math.min(100, val));
-  e.target.value = `${val}px`;
+  e.target.value = `${val} %`;
   updateFn(val); // 🔥 real-time sync
 });
 
@@ -391,7 +391,7 @@ input.addEventListener("blur", (e) => {
   let val = parseInt(e.target.value || "0");
   if (isNaN(val)) val = 0;
   val = Math.max(-100, Math.min(100, val));
-  e.target.value = `${val}px`;
+  e.target.value = `${val} %`;
   updateFn(val); // 🔒 safety update
 });
 
