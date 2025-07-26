@@ -408,6 +408,31 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+  // set default values for start and end inputs
+  startValue.value = `${getCurrentPercentage(
+    "--sc-Typo-vertical-scroll-start"
+  )}%`;
+  endValue.value = `${getCurrentPercentage("--sc-Typo-vertical-scroll-end")}%`;
+
+  [startValue, endValue].forEach((input, i) => {
+    const updateFn = [updateStart, updateEnd][i];
+
+    input.addEventListener("input", (e) => {
+      let val = parseInt(e.target.value.replace("%", "") || "0");
+      if (isNaN(val)) val = 0;
+      val = Math.max(0, Math.min(100, val));
+      e.target.value = val + "%";
+      updateFn(val); // real-time sync
+    });
+
+    input.addEventListener("blur", (e) => {
+      let val = parseInt(e.target.value.replace("%", "") || "0");
+      if (isNaN(val)) val = 0;
+      val = Math.max(0, Math.min(100, val));
+      e.target.value = val + "%";
+      updateFn(val); // final re-sync
+    });
+  });
 
   [entryCount, centerCount, exitCount].forEach((input, i) => {
     const updateFn = [updateEntry, updateCenter, updateExit][i];
@@ -462,13 +487,13 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
   });
 
- attachAdvanceTimelineIncrementDecrement(
-   updateEntry,
-   updateCenter,
-   updateExit,
-   updateStart,
-   updateEnd
- );
+  attachAdvanceTimelineIncrementDecrement(
+    updateEntry,
+    updateCenter,
+    updateExit,
+    updateStart,
+    updateEnd
+  );
 
   attachCustomTimelineReset(
     updateStart,
