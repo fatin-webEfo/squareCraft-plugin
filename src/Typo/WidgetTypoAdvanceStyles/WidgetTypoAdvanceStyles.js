@@ -488,8 +488,12 @@ function horizontalattachAdvanceTimelineIncrementDecrement(
     }
   }
 
-  const getVal = (id) =>
-    parseInt(document.getElementById(id)?.textContent.replace("%", "") || "0");
+ const getVal = (id) => {
+   const raw = document.getElementById(id)?.value || "0";
+   const val = parseInt(raw.replace(/[^-0-9]/g, ""));
+   return Math.max(-100, Math.min(100, isNaN(val) ? 0 : val));
+ };
+
 
   setup(
     "Typo-horizontal-advance-entry-increase",
