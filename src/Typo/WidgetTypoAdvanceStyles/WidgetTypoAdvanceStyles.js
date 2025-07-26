@@ -232,7 +232,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.value = `${val}`;
+      countEl.value = `${val} Px`;
       countEl.setAttribute("value", val); // preserve default
 
       const el = getSelectedElement?.();
