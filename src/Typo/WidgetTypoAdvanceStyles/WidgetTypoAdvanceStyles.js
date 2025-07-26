@@ -232,7 +232,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.value = `${val} Px`;
+      countEl.value = `${val} %`;
       countEl.setAttribute("value", val); // preserve default
 
       const el = getSelectedElement?.();
@@ -379,22 +379,20 @@ updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 [entryCount, centerCount, exitCount].forEach((input, i) => {
   const updateFn = [updateEntry, updateCenter, updateExit][i];
 
-input.addEventListener("input", (e) => {
-  let val = parseInt(e.target.value || "0");
-  if (isNaN(val)) val = 0;
-  val = Math.max(-100, Math.min(100, val));
-  e.target.value = `${val} %`;
-  updateFn(val); // 🔥 real-time sync
-});
+  // 💡 Inside input listener (for all: entry, center, exit)
+  input.addEventListener("input", (e) => {
+    let val = parseInt(e.target.value.replace(/[^-0-9]/g, "") || "0");
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = `${val} %`;
+    updateFn(val);
+  });
 
-input.addEventListener("blur", (e) => {
-  let val = parseInt(e.target.value || "0");
-  if (isNaN(val)) val = 0;
-  val = Math.max(-100, Math.min(100, val));
-  e.target.value = `${val} %`;
-  updateFn(val); // 🔒 safety update
-});
-
+  input.addEventListener("blur", (e) => {
+    let val = parseInt(e.target.value.replace(/[^-0-9]/g, "") || "0");
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = `${val} %`;
+    updateFn(val);
+  });
 });
 
 
