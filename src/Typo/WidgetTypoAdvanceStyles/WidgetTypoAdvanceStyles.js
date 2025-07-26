@@ -607,27 +607,23 @@ function horizontalinitEffectAnimationDropdownToggle() {
 
   if (!arrow || !start || !end) return;
 
+  const parent = arrow.parentElement;
+  const parentBox = parent.getBoundingClientRect();
+  const arrowBox = arrow.getBoundingClientRect();
+  const startBox = start.getBoundingClientRect();
+  const endBox = end.getBoundingClientRect();
 
- const scrollPercent = scrollBasedLeft; // 0–100%
+  const arrowCenter = arrowBox.left + arrowBox.width / 2;
+  const startCenter = startBox.left + startBox.width / 2;
+  const endCenter = endBox.left + endBox.width / 2;
 
- if (scrollPercent <= startPercent) {
-   const progress = scrollPercent / startPercent;
-   activeY = progress * entryY;
-   arrowColor = "#EF7C2F";
-   window.__typoActiveZone = "entry";
- } else if (scrollPercent >= endPercent) {
-   const progress = (scrollPercent - endPercent) / (100 - endPercent);
-   activeY = progress * exitY;
-   arrowColor = "#F6B67B";
-   window.__typoActiveZone = "exit";
- } else {
-   const range = endPercent - startPercent;
-   const progress = (scrollPercent - startPercent) / range;
-   activeY = progress * centerY;
-   arrowColor = "#FFFFFF";
-   window.__typoActiveZone = "center";
- }
-
+  if (arrowCenter <= startCenter + 1) {
+    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
+  } else if (arrowCenter >= endCenter - 1) {
+    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
+  } else {
+    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
+  }
 }
 
 export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
