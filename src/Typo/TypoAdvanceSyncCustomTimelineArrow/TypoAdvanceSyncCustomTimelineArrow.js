@@ -56,48 +56,44 @@
      const startPercent = getVarPercent("--sc-Typo-vertical-scroll-start");
      const endPercent = getVarPercent("--sc-Typo-vertical-scroll-end");
 
+     const arrowCenter =
+       arrow.getBoundingClientRect().left + arrow.offsetWidth / 2;
+     const startCenter =
+       startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2;
+     const endCenter =
+       endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2;
 
      let activeY;
      let arrowColor;
 
     window.__typoActiveZone = "entry"; // fallback if undefined
 
-  const scrollPercent = scrollBasedLeft;
-
-  if (scrollPercent <= startPercent) {
-    // Entry zone: from 0% to startPercent
-    const progress = scrollPercent / startPercent;
-    activeY = progress * entryY;
-    arrowColor = "#EF7C2F";
-    window.__typoActiveZone = "entry";
-  } else if (scrollPercent >= endPercent) {
-    // Exit zone: from endPercent to 100%
-    const progress = (scrollPercent - endPercent) / (100 - endPercent);
-    activeY = progress * exitY;
-    arrowColor = "#F6B67B";
-    window.__typoActiveZone = "exit";
-  } else {
-    // Center zone: from startPercent to endPercent
-    const centerRange = endPercent - startPercent;
-    const progress = (scrollPercent - startPercent) / centerRange;
-    activeY = progress * centerY;
-    arrowColor = "#FFFFFF";
-    window.__typoActiveZone = "center";
-  }
+    if (arrowCenter <= startCenter + 1) {
+      arrowColor = "#EF7C2F";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = entryY;
+      window.__typoActiveZone = "entry";
+    } else if (arrowCenter >= endCenter - 1) {
+      arrowColor = "#F6B67B";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = exitY;
+      window.__typoActiveZone = "exit";
+    } else {
+      arrowColor = "#FFFFFF";
+      arrow.style.backgroundColor = arrowColor;
+      activeY = centerY;
+      window.__typoActiveZone = "center";
+    }
 
 
-
-  arrow.style.backgroundColor = arrowColor;
-
-  if (lastY !== activeY) {
-    gsap.to(btn, {
-      duration: 0.3,
-      ease: transition.ease,
-      transform: `translateY(${activeY.toFixed(2)}vh)`,
-    });
-    lastY = activeY;
-  }
-
+    if (lastY !== activeY) {
+      gsap.to(btn, {
+        duration: 0.3,
+        ease: transition.ease,
+        transform: `translateY(${activeY.toFixed(2)}vh)`,
+      });
+      lastY = activeY;
+    }
 
    }
 
