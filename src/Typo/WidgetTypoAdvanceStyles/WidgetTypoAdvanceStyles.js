@@ -171,6 +171,7 @@ export function initEffectAnimationDropdownToggle() {}
 
 
 
+
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-vertical-timeline-start-bullet"
@@ -230,10 +231,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =(bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+  const updateField =
+    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.textContent = `${val}%`;
+      countEl.value = `${val}`;
+      countEl.setAttribute("value", val); // preserve default
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -376,6 +379,26 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
+  [entryCount, centerCount, exitCount].forEach((input, i) => {
+    const updateFn = [updateEntry, updateCenter, updateExit][i];
+
+    input.addEventListener("input", (e) => {
+      let val = parseInt(e.target.value || "0");
+      if (isNaN(val)) val = 0;
+      val = Math.max(-100, Math.min(100, val));
+      e.target.value = val;
+      updateFn(val); // 🔥 real-time sync
+    });
+
+    input.addEventListener("blur", (e) => {
+      let val = parseInt(e.target.value || "0");
+      if (isNaN(val)) val = 0;
+      val = Math.max(-100, Math.min(100, val));
+      e.target.value = val;
+      updateFn(val); // 🔒 safety update
+    });
+  });
+
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
   makeDraggable(entryBullet, updateEntry, "normal");
@@ -422,9 +445,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateExit
   );
   initEffectAnimationDropdownToggle(startBullet, endBullet);
-
-  
 }
+
 
 //
 
