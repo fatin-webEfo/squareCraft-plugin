@@ -91,7 +91,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                 <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
-                  <input
+                  <input value="0"
                     type="number"
                     min="-100"
                     max="100"
@@ -147,7 +147,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                 <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
-                  <input
+                  <input value="0"
                     type="number"
                     min="-100"
                     max="100"
@@ -203,7 +203,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                 <div
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
-                  <input
+                  <input value="0"
                     type="number"
                     min="-100"
                     max="100"
