@@ -30,7 +30,7 @@ function attachAdvanceTimelineIncrementDecrement(
         updateFn(val);
         document.getElementById(
           bulletId.replace("bullet", "Value")
-        ).textContent = `${val}%`;
+        ).textContent = `${val}`;
 
       }, 100);
     };
@@ -52,7 +52,7 @@ function attachAdvanceTimelineIncrementDecrement(
         updateFn(val);
         document.getElementById(
           bulletId.replace("bullet", "Value")
-        ).value = `${val}%`;
+        ).value = `${val}`;
       };
     }
 
@@ -66,7 +66,7 @@ function attachAdvanceTimelineIncrementDecrement(
         updateFn(val);
         document.getElementById(
           bulletId.replace("bullet", "Value")
-        ).value = `${val}%`;
+        ).value = `${val}`;
       };
     }
 
