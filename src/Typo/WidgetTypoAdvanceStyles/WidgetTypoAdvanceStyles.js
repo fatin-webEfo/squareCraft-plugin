@@ -30,7 +30,8 @@ function attachAdvanceTimelineIncrementDecrement(
         updateFn(val);
         document.getElementById(
           bulletId.replace("bullet", "Value")
-        ).value = `${val}%`;
+        ).textContent = `${val}%`;
+
       }, 100);
     };
 
