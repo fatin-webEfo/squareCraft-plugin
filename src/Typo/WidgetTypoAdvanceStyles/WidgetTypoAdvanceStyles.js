@@ -26,7 +26,14 @@
         holdInterval = setInterval(() => {
           let val = getCurrent();
           val = type === "inc" ? val + 1 : val - 1;
-          val = Math.max(0, Math.min(100, val));
+          const min =
+            bulletId.includes("entry") ||
+            bulletId.includes("center") ||
+            bulletId.includes("exit")
+              ? -100
+              : 0;
+          val = Math.max(min, Math.min(100, val));
+
           updateFn(val);
           document.getElementById(
             bulletId.replace("bullet", "Value")
