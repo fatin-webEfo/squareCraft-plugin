@@ -262,70 +262,72 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-      countEl.value = `${val}`;
-      countEl.setAttribute("value", val); // preserve default
+ const updateField =
+   (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+   (val) => {
+     val = Math.max(min, Math.min(max, val));
+     countEl.value = `${val}%`; // ✅ sync input with %
 
-      const el = getSelectedElement?.();
-      const styleId = el?.id
-        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
-        : null;
+     const el = getSelectedElement?.();
+     const styleId = el?.id
+       ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+       : null;
 
-      if (
-        [
-          "--sc-Typo-vertical-scroll-entry",
-          "--sc-Typo-vertical-scroll-center",
-          "--sc-Typo-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
-        bullet.style.left = `${bulletLeft}%`; // sync
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-Typo-theme-accent)",
-        });
+     if (
+       [
+         "--sc-Typo-vertical-scroll-entry",
+         "--sc-Typo-vertical-scroll-center",
+         "--sc-Typo-vertical-scroll-exit",
+       ].includes(cssVar)
+     ) {
+       const percent = (val + 100) / 2;
+       const bulletLeft = percent;
+       const fillLeft = val < 0 ? percent : 50;
+       const fillWidth = Math.abs(val / 2);
 
-        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
-          document.getElementById(
-            "Typo-vertical-custom-timeline-arrow"
-          ).style.left = `${bulletLeft}%`;
-        }
-        initEffectAnimationDropdownToggle();
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        position === "left"
-          ? gsap.set(fill, { width: `${val}%`, left: "0" })
-          : gsap.set(fill, {
-              left: "0",
-              left: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
-              transformOrigin: "right",
-              width: "100%",
-              backgroundColor: "#F6B67B",
-            });
-      }
+       bullet.style.left = `${bulletLeft}%`;
+       gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+       gsap.set(fill, {
+         left: `${fillLeft}%`,
+         width: `${fillWidth}%`,
+         backgroundColor: "var(--sc-Typo-theme-accent)",
+       });
 
-      if (el && el.id?.startsWith("block-")) {
-        let styleTag = document.getElementById(styleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
-        const contentEl = el.querySelector(".sqs-block-content");
-        if (contentEl) {
-          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-        }
-      }
-    };
+       if (cssVar === "--sc-Typo-vertical-scroll-entry") {
+         document.getElementById(
+           "Typo-vertical-custom-timeline-arrow"
+         ).style.left = `${bulletLeft}%`;
+       }
+
+       initEffectAnimationDropdownToggle();
+     } else {
+       gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+       position === "left"
+         ? gsap.set(fill, { width: `${val}%`, left: "0" })
+         : gsap.set(fill, {
+             left: "auto",
+             transform: `scaleX(${(100 - val) / 100})`,
+             transformOrigin: "right",
+             width: "100%",
+             backgroundColor: "#F6B67B",
+           });
+     }
+
+     if (el && el.id?.startsWith("block-")) {
+       let styleTag = document.getElementById(styleId);
+       if (!styleTag) {
+         styleTag = document.createElement("style");
+         styleTag.id = styleId;
+         document.head.appendChild(styleTag);
+       }
+
+       const contentEl = el.querySelector(".sqs-block-content");
+       if (contentEl) {
+         styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
+       }
+     }
+   };
+
 
   const makeDraggable = (
     bullet,
@@ -406,11 +408,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "--sc-Typo-vertical-scroll-exit"
   );
 
-updateStart(getCurrentPercentage("--sc-Typo-vertical-scroll-start"));
-updateEnd(getCurrentPercentage("--sc-Typo-vertical-scroll-end"));
-updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
-updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
-updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
@@ -421,29 +419,32 @@ updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
     let val = parseInt(e.target.value.replace("%", "").trim());
     if (isNaN(val)) val = 0;
     val = Math.max(-100, Math.min(100, val));
-    e.target.value = val; // remove % temporarily
+    e.target.value = val + "%"; // 🧷 Show `%`
+    updateFn(val);
   });
 
   input.addEventListener("blur", (e) => {
     let val = parseInt(e.target.value.replace("%", "").trim());
     if (isNaN(val)) val = 0;
     val = Math.max(-100, Math.min(100, val));
-    e.target.value = val + "%"; // apply % after unfocus
+    e.target.value = val + "%"; // 🧷 Ensure `%` on blur
     updateFn(val);
   });
 
   input.addEventListener("keydown", (e) => {
-    const valid = /[0-9\-]/.test(e.key);
-    const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
-    if (!valid && !allowed.includes(e.key)) e.preventDefault();
+    if (
+      !/[0-9\-]/.test(e.key) &&
+      !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
+    ) {
+      e.preventDefault(); // 🚫 Block unwanted characters
+    }
   });
 
   input.addEventListener("focus", (e) => {
     const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-    e.target.value = val; // hide % for easier editing
+    e.target.value = val; 
   });
 });
-
 
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
