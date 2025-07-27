@@ -96,9 +96,9 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-entry-count"
-                    class="sc-font-thin sc-input sc-w-30px sc-roboto sc-universal sc-font-size-11"
+                    class="sc-font-thin sc-input sc-w-20px sc-roboto sc-universal sc-font-size-11"
                   />
-                  </div>
+                  <span class="sc-font-size-11 sc-roboto sc-font-thin">%</span></div>
 
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
@@ -153,9 +153,9 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-center-count"
-                    class="sc-font-thin sc-input sc-w-30px sc-roboto sc-universal sc-font-size-11"
+                    class="sc-font-thin sc-input sc-w-20px sc-roboto sc-universal sc-font-size-11"
                   />
- </div>
+ <span class="sc-font-size-11 sc-roboto sc-font-thin">%</span></div>
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
                       id="Typo-vertical-advance-center-increase"
@@ -209,8 +209,8 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-exit-count"
-                    class="sc-font-thin sc-input sc-w-30px sc-roboto sc-universal sc-font-size-11"
-                  /> </div>
+                    class="sc-font-thin sc-input sc-w-20px sc-roboto sc-universal sc-font-size-11"
+                  /> <span class="sc-font-size-11 sc-roboto sc-font-thin">%</span></div>
 
                   <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                     <span
