@@ -49,33 +49,47 @@
         }
       };
 
-      if (btnInc) {
-        btnInc.onmousedown = () => startHold("inc");
-        btnInc.onmouseup = stopHold;
-        btnInc.onmouseleave = stopHold;
-        btnInc.onclick = () => {
-          let val = getCurrent() + 1;
-          val = Math.max(0, Math.min(100, val));
-          updateFn(val);
-          document.getElementById(
-            bulletId.replace("bullet", "Value")
-          ).value = `${val}`;
-        };
-      }
+   if (btnInc) {
+     btnInc.onmousedown = () => startHold("inc");
+     btnInc.onmouseup = stopHold;
+     btnInc.onmouseleave = stopHold;
+     btnInc.onclick = () => {
+       let val = getCurrent() + 1;
+       const min =
+         bulletId.includes("entry") ||
+         bulletId.includes("center") ||
+         bulletId.includes("exit")
+           ? -100
+           : 0;
+       val = Math.max(min, Math.min(100, val));
+       updateFn(val);
+       document.getElementById(
+         bulletId.replace("bullet", "Value")
+       ).value = `${val}`;
+     };
+   }
 
-      if (btnDec) {
-        btnDec.onmousedown = () => startHold("dec");
-        btnDec.onmouseup = stopHold;
-        btnDec.onmouseleave = stopHold;
-        btnDec.onclick = () => {
-          let val = getCurrent() - 1;
-          val = Math.max(0, Math.min(100, val));
-          updateFn(val);
-          document.getElementById(
-            bulletId.replace("bullet", "Value")
-          ).value = `${val}`;
-        };
-      }
+   if (btnDec) {
+     btnDec.onmousedown = () => startHold("dec");
+     btnDec.onmouseup = stopHold;
+     btnDec.onmouseleave = stopHold;
+     btnDec.onclick = () => {
+       let val = getCurrent() - 1;
+       const min =
+         bulletId.includes("entry") ||
+         bulletId.includes("center") ||
+         bulletId.includes("exit")
+           ? -100
+           : 0;
+       val = Math.max(min, Math.min(100, val));
+       updateFn(val);
+       document.getElementById(
+         bulletId.replace("bullet", "Value")
+       ).value = `${val}`;
+     };
+   }
+
+
 
       const bullet = document.getElementById(bulletId);
       if (bullet) {
