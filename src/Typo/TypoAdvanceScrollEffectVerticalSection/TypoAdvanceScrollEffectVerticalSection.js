@@ -92,7 +92,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
                   <input value="0"
-                    type="number"
+                    type="text"
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-entry-count"
@@ -148,7 +148,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
                   <input value="0"
-                    type="number"
+                    type="text"
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-center-count"
@@ -204,7 +204,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                   class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg-3f3f3f"
                 >
                   <input value="0"
-                    type="number"
+                    type="text"
                     min="-100"
                     max="100"
                     id="Typo-vertical-advance-exit-count"

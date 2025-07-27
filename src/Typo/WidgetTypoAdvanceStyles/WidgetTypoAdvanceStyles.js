@@ -409,25 +409,40 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
-  [entryCount, centerCount, exitCount].forEach((input, i) => {
-    const updateFn = [updateEntry, updateCenter, updateExit][i];
+[entryCount, centerCount, exitCount].forEach((input, i) => {
+  const updateFn = [updateEntry, updateCenter, updateExit][i];
 
-    input.addEventListener("input", (e) => {
-      let val = parseInt(e.target.value || "0");
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
-      updateFn(val); // 🔥 real-time sync
-    });
-
-    input.addEventListener("blur", (e) => {
-      let val = parseInt(e.target.value || "0");
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
-      updateFn(val); // 🔒 safety update
-    });
+  input.addEventListener("input", (e) => {
+    let val = parseInt(e.target.value.replace("%", "").trim());
+    if (isNaN(val)) val = 0;
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = val + "%"; // 🧷 Show `%`
+    updateFn(val);
   });
+
+  input.addEventListener("blur", (e) => {
+    let val = parseInt(e.target.value.replace("%", "").trim());
+    if (isNaN(val)) val = 0;
+    val = Math.max(-100, Math.min(100, val));
+    e.target.value = val + "%"; // 🧷 Ensure `%` on blur
+    updateFn(val);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (
+      !/[0-9\-]/.test(e.key) &&
+      !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
+    ) {
+      e.preventDefault(); // 🚫 Block unwanted characters
+    }
+  });
+
+  input.addEventListener("focus", (e) => {
+    const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
+    e.target.value = val; // ✂ remove % temporarily to allow edit
+  });
+});
+
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
