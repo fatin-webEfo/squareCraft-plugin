@@ -417,32 +417,29 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     let val = parseInt(e.target.value.replace("%", "").trim());
     if (isNaN(val)) val = 0;
     val = Math.max(-100, Math.min(100, val));
-    e.target.value = val + "%"; // 🧷 Show `%`
-    updateFn(val);
+    e.target.value = val; // remove % temporarily
   });
 
   input.addEventListener("blur", (e) => {
     let val = parseInt(e.target.value.replace("%", "").trim());
     if (isNaN(val)) val = 0;
     val = Math.max(-100, Math.min(100, val));
-    e.target.value = val + "%"; // 🧷 Ensure `%` on blur
+    e.target.value = val + "%"; // apply % after unfocus
     updateFn(val);
   });
 
   input.addEventListener("keydown", (e) => {
-    if (
-      !/[0-9\-]/.test(e.key) &&
-      !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
-    ) {
-      e.preventDefault(); // 🚫 Block unwanted characters
-    }
+    const valid = /[0-9\-]/.test(e.key);
+    const allowed = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
+    if (!valid && !allowed.includes(e.key)) e.preventDefault();
   });
 
   input.addEventListener("focus", (e) => {
     const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-    e.target.value = val; 
+    e.target.value = val; // hide % for easier editing
   });
 });
+
 
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
