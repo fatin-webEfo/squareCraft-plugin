@@ -439,7 +439,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
 
   input.addEventListener("focus", (e) => {
     const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-    e.target.value = val; // ✂ remove % temporarily to allow edit
+    e.target.value = val; 
   });
 });
 
