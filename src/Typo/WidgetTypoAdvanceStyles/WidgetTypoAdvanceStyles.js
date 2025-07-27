@@ -416,7 +416,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       let val = parseInt(e.target.value || "0");
       if (isNaN(val)) val = 0;
       val = Math.max(-100, Math.min(100, val));
-      e.target.value = val;
+      e.target.value = val + "%";
       updateFn(val); // 🔥 real-time sync
     });
 
@@ -424,7 +424,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       let val = parseInt(e.target.value || "0");
       if (isNaN(val)) val = 0;
       val = Math.max(-100, Math.min(100, val));
-      e.target.value = val;
+      e.target.value = val + "%";
       updateFn(val); // 🔒 safety update
     });
   });
