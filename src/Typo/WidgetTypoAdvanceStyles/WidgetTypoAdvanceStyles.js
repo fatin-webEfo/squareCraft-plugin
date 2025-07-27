@@ -406,7 +406,11 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "--sc-Typo-vertical-scroll-exit"
   );
 
-  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+updateStart(getCurrentPercentage("--sc-Typo-vertical-scroll-start"));
+updateEnd(getCurrentPercentage("--sc-Typo-vertical-scroll-end"));
+updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
