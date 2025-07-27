@@ -86,8 +86,13 @@
       }
     }
 
-    const getVal = (id) =>
-      parseInt(document.getElementById(id)?.value.replace("%", "") || "0");
+   const getVal = (id) => {
+     const el = document.getElementById(id);
+     if (!el) return 0;
+     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+     return parseInt(raw.replace("%", "")) || 0;
+   };
+
 
     setup(
       "Typo-vertical-advance-entry-increase",
