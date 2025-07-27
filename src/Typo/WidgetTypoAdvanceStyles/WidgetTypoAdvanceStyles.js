@@ -292,7 +292,12 @@
     (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      countEl.value = `${val}`; // ✅ sync input with %
+      if (countEl.tagName === "INPUT") {
+        countEl.value = `${val}`;
+      } else {
+        countEl.textContent = `${val}`;
+      }
+
 
       const el = getSelectedElement?.();
       const styleId = el?.id
