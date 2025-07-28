@@ -460,8 +460,19 @@ export function initEffectAnimationDropdownToggle() {
       const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
       return parseFloat(val.replace("%", "")) || 0;
     };
+let startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
+let endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
+window.TypoStartVal = startVal;
+window.TypoEndVal = endVal;
 
-    const updateStart = updateField(
+  const updateStart = (val) => {
+  const nextStart = Math.max(0, Math.min(endVal, startVal + direction));
+  startVal = nextStart;
+  window.TypoStartVal = startVal;
+  updateStart(startVal);
+
+    window.TypoStartVal = startVal;
+    updateField(
       startBullet,
       startFill,
       startValue,
@@ -469,8 +480,13 @@ export function initEffectAnimationDropdownToggle() {
       "left",
       0,
       100
-    );
-    const updateEnd = updateField(
+    )(startVal);
+  };
+
+  const updateEnd = (val) => {
+    endVal = Math.max(startVal, Math.min(val, 100));
+    window.TypoEndVal = endVal;
+    updateField(
       endBullet,
       endFill,
       endValue,
@@ -478,7 +494,9 @@ export function initEffectAnimationDropdownToggle() {
       "right",
       0,
       100
-    );
+    )(endVal);
+  };
+
     const updateEntry = updateField(
       entryBullet,
       entryFill,
