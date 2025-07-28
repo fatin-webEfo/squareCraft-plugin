@@ -164,28 +164,31 @@
         const direction = e.key === "ArrowRight" ? 1 : -1;
         lastPressedKey = e.key;
 
-        const update = () => {
-          if (lastFocused.includes("entry")) {
-            entryVal = Math.max(-100, Math.min(100, entryVal + direction));
-            updateEntry(entryVal);
-          }
-          if (lastFocused.includes("center")) {
-            centerVal = Math.max(-100, Math.min(100, centerVal + direction));
-            updateCenter(centerVal);
-          }
-          if (lastFocused.includes("exit")) {
-            exitVal = Math.max(-100, Math.min(100, exitVal + direction));
-            updateExit(exitVal);
-          }
-          if (lastFocused.includes("start")) {
-            startVal = Math.max(0, Math.min(100, startVal + direction));
-            updateStart(startVal);
-          }
-          if (lastFocused.includes("end")) {
-            endVal = Math.max(0, Math.min(100, endVal + direction));
-            updateEnd(endVal);
-          }
-        };
+       const update = () => {
+         if (lastFocused.includes("entry")) {
+           entryVal = Math.max(-100, Math.min(100, entryVal + direction));
+           updateEntry(entryVal);
+         }
+         if (lastFocused.includes("center")) {
+           centerVal = Math.max(-100, Math.min(100, centerVal + direction));
+           updateCenter(centerVal);
+         }
+         if (lastFocused.includes("exit")) {
+           exitVal = Math.max(-100, Math.min(100, exitVal + direction));
+           updateExit(exitVal);
+         }
+         if (lastFocused.includes("start")) {
+           startVal = getVal("Typo-vertical-timelineStartValue"); // ✅ Sync first
+           startVal = Math.max(0, Math.min(startVal + direction, endVal - 4)); // ✅ Lock buffer
+           updateStart(startVal);
+         }
+         if (lastFocused.includes("end")) {
+           endVal = getVal("Typo-vertical-timelineEndValue"); // ✅ Sync first
+           endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100)); // ✅ Lock buffer
+           updateEnd(endVal);
+         }
+       };
+
 
         update();
 
