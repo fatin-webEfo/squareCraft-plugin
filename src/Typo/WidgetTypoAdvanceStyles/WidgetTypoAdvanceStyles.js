@@ -173,14 +173,19 @@ function attachAdvanceTimelineIncrementDecrement(
         exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
       }
-      if (lastFocused.includes("start")) {
-        startVal = Math.max(0, Math.min(100, startVal + direction));
-        updateStart(startVal);
-      }
-      if (lastFocused.includes("end")) {
-        endVal = Math.max(0, Math.min(100, endVal + direction));
-        updateEnd(endVal);
-      }
+     if (lastFocused.includes("start")) {
+       const next = startVal + direction;
+       if (next >= 0 && next <= endVal) {
+         updateStart(next);
+       }
+     }
+     if (lastFocused.includes("end")) {
+       const next = endVal + direction;
+       if (next <= 100 && next >= startVal) {
+         updateEnd(next);
+       }
+     }
+
     };
 
     update();
@@ -269,6 +274,9 @@ export function initEffectAnimationDropdownToggle() {
 }
 
 export function initTypoAdvanceStyles(getSelectedElement) {
+  let startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
+  let endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
+
   const startBullet = document.getElementById(
     "Typo-vertical-timeline-start-bullet"
   );
@@ -415,7 +423,18 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         );
         const percent =
           ((clientX - rect.left) / rect.width) * (max - min) + min;
-        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+let clamped = Math.round(percent);
+
+if (bullet === startBullet) {
+  clamped = Math.max(0, Math.min(clamped, endVal));
+  updateStart(clamped);
+} else if (bullet === endBullet) {
+  clamped = Math.max(startVal, Math.min(clamped, 100));
+  updateEnd(clamped);
+} else {
+  clamped = Math.max(min, Math.min(clamped, max));
+  updateFn(clamped);
+}
         updateFn(clamped);
       };
 
@@ -438,8 +457,10 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
     return parseFloat(val.replace("%", "")) || 0;
   };
-
-  const updateStart = updateField(
+const updateStart = (val) => {
+  val = Math.max(0, Math.min(val, endVal)); // Can't cross end
+  startVal = val;
+  updateField(
     startBullet,
     startFill,
     startValue,
@@ -447,8 +468,13 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "left",
     0,
     100
-  );
-  const updateEnd = updateField(
+  )(val);
+};
+
+const updateEnd = (val) => {
+  val = Math.max(startVal, Math.min(val, 100)); // Can't cross start
+  endVal = val;
+  updateField(
     endBullet,
     endFill,
     endValue,
@@ -456,7 +482,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "right",
     0,
     100
-  );
+  )(val);
+};
+
   const updateEntry = updateField(
     entryBullet,
     entryFill,
@@ -483,13 +511,17 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   [entryCount, centerCount, exitCount].forEach((input, i) => {
     const updateFn = [updateEntry, updateCenter, updateExit][i];
 
-    input.addEventListener("input", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%"; // 🧷 Show `%`
-      updateFn(val);
-    });
+   if (input === startValue) {
+     val = Math.max(0, Math.min(val, endVal));
+     updateStart(val);
+   } else if (input === endValue) {
+     val = Math.max(startVal, Math.min(val, 100));
+     updateEnd(val);
+   } else {
+     val = Math.max(-100, Math.min(100, val));
+     updateFn(val);
+   }
+
 
     input.addEventListener("blur", (e) => {
       let val = parseInt(e.target.value.replace("%", "").trim());
