@@ -174,13 +174,20 @@ function attachAdvanceTimelineIncrementDecrement(
         updateExit(exitVal);
       }
       if (lastFocused.includes("start")) {
-        startVal = Math.max(0, Math.min(100, startVal + direction));
-        updateStart(startVal);
+        const nextStart = Math.max(0, Math.min(100, startVal + direction));
+        if (nextStart <= endVal) {
+          startVal = nextStart;
+          updateStart(startVal);
+        }
       }
       if (lastFocused.includes("end")) {
-        endVal = Math.max(0, Math.min(100, endVal + direction));
-        updateEnd(endVal);
+        const nextEnd = Math.max(0, Math.min(100, endVal + direction));
+        if (nextEnd >= startVal) {
+          endVal = nextEnd;
+          updateEnd(endVal);
+        }
       }
+
     };
 
     update();
