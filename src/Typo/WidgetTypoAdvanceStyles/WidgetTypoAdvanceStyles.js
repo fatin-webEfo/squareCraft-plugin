@@ -747,6 +747,7 @@ function horizontalinitEffectAnimationDropdownToggle() {
   }
 }
 
+
 export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-horizontal-timeline-start-bullet"
@@ -1005,6 +1006,7 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
 }
 
 //
+
 
 function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
