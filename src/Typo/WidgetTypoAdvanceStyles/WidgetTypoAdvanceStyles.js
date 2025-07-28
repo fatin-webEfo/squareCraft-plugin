@@ -416,6 +416,11 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
+
+      if (bullet === startBullet) lastFocused = "start";
+      else if (bullet === endBullet) lastFocused = "end";
+      else lastFocused = bullet.id;
+
       const onMouseMove = (event) => {
         const clientX = Math.max(
           rect.left,
@@ -423,29 +428,31 @@ export function initTypoAdvanceStyles(getSelectedElement) {
         );
         const percent =
           ((clientX - rect.left) / rect.width) * (max - min) + min;
-let clamped = Math.round(percent);
+        let clamped = Math.round(percent);
 
-if (bullet === startBullet) {
-  clamped = Math.max(0, Math.min(clamped, endVal));
-  updateStart(clamped);
-} else if (bullet === endBullet) {
-  clamped = Math.max(startVal, Math.min(clamped, 100));
-  updateEnd(clamped);
-} else {
-  clamped = Math.max(min, Math.min(clamped, max));
-  updateFn(clamped);
-}
-        updateFn(clamped);
+        if (bullet === startBullet) {
+          clamped = Math.max(0, Math.min(clamped, endVal));
+          updateStart(clamped);
+        } else if (bullet === endBullet) {
+          clamped = Math.max(startVal, Math.min(clamped, 100));
+          updateEnd(clamped);
+        } else {
+          clamped = Math.max(min, Math.min(clamped, max));
+          updateFn(clamped);
+        }
       };
 
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener(
         "mouseup",
-        () => document.removeEventListener("mousemove", onMouseMove),
+        () => {
+          document.removeEventListener("mousemove", onMouseMove);
+        },
         { once: true }
       );
     };
   };
+
 
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
