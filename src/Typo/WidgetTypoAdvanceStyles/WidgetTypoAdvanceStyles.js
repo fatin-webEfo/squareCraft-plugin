@@ -91,7 +91,17 @@ function attachAdvanceTimelineIncrementDecrement(
     const bullet = document.getElementById(bulletId);
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
-      bullet.addEventListener("click", () => (lastFocused = bulletId));
+bullet.addEventListener("click", () => {
+  lastFocused = bulletId;
+
+  const val = getCurrent();
+  if (bulletId.includes("entry")) entryVal = val;
+  if (bulletId.includes("center")) centerVal = val;
+  if (bulletId.includes("exit")) exitVal = val;
+  if (bulletId.includes("start")) startVal = val;
+  if (bulletId.includes("end")) endVal = val;
+});
+
       bullet.addEventListener("focus", () => {
         lastFocused = bulletId;
         const val = getCurrent();
@@ -173,18 +183,17 @@ function attachAdvanceTimelineIncrementDecrement(
         exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
       }
-     if (lastFocused.includes("start")) {
-       const next = startVal + direction;
-       if (next >= 0 && next <= endVal) {
-         updateStart(next);
-       }
-     }
-     if (lastFocused.includes("end")) {
-       const next = endVal + direction;
-       if (next <= 100 && next >= startVal) {
-         updateEnd(next);
-       }
-     }
+    if (lastFocused.includes("start")) {
+      const next = Math.max(0, Math.min(endVal, startVal + direction));
+      startVal = next;
+      updateStart(next);
+    }
+    if (lastFocused.includes("end")) {
+      const next = Math.max(startVal, Math.min(100, endVal + direction));
+      endVal = next;
+      updateEnd(next);
+    }
+
 
     };
 
