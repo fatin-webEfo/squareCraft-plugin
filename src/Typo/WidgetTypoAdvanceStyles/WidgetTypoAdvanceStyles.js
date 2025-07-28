@@ -283,6 +283,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   const endBullet = document.getElementById(
     "Typo-vertical-timeline-end-bullet"
   );
+  startBullet.addEventListener("click", () => (lastFocused = "start"));
+  endBullet.addEventListener("click", () => (lastFocused = "end"));
+
   const startFill = document.getElementById(
     "Typo-vertical-timeline-start-fill"
   );
