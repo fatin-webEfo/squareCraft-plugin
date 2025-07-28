@@ -206,16 +206,18 @@ function attachAdvanceTimelineIncrementDecrement(
        endVal = getVal("Typo-vertical-timelineEndValue");
        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
        updateStart(startVal);
-       document.getElementById("Typo-vertical-timelineStartValue").value =
-         startVal + "%";
+      document.getElementById("Typo-vertical-timelineStartValue").textContent =
+        startVal + "%";
+    
+
      }
      if (lastFocused.includes("end")) {
        startVal = getVal("Typo-vertical-timelineStartValue");
        endVal = getVal("Typo-vertical-timelineEndValue");
        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
        updateEnd(endVal);
-       document.getElementById("Typo-vertical-timelineEndValue").value =
-         endVal + "%";
+        document.getElementById("Typo-vertical-timelineEndValue").textContent =
+          endVal + "%";
      }
    };
 
@@ -514,16 +516,18 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           ((clientX - rect.left) / rect.width) * (max - min) + min;
         let clamped = Math.round(percent);
 
-        if (bullet === startBullet) {
-          clamped = Math.max(0, Math.min(clamped, currentEndVal));
-          updateStart(clamped);
-        } else if (bullet === endBullet) {
-          clamped = Math.max(currentStartVal, Math.min(clamped, 100));
-          updateEnd(clamped);
-        } else {
-          clamped = Math.max(min, Math.min(clamped, max));
-          updateFn(clamped);
-        }
+      if (bullet === startBullet) {
+        clamped = Math.max(0, Math.min(clamped, currentEndVal));
+        currentStartVal = clamped; // ✅ Sync here
+        updateStart(clamped);
+      } else if (bullet === endBullet) {
+        clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
+        currentEndVal = clamped; // ✅ Sync here
+        updateEnd(clamped);
+      } else {
+        clamped = Math.max(min, Math.min(clamped, max));
+        updateFn(clamped);
+      }
       };
 
       document.addEventListener("mousemove", onMouseMove);
