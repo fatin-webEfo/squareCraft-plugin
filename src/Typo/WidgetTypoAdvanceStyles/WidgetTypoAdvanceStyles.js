@@ -397,11 +397,44 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       }
     };
 
+  const makeDraggable = (
+    bullet,
+    updateFn,
+    type = "normal",
+    min = -100,
+    max = 100
+  ) => {
+    bullet.onmousedown = (e) => {
+      e.preventDefault();
+      const container = bullet.parentElement;
+      const rect = container.getBoundingClientRect();
+      const onMouseMove = (event) => {
+        const clientX = Math.max(
+          rect.left,
+          Math.min(rect.right, event.clientX)
+        );
+        const percent =
+          ((clientX - rect.left) / rect.width) * (max - min) + min;
+        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+        updateFn(clamped);
+      };
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener(
+        "mouseup",
+        () => document.removeEventListener("mousemove", onMouseMove),
+        { once: true }
+      );
+    };
+  };
+
   const getCurrentPercentage = (cssVar) => {
     const el = getSelectedElement?.();
     if (!el) return 0;
+
     const contentEl = el.querySelector(".sqs-block-content");
     if (!contentEl) return 0;
+
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
     return parseFloat(val.replace("%", "")) || 0;
   };
@@ -442,35 +475,42 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     exitCount,
     "--sc-Typo-vertical-scroll-exit"
   );
-
+  const startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
+  const endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
   const entryVal = getCurrentPercentage("--sc-Typo-vertical-scroll-entry");
   const centerVal = getCurrentPercentage("--sc-Typo-vertical-scroll-center");
   const exitVal = getCurrentPercentage("--sc-Typo-vertical-scroll-exit");
-  const startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
-  const endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
 
+  updateStart(startVal);
+  updateEnd(endVal);
   updateEntry(entryVal);
   updateCenter(centerVal);
   updateExit(exitVal);
-  updateStart(startVal);
-  updateEnd(endVal);
+
+
+  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+  updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+  updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
   [entryCount, centerCount, exitCount].forEach((input, i) => {
     const updateFn = [updateEntry, updateCenter, updateExit][i];
+
     input.addEventListener("input", (e) => {
       let val = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(val)) val = 0;
       val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
+      e.target.value = val + "%"; // 🧷 Show `%`
       updateFn(val);
     });
+
     input.addEventListener("blur", (e) => {
       let val = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(val)) val = 0;
       val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
+      e.target.value = val + "%"; // 🧷 Ensure `%` on blur
       updateFn(val);
     });
+
     input.addEventListener("keydown", (e) => {
       if (
         !/[0-9\-]/.test(e.key) &&
@@ -478,46 +518,15 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           e.key
         )
       ) {
-        e.preventDefault();
+        e.preventDefault(); // 🚫 Block unwanted characters
       }
     });
+
     input.addEventListener("focus", (e) => {
       const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
       e.target.value = val;
     });
   });
-
-  const makeDraggable = (
-    bullet,
-    updateFn,
-    type = "normal",
-    min = -100,
-    max = 100
-  ) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      const container = bullet.parentElement;
-      const rect = container.getBoundingClientRect();
-      const onMouseMove = (event) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, event.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-        updateFn(clamped);
-      };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", onMouseMove);
-        },
-        { once: true }
-      );
-    };
-  };
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
@@ -567,10 +576,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateCenter,
     updateExit
   );
-
   initEffectAnimationDropdownToggle(startBullet, endBullet);
 }
-
 
 //
 
