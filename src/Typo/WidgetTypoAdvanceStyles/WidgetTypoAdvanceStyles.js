@@ -174,20 +174,13 @@ function attachAdvanceTimelineIncrementDecrement(
         updateExit(exitVal);
       }
       if (lastFocused.includes("start")) {
-        const nextStart = Math.max(0, Math.min(100, startVal + direction));
-        if (nextStart <= endVal) {
-          startVal = nextStart;
-          updateStart(startVal);
-        }
+        startVal = Math.max(0, Math.min(100, startVal + direction));
+        updateStart(startVal);
       }
       if (lastFocused.includes("end")) {
-        const nextEnd = Math.max(0, Math.min(100, endVal + direction));
-        if (nextEnd >= startVal) {
-          endVal = nextEnd;
-          updateEnd(endVal);
-        }
+        endVal = Math.max(0, Math.min(100, endVal + direction));
+        updateEnd(endVal);
       }
-
     };
 
     update();
@@ -482,18 +475,6 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     exitCount,
     "--sc-Typo-vertical-scroll-exit"
   );
-  const startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
-  const endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
-  const entryVal = getCurrentPercentage("--sc-Typo-vertical-scroll-entry");
-  const centerVal = getCurrentPercentage("--sc-Typo-vertical-scroll-center");
-  const exitVal = getCurrentPercentage("--sc-Typo-vertical-scroll-exit");
-
-  updateStart(startVal);
-  updateEnd(endVal);
-  updateEntry(entryVal);
-  updateCenter(centerVal);
-  updateExit(exitVal);
-
 
   updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
