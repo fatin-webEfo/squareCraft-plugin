@@ -177,14 +177,17 @@
           exitVal = Math.max(-100, Math.min(100, exitVal + direction));
           updateExit(exitVal);
         }
-        if (lastFocused.includes("start")) {
-          startVal = Math.max(0, Math.min(100, startVal + direction));
-          updateStart(startVal);
-        }
-        if (lastFocused.includes("end")) {
-          endVal = Math.max(0, Math.min(100, endVal + direction));
-          updateEnd(endVal);
-        }
+       if (lastFocused.includes("start")) {
+         const next = Math.max(0, Math.min(endVal, startVal + direction));
+         startVal = next;
+         updateStart(next);
+       }
+       if (lastFocused.includes("end")) {
+         const next = Math.max(startVal, Math.min(100, endVal + direction));
+         endVal = next;
+         updateEnd(next);
+       }
+
       };
 
       update();
@@ -421,8 +424,21 @@ export function initEffectAnimationDropdownToggle() {
           );
           const percent =
             ((clientX - rect.left) / rect.width) * (max - min) + min;
-          const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-          updateFn(clamped);
+         let clamped = Math.round(percent);
+
+         if (bullet === startBullet) {
+           clamped = Math.max(0, Math.min(clamped, endVal));
+           updateStart(clamped);
+           startVal = clamped;
+         } else if (bullet === endBullet) {
+           clamped = Math.max(startVal, Math.min(clamped, 100));
+           updateEnd(clamped);
+           endVal = clamped;
+         } else {
+           clamped = Math.max(min, Math.min(clamped, max));
+           updateFn(clamped);
+         }
+
         };
 
         document.addEventListener("mousemove", onMouseMove);
