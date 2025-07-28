@@ -1005,7 +1005,7 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
   horizontalinitEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-//
+
 ``
 
 function opacityattachAdvanceTimelineIncrementDecrement(
