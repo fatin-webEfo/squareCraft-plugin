@@ -177,17 +177,14 @@
           exitVal = Math.max(-100, Math.min(100, exitVal + direction));
           updateExit(exitVal);
         }
-       if (lastFocused.includes("start")) {
-         const next = Math.max(0, Math.min(endVal, startVal + direction));
-         startVal = next;
-         updateStart(next);
-       }
-       if (lastFocused.includes("end")) {
-         const next = Math.max(startVal, Math.min(100, endVal + direction));
-         endVal = next;
-         updateEnd(next);
-       }
-
+        if (lastFocused.includes("start")) {
+          startVal = Math.max(0, Math.min(100, startVal + direction));
+          updateStart(startVal);
+        }
+        if (lastFocused.includes("end")) {
+          endVal = Math.max(0, Math.min(100, endVal + direction));
+          updateEnd(endVal);
+        }
       };
 
       update();
@@ -424,21 +421,8 @@ export function initEffectAnimationDropdownToggle() {
           );
           const percent =
             ((clientX - rect.left) / rect.width) * (max - min) + min;
-         let clamped = Math.round(percent);
-
-         if (bullet === startBullet) {
-           clamped = Math.max(0, Math.min(clamped, endVal));
-           updateStart(clamped);
-           startVal = clamped;
-         } else if (bullet === endBullet) {
-           clamped = Math.max(startVal, Math.min(clamped, 100));
-           updateEnd(clamped);
-           endVal = clamped;
-         } else {
-           clamped = Math.max(min, Math.min(clamped, max));
-           updateFn(clamped);
-         }
-
+          const clamped = Math.round(Math.max(min, Math.min(max, percent)));
+          updateFn(clamped);
         };
 
         document.addEventListener("mousemove", onMouseMove);
@@ -460,19 +444,8 @@ export function initEffectAnimationDropdownToggle() {
       const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
       return parseFloat(val.replace("%", "")) || 0;
     };
-let startVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
-let endVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
-window.TypoStartVal = startVal;
-window.TypoEndVal = endVal;
 
-  const updateStart = (val) => {
-  const nextStart = Math.max(0, Math.min(endVal, startVal + direction));
-  startVal = nextStart;
-  window.TypoStartVal = startVal;
-  updateStart(startVal);
-
-    window.TypoStartVal = startVal;
-    updateField(
+    const updateStart = updateField(
       startBullet,
       startFill,
       startValue,
@@ -480,13 +453,8 @@ window.TypoEndVal = endVal;
       "left",
       0,
       100
-    )(startVal);
-  };
-
-  const updateEnd = (val) => {
-    endVal = Math.max(startVal, Math.min(val, 100));
-    window.TypoEndVal = endVal;
-    updateField(
+    );
+    const updateEnd = updateField(
       endBullet,
       endFill,
       endValue,
@@ -494,9 +462,7 @@ window.TypoEndVal = endVal;
       "right",
       0,
       100
-    )(endVal);
-  };
-
+    );
     const updateEntry = updateField(
       entryBullet,
       entryFill,
