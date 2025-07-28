@@ -272,305 +272,334 @@ export function initEffectAnimationDropdownToggle() {
   });
 }
 
-  export function initTypoAdvanceStyles(getSelectedElement) {
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
-    const startFill = document.getElementById(
-      "Typo-vertical-timeline-start-fill"
-    );
-    const endFill = document.getElementById("Typo-vertical-timeline-end-fill");
-    const startValue = document.getElementById(
-      "Typo-vertical-timelineStartValue"
-    );
-    const endValue = document.getElementById("Typo-vertical-timelineEndValue");
+ export function initTypoAdvanceStyles(getSelectedElement) {
+   const startBullet = document.getElementById(
+     "Typo-vertical-timeline-start-bullet"
+   );
+   const endBullet = document.getElementById(
+     "Typo-vertical-timeline-end-bullet"
+   );
+   const startFill = document.getElementById(
+     "Typo-vertical-timeline-start-fill"
+   );
+   const endFill = document.getElementById("Typo-vertical-timeline-end-fill");
+   const startValue = document.getElementById(
+     "Typo-vertical-timelineStartValue"
+   );
+   const endValue = document.getElementById("Typo-vertical-timelineEndValue");
 
-    const entryBullet = document.getElementById(
-      "Typo-vertical-advance-entry-bullet"
-    );
-    const entryFill = document.getElementById("Typo-vertical-advance-entry-fill");
-    const entryCount = document.getElementById(
-      "Typo-vertical-advance-entry-count"
-    );
+   const entryBullet = document.getElementById(
+     "Typo-vertical-advance-entry-bullet"
+   );
+   const entryFill = document.getElementById(
+     "Typo-vertical-advance-entry-fill"
+   );
+   const entryCount = document.getElementById(
+     "Typo-vertical-advance-entry-count"
+   );
 
-    const centerBullet = document.getElementById(
-      "Typo-vertical-advance-center-bullet"
-    );
-    const centerFill = document.getElementById(
-      "Typo-vertical-advance-center-fill"
-    );
-    const centerCount = document.getElementById(
-      "Typo-vertical-advance-center-count"
-    );
+   const centerBullet = document.getElementById(
+     "Typo-vertical-advance-center-bullet"
+   );
+   const centerFill = document.getElementById(
+     "Typo-vertical-advance-center-fill"
+   );
+   const centerCount = document.getElementById(
+     "Typo-vertical-advance-center-count"
+   );
 
-    const exitBullet = document.getElementById(
-      "Typo-vertical-advance-exit-bullet"
-    );
-    const exitFill = document.getElementById("Typo-vertical-advance-exit-fill");
-    const exitCount = document.getElementById("Typo-vertical-advance-exit-count");
+   const exitBullet = document.getElementById(
+     "Typo-vertical-advance-exit-bullet"
+   );
+   const exitFill = document.getElementById("Typo-vertical-advance-exit-fill");
+   const exitCount = document.getElementById(
+     "Typo-vertical-advance-exit-count"
+   );
 
-    if (
-      !startBullet ||
-      !endBullet ||
-      !startFill ||
-      !endFill ||
-      !startValue ||
-      !endValue ||
-      !entryBullet ||
-      !entryFill ||
-      !entryCount ||
-      !centerBullet ||
-      !centerFill ||
-      !centerCount ||
-      !exitBullet ||
-      !exitFill ||
-      !exitCount
-    )
-      return;
+   if (
+     !startBullet ||
+     !endBullet ||
+     !startFill ||
+     !endFill ||
+     !startValue ||
+     !endValue ||
+     !entryBullet ||
+     !entryFill ||
+     !entryCount ||
+     !centerBullet ||
+     !centerFill ||
+     !centerCount ||
+     !exitBullet ||
+     !exitFill ||
+     !exitCount
+   )
+     return;
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-      if (countEl.tagName === "INPUT") {
-        countEl.value = `${val}`;
-      } else {
-        countEl.textContent = `${val}`;
-      }
+   const updateField =
+     (
+       bullet,
+       fill,
+       countEl,
+       cssVar,
+       position = "left",
+       min = -100,
+       max = 100
+     ) =>
+     (val) => {
+       val = Math.max(min, Math.min(max, val));
+       if (countEl.tagName === "INPUT") {
+         countEl.value = `${val}`;
+       } else {
+         countEl.textContent = `${val}`;
+       }
 
+       const el = getSelectedElement?.();
+       const styleId = el?.id
+         ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+         : null;
 
-      const el = getSelectedElement?.();
-      const styleId = el?.id
-        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
-        : null;
+       if (
+         [
+           "--sc-Typo-vertical-scroll-entry",
+           "--sc-Typo-vertical-scroll-center",
+           "--sc-Typo-vertical-scroll-exit",
+         ].includes(cssVar)
+       ) {
+         const percent = (val + 100) / 2;
+         const bulletLeft = percent;
+         const fillLeft = val < 0 ? percent : 50;
+         const fillWidth = Math.abs(val / 2);
 
-      if (
-        [
-          "--sc-Typo-vertical-scroll-entry",
-          "--sc-Typo-vertical-scroll-center",
-          "--sc-Typo-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
+         bullet.style.left = `${bulletLeft}%`;
+         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
+         gsap.set(fill, {
+           left: `${fillLeft}%`,
+           width: `${fillWidth}%`,
+           backgroundColor: "var(--sc-Typo-theme-accent)",
+         });
 
-        bullet.style.left = `${bulletLeft}%`;
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-Typo-theme-accent)",
-        });
+         if (cssVar === "--sc-Typo-vertical-scroll-entry") {
+           document.getElementById(
+             "Typo-vertical-custom-timeline-arrow"
+           ).style.left = `${bulletLeft}%`;
+         }
 
-        if (cssVar === "--sc-Typo-vertical-scroll-entry") {
-          document.getElementById(
-            "Typo-vertical-custom-timeline-arrow"
-          ).style.left = `${bulletLeft}%`;
-        }
+         initEffectAnimationDropdownToggle();
+       } else {
+         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+         position === "left"
+           ? gsap.set(fill, { width: `${val}%`, left: "0" })
+           : gsap.set(fill, {
+               left: "auto",
+               transform: `scaleX(${(100 - val) / 100})`,
+               transformOrigin: "right",
+               width: "100%",
+               backgroundColor: "#F6B67B",
+             });
+       }
 
-        initEffectAnimationDropdownToggle();
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        position === "left"
-          ? gsap.set(fill, { width: `${val}%`, left: "0" })
-          : gsap.set(fill, {
-              left: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
-              transformOrigin: "right",
-              width: "100%",
-              backgroundColor: "#F6B67B",
-            });
-      }
+       if (el && el.id?.startsWith("block-")) {
+         let styleTag = document.getElementById(styleId);
+         if (!styleTag) {
+           styleTag = document.createElement("style");
+           styleTag.id = styleId;
+           document.head.appendChild(styleTag);
+         }
+         const contentEl = el.querySelector(".sqs-block-content");
+         if (contentEl) {
+           styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
+         }
+       }
+     };
 
-      if (el && el.id?.startsWith("block-")) {
-        let styleTag = document.getElementById(styleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
+   const getCurrentPercentage = (cssVar) => {
+     const el = getSelectedElement?.();
+     if (!el) return 0;
+     const contentEl = el.querySelector(".sqs-block-content");
+     if (!contentEl) return 0;
+     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
+     return parseFloat(val.replace("%", "")) || 0;
+   };
 
-        const contentEl = el.querySelector(".sqs-block-content");
-        if (contentEl) {
-          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-        }
-      }
-    };
+   let currentStartVal = getCurrentPercentage(
+     "--sc-Typo-vertical-scroll-start"
+   );
+   let currentEndVal = getCurrentPercentage("--sc-Typo-vertical-scroll-end");
 
+   const updateStart = (val) => {
+     currentStartVal = Math.max(0, Math.min(val, currentEndVal));
+     updateField(
+       startBullet,
+       startFill,
+       startValue,
+       "--sc-Typo-vertical-scroll-start",
+       "left",
+       0,
+       100
+     )(currentStartVal);
+   };
 
-    const makeDraggable = (
-      bullet,
-      updateFn,
-      type = "normal",
-      min = -100,
-      max = 100
-    ) => {
-      bullet.onmousedown = (e) => {
-        e.preventDefault();
-        const container = bullet.parentElement;
-        const rect = container.getBoundingClientRect();
-        const onMouseMove = (event) => {
-          const clientX = Math.max(
-            rect.left,
-            Math.min(rect.right, event.clientX)
-          );
-          const percent =
-            ((clientX - rect.left) / rect.width) * (max - min) + min;
-          const clamped = Math.round(Math.max(min, Math.min(max, percent)));
-          updateFn(clamped);
-        };
+   const updateEnd = (val) => {
+     currentEndVal = Math.max(currentStartVal, Math.min(val, 100));
+     updateField(
+       endBullet,
+       endFill,
+       endValue,
+       "--sc-Typo-vertical-scroll-end",
+       "right",
+       0,
+       100
+     )(currentEndVal);
+   };
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener(
-          "mouseup",
-          () => document.removeEventListener("mousemove", onMouseMove),
-          { once: true }
-        );
-      };
-    };
+   const updateEntry = updateField(
+     entryBullet,
+     entryFill,
+     entryCount,
+     "--sc-Typo-vertical-scroll-entry"
+   );
+   const updateCenter = updateField(
+     centerBullet,
+     centerFill,
+     centerCount,
+     "--sc-Typo-vertical-scroll-center"
+   );
+   const updateExit = updateField(
+     exitBullet,
+     exitFill,
+     exitCount,
+     "--sc-Typo-vertical-scroll-exit"
+   );
 
-    const getCurrentPercentage = (cssVar) => {
-      const el = getSelectedElement?.();
-      if (!el) return 0;
+   updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
-      const contentEl = el.querySelector(".sqs-block-content");
-      if (!contentEl) return 0;
+   const makeDraggable = (
+     bullet,
+     updateFn,
+     type = "normal",
+     min = -100,
+     max = 100
+   ) => {
+     bullet.onmousedown = (e) => {
+       e.preventDefault();
+       const container = bullet.parentElement;
+       const rect = container.getBoundingClientRect();
+       const onMouseMove = (event) => {
+         const clientX = Math.max(
+           rect.left,
+           Math.min(rect.right, event.clientX)
+         );
+         const percent =
+           ((clientX - rect.left) / rect.width) * (max - min) + min;
+         let clamped = Math.round(percent);
 
-      const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
-      return parseFloat(val.replace("%", "")) || 0;
-    };
+         if (bullet === startBullet) {
+           clamped = Math.max(0, Math.min(clamped, currentEndVal));
+           updateStart(clamped);
+         } else if (bullet === endBullet) {
+           clamped = Math.max(currentStartVal, Math.min(clamped, 100));
+           updateEnd(clamped);
+         } else {
+           clamped = Math.max(min, Math.min(clamped, max));
+           updateFn(clamped);
+         }
+       };
 
-    const updateStart = updateField(
-      startBullet,
-      startFill,
-      startValue,
-      "--sc-Typo-vertical-scroll-start",
-      "left",
-      0,
-      100
-    );
-    const updateEnd = updateField(
-      endBullet,
-      endFill,
-      endValue,
-      "--sc-Typo-vertical-scroll-end",
-      "right",
-      0,
-      100
-    );
-    const updateEntry = updateField(
-      entryBullet,
-      entryFill,
-      entryCount,
-      "--sc-Typo-vertical-scroll-entry"
-    );
-    const updateCenter = updateField(
-      centerBullet,
-      centerFill,
-      centerCount,
-      "--sc-Typo-vertical-scroll-center"
-    );
-    const updateExit = updateField(
-      exitBullet,
-      exitFill,
-      exitCount,
-      "--sc-Typo-vertical-scroll-exit"
-    );
+       document.addEventListener("mousemove", onMouseMove);
+       document.addEventListener(
+         "mouseup",
+         () => document.removeEventListener("mousemove", onMouseMove),
+         { once: true }
+       );
+     };
+   };
 
-    updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
-    updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
-    updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+   [
+     { input: entryCount, fn: updateEntry },
+     { input: centerCount, fn: updateCenter },
+     { input: exitCount, fn: updateExit },
+   ].forEach(({ input, fn }) => {
+     input.addEventListener("input", (e) => {
+       let val = parseInt(e.target.value.replace("%", "").trim());
+       if (isNaN(val)) val = 0;
+       val = Math.max(-100, Math.min(100, val));
+       e.target.value = val + "%";
+       fn(val);
+     });
+     input.addEventListener("blur", (e) => {
+       let val = parseInt(e.target.value.replace("%", "").trim());
+       if (isNaN(val)) val = 0;
+       val = Math.max(-100, Math.min(100, val));
+       e.target.value = val + "%";
+       fn(val);
+     });
+     input.addEventListener("keydown", (e) => {
+       if (
+         !/[0-9\-]/.test(e.key) &&
+         !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+           e.key
+         )
+       ) {
+         e.preventDefault();
+       }
+     });
+     input.addEventListener("focus", (e) => {
+       const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
+       e.target.value = val;
+     });
+   });
 
-  [entryCount, centerCount, exitCount].forEach((input, i) => {
-    const updateFn = [updateEntry, updateCenter, updateExit][i];
+   makeDraggable(startBullet, updateStart, "start", 0, 100);
+   makeDraggable(endBullet, updateEnd, "end", 0, 100);
+   makeDraggable(entryBullet, updateEntry, "normal");
+   makeDraggable(centerBullet, updateCenter, "normal");
+   makeDraggable(exitBullet, updateExit, "normal");
 
-    input.addEventListener("input", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%"; // 🧷 Show `%`
-      updateFn(val);
-    });
+   [
+     {
+       id: "Typo-vertical-advance-entry-reset",
+       bullet: entryBullet,
+       fill: entryFill,
+       count: entryCount,
+       css: "--sc-Typo-vertical-scroll-entry",
+     },
+     {
+       id: "Typo-vertical-advance-center-reset",
+       bullet: centerBullet,
+       fill: centerFill,
+       count: centerCount,
+       css: "--sc-Typo-vertical-scroll-center",
+     },
+     {
+       id: "Typo-vertical-advance-exit-reset",
+       bullet: exitBullet,
+       fill: exitFill,
+       count: exitCount,
+       css: "--sc-Typo-vertical-scroll-exit",
+     },
+   ].forEach(({ id, bullet, fill, count, css }) => {
+     const btn = document.getElementById(id);
+     if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
+   });
 
-    input.addEventListener("blur", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%"; // 🧷 Ensure `%` on blur
-      updateFn(val);
-    });
-
-    input.addEventListener("keydown", (e) => {
-      if (
-        !/[0-9\-]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
-      ) {
-        e.preventDefault(); // 🚫 Block unwanted characters
-      }
-    });
-
-    input.addEventListener("focus", (e) => {
-      const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-      e.target.value = val; 
-    });
-  });
-
-
-    makeDraggable(startBullet, updateStart, "start", 0, 100);
-    makeDraggable(endBullet, updateEnd, "end", 0, 100);
-    makeDraggable(entryBullet, updateEntry, "normal");
-    makeDraggable(centerBullet, updateCenter, "normal");
-    makeDraggable(exitBullet, updateExit, "normal");
-
-    [
-      {
-        id: "Typo-vertical-advance-entry-reset",
-        bullet: entryBullet,
-        fill: entryFill,
-        count: entryCount,
-        css: "--sc-Typo-vertical-scroll-entry",
-      },
-      {
-        id: "Typo-vertical-advance-center-reset",
-        bullet: centerBullet,
-        fill: centerFill,
-        count: centerCount,
-        css: "--sc-Typo-vertical-scroll-center",
-      },
-      {
-        id: "Typo-vertical-advance-exit-reset",
-        bullet: exitBullet,
-        fill: exitFill,
-        count: exitCount,
-        css: "--sc-Typo-vertical-scroll-exit",
-      },
-    ].forEach(({ id, bullet, fill, count, css }) => {
-      const btn = document.getElementById(id);
-      if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
-    });
-
-  attachAdvanceTimelineIncrementDecrement(
-    updateEntry,
-    updateCenter,
-    updateExit,
-    updateStart,
-    updateEnd
-  );
-
-    attachCustomTimelineReset(
-      updateStart,
-      updateEnd,
-      updateEntry,
-      updateCenter,
-      updateExit
-    );
-    initEffectAnimationDropdownToggle(startBullet, endBullet);
-  }
+   attachAdvanceTimelineIncrementDecrement(
+     updateEntry,
+     updateCenter,
+     updateExit,
+     updateStart,
+     updateEnd
+   );
+   attachCustomTimelineReset(
+     updateStart,
+     updateEnd,
+     updateEntry,
+     updateCenter,
+     updateExit
+   );
+   initEffectAnimationDropdownToggle(startBullet, endBullet);
+ }
 
 //
 
