@@ -24,87 +24,77 @@
       }
     }
 
- let lastUpdateTime = 0;
+ function updateArrowPosition(arrow, startBullet, endBullet) {
+   const rect = selectedElement.getBoundingClientRect();
+   const viewportHeight = window.innerHeight;
 
-function updateArrowPosition(arrow, startBullet, endBullet) {
-  const now = Date.now();
-  if (now - lastUpdateTime < 50) return; // throttle updates
-  lastUpdateTime = now;
+   if (viewportHeight === 0) return;
 
-  const rect = selectedElement.getBoundingClientRect();
-  const viewportHeight = window.innerHeight;
-  const top = rect.top;
-  const percentFromTop = top / viewportHeight;
-  const scrollBasedLeft = Math.max(
-    0,
-    Math.min(100, 100 - 100 * percentFromTop)
-  );
+   const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+   const scrollLeft = (1 - scrollRatio) * 100;
 
-  arrow.style.left = `${scrollBasedLeft}%`;
-  arrow.style.transform = "translateX(-50%)";
+   arrow.style.left = `${scrollLeft}%`;
+   arrow.style.transform = "translateX(-50%)";
 
-  const btn = selectedElement.querySelector(".sqs-block-content");
-  if (!btn) return;
+   const content = selectedElement.querySelector(".sqs-block-content");
+   if (!content) return;
 
-  const getVar = (v) => {
-    const val = getComputedStyle(btn).getPropertyValue(v).trim();
-    return parseFloat(val.replace("%", "")) || 0;
-  };
+   const getVar = (v) => {
+     const raw = getComputedStyle(content).getPropertyValue(v).trim();
+     return parseFloat(raw.replace("%", "")) || 0;
+   };
 
-  const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
-  const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
-  const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
+   const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
+   const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
+   const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
 
-  const startCenter = Math.round(
-    startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2
-  );
-  const endCenter = Math.round(
-    endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2
-  );
-  const arrowCenter = Math.round(
-    arrow.getBoundingClientRect().left + arrow.offsetWidth / 2
-  );
+   const startPercent = getVar("--sc-Typo-vertical-scroll-start");
+   const endPercent = getVar("--sc-Typo-vertical-scroll-end");
 
-  const range = endCenter - startCenter;
-  const progress = (arrowCenter - startCenter) / range;
+   const effectiveStart = startPercent / 100;
+   const effectiveEnd = endPercent / 100;
+   const effectiveScroll = scrollLeft / 100;
 
-  let yOutput, arrowColor;
+   let activeZone = "entry";
+   let arrowColor = "#EF7C2F";
+   let outputY = entryY;
 
-  if (progress <= 0) {
-    yOutput = entryY;
-    arrowColor = "#EF7C2F";
-    window.__typoActiveZone = "entry";
-  } else if (progress >= 1) {
-    yOutput = exitY;
-    arrowColor = "#F6B67B";
-    window.__typoActiveZone = "exit";
-  } else {
-    const mid = 0.5;
-    if (progress < mid) {
-      const t = progress / mid;
-      yOutput = entryY + (centerY - entryY) * t;
-      window.__typoActiveZone = "entry-center";
-    } else {
-      const t = (progress - mid) / (1 - mid);
-      yOutput = centerY + (exitY - centerY) * t;
-      window.__typoActiveZone = "center-exit";
-    }
-    arrowColor = "#FFFFFF";
-  }
+   if (effectiveScroll <= effectiveStart + 0.01) {
+     outputY = entryY;
+     activeZone = "entry";
+     arrowColor = "#EF7C2F";
+   } else if (effectiveScroll >= effectiveEnd - 0.01) {
+     outputY = exitY;
+     activeZone = "exit";
+     arrowColor = "#F6B67B";
+   } else {
+     const centerProgress =
+       (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
+     if (centerProgress <= 0.5) {
+       const t = centerProgress / 0.5;
+       outputY = entryY + (centerY - entryY) * t;
+       activeZone = "entry-center";
+     } else {
+       const t = (centerProgress - 0.5) / 0.5;
+       outputY = centerY + (exitY - centerY) * t;
+       activeZone = "center-exit";
+     }
+     arrowColor = "#FFFFFF";
+   }
 
-  arrow.style.backgroundColor = arrowColor;
+   if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
+     window.__typoActiveZone = activeZone;
+     arrow.style.backgroundColor = arrowColor;
+     lastY = outputY;
 
-  if (lastY !== yOutput) {
-    gsap.killTweensOf(btn);
-    gsap.to(btn, {
-      duration: 0.3,
-      ease: transition.ease,
-      y: `${yOutput}vh`,
-    });
-    lastY = yOutput;
-  }
-}
-
+     gsap.killTweensOf(content);
+     gsap.to(content, {
+       duration: 0.35,
+       ease: transition.ease,
+       y: `${outputY}vh`,
+     });
+   }
+ }
 
 
 
