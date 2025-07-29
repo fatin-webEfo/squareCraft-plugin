@@ -428,13 +428,10 @@ export function initTypoAdvanceStyles(getSelectedElement) {
  updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
  updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
 
- const tempStart = currentStartVal;
- const tempEnd = currentEndVal;
+ updateStart(currentStartVal);
+ gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 }); // ✅ force bullet visibility
+ updateEnd(currentEndVal);
 
- setTimeout(() => {
-   updateStart(tempStart); // ✅ visual + GSAP will now apply correctly
-   updateEnd(tempEnd);
- }, 0);
 
 
   const makeDraggable = (
