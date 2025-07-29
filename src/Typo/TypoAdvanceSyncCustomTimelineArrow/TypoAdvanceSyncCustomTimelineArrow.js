@@ -26,74 +26,85 @@
 
  let lastUpdateTime = 0;
 
- function updateArrowPosition(arrow, startBullet, endBullet) {
-   const now = Date.now();
-   if (now - lastUpdateTime < 50) return; // Throttle to every 50ms
-   lastUpdateTime = now;
+function updateArrowPosition(arrow, startBullet, endBullet) {
+  const now = Date.now();
+  if (now - lastUpdateTime < 50) return; // throttle updates
+  lastUpdateTime = now;
 
-   const rect = selectedElement.getBoundingClientRect();
-   const viewportHeight = window.innerHeight;
-   const top = rect.top;
-   const percentFromTop = top / viewportHeight;
-   const scrollBasedLeft = Math.max(
-     0,
-     Math.min(100, 100 - 100 * percentFromTop)
-   );
+  const rect = selectedElement.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  const top = rect.top;
+  const percentFromTop = top / viewportHeight;
+  const scrollBasedLeft = Math.max(
+    0,
+    Math.min(100, 100 - 100 * percentFromTop)
+  );
 
-   arrow.style.left = `${scrollBasedLeft}%`;
-   arrow.style.transform = "translateX(-50%)";
+  arrow.style.left = `${scrollBasedLeft}%`;
+  arrow.style.transform = "translateX(-50%)";
 
-   const btn = selectedElement.querySelector(".sqs-block-content");
-   if (!btn) return;
+  const btn = selectedElement.querySelector(".sqs-block-content");
+  if (!btn) return;
 
-   const getVar = (v) => {
-     const val = getComputedStyle(btn).getPropertyValue(v).trim();
-     return parseFloat(val.replace("%", "")) || 0;
-   };
+  const getVar = (v) => {
+    const val = getComputedStyle(btn).getPropertyValue(v).trim();
+    return parseFloat(val.replace("%", "")) || 0;
+  };
 
-   const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
-   const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
-   const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
+  const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
+  const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
+  const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
 
-   const startCenter = Math.round(
-     startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2
-   );
-   const endCenter = Math.round(
-     endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2
-   );
-   const arrowCenter = Math.round(
-     arrow.getBoundingClientRect().left + arrow.offsetWidth / 2
-   );
+  const startCenter = Math.round(
+    startBullet.getBoundingClientRect().left + startBullet.offsetWidth / 2
+  );
+  const endCenter = Math.round(
+    endBullet.getBoundingClientRect().left + endBullet.offsetWidth / 2
+  );
+  const arrowCenter = Math.round(
+    arrow.getBoundingClientRect().left + arrow.offsetWidth / 2
+  );
 
-   let activeY, arrowColor;
-   const TOLERANCE = 3;
+  const range = endCenter - startCenter;
+  const progress = (arrowCenter - startCenter) / range;
 
-   if (arrowCenter <= startCenter + TOLERANCE) {
-     arrowColor = "#EF7C2F";
-     activeY = entryY;
-     window.__typoActiveZone = "entry";
-   } else if (arrowCenter >= endCenter - TOLERANCE) {
-     arrowColor = "#F6B67B";
-     activeY = exitY;
-     window.__typoActiveZone = "exit";
-   } else {
-     arrowColor = "#FFFFFF";
-     activeY = centerY;
-     window.__typoActiveZone = "center";
-   }
+  let yOutput, arrowColor;
 
-   arrow.style.backgroundColor = arrowColor;
+  if (progress <= 0) {
+    yOutput = entryY;
+    arrowColor = "#EF7C2F";
+    window.__typoActiveZone = "entry";
+  } else if (progress >= 1) {
+    yOutput = exitY;
+    arrowColor = "#F6B67B";
+    window.__typoActiveZone = "exit";
+  } else {
+    const mid = 0.5;
+    if (progress < mid) {
+      const t = progress / mid;
+      yOutput = entryY + (centerY - entryY) * t;
+      window.__typoActiveZone = "entry-center";
+    } else {
+      const t = (progress - mid) / (1 - mid);
+      yOutput = centerY + (exitY - centerY) * t;
+      window.__typoActiveZone = "center-exit";
+    }
+    arrowColor = "#FFFFFF";
+  }
 
-   if (lastY !== activeY) {
-     gsap.killTweensOf(btn);
-     gsap.to(btn, {
-       duration: 0.3,
-       ease: transition.ease,
-       y: `${activeY}vh`,
-     });
-     lastY = activeY;
-   }
- }
+  arrow.style.backgroundColor = arrowColor;
+
+  if (lastY !== yOutput) {
+    gsap.killTweensOf(btn);
+    gsap.to(btn, {
+      duration: 0.3,
+      ease: transition.ease,
+      y: `${yOutput}vh`,
+    });
+    lastY = yOutput;
+  }
+}
+
 
 
 
