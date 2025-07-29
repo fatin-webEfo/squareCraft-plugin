@@ -373,7 +373,12 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     const contentEl = el.querySelector(".sqs-block-content");
     if (!contentEl) return 0;
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
-    return parseFloat(val.replace("%", "")) || 0;
+    const parsed = parseFloat(val.replace("%", ""));
+    if (isNaN(parsed)) {
+      return cssVar === "--sc-Typo-vertical-scroll-end" ? 100 : 0;
+    }
+    return parsed;
+
   };
 
   let currentStartVal = getCurrentPercentage("--sc-Typo-vertical-scroll-start");
