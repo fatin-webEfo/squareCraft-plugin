@@ -5,7 +5,7 @@
     let lastY = null;
     const transition = { ease: "power2.out" };
 
-    
+
     function waitForElements(callback, retries = 20) {
       const arrow = document.getElementById(
         "Typo-vertical-custom-timeline-arrow"
@@ -87,14 +87,16 @@
     }
 
 
-    if (lastY !== activeY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${activeY.toFixed(2)}vh)`,
-      });
-      lastY = activeY;
-    }
+   if (lastY !== activeY) {
+     gsap.killTweensOf(btn); // Stop existing animations
+     gsap.to(btn, {
+       duration: 0.3,
+       ease: transition.ease,
+       y: `${activeY}vh`,
+     });
+     lastY = activeY;
+   }
+
 
    }
 
