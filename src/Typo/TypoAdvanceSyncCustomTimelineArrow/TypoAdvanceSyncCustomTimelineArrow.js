@@ -5,6 +5,7 @@
     let lastY = null;
     const transition = { ease: "power2.out" };
 
+    
     function waitForElements(callback, retries = 20) {
       const arrow = document.getElementById(
         "Typo-vertical-custom-timeline-arrow"
