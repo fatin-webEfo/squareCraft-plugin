@@ -567,7 +567,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   initEffectAnimationDropdownToggle(startBullet, endBullet);
 }
 
-//vertical done
+//vertical donevertical done
 
 function horizontalattachAdvanceTimelineIncrementDecrement(
   updateEntry,
