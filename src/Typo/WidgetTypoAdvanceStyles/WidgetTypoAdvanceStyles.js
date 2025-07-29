@@ -424,10 +424,17 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     "--sc-Typo-vertical-scroll-exit"
   );
 
-  updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
-  updateStart(currentStartVal); // 🔁 ADD THIS LINE
+ updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
+ updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
+ updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+
+ const tempStart = currentStartVal;
+ const tempEnd = currentEndVal;
+
+ setTimeout(() => {
+   updateStart(tempStart); // ✅ visual + GSAP will now apply correctly
+   updateEnd(tempEnd);
+ }, 0);
 
 
   const makeDraggable = (
