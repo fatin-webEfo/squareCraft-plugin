@@ -303,9 +303,9 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     (val) => {
       val = Math.max(min, Math.min(max, val));
       if (countEl.tagName === "INPUT") {
-        countEl.value = `${val}`;
+        countEl.value = `${val} %`;
       } else {
-        countEl.textContent = `${val}`;
+        countEl.textContent = `${val} %`;
       }
 
       const el = getSelectedElement?.();
