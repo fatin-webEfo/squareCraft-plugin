@@ -427,6 +427,8 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   updateEntry(getCurrentPercentage("--sc-Typo-vertical-scroll-entry"));
   updateCenter(getCurrentPercentage("--sc-Typo-vertical-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-vertical-scroll-exit"));
+  updateStart(currentStartVal); // 🔁 ADD THIS LINE
+  updateEnd(currentEndVal);
 
   const makeDraggable = (
     bullet,
