@@ -175,24 +175,7 @@ export function attachAdvanceTimelineIncrementDecrement(
     }
   });
 }
-attachFieldClickListener(
-  "Typo-vertical-advance-entry-field",
-  entryBullet,
-  entryCount,
-  updateEntry
-);
-attachFieldClickListener(
-  "Typo-vertical-advance-center-field",
-  centerBullet,
-  centerCount,
-  updateCenter
-);
-attachFieldClickListener(
-  "Typo-vertical-advance-exit-field",
-  exitBullet,
-  exitCount,
-  updateExit
-);
+
 
 function attachCustomTimelineReset(
   updateStart,
@@ -601,6 +584,24 @@ export function initTypoAdvanceStyles(getSelectedElement) {
   initEffectAnimationDropdownToggle(startBullet, endBullet);
 
  
+attachFieldClickListener(
+  "Typo-vertical-advance-entry-field",
+  entryBullet,
+  entryCount,
+  updateEntry
+);
+attachFieldClickListener(
+  "Typo-vertical-advance-center-field",
+  centerBullet,
+  centerCount,
+  updateCenter
+);
+attachFieldClickListener(
+  "Typo-vertical-advance-exit-field",
+  exitBullet,
+  exitCount,
+  updateExit
+);
 
 }
  function attachFieldClickListener(
