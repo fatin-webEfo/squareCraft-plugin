@@ -1,7 +1,29 @@
 (async function squareCraft() {
   // icon set fast
   // load custom external JS from "Link" file section
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
   await import("https://fatin-webefo.github.io/squareCraft-plugin/index.js");
+  const styleLink = document.createElement("link");
+  styleLink.rel = "stylesheet";
+  styleLink.href =
+    "https://fatin-webefo.github.io/squareCraft-plugin/index.css";
+  styleLink.type = "text/css";
+  styleLink.media = "all";
+  document.head.appendChild(styleLink);
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   try {
     const { injectNavbarIcon } = await import(
