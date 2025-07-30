@@ -10,6 +10,27 @@
   //
   //
   await import("https://fatin-webefo.github.io/squareCraft-plugin/index.js");
+const savedFont = localStorage.getItem("sc-font-family");
+const typeClass = localStorage.getItem("sc-font-type-class");
+
+if (savedFont && typeClass) {
+  const fontName = savedFont.split(",")[0].replace(/["']/g, "").trim();
+  const fontLink = document.createElement("link");
+  fontLink.rel = "stylesheet";
+  fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(
+    /\s+/g,
+    "+"
+  )}&display=swap`;
+  document.head.appendChild(fontLink);
+
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .${typeClass}, .${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner {
+      font-family: ${savedFont} !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
   //
   //
