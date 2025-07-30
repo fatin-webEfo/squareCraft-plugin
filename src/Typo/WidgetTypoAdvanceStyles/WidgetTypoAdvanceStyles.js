@@ -113,7 +113,7 @@ export function attachAdvanceTimelineIncrementDecrement(
     "Typo-vertical-timeline-end-bullet"
   );
 
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", (e) => { 
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
       return;
     if (keyHoldInterval || keyHoldTimeout) return;
@@ -501,16 +501,32 @@ export function initTypoAdvanceStyles(getSelectedElement) {
       e.target.value = val + "%";
       fn(val);
     });
-    input.addEventListener("keydown", (e) => {
-      if (
-        !/[0-9\-]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
-          e.key
-        )
-      ) {
-        e.preventDefault();
-      }
-    });
+   input.addEventListener("keydown", (e) => {
+     const value = e.target.value;
+
+     if (
+       e.key === "Backspace" &&
+       value.endsWith("%") &&
+       e.target.selectionStart === value.length - 1
+     ) {
+       e.preventDefault();
+       const numeric = parseInt(value.replace("%", "").trim()) || 0;
+       const newVal = numeric.toString().slice(0, -1);
+       e.target.value = (newVal || "0") + "%";
+       fn(parseInt(newVal) || 0);
+       return;
+     }
+
+     if (
+       !/[0-9\-]/.test(e.key) &&
+       !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+         e.key
+       )
+     ) {
+       e.preventDefault();
+     }
+   });
+
     input.addEventListener("focus", (e) => {
       const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
       e.target.value = val;
