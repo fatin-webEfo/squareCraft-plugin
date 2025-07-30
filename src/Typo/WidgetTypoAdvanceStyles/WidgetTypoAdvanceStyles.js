@@ -175,6 +175,24 @@ export function attachAdvanceTimelineIncrementDecrement(
     }
   });
 }
+attachFieldClickListener(
+  "Typo-vertical-advance-entry-field",
+  entryBullet,
+  entryCount,
+  updateEntry
+);
+attachFieldClickListener(
+  "Typo-vertical-advance-center-field",
+  centerBullet,
+  centerCount,
+  updateCenter
+);
+attachFieldClickListener(
+  "Typo-vertical-advance-exit-field",
+  exitBullet,
+  exitCount,
+  updateExit
+);
 
 function attachCustomTimelineReset(
   updateStart,
@@ -581,8 +599,31 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateExit
   );
   initEffectAnimationDropdownToggle(startBullet, endBullet);
-}
 
+ 
+
+}
+ function attachFieldClickListener(
+   fieldId,
+   bullet,
+   countEl,
+   updateFn,
+   min = -100,
+   max = 100
+ ) {
+   const field = document.getElementById(fieldId);
+   if (!field || !bullet || !countEl) return;
+
+   field.addEventListener("click", (e) => {
+     const rect = field.getBoundingClientRect();
+     const clickX = e.clientX - rect.left;
+     const percent = (clickX / rect.width) * (max - min) + min;
+     const clamped = Math.round(Math.max(min, Math.min(percent, max)));
+
+     countEl.value = clamped + "%";
+     updateFn(clamped);
+   });
+ }
 //vertical donevertical done
 
 function horizontalattachAdvanceTimelineIncrementDecrement(
