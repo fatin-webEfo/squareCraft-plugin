@@ -1,44 +1,5 @@
 (async function squareCraft() {
   // icon set fast
-  // load custom external JS from "Link" file section
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  await import("https://fatin-webefo.github.io/squareCraft-plugin/index.js");
-const savedFont = localStorage.getItem("sc-font-family");
-const typeClass = localStorage.getItem("sc-font-type-class");
-
-if (savedFont && typeClass) {
-  const fontName = savedFont.split(",")[0].replace(/["']/g, "").trim();
-  const fontLink = document.createElement("link");
-  fontLink.rel = "stylesheet";
-  fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(
-    /\s+/g,
-    "+"
-  )}&display=swap`;
-  document.head.appendChild(fontLink);
-
-  const style = document.createElement("style");
-  style.innerHTML = `
-    .${typeClass}, .${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner {
-      font-family: ${savedFont} !important;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
 
   try {
     const { injectNavbarIcon } = await import(
@@ -178,6 +139,8 @@ if (savedFont && typeClass) {
   let lastActiveAlignmentElement = null;
 
   //  viewport
+
+
 
   function applyStylesToElement(element, css) {
     if (!element || !css) return;
@@ -380,17 +343,21 @@ if (savedFont && typeClass) {
   );
   const themeColors = await getSquarespaceThemeStyles();
 
-  let isTrackingArrow = false;
+  
+let isTrackingArrow = false;
 
-  window.addEventListener("scroll", () => {
-    const selected = document.querySelector('[id^="block-"].sc-font-modified');
-    if (selected && !isTrackingArrow) {
-      TypoAdvanceSyncCustomTimelineArrow(selected);
-      isTrackingArrow = true;
-    }
-  });
+window.addEventListener("scroll", () => {
+  const selected = document.querySelector('[id^="block-"].sc-font-modified');
+  if (selected && !isTrackingArrow) {
+    TypoAdvanceSyncCustomTimelineArrow(selected);
+    isTrackingArrow = true;
+  }
+});
+
+
 
   document.body.addEventListener("click", (event) => {
+    
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
@@ -399,6 +366,7 @@ if (savedFont && typeClass) {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
+
 
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
@@ -478,6 +446,7 @@ if (savedFont && typeClass) {
         setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
         setLastActiveAlignmentElement: (val) =>
           (lastActiveAlignmentElement = val),
+        
       });
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
