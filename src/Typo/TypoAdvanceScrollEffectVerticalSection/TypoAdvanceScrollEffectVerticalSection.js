@@ -172,7 +172,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
               </div>
               <div
                 id="Typo-vertical-advance-center-field"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full  sc-cursor-pointer sc-h-2 sc-bg-F6F6F6"
               >
                 <div
                   id="Typo-vertical-advance-center-fill"
@@ -228,7 +228,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
               </div>
               <div
                 id="Typo-vertical-advance-exit-field"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                class="sc-rounded-15px sc-relative sc-mt-2  sc-cursor-pointer sc-w-full sc-h-2 sc-bg-F6F6F6"
               >
                 <div
                   id="Typo-vertical-advance-exit-fill"
