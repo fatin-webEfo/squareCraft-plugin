@@ -13,6 +13,8 @@ setTimeout(() => {
   }
 }, 200);
 
+
+
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API =
     "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBPpLHcfY1Z1SfUIe78z6UvPe-wF31iwRk";
@@ -49,9 +51,30 @@ export function initButtonFontFamilyControls(getSelectedElement) {
       fontsList = data.items;
       loader.remove();
       renderFontBatch();
+      applySavedFontStyle(); // apply saved
     } catch (err) {
       loader.remove();
       console.error("❌ Failed to fetch Google Fonts:", err);
+    }
+  }
+
+  function applySavedFontStyle() {
+    const savedFont = localStorage.getItem("sc-font-family");
+    const typeClass = localStorage.getItem("sc-font-type-class");
+    if (savedFont && typeClass) {
+      const styleId = `sc-font-style-${typeClass}`;
+      let style = document.getElementById(styleId);
+      if (!style) {
+        style = document.createElement("style");
+        style.id = styleId;
+        document.head.appendChild(style);
+      }
+
+      style.innerHTML = `
+        .${typeClass}, .${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner {
+          font-family: ${savedFont} !important;
+        }
+      `;
     }
   }
 
@@ -66,7 +89,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 
   function renderFontBatch() {
     const slice = fontsList.slice(fontIndex, fontIndex + fontsPerPage);
-
     slice.forEach((fontItem) => {
       const family = fontItem.family;
       const fontId = `font-${family.replace(/\s+/g, "-")}`;
@@ -118,6 +140,9 @@ export function initButtonFontFamilyControls(getSelectedElement) {
         );
         if (!typeClass) return;
 
+        localStorage.setItem("sc-font-family", fontFace);
+        localStorage.setItem("sc-font-type-class", typeClass);
+
         const styleId = `sc-font-style-${typeClass}`;
         let style = document.getElementById(styleId);
         if (!style) {
@@ -131,54 +156,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
             font-family: ${fontFace} !important;
           }
         `;
-
-        const fontWeightOptions = document.getElementById(
-          "scButtonFontWeightOptions"
-        );
-        const fontWeightSelectedLabel = document.getElementById(
-          "scButtonFontWeightSelected"
-        );
-
-        if (fontWeightOptions && fontItem.variants) {
-          fontWeightOptions.innerHTML = "";
-
-          const variants = fontItem.variants
-            .filter((v) => v !== "italic")
-            .map((v) => (v === "regular" ? "400" : v));
-
-          variants.forEach((weight) => {
-            const item = document.createElement("div");
-            item.className =
-              "sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer";
-            item.innerText = weight;
-
-            item.onclick = () => {
-              fontWeightSelectedLabel.innerText = weight;
-              fontWeightOptions.classList.add("sc-hidden");
-
-              const weightStyleId = `sc-font-weight-${typeClass}`;
-              let weightStyle = document.getElementById(weightStyleId);
-              if (!weightStyle) {
-                weightStyle = document.createElement("style");
-                weightStyle.id = weightStyleId;
-                document.head.appendChild(weightStyle);
-              }
-
-              weightStyle.innerHTML = `
-                .${typeClass} span,
-                .${typeClass} .sqs-add-to-cart-button-inner {
-                  font-weight: ${weight} !important;
-                }
-              `;
-            };
-
-            fontWeightOptions.appendChild(item);
-          });
-
-          fontWeightSelectedLabel.innerText = variants.includes("400")
-            ? "400"
-            : variants[0] || "";
-        }
       });
 
       fontFamilyOptions.appendChild(div);
@@ -187,6 +164,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
     fontIndex += fontsPerPage;
   }
 }
+
 
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
