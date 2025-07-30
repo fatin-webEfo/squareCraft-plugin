@@ -1,5 +1,7 @@
 (async function squareCraft() {
   // icon set fast
+  // load custom external JS from "Link" file section
+  await import("https://fatin-webefo.github.io/squareCraft-plugin/index.js");
 
   try {
     const { injectNavbarIcon } = await import(
@@ -139,8 +141,6 @@
   let lastActiveAlignmentElement = null;
 
   //  viewport
-
-
 
   function applyStylesToElement(element, css) {
     if (!element || !css) return;
@@ -343,21 +343,17 @@
   );
   const themeColors = await getSquarespaceThemeStyles();
 
-  
-let isTrackingArrow = false;
+  let isTrackingArrow = false;
 
-window.addEventListener("scroll", () => {
-  const selected = document.querySelector('[id^="block-"].sc-font-modified');
-  if (selected && !isTrackingArrow) {
-    TypoAdvanceSyncCustomTimelineArrow(selected);
-    isTrackingArrow = true;
-  }
-});
-
-
+  window.addEventListener("scroll", () => {
+    const selected = document.querySelector('[id^="block-"].sc-font-modified');
+    if (selected && !isTrackingArrow) {
+      TypoAdvanceSyncCustomTimelineArrow(selected);
+      isTrackingArrow = true;
+    }
+  });
 
   document.body.addEventListener("click", (event) => {
-    
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
@@ -366,7 +362,6 @@ window.addEventListener("scroll", () => {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
-
 
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
@@ -446,7 +441,6 @@ window.addEventListener("scroll", () => {
         setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
         setLastActiveAlignmentElement: (val) =>
           (lastActiveAlignmentElement = val),
-        
       });
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
