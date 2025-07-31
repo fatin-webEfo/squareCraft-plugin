@@ -344,7 +344,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           ).style.left = `${bulletLeft}%`;
         }
 
-        initEffectAnimationDropdownToggle();
+        initEffectAnimationDropdownToggle(getSelectedElement);
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         position === "left"

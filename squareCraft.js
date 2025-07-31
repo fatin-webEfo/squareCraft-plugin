@@ -758,7 +758,7 @@ window.addEventListener("scroll", () => {
       tooltipControls();
       ButtonAdvanceToggleControls();
       initButtonSectionToggleControls();
-      initEffectAnimationDropdownToggle();
+initEffectAnimationDropdownToggle(() => selectedElement);
       WidgetTypoSectionStateControls();
       initImageStateTabToggle();
       initButtonStructureGapTypeToggle();
