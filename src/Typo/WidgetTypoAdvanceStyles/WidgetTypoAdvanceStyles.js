@@ -246,6 +246,7 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
 }
 
 
+
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-vertical-timeline-start-bullet"
