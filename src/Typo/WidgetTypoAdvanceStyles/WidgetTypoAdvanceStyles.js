@@ -199,7 +199,7 @@ function attachCustomTimelineReset(
     };
 }
 
-export function initEffectAnimationDropdownToggle() {
+export function initEffectAnimationDropdownToggle(getSelectedElement) {
   const arrow = document.getElementById(
     "Typo-vertical-effect-animation-type-arrow"
   );
@@ -223,14 +223,15 @@ export function initEffectAnimationDropdownToggle() {
       display.textContent = item.textContent;
       display.setAttribute("data-value", selected);
 
-      // Optional: save animation effect to style property of selected element
-      const el =
-        typeof getSelectedElement === "function" ? getSelectedElement() : null;
+      const el = getSelectedElement?.();
       if (el && el.id?.startsWith("block-")) {
-        el.querySelector(".sqs-block-content")?.style.setProperty(
-          "--sc-Typo-vertical-effect-animation",
-          selected
-        );
+        const target = el.querySelector(".sqs-block-content");
+        if (target) {
+          target.style.setProperty(
+            "--sc-Typo-vertical-effect-animation",
+            selected
+          );
+        }
       }
 
       list.classList.add("sc-hidden");
@@ -243,6 +244,7 @@ export function initEffectAnimationDropdownToggle() {
     }
   });
 }
+
 
 export function initTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(

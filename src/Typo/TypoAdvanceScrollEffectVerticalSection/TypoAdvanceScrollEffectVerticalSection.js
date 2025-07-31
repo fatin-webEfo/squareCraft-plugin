@@ -283,29 +283,25 @@ export function TypoAdvanceScrollEffectVerticalSection() {
 
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="linear"
-                  >
+                    data-value="linear">
                     Linear
                   </div>
 
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-in"
-                  >
+                    data-value="ease-in">
                     Ease In
                   </div>
 
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-out"
-                  >
+                    data-value="ease-out">
                     Ease Out
                   </div>
 
                   <div
                     class="sc-bg-3f3f3f sc-py-1 sc-font-size-12 sc-px-2 sc-w-16 sc-cursor-pointer sc-bg-colo-EF7C2F-hover"
-                    data-value="ease-in-out"
-                  >
+                    data-value="ease-in-out">
                     Ease In Out
                   </div>
 
