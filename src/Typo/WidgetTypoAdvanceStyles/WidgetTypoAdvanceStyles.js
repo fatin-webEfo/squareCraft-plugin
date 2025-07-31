@@ -219,22 +219,36 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
   const items = list.querySelectorAll("[data-value]");
   items.forEach((item) => {
     item.onclick = () => {
-      const selected = item.getAttribute("data-value");
+      const easeValue = item.getAttribute("data-value");
       display.textContent = item.textContent;
-      display.setAttribute("data-value", selected);
+      display.setAttribute("data-value", easeValue);
+      list.classList.add("sc-hidden");
 
       const el = getSelectedElement?.();
-      if (el && el.id?.startsWith("block-")) {
-        const target = el.querySelector(".sqs-block-content");
-        if (target) {
-          target.style.setProperty(
-            "--sc-Typo-vertical-effect-animation",
-            selected
-          );
-        }
+      const content = el?.querySelector(".sqs-block-content");
+      if (!el || !content) return;
+
+      gsap.killTweensOf(content);
+
+      if (easeValue === "none") {
+        content.style.transform = "";
+        content.style.opacity = "";
+        return;
       }
 
-      list.classList.add("sc-hidden");
+      const gsapEase =
+        easeValue === "linear" ? "none" : easeValue.replace("-", ".");
+
+      gsap.fromTo(
+        content,
+        { y: "10vh", opacity: 0 },
+        {
+          y: "0vh",
+          opacity: 1,
+          duration: 1,
+          ease: gsapEase,
+        }
+      );
     };
   });
 
@@ -244,6 +258,7 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     }
   });
 }
+
 
 
 
