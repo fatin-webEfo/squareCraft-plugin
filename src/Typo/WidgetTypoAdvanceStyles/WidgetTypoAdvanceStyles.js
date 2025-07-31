@@ -113,45 +113,53 @@ export function attachAdvanceTimelineIncrementDecrement(
     "Typo-vertical-timeline-end-bullet"
   );
 
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
-      return;
+ document.addEventListener("keydown", (e) => {
+   if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
+     return;
 
-    const direction = e.key === "ArrowRight" ? 1 : -1;
+   const direction = e.key === "ArrowRight" ? 1 : -1;
 
-    if (lastFocused.includes("entry")) {
-      entryVal = Math.max(-100, Math.min(100, entryVal + direction));
-      updateEntry(entryVal);
-      document.getElementById("Typo-vertical-advance-entry-count").value =
-        entryVal + "%";
-    }
-    if (lastFocused.includes("center")) {
-      centerVal = Math.max(-100, Math.min(100, centerVal + direction));
-      updateCenter(centerVal);
-      document.getElementById("Typo-vertical-advance-center-count").value =
-        centerVal + "%";
-    }
-    if (lastFocused.includes("exit")) {
-      exitVal = Math.max(-100, Math.min(100, exitVal + direction));
-      updateExit(exitVal);
-      document.getElementById("Typo-vertical-advance-exit-count").value =
-        exitVal + "%";
-    }
-    if (lastFocused.includes("start")) {
-      startVal += direction;
-      startVal = Math.max(0, Math.min(startVal, endVal - 4));
-      updateStart(startVal);
-      document.getElementById("Typo-vertical-timelineStartValue").textContent =
-        startVal + "%";
-    }
-    if (lastFocused.includes("end")) {
-      endVal += direction;
-      endVal = Math.max(startVal + 4, Math.min(endVal, 100));
-      updateEnd(endVal);
-      document.getElementById("Typo-vertical-timelineEndValue").textContent =
-        endVal + "%";
-    }
-  });
+   if (lastFocused.includes("entry")) {
+     const val = getVal("Typo-vertical-advance-entry-count") + direction;
+     const clamped = Math.max(-100, Math.min(100, val));
+     updateEntry(clamped);
+     document.getElementById("Typo-vertical-advance-entry-count").value =
+       clamped + "%";
+   }
+   if (lastFocused.includes("center")) {
+     const val = getVal("Typo-vertical-advance-center-count") + direction;
+     const clamped = Math.max(-100, Math.min(100, val));
+     updateCenter(clamped);
+     document.getElementById("Typo-vertical-advance-center-count").value =
+       clamped + "%";
+   }
+   if (lastFocused.includes("exit")) {
+     const val = getVal("Typo-vertical-advance-exit-count") + direction;
+     const clamped = Math.max(-100, Math.min(100, val));
+     updateExit(clamped);
+     document.getElementById("Typo-vertical-advance-exit-count").value =
+       clamped + "%";
+   }
+   if (lastFocused.includes("start")) {
+     startVal = getVal("Typo-vertical-timelineStartValue");
+     endVal = getVal("Typo-vertical-timelineEndValue");
+     startVal += direction;
+     startVal = Math.max(0, Math.min(startVal, endVal - 4));
+     updateStart(startVal);
+     document.getElementById("Typo-vertical-timelineStartValue").textContent =
+       startVal + "%";
+   }
+   if (lastFocused.includes("end")) {
+     startVal = getVal("Typo-vertical-timelineStartValue");
+     endVal = getVal("Typo-vertical-timelineEndValue");
+     endVal += direction;
+     endVal = Math.max(startVal + 4, Math.min(endVal, 100));
+     updateEnd(endVal);
+     document.getElementById("Typo-vertical-timelineEndValue").textContent =
+       endVal + "%";
+   }
+ });
+
 
 
   document.addEventListener("keyup", (e) => {
