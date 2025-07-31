@@ -231,8 +231,7 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
       gsap.killTweensOf(content);
 
       if (easeValue === "none") {
-        content.style.transform = "";
-        content.style.opacity = "";
+        gsap.set(content, { y: "0vh" });
         return;
       }
 
@@ -241,10 +240,9 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
 
       gsap.fromTo(
         content,
-        { y: "10vh", opacity: 0 },
+        { y: "10vh" },
         {
           y: "0vh",
-          opacity: 1,
           duration: 1,
           ease: gsapEase,
         }
@@ -258,6 +256,7 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     }
   });
 }
+
 
 
 
