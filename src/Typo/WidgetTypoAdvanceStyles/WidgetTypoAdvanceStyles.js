@@ -141,22 +141,26 @@ export function attachAdvanceTimelineIncrementDecrement(
           exitVal + "%";
       }
       if (lastFocused.includes("start")) {
+        startVal = getVal("Typo-vertical-timelineStartValue");
+        endVal = getVal("Typo-vertical-timelineEndValue");
         startVal += direction;
         startVal = Math.max(0, Math.min(startVal, endVal - 4));
+
         updateStart(startVal);
         document.getElementById(
           "Typo-vertical-timelineStartValue"
         ).textContent = startVal + "%";
       }
-
       if (lastFocused.includes("end")) {
-        endVal += direction;
-        endVal = Math.max(startVal + 4, Math.min(endVal, 100));
+        startVal = getVal("Typo-vertical-timelineStartValue");
+        endVal = getVal("Typo-vertical-timelineEndValue");
+       endVal += direction;
+       endVal = Math.max(startVal + 4, Math.min(endVal, 100));
+
         updateEnd(endVal);
         document.getElementById("Typo-vertical-timelineEndValue").textContent =
           endVal + "%";
       }
-
     };
 
     update();
