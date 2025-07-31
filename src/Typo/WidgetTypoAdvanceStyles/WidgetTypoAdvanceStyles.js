@@ -140,27 +140,22 @@ export function attachAdvanceTimelineIncrementDecrement(
         document.getElementById("Typo-vertical-advance-exit-count").value =
           exitVal + "%";
       }
-      if (lastFocused.includes("start")) {
-        startVal = getVal("Typo-vertical-timelineStartValue");
-        endVal = getVal("Typo-vertical-timelineEndValue");
-        startVal += direction;
-        startVal = Math.max(0, Math.min(startVal, endVal - 4));
+      bullet.addEventListener("focus", () => {
+        lastFocused = bulletId;
+        const val = getCurrent();
+        if (bulletId.includes("entry")) entryVal = val;
+        if (bulletId.includes("center")) centerVal = val;
+        if (bulletId.includes("exit")) exitVal = val;
+        if (bulletId.includes("start")) {
+          startVal = val;
+          endVal = getVal("Typo-vertical-timelineEndValue");
+        }
+        if (bulletId.includes("end")) {
+          endVal = val;
+          startVal = getVal("Typo-vertical-timelineStartValue");
+        }
+      });
 
-        updateStart(startVal);
-        document.getElementById(
-          "Typo-vertical-timelineStartValue"
-        ).textContent = startVal + "%";
-      }
-      if (lastFocused.includes("end")) {
-        startVal = getVal("Typo-vertical-timelineStartValue");
-        endVal = getVal("Typo-vertical-timelineEndValue");
-       endVal += direction;
-       endVal = Math.max(startVal + 4, Math.min(endVal, 100));
-
-        updateEnd(endVal);
-        document.getElementById("Typo-vertical-timelineEndValue").textContent =
-          endVal + "%";
-      }
     };
 
     update();
