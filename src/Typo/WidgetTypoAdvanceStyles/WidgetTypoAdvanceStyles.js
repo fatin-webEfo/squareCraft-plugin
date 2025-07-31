@@ -212,6 +212,32 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
 
   if (!arrow || !list || !display) return;
 
+  const setEasePreview = (easeValue, el) => {
+    const content = el?.querySelector(".sqs-block-content");
+    if (!content) return;
+
+    gsap.killTweensOf(content);
+
+    if (easeValue === "none") {
+      gsap.set(content, { y: "0vh" });
+      return;
+    }
+
+    const gsapEase =
+      easeValue === "linear" ? "none" : easeValue.replace("-", ".");
+    window.__typoScrollEase = gsapEase;
+
+    gsap.fromTo(
+      content,
+      { y: "10vh" },
+      {
+        y: "0vh",
+        duration: 1,
+        ease: gsapEase,
+      }
+    );
+  };
+
   arrow.onclick = () => {
     list.classList.toggle("sc-hidden");
   };
@@ -220,33 +246,16 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
   items.forEach((item) => {
     item.onclick = () => {
       const easeValue = item.getAttribute("data-value");
-      display.textContent = item.textContent;
+      const label = item.textContent;
+
+      display.textContent = label;
       display.setAttribute("data-value", easeValue);
       list.classList.add("sc-hidden");
 
       const el = getSelectedElement?.();
-      const content = el?.querySelector(".sqs-block-content");
-      if (!el || !content) return;
+      if (!el) return;
 
-      gsap.killTweensOf(content);
-
-      if (easeValue === "none") {
-        gsap.set(content, { y: "0vh" });
-        return;
-      }
-
-      const gsapEase =
-        easeValue === "linear" ? "none" : easeValue.replace("-", ".");
-
-      gsap.fromTo(
-        content,
-        { y: "10vh" },
-        {
-          y: "0vh",
-          duration: 1,
-          ease: gsapEase,
-        }
-      );
+      setEasePreview(easeValue, el);
     };
   });
 
@@ -255,9 +264,13 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
       list.classList.add("sc-hidden");
     }
   });
+
+  const el = getSelectedElement?.();
+  const currentEase = display.getAttribute("data-value");
+  if (currentEase && el) {
+    setEasePreview(currentEase, el);
+  }
 }
-
-
 
 
 
