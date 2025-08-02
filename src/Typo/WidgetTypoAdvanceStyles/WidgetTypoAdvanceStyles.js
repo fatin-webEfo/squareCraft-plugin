@@ -613,7 +613,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
     updateCenter,
     updateExit
   );
-  initEffectAnimationDropdownToggle(startBullet, endBullet);
+initEffectAnimationDropdownToggle(getSelectedElement);
 
  
 attachFieldClickListener(
