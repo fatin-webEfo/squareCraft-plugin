@@ -176,6 +176,7 @@
   const {
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
+    opacityinitTypoAdvanceStyles,
 horizontalinitEffectAnimationDropdownToggle,
 scaleinitEffectAnimationDropdownToggle,
 rotateinitEffectAnimationDropdownToggle,
@@ -374,9 +375,9 @@ window.addEventListener("scroll", () => {
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
+      opacityinitTypoAdvanceStyles(() => selectedElement);
       scaleinitTypoAdvanceStyles(() => selectedElement);
       rotateinitTypoAdvanceStyles(() => selectedElement);
-      // opacityinitTypoAdvanceStyles(() => selectedElement);
       opacityinitButtonAdvanceStyles(() => selectedElement);
       scaleinitButtonAdvanceStyles(() => selectedElement);
       rotateinitButtonAdvanceStyles(() => selectedElement);
