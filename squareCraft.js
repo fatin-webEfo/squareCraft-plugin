@@ -178,6 +178,7 @@
     horizontalinitTypoAdvanceStyles,
 horizontalinitEffectAnimationDropdownToggle,
 scaleinitEffectAnimationDropdownToggle,
+rotateinitEffectAnimationDropdownToggle,
     initEffectAnimationDropdownToggle,
     // opacityinitTypoAdvanceStyles,
     scaleinitTypoAdvanceStyles,
@@ -455,6 +456,7 @@ window.addEventListener("scroll", () => {
       initEffectAnimationDropdownToggle(() => selectedElement);
       horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
       scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
 
       initHoverButtonShadowControls(() => selectedElement);
       initButtonIconRotationControl(() => selectedElement);
@@ -764,6 +766,7 @@ window.addEventListener("scroll", () => {
 initEffectAnimationDropdownToggle(() => selectedElement);
 horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
 scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+rotateinitEffectAnimationDropdownToggle(() => selectedElement);
       WidgetTypoSectionStateControls();
       initImageStateTabToggle();
       initButtonStructureGapTypeToggle();
@@ -806,6 +809,7 @@ scaleinitEffectAnimationDropdownToggle(() => selectedElement);
       initEffectAnimationDropdownToggle(() => selectedElement);
       horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
       scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
 
       triggerLaunchAnimation();
       if (clickedBlock) {
