@@ -374,15 +374,17 @@ export function rotateinitTypoAdvanceStyles(getSelectedElement) {
         rotateinitEffectAnimationDropdownToggle(getSelectedElement);
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        position === "left"
-          ? gsap.set(fill, { width: `${val}%`, left: "0" })
-          : gsap.set(fill, {
-              left: "auto",
-              transform: `rotateX(${(100 - val) / 100})`,
-              transformOrigin: "right",
-              width: "100%",
-              backgroundColor: "#F6B67B",
-            });
+       if (position === "left") {
+         gsap.set(fill, { width: `${val}%`, left: "0" });
+       } else if (position === "right") {
+         const width = 100 - val;
+         gsap.set(fill, {
+           width: `${width}%`,
+           left: `${val}%`,
+           backgroundColor: "#F6B67B",
+         });
+       }
+
       }
 
       if (el && el.id?.startsWith("block-")) {
