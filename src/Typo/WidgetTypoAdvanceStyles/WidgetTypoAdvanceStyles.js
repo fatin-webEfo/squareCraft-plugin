@@ -180,7 +180,6 @@ export function attachAdvanceTimelineIncrementDecrement(
   });
 }
 
-
 function attachCustomTimelineReset(
   updateStart,
   updateEnd,
@@ -271,7 +270,6 @@ export function initEffectAnimationDropdownToggle(getSelectedElement) {
     setEasePreview(currentEase, el);
   }
 }
-
 
 
 export function initTypoAdvanceStyles(getSelectedElement) {
