@@ -638,7 +638,8 @@ attachFieldClickListener(
 );
 
 }
- function attachFieldClickListener(
+
+function attachFieldClickListener(
    fieldId,
    bullet,
    countEl,
@@ -658,7 +659,7 @@ attachFieldClickListener(
      countEl.value = clamped + "%";
      updateFn(clamped);
    });
- }
+}
 //vertical donevertical done
 
 function horizontalattachAdvanceTimelineIncrementDecrement(
