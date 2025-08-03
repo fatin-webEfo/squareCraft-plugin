@@ -3076,6 +3076,9 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
   updateStart(currentStartVal);
+  gsap.set(startFill, { width: "0%", left: "0%" });
+  gsap.set(startBullet, { left: "0%", xPercent: -50 });
+
 gsap.set(startBullet, { left: `0%`, xPercent: -50 });
   updateEnd(currentEndVal);
 
@@ -3083,7 +3086,7 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
     bullet,
     updateFn,
     type = "normal",
-    min = -100,
+    min = 0,
     max = 100
   ) => {
     bullet.onmousedown = (e) => {
