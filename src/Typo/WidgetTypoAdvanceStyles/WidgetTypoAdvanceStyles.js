@@ -3125,12 +3125,9 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
         let clamped = Math.round(percent);
 
         if (bullet === startBullet) {
-          clamped = Math.max(0, Math.min(clamped, currentEndVal - 4));
-
-          updateStart(clamped);
+          updateStart(clamped); // Let updateStart() handle clamping and sync
         } else if (bullet === endBullet) {
-          clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
-          updateEnd(clamped);
+          updateEnd(clamped); // Let updateEnd() handle clamping and sync
         } else {
           clamped = Math.max(min, Math.min(clamped, max));
           updateFn(clamped);
