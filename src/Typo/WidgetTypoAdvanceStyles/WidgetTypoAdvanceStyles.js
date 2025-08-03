@@ -3023,9 +3023,12 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     return parsed;
   };
 
-let currentStartVal =
-  getCurrentPercentage("--sc-Typo-opacity-scroll-start") || 0;
-  let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
+let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start");
+if (isNaN(currentStartVal)) currentStartVal = 0;
+
+let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
+if (isNaN(currentEndVal)) currentEndVal = 100;
+
 
   const updateStart = (val) => {
     currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
