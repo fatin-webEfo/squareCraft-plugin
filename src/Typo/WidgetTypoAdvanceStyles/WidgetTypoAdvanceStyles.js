@@ -3082,10 +3082,14 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
   updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
-  updateStart(currentStartVal);
-  startValue.textContent = `${currentStartVal}%`;
-  gsap.set(startFill, { width: "0%", left: "0%" });
-  gsap.set(startBullet, { left: "0%", xPercent: -50 });
+ updateStart(currentStartVal);
+ startValue.textContent = `${currentStartVal}%`;
+ gsap.set(startFill, {
+   width: `${currentStartVal}%`,
+   left: "0%",
+   backgroundColor: "var(--sc-Typo-theme-accent)",
+ });
+ gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 });
 
  currentEndVal = 100;
  updateField(
@@ -3098,9 +3102,14 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
    100
  )(currentEndVal);
 
- endValue.textContent = "100%";
- gsap.set(endBullet, { left: "100%", xPercent: -50 });
- gsap.set(endFill, { width: "0%", left: "100%" });
+ endValue.textContent = `${currentEndVal}%`;
+ gsap.set(endBullet, { left: `${currentEndVal}%`, xPercent: -50 });
+ gsap.set(endFill, {
+   width: `${100 - currentEndVal}%`,
+   left: `${currentEndVal}%`,
+   backgroundColor: "#F6B67B",
+ });
+
 
 
 
