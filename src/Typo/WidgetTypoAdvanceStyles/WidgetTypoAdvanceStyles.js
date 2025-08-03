@@ -3107,7 +3107,6 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
   const makeDraggable = (
     bullet,
     updateFn,
-    type = "normal",
     min = 0,
     max = 100
   ) => {
@@ -3125,9 +3124,9 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
         let clamped = Math.round(percent);
 
         if (bullet === startBullet) {
-          updateStart(clamped); // Let updateStart() handle clamping and sync
+          updateStart(clamped); 
         } else if (bullet === endBullet) {
-          updateEnd(clamped); // Let updateEnd() handle clamping and sync
+          updateEnd(clamped); 
         } else {
           clamped = Math.max(min, Math.min(clamped, max));
           updateFn(clamped);
