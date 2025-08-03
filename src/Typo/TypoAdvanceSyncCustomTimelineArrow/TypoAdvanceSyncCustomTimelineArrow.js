@@ -53,39 +53,45 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const effectiveEnd = endPercent / 100;
     const effectiveScroll = scrollLeft / 100;
 
-    let activeZone = "entry";
-    let arrowColor = "#EF7C2F";
-    let outputY = entryY;
+    let outputY = 0;
+    let zone = "";
+    let arrowColor = "";
+
+    const progress =
+      (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
 
     if (effectiveScroll <= effectiveStart + 0.01) {
+      zone = "entry";
       outputY = entryY;
-      activeZone = "entry";
       arrowColor = "#EF7C2F";
     } else if (effectiveScroll >= effectiveEnd - 0.01) {
+      zone = "exit";
       outputY = exitY;
-      activeZone = "exit";
       arrowColor = "#F6B67B";
+    } else if (progress <= 0.5) {
+      zone = "entry-center";
+      const t = progress / 0.5;
+      outputY = entryY + (centerY - entryY) * t;
+      arrowColor = "#FFFFFF";
     } else {
-      const centerProgress =
-        (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-      if (centerProgress <= 0.5) {
-        const t = centerProgress / 0.5;
-        outputY = entryY + (centerY - entryY) * t;
-        activeZone = "entry-center";
-        arrowColor = "#FFFFFF";
-      } else {
-        const t = (centerProgress - 0.5) / 0.5;
-        outputY = centerY + (exitY - centerY) * t;
-        activeZone = "center-exit";
-        arrowColor = "#FFFFFF";
-      }
+      zone = "center-exit";
+      const t = (progress - 0.5) / 0.5;
+      outputY = centerY + (exitY - centerY) * t;
+      arrowColor = "#FFFFFF";
     }
 
-    if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
-      window.__typoActiveZone = activeZone;
-      lastY = outputY;
-      arrow.style.backgroundColor = arrowColor;
+    arrow.style.backgroundColor = arrowColor;
 
+    const currentColor = arrow.style.backgroundColor
+      .replace(/\s/g, "")
+      .toLowerCase();
+    const shouldAnimate =
+      (zone.startsWith("entry") && currentColor === "#ef7c2f") ||
+      (zone.startsWith("center") && currentColor === "#ffffff") ||
+      (zone === "exit" && currentColor === "#f6b67b");
+
+    if (shouldAnimate && lastY !== outputY) {
+      lastY = outputY;
       gsap.to(content, {
         duration: 0.35,
         ease: transition.ease,
@@ -106,7 +112,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   waitForElements((arrow, startBullet, endBullet) => {
-    arrow.style.backgroundColor = "#FFFFFF";
+    arrow.style.backgroundColor = "#FFFFFF"; // Initial
     trackLoop(arrow, startBullet, endBullet);
   });
 }
