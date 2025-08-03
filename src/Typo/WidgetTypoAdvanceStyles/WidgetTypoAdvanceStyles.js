@@ -3084,10 +3084,12 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
   gsap.set(startFill, { width: "0%", left: "0%" });
   gsap.set(startBullet, { left: "0%", xPercent: -50 });
 
-  updateEnd(currentEndVal);
-  endValue.textContent = `${currentEndVal}%`;
-  gsap.set(endBullet, { left: `100%`, xPercent: -50 });
-  gsap.set(endFill, { width: `0%`, left: `100%` });
+ updateEnd(100);
+ currentEndVal = 100;
+ endValue.textContent = "100%";
+ gsap.set(endBullet, { left: "100%", xPercent: -50 });
+ gsap.set(endFill, { width: "0%", left: "100%" });
+
 
 
   const makeDraggable = (
