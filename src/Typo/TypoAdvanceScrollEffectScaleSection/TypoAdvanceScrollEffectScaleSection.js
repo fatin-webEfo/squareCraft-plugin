@@ -106,7 +106,7 @@ export function TypoAdvanceScrollEffectScaleSection() {
            </div>
            <div
              id="Typo-scale-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-cursor-pointer sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-scale-advance-entry-fill"
@@ -158,7 +158,7 @@ export function TypoAdvanceScrollEffectScaleSection() {
            </div>
            <div
              id="Typo-scale-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-cursor-pointer sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-scale-advance-center-fill"
@@ -210,7 +210,7 @@ export function TypoAdvanceScrollEffectScaleSection() {
            </div>
            <div
              id="Typo-scale-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-cursor-pointer sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-scale-advance-exit-fill"

@@ -105,7 +105,7 @@ export function TypoAdvanceScrollEffectHorizontalSection() {
            </div>
            <div
              id="Typo-horizontal-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-cursor-pointer sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-horizontal-advance-entry-fill"
@@ -157,7 +157,7 @@ export function TypoAdvanceScrollEffectHorizontalSection() {
            </div>
            <div
              id="Typo-horizontal-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-cursor-pointer sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-horizontal-advance-center-fill"
@@ -209,7 +209,7 @@ export function TypoAdvanceScrollEffectHorizontalSection() {
            </div>
            <div
              id="Typo-horizontal-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-cursor-pointer sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-horizontal-advance-exit-fill"

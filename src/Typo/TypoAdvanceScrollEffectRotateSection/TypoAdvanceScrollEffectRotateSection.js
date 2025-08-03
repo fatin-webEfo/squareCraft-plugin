@@ -105,7 +105,7 @@ export function TypoAdvanceScrollEffectRotateSection() {
            </div>
            <div
              id="Typo-rotate-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-cursor-pointer sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-rotate-advance-entry-fill"
@@ -157,7 +157,7 @@ export function TypoAdvanceScrollEffectRotateSection() {
            </div>
            <div
              id="Typo-rotate-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-cursor-pointer sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-rotate-advance-center-fill"
@@ -209,7 +209,7 @@ export function TypoAdvanceScrollEffectRotateSection() {
            </div>
            <div
              id="Typo-rotate-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-cursor-pointer sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
            >
              <div
                id="Typo-rotate-advance-exit-fill"

@@ -165,7 +165,7 @@
 
   const {
     initButtonAdvanceStyles,
-    horizontalinitButtonAdvanceStyles,
+    horizontalinitButtonAdvanceStyles,  
     opacityinitButtonAdvanceStyles,
     scaleinitButtonAdvanceStyles,
     rotateinitButtonAdvanceStyles,
