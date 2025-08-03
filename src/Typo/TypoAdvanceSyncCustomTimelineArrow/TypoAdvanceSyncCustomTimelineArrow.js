@@ -3,7 +3,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   let isTracking = false;
   let lastY = null;
-  let lastZone = null;
+  let currentZone = null;
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById(
@@ -17,13 +17,13 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     );
 
     if (arrow && startBullet && endBullet) {
-      callback(arrow);
+      callback(arrow, startBullet, endBullet);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
   }
 
-  function updateArrowPosition(arrow) {
+  function updateArrowPosition(arrow, startBullet, endBullet) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     if (viewportHeight === 0) return;
@@ -49,90 +49,73 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.left = `${effectiveScroll}%`;
     arrow.style.transform = "translateX(-50%)";
 
+    const totalTimeline = endVal - startVal;
+    const localScroll = effectiveScroll - startVal;
+    const progress = localScroll / totalTimeline;
+
     let outputY = 0;
-    let arrowColor = "#FFFFFF";
-    let zone = "center"; // default
+    let zone = "";
 
     if (effectiveScroll <= startVal) {
-      outputY = entryVal;
-      arrowColor = "#EF7C2F";
       zone = "entry";
+      outputY = entryVal;
     } else if (effectiveScroll >= endVal) {
-      outputY = exitVal;
-      arrowColor = "#F6B67B";
       zone = "exit";
+      outputY = exitVal;
+    } else if (progress <= 0.5) {
+      zone = "entry";
+      const t = progress / 0.5;
+      outputY = entryVal + (centerVal - entryVal) * t;
     } else {
-      const totalTimeline = endVal - startVal;
-      const localScroll = effectiveScroll - startVal;
-      const progress = localScroll / totalTimeline;
-
-      if (progress <= 0.5) {
-        const unit = centerVal - entryVal;
-        const scale = 1 / Math.max(1, Math.abs(unit));
-        outputY = entryVal + unit * (progress * 2 * scale);
-        arrowColor = "#EF7C2F";
-        zone = "entry";
-      } else {
-        const unit = exitVal - centerVal;
-        const scale = 1 / Math.max(1, Math.abs(unit));
-        outputY = centerVal + unit * ((progress - 0.5) * 2 * scale);
-        arrowColor = "#F6B67B";
-        zone = "exit";
-      }
-
-      // At exact center, lock to centerVal
-      if (progress > 0.49 && progress < 0.51) {
-        outputY = centerVal;
-        arrowColor = "#FFFFFF";
-        zone = "center";
-      }
+      zone = "exit";
+      const t = (progress - 0.5) / 0.5;
+      outputY = centerVal + (exitVal - centerVal) * t;
     }
 
-    // Update arrow color
-    arrow.style.backgroundColor = arrowColor;
+    // Set arrow color per zone
+    if (currentZone !== zone) {
+      currentZone = zone;
+      if (zone === "entry") arrow.style.backgroundColor = "#EF7C2F";
+      else if (zone === "exit") arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+    }
 
-    // Only animate if the zone changed (so only one style applies)
-    if (lastZone !== zone || lastY !== outputY) {
-      lastZone = zone;
-      lastY = outputY;
+    const color = arrow.style.backgroundColor.replace(/\s/g, "").toLowerCase();
+    const zoneColorMap = {
+      entry: "#ef7c2f",
+      center: "#ffffff",
+      exit: "#f6b67b",
+    };
 
-      gsap.killTweensOf(content);
-
-      if (zone === "entry") {
+    if (
+      (zone === "entry" && color === zoneColorMap.entry) ||
+      (zone === "exit" && color === zoneColorMap.exit)
+    ) {
+      if (lastY !== outputY) {
+        lastY = outputY;
         gsap.to(content, {
           y: `${outputY}vh`,
           duration: 0.2,
           ease: "power2.out",
-        });
-      } else if (zone === "center") {
-        gsap.to(content, {
-          y: `${outputY}vh`,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-      } else if (zone === "exit") {
-        gsap.to(content, {
-          y: `${outputY}vh`,
-          duration: 0.2,
-          ease: "power2.out",
+          overwrite: true,
         });
       }
     }
   }
 
-  function trackLoop(arrow) {
+  function trackLoop(arrow, startBullet, endBullet) {
     if (isTracking) return;
     isTracking = true;
     function loop() {
-      updateArrowPosition(arrow);
+      updateArrowPosition(arrow, startBullet, endBullet);
       requestAnimationFrame(loop);
     }
     loop();
   }
 
-  waitForElements((arrow) => {
+  waitForElements((arrow, startBullet, endBullet) => {
     arrow.style.backgroundColor = "#FFFFFF";
-    trackLoop(arrow);
+    trackLoop(arrow, startBullet, endBullet);
   });
 }
 
