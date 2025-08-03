@@ -2740,19 +2740,19 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
 
     const update = () => {
       if (lastFocused.includes("entry")) {
-        entryVal = Math.max(-100, Math.min(100, entryVal + direction));
+        entryVal = Math.max(0, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
         document.getElementById("Typo-opacity-advance-entry-count").value =
           entryVal + "%";
       }
       if (lastFocused.includes("center")) {
-        centerVal = Math.max(-100, Math.min(100, centerVal + direction));
+        centerVal = Math.max(0, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
         document.getElementById("Typo-opacity-advance-center-count").value =
           centerVal + "%";
       }
       if (lastFocused.includes("exit")) {
-        exitVal = Math.max(-100, Math.min(100, exitVal + direction));
+        exitVal = Math.max(0, Math.min(100, exitVal + direction));
         updateExit(exitVal);
         document.getElementById("Typo-opacity-advance-exit-count").value =
           exitVal + "%";
@@ -2941,7 +2941,7 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     return;
 
   const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+(bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
       if (countEl.tagName === "INPUT") {
@@ -3076,7 +3076,7 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
   updateStart(currentStartVal);
-  gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 }); // ✅ force bullet visibility
+gsap.set(startBullet, { left: `0%`, xPercent: -50 });
   updateEnd(currentEndVal);
 
   const makeDraggable = (
@@ -3130,14 +3130,14 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     input.addEventListener("input", (e) => {
       let val = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
+      val = Math.max(0, Math.min(100, val));
       e.target.value = val + "%";
       fn(val);
     });
     input.addEventListener("blur", (e) => {
       let val = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
+      val = Math.max(0, Math.min(100, val));
       e.target.value = val + "%";
       fn(val);
     });
