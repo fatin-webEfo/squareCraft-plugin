@@ -3078,12 +3078,14 @@ let currentStartVal =
 
   updateStart(currentStartVal);
   startValue.textContent = `${currentStartVal}%`;
-
   gsap.set(startFill, { width: "0%", left: "0%" });
   gsap.set(startBullet, { left: "0%", xPercent: -50 });
 
-gsap.set(startBullet, { left: `0%`, xPercent: -50 });
   updateEnd(currentEndVal);
+  endValue.textContent = `${currentEndVal}%`;
+  gsap.set(endBullet, { left: `100%`, xPercent: -50 });
+  gsap.set(endFill, { width: `0%`, left: `100%` });
+
 
   const makeDraggable = (
     bullet,
