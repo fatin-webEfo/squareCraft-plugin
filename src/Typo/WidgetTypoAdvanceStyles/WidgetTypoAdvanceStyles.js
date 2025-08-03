@@ -3017,47 +3017,40 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
     const parsed = parseFloat(val.replace("%", ""));
     if (isNaN(parsed)) {
-      return 0;
+      return 100;
     }
 
     return parsed;
   };
 
-let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start");
-if (isNaN(currentStartVal)) currentStartVal = 0;
+  let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start");
+  let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
 
-let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
-if (isNaN(currentEndVal)) currentEndVal = 100;
+  const updateStart = (val) => {
+    currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
+    updateField(
+      startBullet,
+      startFill,
+      startValue,
+      "--sc-Typo-opacity-scroll-start",
+      "left",
+      0,
+      100
+    )(currentStartVal);
+  };
 
-
- const updateStart = (val) => {
-   val = Math.max(0, Math.min(val, currentEndVal - 4));
-   currentStartVal = val;
-   updateField(
-     startBullet,
-     startFill,
-     startValue,
-     "--sc-Typo-opacity-scroll-start",
-     "left",
-     0,
-     100
-   )(val);
- };
-
- const updateEnd = (val) => {
-   val = Math.max(currentStartVal + 4, Math.min(val, 100));
-   currentEndVal = val;
-   updateField(
-     endBullet,
-     endFill,
-     endValue,
-     "--sc-Typo-opacity-scroll-end",
-     "right",
-     0,
-     100
-   )(val);
- };
-
+  const updateEnd = (val) => {
+    currentEndVal = Math.max(currentStartVal + 4, Math.min(val, 100));
+    updateField(
+      endBullet,
+      endFill,
+      endValue,
+      "--sc-Typo-opacity-scroll-end",
+      "right",
+      0,
+      100
+    )(currentEndVal);
+  };
 
   const updateEntry = updateField(
     entryBullet,
@@ -3082,40 +3075,15 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
   updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center"));
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
- updateStart(currentStartVal);
- startValue.textContent = `${currentStartVal}%`;
- gsap.set(startFill, {
-   width: `${currentStartVal}%`,
-   left: "0%",
-   backgroundColor: "var(--sc-Typo-theme-accent)",
- });
- gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 });
-
- currentEndVal = 100;
- updateField(
-   endBullet,
-   endFill,
-   endValue,
-   "--sc-Typo-opacity-scroll-end",
-   "right",
-   0,
-   100
- )(currentEndVal);
-
- endValue.textContent = `${currentEndVal}%`;
- gsap.set(endBullet, { left: `${currentEndVal}%`, xPercent: -50 });
- gsap.set(endFill, {
-   width: `${100 - currentEndVal}%`,
-   left: `${currentEndVal}%`,
-   backgroundColor: "#F6B67B",
- });
-
-
-
+  updateStart(currentStartVal);
+  
+gsap.set(startBullet, { left: `0%`, xPercent: -50 });
+  updateEnd(currentEndVal);
 
   const makeDraggable = (
     bullet,
     updateFn,
+    type = "normal",
     min = 0,
     max = 100
   ) => {
@@ -3133,9 +3101,13 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
         let clamped = Math.round(percent);
 
         if (bullet === startBullet) {
-          updateStart(clamped); 
+          clamped = Math.max(0, Math.min(clamped, currentEndVal));
+          currentStartVal = clamped; // ✅ Sync here
+          updateStart(clamped);
         } else if (bullet === endBullet) {
-          updateEnd(clamped); 
+          clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
+          currentEndVal = clamped; // ✅ Sync here
+          updateEnd(clamped);
         } else {
           clamped = Math.max(min, Math.min(clamped, max));
           updateFn(clamped);
