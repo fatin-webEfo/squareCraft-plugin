@@ -3017,13 +3017,14 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
     const parsed = parseFloat(val.replace("%", ""));
     if (isNaN(parsed)) {
-      return 100;
+      return 0;
     }
 
     return parsed;
   };
 
-  let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start");
+let currentStartVal =
+  getCurrentPercentage("--sc-Typo-opacity-scroll-start") || 0;
   let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
 
   const updateStart = (val) => {
@@ -3076,6 +3077,8 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
 
   updateStart(currentStartVal);
+  startValue.textContent = `${currentStartVal}%`;
+
   gsap.set(startFill, { width: "0%", left: "0%" });
   gsap.set(startBullet, { left: "0%", xPercent: -50 });
 
