@@ -86,12 +86,29 @@ function updateArrowPosition(arrow) {
 
   if (shouldApply && lastY !== outputY) {
     lastY = outputY;
-    gsap.killTweensOf(content);
-    gsap.to(content, {
-      duration: 0.35,
-      ease: "power2.out",
-      y: `${outputY}vh`,
-    });
+    const currentColor = arrow.style.backgroundColor;
+
+    let allowed = false;
+    if (currentColor === "rgb(239, 124, 47)" && outputY === entryY) {
+      allowed = true;
+    }
+    if (currentColor === "rgb(255, 255, 255)" && outputY === centerY) {
+      allowed = true;
+    }
+    if (currentColor === "rgb(246, 182, 123)" && outputY === exitY) {
+      allowed = true;
+    }
+
+    if (allowed && lastY !== outputY) {
+      lastY = outputY;
+      gsap.killTweensOf(content);
+      gsap.to(content, {
+        duration: 0.35,
+        ease: transition.ease,
+        y: `${outputY}vh`,
+      });
+    }
+
   }
 }
 
