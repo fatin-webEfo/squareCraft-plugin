@@ -53,39 +53,42 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const effectiveEnd = endPercent / 100;
     const effectiveScroll = scrollLeft / 100;
 
+    let outputY = 0;
     let arrowColor = "#FFFFFF";
-    let outputY = centerY;
+    let activeZone = "";
+
+    const progress =
+      (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
 
     if (effectiveScroll <= effectiveStart + 0.01) {
       outputY = entryY;
       arrowColor = "#EF7C2F";
+      activeZone = "entry";
     } else if (effectiveScroll >= effectiveEnd - 0.01) {
       outputY = exitY;
       arrowColor = "#F6B67B";
+      activeZone = "exit";
+    } else if (progress <= 0.5) {
+      const t = progress / 0.5;
+      outputY = entryY + (centerY - entryY) * t;
+      arrowColor = "#EF7C2F";
+      activeZone = "entry-center";
     } else {
-      const centerProgress =
-        (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-      if (centerProgress <= 0.5) {
-        const t = centerProgress / 0.5;
-        outputY = entryY + (centerY - entryY) * t;
-        arrowColor = "#EF7C2F";
-      } else {
-        const t = (centerProgress - 0.5) / 0.5;
-        outputY = centerY + (exitY - centerY) * t;
-        arrowColor = "#F6B67B";
-      }
+      const t = (progress - 0.5) / 0.5;
+      outputY = centerY + (exitY - centerY) * t;
+      arrowColor = "#F6B67B";
+      activeZone = "center-exit";
     }
 
     arrow.style.backgroundColor = arrowColor;
 
-    const bgColor = arrowColor.replace(/\s/g, "").toLowerCase();
+    const shouldApply =
+      (activeZone.startsWith("entry") && arrowColor === "#EF7C2F") ||
+      (activeZone.startsWith("center") && arrowColor === "#FFFFFF") ||
+      (activeZone.startsWith("center-exit") && arrowColor === "#F6B67B") ||
+      (activeZone === "exit" && arrowColor === "#F6B67B");
 
-    const applyY =
-      (bgColor === "#ef7c2f" && outputY <= centerY) ||
-      (bgColor === "#f6b67b" && outputY >= centerY) ||
-      (bgColor === "#ffffff" && outputY === centerY);
-
-    if (applyY && lastY !== outputY) {
+    if (shouldApply && lastY !== outputY) {
       lastY = outputY;
       gsap.to(content, {
         duration: 0.35,
