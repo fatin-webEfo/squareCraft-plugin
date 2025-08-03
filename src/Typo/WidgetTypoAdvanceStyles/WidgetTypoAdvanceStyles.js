@@ -3030,31 +3030,34 @@ let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
 if (isNaN(currentEndVal)) currentEndVal = 100;
 
 
-  const updateStart = (val) => {
-    currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
-    updateField(
-      startBullet,
-      startFill,
-      startValue,
-      "--sc-Typo-opacity-scroll-start",
-      "left",
-      0,
-      100
-    )(currentStartVal);
-  };
+ const updateStart = (val) => {
+   val = Math.max(0, Math.min(val, currentEndVal - 4));
+   currentStartVal = val;
+   updateField(
+     startBullet,
+     startFill,
+     startValue,
+     "--sc-Typo-opacity-scroll-start",
+     "left",
+     0,
+     100
+   )(val);
+ };
 
-  const updateEnd = (val) => {
-    currentEndVal = Math.max(currentStartVal + 4, Math.min(val, 100));
-    updateField(
-      endBullet,
-      endFill,
-      endValue,
-      "--sc-Typo-opacity-scroll-end",
-      "right",
-      0,
-      100
-    )(currentEndVal);
-  };
+ const updateEnd = (val) => {
+   val = Math.max(currentStartVal + 4, Math.min(val, 100));
+   currentEndVal = val;
+   updateField(
+     endBullet,
+     endFill,
+     endValue,
+     "--sc-Typo-opacity-scroll-end",
+     "right",
+     0,
+     100
+   )(val);
+ };
+
 
   const updateEntry = updateField(
     entryBullet,
@@ -3124,12 +3127,9 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
         if (bullet === startBullet) {
           clamped = Math.max(0, Math.min(clamped, currentEndVal - 4));
 
-          currentStartVal = clamped; // ✅ Sync here
           updateStart(clamped);
         } else if (bullet === endBullet) {
           clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
-
-          currentEndVal = clamped; // ✅ Sync here
           updateEnd(clamped);
         } else {
           clamped = Math.max(min, Math.min(clamped, max));
