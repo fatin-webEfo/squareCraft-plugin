@@ -24,15 +24,10 @@
       }
     }
 
-function updateArrowPosition(arrow, startBullet, endBullet) {
+function updateArrowPosition(arrow) {
   const rect = selectedElement.getBoundingClientRect();
   const viewportHeight = window.innerHeight;
   if (viewportHeight === 0) return;
-
-  const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-  const scrollLeftPercent = (1 - scrollRatio) * 100;
-  arrow.style.left = `${scrollLeftPercent}%`;
-  arrow.style.transform = "translateX(-50%)";
 
   const content = selectedElement.querySelector(".sqs-block-content");
   if (!content) return;
@@ -45,55 +40,55 @@ function updateArrowPosition(arrow, startBullet, endBullet) {
   const entryVal = getVar("--sc-Typo-vertical-scroll-entry") / 2;
   const centerVal = getVar("--sc-Typo-vertical-scroll-center") / 2;
   const exitVal = getVar("--sc-Typo-vertical-scroll-exit") / 2;
+  const startVal = getVar("--sc-Typo-vertical-scroll-start");
+  const endVal = getVar("--sc-Typo-vertical-scroll-end");
 
-  const startPercent = getVar("--sc-Typo-vertical-scroll-start");
-  const endPercent = getVar("--sc-Typo-vertical-scroll-end");
+  const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+  const scrollLeftPercent = (1 - scrollRatio) * 100;
+  const effectiveScroll = scrollLeftPercent;
 
-  const effectiveStart = startPercent / 100;
-  const effectiveEnd = endPercent / 100;
-  const effectiveScroll = scrollLeftPercent / 100;
-
-  const scrollProgress =
-    (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-  const clamped = Math.max(0, Math.min(1, scrollProgress));
+  arrow.style.left = `${effectiveScroll}%`;
+  arrow.style.transform = "translateX(-50%)";
 
   let outputY = 0;
   let arrowColor = "#FFFFFF";
-  let activeZone = "";
 
-  if (clamped <= 0.01) {
+  if (effectiveScroll <= startVal) {
     outputY = 0;
     arrowColor = "#EF7C2F";
-    activeZone = "before-start";
-  } else if (clamped >= 0.99) {
+  } else if (effectiveScroll >= endVal) {
     outputY = exitVal;
     arrowColor = "#F6B67B";
-    activeZone = "after-end";
   } else {
-    if (clamped <= 0.5) {
-      const t = clamped / 0.5;
-      outputY = entryVal + (centerVal - entryVal) * t;
-      activeZone = "entry-center";
+    const totalTimeline = endVal - startVal;
+    const localScroll = effectiveScroll - startVal;
+    const progress = localScroll / totalTimeline;
+
+    const firstHalf = progress <= 0.5;
+    if (firstHalf) {
+      const unit = centerVal - entryVal;
+      const scale = 1 / Math.max(1, centerVal !== 0 ? Math.abs(unit) : 1);
+      outputY = entryVal + unit * (progress * 2 * scale);
     } else {
-      const t = (clamped - 0.5) / 0.5;
-      outputY = centerVal + (exitVal - centerVal) * t;
-      activeZone = "center-exit";
+      const unit = exitVal - centerVal;
+      const scale = 1 / Math.max(1, centerVal !== 0 ? Math.abs(unit) : 1);
+      outputY = centerVal + unit * ((progress - 0.5) * 2 * scale);
     }
   }
 
-  if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
-    window.__typoActiveZone = activeZone;
+  if (lastY !== outputY) {
     lastY = outputY;
     arrow.style.backgroundColor = arrowColor;
 
-    gsap.killTweensOf(content);
     gsap.to(content, {
+      y: `${outputY}vh`,
       duration: 0.2,
       ease: "power2.out",
-      y: `${outputY}vh`,
+      overwrite: true,
     });
   }
 }
+
 
 
 
