@@ -24,77 +24,77 @@
       }
     }
 
- function updateArrowPosition(arrow, startBullet, endBullet) {
-   const rect = selectedElement.getBoundingClientRect();
-   const viewportHeight = window.innerHeight;
+function updateArrowPosition(arrow) {
+  const rect = selectedElement.getBoundingClientRect();
+  const viewportHeight = window.innerHeight;
+  if (viewportHeight === 0) return;
 
-   if (viewportHeight === 0) return;
+  const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+  const scrollLeft = (1 - scrollRatio) * 100;
 
-   const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-   const scrollLeft = (1 - scrollRatio) * 100;
+  arrow.style.left = `${scrollLeft}%`;
+  arrow.style.transform = "translateX(-50%)";
 
-   arrow.style.left = `${scrollLeft}%`;
-   arrow.style.transform = "translateX(-50%)";
+  const content = selectedElement.querySelector(".sqs-block-content");
+  if (!content) return;
 
-   const content = selectedElement.querySelector(".sqs-block-content");
-   if (!content) return;
+  const getVar = (v) => {
+    const raw = getComputedStyle(content).getPropertyValue(v).trim();
+    return parseFloat(raw.replace("%", "")) || 0;
+  };
 
-   const getVar = (v) => {
-     const raw = getComputedStyle(content).getPropertyValue(v).trim();
-     return parseFloat(raw.replace("%", "")) || 0;
-   };
+  const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
+  const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
+  const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
 
-   const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
-   const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
-   const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
+  const startPercent = getVar("--sc-Typo-vertical-scroll-start");
+  const endPercent = getVar("--sc-Typo-vertical-scroll-end");
 
-   const startPercent = getVar("--sc-Typo-vertical-scroll-start");
-   const endPercent = getVar("--sc-Typo-vertical-scroll-end");
+  const effectiveStart = startPercent / 100;
+  const effectiveEnd = endPercent / 100;
+  const effectiveScroll = scrollLeft / 100;
 
-   const effectiveStart = startPercent / 100;
-   const effectiveEnd = endPercent / 100;
-   const effectiveScroll = scrollLeft / 100;
+  let arrowColor = "#FFFFFF";
+  let outputY = centerY;
 
-   let activeZone = "entry";
-   let arrowColor = "#EF7C2F";
-   let outputY = entryY;
+  const progress =
+    (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
 
-   if (effectiveScroll <= effectiveStart + 0.01) {
-     outputY = entryY;
-     activeZone = "entry";
-     arrowColor = "#EF7C2F";
-   } else if (effectiveScroll >= effectiveEnd - 0.01) {
-     outputY = exitY;
-     activeZone = "exit";
-     arrowColor = "#F6B67B";
-   } else {
-     const centerProgress =
-       (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-     if (centerProgress <= 0.5) {
-       const t = centerProgress / 0.5;
-       outputY = entryY + (centerY - entryY) * t;
-       activeZone = "entry-center";
-     } else {
-       const t = (centerProgress - 0.5) / 0.5;
-       outputY = centerY + (exitY - centerY) * t;
-       activeZone = "center-exit";
-     }
-     arrowColor = "#FFFFFF";
-   }
+  if (effectiveScroll <= effectiveStart + 0.01) {
+    arrowColor = "#EF7C2F";
+    outputY = entryY;
+  } else if (effectiveScroll >= effectiveEnd - 0.01) {
+    arrowColor = "#F6B67B";
+    outputY = exitY;
+  } else if (progress >= 0.49 && progress <= 0.51) {
+    arrowColor = "#FFFFFF";
+    outputY = centerY;
+  } else if (progress < 0.49) {
+    arrowColor = "#EF7C2F";
+    outputY = entryY;
+  } else {
+    arrowColor = "#F6B67B";
+    outputY = exitY;
+  }
 
-   if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
-     window.__typoActiveZone = activeZone;
-     arrow.style.backgroundColor = arrowColor;
-     lastY = outputY;
+  arrow.style.backgroundColor = arrowColor;
 
-     gsap.killTweensOf(content);
-     gsap.to(content, {
-       duration: 0.35,
-       ease: transition.ease,
-       y: `${outputY}vh`,
-     });
-   }
- }
+  const shouldApply =
+    (arrowColor === "#EF7C2F" && outputY === entryY) ||
+    (arrowColor === "#FFFFFF" && outputY === centerY) ||
+    (arrowColor === "#F6B67B" && outputY === exitY);
+
+  if (shouldApply && lastY !== outputY) {
+    lastY = outputY;
+    gsap.killTweensOf(content);
+    gsap.to(content, {
+      duration: 0.35,
+      ease: "power2.out",
+      y: `${outputY}vh`,
+    });
+  }
+}
+
 
 
 
