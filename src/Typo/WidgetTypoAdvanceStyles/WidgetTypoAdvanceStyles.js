@@ -3084,8 +3084,17 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
   gsap.set(startFill, { width: "0%", left: "0%" });
   gsap.set(startBullet, { left: "0%", xPercent: -50 });
 
- updateEnd(100);
  currentEndVal = 100;
+ updateField(
+   endBullet,
+   endFill,
+   endValue,
+   "--sc-Typo-opacity-scroll-end",
+   "right",
+   0,
+   100
+ )(currentEndVal);
+
  endValue.textContent = "100%";
  gsap.set(endBullet, { left: "100%", xPercent: -50 });
  gsap.set(endFill, { width: "0%", left: "100%" });
@@ -3113,11 +3122,13 @@ if (isNaN(currentEndVal)) currentEndVal = 100;
         let clamped = Math.round(percent);
 
         if (bullet === startBullet) {
-          clamped = Math.max(0, Math.min(clamped, currentEndVal));
+          clamped = Math.max(0, Math.min(clamped, currentEndVal - 4));
+
           currentStartVal = clamped; // ✅ Sync here
           updateStart(clamped);
         } else if (bullet === endBullet) {
           clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
+
           currentEndVal = clamped; // ✅ Sync here
           updateEnd(clamped);
         } else {
