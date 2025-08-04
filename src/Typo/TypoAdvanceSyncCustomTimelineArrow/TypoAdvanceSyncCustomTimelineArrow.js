@@ -2,15 +2,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
+    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
 
     if (arrow && startBullet && endBullet) {
       callback(arrow);
@@ -73,8 +67,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           }
 
           gsap.set(content, { y: `${yVal}vh` });
-        },
-      },
+        }
+      }
     });
 
     ScrollTrigger.refresh();
@@ -112,6 +106,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupSmoothScroll(content, arrow);
   });
 }
+
+
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
