@@ -33,17 +33,16 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
-
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const timeline = gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
-        scrub: 1,
         trigger: selectedElement,
         start: "top bottom",
         end: "bottom top",
+        scrub: 1,
         onUpdate: (self) => {
           const scroll = self.progress;
           const start = startPercent();
