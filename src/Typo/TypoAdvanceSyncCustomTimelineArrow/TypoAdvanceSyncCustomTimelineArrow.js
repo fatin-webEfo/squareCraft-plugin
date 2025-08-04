@@ -29,10 +29,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     arrow.style.left = `${scrollLeft}%`;
     arrow.style.transform = "translateX(-50%)";
-    arrow.style.backgroundColor = "#FFFFFF";
   }
 
-  function setupSmoothScroll(content) {
+  function setupSmoothScroll(content, arrow) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -60,6 +59,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         const scroll = self.progress;
         const start = startPercent();
         const end = endPercent();
+
         const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
 
         const eY = entryY();
@@ -81,6 +81,15 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           ease: "none",
           overwrite: "auto",
         });
+
+        // 🔥 Fix arrow color based on zone
+        if (scroll < start) {
+          arrow.style.backgroundColor = "#EF7C2F"; // entry zone
+        } else if (scroll > end) {
+          arrow.style.backgroundColor = "#F6B67B"; // exit zone
+        } else {
+          arrow.style.backgroundColor = "#FFFFFF"; // center zone
+        }
       },
     });
 
@@ -99,7 +108,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
 
-    setupSmoothScroll(content);
+    setupSmoothScroll(content, arrow);
     trackArrowLoop(arrow);
   });
 }
