@@ -19,7 +19,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function setupTimeline(content, arrow) {
+  function setupStrictZoneScroll(content, arrow) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -28,7 +28,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
     const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
     const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
-
     const startPercent = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
@@ -43,62 +42,68 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       start: "top bottom",
       end: "bottom top",
       scrub: true,
-      onUpdate: (self) => {
-        const scrollProgress = self.progress;
+      onUpdate: () => {
+        const rect = selectedElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const scrollProgress = 1 - rect.top / viewportHeight;
+
         const start = startPercent();
         const end = endPercent();
 
-        const p = Math.max(
-          0,
-          Math.min(1, (scrollProgress - start) / (end - start))
-        );
-
-        const eY = entryY();
-        const cY = centerY();
-        const xY = exitY();
-
         let yVal;
-        if (p <= 0) {
-          yVal = eY;
-        } else if (p >= 1) {
-          yVal = xY;
-        } else if (p < 0.5) {
-          const t = p / 0.5;
-          yVal = eY + (cY - eY) * t;
+        let activeZone;
+
+        if (scrollProgress < start) {
+          yVal = entryY();
+          activeZone = "entry";
+        } else if (scrollProgress >= start && scrollProgress <= end) {
+          yVal = centerY();
+          activeZone = "center";
         } else {
-          const t = (p - 0.5) / 0.5;
-          yVal = cY + (xY - cY) * t;
+          yVal = exitY();
+          activeZone = "exit";
         }
 
         gsap.set(content, { y: `${yVal}vh` });
-
-        const rect = selectedElement.getBoundingClientRect();
-        const scrollRatio = Math.max(
-          0,
-          Math.min(1, rect.top / window.innerHeight)
-        );
-        const scrollX = 1 - scrollRatio;
-        arrow.style.left = `${scrollX * 100}%`;
-        arrow.style.transform = "translateX(-50%)";
-
-        const buffer = 0.001;
-        if (scrollX < start - buffer) {
-          arrow.style.backgroundColor = "#EF7C2F";
-        } else if (scrollX > end + buffer) {
-          arrow.style.backgroundColor = "#F6B67B";
-        } else {
-          arrow.style.backgroundColor = "#FFFFFF";
-        }
+        applyArrowColor(scrollProgress, start, end, arrow);
       },
     });
 
     ScrollTrigger.refresh();
+
+    function applyArrowColor(scrollProgress, start, end, arrow) {
+      const buffer = 0.002;
+      if (scrollProgress < start - buffer) {
+        arrow.style.backgroundColor = "#EF7C2F"; // Entry
+      } else if (scrollProgress > end + buffer) {
+        arrow.style.backgroundColor = "#F6B67B"; // Exit
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF"; // Center
+      }
+    }
+
+    function loop() {
+      const rect = selectedElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollProgress = 1 - rect.top / viewportHeight;
+
+      arrow.style.left = `${scrollProgress * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+
+      const start = startPercent();
+      const end = endPercent();
+      applyArrowColor(scrollProgress, start, end, arrow);
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
   }
 
   waitForElements((arrow) => {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
-    setupTimeline(content, arrow);
+    setupStrictZoneScroll(content, arrow);
   });
 }
 
