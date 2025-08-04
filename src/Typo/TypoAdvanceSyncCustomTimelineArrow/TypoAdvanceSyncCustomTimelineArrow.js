@@ -33,7 +33,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.transform = "translateX(-50%)";
   }
 
-  function setupScrollEffect(content) {
+  function setupScrollEffect(content, arrow) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -62,20 +62,27 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         const end = endPercent();
         const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
 
-        let yVal;
+        let yVal, color;
+
         if (p <= 0) {
           yVal = entryY();
+          color = "#EF7C2F";
         } else if (p >= 1) {
           yVal = exitY();
+          color = "#F6B67B";
+        } else if (p >= 0.49 && p <= 0.51) {
+          yVal = centerY();
+          color = "#FFFFFF";
         } else if (p < 0.5) {
-          const t = p / 0.5;
-          yVal = entryY() + (centerY() - entryY()) * t;
+          yVal = entryY();
+          color = "#EF7C2F";
         } else {
-          const t = (p - 0.5) / 0.5;
-          yVal = centerY() + (exitY() - centerY()) * t;
+          yVal = exitY();
+          color = "#F6B67B";
         }
 
         gsap.set(content, { y: `${yVal}vh` });
+        arrow.style.backgroundColor = color;
       },
     });
 
@@ -97,7 +104,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!content) return;
 
     arrow.style.backgroundColor = "#FFFFFF";
-    setupScrollEffect(content);
+    setupScrollEffect(content, arrow);
     trackLoop(arrow);
   });
 }
