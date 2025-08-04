@@ -75,28 +75,31 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     ScrollTrigger.refresh();
 
     // 🧠 Live color sync inside loop:
-    function loop() {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-      const scrollProgress = 1 - scrollRatio;
+   function loop() {
+     const rect = selectedElement.getBoundingClientRect();
+     const viewportHeight = window.innerHeight;
+     const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+     const scrollProgress = 1 - scrollRatio;
 
-      arrow.style.left = `${scrollProgress * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
+     arrow.style.left = `${scrollProgress * 100}%`;
+     arrow.style.transform = "translateX(-50%)";
 
-      const start = startPercent();
-      const end = endPercent();
+     const start = startPercent();
+     const end = endPercent();
 
-      if (scrollProgress < start) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollProgress > end) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
+     const buffer = 0.005;
 
-      requestAnimationFrame(loop);
-    }
+     if (scrollProgress < start - buffer) {
+       arrow.style.backgroundColor = "#EF7C2F";
+     } else if (scrollProgress > end + buffer) {
+       arrow.style.backgroundColor = "#F6B67B";
+     } else {
+       arrow.style.backgroundColor = "#FFFFFF";
+     }
+
+     requestAnimationFrame(loop);
+   }
+
 
     loop();
   }
