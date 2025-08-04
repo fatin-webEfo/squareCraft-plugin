@@ -4,15 +4,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   let isTracking = false;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
+    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
 
     if (arrow && startBullet && endBullet) {
       callback(arrow, startBullet, endBullet);
@@ -108,6 +102,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow);
   });
 }
+
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
