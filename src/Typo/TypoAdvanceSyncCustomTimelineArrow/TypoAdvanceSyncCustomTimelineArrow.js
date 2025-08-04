@@ -43,8 +43,10 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       start: "top bottom",
       end: "bottom top",
       scrub: true,
-      onUpdate: (self) => {
-        const scroll = self.progress;
+      onUpdate: () => {
+        const scrollTop = window.scrollY || window.pageYOffset;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scroll = scrollTop / docHeight;
         const start = startPercent();
         const end = endPercent();
         const eY = entryY();
