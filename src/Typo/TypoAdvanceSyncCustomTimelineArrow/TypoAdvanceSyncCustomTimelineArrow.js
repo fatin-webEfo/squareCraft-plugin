@@ -33,67 +33,59 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
-
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        scrub: 1,
-        trigger: selectedElement,
-        start: "top bottom",
-        end: "bottom top",
-        onUpdate: (self) => {
-          const scroll = self.progress;
-          const start = startPercent();
-          const end = endPercent();
-          const buffer = 0.001;
+    const start = startPercent();
+    const end = endPercent();
+    const entry = entryY();
+    const center = centerY();
+    const exit = exitY();
 
-          const eY = entryY();
-          const cY = centerY();
-          const xY = exitY();
+    const middle = start + (end - start) / 2;
 
-          if (scroll < start - buffer) {
-            gsap.to(content, {
-              y: `${eY}vh`,
-              duration: 0.3,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-            return;
-          }
-
-          if (scroll > end + buffer) {
-            gsap.to(content, {
-              y: `${xY}vh`,
-              duration: 0.3,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
-            return;
-          }
-
-          const p = (scroll - start) / (end - start);
-          let yVal;
-
-          if (p < 0.5) {
-            const t = p / 0.5;
-            yVal = eY + (cY - eY) * t;
-          } else {
-            const t = (p - 0.5) / 0.5;
-            yVal = cY + (xY - cY) * t;
-          }
-
-          gsap.to(content, {
-            y: `${yVal}vh`,
-            duration: 0.3,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: selectedElement,
+          start: `${start * 100}% top`,
+          end: `${middle * 100}% top`,
+          scrub: 1,
         },
-      },
-    });
+      })
+      .to(content, {
+        y: `${center}vh`,
+        ease: "none",
+      });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: selectedElement,
+          start: `${middle * 100}% top`,
+          end: `${end * 100}% top`,
+          scrub: 1,
+        },
+      })
+      .to(content, {
+        y: `${exit}vh`,
+        ease: "none",
+      });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: selectedElement,
+          start: "top bottom",
+          end: `${start * 100}% top`,
+          scrub: 1,
+        },
+      })
+      .to(content, {
+        y: `${entry}vh`,
+        ease: "none",
+      });
 
     ScrollTrigger.refresh();
 
