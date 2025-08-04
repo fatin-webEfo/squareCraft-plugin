@@ -19,7 +19,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function setupStrictZoneScroll(content, arrow) {
+  function setupGSAPScroll(content, arrow) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -28,6 +28,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
     const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
     const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
+
     const startPercent = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
@@ -37,73 +38,64 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: true,
-      onUpdate: () => {
-        const rect = selectedElement.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const scrollProgress = 1 - rect.top / viewportHeight;
-
-        const start = startPercent();
-        const end = endPercent();
-
-        let yVal;
-        let activeZone;
-
-        if (scrollProgress < start) {
-          yVal = entryY();
-          activeZone = "entry";
-        } else if (scrollProgress >= start && scrollProgress <= end) {
-          yVal = centerY();
-          activeZone = "center";
-        } else {
-          yVal = exitY();
-          activeZone = "exit";
-        }
-
-        gsap.set(content, { y: `${yVal}vh` });
-        applyArrowColor(scrollProgress, start, end, arrow);
+    const fullTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
       },
+    });
+
+    fullTimeline.to(content, {
+      y: () => `${entryY()}vh`,
+      immediateRender: true,
+    });
+
+    fullTimeline.to(content, {
+      y: () => `${centerY()}vh`,
+      duration: 1,
+      ease: "none",
+    });
+
+    fullTimeline.to(content, {
+      y: () => `${exitY()}vh`,
+      duration: 1,
+      ease: "none",
     });
 
     ScrollTrigger.refresh();
 
-    function applyArrowColor(scrollProgress, start, end, arrow) {
-      const buffer = 0.002;
-      if (scrollProgress < start - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F"; // Entry
-      } else if (scrollProgress > end + buffer) {
-        arrow.style.backgroundColor = "#F6B67B"; // Exit
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF"; // Center
-      }
-    }
-
-    function loop() {
+    function loopArrowColor() {
       const rect = selectedElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const scrollProgress = 1 - rect.top / viewportHeight;
+      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+      const scrollProgress = 1 - scrollRatio;
 
       arrow.style.left = `${scrollProgress * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const start = startPercent();
       const end = endPercent();
-      applyArrowColor(scrollProgress, start, end, arrow);
 
-      requestAnimationFrame(loop);
+      if (scrollProgress < start) {
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (scrollProgress > end) {
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+      }
+
+      requestAnimationFrame(loopArrowColor);
     }
 
-    loop();
+    loopArrowColor();
   }
 
   waitForElements((arrow) => {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
-    setupStrictZoneScroll(content, arrow);
+    setupGSAPScroll(content, arrow);
   });
 }
 
