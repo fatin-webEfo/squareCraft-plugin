@@ -38,7 +38,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const tl = gsap.timeline({
+    const timeline = gsap.timeline({
       scrollTrigger: {
         scrub: 1,
         trigger: selectedElement,
@@ -48,29 +48,17 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const scroll = self.progress;
           const start = startPercent();
           const end = endPercent();
-          const buffer = 0.001;
-
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
 
-          if (scroll < start - buffer) {
-            gsap.to(content, {
-              y: `${eY}vh`,
-              duration: 0.3,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
+          if (scroll < start) {
+            gsap.set(content, { y: `${eY}vh` });
             return;
           }
 
-          if (scroll > end + buffer) {
-            gsap.to(content, {
-              y: `${xY}vh`,
-              duration: 0.3,
-              ease: "power2.out",
-              overwrite: "auto",
-            });
+          if (scroll > end) {
+            gsap.set(content, { y: `${xY}vh` });
             return;
           }
 
@@ -85,12 +73,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
             yVal = cY + (xY - cY) * t;
           }
 
-          gsap.to(content, {
-            y: `${yVal}vh`,
-            duration: 0.3,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
+          gsap.set(content, { y: `${yVal}vh` });
         },
       },
     });
