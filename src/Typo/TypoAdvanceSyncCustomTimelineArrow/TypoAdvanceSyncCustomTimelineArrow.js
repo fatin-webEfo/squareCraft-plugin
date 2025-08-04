@@ -26,6 +26,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   function updateArrowPosition(arrow, startBullet, endBullet) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
+
     if (viewportHeight === 0) return;
 
     const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
@@ -53,41 +54,38 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const effectiveEnd = endPercent / 100;
     const effectiveScroll = scrollLeft / 100;
 
-    let arrowColor = "#FFFFFF";
-    let outputY = centerY;
+    let activeZone = "entry";
+    let arrowColor = "#EF7C2F";
+    let outputY = entryY;
 
     if (effectiveScroll <= effectiveStart + 0.01) {
-      arrowColor = "#EF7C2F";
       outputY = entryY;
+      activeZone = "entry";
+      arrowColor = "#EF7C2F";
     } else if (effectiveScroll >= effectiveEnd - 0.01) {
-      arrowColor = "#F6B67B";
       outputY = exitY;
+      activeZone = "exit";
+      arrowColor = "#F6B67B";
     } else {
-      const progress =
+      const centerProgress =
         (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-      if (progress <= 0.5) {
-        arrowColor = "#EF7C2F";
-        outputY = entryY;
+      if (centerProgress <= 0.5) {
+        const t = centerProgress / 0.5;
+        outputY = entryY + (centerY - entryY) * t;
+        activeZone = "entry-center";
       } else {
-        arrowColor = "#F6B67B";
-        outputY = exitY;
+        const t = (centerProgress - 0.5) / 0.5;
+        outputY = centerY + (exitY - centerY) * t;
+        activeZone = "center-exit";
       }
-
-      if (progress >= 0.49 && progress <= 0.51) {
-        arrowColor = "#FFFFFF";
-        outputY = centerY;
-      }
+      arrowColor = "#FFFFFF";
     }
 
-    arrow.style.backgroundColor = arrowColor;
-
-    const shouldApply =
-      (arrowColor === "#EF7C2F" && outputY === entryY) ||
-      (arrowColor === "#FFFFFF" && outputY === centerY) ||
-      (arrowColor === "#F6B67B" && outputY === exitY);
-
-    if (shouldApply && lastY !== outputY) {
+    if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
+      window.__typoActiveZone = activeZone;
+      arrow.style.backgroundColor = arrowColor;
       lastY = outputY;
+
       gsap.killTweensOf(content);
       gsap.to(content, {
         duration: 0.35,
