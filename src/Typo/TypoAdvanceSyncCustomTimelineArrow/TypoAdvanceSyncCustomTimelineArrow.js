@@ -33,47 +33,46 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
+
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const entryToStart = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: selectedElement,
       start: "top bottom",
-      end: "top top",
-      scrub: true,
-      onUpdate: (self) => {
-        const start = startPercent();
-        const scroll = self.progress;
-        const p = Math.min(1, scroll / start);
-        const y = entryY() + (centerY() - entryY()) * p;
-        gsap.set(content, { y: `${y}vh` });
-      },
-    });
-
-    const startToEnd = ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top top",
       end: "bottom top",
       scrub: true,
       onUpdate: (self) => {
+        const scroll = self.progress;
         const start = startPercent();
         const end = endPercent();
-        const scroll = self.progress;
-        const rawP = (scroll - start) / (end - start);
-        const p = Math.max(0, Math.min(1, rawP));
-        const y = centerY() + (exitY() - centerY()) * p;
-        gsap.set(content, { y: `${y}vh` });
-      },
-    });
+        const eY = entryY();
+        const cY = centerY();
+        const xY = exitY();
 
-    const endToOut = ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "bottom top",
-      end: "bottom -100%",
-      scrub: true,
-      onUpdate: () => {
-        gsap.set(content, { y: `${exitY()}vh` });
+        if (scroll < start) {
+          gsap.set(content, { y: `${eY}vh` });
+          return;
+        }
+
+        if (scroll > end) {
+          gsap.set(content, { y: `${xY}vh` });
+          return;
+        }
+
+        const p = (scroll - start) / (end - start);
+        let yVal;
+
+        if (p < 0.5) {
+          const t = p / 0.5;
+          yVal = eY + (cY - eY) * t;
+        } else {
+          const t = (p - 0.5) / 0.5;
+          yVal = cY + (xY - cY) * t;
+        }
+
+        gsap.set(content, { y: `${yVal}vh` });
       },
     });
 
