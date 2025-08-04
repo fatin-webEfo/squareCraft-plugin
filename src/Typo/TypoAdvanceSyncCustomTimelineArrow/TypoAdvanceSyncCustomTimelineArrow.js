@@ -2,15 +2,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
+    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
 
     if (arrow && startBullet && endBullet) {
       callback(arrow);
@@ -45,47 +39,41 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const middle = start + (end - start) / 2;
 
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: selectedElement,
-          start: `${start * 100}% top`,
-          end: `${middle * 100}% top`,
-          scrub: 1,
-        },
-      })
-      .to(content, {
-        y: `${center}vh`,
-        ease: "none",
-      });
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: `${start * 100}% top`,
+        end: `${middle * 100}% top`,
+        scrub: 1,
+      },
+    }).to(content, {
+      y: `${center}vh`,
+      ease: "none",
+    });
 
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: selectedElement,
-          start: `${middle * 100}% top`,
-          end: `${end * 100}% top`,
-          scrub: 1,
-        },
-      })
-      .to(content, {
-        y: `${exit}vh`,
-        ease: "none",
-      });
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: `${middle * 100}% top`,
+        end: `${end * 100}% top`,
+        scrub: 1,
+      },
+    }).to(content, {
+      y: `${exit}vh`,
+      ease: "none",
+    });
 
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: selectedElement,
-          start: "top bottom",
-          end: `${start * 100}% top`,
-          scrub: 1,
-        },
-      })
-      .to(content, {
-        y: `${entry}vh`,
-        ease: "none",
-      });
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: "top bottom",
+        end: `${start * 100}% top`,
+        scrub: 1,
+      },
+    }).to(content, {
+      y: `${entry}vh`,
+      ease: "none",
+    });
 
     ScrollTrigger.refresh();
 
@@ -122,6 +110,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupSmoothScroll(content, arrow);
   });
 }
+
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
