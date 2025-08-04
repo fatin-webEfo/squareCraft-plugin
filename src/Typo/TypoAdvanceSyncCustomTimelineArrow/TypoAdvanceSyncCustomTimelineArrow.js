@@ -1,8 +1,6 @@
 export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById(
       "Typo-vertical-custom-timeline-arrow"
@@ -15,7 +13,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     );
 
     if (arrow && startBullet && endBullet) {
-      callback(arrow, startBullet, endBullet);
+      callback(arrow);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
@@ -31,9 +29,10 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     arrow.style.left = `${scrollLeft}%`;
     arrow.style.transform = "translateX(-50%)";
+    arrow.style.backgroundColor = "#FFFFFF";
   }
 
-  function setupScrollEffect(content, arrow) {
+  function setupSmoothScroll(content) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -42,6 +41,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
     const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
     const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
+
     const startPercent = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
@@ -62,36 +62,32 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         const end = endPercent();
         const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
 
-        let yVal, color;
+        const eY = entryY();
+        const cY = centerY();
+        const xY = exitY();
 
-        if (p <= 0) {
-          yVal = entryY();
-          color = "#EF7C2F";
-        } else if (p >= 1) {
-          yVal = exitY();
-          color = "#F6B67B";
-        } else if (p >= 0.49 && p <= 0.51) {
-          yVal = centerY();
-          color = "#FFFFFF";
-        } else if (p < 0.5) {
-          yVal = entryY();
-          color = "#EF7C2F";
+        let yVal;
+        if (p < 0.5) {
+          const t = p / 0.5;
+          yVal = eY + (cY - eY) * t;
         } else {
-          yVal = exitY();
-          color = "#F6B67B";
+          const t = (p - 0.5) / 0.5;
+          yVal = cY + (xY - cY) * t;
         }
 
-        gsap.set(content, { y: `${yVal}vh` });
-        arrow.style.backgroundColor = color;
+        gsap.to(content, {
+          y: `${yVal}vh`,
+          duration: 0.2,
+          ease: "none",
+          overwrite: "auto",
+        });
       },
     });
 
     ScrollTrigger.refresh();
   }
 
-  function trackLoop(arrow) {
-    if (isTracking) return;
-    isTracking = true;
+  function trackArrowLoop(arrow) {
     function loop() {
       updateArrowPosition(arrow);
       requestAnimationFrame(loop);
@@ -103,9 +99,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
 
-    arrow.style.backgroundColor = "#FFFFFF";
-    setupScrollEffect(content, arrow);
-    trackLoop(arrow);
+    setupSmoothScroll(content);
+    trackArrowLoop(arrow);
   });
 }
 
