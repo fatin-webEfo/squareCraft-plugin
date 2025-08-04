@@ -47,14 +47,23 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         const scroll = self.progress;
         const start = startPercent();
         const end = endPercent();
-
-        const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
-
         const eY = entryY();
         const cY = centerY();
         const xY = exitY();
 
+        if (scroll < start) {
+          gsap.set(content, { y: `${eY}vh` });
+          return;
+        }
+
+        if (scroll > end) {
+          gsap.set(content, { y: `${xY}vh` });
+          return;
+        }
+
+        const p = (scroll - start) / (end - start);
         let yVal;
+
         if (p < 0.5) {
           const t = p / 0.5;
           yVal = eY + (cY - eY) * t;
@@ -63,43 +72,34 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           yVal = cY + (xY - cY) * t;
         }
 
-        gsap.to(content, {
-          y: `${yVal}vh`,
-          duration: 0.2,
-          ease: "none",
-          overwrite: "auto",
-        });
+        gsap.set(content, { y: `${yVal}vh` });
       },
     });
 
     ScrollTrigger.refresh();
 
-    // 🧠 Live color sync inside loop:
-   function loop() {
-     const rect = selectedElement.getBoundingClientRect();
-     const viewportHeight = window.innerHeight;
-     const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-     const scrollProgress = 1 - scrollRatio;
+    function loop() {
+      const rect = selectedElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+      const scrollProgress = 1 - scrollRatio;
 
-     arrow.style.left = `${scrollProgress * 100}%`;
-     arrow.style.transform = "translateX(-50%)";
+      arrow.style.left = `${scrollProgress * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
 
-     const start = startPercent();
-     const end = endPercent();
+      const start = startPercent();
+      const end = endPercent();
 
-     const buffer = 0.005;
+      if (scrollProgress < start) {
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (scrollProgress > end) {
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+      }
 
-     if (scrollProgress < start - buffer) {
-       arrow.style.backgroundColor = "#EF7C2F";
-     } else if (scrollProgress > end + buffer) {
-       arrow.style.backgroundColor = "#F6B67B";
-     } else {
-       arrow.style.backgroundColor = "#FFFFFF";
-     }
-
-     requestAnimationFrame(loop);
-   }
-
+      requestAnimationFrame(loop);
+    }
 
     loop();
   }
