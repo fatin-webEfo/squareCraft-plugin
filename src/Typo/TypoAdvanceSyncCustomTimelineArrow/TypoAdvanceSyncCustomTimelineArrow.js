@@ -23,7 +23,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function updateArrowPosition(arrow) {
+  function updateArrowPosition(arrow, startBullet, endBullet) {
     const rect = selectedElement.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
     if (viewportHeight === 0) return;
@@ -56,24 +56,27 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     let arrowColor = "#FFFFFF";
     let outputY = centerY;
 
-    const progress =
-      (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-
     if (effectiveScroll <= effectiveStart + 0.01) {
       arrowColor = "#EF7C2F";
       outputY = entryY;
     } else if (effectiveScroll >= effectiveEnd - 0.01) {
       arrowColor = "#F6B67B";
       outputY = exitY;
-    } else if (progress >= 0.49 && progress <= 0.51) {
-      arrowColor = "#FFFFFF";
-      outputY = centerY;
-    } else if (progress < 0.49) {
-      arrowColor = "#EF7C2F";
-      outputY = entryY;
     } else {
-      arrowColor = "#F6B67B";
-      outputY = exitY;
+      const progress =
+        (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
+      if (progress <= 0.5) {
+        arrowColor = "#EF7C2F";
+        outputY = entryY;
+      } else {
+        arrowColor = "#F6B67B";
+        outputY = exitY;
+      }
+
+      if (progress >= 0.49 && progress <= 0.51) {
+        arrowColor = "#FFFFFF";
+        outputY = centerY;
+      }
     }
 
     arrow.style.backgroundColor = arrowColor;
@@ -88,7 +91,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       gsap.killTweensOf(content);
       gsap.to(content, {
         duration: 0.35,
-        ease: "power2.out",
+        ease: transition.ease,
         y: `${outputY}vh`,
       });
     }
