@@ -33,48 +33,47 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
-
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: true,
-      onUpdate: () => {
-        const scrollTop = window.scrollY || window.pageYOffset;
-        const docHeight = document.body.scrollHeight - window.innerHeight;
-        const scroll = scrollTop / docHeight;
-        const start = startPercent();
-        const end = endPercent();
-        const eY = entryY();
-        const cY = centerY();
-        const xY = exitY();
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: (self) => {
+          const scroll = self.progress;
+          const start = startPercent();
+          const end = endPercent();
+          const eY = entryY();
+          const cY = centerY();
+          const xY = exitY();
 
-        if (scroll < start) {
-          gsap.set(content, { y: `${eY}vh` });
-          return;
-        }
+          if (scroll < start) {
+            gsap.set(content, { y: `${eY}vh` });
+            return;
+          }
 
-        if (scroll > end) {
-          gsap.set(content, { y: `${xY}vh` });
-          return;
-        }
+          if (scroll > end) {
+            gsap.set(content, { y: `${xY}vh` });
+            return;
+          }
 
-        const p = (scroll - start) / (end - start);
-        let yVal;
+          const p = (scroll - start) / (end - start);
+          let yVal;
 
-        if (p < 0.5) {
-          const t = p / 0.5;
-          yVal = eY + (cY - eY) * t;
-        } else {
-          const t = (p - 0.5) / 0.5;
-          yVal = cY + (xY - cY) * t;
-        }
+          if (p < 0.5) {
+            const t = p / 0.5;
+            yVal = eY + (cY - eY) * t;
+          } else {
+            const t = (p - 0.5) / 0.5;
+            yVal = cY + (xY - cY) * t;
+          }
 
-        gsap.set(content, { y: `${yVal}vh` });
+          gsap.set(content, { y: `${yVal}vh` });
+        },
       },
     });
 
@@ -91,10 +90,11 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       const start = startPercent();
       const end = endPercent();
+      const buffer = 0.001;
 
-      if (scrollProgress < start) {
+      if (scrollProgress < start - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollProgress > end) {
+      } else if (scrollProgress > end + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
