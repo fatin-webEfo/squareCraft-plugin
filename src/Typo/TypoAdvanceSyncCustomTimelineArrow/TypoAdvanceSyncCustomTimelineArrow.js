@@ -1,114 +1,68 @@
 export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
+  const content = selectedElement.querySelector(".sqs-block-content");
+  const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
 
-  function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
+  if (!content || !arrow) return;
 
-    if (arrow && startBullet && endBullet) {
-      callback(arrow, startBullet, endBullet);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
-  }
+  const getVar = (v) => {
+    const raw = getComputedStyle(content).getPropertyValue(v).trim();
+    return parseFloat(raw.replace("%", "")) || 0;
+  };
 
-  function updateArrowPosition(arrow, startBullet, endBullet) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
+  const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
+  const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
+  const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
 
-    if (viewportHeight === 0) return;
+  const startPercent = () => getVar("--sc-Typo-vertical-scroll-start");
+  const endPercent = () => getVar("--sc-Typo-vertical-scroll-end");
 
-    const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-    const scrollLeft = (1 - scrollRatio) * 100;
+  gsap.registerPlugin(ScrollTrigger);
 
-    arrow.style.left = `${scrollLeft}%`;
-    arrow.style.transform = "translateX(-50%)";
-
-    const content = selectedElement.querySelector(".sqs-block-content");
-    if (!content) return;
-
-    const getVar = (v) => {
-      const raw = getComputedStyle(content).getPropertyValue(v).trim();
-      return parseFloat(raw.replace("%", "")) || 0;
-    };
-
-    const entryY = getVar("--sc-Typo-vertical-scroll-entry") / 2;
-    const centerY = getVar("--sc-Typo-vertical-scroll-center") / 2;
-    const exitY = getVar("--sc-Typo-vertical-scroll-exit") / 2;
-
-    const startPercent = getVar("--sc-Typo-vertical-scroll-start");
-    const endPercent = getVar("--sc-Typo-vertical-scroll-end");
-
-    const effectiveStart = startPercent / 100;
-    const effectiveEnd = endPercent / 100;
-    const effectiveScroll = scrollLeft / 100;
-
-    let activeZone = "entry";
-    let arrowColor = "#EF7C2F";
-    let outputY = entryY;
-
-    if (effectiveScroll <= effectiveStart + 0.01) {
-      outputY = entryY;
-      activeZone = "entry";
-      arrowColor = "#EF7C2F";
-    } else if (effectiveScroll >= effectiveEnd - 0.01) {
-      outputY = exitY;
-      activeZone = "exit";
-      arrowColor = "#F6B67B";
-    } else {
-      const centerProgress =
-        (effectiveScroll - effectiveStart) / (effectiveEnd - effectiveStart);
-      if (centerProgress <= 0.5) {
-        const t = centerProgress / 0.5;
-        outputY = entryY + (centerY - entryY) * t;
-        activeZone = "entry-center";
-      } else {
-        const t = (centerProgress - 0.5) / 0.5;
-        outputY = centerY + (exitY - centerY) * t;
-        activeZone = "center-exit";
-      }
-      arrowColor = "#FFFFFF";
-    }
-
-    if (window.__typoActiveZone !== activeZone || lastY !== outputY) {
-      window.__typoActiveZone = activeZone;
-      arrow.style.backgroundColor = arrowColor;
-      lastY = outputY;
-
-      gsap.killTweensOf(content);
-      gsap.to(content, {
-        duration: 0.35,
-        ease: transition.ease,
-        y: `${outputY}vh`,
-      });
-    }
-  }
-
-  function trackLoop(arrow, startBullet, endBullet) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, startBullet, endBullet);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  waitForElements((arrow, startBullet, endBullet) => {
-    arrow.style.backgroundColor = "#FFFFFF";
-    trackLoop(arrow, startBullet, endBullet);
+  // Cleanup any previous ScrollTriggers for this block
+  ScrollTrigger.getAll().forEach((t) => {
+    if (t.trigger === selectedElement) t.kill();
   });
+
+  ScrollTrigger.create({
+    trigger: selectedElement,
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true,
+    onUpdate: (self) => {
+      const start = startPercent() / 100;
+      const end = endPercent() / 100;
+      const scroll = self.progress;
+
+      const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
+
+      let yVal, color;
+
+      if (p <= 0) {
+        yVal = entryY();
+        color = "#EF7C2F";
+      } else if (p >= 1) {
+        yVal = exitY();
+        color = "#F6B67B";
+      } else if (p < 0.5) {
+        const t = p / 0.5;
+        yVal = entryY() + (centerY() - entryY()) * t;
+        color = "#FFFFFF";
+      } else {
+        const t = (p - 0.5) / 0.5;
+        yVal = centerY() + (exitY() - centerY()) * t;
+        color = "#FFFFFF";
+      }
+
+      gsap.set(content, { y: `${yVal}vh` });
+      arrow.style.left = `${(1 - scroll) * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      arrow.style.backgroundColor = color;
+    },
+  });
+
+  ScrollTrigger.refresh();
 }
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
