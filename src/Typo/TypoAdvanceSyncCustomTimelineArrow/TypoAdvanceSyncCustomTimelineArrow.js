@@ -4,9 +4,15 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   let isTracking = false;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
-    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
-    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
+    const arrow = document.getElementById(
+      "Typo-vertical-custom-timeline-arrow"
+    );
+    const startBullet = document.getElementById(
+      "Typo-vertical-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById(
+      "Typo-vertical-timeline-end-bullet"
+    );
 
     if (arrow && startBullet && endBullet) {
       callback(arrow, startBullet, endBullet);
@@ -27,7 +33,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.transform = "translateX(-50%)";
   }
 
-  function setupScrollEffect(content, arrow) {
+  function setupScrollEffect(content) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -56,27 +62,20 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         const end = endPercent();
         const p = Math.max(0, Math.min(1, (scroll - start) / (end - start)));
 
-        let yVal, color;
-
+        let yVal;
         if (p <= 0) {
           yVal = entryY();
-          color = "#EF7C2F";
         } else if (p >= 1) {
           yVal = exitY();
-          color = "#F6B67B";
-        } else if (p >= 0.49 && p <= 0.51) {
-          yVal = centerY();
-          color = "#FFFFFF";
         } else if (p < 0.5) {
-          yVal = entryY();
-          color = "#EF7C2F";
+          const t = p / 0.5;
+          yVal = entryY() + (centerY() - entryY()) * t;
         } else {
-          yVal = exitY();
-          color = "#F6B67B";
+          const t = (p - 0.5) / 0.5;
+          yVal = centerY() + (exitY() - centerY()) * t;
         }
 
         gsap.set(content, { y: `${yVal}vh` });
-        arrow.style.backgroundColor = color;
       },
     });
 
@@ -98,11 +97,10 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!content) return;
 
     arrow.style.backgroundColor = "#FFFFFF";
-    setupScrollEffect(content, arrow);
+    setupScrollEffect(content);
     trackLoop(arrow);
   });
 }
-
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
