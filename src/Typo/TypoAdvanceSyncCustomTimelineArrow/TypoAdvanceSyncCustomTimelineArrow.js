@@ -19,7 +19,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function setupSmoothScroll(content, arrow) {
+  function setupSmartScroll(content, arrow) {
     const getVar = (v) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       return parseFloat(raw.replace("%", "")) || 0;
@@ -33,47 +33,41 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
+
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const entryToStart = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: selectedElement,
       start: "top bottom",
-      end: "top top",
-      scrub: true,
-      onUpdate: (self) => {
-        const start = startPercent();
-        const scroll = self.progress;
-        const p = Math.min(1, scroll / start);
-        const y = entryY() + (centerY() - entryY()) * p;
-        gsap.set(content, { y: `${y}vh` });
-      },
-    });
-
-    const startToEnd = ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top top",
       end: "bottom top",
       scrub: true,
-      onUpdate: (self) => {
+      onUpdate: () => {
+        const rect = selectedElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const scrollZone = 1 - rect.top / viewportHeight;
+
         const start = startPercent();
         const end = endPercent();
-        const scroll = self.progress;
-        const rawP = (scroll - start) / (end - start);
-        const p = Math.max(0, Math.min(1, rawP));
-        const y = centerY() + (exitY() - centerY()) * p;
-        gsap.set(content, { y: `${y}vh` });
-      },
-    });
 
-    const endToOut = ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "bottom top",
-      end: "bottom -100%",
-      scrub: true,
-      onUpdate: () => {
-        gsap.set(content, { y: `${exitY()}vh` });
+        const eY = entryY();
+        const cY = centerY();
+        const xY = exitY();
+
+        let yVal;
+
+        if (scrollZone < start) {
+          const p = Math.min(1, scrollZone / start);
+          yVal = eY + (cY - eY) * p;
+        } else if (scrollZone >= start && scrollZone <= end) {
+          const p = (scrollZone - start) / (end - start);
+          yVal = cY + (xY - cY) * p;
+        } else {
+          yVal = xY;
+        }
+
+        gsap.set(content, { y: `${yVal}vh` });
       },
     });
 
@@ -82,21 +76,21 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     function loop() {
       const rect = selectedElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-      const scrollProgress = 1 - scrollRatio;
+      const scrollProgress = 1 - rect.top / viewportHeight;
 
       arrow.style.left = `${scrollProgress * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const start = startPercent();
       const end = endPercent();
+      const buffer = 0.001;
 
-      if (scrollProgress < start) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollProgress > end) {
-        arrow.style.backgroundColor = "#F6B67B";
+      if (scrollProgress < start - buffer) {
+        arrow.style.backgroundColor = "#EF7C2F"; // Entry
+      } else if (scrollProgress > end + buffer) {
+        arrow.style.backgroundColor = "#F6B67B"; // Exit
       } else {
-        arrow.style.backgroundColor = "#FFFFFF";
+        arrow.style.backgroundColor = "#FFFFFF"; // Center
       }
 
       requestAnimationFrame(loop);
@@ -108,7 +102,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   waitForElements((arrow) => {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
-    setupSmoothScroll(content, arrow);
+    setupSmartScroll(content, arrow);
   });
 }
 
