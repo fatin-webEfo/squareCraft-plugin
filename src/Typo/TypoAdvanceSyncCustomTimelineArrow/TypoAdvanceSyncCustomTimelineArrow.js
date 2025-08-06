@@ -53,15 +53,16 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const cY = centerY();
           const xY = exitY();
 
-          if (scroll < start) {
-            gsap.set(content, { y: `${eY}vh` });
-            return;
-          }
+        if (scroll < 0) {
+          gsap.set(content, { y: `${eY}vh` });
+          return;
+        }
 
-          if (scroll > end) {
-            gsap.set(content, { y: `${xY}vh` });
-            return;
-          }
+        if (scroll > 1) {
+          gsap.set(content, { y: `${xY}vh` });
+          return;
+        }
+
 
           const p = self.progress;
           let yVal;
