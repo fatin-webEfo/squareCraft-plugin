@@ -69,13 +69,19 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const cEl = scroll >= s && scroll <= e;
           const xEl = scroll > e;
 
-          if (sEl) {
-            gsap.set(content, { y: `${yVal}vh` });
-          } else if (cEl) {
-            gsap.set(content, { y: `${yVal}vh` });
-          } else if (xEl) {
-            gsap.set(content, { y: `${yVal}vh` });
-          }
+        if (sEl) {
+          // only show entry scroll effect
+          const t = Math.min(scroll / s, 1);
+          const y = entryY() + (centerY() - entryY()) * t;
+          gsap.set(content, { y: `${y}vh` });
+        } else if (cEl) {
+          gsap.set(content, { y: `${centerY()}vh` });
+        } else if (xEl) {
+          const t = Math.min((scroll - e) / (1 - e), 1);
+          const y = centerY() + (exitY() - centerY()) * t;
+          gsap.set(content, { y: `${y}vh` });
+        }
+
         },
       },
     });
