@@ -62,11 +62,20 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
             const t = Math.min((scroll - e) / (1 - e), 1);
             yVal = cY + (xY - cY) * t;
           } else {
-            const t = (scroll - s) / (e - s);
             yVal = cY;
           }
 
-          gsap.set(content, { y: `${yVal}vh` });
+          const sEl = scroll < s;
+          const cEl = scroll >= s && scroll <= e;
+          const xEl = scroll > e;
+
+          if (sEl) {
+            gsap.set(content, { y: `${yVal}vh` });
+          } else if (cEl) {
+            gsap.set(content, { y: `${yVal}vh` });
+          } else if (xEl) {
+            gsap.set(content, { y: `${yVal}vh` });
+          }
         },
       },
     });
