@@ -69,7 +69,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
 
     ScrollTrigger.refresh();
-
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
       const scrollRatio =
