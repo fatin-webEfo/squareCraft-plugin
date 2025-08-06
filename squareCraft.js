@@ -140,8 +140,6 @@
 
   //  viewport
 
-
-
   function applyStylesToElement(element, css) {
     if (!element || !css) return;
 
@@ -165,7 +163,7 @@
 
   const {
     initButtonAdvanceStyles,
-    horizontalinitButtonAdvanceStyles,  
+    horizontalinitButtonAdvanceStyles,
     opacityinitButtonAdvanceStyles,
     scaleinitButtonAdvanceStyles,
     rotateinitButtonAdvanceStyles,
@@ -177,12 +175,11 @@
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
     opacityinitTypoAdvanceStyles,
-horizontalinitEffectAnimationDropdownToggle,
-scaleinitEffectAnimationDropdownToggle,
-rotateinitEffectAnimationDropdownToggle,
-opacityinitEffectAnimationDropdownToggle,
+    horizontalinitEffectAnimationDropdownToggle,
+    scaleinitEffectAnimationDropdownToggle,
+    rotateinitEffectAnimationDropdownToggle,
+    opacityinitEffectAnimationDropdownToggle,
     initEffectAnimationDropdownToggle,
-    // opacityinitTypoAdvanceStyles,
     scaleinitTypoAdvanceStyles,
     rotateinitTypoAdvanceStyles,
   } = await import(
@@ -347,21 +344,17 @@ opacityinitEffectAnimationDropdownToggle,
   );
   const themeColors = await getSquarespaceThemeStyles();
 
-  
-let isTrackingArrow = false;
+  let isTrackingArrow = false;
 
-window.addEventListener("scroll", () => {
-  const selected = document.querySelector('[id^="block-"].sc-font-modified');
-  if (selected && !isTrackingArrow) {
-    TypoAdvanceSyncCustomTimelineArrow(selected);
-    isTrackingArrow = true;
-  }
-});
-
-
+  window.addEventListener("scroll", () => {
+    const selected = document.querySelector('[id^="block-"].sc-font-modified');
+    if (selected && !isTrackingArrow) {
+      TypoAdvanceSyncCustomTimelineArrow(selected);
+      isTrackingArrow = true;
+    }
+  });
 
   document.body.addEventListener("click", (event) => {
-    
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
@@ -370,7 +363,6 @@ window.addEventListener("scroll", () => {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
-
 
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
@@ -450,7 +442,6 @@ window.addEventListener("scroll", () => {
         setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
         setLastActiveAlignmentElement: (val) =>
           (lastActiveAlignmentElement = val),
-        
       });
 
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
@@ -766,11 +757,11 @@ window.addEventListener("scroll", () => {
       tooltipControls();
       ButtonAdvanceToggleControls();
       initButtonSectionToggleControls();
-initEffectAnimationDropdownToggle(() => selectedElement);
-horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+      initEffectAnimationDropdownToggle(() => selectedElement);
+      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
       WidgetTypoSectionStateControls();
       initImageStateTabToggle();
       initButtonStructureGapTypeToggle();
