@@ -43,7 +43,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         end: `bottom+=${0}px top`,
         scrub: 1,
         onUpdate: (self) => {
-          const scroll =
+          const scrollRatio =
             1 -
             selectedElement.getBoundingClientRect().top / window.innerHeight;
           const s = start();
@@ -53,21 +53,19 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const cY = centerY();
           const xY = exitY();
 
-          const sEl = scroll < s;
-          const cEl = scroll >= s && scroll <= e;
-          const xEl = scroll > e;
-
-          if (sEl) {
-            const t = Math.min(scroll / s, 1);
-            
+          if (scrollRatio < s) {
+            // Entry zone only — allow entry → center interpolation
+            const t = Math.min(scrollRatio / s, 1);
             const y = eY + (cY - eY) * t;
             gsap.set(content, { y: `${y}vh` });
-          } else if (cEl) {
-            gsap.set(content, { y: `${cY}vh` });
-          } else if (xEl) {
-            const t = Math.min((scroll - e) / (1 - e), 1);
+          } else if (scrollRatio > e) {
+            // Exit zone only — allow center → exit interpolation
+            const t = Math.min((scrollRatio - e) / (1 - e), 1);
             const y = cY + (xY - cY) * t;
             gsap.set(content, { y: `${y}vh` });
+          } else {
+            // Center zone — lock at center
+            gsap.set(content, { y: `${cY}vh` });
           }
         },
       },
