@@ -427,10 +427,8 @@
             TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
-            // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
-
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);

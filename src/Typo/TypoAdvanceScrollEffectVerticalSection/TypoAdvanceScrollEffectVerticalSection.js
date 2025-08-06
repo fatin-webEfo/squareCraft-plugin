@@ -48,8 +48,7 @@ export function TypoAdvanceScrollEffectVerticalSection() {
               </div>
 
               <div
-                class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300"
-              >
+                class="sc-flex sc-mt-1 sc-justify-between sc-font-size-12 sc-text-gray-300">
                 <p class="sc-universal sc-roboto">
                   Start <span id="Typo-vertical-timelineStartValue">0%</span>
                 </p>

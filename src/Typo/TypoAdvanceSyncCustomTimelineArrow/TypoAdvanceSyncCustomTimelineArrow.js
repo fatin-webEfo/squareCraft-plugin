@@ -107,8 +107,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
-
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
