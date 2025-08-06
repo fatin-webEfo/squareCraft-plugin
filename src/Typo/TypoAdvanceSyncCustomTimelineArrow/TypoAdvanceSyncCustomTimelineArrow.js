@@ -2,9 +2,15 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
-    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
-    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
+    const arrow = document.getElementById(
+      "Typo-vertical-custom-timeline-arrow"
+    );
+    const startBullet = document.getElementById(
+      "Typo-vertical-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById(
+      "Typo-vertical-timeline-end-bullet"
+    );
 
     if (arrow && startBullet && endBullet) {
       callback(arrow);
@@ -22,7 +28,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
     const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
     const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
-
     const startPercent = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
     const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
@@ -31,33 +36,28 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    const height = selectedElement.offsetHeight;
+    const scrollStart = startPercent() * height;
+    const scrollEnd = endPercent() * height;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
-        start: "top bottom",
-        end: "bottom top",
+        start: `top+=${scrollStart}px bottom`,
+        end: `top+=${scrollEnd}px bottom`,
         scrub: 1,
         onUpdate: (self) => {
           const scroll = self.progress;
-          const start = startPercent();
-          const end = endPercent();
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
+          const start = startPercent();
+          const end = endPercent();
 
-          if (scroll < start) {
-            gsap.set(content, { y: `${eY}vh` });
-            return;
-          }
+          const relativeProgress = (scroll - start) / (end - start);
+          const p = Math.min(Math.max(relativeProgress, 0), 1);
 
-          if (scroll > end) {
-            gsap.set(content, { y: `${xY}vh` });
-            return;
-          }
-
-          const p = (scroll - start) / (end - start);
           let yVal;
-
           if (p < 0.5) {
             const t = p / 0.5;
             yVal = eY + (cY - eY) * t;
@@ -67,37 +67,39 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           }
 
           gsap.set(content, { y: `${yVal}vh` });
-        }
-      }
+        },
+      },
     });
 
     ScrollTrigger.refresh();
 
-    function loop() {
+    function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-      const scrollProgress = 1 - scrollRatio;
+      const elementHeight = selectedElement.offsetHeight;
+      const topOffset = rect.top;
+      const scrollPercent =
+        1 - Math.min(Math.max(topOffset / viewportHeight, 0), 1);
 
-      arrow.style.left = `${scrollProgress * 100}%`;
+      arrow.style.left = `${scrollPercent * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
-      const start = startPercent();
-      const end = endPercent();
+      const s = startPercent();
+      const e = endPercent();
       const buffer = 0.001;
 
-      if (scrollProgress < start - buffer) {
+      if (scrollPercent < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollProgress > end + buffer) {
+      } else if (scrollPercent > e + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
       }
 
-      requestAnimationFrame(loop);
+      requestAnimationFrame(loopArrow);
     }
 
-    loop();
+    loopArrow();
   }
 
   waitForElements((arrow) => {
@@ -106,8 +108,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupSmoothScroll(content, arrow);
   });
 }
-
-
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
