@@ -2,15 +2,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
+    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
+    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
 
     if (arrow && startBullet && endBullet) {
       callback(arrow);
@@ -37,69 +31,69 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const startPx = () =>
-      window.innerHeight + startPercent() * selectedElement.offsetHeight;
-    const endPx = () =>
-      window.innerHeight + endPercent() * selectedElement.offsetHeight;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: (self) => {
+          const scroll = self.progress;
+          const start = startPercent();
+          const end = endPercent();
+          const eY = entryY();
+          const cY = centerY();
+          const xY = exitY();
 
-    const triggerId = `typoScroll-${selectedElement.id}`;
+          if (scroll < start) {
+            gsap.set(content, { y: `${eY}vh` });
+            return;
+          }
 
-   gsap.registerPlugin(ScrollTrigger);
+          if (scroll > end) {
+            gsap.set(content, { y: `${xY}vh` });
+            return;
+          }
 
-   ScrollTrigger.create({
-     id: triggerId,
-     trigger: selectedElement,
-     start: startPx,
-     end: endPx,
-     scrub: 1,
-     onUpdate: (self) => {
-       const p = self.progress;
-       const eY = entryY();
-       const cY = centerY();
-       const xY = exitY();
+          const p = (scroll - start) / (end - start);
+          let yVal;
 
-       if (p < 0) {
-         gsap.set(content, { y: `${eY}vh` });
-         return;
-       }
+          if (p < 0.5) {
+            const t = p / 0.5;
+            yVal = eY + (cY - eY) * t;
+          } else {
+            const t = (p - 0.5) / 0.5;
+            yVal = cY + (xY - cY) * t;
+          }
 
-       if (p > 1) {
-         gsap.set(content, { y: `${xY}vh` });
-         return;
-       }
-
-       let yVal;
-       if (p < 0.5) {
-         const t = p / 0.5;
-         yVal = eY + (cY - eY) * t;
-       } else {
-         const t = (p - 0.5) / 0.5;
-         yVal = cY + (xY - cY) * t;
-       }
-
-       gsap.set(content, { y: `${yVal}vh` });
-     },
-   });
-
+          gsap.set(content, { y: `${yVal}vh` });
+        }
+      }
+    });
 
     ScrollTrigger.refresh();
 
     function loop() {
-      const trigger = ScrollTrigger.getById(triggerId);
-      if (trigger) {
-        const progress = trigger.progress;
-        arrow.style.left = `${progress * 100}%`;
-        arrow.style.transform = "translateX(-50%)";
+      const rect = selectedElement.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
+      const scrollProgress = 1 - scrollRatio;
 
-        const buffer = 0.001;
-        if (progress < buffer) {
-          arrow.style.backgroundColor = "#EF7C2F";
-        } else if (progress > 1 - buffer) {
-          arrow.style.backgroundColor = "#F6B67B";
-        } else {
-          arrow.style.backgroundColor = "#FFFFFF";
-        }
+      arrow.style.left = `${scrollProgress * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+
+      const start = startPercent();
+      const end = endPercent();
+      const buffer = 0.001;
+
+      if (scrollProgress < start - buffer) {
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (scrollProgress > end + buffer) {
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
       }
+
       requestAnimationFrame(loop);
     }
 
@@ -112,6 +106,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupSmoothScroll(content, arrow);
   });
 }
+
+
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
