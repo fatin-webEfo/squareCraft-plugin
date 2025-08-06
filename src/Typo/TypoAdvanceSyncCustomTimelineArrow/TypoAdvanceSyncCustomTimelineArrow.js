@@ -37,34 +37,37 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    const startPx = () =>
+      window.innerHeight + startPercent() * selectedElement.offsetHeight;
+    const endPx = () =>
+      window.innerHeight + endPercent() * selectedElement.offsetHeight;
+
+    const triggerId = `typoScroll-${selectedElement.id}`;
+
     const tl = gsap.timeline({
       scrollTrigger: {
+        id: triggerId,
         trigger: selectedElement,
-        start: () =>
-          `top+=${startPercent() * selectedElement.offsetHeight}px bottom`,
-        end: () =>
-          `top+=${endPercent() * selectedElement.offsetHeight}px bottom`,
+        start: startPx,
+        end: endPx,
         scrub: 1,
         onUpdate: (self) => {
-          const scroll = self.progress;
+          const p = self.progress;
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
 
-        if (scroll < 0) {
-          gsap.set(content, { y: `${eY}vh` });
-          return;
-        }
+          if (p < 0) {
+            gsap.set(content, { y: `${eY}vh` });
+            return;
+          }
 
-        if (scroll > 1) {
-          gsap.set(content, { y: `${xY}vh` });
-          return;
-        }
+          if (p > 1) {
+            gsap.set(content, { y: `${xY}vh` });
+            return;
+          }
 
-
-          const p = self.progress;
           let yVal;
-
           if (p < 0.5) {
             const t = p / 0.5;
             yVal = eY + (cY - eY) * t;
@@ -81,26 +84,21 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     ScrollTrigger.refresh();
 
     function loop() {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const scrollRatio = Math.max(0, Math.min(1, rect.top / viewportHeight));
-      const scrollProgress = 1 - scrollRatio;
+      const trigger = ScrollTrigger.getById(triggerId);
+      if (trigger) {
+        const progress = trigger.progress;
+        arrow.style.left = `${progress * 100}%`;
+        arrow.style.transform = "translateX(-50%)";
 
-      arrow.style.left = `${scrollProgress * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
-
-      const start = startPercent();
-      const end = endPercent();
-      const buffer = 0.001;
-
-      if (scrollProgress < start - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollProgress > end + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
+        const buffer = 0.001;
+        if (progress < buffer) {
+          arrow.style.backgroundColor = "#EF7C2F";
+        } else if (progress > 1 - buffer) {
+          arrow.style.backgroundColor = "#F6B67B";
+        } else {
+          arrow.style.backgroundColor = "#FFFFFF";
+        }
       }
-
       requestAnimationFrame(loop);
     }
 
