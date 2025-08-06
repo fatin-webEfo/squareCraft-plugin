@@ -44,42 +44,43 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const triggerId = `typoScroll-${selectedElement.id}`;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        id: triggerId,
-        trigger: selectedElement,
-        start: startPx,
-        end: endPx,
-        scrub: 1,
-        onUpdate: (self) => {
-          const p = self.progress;
-          const eY = entryY();
-          const cY = centerY();
-          const xY = exitY();
+   gsap.registerPlugin(ScrollTrigger);
 
-          if (p < 0) {
-            gsap.set(content, { y: `${eY}vh` });
-            return;
-          }
+   ScrollTrigger.create({
+     id: triggerId,
+     trigger: selectedElement,
+     start: startPx,
+     end: endPx,
+     scrub: 1,
+     onUpdate: (self) => {
+       const p = self.progress;
+       const eY = entryY();
+       const cY = centerY();
+       const xY = exitY();
 
-          if (p > 1) {
-            gsap.set(content, { y: `${xY}vh` });
-            return;
-          }
+       if (p < 0) {
+         gsap.set(content, { y: `${eY}vh` });
+         return;
+       }
 
-          let yVal;
-          if (p < 0.5) {
-            const t = p / 0.5;
-            yVal = eY + (cY - eY) * t;
-          } else {
-            const t = (p - 0.5) / 0.5;
-            yVal = cY + (xY - cY) * t;
-          }
+       if (p > 1) {
+         gsap.set(content, { y: `${xY}vh` });
+         return;
+       }
 
-          gsap.set(content, { y: `${yVal}vh` });
-        },
-      },
-    });
+       let yVal;
+       if (p < 0.5) {
+         const t = p / 0.5;
+         yVal = eY + (cY - eY) * t;
+       } else {
+         const t = (p - 0.5) / 0.5;
+         yVal = cY + (xY - cY) * t;
+       }
+
+       gsap.set(content, { y: `${yVal}vh` });
+     },
+   });
+
 
     ScrollTrigger.refresh();
 
