@@ -54,17 +54,14 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const xY = exitY();
 
           if (scrollRatio < s) {
-            // Entry zone only — allow entry → center interpolation
             const t = Math.min(scrollRatio / s, 1);
             const y = eY + (cY - eY) * t;
             gsap.set(content, { y: `${y}vh` });
           } else if (scrollRatio > e) {
-            // Exit zone only — allow center → exit interpolation
             const t = Math.min((scrollRatio - e) / (1 - e), 1);
             const y = cY + (xY - cY) * t;
             gsap.set(content, { y: `${y}vh` });
           } else {
-            // Center zone — lock at center
             gsap.set(content, { y: `${cY}vh` });
           }
         },
