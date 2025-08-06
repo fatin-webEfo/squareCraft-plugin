@@ -2,9 +2,15 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("Typo-vertical-custom-timeline-arrow");
-    const startBullet = document.getElementById("Typo-vertical-timeline-start-bullet");
-    const endBullet = document.getElementById("Typo-vertical-timeline-end-bullet");
+    const arrow = document.getElementById(
+      "Typo-vertical-custom-timeline-arrow"
+    );
+    const startBullet = document.getElementById(
+      "Typo-vertical-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById(
+      "Typo-vertical-timeline-end-bullet"
+    );
 
     if (arrow && startBullet && endBullet) {
       callback(arrow);
@@ -34,8 +40,10 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
-        start: "top bottom",
-        end: "bottom top",
+        start: () =>
+          `top+=${startPercent() * selectedElement.offsetHeight}px bottom`,
+        end: () =>
+          `top+=${endPercent() * selectedElement.offsetHeight}px bottom`,
         scrub: 1,
         onUpdate: (self) => {
           const scroll = self.progress;
@@ -55,7 +63,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
             return;
           }
 
-          const p = (scroll - start) / (end - start);
+          const p = self.progress;
           let yVal;
 
           if (p < 0.5) {
@@ -67,8 +75,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           }
 
           gsap.set(content, { y: `${yVal}vh` });
-        }
-      }
+        },
+      },
     });
 
     ScrollTrigger.refresh();
@@ -106,8 +114,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupSmoothScroll(content, arrow);
   });
 }
-
-
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
