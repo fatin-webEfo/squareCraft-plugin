@@ -47,8 +47,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         scrub: 1,
         onUpdate: (self) => {
           const scroll = self.progress;
-          const start = startPercent();
-          const end = endPercent();
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
