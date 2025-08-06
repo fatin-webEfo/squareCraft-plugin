@@ -19,17 +19,17 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   }
 
-  function setupSmoothScroll(content, arrow) {
-    const getVar = (v) => {
-      const raw = getComputedStyle(content).getPropertyValue(v).trim();
-      return parseFloat(raw.replace("%", "")) || 0;
-    };
+  function setupScrollAnimation(content, arrow) {
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
 
     const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
     const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
     const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
-    const startPercent = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
-    const endPercent = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
+    const start = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
+    const end = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
@@ -37,33 +37,33 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
 
     const height = selectedElement.offsetHeight;
-    const scrollStart = startPercent() * height;
-    const scrollEnd = endPercent() * height;
-
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
-        start: `top+=${scrollStart}px bottom`,
-        end: `top+=${scrollEnd}px bottom`,
+        start: `top+=${0}px bottom`,
+        end: `bottom+=${0}px top`,
         scrub: 1,
         onUpdate: (self) => {
-          const scroll = self.progress;
+          const scroll =
+            1 -
+            selectedElement.getBoundingClientRect().top / window.innerHeight;
+          const s = start();
+          const e = end();
+
+          let yVal;
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
-          const start = startPercent();
-          const end = endPercent();
 
-          const relativeProgress = (scroll - start) / (end - start);
-          const p = Math.min(Math.max(relativeProgress, 0), 1);
-
-          let yVal;
-          if (p < 0.5) {
-            const t = p / 0.5;
+          if (scroll < s) {
+            const t = Math.min(scroll / s, 1);
             yVal = eY + (cY - eY) * t;
-          } else {
-            const t = (p - 0.5) / 0.5;
+          } else if (scroll > e) {
+            const t = Math.min((scroll - e) / (1 - e), 1);
             yVal = cY + (xY - cY) * t;
+          } else {
+            const t = (scroll - s) / (e - s);
+            yVal = cY;
           }
 
           gsap.set(content, { y: `${yVal}vh` });
@@ -75,22 +75,18 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const elementHeight = selectedElement.offsetHeight;
-      const topOffset = rect.top;
-      const scrollPercent =
-        1 - Math.min(Math.max(topOffset / viewportHeight, 0), 1);
-
-      arrow.style.left = `${scrollPercent * 100}%`;
+      const scrollRatio =
+        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1);
+      arrow.style.left = `${scrollRatio * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
-      const s = startPercent();
-      const e = endPercent();
+      const s = start();
+      const e = end();
       const buffer = 0.001;
 
-      if (scrollPercent < s - buffer) {
+      if (scrollRatio < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollPercent > e + buffer) {
+      } else if (scrollRatio > e + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
@@ -105,7 +101,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   waitForElements((arrow) => {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
-    setupSmoothScroll(content, arrow);
+    setupScrollAnimation(content, arrow);
   });
 }
 
