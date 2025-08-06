@@ -36,7 +36,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const height = selectedElement.offsetHeight;
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
@@ -50,38 +49,25 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const s = start();
           const e = end();
 
-          let yVal;
           const eY = entryY();
           const cY = centerY();
           const xY = exitY();
-
-          if (scroll < s) {
-            const t = Math.min(scroll / s, 1);
-            yVal = eY + (cY - eY) * t;
-          } else if (scroll > e) {
-            const t = Math.min((scroll - e) / (1 - e), 1);
-            yVal = cY + (xY - cY) * t;
-          } else {
-            yVal = cY;
-          }
 
           const sEl = scroll < s;
           const cEl = scroll >= s && scroll <= e;
           const xEl = scroll > e;
 
-        if (sEl) {
-          // only show entry scroll effect
-          const t = Math.min(scroll / s, 1);
-          const y = entryY() + (centerY() - entryY()) * t;
-          gsap.set(content, { y: `${y}vh` });
-        } else if (cEl) {
-          gsap.set(content, { y: `${centerY()}vh` });
-        } else if (xEl) {
-          const t = Math.min((scroll - e) / (1 - e), 1);
-          const y = centerY() + (exitY() - centerY()) * t;
-          gsap.set(content, { y: `${y}vh` });
-        }
-
+          if (sEl) {
+            const t = Math.min(scroll / s, 1);
+            const y = eY + (cY - eY) * t;
+            gsap.set(content, { y: `${y}vh` });
+          } else if (cEl) {
+            gsap.set(content, { y: `${cY}vh` });
+          } else if (xEl) {
+            const t = Math.min((scroll - e) / (1 - e), 1);
+            const y = cY + (xY - cY) * t;
+            gsap.set(content, { y: `${y}vh` });
+          }
         },
       },
     });
