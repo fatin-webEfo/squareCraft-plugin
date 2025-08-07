@@ -36,46 +36,59 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    let currentY = null;
+    let animationActive = true;
+    let easePreviewActive = false;
 
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: `top+=0px bottom`,
-      end: `bottom+=0px top`,
-      scrub: 1,
-      onUpdate: () => {
-        const scrollRatio =
-          1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
-        const s = start();
-        const e = end();
+    const observer = new MutationObserver(() => {
+      if (!animationActive && !easePreviewActive) {
+        animationActive = true;
+      }
+    });
 
-        const eY = entryY();
-        const cY = centerY();
-        const xY = exitY();
+    observer.observe(
+      document.getElementById("Typo-vertical-effect-animation-type-arrow"),
+      {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      }
+    );
 
-        let y;
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: selectedElement,
+        start: `top+=${0}px bottom`,
+        end: `bottom+=${0}px top`,
+        scrub: 1,
+        onUpdate: (self) => {
+          if (!animationActive) return;
 
-        if (scrollRatio < s) {
-          const t = Math.min(scrollRatio / s, 1);
-          y = eY + (cY - eY) * t;
-        } else if (scrollRatio > e) {
-          const t = Math.min((scrollRatio - e) / (1 - e), 1);
-          y = cY + (xY - cY) * t;
-        } else {
-          y = cY;
-        }
+          const scrollRatio =
+            1 -
+            selectedElement.getBoundingClientRect().top / window.innerHeight;
+          const s = start();
+          const e = end();
 
-        // Only animate if value changed
-        if (y !== currentY) {
-          currentY = y;
-          content.style.transform = `translateY(${y}vh)`;
-        }
+          const eY = entryY();
+          const cY = centerY();
+          const xY = exitY();
+
+          if (scrollRatio < s) {
+            const t = Math.min(scrollRatio / s, 1);
+            const y = eY + (cY - eY) * t;
+            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
+          } else if (scrollRatio > e) {
+            const t = Math.min((scrollRatio - e) / (1 - e), 1);
+            const y = cY + (xY - cY) * t;
+            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
+          } else {
+            gsap.to(content, { y: `${cY}vh`, overwrite: true, duration: 0.1 });
+          }
+        },
       },
     });
 
-    ScrollTrigger.refresh(true);
-    ScrollTrigger.update(true);
-
+    ScrollTrigger.refresh();
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
