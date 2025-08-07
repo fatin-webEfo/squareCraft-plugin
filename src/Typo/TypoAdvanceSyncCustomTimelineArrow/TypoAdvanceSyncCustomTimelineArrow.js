@@ -167,7 +167,8 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const updateXTransform = () => {
       const scrollRatio =
-        1 - selectedElement.getBoundingClientRect().left / window.innerWidth;
+        1 - selectedElement.getBoundingClientRect().top / window.innerHeight; // vertical scroll
+
       const s = start();
       const e = end();
 
@@ -194,7 +195,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
-          x: `${x}vw`,
+          x: `${x}vw`, // horizontal movement ✅
           ease,
           duration: ease === "none" ? 0 : 0.6,
           overwrite: true,
@@ -204,8 +205,8 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     ScrollTrigger.create({
       trigger: selectedElement,
-      start: `left+=0px right`,
-      end: `right+=0px left`,
+      start: `top+=0px bottom`,
+      end: `bottom+=0px top`,
       scrub: 1,
       onUpdate: () => {
         updateXTransform();
@@ -216,33 +217,31 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     observer.observe(content, { attributes: true, attributeFilter: ["style"] });
 
     setInterval(updateXTransform, 150);
-
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
-   function loopArrow() {
-     const rect = selectedElement.getBoundingClientRect();
-     const scrollRatio =
-       1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1); // ✅ vertical scroll sync
+    function loopArrow() {
+      const rect = selectedElement.getBoundingClientRect();
+      const scrollRatio =
+        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1);
 
-     arrow.style.left = `${scrollRatio * 100}%`;
-     arrow.style.transform = "translateX(-50%)";
+      arrow.style.left = `${scrollRatio * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
 
-     const s = start();
-     const e = end();
-     const buffer = 0.001;
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
 
-     if (scrollRatio < s - buffer) {
-       arrow.style.backgroundColor = "#EF7C2F";
-     } else if (scrollRatio > e + buffer) {
-       arrow.style.backgroundColor = "#F6B67B";
-     } else {
-       arrow.style.backgroundColor = "#FFFFFF";
-     }
+      if (scrollRatio < s - buffer) {
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (scrollRatio > e + buffer) {
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+      }
 
-     requestAnimationFrame(loopArrow);
-   }
-
+      requestAnimationFrame(loopArrow);
+    }
 
     loopArrow();
   }
@@ -253,6 +252,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
