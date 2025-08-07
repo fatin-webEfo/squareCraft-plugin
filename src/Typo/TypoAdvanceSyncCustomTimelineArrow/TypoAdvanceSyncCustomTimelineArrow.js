@@ -38,35 +38,36 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     let currentY = null;
 
-  const updateYTransform = () => {
-    const scrollRatio =
-      1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
-    const s = start();
-    const e = end();
+ const updateYTransform = () => {
+   const scrollRatio =
+     1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
+   const s = start();
+   const e = end();
 
-    const eY = entryY();
-    const cY = centerY();
-    const xY = exitY();
+   const eY = entryY();
+   const cY = centerY();
+   const xY = exitY();
 
-    let y;
+   let y;
 
-    if (scrollRatio < s) {
-      const t = Math.min(scrollRatio / s, 1);
-      y = eY + (cY - eY) * t;
-    } else if (scrollRatio > e) {
-      const t = Math.min((scrollRatio - e) / (1 - e), 1);
-      y = cY + (xY - cY) * t;
-    } else {
-      y = cY;
-    }
+   if (scrollRatio < s) {
+     const t = Math.min(scrollRatio / s, 1);
+     y = eY + (cY - eY) * t;
+   } else if (scrollRatio > e) {
+     const t = Math.min((scrollRatio - e) / (1 - e), 1);
+     y = cY + (xY - cY) * t;
+   } else {
+     y = cY;
+   }
 
-    y = Math.max(-50, Math.min(50, y)); // ✅ clamp final translateY
+   y = Math.max(-50, Math.min(50, y)); // ✅ clamp final translateY
 
-    if (y !== currentY) {
-      currentY = y;
-      content.style.transform = `translateY(${y}vh)`;
-    }
-  };
+   if (y !== currentY) {
+     currentY = y;
+     content.style.transform = `translateY(${y}vh)`;
+   }
+ };
+
 
 
     ScrollTrigger.create({
