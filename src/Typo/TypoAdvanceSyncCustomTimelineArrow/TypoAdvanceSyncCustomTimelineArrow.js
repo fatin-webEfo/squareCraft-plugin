@@ -36,6 +36,8 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    let lastY = null;
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
@@ -53,22 +55,28 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const cY = centerY();
           const xY = exitY();
 
+          let y;
           if (scrollRatio < s) {
             const t = Math.min(scrollRatio / s, 1);
-            const y = eY + (cY - eY) * t;
-            gsap.set(content, { y: `${y}vh` });
+            y = eY + (cY - eY) * t;
           } else if (scrollRatio > e) {
             const t = Math.min((scrollRatio - e) / (1 - e), 1);
-            const y = cY + (xY - cY) * t;
-            gsap.set(content, { y: `${y}vh` });
+            y = cY + (xY - cY) * t;
           } else {
-            gsap.set(content, { y: `${cY}vh` });
+            y = cY;
+          }
+
+          // Only update content y when scroll-based (not programmatic bullet drag)
+          if (y !== lastY) {
+            gsap.set(content, { y: `${y}vh` });
+            lastY = y;
           }
         },
       },
     });
 
     ScrollTrigger.refresh();
+
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
       const scrollRatio =
