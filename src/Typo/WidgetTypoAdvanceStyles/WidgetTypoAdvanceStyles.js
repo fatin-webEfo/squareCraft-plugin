@@ -1067,6 +1067,8 @@ export function horizontalinitTypoAdvanceStyles(getSelectedElement) {
         if (contentEl) {
           styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
         }
+        ScrollTrigger.refresh();
+        ScrollTrigger.update(true);
       }
     };
 
@@ -1325,6 +1327,7 @@ function horizontalattachFieldClickListener(
     updateFn(clamped);
   });
 }
+
 
 
 //horizontal done
