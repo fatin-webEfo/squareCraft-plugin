@@ -195,7 +195,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
-          x: `${x}vw`, // horizontal movement ✅
+          x: `${x}vw`, 
           ease,
           duration: ease === "none" ? 0 : 0.6,
           overwrite: true,
