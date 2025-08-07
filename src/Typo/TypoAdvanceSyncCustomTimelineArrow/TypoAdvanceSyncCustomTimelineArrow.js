@@ -37,30 +37,30 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
 
     let animationActive = true;
-    let easePreviewActive = false;
+    let easePreviewTimeout;
 
-    const observer = new MutationObserver(() => {
-      if (!animationActive && !easePreviewActive) {
-        animationActive = true;
-      }
-    });
-
-    observer.observe(
-      document.getElementById("Typo-vertical-effect-animation-type-arrow"),
-      {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      }
+    // ✅ This replaces the MutationObserver
+    const easeArrow = document.getElementById(
+      "Typo-vertical-effect-animation-type-arrow"
     );
+    if (easeArrow) {
+      easeArrow.addEventListener("click", () => {
+        animationActive = false;
+        clearTimeout(easePreviewTimeout);
+        easePreviewTimeout = setTimeout(() => {
+          animationActive = true;
+          ScrollTrigger.refresh();
+        }, 500); // slight delay to allow dropdown preview
+      });
+    }
 
     gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
-        start: `top+=${0}px bottom`,
-        end: `bottom+=${0}px top`,
+        start: `top+=0px bottom`,
+        end: `bottom+=0px top`,
         scrub: 1,
-        onUpdate: (self) => {
+        onUpdate: () => {
           if (!animationActive) return;
 
           const scrollRatio =
@@ -76,13 +76,13 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           if (scrollRatio < s) {
             const t = Math.min(scrollRatio / s, 1);
             const y = eY + (cY - eY) * t;
-            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
+            gsap.set(content, { y: `${y}vh` });
           } else if (scrollRatio > e) {
             const t = Math.min((scrollRatio - e) / (1 - e), 1);
             const y = cY + (xY - cY) * t;
-            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
+            gsap.set(content, { y: `${y}vh` });
           } else {
-            gsap.to(content, { y: `${cY}vh`, overwrite: true, duration: 0.1 });
+            gsap.set(content, { y: `${cY}vh` });
           }
         },
       },
