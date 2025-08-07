@@ -36,59 +36,51 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    let animationActive = true;
-    let easePreviewTimeout;
+    let currentY = null;
 
-    // ✅ This replaces the MutationObserver
-    const easeArrow = document.getElementById(
-      "Typo-vertical-effect-animation-type-arrow"
-    );
-    if (easeArrow) {
-      easeArrow.addEventListener("click", () => {
-        animationActive = false;
-        clearTimeout(easePreviewTimeout);
-        easePreviewTimeout = setTimeout(() => {
-          animationActive = true;
-          ScrollTrigger.refresh();
-        }, 500); // slight delay to allow dropdown preview
-      });
-    }
+    const updateYTransform = () => {
+      const scrollRatio =
+        1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
+      const s = start();
+      const e = end();
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: selectedElement,
-        start: `top+=0px bottom`,
-        end: `bottom+=0px top`,
-        scrub: 1,
-        onUpdate: () => {
-          if (!animationActive) return;
+      const eY = entryY();
+      const cY = centerY();
+      const xY = exitY();
 
-          const scrollRatio =
-            1 -
-            selectedElement.getBoundingClientRect().top / window.innerHeight;
-          const s = start();
-          const e = end();
+      let y;
 
-          const eY = entryY();
-          const cY = centerY();
-          const xY = exitY();
+      if (scrollRatio < s) {
+        const t = Math.min(scrollRatio / s, 1);
+        y = eY + (cY - eY) * t;
+      } else if (scrollRatio > e) {
+        const t = Math.min((scrollRatio - e) / (1 - e), 1);
+        y = cY + (xY - cY) * t;
+      } else {
+        y = cY;
+      }
 
-          if (scrollRatio < s) {
-            const t = Math.min(scrollRatio / s, 1);
-            const y = eY + (cY - eY) * t;
-            gsap.set(content, { y: `${y}vh` });
-          } else if (scrollRatio > e) {
-            const t = Math.min((scrollRatio - e) / (1 - e), 1);
-            const y = cY + (xY - cY) * t;
-            gsap.set(content, { y: `${y}vh` });
-          } else {
-            gsap.set(content, { y: `${cY}vh` });
-          }
-        },
+      if (y !== currentY) {
+        currentY = y;
+        content.style.transform = `translateY(${y}vh)`;
+      }
+    };
+
+    ScrollTrigger.create({
+      trigger: selectedElement,
+      start: `top+=0px bottom`,
+      end: `bottom+=0px top`,
+      scrub: 1,
+      onUpdate: () => {
+        updateYTransform();
       },
     });
 
-    ScrollTrigger.refresh();
+    // ⛑ Trigger force-update every 150ms in case scroll wasn't touched but bullets changed
+    setInterval(updateYTransform, 150);
+
+    ScrollTrigger.refresh(true);
+    ScrollTrigger.update(true);
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
