@@ -220,28 +220,29 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
-    function loopArrow() {
-      const rect = selectedElement.getBoundingClientRect();
-      const scrollRatio =
-        1 - Math.min(Math.max(rect.left / window.innerWidth, 0), 1);
+   function loopArrow() {
+     const rect = selectedElement.getBoundingClientRect();
+     const scrollRatio =
+       1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1); // ✅ vertical scroll sync
 
-      arrow.style.left = `${scrollRatio * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
+     arrow.style.left = `${scrollRatio * 100}%`;
+     arrow.style.transform = "translateX(-50%)";
 
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
+     const s = start();
+     const e = end();
+     const buffer = 0.001;
 
-      if (scrollRatio < s - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollRatio > e + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
+     if (scrollRatio < s - buffer) {
+       arrow.style.backgroundColor = "#EF7C2F";
+     } else if (scrollRatio > e + buffer) {
+       arrow.style.backgroundColor = "#F6B67B";
+     } else {
+       arrow.style.backgroundColor = "#FFFFFF";
+     }
 
-      requestAnimationFrame(loopArrow);
-    }
+     requestAnimationFrame(loopArrow);
+   }
+
 
     loopArrow();
   }
