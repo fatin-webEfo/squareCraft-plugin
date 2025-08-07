@@ -73,7 +73,9 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       },
     });
 
-    ScrollTrigger.refresh();
+    ScrollTrigger.refresh(true);
+    ScrollTrigger.update(true);
+
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();

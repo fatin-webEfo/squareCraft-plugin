@@ -398,6 +398,7 @@ export function initTypoAdvanceStyles(getSelectedElement) {
           styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
         }
         ScrollTrigger.refresh();
+        ScrollTrigger.update(true);
       }
     };
 
