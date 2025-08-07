@@ -605,3 +605,4 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, startBullet, endBullet);
   });
 }
+
