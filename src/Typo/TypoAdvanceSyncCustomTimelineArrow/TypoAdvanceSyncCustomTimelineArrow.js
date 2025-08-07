@@ -67,11 +67,12 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
-          y: `${y}vh`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
+          x: `${x}vw`,
+          duration: 0.3,
+          ease: "power1.out",
           overwrite: true,
         });
+
       }
     };
 
