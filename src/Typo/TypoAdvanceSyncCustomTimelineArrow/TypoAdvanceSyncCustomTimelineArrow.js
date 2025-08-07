@@ -36,9 +36,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    let lastY = null;
-
-    const tl = gsap.timeline({
+    gsap.timeline({
       scrollTrigger: {
         trigger: selectedElement,
         start: `top+=${0}px bottom`,
@@ -55,21 +53,16 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           const cY = centerY();
           const xY = exitY();
 
-          let y;
           if (scrollRatio < s) {
             const t = Math.min(scrollRatio / s, 1);
-            y = eY + (cY - eY) * t;
+            const y = eY + (cY - eY) * t;
+            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
           } else if (scrollRatio > e) {
             const t = Math.min((scrollRatio - e) / (1 - e), 1);
-            y = cY + (xY - cY) * t;
+            const y = cY + (xY - cY) * t;
+            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
           } else {
-            y = cY;
-          }
-
-          // Only update content y when scroll-based (not programmatic bullet drag)
-          if (y !== lastY) {
-            gsap.set(content, { y: `${y}vh` });
-            lastY = y;
+            gsap.to(content, { y: `${cY}vh`, overwrite: true, duration: 0.1 });
           }
         },
       },
@@ -605,4 +598,3 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     trackLoop(arrow, startBullet, endBullet);
   });
 }
-
