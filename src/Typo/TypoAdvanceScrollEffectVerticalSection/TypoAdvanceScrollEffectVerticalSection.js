@@ -31,9 +31,8 @@ export function TypoAdvanceScrollEffectVerticalSection() {
                   style="
                     right: 0;
                     transform: scaleX(0);
-                    transform-origin: right;
-                  "
-                ></div>
+                    transform-origin: right;">
+                    </div>
 
                 <div
                   id="Typo-vertical-timeline-start-bullet"

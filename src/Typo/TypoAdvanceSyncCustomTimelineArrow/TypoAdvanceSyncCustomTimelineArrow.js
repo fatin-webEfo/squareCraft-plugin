@@ -64,7 +64,14 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       if (y !== currentY) {
         currentY = y;
-        content.style.transform = `translateY(${y}vh)`;
+
+        const ease = window.__typoScrollEase || "none";
+        gsap.to(content, {
+          y: `${y}vh`,
+          ease,
+          duration: ease === "none" ? 0 : 0.6,
+          overwrite: true,
+        });
       }
     };
 
