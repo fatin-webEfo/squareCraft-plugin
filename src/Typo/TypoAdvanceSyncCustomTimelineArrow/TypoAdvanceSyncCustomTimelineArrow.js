@@ -188,7 +188,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
         x = cX;
       }
 
-      x = Math.max(-50, Math.min(50, x));
+      x = Math.max(-30, Math.min(30, x)); 
 
       if (x !== currentX) {
         currentX = x;
