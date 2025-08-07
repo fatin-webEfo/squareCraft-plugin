@@ -163,11 +163,16 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    const xSetter = gsap.quickTo(content, "x", {
+      duration: 0.3,
+      ease: "power2.out",
+    });
+
     let currentX = null;
 
     const updateXTransform = () => {
       const scrollRatio =
-        1 - selectedElement.getBoundingClientRect().top / window.innerHeight; // vertical scroll
+        1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
 
       const s = start();
       const e = end();
@@ -177,7 +182,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       const xX = exitX();
 
       let x;
-
       if (scrollRatio < s) {
         const t = Math.min(scrollRatio / s, 1);
         x = eX + (cX - eX) * t;
@@ -188,18 +192,11 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
         x = cX;
       }
 
-      x = Math.max(-30, Math.min(30, x)); 
+      x = Math.max(-30, Math.min(30, x));
 
       if (x !== currentX) {
         currentX = x;
-
-        const ease = window.__typoScrollEase || "none";
-        gsap.to(content, {
-          x: `${x}vw`, 
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
-          overwrite: true,
-        });
+        xSetter(`${x}vw`);
       }
     };
 
@@ -252,6 +249,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
