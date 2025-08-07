@@ -36,35 +36,40 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: selectedElement,
-        start: `top+=${0}px bottom`,
-        end: `bottom+=${0}px top`,
-        scrub: 1,
-        onUpdate: (self) => {
-          const scrollRatio =
-            1 -
-            selectedElement.getBoundingClientRect().top / window.innerHeight;
-          const s = start();
-          const e = end();
+    let currentY = null;
 
-          const eY = entryY();
-          const cY = centerY();
-          const xY = exitY();
+    ScrollTrigger.create({
+      trigger: selectedElement,
+      start: `top+=0px bottom`,
+      end: `bottom+=0px top`,
+      scrub: 1,
+      onUpdate: () => {
+        const scrollRatio =
+          1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
+        const s = start();
+        const e = end();
 
-          if (scrollRatio < s) {
-            const t = Math.min(scrollRatio / s, 1);
-            const y = eY + (cY - eY) * t;
-            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
-          } else if (scrollRatio > e) {
-            const t = Math.min((scrollRatio - e) / (1 - e), 1);
-            const y = cY + (xY - cY) * t;
-            gsap.to(content, { y: `${y}vh`, overwrite: true, duration: 0.1 });
-          } else {
-            gsap.to(content, { y: `${cY}vh`, overwrite: true, duration: 0.1 });
-          }
-        },
+        const eY = entryY();
+        const cY = centerY();
+        const xY = exitY();
+
+        let y;
+
+        if (scrollRatio < s) {
+          const t = Math.min(scrollRatio / s, 1);
+          y = eY + (cY - eY) * t;
+        } else if (scrollRatio > e) {
+          const t = Math.min((scrollRatio - e) / (1 - e), 1);
+          y = cY + (xY - cY) * t;
+        } else {
+          y = cY;
+        }
+
+        // Only animate if value changed
+        if (y !== currentY) {
+          currentY = y;
+          content.style.transform = `translateY(${y}vh)`;
+        }
       },
     });
 
