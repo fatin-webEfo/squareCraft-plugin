@@ -22,7 +22,7 @@ function loadStylesheetOnce(href) {
     document.head.appendChild(link);
   });
 }
-function animateWidgetOpen(el, duration = 0.5) {
+function animateWidgetOpen(el, duration = 0.2) {
   if (!el) return;
 
   // Fallback if GSAP not ready yet (first click)
@@ -56,7 +56,7 @@ function animateWidgetOpen(el, duration = 0.5) {
   );
 }
 
-function animateWidgetClose(el, duration = 0.4) {
+function animateWidgetClose(el, duration = 0.2) {
   if (!el) return;
 
   if (!window.gsap) {
@@ -87,7 +87,7 @@ function animateWidgetClose(el, duration = 0.4) {
 }
 
 
-function animateWidgetClose(el, duration = 0.4) {
+function animateWidgetClose(el, duration = 0.2) {
   if (!el) return;
   const curH = el.getBoundingClientRect().height || 0;
   el.style.overflow = "hidden";
@@ -139,7 +139,7 @@ function animateWidgetClose(el, duration = 0.4) {
        widgetContainer.style.visibility !== "hidden" &&
        widgetContainer.style.opacity !== "0"
      ) {
-       animateWidgetClose(widgetContainer, 0.4);
+       animateWidgetClose(widgetContainer, 0.2);
      }
 
     });
@@ -782,7 +782,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
     widgetContainer.style.height === "0px";
 
   if (isHidden) {
-    if (window.gsap) animateWidgetOpen(widgetContainer, 0.5);
+    if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
     else {
       widgetContainer.style.visibility = "visible";
       widgetContainer.style.opacity = "1";
@@ -790,7 +790,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
       widgetContainer.style.overflow = "visible";
     }
   } else {
-    if (window.gsap) animateWidgetClose(widgetContainer, 0.4);
+    if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
     else {
       widgetContainer.style.visibility = "hidden";
       widgetContainer.style.opacity = "0";
@@ -945,7 +945,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
    initImageUploadPreview(() => selectedElement);
 
    // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
-   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.5));
+   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.2));
 
    // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
@@ -1119,7 +1119,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
   widgetContainer.style.visibility !== "hidden" &&
   widgetContainer.style.opacity !== "0"
 ) {
-  animateWidgetClose(widgetContainer, 0.4);
+  animateWidgetClose(widgetContainer, 0.2);
 }
 
   });
