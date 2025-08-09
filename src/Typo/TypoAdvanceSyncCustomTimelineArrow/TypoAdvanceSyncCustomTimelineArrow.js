@@ -138,7 +138,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-horizontal-timeline-end-bullet"
     );
-
     if (arrow && startBullet && endBullet) {
       callback(arrow);
     } else if (retries > 0) {
@@ -168,17 +167,16 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const updateXTransform = () => {
       const rect = selectedElement.getBoundingClientRect();
       const viewportW = Math.max(window.innerWidth, 1);
-      const scrollRatio = 1 - rect.left / viewportW;
-
       const s = start();
       const e = end();
-
       const eX = entryX();
       const cX = centerX();
       const xX = exitX();
 
-      let x;
+      const raw = (viewportW - rect.left) / (viewportW + rect.width);
+      const scrollRatio = Math.min(Math.max(raw, 0), 1);
 
+      let x;
       if (scrollRatio < s) {
         const t = Math.min(scrollRatio / (s || 1e-6), 1);
         x = eX + (cX - eX) * t;
@@ -193,7 +191,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       if (x !== currentX) {
         currentX = x;
-
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           x: `${x}vw`,
@@ -209,33 +206,34 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       start: "left right",
       end: "right left",
       scrub: 1,
-      onUpdate: () => {
-        updateXTransform();
-      },
+      onUpdate: updateXTransform,
     });
 
     const observer = new MutationObserver(updateXTransform);
     observer.observe(content, { attributes: true, attributeFilter: ["style"] });
 
     setInterval(updateXTransform, 150);
-
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
       const viewportW = Math.max(window.innerWidth, 1);
-      const scrollRatio = 1 - Math.min(Math.max(rect.left / viewportW, 0), 1);
-      arrow.style.left = `${scrollRatio * 100}%`;
+      const ratio = Math.min(
+        Math.max((viewportW - rect.left) / (viewportW + rect.width), 0),
+        1
+      );
+
+      arrow.style.left = `${ratio * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const s = start();
       const e = end();
       const buffer = 0.001;
 
-      if (scrollRatio < s - buffer) {
+      if (ratio < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollRatio > e + buffer) {
+      } else if (ratio > e + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
@@ -253,6 +251,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
