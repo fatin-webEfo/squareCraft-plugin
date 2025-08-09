@@ -157,16 +157,26 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const start = () => getVar("--sc-Typo-horizontal-scroll-start") / 100;
     const end = () => getVar("--sc-Typo-horizontal-scroll-end") / 100;
 
+    if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
+      document.documentElement.classList.add("sc-no-x-scroll");
+      document.documentElement.style.overflowX = "hidden";
+      document.body.style.overflowX = "hidden";
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    let currentX = null;
+    gsap.set(content, { willChange: "transform" });
+
+    let currentPx = null;
 
     const updateXTransform = () => {
       const rect = selectedElement.getBoundingClientRect();
       const viewportH = Math.max(window.innerHeight, 1);
+      const viewportW = Math.max(window.innerWidth, 1);
+
       const raw = 1 - rect.top / viewportH;
       const scrollRatio = Math.min(Math.max(raw, 0), 1);
 
@@ -177,28 +187,34 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       const cX = centerX();
       const xX = exitX();
 
-      let x;
+      let vwVal;
       if (scrollRatio < s) {
         const t = Math.min(scrollRatio / (s || 1e-6), 1);
-        x = eX + (cX - eX) * t;
+        vwVal = eX + (cX - eX) * t;
       } else if (scrollRatio > e) {
         const t = Math.min((scrollRatio - e) / Math.max(1 - e, 1e-6), 1);
-        x = cX + (xX - cX) * t;
+        vwVal = cX + (xX - cX) * t;
       } else {
-        x = cX;
+        vwVal = cX;
       }
 
-      x = Math.max(-50, Math.min(50, x));
+      vwVal = Math.max(-50, Math.min(50, vwVal));
 
-      if (x !== currentX) {
-        currentX = x;
-        const ease = window.__typoScrollEase || "none";
-        gsap.to(content, {
-          x: `${x}vw`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
-          overwrite: true,
-        });
+      const desiredPx = (vwVal / 100) * viewportW;
+
+      const maxLeftShift = -rect.left; // don’t go past left edge
+      const maxRightShift = viewportW - rect.right; // don’t go past right edge
+      const clampedPx = Math.max(
+        maxLeftShift,
+        Math.min(desiredPx, maxRightShift)
+      );
+
+      if (clampedPx !== currentPx) {
+        currentPx = clampedPx;
+        const customEase = window.__typoScrollEase || "none";
+        const ease = customEase === "none" ? "power1.out" : customEase;
+        const duration = customEase === "none" ? 0.16 : 0.36;
+        gsap.to(content, { x: clampedPx, ease, duration, overwrite: true });
       }
     };
 
