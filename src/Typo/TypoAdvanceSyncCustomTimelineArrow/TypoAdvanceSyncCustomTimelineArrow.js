@@ -64,7 +64,7 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       if (y !== currentY) {
         currentY = y;
-
+// 
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           y: `${y}vh`,
