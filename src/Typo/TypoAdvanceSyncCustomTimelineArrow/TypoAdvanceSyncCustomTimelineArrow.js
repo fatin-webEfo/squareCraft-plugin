@@ -72,7 +72,6 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
           ease: "power1.out",
           overwrite: true,
         });
-
       }
     };
 
@@ -250,8 +249,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
-
-
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
