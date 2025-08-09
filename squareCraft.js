@@ -22,7 +22,7 @@ function loadStylesheetOnce(href) {
     document.head.appendChild(link);
   });
 }
-function animateWidgetOpen(el, duration = 0.5) {
+function animateWidgetOpen(el, duration = 0.2) {
   if (!el) return;
   const content = el.firstElementChild; // inner wrapper
   el.style.visibility = "visible";
@@ -748,7 +748,7 @@ function animateWidgetClose(el, duration = 0.4) {
        widgetContainer.style.visibility === "hidden" ||
        widgetContainer.style.opacity === "0";
      if (isHidden) {
-       animateWidgetOpen(widgetContainer, 0.5);
+       animateWidgetOpen(widgetContainer, 0.2);
      } else {
        animateWidgetClose(widgetContainer, 0.4);
      }
@@ -898,7 +898,7 @@ function animateWidgetClose(el, duration = 0.4) {
    initImageUploadPreview(() => selectedElement);
 
    // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
-   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.5));
+   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.2));
 
    // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
