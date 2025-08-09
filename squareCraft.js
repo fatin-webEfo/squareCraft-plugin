@@ -897,19 +897,16 @@ function animateWidgetClose(el, duration = 0.2) {
    initHoverButtonEffectDropdowns();
    initImageUploadPreview(() => selectedElement);
 
-   // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
 requestAnimationFrame(() => {
   if (window.gsap) {
     animateWidgetOpen(widgetContainer, 0.2);
   } else {
-    // no GSAP yet: show immediately so first click works
     widgetContainer.style.visibility = "visible";
     widgetContainer.style.opacity = "1";
     widgetContainer.style.height = "auto";
     widgetContainer.style.overflow = "visible";
   }
 });
-   // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
      waitForElement("#typoSection, #imageSection, #buttonSection")
        .then(() => {
