@@ -526,111 +526,100 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
 
 export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
+  if (selectedElement.dataset.scRotateLoop === "1") return;
+  selectedElement.dataset.scRotateLoop = "1";
 
-  function waitForElements(cb, retries = 20) {
-    const arrow = document.getElementById("Typo-rotate-custom-timeline-arrow");
-    const startBullet = document.getElementById(
-      "Typo-rotate-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-rotate-timeline-end-bullet"
-    );
-    if (arrow && startBullet && endBullet) cb(arrow, startBullet, endBullet);
-    else if (retries > 0)
-      setTimeout(() => waitForElements(cb, retries - 1), 100);
-  }
-
-  function getNum(varName, el, pctAs01 = false) {
-    const raw = getComputedStyle(el).getPropertyValue(varName).trim();
-    if (!raw) return 0;
-    const val = parseFloat(raw);
-    if (!isFinite(val)) return 0;
-    return pctAs01 ? (raw.includes("%") ? val / 100 : val) : val;
-  }
-
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
   function clamp01(x) {
     return Math.max(0, Math.min(1, x));
   }
+  function viewportProgress(el) {
+    const r = el.getBoundingClientRect();
+    const vh = Math.max(1, window.innerHeight);
+    return clamp01((vh - r.top) / (vh + r.height));
+  }
+  function numVar(el, name, as01) {
+    const raw = getComputedStyle(el).getPropertyValue(name).trim();
+    if (!raw) return 0;
+    const v = parseFloat(raw);
+    if (!isFinite(v)) return 0;
+    return as01 ? (raw.includes("%") ? v / 100 : v) : v;
+  }
+  function waitForEls(cb, retries = 20) {
+    const arrow = document.getElementById("Typo-rotate-custom-timeline-arrow");
+    const sBul = document.getElementById("Typo-rotate-timeline-start-bullet");
+    const eBul = document.getElementById("Typo-rotate-timeline-end-bullet");
+    if (arrow && sBul && eBul) cb(arrow, sBul, eBul);
+    else if (retries > 0) setTimeout(() => waitForEls(cb, retries - 1), 100);
+  }
 
-  function setup(arrow, startBullet, endBullet) {
+  function setup(arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     if (!content) return;
 
-    // one-time: avoid horizontal scrollbars due to arrow movement
     if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
       document.documentElement.classList.add("sc-no-x-scroll");
       document.documentElement.style.overflowX = "hidden";
       document.body.style.overflowX = "hidden";
     }
 
-    let lastRotation = null;
+    let lastDeg = null;
 
-    function frame() {
-      // ratio based on element’s vertical position in viewport
-      const rect = selectedElement.getBoundingClientRect();
-      const vh = Math.max(1, window.innerHeight);
-      const scrollRatio = clamp01(1 - rect.top / vh); // 0 top offscreen, 1 fully passed
+    const tick = () => {
+      const p = viewportProgress(selectedElement);
+      const pct = p * 100;
 
-      // thresholds + key angles from CSS variables on the content node
-      const s = clamp01(getNum("--sc-Typo-rotate-scroll-start", content, true)); // 0..1
-      const e = clamp01(getNum("--sc-Typo-rotate-scroll-end", content, true)); // 0..1
-      const entryDeg = getNum("--sc-Typo-rotate-scroll-entry", content); // degrees
-      const centerDeg = getNum("--sc-Typo-rotate-scroll-center", content);
-      const exitDeg = getNum("--sc-Typo-rotate-scroll-exit", content);
-
-      // place arrow along a simple 0..100% rail
-      const arrowPct = scrollRatio * 100;
-      arrow.style.left = `${arrowPct}%`;
+      arrow.style.left = pct + "%";
       arrow.style.transform = "translateX(-50%)";
 
-      // tint based on window
-      const buf = 0.001;
-      if (scrollRatio < s - buf) arrow.style.backgroundColor = "#EF7C2F";
-      else if (scrollRatio > e + buf) arrow.style.backgroundColor = "#F6B67B";
-      else arrow.style.backgroundColor = "#FFFFFF";
+      const s = clamp01(numVar(content, "--sc-Typo-rotate-scroll-start", true));
+      const e = clamp01(numVar(content, "--sc-Typo-rotate-scroll-end", true));
+      const a = numVar(content, "--sc-Typo-rotate-scroll-entry");
+      const b = numVar(content, "--sc-Typo-rotate-scroll-center");
+      const c = numVar(content, "--sc-Typo-rotate-scroll-exit");
 
-      // piecewise rotation: [0..s] entry, [s..(s+e)/2] entry→center, [(s+e)/2..e] center→exit, [e..1] exit
-      let targetDeg = entryDeg;
+      const buf = 0.001;
+      arrow.style.backgroundColor =
+        p < s - buf ? "#EF7C2F" : p > e + buf ? "#F6B67B" : "#FFFFFF";
+
+      let deg = a;
       if (e > s) {
         const mid = (s + e) / 2;
-        if (scrollRatio <= s) {
-          targetDeg = entryDeg;
-        } else if (scrollRatio < mid) {
-          const t = (scrollRatio - s) / Math.max(mid - s, 1e-6);
-          targetDeg = lerp(entryDeg, centerDeg, clamp01(t));
-        } else if (scrollRatio < e) {
-          const t = (scrollRatio - mid) / Math.max(e - mid, 1e-6);
-          targetDeg = lerp(centerDeg, exitDeg, clamp01(t));
+        if (p <= s) {
+          deg = a;
+        } else if (p < mid) {
+          const t = (p - s) / Math.max(mid - s, 1e-6);
+          deg = a + (b - a) * t;
+        } else if (p < e) {
+          const t = (p - mid) / Math.max(e - mid, 1e-6);
+          deg = b + (c - b) * t;
         } else {
-          targetDeg = exitDeg;
+          deg = c;
         }
       }
 
-      if (lastRotation !== targetDeg) {
+      if (deg !== lastDeg) {
         if (window.gsap) {
           gsap.to(content, {
-            rotate: targetDeg,
-            duration: lastRotation == null ? 0 : 0.3,
+            rotate: deg,
+            duration: lastDeg == null ? 0 : 0.3,
             ease: "power2.out",
             overwrite: true,
           });
         } else {
           content.style.transition =
-            lastRotation == null ? "none" : "transform 0.3s ease-out";
-          content.style.transform = `rotate(${targetDeg}deg)`;
+            lastDeg == null ? "none" : "transform 0.3s ease-out";
+          content.style.transform = `rotate(${deg}deg)`;
         }
-        lastRotation = targetDeg;
+        lastDeg = deg;
       }
 
-      requestAnimationFrame(frame);
-    }
+      requestAnimationFrame(tick);
+    };
 
-    requestAnimationFrame(frame);
+    requestAnimationFrame(tick);
   }
 
-  waitForElements(setup);
+  waitForEls(setup);
 }
+
 
