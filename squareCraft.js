@@ -804,6 +804,17 @@
       scaleinitEffectAnimationDropdownToggle(() => selectedElement);
       rotateinitEffectAnimationDropdownToggle(() => selectedElement);
       opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+function triggerLaunchAnimation() {
+  const el = document.getElementById("sc-widget-container");
+  if (!el) return;
+  if (window.gsap) {
+    gsap.fromTo(
+      el,
+      { opacity: 0, y: -8 },
+      { opacity: 1, y: 0, duration: 0.25, ease: "power1.out", overwrite: true }
+    );
+  }
+}
 
       triggerLaunchAnimation();
       if (clickedBlock) {
