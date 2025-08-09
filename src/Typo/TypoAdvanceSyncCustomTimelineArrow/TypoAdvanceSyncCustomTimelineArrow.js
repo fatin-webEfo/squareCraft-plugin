@@ -1,3 +1,22 @@
+function placeArrowOnRail(arrow, startBullet, endBullet, progress01) {
+  const parentRect =
+    arrow.offsetParent?.getBoundingClientRect() ||
+    document.body.getBoundingClientRect();
+  const s = startBullet.getBoundingClientRect();
+  const e = endBullet.getBoundingClientRect();
+
+  const sC = s.left + s.width / 2;
+  const eC = e.left + e.width / 2;
+  const railStartPx = sC - parentRect.left;
+  const railEndPx = eC - parentRect.left;
+
+  const x =
+    railStartPx +
+    (railEndPx - railStartPx) * Math.min(Math.max(progress01, 0), 1);
+  arrow.style.left = `${x}px`;
+  arrow.style.transform = "translateX(-50%)";
+}
+
 export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -522,7 +541,6 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
-
 
 export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
