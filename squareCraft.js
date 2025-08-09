@@ -1,5 +1,71 @@
 (async function squareCraft() {
   // icon set fast
+function loadStylesheetOnce(href) {
+  return new Promise((resolve, reject) => {
+    const existing = Array.from(document.styleSheets).find(
+      (ss) => ss.href && ss.href.includes(href)
+    );
+    if (existing) {
+      resolve();
+      return;
+    }
+
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "style";
+    link.href = href;
+    link.onload = () => {
+      link.rel = "stylesheet";
+      resolve();
+    };
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+}
+function animateWidgetOpen(el, duration = 1) {
+  if (!el) return;
+  const content = el.firstElementChild; // inner wrapper
+  el.style.visibility = "visible";
+  el.style.overflow = "hidden";
+  const fullH = content ? content.scrollHeight : 320;
+
+  gsap.fromTo(
+    el,
+    { height: 0, opacity: 0 },
+    {
+      height: fullH,
+      opacity: 1,
+      duration,
+      ease: "power2.out",
+      onComplete: () => {
+        el.style.height = "auto";
+        el.style.overflow = "visible";
+      },
+      overwrite: true,
+    }
+  );
+}
+
+function animateWidgetClose(el, duration = 0.4) {
+  if (!el) return;
+  const curH = el.getBoundingClientRect().height || 0;
+  el.style.overflow = "hidden";
+  gsap.fromTo(
+    el,
+    { height: curH, opacity: 1 },
+    {
+      height: 0,
+      opacity: 0,
+      duration,
+      ease: "power2.in",
+      onComplete: () => {
+        el.style.visibility = "hidden";
+        el.style.overflow = "hidden";
+      },
+      overwrite: true,
+    }
+  );
+}
 
   try {
     const { injectNavbarIcon } = await import(
@@ -675,8 +741,15 @@
           console.error(error.message);
         });
     } else {
-      widgetContainer.style.display =
-        widgetContainer.style.display === "none" ? "block" : "none";
+     const isHidden =
+       widgetContainer.style.visibility === "hidden" ||
+       widgetContainer.style.opacity === "0";
+     if (isHidden) {
+       animateWidgetOpen(widgetContainer, 0.6);
+     } else {
+       animateWidgetClose(widgetContainer, 0.4);
+     }
+
       waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
         .then(() => {
           handleAndDetect(clickedBlock);
@@ -705,166 +778,174 @@
 
     detectBlockElementTypes(clickedBlock);
   }
-  function loadWidgetFromString(htmlString, clickedBlock) {
-    if (!widgetContainer) {
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "sc-widget-container";
-      widgetContainer.classList.add(
-        "sc-fixed",
-        "sc-text-color-white",
-        "sc-universal",
-        "sc-z-999999"
-      );
+ async function loadWidgetFromString(htmlString, clickedBlock) {
+   if (widgetContainer) return;
 
-      const styleLink = document.createElement("link");
-      styleLink.rel = "stylesheet";
-      styleLink.type = "text/css";
-      styleLink.href =
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-      widgetContainer.appendChild(styleLink);
+   // 1) create container (hidden to avoid FOUC)
+   widgetContainer = document.createElement("div");
+   widgetContainer.id = "sc-widget-container";
+   widgetContainer.classList.add(
+     "sc-fixed",
+     "sc-text-color-white",
+     "sc-universal",
+     "sc-z-999999"
+   );
+   Object.assign(widgetContainer.style, {
+     visibility: "hidden",
+     opacity: "0",
+     height: "0px",
+     overflow: "hidden",
+     willChange: "height, opacity, transform",
+   });
 
-      const contentWrapper = document.createElement("div");
-      contentWrapper.innerHTML = htmlString;
-      widgetContainer.appendChild(contentWrapper);
+   // 2) ensure stylesheet is loaded BEFORE revealing the widget
+   const cssHref =
+     "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+   try {
+     await loadStylesheetOnce(cssHref);
+   } catch (e) {
+     console.warn("⚠️ parent.css failed to preload; continuing anyway.", e);
+   }
 
-      widgetContainer.style.display = "block";
-      document.body.appendChild(widgetContainer);
+   // (we do NOT append a second <link> inside the widget; it's already in <head>)
 
-      initImageMaskControls(() => selectedElement);
-      makeWidgetDraggable();
-      setTimeout(() => {
-        const placeholders = widgetContainer.querySelectorAll(
-          ".sc-arrow-placeholder"
-        );
+   // 3) inject content markup
+   const contentWrapper = document.createElement("div");
+   contentWrapper.innerHTML = htmlString;
+   widgetContainer.appendChild(contentWrapper);
 
-        placeholders.forEach((span) => {
-          const isRotate = span.classList.contains("sc-rotate-180");
-          const cloneClassList = Array.from(span.classList);
-          const originalId = span.getAttribute("id") || "";
-          const id =
-            originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+   // 4) mount to DOM (still hidden)
+   document.body.appendChild(widgetContainer);
 
-          const svg = createHoverableArrowSVG(id, isRotate);
-          cloneClassList.forEach((cls) => svg.classList.add(cls));
-          span.replaceWith(svg);
-        });
-        ButtonAdvanceToggleControls();
-      }, 100);
-      widgetLoaded = true;
-      initImageSectionToggleControls();
-      tooltipControls();
-      ButtonAdvanceToggleControls();
-      initButtonSectionToggleControls();
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-      WidgetTypoSectionStateControls();
-      initImageStateTabToggle();
-      initButtonStructureGapTypeToggle();
-      initTypoStructureGapTypeToggle();
-      WidgetImageHoverToggleControls();
-      initHoverTypoTabControls([
-        {
-          buttonId: "typo-all-hover-font-button",
-          sectionId: "typo-all-hover-font-section",
-        },
-        {
-          buttonId: "typo-all-hover-border-button",
-          sectionId: "typo-all-hover-border-section",
-        },
-        {
-          buttonId: "typo-all-hover-shadow-button",
-          sectionId: "typo-all-hover-shadow-section",
-        },
-        {
-          buttonId: "typo-all-hover-effects-button",
-          sectionId: "typo-all-hover-effects-section",
-        },
-        {
-          buttonId: "typo-bold-hover-font-button",
-          sectionId: "typo-bold-hover-font-section",
-        },
-        {
-          buttonId: "typo-italic-hover-font-button",
-          sectionId: "typo-italic-hover-font-section",
-        },
-        {
-          buttonId: "typo-link-hover-font-button",
-          sectionId: "typo-link-hover-font-section",
-        },
-      ]);
-      initHoverButtonSectionToggleControls();
-      hoverTypoTabSelect();
-      initHoverButtonEffectDropdowns();
-      initImageUploadPreview(() => selectedElement);
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-function triggerLaunchAnimation() {
-  const el = document.getElementById("sc-widget-container");
-  if (!el) return;
-  if (window.gsap) {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: -8 },
-      { opacity: 1, y: 0, duration: 0.25, ease: "power1.out", overwrite: true }
-    );
-  }
-}
+   // 5) post-mount init (your existing logic)
+   initImageMaskControls(() => selectedElement);
+   makeWidgetDraggable();
 
-      triggerLaunchAnimation();
-      if (clickedBlock) {
-        waitForElement("#typoSection, #imageSection, #buttonSection")
-          .then(() => {
-            handleBlockClick(
-              { target: clickedBlock },
-              {
-                getTextType,
-                getHoverTextType,
-                selectedElement,
-                setSelectedElement: (val) => {
-                  selectedElement = val;
+   setTimeout(() => {
+     const placeholders = widgetContainer.querySelectorAll(
+       ".sc-arrow-placeholder"
+     );
+     placeholders.forEach((span) => {
+       const isRotate = span.classList.contains("sc-rotate-180");
+       const cloneClassList = Array.from(span.classList);
+       const originalId = span.getAttribute("id") || "";
+       const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
 
-                  setTimeout(() => {
-                    buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    horizontalbuttonAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    TypoAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
-                    // TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoHorizontalAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    opacitybuttonAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    initButtonAdvanceScrollEffectReset(selectedElement);
-                  }, 300);
-                },
-                setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                setLastClickedElement: (val) => (lastClickedElement = val),
-                setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
-                setLastActiveAlignmentElement: (val) =>
-                  (lastActiveAlignmentElement = val),
-              }
-            );
-            detectBlockElementTypes(clickedBlock);
-          })
-          .catch((error) => {
-            console.error(error.message);
-          });
-      }
-    }
-  }
+       const svg = createHoverableArrowSVG(id, isRotate);
+       cloneClassList.forEach((cls) => svg.classList.add(cls));
+       span.replaceWith(svg);
+     });
+     ButtonAdvanceToggleControls();
+   }, 100);
+
+   widgetLoaded = true;
+
+   initImageSectionToggleControls();
+   tooltipControls();
+   ButtonAdvanceToggleControls();
+   initButtonSectionToggleControls();
+
+   // effect dropdowns
+   initEffectAnimationDropdownToggle(() => selectedElement);
+   horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+   scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+   rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+   opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+
+   WidgetTypoSectionStateControls();
+   initImageStateTabToggle();
+   initButtonStructureGapTypeToggle();
+   initTypoStructureGapTypeToggle();
+   WidgetImageHoverToggleControls();
+
+   // hover/advanced UI
+   initHoverTypoTabControls([
+     {
+       buttonId: "typo-all-hover-font-button",
+       sectionId: "typo-all-hover-font-section",
+     },
+     {
+       buttonId: "typo-all-hover-border-button",
+       sectionId: "typo-all-hover-border-section",
+     },
+     {
+       buttonId: "typo-all-hover-shadow-button",
+       sectionId: "typo-all-hover-shadow-section",
+     },
+     {
+       buttonId: "typo-all-hover-effects-button",
+       sectionId: "typo-all-hover-effects-section",
+     },
+     {
+       buttonId: "typo-bold-hover-font-button",
+       sectionId: "typo-bold-hover-font-section",
+     },
+     {
+       buttonId: "typo-italic-hover-font-button",
+       sectionId: "typo-italic-hover-font-section",
+     },
+     {
+       buttonId: "typo-link-hover-font-button",
+       sectionId: "typo-link-hover-font-section",
+     },
+   ]);
+   initHoverButtonSectionToggleControls();
+   hoverTypoTabSelect();
+   initHoverButtonEffectDropdowns();
+   initImageUploadPreview(() => selectedElement);
+
+   // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
+   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 1.0));
+
+   // 7) if we came from a clicked block, finish detection + wire effects
+   if (clickedBlock) {
+     waitForElement("#typoSection, #imageSection, #buttonSection")
+       .then(() => {
+         handleBlockClick(
+           { target: clickedBlock },
+           {
+             getTextType,
+             getHoverTextType,
+             selectedElement,
+             setSelectedElement: (val) => {
+               selectedElement = val;
+
+               setTimeout(() => {
+                 // buttons
+                 buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                 horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                   selectedElement
+                 );
+                 opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                 scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                 rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                 blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+
+                 // typo
+                 TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+                 TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+                 TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+                 TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+
+                 // reset hooks
+                 initButtonAdvanceScrollEffectReset(selectedElement);
+               }, 300);
+             },
+             setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+             setLastClickedElement: (val) => (lastClickedElement = val),
+             setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
+             setLastActiveAlignmentElement: (val) =>
+               (lastActiveAlignmentElement = val),
+           }
+         );
+         detectBlockElementTypes(clickedBlock);
+       })
+       .catch((error) => {
+         console.error(error.message);
+       });
+   }
+ }
+
   async function createWidget(clickedBlock) {
     try {
       const module = await import(
@@ -1067,8 +1148,15 @@ function triggerLaunchAnimation() {
               }
             });
           } else {
-            widgetContainer.style.display =
-              widgetContainer.style.display === "none" ? "block" : "none";
+            const isHidden =
+              widgetContainer.style.visibility === "hidden" ||
+              widgetContainer.style.opacity === "0";
+            if (isHidden) {
+              animateWidgetOpen(widgetContainer, 0.6);
+            } else {
+              animateWidgetClose(widgetContainer, 0.4);
+            }
+
           }
         });
       });
