@@ -21,7 +21,6 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     const blockId = block.id;
    const TypoSelector = `#${blockId} .sqs-block-content`;
 ;
-    console.log("🔄 Updating Typo Styles for:", TypoSelector);
 
     const styleId = `sc-structure-style-${blockId}`;
     let styleTag = document.getElementById(styleId);
@@ -52,7 +51,6 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     const cssString = `${TypoSelector} { ${cssParts.join("; ")} }`;
     styleTag.innerHTML = cssString;
 
-    console.log("🔄 Real-time Typo Styles Applied:\n", cssString);
   };
 
   const observer = new MutationObserver(updateStyles);
