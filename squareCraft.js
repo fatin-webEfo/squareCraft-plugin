@@ -898,8 +898,17 @@ function animateWidgetClose(el, duration = 0.2) {
    initImageUploadPreview(() => selectedElement);
 
    // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
-   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.2));
-
+requestAnimationFrame(() => {
+  if (window.gsap) {
+    animateWidgetOpen(widgetContainer, 0.2);
+  } else {
+    // no GSAP yet: show immediately so first click works
+    widgetContainer.style.visibility = "visible";
+    widgetContainer.style.opacity = "1";
+    widgetContainer.style.height = "auto";
+    widgetContainer.style.overflow = "visible";
+  }
+});
    // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
      waitForElement("#typoSection, #imageSection, #buttonSection")
@@ -948,6 +957,23 @@ function animateWidgetClose(el, duration = 0.2) {
        });
    }
  }
+function triggerLaunchAnimation() {
+  const el = document.getElementById("sc-widget-container");
+  if (!el) return;
+  if (window.gsap) {
+    gsap.fromTo(
+      el,
+      { opacity: 0, y: -8 },
+      { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }
+    );
+  } else {
+    // Fallback if GSAP isn't ready yet
+    el.style.opacity = "1";
+    el.style.visibility = "visible";
+    el.style.height = "auto";
+    el.style.overflow = "visible";
+  }
+}
 
   async function createWidget(clickedBlock) {
     try {
