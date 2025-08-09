@@ -59,7 +59,6 @@ function animateWidgetOpen(el, duration = 0.5) {
 function animateWidgetClose(el, duration = 0.4) {
   if (!el) return;
 
-  // Fallback if GSAP not ready yet
   if (!window.gsap) {
     el.style.visibility = "hidden";
     el.style.opacity = "0";
