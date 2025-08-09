@@ -1166,27 +1166,27 @@ function triggerLaunchAnimation() {
         clonedIcon.addEventListener("click", function (event) {
           event.stopPropagation();
           event.preventDefault();
-          toggleWidgetVisibility(event);
-          if (!widgetLoaded) {
-            createWidget().then(() => {
-              widgetContainer = document.getElementById("sc-widget-container");
-              if (widgetContainer) {
-                widgetContainer.style.display = "block";
-              } else {
-                console.error("❌ Widget container not found after creation.");
-              }
-            });
-          } else {
-            const isHidden =
-              widgetContainer.style.visibility === "hidden" ||
-              widgetContainer.style.opacity === "0";
-            if (isHidden) {
-              animateWidgetOpen(widgetContainer, 0.6);
-            } else {
-              animateWidgetClose(widgetContainer, 0.2);
+        if (!widgetLoaded) {
+          createWidget().then(() => {
+            widgetContainer = document.getElementById("sc-widget-container");
+            if (!widgetContainer) {
+              console.error("❌ Widget container not found after creation.");
+              return;
             }
+            // ensure it shows on the very first click
+            if (window.gsap) {
+              animateWidgetOpen(widgetContainer, 0.2);
+            } else {
+              widgetContainer.style.visibility = "visible";
+              widgetContainer.style.opacity = "1";
+              widgetContainer.style.height = "auto";
+              widgetContainer.style.overflow = "visible";
+            }
+          });
+        } else {
+          toggleWidgetVisibility(event);
+        }
 
-          }
         });
       });
     }
