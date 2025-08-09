@@ -535,84 +535,115 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-rotate-timeline-end-bullet"
     );
-    if (arrow && startBullet && endBullet) cb(arrow, startBullet, endBullet);
+    if (arrow && startBullet && endBullet) cb(arrow);
     else if (retries > 0)
       setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
 
-  function getNum(varName, el) {
-    const raw = getComputedStyle(el).getPropertyValue(varName).trim();
-    const v = parseFloat(raw);
-    return Number.isFinite(v) ? v : 0;
-  }
+  function setup(content, arrow) {
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
+    const start = () => getVar("--sc-Typo-rotate-scroll-start") / 100;
+    const end = () => getVar("--sc-Typo-rotate-scroll-end") / 100;
+    const entryDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-entry"
+        )
+      ) || 0;
+    const centerDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-center"
+        )
+      ) || 0;
+    const exitDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-exit"
+        )
+      ) || 0;
 
-  function clamp01(x) {
-    return x < 0 ? 0 : x > 1 ? 1 : x;
-  }
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
+    if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
+      document.documentElement.classList.add("sc-no-x-scroll");
+      document.documentElement.style.overflowX = "hidden";
+      document.body.style.overflowX = "hidden";
+    }
 
-  function setup(arrow, startBullet, endBullet) {
-    const content = selectedElement.querySelector(".sqs-block-content");
-    if (!content) return;
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.getAll().forEach((t) => {
+      if (t.trigger === selectedElement) t.kill();
+    });
 
     let lastDeg = null;
 
-    function frame() {
-      const r = selectedElement.getBoundingClientRect();
-      const vh = Math.max(1, window.innerHeight);
-      const scrollRatio = clamp01(1 - r.top / vh);
-      arrow.style.left = `${scrollRatio * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
+    const updateRotate = () => {
+      const rect = selectedElement.getBoundingClientRect();
+      const vh = Math.max(window.innerHeight, 1);
+      const ratio = Math.min(Math.max(1 - rect.top / vh, 0), 1);
+      const s = start();
+      const e = end();
 
-      const a = arrow.getBoundingClientRect();
-      const s = startBullet.getBoundingClientRect();
-      const e = endBullet.getBoundingClientRect();
-
-      const aC = a.left + a.width / 2;
-      const sC = s.left + s.width / 2;
-      const eC = e.left + e.width / 2;
-
-      const p = (aC - sC) / Math.max(eC - sC, 1e-6);
-      const p01 = clamp01(p);
-
-      arrow.style.backgroundColor =
-        p < 0 ? "#EF7C2F" : p > 1 ? "#F6B67B" : "#FFFFFF";
-
-      const entryDeg = getNum("--sc-Typo-rotate-scroll-entry", content);
-      const centerDeg = getNum("--sc-Typo-rotate-scroll-center", content);
-      const exitDeg = getNum("--sc-Typo-rotate-scroll-exit", content);
-
-      let targetDeg;
-      if (p <= 0) targetDeg = entryDeg;
-      else if (p >= 1) targetDeg = exitDeg;
-      else if (p01 < 0.5) targetDeg = lerp(entryDeg, centerDeg, p01 * 2);
-      else targetDeg = lerp(centerDeg, exitDeg, (p01 - 0.5) * 2);
-
-      if (targetDeg !== lastDeg) {
-        if (window.gsap) {
-          gsap.to(content, {
-            rotate: targetDeg,
-            duration: lastDeg == null ? 0 : 0.3,
-            ease: "power2.out",
-            overwrite: true,
-          });
-        } else {
-          content.style.transition =
-            lastDeg == null ? "none" : "transform 0.3s ease-out";
-          content.style.transform = `rotate(${targetDeg}deg)`;
-        }
-        lastDeg = targetDeg;
+      let deg;
+      if (ratio < s) {
+        const t = Math.min(ratio / Math.max(s, 1e-6), 1);
+        deg = entryDeg() + (centerDeg() - entryDeg()) * t;
+      } else if (ratio > e) {
+        const t = Math.min((ratio - e) / Math.max(1 - e, 1e-6), 1);
+        deg = centerDeg() + (exitDeg() - centerDeg()) * t;
+      } else {
+        deg = centerDeg();
       }
 
-      requestAnimationFrame(frame);
-    }
+      if (deg !== lastDeg) {
+        gsap.to(content, {
+          rotate: deg,
+          duration: lastDeg == null ? 0 : 0.3,
+          ease: "power2.out",
+          overwrite: true,
+        });
+        lastDeg = deg;
+      }
+    };
 
-    requestAnimationFrame(frame);
+    ScrollTrigger.create({
+      trigger: selectedElement,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1,
+      onUpdate: updateRotate,
+    });
+
+    const observer = new MutationObserver(updateRotate);
+    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateRotate, 150);
+    ScrollTrigger.refresh(true);
+    ScrollTrigger.update(true);
+
+    const loopArrow = () => {
+      const rect = selectedElement.getBoundingClientRect();
+      const vh = Math.max(window.innerHeight, 1);
+      const ratio = Math.min(Math.max(1 - rect.top / vh, 0), 1);
+      arrow.style.left = `${ratio * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buf = 0.001;
+      arrow.style.backgroundColor =
+        ratio < s - buf ? "#EF7C2F" : ratio > e + buf ? "#F6B67B" : "#FFFFFF";
+      requestAnimationFrame(loopArrow);
+    };
+    loopArrow();
   }
 
-  waitForElements(setup);
+  waitForElements((arrow) => {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+    setup(content, arrow);
+  });
 }
+
 
 
