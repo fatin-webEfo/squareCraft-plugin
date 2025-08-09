@@ -20,161 +20,105 @@ function placeArrowOnRail(arrow, startBullet, endBullet, progress01) {
 export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
-    );
-
-    if (arrow && startBullet && endBullet) {
-      callback(arrow);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
+  function waitForElements(cb, r = 20) {
+    const a = document.getElementById("Typo-vertical-custom-timeline-arrow");
+    const s = document.getElementById("Typo-vertical-timeline-start-bullet");
+    const e = document.getElementById("Typo-vertical-timeline-end-bullet");
+    if (a && s && e) cb(a, s, e);
+    else if (r > 0) setTimeout(() => waitForElements(cb, r - 1), 100);
   }
 
-  function setupScrollAnimation(content, arrow) {
-    const getVar = (v) =>
+  waitForElements((arrow, sBullet, eBullet) => {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+
+    const gv = (v) =>
       parseFloat(
         getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
       ) || 0;
-
-    const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
-    const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
-    const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
-    const start = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
-    const end = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
+    const entryY = () => gv("--sc-Typo-vertical-scroll-entry") / 2;
+    const centerY = () => gv("--sc-Typo-vertical-scroll-center") / 2;
+    const exitY = () => gv("--sc-Typo-vertical-scroll-exit") / 2;
+    const start = () => gv("--sc-Typo-vertical-scroll-start") / 100;
+    const end = () => gv("--sc-Typo-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    let currentY = null;
-
-    const updateYTransform = () => {
-      const scrollRatio =
-        1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
-      const s = start();
-      const e = end();
-
-      const eY = entryY();
-      const cY = centerY();
-      const xY = exitY();
-
-      let y;
-
-      if (scrollRatio < s) {
-        const t = Math.min(scrollRatio / s, 1);
-        y = eY + (cY - eY) * t;
-      } else if (scrollRatio > e) {
-        const t = Math.min((scrollRatio - e) / (1 - e), 1);
-        y = cY + (xY - cY) * t;
-      } else {
-        y = cY;
-      }
-
-      y = Math.max(-50, Math.min(50, y));
-
-      if (y !== currentY) {
-        currentY = y;
-
-        const ease = window.__typoScrollEase || "none";
-        gsap.to(content, {
-          y: `${y}vh`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
-          overwrite: true,
-        });
-      }
-    };
-
-    ScrollTrigger.create({
+    let curY = null;
+    const trig = ScrollTrigger.create({
       trigger: selectedElement,
-      start: `top+=0px bottom`,
-      end: `bottom+=0px top`,
+      start: "top bottom",
+      end: "bottom top",
       scrub: 1,
-      onUpdate: () => {
-        updateYTransform();
+      onUpdate(self) {
+        const ratio = self.progress; // 0..1 along the trigger
+        placeArrowOnRail(arrow, sBullet, eBullet, ratio);
+
+        const s = start(),
+          e = end();
+        const eY = entryY(),
+          cY = centerY(),
+          xY = exitY();
+        let y;
+        if (ratio < s) {
+          const t = ratio / Math.max(s, 1e-6);
+          y = eY + (cY - eY) * t;
+        } else if (ratio > e) {
+          const t = (ratio - e) / Math.max(1 - e, 1e-6);
+          y = cY + (xY - cY) * t;
+        } else {
+          y = cY;
+        }
+        y = Math.max(-50, Math.min(50, y));
+        if (y !== curY) {
+          const ease = window.__typoScrollEase || "none";
+          gsap.to(content, {
+            y: `${y}vh`,
+            ease,
+            duration: ease === "none" ? 0 : 0.6,
+            overwrite: true,
+          });
+          curY = y;
+        }
+
+        const buf = 0.001;
+        arrow.style.backgroundColor =
+          ratio < s - buf ? "#EF7C2F" : ratio > e + buf ? "#F6B67B" : "#FFFFFF";
       },
     });
 
-    const observer = new MutationObserver(updateYTransform);
-    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
-
-    setInterval(updateYTransform, 150);
-
     ScrollTrigger.refresh(true);
-    ScrollTrigger.update(true);
-
-    function loopArrow() {
-      const rect = selectedElement.getBoundingClientRect();
-      const scrollRatio =
-        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1);
-      arrow.style.left = `${scrollRatio * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
-
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
-
-      if (scrollRatio < s - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollRatio > e + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
-
-      requestAnimationFrame(loopArrow);
-    }
-
-    loopArrow();
-  }
-
-  waitForElements((arrow) => {
-    const content = selectedElement.querySelector(".sqs-block-content");
-    if (!content) return;
-    setupScrollAnimation(content, arrow);
   });
 }
+
 
 export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById(
-      "Typo-horizontal-custom-timeline-arrow"
-    );
-    const startBullet = document.getElementById(
-      "Typo-horizontal-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById(
-      "Typo-horizontal-timeline-end-bullet"
-    );
-    if (arrow && startBullet && endBullet) {
-      callback(arrow);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
+  function waitForElements(cb, r = 20) {
+    const a = document.getElementById("Typo-horizontal-custom-timeline-arrow");
+    const s = document.getElementById("Typo-horizontal-timeline-start-bullet");
+    const e = document.getElementById("Typo-horizontal-timeline-end-bullet");
+    if (a && s && e) cb(a, s, e);
+    else if (r > 0) setTimeout(() => waitForElements(cb, r - 1), 100);
   }
 
-  function setupScrollAnimation(content, arrow) {
-    const getVar = (v) =>
+  waitForElements((arrow, sBullet, eBullet) => {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+
+    const gv = (v) =>
       parseFloat(
         getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
       ) || 0;
-
-    const entryX = () => getVar("--sc-Typo-horizontal-scroll-entry") / 2;
-    const centerX = () => getVar("--sc-Typo-horizontal-scroll-center") / 2;
-    const exitX = () => getVar("--sc-Typo-horizontal-scroll-exit") / 2;
-    const start = () => getVar("--sc-Typo-horizontal-scroll-start") / 100;
-    const end = () => getVar("--sc-Typo-horizontal-scroll-end") / 100;
+    const entryX = () => gv("--sc-Typo-horizontal-scroll-entry") / 2;
+    const centerX = () => gv("--sc-Typo-horizontal-scroll-center") / 2;
+    const exitX = () => gv("--sc-Typo-horizontal-scroll-exit") / 2;
+    const start = () => gv("--sc-Typo-horizontal-scroll-start") / 100;
+    const end = () => gv("--sc-Typo-horizontal-scroll-end") / 100;
 
     if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
       document.documentElement.classList.add("sc-no-x-scroll");
@@ -187,103 +131,61 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    gsap.set(content, { willChange: "transform" });
-
-    let currentPx = null;
-
-    const updateXTransform = () => {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportH = Math.max(window.innerHeight, 1);
-      const viewportW = Math.max(window.innerWidth, 1);
-
-      const raw = 1 - rect.top / viewportH;
-      const scrollRatio = Math.min(Math.max(raw, 0), 1);
-
-      const s = start();
-      const e = end();
-
-      const eX = entryX();
-      const cX = centerX();
-      const xX = exitX();
-
-      let vwVal;
-      if (scrollRatio < s) {
-        const t = Math.min(scrollRatio / (s || 1e-6), 1);
-        vwVal = eX + (cX - eX) * t;
-      } else if (scrollRatio > e) {
-        const t = Math.min((scrollRatio - e) / Math.max(1 - e, 1e-6), 1);
-        vwVal = cX + (xX - cX) * t;
-      } else {
-        vwVal = cX;
-      }
-
-      vwVal = Math.max(-50, Math.min(50, vwVal));
-
-      const desiredPx = (vwVal / 100) * viewportW;
-
-      const maxLeftShift = -rect.left; // don’t go past left edge
-      const maxRightShift = viewportW - rect.right; // don’t go past right edge
-      const clampedPx = Math.max(
-        maxLeftShift,
-        Math.min(desiredPx, maxRightShift)
-      );
-
-      if (clampedPx !== currentPx) {
-        currentPx = clampedPx;
-        const customEase = window.__typoScrollEase || "none";
-        const ease = customEase === "none" ? "power1.out" : customEase;
-        const duration = customEase === "none" ? 0.16 : 0.36;
-        gsap.to(content, { x: clampedPx, ease, duration, overwrite: true });
-      }
-    };
-
-    ScrollTrigger.create({
+    let curPx = null;
+    const trig = ScrollTrigger.create({
       trigger: selectedElement,
       start: "top bottom",
       end: "bottom top",
       scrub: 1,
-      onUpdate: updateXTransform,
+      onUpdate(self) {
+        const ratio = self.progress; // 0..1 along the trigger
+        placeArrowOnRail(arrow, sBullet, eBullet, ratio);
+
+        const rect = selectedElement.getBoundingClientRect();
+        const vw = Math.max(window.innerWidth, 1);
+        const s = start(),
+          e = end();
+        const eV = entryX(),
+          cV = centerX(),
+          xV = exitX();
+
+        let vwVal;
+        if (ratio < s) {
+          const t = ratio / Math.max(s, 1e-6);
+          vwVal = eV + (cV - eV) * t;
+        } else if (ratio > e) {
+          const t = (ratio - e) / Math.max(1 - e, 1e-6);
+          vwVal = cV + (xV - cV) * t;
+        } else {
+          vwVal = cV;
+        }
+        vwVal = Math.max(-50, Math.min(50, vwVal));
+        const desiredPx = (vwVal / 100) * vw;
+        const maxLeft = -rect.left,
+          maxRight = vw - rect.right;
+        const clamped = Math.max(maxLeft, Math.min(desiredPx, maxRight));
+
+        if (clamped !== curPx) {
+          const ease = window.__typoScrollEase || "none";
+          gsap.to(content, {
+            x: clamped,
+            ease: ease === "none" ? "power1.out" : ease,
+            duration: ease === "none" ? 0.16 : 0.36,
+            overwrite: true,
+          });
+          curPx = clamped;
+        }
+
+        const buf = 0.001;
+        arrow.style.backgroundColor =
+          ratio < s - buf ? "#EF7C2F" : ratio > e + buf ? "#F6B67B" : "#FFFFFF";
+      },
     });
 
-    const observer = new MutationObserver(updateXTransform);
-    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
-
-    setInterval(updateXTransform, 150);
     ScrollTrigger.refresh(true);
-    ScrollTrigger.update(true);
-
-    function loopArrow() {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportH = Math.max(window.innerHeight, 1);
-      const ratio = 1 - Math.min(Math.max(rect.top / viewportH, 0), 1);
-
-      arrow.style.left = `${ratio * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
-
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
-
-      if (ratio < s - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (ratio > e + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
-
-      requestAnimationFrame(loopArrow);
-    }
-
-    loopArrow();
-  }
-
-  waitForElements((arrow) => {
-    const content = selectedElement.querySelector(".sqs-block-content");
-    if (!content) return;
-    setupScrollAnimation(content, arrow);
   });
 }
+
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
