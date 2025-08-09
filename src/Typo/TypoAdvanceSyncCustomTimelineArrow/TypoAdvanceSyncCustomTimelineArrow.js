@@ -138,7 +138,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-horizontal-timeline-end-bullet"
     );
-
     if (arrow && startBullet && endBullet) {
       callback(arrow);
     } else if (retries > 0) {
@@ -163,16 +162,13 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    const xSetter = gsap.quickTo(content, "x", {
-      duration: 0.3,
-      ease: "power2.out",
-    });
-
     let currentX = null;
 
     const updateXTransform = () => {
-      const scrollRatio =
-        1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
+      const rect = selectedElement.getBoundingClientRect();
+      const viewportH = Math.max(window.innerHeight, 1);
+      const raw = 1 - rect.top / viewportH;
+      const scrollRatio = Math.min(Math.max(raw, 0), 1);
 
       const s = start();
       const e = end();
@@ -183,31 +179,35 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
       let x;
       if (scrollRatio < s) {
-        const t = Math.min(scrollRatio / s, 1);
+        const t = Math.min(scrollRatio / (s || 1e-6), 1);
         x = eX + (cX - eX) * t;
       } else if (scrollRatio > e) {
-        const t = Math.min((scrollRatio - e) / (1 - e), 1);
+        const t = Math.min((scrollRatio - e) / Math.max(1 - e, 1e-6), 1);
         x = cX + (xX - cX) * t;
       } else {
         x = cX;
       }
 
-      x = Math.max(-30, Math.min(30, x));
+      x = Math.max(-50, Math.min(50, x));
 
       if (x !== currentX) {
         currentX = x;
-        xSetter(`${x}vw`);
+        const ease = window.__typoScrollEase || "none";
+        gsap.to(content, {
+          x: `${x}vw`,
+          ease,
+          duration: ease === "none" ? 0 : 0.6,
+          overwrite: true,
+        });
       }
     };
 
     ScrollTrigger.create({
       trigger: selectedElement,
-      start: `top+=0px bottom`,
-      end: `bottom+=0px top`,
+      start: "top bottom",
+      end: "bottom top",
       scrub: 1,
-      onUpdate: () => {
-        updateXTransform();
-      },
+      onUpdate: updateXTransform,
     });
 
     const observer = new MutationObserver(updateXTransform);
@@ -219,19 +219,19 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
-      const scrollRatio =
-        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1);
+      const viewportH = Math.max(window.innerHeight, 1);
+      const ratio = 1 - Math.min(Math.max(rect.top / viewportH, 0), 1);
 
-      arrow.style.left = `${scrollRatio * 100}%`;
+      arrow.style.left = `${ratio * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const s = start();
       const e = end();
       const buffer = 0.001;
 
-      if (scrollRatio < s - buffer) {
+      if (ratio < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (scrollRatio > e + buffer) {
+      } else if (ratio > e + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
