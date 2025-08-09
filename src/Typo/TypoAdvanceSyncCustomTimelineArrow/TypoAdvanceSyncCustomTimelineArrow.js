@@ -163,11 +163,17 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    const xSetter = gsap.quickTo(content, "x", {
+      duration: 0.3,
+      ease: "power2.out",
+    });
+
     let currentX = null;
 
     const updateXTransform = () => {
       const scrollRatio =
-        1 - selectedElement.getBoundingClientRect().left / window.innerWidth;
+        1 - selectedElement.getBoundingClientRect().top / window.innerHeight;
+
       const s = start();
       const e = end();
 
@@ -176,7 +182,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       const xX = exitX();
 
       let x;
-
       if (scrollRatio < s) {
         const t = Math.min(scrollRatio / s, 1);
         x = eX + (cX - eX) * t;
@@ -187,25 +192,18 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
         x = cX;
       }
 
-      x = Math.max(-50, Math.min(50, x));
+      x = Math.max(-30, Math.min(30, x));
 
       if (x !== currentX) {
         currentX = x;
-
-        const ease = window.__typoScrollEase || "none";
-        gsap.to(content, {
-          x: `${x}vw`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
-          overwrite: true,
-        });
+        xSetter(`${x}vw`);
       }
     };
 
     ScrollTrigger.create({
       trigger: selectedElement,
-      start: `left+=0px right`,
-      end: `right+=0px left`,
+      start: `top+=0px bottom`,
+      end: `bottom+=0px top`,
       scrub: 1,
       onUpdate: () => {
         updateXTransform();
@@ -216,14 +214,13 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     observer.observe(content, { attributes: true, attributeFilter: ["style"] });
 
     setInterval(updateXTransform, 150);
-
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
     function loopArrow() {
       const rect = selectedElement.getBoundingClientRect();
       const scrollRatio =
-        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1); // ✅ vertical scroll sync
+        1 - Math.min(Math.max(rect.top / window.innerHeight, 0), 1);
 
       arrow.style.left = `${scrollRatio * 100}%`;
       arrow.style.transform = "translateX(-50%)";
