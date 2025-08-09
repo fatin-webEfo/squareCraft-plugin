@@ -972,26 +972,27 @@ function triggerLaunchAnimation() {
   }
 }
 
-  async function createWidget(clickedBlock) {
-    try {
-      const module = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-      );
-      const htmlString = module.html();
+ async function createWidget(clickedBlock) {
+   try {
+     const module = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+     );
+     const htmlString = module.html();
 
-      if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-        loadWidgetFromString(htmlString, clickedBlock);
-        setTimeout(() => {
-          if (typeof module.initToggleSwitch === "function") {
-            module.initToggleSwitch();
-          }
-        }, 200);
-      }
-    } catch (err) {
-      console.error("🚨 Error loading HTML module:", err);
-    }
-    triggerLaunchAnimation();
-  }
+     if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+       await loadWidgetFromString(htmlString, clickedBlock); // <-- add await
+       setTimeout(() => {
+         if (typeof module.initToggleSwitch === "function") {
+           module.initToggleSwitch();
+         }
+       }, 200);
+     }
+   } catch (err) {
+     console.error("🚨 Error loading HTML module:", err);
+   }
+   triggerLaunchAnimation();
+ }
+
 
   function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
@@ -1163,17 +1164,19 @@ function triggerLaunchAnimation() {
           deleteButton.nextSibling
         );
 
-        clonedIcon.addEventListener("click", function (event) {
+        clonedIcon.addEventListener("click", async function (event) {
           event.stopPropagation();
           event.preventDefault();
-        if (!widgetLoaded) {
-          createWidget().then(() => {
-            widgetContainer = document.getElementById("sc-widget-container");
+
+          if (!widgetLoaded) {
+            await createWidget(); 
+            if (!widgetContainer) {
+              widgetContainer = document.getElementById("sc-widget-container");
+            }
             if (!widgetContainer) {
               console.error("❌ Widget container not found after creation.");
               return;
             }
-            // ensure it shows on the very first click
             if (window.gsap) {
               animateWidgetOpen(widgetContainer, 0.2);
             } else {
@@ -1182,12 +1185,11 @@ function triggerLaunchAnimation() {
               widgetContainer.style.height = "auto";
               widgetContainer.style.overflow = "visible";
             }
-          });
-        } else {
-          toggleWidgetVisibility(event);
-        }
-
+          } else {
+            toggleWidgetVisibility(event);
+          }
         });
+
       });
     }
 
