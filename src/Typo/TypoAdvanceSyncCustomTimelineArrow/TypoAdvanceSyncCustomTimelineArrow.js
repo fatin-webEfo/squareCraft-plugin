@@ -527,11 +527,7 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
-
-  function waitForElements(callback, retries = 20) {
+  function waitForElements(cb, retries = 20) {
     const arrow = document.getElementById("Typo-rotate-custom-timeline-arrow");
     const startBullet = document.getElementById(
       "Typo-rotate-timeline-start-bullet"
@@ -539,117 +535,102 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-rotate-timeline-end-bullet"
     );
-
-    if (arrow && startBullet && endBullet) {
-      callback(arrow, startBullet, endBullet);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
+    if (arrow && startBullet && endBullet) cb(arrow, startBullet, endBullet);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
 
-  function updateArrowPosition(arrow, startBullet, endBullet) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const top = rect.top;
-    const percentFromTop = top / viewportHeight;
-    const scrollBasedLeft = Math.max(
-      0,
-      Math.min(100, 100 - 100 * percentFromTop)
-    );
+  function getNum(varName, el, pctAs01 = false) {
+    const raw = getComputedStyle(el).getPropertyValue(varName).trim();
+    if (!raw) return 0;
+    const val = parseFloat(raw);
+    if (!isFinite(val)) return 0;
+    return pctAs01 ? (raw.includes("%") ? val / 100 : val) : val;
+  }
 
-    arrow.style.left = `${scrollBasedLeft}%`;
-    arrow.style.transform = "translateX(-50%)";
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+  function clamp01(x) {
+    return Math.max(0, Math.min(1, x));
+  }
 
-    const startBox = startBullet.getBoundingClientRect();
-    const endBox = endBullet.getBoundingClientRect();
-    const arrowBox = arrow.getBoundingClientRect();
+  function setup(arrow, startBullet, endBullet) {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
 
-    const arrowCenter = arrowBox.left + arrowBox.width / 2;
-    const startCenter = startBox.left + startBox.width / 2;
-    const endCenter = endBox.left + endBox.width / 2;
-    const centerCenter = (startCenter + endCenter) / 2;
+    // one-time: avoid horizontal scrollbars due to arrow movement
+    if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
+      document.documentElement.classList.add("sc-no-x-scroll");
+      document.documentElement.style.overflowX = "hidden";
+      document.body.style.overflowX = "hidden";
+    }
 
-    const btn = selectedElement.querySelector(".sqs-block-content");
-    if (!btn) return;
+    let lastRotation = null;
 
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
-    };
+    function frame() {
+      // ratio based on element’s vertical position in viewport
+      const rect = selectedElement.getBoundingClientRect();
+      const vh = Math.max(1, window.innerHeight);
+      const scrollRatio = clamp01(1 - rect.top / vh); // 0 top offscreen, 1 fully passed
 
-    const entryY = getVHFromCSSVar("--sc-Typo-rotate-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-Typo-rotate-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-Typo-rotate-scroll-exit");
+      // thresholds + key angles from CSS variables on the content node
+      const s = clamp01(getNum("--sc-Typo-rotate-scroll-start", content, true)); // 0..1
+      const e = clamp01(getNum("--sc-Typo-rotate-scroll-end", content, true)); // 0..1
+      const entryDeg = getNum("--sc-Typo-rotate-scroll-entry", content); // degrees
+      const centerDeg = getNum("--sc-Typo-rotate-scroll-center", content);
+      const exitDeg = getNum("--sc-Typo-rotate-scroll-exit", content);
 
-    let y = 0;
-    let apply = false;
+      // place arrow along a simple 0..100% rail
+      const arrowPct = scrollRatio * 100;
+      arrow.style.left = `${arrowPct}%`;
+      arrow.style.transform = "translateX(-50%)";
 
-    if (arrowCenter <= startCenter + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (arrowCenter - startCenter + 1) / 2)
-        );
-        y = entryY * progress;
-        apply = true;
-      }
-    } else if (arrowCenter >= endCenter - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (endCenter - arrowCenter + 1) / 2)
-        );
-        y = exitY * (1 - progress);
-        apply = true;
-      }
-    } else {
-      arrow.style.backgroundColor = "#FFFFFF";
+      // tint based on window
+      const buf = 0.001;
+      if (scrollRatio < s - buf) arrow.style.backgroundColor = "#EF7C2F";
+      else if (scrollRatio > e + buf) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
 
-      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (arrowCenter - startCenter) / (centerCenter - startCenter);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        arrowCenter > centerCenter + 1 &&
-        arrowCenter < endCenter - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (arrowCenter - centerCenter) / (endCenter - centerCenter);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
+      // piecewise rotation: [0..s] entry, [s..(s+e)/2] entry→center, [(s+e)/2..e] center→exit, [e..1] exit
+      let targetDeg = entryDeg;
+      if (e > s) {
+        const mid = (s + e) / 2;
+        if (scrollRatio <= s) {
+          targetDeg = entryDeg;
+        } else if (scrollRatio < mid) {
+          const t = (scrollRatio - s) / Math.max(mid - s, 1e-6);
+          targetDeg = lerp(entryDeg, centerDeg, clamp01(t));
+        } else if (scrollRatio < e) {
+          const t = (scrollRatio - mid) / Math.max(e - mid, 1e-6);
+          targetDeg = lerp(centerDeg, exitDeg, clamp01(t));
+        } else {
+          targetDeg = exitDeg;
         }
       }
+
+      if (lastRotation !== targetDeg) {
+        if (window.gsap) {
+          gsap.to(content, {
+            rotate: targetDeg,
+            duration: lastRotation == null ? 0 : 0.3,
+            ease: "power2.out",
+            overwrite: true,
+          });
+        } else {
+          content.style.transition =
+            lastRotation == null ? "none" : "transform 0.3s ease-out";
+          content.style.transform = `rotate(${targetDeg}deg)`;
+        }
+        lastRotation = targetDeg;
+      }
+
+      requestAnimationFrame(frame);
     }
 
-    const finalY = apply ? y : 0;
-
-    if (lastY !== finalY) {
-      gsap.to(btn, {
-        duration: lastY === null ? 0 : 0.3,
-        ease: transition.ease,
-        rotate: finalY,
-      });
-      lastY = finalY;
-    }
+    requestAnimationFrame(frame);
   }
 
-  function trackLoop(arrow, startBullet, endBullet) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, startBullet, endBullet);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  waitForElements((arrow, startBullet, endBullet) => {
-    trackLoop(arrow, startBullet, endBullet);
-  });
+  waitForElements(setup);
 }
+
