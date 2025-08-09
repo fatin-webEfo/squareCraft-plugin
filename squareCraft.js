@@ -22,7 +22,7 @@ function loadStylesheetOnce(href) {
     document.head.appendChild(link);
   });
 }
-function animateWidgetOpen(el, duration = 0.2) {
+function animateWidgetOpen(el, duration = 0.5) {
   if (!el) return;
   const content = el.firstElementChild; // inner wrapper
   el.style.visibility = "visible";
@@ -46,7 +46,7 @@ function animateWidgetOpen(el, duration = 0.2) {
   );
 }
 
-function animateWidgetClose(el, duration = 0.2) {
+function animateWidgetClose(el, duration = 0.4) {
   if (!el) return;
   const curH = el.getBoundingClientRect().height || 0;
   el.style.overflow = "hidden";
@@ -98,7 +98,7 @@ function animateWidgetClose(el, duration = 0.2) {
        widgetContainer.style.visibility !== "hidden" &&
        widgetContainer.style.opacity !== "0"
      ) {
-       animateWidgetClose(widgetContainer, 0.2);
+       animateWidgetClose(widgetContainer, 0.4);
      }
 
     });
@@ -727,38 +727,41 @@ function animateWidgetClose(el, duration = 0.2) {
 
   addHeadingEventListeners();
 
-async function toggleWidgetVisibility(event, clickedBlock = null) {
-  event?.stopPropagation?.();
+  async function toggleWidgetVisibility(event) {
+    event.stopPropagation();
+    const clickedBlock = event?.target?.closest('[id^="block-"]');
+    if (!clickedBlock) {
+      return;
+    }
 
-  // If widget isn't created yet, create it first
-  if (!widgetLoaded) {
-    await createWidget(clickedBlock);
-  }
+    if (!widgetLoaded) {
+      await createWidget(clickedBlock);
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+        .then(() => {
+          handleAndDetect(clickedBlock);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    } else {
+     const isHidden =
+       widgetContainer.style.visibility === "hidden" ||
+       widgetContainer.style.opacity === "0";
+     if (isHidden) {
+       animateWidgetOpen(widgetContainer, 0.5);
+     } else {
+       animateWidgetClose(widgetContainer, 0.4);
+     }
 
-  // Toggle regardless of clickedBlock
-  const isHidden =
-    !widgetContainer ||
-    widgetContainer.style.visibility === "hidden" ||
-    widgetContainer.style.opacity === "0" ||
-    widgetContainer.style.height === "0px";
-
-  if (isHidden) {
-    animateWidgetOpen(widgetContainer, 0.2);
-  } else {
-    animateWidgetClose(widgetContainer, 0.2);
-  }
-
-  // Only run detection if we actually clicked a block
-  if (clickedBlock) {
-    try {
-      await waitForElement("#typoSection, #imageSection, #buttonSection", 4000);
-      handleAndDetect(clickedBlock);
-    } catch (err) {
-      console.error(err.message);
+      waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
+        .then(() => {
+          handleAndDetect(clickedBlock);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
     }
   }
-}
-
 
   function handleAndDetect(clickedBlock) {
     handleBlockClick(
@@ -894,16 +897,10 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
    initHoverButtonEffectDropdowns();
    initImageUploadPreview(() => selectedElement);
 
-requestAnimationFrame(() => {
-  if (window.gsap) {
-    animateWidgetOpen(widgetContainer, 0.2);
-  } else {
-    widgetContainer.style.visibility = "visible";
-    widgetContainer.style.opacity = "1";
-    widgetContainer.style.height = "auto";
-    widgetContainer.style.overflow = "visible";
-  }
-});
+   // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
+   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.5));
+
+   // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
      waitForElement("#typoSection, #imageSection, #buttonSection")
        .then(() => {
@@ -951,47 +948,27 @@ requestAnimationFrame(() => {
        });
    }
  }
-function triggerLaunchAnimation() {
-  const el = document.getElementById("sc-widget-container");
-  if (!el) return;
-  if (window.gsap) {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: -8 },
-      { opacity: 1, y: 0, duration: 0.2, ease: "power1.out" }
-    );
-  } else {
-    // Fallback if GSAP isn't ready yet
-    el.style.opacity = "1";
-    el.style.visibility = "visible";
-    el.style.height = "auto";
-    el.style.overflow = "visible";
-  }
-}
 
-async function createWidget(clickedBlock) {
-  try {
-    const module =
-      (await htmlModulePromise) ||
-      (await import(
+  async function createWidget(clickedBlock) {
+    try {
+      const module = await import(
         "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-      ));
-    const htmlString = module.html();
-    if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-      await loadWidgetFromString(htmlString, clickedBlock);
-      setTimeout(() => {
-        if (typeof module.initToggleSwitch === "function") {
-          module.initToggleSwitch();
-        }
-      }, 200);
+      );
+      const htmlString = module.html();
+
+      if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+        loadWidgetFromString(htmlString, clickedBlock);
+        setTimeout(() => {
+          if (typeof module.initToggleSwitch === "function") {
+            module.initToggleSwitch();
+          }
+        }, 200);
+      }
+    } catch (err) {
+      console.error("🚨 Error loading HTML module:", err);
     }
-  } catch (err) {
-    console.error("🚨 Error loading HTML module:", err);
+    triggerLaunchAnimation();
   }
-  triggerLaunchAnimation();
-}
-
-
 
   function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
@@ -1087,15 +1064,15 @@ async function createWidget(clickedBlock) {
       e.target.tagName === "INPUT" && e.target.type === "file";
 
   if (
-    !isInsideWidget &&
-    !isToolbarIcon &&
-    !isHiddenInput &&
-    widgetContainer &&
-    widgetContainer.style.visibility !== "hidden" &&
-    widgetContainer.style.opacity !== "0"
-  ) {
-    animateWidgetClose(widgetContainer, 0.2);
-  }
+  !isInsideWidget &&
+  !isToolbarIcon &&
+  !isHiddenInput &&
+  widgetContainer &&
+  widgetContainer.style.visibility !== "hidden" &&
+  widgetContainer.style.opacity !== "0"
+) {
+  animateWidgetClose(widgetContainer, 0.4);
+}
 
   });
 
@@ -1163,13 +1140,31 @@ async function createWidget(clickedBlock) {
           deleteButton.nextSibling
         );
 
-       clonedIcon.addEventListener("click", async function (event) {
-         event.stopPropagation();
-         event.preventDefault();
-         await toggleWidgetVisibility(event, null); // <— works for every click now
-       });
-;
+        clonedIcon.addEventListener("click", function (event) {
+          event.stopPropagation();
+          event.preventDefault();
+          toggleWidgetVisibility(event);
+          if (!widgetLoaded) {
+            createWidget().then(() => {
+              widgetContainer = document.getElementById("sc-widget-container");
+              if (widgetContainer) {
+                widgetContainer.style.display = "block";
+              } else {
+                console.error("❌ Widget container not found after creation.");
+              }
+            });
+          } else {
+            const isHidden =
+              widgetContainer.style.visibility === "hidden" ||
+              widgetContainer.style.opacity === "0";
+            if (isHidden) {
+              animateWidgetOpen(widgetContainer, 0.6);
+            } else {
+              animateWidgetClose(widgetContainer, 0.4);
+            }
 
+          }
+        });
       });
     }
 
