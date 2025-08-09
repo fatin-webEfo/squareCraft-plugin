@@ -24,7 +24,17 @@ function loadStylesheetOnce(href) {
 }
 function animateWidgetOpen(el, duration = 0.5) {
   if (!el) return;
-  const content = el.firstElementChild; // inner wrapper
+
+  // Fallback if GSAP not ready yet (first click)
+  if (!window.gsap) {
+    el.style.visibility = "visible";
+    el.style.opacity = "1";
+    el.style.height = "auto";
+    el.style.overflow = "visible";
+    return;
+  }
+
+  const content = el.firstElementChild;
   el.style.visibility = "visible";
   el.style.overflow = "hidden";
   const fullH = content ? content.scrollHeight : 320;
@@ -45,6 +55,38 @@ function animateWidgetOpen(el, duration = 0.5) {
     }
   );
 }
+
+function animateWidgetClose(el, duration = 0.4) {
+  if (!el) return;
+
+  // Fallback if GSAP not ready yet
+  if (!window.gsap) {
+    el.style.visibility = "hidden";
+    el.style.opacity = "0";
+    el.style.height = "0px";
+    el.style.overflow = "hidden";
+    return;
+  }
+
+  const curH = el.getBoundingClientRect().height || 0;
+  el.style.overflow = "hidden";
+  gsap.fromTo(
+    el,
+    { height: curH, opacity: 1 },
+    {
+      height: 0,
+      opacity: 0,
+      duration,
+      ease: "power2.in",
+      onComplete: () => {
+        el.style.visibility = "hidden";
+        el.style.overflow = "hidden";
+      },
+      overwrite: true,
+    }
+  );
+}
+
 
 function animateWidgetClose(el, duration = 0.4) {
   if (!el) return;
