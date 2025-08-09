@@ -46,7 +46,7 @@ function animateWidgetOpen(el, duration = 0.2) {
   );
 }
 
-function animateWidgetClose(el, duration = 0.4) {
+function animateWidgetClose(el, duration = 0.2) {
   if (!el) return;
   const curH = el.getBoundingClientRect().height || 0;
   el.style.overflow = "hidden";
@@ -98,7 +98,7 @@ function animateWidgetClose(el, duration = 0.4) {
        widgetContainer.style.visibility !== "hidden" &&
        widgetContainer.style.opacity !== "0"
      ) {
-       animateWidgetClose(widgetContainer, 0.4);
+       animateWidgetClose(widgetContainer, 0.2);
      }
 
     });
@@ -750,7 +750,7 @@ function animateWidgetClose(el, duration = 0.4) {
      if (isHidden) {
        animateWidgetOpen(widgetContainer, 0.2);
      } else {
-       animateWidgetClose(widgetContainer, 0.4);
+       animateWidgetClose(widgetContainer, 0.2);
      }
 
       waitForElement("#typoSection, #imageSection, #buttonSection", 4000)
@@ -1071,7 +1071,7 @@ function animateWidgetClose(el, duration = 0.4) {
     widgetContainer.style.visibility !== "hidden" &&
     widgetContainer.style.opacity !== "0"
   ) {
-    animateWidgetClose(widgetContainer, 0.4);
+    animateWidgetClose(widgetContainer, 0.2);
   }
 
   });
@@ -1160,7 +1160,7 @@ function animateWidgetClose(el, duration = 0.4) {
             if (isHidden) {
               animateWidgetOpen(widgetContainer, 0.6);
             } else {
-              animateWidgetClose(widgetContainer, 0.4);
+              animateWidgetClose(widgetContainer, 0.2);
             }
 
           }
