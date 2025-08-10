@@ -406,11 +406,9 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
       "Typo-scale-timeline-start-bullet"
     );
     const endBullet = document.getElementById("Typo-scale-timeline-end-bullet");
-    if (arrow && startBullet && endBullet) {
-      callback(arrow);
-    } else if (retries > 0) {
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
   }
 
   function setupScrollAnimation(content, arrow) {
@@ -438,11 +436,7 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
     let currentScale = null;
 
     const updateScale = () => {
-      const rect = selectedElement.getBoundingClientRect();
-      const vh = Math.max(window.innerHeight, 1);
-      const raw = 1 - rect.top / vh;
-      const ratio = Math.min(Math.max(raw, 0), 1);
-
+      const t = getViewportProgress(selectedElement); // 0..1 based on element center vs visible viewport
       const s = start();
       const e = end();
 
@@ -451,18 +445,17 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
       const xV = exit();
 
       let y;
-      if (ratio < s) {
-        const t = Math.min(ratio / (s || 1e-6), 1);
-        y = eV + (cV - eV) * t;
-      } else if (ratio > e) {
-        const t = Math.min((ratio - e) / Math.max(1 - e, 1e-6), 1);
-        y = cV + (xV - cV) * t;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        y = eV + (cV - eV) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        y = cV + (xV - cV) * k;
       } else {
         y = cV;
       }
 
       y = Math.max(-50, Math.min(50, y));
-
       const scaleVal = Math.max(0.01, 1 + y / 100);
 
       if (scaleVal !== currentScale) {
@@ -485,25 +478,145 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
     const observer = new MutationObserver(updateScale);
     observer.observe(target, { attributes: true, attributeFilter: ["style"] });
 
-    setInterval(updateScale, 150);
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
     function loopArrow() {
-      const rect = selectedElement.getBoundingClientRect();
-      const vh = Math.max(window.innerHeight, 1);
-      const ratio = 1 - Math.min(Math.max(rect.top / vh, 0), 1);
-
-      arrow.style.left = `${ratio * 100}%`;
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const s = start();
       const e = end();
       const buffer = 0.001;
 
-      if (ratio < s - buffer) {
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+
+      requestAnimationFrame(loopArrow);
+    }
+
+    loopArrow();
+  }
+
+  waitForElements((arrow) => {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+    setupScrollAnimation(content, arrow);
+  });
+}
+
+
+export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
+  if (!selectedElement) return;
+
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("Typo-rotate-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "Typo-rotate-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById(
+      "Typo-rotate-timeline-end-bullet"
+    );
+    if (arrow && startBullet && endBullet) {
+      callback(arrow);
+    } else if (retries > 0) {
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
+    }
+  }
+
+  function setupScrollAnimation(content, arrow) {
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
+
+    const entryDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-entry"
+        )
+      ) || 0;
+    const centerDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-center"
+        )
+      ) || 0;
+    const exitDeg = () =>
+      parseFloat(
+        getComputedStyle(content).getPropertyValue(
+          "--sc-Typo-rotate-scroll-exit"
+        )
+      ) || 0;
+
+    const start = () => getVar("--sc-Typo-rotate-scroll-start") / 100;
+    const end = () => getVar("--sc-Typo-rotate-scroll-end") / 100;
+
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.getAll().forEach((t) => {
+      if (t.trigger === selectedElement) t.kill();
+    });
+
+    let lastDeg = null;
+
+    const updateRotation = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+
+      let deg;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        deg = entryDeg() + (centerDeg() - entryDeg()) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        deg = centerDeg() + (exitDeg() - centerDeg()) * k;
+      } else {
+        deg = centerDeg();
+      }
+
+      if (deg !== lastDeg) {
+        lastDeg = deg;
+        const ease = window.__typoScrollEase || "none";
+        gsap.to(content, {
+          rotate: deg,
+          ease,
+          duration: ease === "none" ? 0 : 0.6,
+          overwrite: true,
+        });
+      }
+    };
+
+    ScrollTrigger.create({
+      trigger: selectedElement,
+      start: `top+=0px bottom`,
+      end: `bottom+=0px top`,
+      scrub: 1,
+      onUpdate: updateRotation,
+    });
+
+    const observer = new MutationObserver(updateRotation);
+    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
+
+    setInterval(updateRotation, 150);
+
+    ScrollTrigger.refresh(true);
+    ScrollTrigger.update(true);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+
+      if (t < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
-      } else if (ratio > e + buffer) {
+      } else if (t > e + buffer) {
         arrow.style.backgroundColor = "#F6B67B";
       } else {
         arrow.style.backgroundColor = "#FFFFFF";
@@ -522,90 +635,3 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
-  if (!selectedElement) return;
-
-  function waitForElements(cb, r = 20) {
-    const a = document.getElementById("Typo-rotate-custom-timeline-arrow");
-    const s = document.getElementById("Typo-rotate-timeline-start-bullet");
-    const e = document.getElementById("Typo-rotate-timeline-end-bullet");
-    if (a && s && e) cb(a, s, e);
-    else if (r > 0) setTimeout(() => waitForElements(cb, r - 1), 100);
-  }
-
-  waitForElements((arrow, sBullet, eBullet) => {
-    const content = selectedElement.querySelector(".sqs-block-content");
-    if (!content) return;
-
-    const gv = (v) =>
-      parseFloat(
-        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
-      ) || 0;
-    const start = () => gv("--sc-Typo-rotate-scroll-start") / 100;
-    const end = () => gv("--sc-Typo-rotate-scroll-end") / 100;
-    const entryD = () =>
-      parseFloat(
-        getComputedStyle(content).getPropertyValue(
-          "--sc-Typo-rotate-scroll-entry"
-        )
-      ) || 0;
-    const centerD = () =>
-      parseFloat(
-        getComputedStyle(content).getPropertyValue(
-          "--sc-Typo-rotate-scroll-center"
-        )
-      ) || 0;
-    const exitD = () =>
-      parseFloat(
-        getComputedStyle(content).getPropertyValue(
-          "--sc-Typo-rotate-scroll-exit"
-        )
-      ) || 0;
-
-    gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.getAll().forEach((t) => {
-      if (t.trigger === selectedElement) t.kill();
-    });
-
-    let lastDeg = null;
-    const trig = ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate(self) {
-        const ratio = self.progress; // 0..1 along the trigger
-        placeArrowOnRail(arrow, sBullet, eBullet, ratio);
-
-        const s = start(),
-          e = end();
-        let deg;
-        if (ratio < s) {
-          const t = ratio / Math.max(s, 1e-6);
-          deg = entryD() + (centerD() - entryD()) * t;
-        } else if (ratio > e) {
-          const t = (ratio - e) / Math.max(1 - e, 1e-6);
-          deg = centerD() + (exitD() - centerD()) * t;
-        } else {
-          deg = centerD();
-        }
-
-        if (deg !== lastDeg) {
-          gsap.to(content, {
-            rotate: deg,
-            duration: lastDeg == null ? 0 : 0.3,
-            ease: "power2.out",
-            overwrite: true,
-          });
-          lastDeg = deg;
-        }
-
-        const buf = 0.001;
-        arrow.style.backgroundColor =
-          ratio < s - buf ? "#EF7C2F" : ratio > e + buf ? "#F6B67B" : "#FFFFFF";
-      },
-    });
-
-    ScrollTrigger.refresh(true);
-  });
-}
