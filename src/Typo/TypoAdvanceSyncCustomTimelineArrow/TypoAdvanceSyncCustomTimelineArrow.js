@@ -268,6 +268,9 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
+  if (selectedElement.dataset.opacitySyncBound === "1") return;
+  selectedElement.dataset.opacitySyncBound = "1";
+
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -281,9 +284,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
 
-  function clamp01(x) {
-    return Math.max(0, Math.min(1, x));
-  }
   function clamp100(x) {
     return Math.max(0, Math.min(100, x));
   }
@@ -294,13 +294,10 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       const n = parseFloat(raw.replace("%", ""));
       return clamp100(Number.isNaN(n) ? def : n);
     };
-
-    // 0..100 values (default 100 so content is fully visible by default)
     const entryV = () => getVarPct("--sc-Typo-opacity-scroll-entry", 100);
     const centerV = () => getVarPct("--sc-Typo-opacity-scroll-center", 100);
     const exitV = () => getVarPct("--sc-Typo-opacity-scroll-exit", 100);
 
-    // 0..1 positions (defaults 0 and 1 like others)
     const start = () => getVarPct("--sc-Typo-opacity-scroll-start", 0) / 100;
     const end = () => getVarPct("--sc-Typo-opacity-scroll-end", 100) / 100;
 
@@ -309,13 +306,12 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    // default opacity 100%
     gsap.set(content, { opacity: 1 });
 
     let lastOpacity = null;
 
     const updateOpacity = () => {
-      const t = getViewportProgress(selectedElement); // 0..1, center-based like others
+      const t = getViewportProgress(selectedElement); // 0..1 center-based
       const s = start();
       const e = end();
 
@@ -342,7 +338,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           opacity,
-          ease: ease === "none" ? "power1.out" : ease, // minimal smoothness like rotate
+          ease: ease === "none" ? "power1.out" : ease, // minimal smoothness
           duration: ease === "none" ? 0.2 : 0.6,
           overwrite: true,
         });
@@ -379,11 +375,10 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       requestAnimationFrame(loopArrow);
     }
 
-    // ensure the track is positioned correctly (same trick as others if needed)
+    // ensure track positioning
     const track = arrow.parentElement;
-    if (track && getComputedStyle(track).position === "static") {
+    if (track && getComputedStyle(track).position === "static")
       track.style.position = "relative";
-    }
 
     loopArrow();
   }
@@ -394,6 +389,9 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
+// === builder UI: init + bullets + inputs (0..100 only) ===
+
 
 
 

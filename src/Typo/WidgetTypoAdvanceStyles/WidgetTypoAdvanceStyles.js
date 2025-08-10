@@ -2945,15 +2945,22 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   )
     return;
 
+  const clamp100 = (n) => Math.max(0, Math.min(100, n));
+
+  const getVarPct = (el, cssVar, def) => {
+    const contentEl = el?.querySelector(".sqs-block-content");
+    if (!contentEl) return def;
+    const raw = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
+    const parsed = parseFloat(raw.replace("%", ""));
+    return Number.isNaN(parsed) ? def : clamp100(parsed);
+  };
+
   const updateField =
-(bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
+    (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      if (countEl.tagName === "INPUT") {
-        countEl.value = `${val}%`;
-      } else {
-        countEl.textContent = `${val}%`;
-      }
+      if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
+      else countEl.textContent = `${val}%`;
 
       const el = getSelectedElement?.();
       const styleId = el?.id
@@ -2971,7 +2978,6 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
         const fillLeft = 0;
         const fillWidth = val;
 
-        bullet.style.left = `${bulletLeft}%`;
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
         gsap.set(fill, {
           left: `${fillLeft}%`,
@@ -2980,9 +2986,10 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
         });
 
         if (cssVar === "--sc-Typo-opacity-scroll-entry") {
-          document.getElementById(
+          const arrow = document.getElementById(
             "Typo-opacity-custom-timeline-arrow"
-          ).style.left = `${bulletLeft}%`;
+          );
+          if (arrow) arrow.style.left = `${bulletLeft}%`;
         }
 
         opacityinitEffectAnimationDropdownToggle(getSelectedElement);
@@ -2990,7 +2997,7 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         if (position === "left") {
           gsap.set(fill, { width: `${val}%`, left: "0" });
-        } else if (position === "right") {
+        } else {
           const width = 100 - val;
           gsap.set(fill, {
             width: `${width}%`,
@@ -3000,36 +3007,34 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
         }
       }
 
-      if (el && el.id?.startsWith("block-")) {
-        let styleTag = document.getElementById(styleId);
+      const el2 = getSelectedElement?.();
+      if (el2 && el2.id?.startsWith("block-")) {
+        let styleTag = styleId ? document.getElementById(styleId) : null;
         if (!styleTag) {
           styleTag = document.createElement("style");
-          styleTag.id = styleId;
+          if (styleId) styleTag.id = styleId;
           document.head.appendChild(styleTag);
         }
-        const contentEl = el.querySelector(".sqs-block-content");
-        if (contentEl) {
-          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-        }
+        const contentEl = el2.querySelector(".sqs-block-content");
+        if (contentEl)
+          styleTag.textContent = `#${el2.id} .sqs-block-content { ${cssVar}: ${val}%; }`;
+        ScrollTrigger.refresh();
+        ScrollTrigger.update(true);
       }
     };
 
-  const getCurrentPercentage = (cssVar) => {
+  const getCurrentPercentage = (cssVar, def) => {
     const el = getSelectedElement?.();
-    if (!el) return 0;
-    const contentEl = el.querySelector(".sqs-block-content");
-    if (!contentEl) return 0;
-    const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
-    const parsed = parseFloat(val.replace("%", ""));
-    if (isNaN(parsed)) {
-      return 100;
-    }
-
-    return parsed;
+    if (!el) return def;
+    return getVarPct(el, cssVar, def);
   };
 
-  let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start");
-  let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end");
+  // Proper defaults for start/end
+  let currentStartVal = getCurrentPercentage(
+    "--sc-Typo-opacity-scroll-start",
+    0
+  );
+  let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end", 100);
 
   const updateStart = (val) => {
     currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
@@ -3076,13 +3081,14 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     "--sc-Typo-opacity-scroll-exit"
   );
 
-  updateEntry(getCurrentPercentage("--sc-Typo-opacity-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit"));
+  // initialize from CSS vars (entry/center/exit default to 100 if missing)
+  updateEntry(getCurrentPercentage("--sc-Typo-opacity-scroll-entry", 100));
+  updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center", 100));
+  updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit", 100));
 
+  // set bullets to actual values (not forced 0%)
   updateStart(currentStartVal);
-  
-gsap.set(startBullet, { left: `0%`, xPercent: -50 });
+  gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 });
   updateEnd(currentEndVal);
 
   const makeDraggable = (
@@ -3103,18 +3109,17 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
         );
         const percent =
           ((clientX - rect.left) / rect.width) * (max - min) + min;
-        let clamped = Math.round(percent);
+        let clamped = Math.round(Math.max(min, Math.min(percent, max)));
 
         if (bullet === startBullet) {
           clamped = Math.max(0, Math.min(clamped, currentEndVal));
-          currentStartVal = clamped; // ✅ Sync here
+          currentStartVal = clamped;
           updateStart(clamped);
         } else if (bullet === endBullet) {
           clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
-          currentEndVal = clamped; // ✅ Sync here
+          currentEndVal = clamped;
           updateEnd(clamped);
         } else {
-          clamped = Math.max(min, Math.min(clamped, max));
           updateFn(clamped);
         }
       };
@@ -3128,62 +3133,11 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
     };
   };
 
-  [
-    { input: entryCount, fn: updateEntry },
-    { input: centerCount, fn: updateCenter },
-    { input: exitCount, fn: updateExit },
-  ].forEach(({ input, fn }) => {
-    input.addEventListener("input", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(0, Math.min(100, val));
-      e.target.value = val + "%";
-      fn(val);
-    });
-    input.addEventListener("blur", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(0, Math.min(100, val));
-      e.target.value = val + "%";
-      fn(val);
-    });
-    input.addEventListener("keydown", (e) => {
-      const value = e.target.value;
-
-      if (
-        e.key === "Backspace" &&
-        value.endsWith("%") &&
-        e.target.selectionStart === value.length - 1
-      ) {
-        e.preventDefault();
-        const numeric = parseInt(value.replace("%", "").trim()) || 0;
-        const newVal = numeric.toString().slice(0, -1);
-        e.target.value = (newVal || "0") + "%";
-        fn(parseInt(newVal) || 0);
-        return;
-      }
-
-      if (
-        !/[0-9\-]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
-          e.key
-        )
-      ) {
-        e.preventDefault();
-      }
-    });
-
-    input.addEventListener("focus", (e) => {
-      const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-      e.target.value = val;
-    });
-  });
-
   makeDraggable(startBullet, updateStart, "start", 0, 100);
   makeDraggable(endBullet, updateEnd, "end", 0, 100);
-  makeDraggable(entryBullet, updateEntry, "normal");
-  makeDraggable(centerBullet, updateCenter, "normal");
-  makeDraggable(exitBullet, updateExit, "normal");
+  makeDraggable(entryBullet, updateEntry, "normal", 0, 100);
+  makeDraggable(centerBullet, updateCenter, "normal", 0, 100);
+  makeDraggable(exitBullet, updateExit, "normal", 0, 100);
 
   [
     {
@@ -3192,6 +3146,7 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
       fill: entryFill,
       count: entryCount,
       css: "--sc-Typo-opacity-scroll-entry",
+      def: 100,
     },
     {
       id: "Typo-opacity-advance-center-reset",
@@ -3199,6 +3154,7 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
       fill: centerFill,
       count: centerCount,
       css: "--sc-Typo-opacity-scroll-center",
+      def: 100,
     },
     {
       id: "Typo-opacity-advance-exit-reset",
@@ -3206,12 +3162,14 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
       fill: exitFill,
       count: exitCount,
       css: "--sc-Typo-opacity-scroll-exit",
+      def: 100,
     },
-  ].forEach(({ id, bullet, fill, count, css }) => {
+  ].forEach(({ id, bullet, fill, count, css, def }) => {
     const btn = document.getElementById(id);
-    if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
+    if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(def);
   });
 
+  // wire up the rest from your module
   opacityattachAdvanceTimelineIncrementDecrement(
     updateEntry,
     updateCenter,
@@ -3228,43 +3186,49 @@ gsap.set(startBullet, { left: `0%`, xPercent: -50 });
   );
   opacityinitEffectAnimationDropdownToggle(getSelectedElement);
 
+  // Click on the field track to jump (0..100 range)
   opacityattachFieldClickListener(
     "Typo-opacity-advance-entry-field",
     entryBullet,
     entryCount,
-    updateEntry
+    updateEntry,
+    0,
+    100
   );
   opacityattachFieldClickListener(
     "Typo-opacity-advance-center-field",
     centerBullet,
     centerCount,
-    updateCenter
+    updateCenter,
+    0,
+    100
   );
   opacityattachFieldClickListener(
     "Typo-opacity-advance-exit-field",
     exitBullet,
     exitCount,
-    updateExit
+    updateExit,
+    0,
+    100
   );
 }
 
+// === helpers from your module (fixed range defaults) ===
 function opacityattachFieldClickListener(
   fieldId,
   bullet,
   countEl,
   updateFn,
-  min = -100,
+  min = 0,
   max = 100
 ) {
   const field = document.getElementById(fieldId);
   if (!field || !bullet || !countEl) return;
-
   field.addEventListener("click", (e) => {
     const rect = field.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const percent = (clickX / rect.width) * (max - min) + min;
     const clamped = Math.round(Math.max(min, Math.min(percent, max)));
-
     countEl.value = clamped + "%";
     updateFn(clamped);
   });
