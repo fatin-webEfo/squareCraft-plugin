@@ -1,31 +1,14 @@
-function setCount(el, val) {
-  if (!el) return;
-  if (el.tagName === "INPUT") el.value = `${val}%`;
-  else el.textContent = `${val}%`;
-}
-
 function getViewportProgress(el) {
   const vh = window.innerHeight || document.documentElement.clientHeight;
-  if (vh <= 0 || !el) return 0.5;
+  if (vh <= 0) return 0.5;
   const toolbar = document.querySelector(
     '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
   );
-  let th = 0;
-  if (toolbar) {
-    const cs = getComputedStyle(toolbar);
-    if (cs.position === "fixed" || cs.position === "sticky") {
-      th = toolbar.getBoundingClientRect().height || 0;
-    }
-  }
-  const safeTop =
-    parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue("padding-top")
-    ) || 0;
-  const visibleTop = th + safeTop;
-  const visibleHeight = Math.max(1, vh - visibleTop);
+  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+  const visibleTop = th;
+  const visibleHeight = Math.max(1, vh - th);
   const r = el.getBoundingClientRect();
-  let center = r.top + r.height / 2;
-  center = Math.max(visibleTop, Math.min(visibleTop + visibleHeight, center));
+  const center = r.top + r.height / 2;
   let t = (center - visibleTop) / visibleHeight;
   if (Number.isNaN(t)) t = 0.5;
   return Math.max(0, Math.min(1, t));
