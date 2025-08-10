@@ -276,13 +276,9 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-opacity-timeline-end-bullet"
     );
-    if (arrow && startBullet && endBullet) {
-      arrow.style.left = "0%";
-      arrow.style.transform = "translateX(-50%)";
-      callback(arrow);
-    } else if (retries > 0) {
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
   }
 
   function clamp01(x) {
@@ -293,30 +289,33 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(content, arrow) {
-    const getVarPct = (v) => {
+    const getVarPct = (v, def = 0) => {
       const raw = getComputedStyle(content).getPropertyValue(v).trim();
       const n = parseFloat(raw.replace("%", ""));
-      return clamp100(isNaN(n) ? 0 : n);
+      return clamp100(Number.isNaN(n) ? def : n);
     };
 
-    const entryV = () => getVarPct("--sc-Typo-opacity-scroll-entry"); // 0..100
-    const centerV = () => getVarPct("--sc-Typo-opacity-scroll-center"); // 0..100
-    const exitV = () => getVarPct("--sc-Typo-opacity-scroll-exit"); // 0..100
-    const start = () => getVarPct("--sc-Typo-opacity-scroll-start") / 100; // 0..1
-    const end = () => getVarPct("--sc-Typo-opacity-scroll-end") / 100; // 0..1
+    // 0..100 values (default 100 so content is fully visible by default)
+    const entryV = () => getVarPct("--sc-Typo-opacity-scroll-entry", 100);
+    const centerV = () => getVarPct("--sc-Typo-opacity-scroll-center", 100);
+    const exitV = () => getVarPct("--sc-Typo-opacity-scroll-exit", 100);
 
-    // default opacity 100%
-    gsap.set(content, { opacity: 1 });
+    // 0..1 positions (defaults 0 and 1 like others)
+    const start = () => getVarPct("--sc-Typo-opacity-scroll-start", 0) / 100;
+    const end = () => getVarPct("--sc-Typo-opacity-scroll-end", 100) / 100;
 
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
+    // default opacity 100%
+    gsap.set(content, { opacity: 1 });
+
     let lastOpacity = null;
 
     const updateOpacity = () => {
-      const t = getViewportProgress(selectedElement); // 0..1 (center-based)
+      const t = getViewportProgress(selectedElement); // 0..1, center-based like others
       const s = start();
       const e = end();
 
@@ -343,7 +342,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           opacity,
-          ease: ease === "none" ? "power1.out" : ease,
+          ease: ease === "none" ? "power1.out" : ease, // minimal smoothness like rotate
           duration: ease === "none" ? 0.2 : 0.6,
           overwrite: true,
         });
@@ -373,15 +372,17 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       const e = end();
       const buffer = 0.001;
 
-      if (t < s - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (t > e + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
 
       requestAnimationFrame(loopArrow);
+    }
+
+    // ensure the track is positioned correctly (same trick as others if needed)
+    const track = arrow.parentElement;
+    if (track && getComputedStyle(track).position === "static") {
+      track.style.position = "relative";
     }
 
     loopArrow();
@@ -393,6 +394,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
 
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
