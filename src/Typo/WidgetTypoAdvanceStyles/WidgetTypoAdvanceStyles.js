@@ -2892,7 +2892,6 @@ export function opacityinitEffectAnimationDropdownToggle(getSelectedElement) {
   }
 }
 
-// === builder UI: init + bullets + inputs (0..100 only) ===
 export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("Typo-opacity-timeline-start-bullet");
   const endBullet   = document.getElementById("Typo-opacity-timeline-end-bullet");
@@ -3064,7 +3063,6 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   opacityattachFieldClickListener("Typo-opacity-advance-exit-field",   exitBullet,   exitCount,   updateExit,   0, 100);
 }
 
-// === helpers from your module (fixed range defaults) ===
 function opacityattachFieldClickListener(fieldId, bullet, countEl, updateFn, min = 0, max = 100) {
   const field = document.getElementById(fieldId);
   if (!field || !bullet || !countEl) return;
