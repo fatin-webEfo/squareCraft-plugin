@@ -268,10 +268,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -280,122 +276,124 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-opacity-timeline-end-bullet"
     );
-
     if (arrow && startBullet && endBullet) {
       arrow.style.left = "0%";
       arrow.style.transform = "translateX(-50%)";
-      callback(arrow, startBullet, endBullet);
+      callback(arrow);
     } else if (retries > 0) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
     }
   }
 
-  function updateArrowPosition(arrow, startBullet, endBullet) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const top = rect.top;
-    const percentFromTop = top / viewportHeight;
-    const scrollBasedLeft = Math.max(
-      0,
-      Math.min(100, 100 - 100 * percentFromTop)
-    );
+  function clamp01(x) {
+    return Math.max(0, Math.min(1, x));
+  }
+  function clamp100(x) {
+    return Math.max(0, Math.min(100, x));
+  }
 
-    arrow.style.left = `${scrollBasedLeft}%`;
-    arrow.style.transform = "translateX(-50%)";
-
-    const startBox = startBullet.getBoundingClientRect();
-    const endBox = endBullet.getBoundingClientRect();
-    const arrowBox = arrow.getBoundingClientRect();
-
-    const arrowCenter = arrowBox.left + arrowBox.width / 2;
-    const startCenter = startBox.left + startBox.width / 2;
-    const endCenter = endBox.left + endBox.width / 2;
-    const centerCenter = (startCenter + endCenter) / 2;
-
-    const btn = selectedElement.querySelector(".sqs-block-content");
-    if (!btn) return;
-
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%") ? parseFloat(value) : parseFloat(value) || 0;
+  function setupScrollAnimation(content, arrow) {
+    const getVarPct = (v) => {
+      const raw = getComputedStyle(content).getPropertyValue(v).trim();
+      const n = parseFloat(raw.replace("%", ""));
+      return clamp100(isNaN(n) ? 0 : n);
     };
 
-    const entryY = getVHFromCSSVar("--sc-Typo-opacity-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-Typo-opacity-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-Typo-opacity-scroll-exit");
+    const entryV = () => getVarPct("--sc-Typo-opacity-scroll-entry"); // 0..100
+    const centerV = () => getVarPct("--sc-Typo-opacity-scroll-center"); // 0..100
+    const exitV = () => getVarPct("--sc-Typo-opacity-scroll-exit"); // 0..100
+    const start = () => getVarPct("--sc-Typo-opacity-scroll-start") / 100; // 0..1
+    const end = () => getVarPct("--sc-Typo-opacity-scroll-end") / 100; // 0..1
 
-    let y = 0;
-    let apply = false;
+    // default opacity 100%
+    gsap.set(content, { opacity: 1 });
 
-    if (arrowCenter <= startCenter + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (arrowCenter - startCenter + 1) / 2)
-        );
-        y = entryY * progress;
-        apply = true;
-      }
-    } else if (arrowCenter >= endCenter - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = Math.max(
-          0,
-          Math.min(1, (endCenter - arrowCenter + 1) / 2)
-        );
-        y = exitY * (1 - progress);
-        apply = true;
-      }
-    } else {
-      arrow.style.backgroundColor = "#FFFFFF";
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.getAll().forEach((t) => {
+      if (t.trigger === selectedElement) t.kill();
+    });
 
-      if (arrowCenter > startCenter + 1 && arrowCenter < centerCenter - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (arrowCenter - startCenter) / (centerCenter - startCenter);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        arrowCenter > centerCenter + 1 &&
-        arrowCenter < endCenter - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (arrowCenter - centerCenter) / (endCenter - centerCenter);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
+    let lastOpacity = null;
+
+    const updateOpacity = () => {
+      const t = getViewportProgress(selectedElement); // 0..1 (center-based)
+      const s = start();
+      const e = end();
+
+      const eV = entryV();
+      const cV = centerV();
+      const xV = exitV();
+
+      let val; // 0..100
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        val = eV + (cV - eV) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        val = cV + (xV - cV) * k;
+      } else {
+        val = cV;
       }
+
+      val = clamp100(val);
+      const opacity = val / 100;
+
+      if (opacity !== lastOpacity) {
+        lastOpacity = opacity;
+        const ease = window.__typoScrollEase || "none";
+        gsap.to(content, {
+          opacity,
+          ease: ease === "none" ? "power1.out" : ease,
+          duration: ease === "none" ? 0.2 : 0.6,
+          overwrite: true,
+        });
+      }
+    };
+
+    ScrollTrigger.create({
+      trigger: selectedElement,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1,
+      onUpdate: updateOpacity,
+    });
+
+    const observer = new MutationObserver(updateOpacity);
+    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
+
+    ScrollTrigger.refresh(true);
+    ScrollTrigger.update(true);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+
+      if (t < s - buffer) {
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (t > e + buffer) {
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        arrow.style.backgroundColor = "#FFFFFF";
+      }
+
+      requestAnimationFrame(loopArrow);
     }
 
-    const finalY = apply ? y : 0;
-
-    if (lastY !== finalY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        opacity: Math.max(0, Math.min(1, finalY / 100)),
-      });
-      lastY = finalY;
-    }
+    loopArrow();
   }
 
-  function trackLoop(arrow, startBullet, endBullet) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, startBullet, endBullet);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  waitForElements((arrow, startBullet, endBullet) => {
-    trackLoop(arrow, startBullet, endBullet);
+  waitForElements((arrow) => {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+    setupScrollAnimation(content, arrow);
   });
 }
+
 
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
