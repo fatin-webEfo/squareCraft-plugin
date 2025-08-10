@@ -149,11 +149,9 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-horizontal-timeline-end-bullet"
     );
-    if (arrow && startBullet && endBullet) {
-      callback(arrow);
-    } else if (retries > 0) {
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
   }
 
   function setupScrollAnimation(content, arrow) {
@@ -184,13 +182,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     let currentPx = null;
 
     const updateXTransform = () => {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportH = Math.max(window.innerHeight, 1);
-      const viewportW = Math.max(window.innerWidth, 1);
-
-      const raw = 1 - rect.top / viewportH;
-      const scrollRatio = Math.min(Math.max(raw, 0), 1);
-
+      const t = getViewportProgress(selectedElement);
       const s = start();
       const e = end();
 
@@ -199,22 +191,24 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       const xX = exitX();
 
       let vwVal;
-      if (scrollRatio < s) {
-        const t = Math.min(scrollRatio / (s || 1e-6), 1);
-        vwVal = eX + (cX - eX) * t;
-      } else if (scrollRatio > e) {
-        const t = Math.min((scrollRatio - e) / Math.max(1 - e, 1e-6), 1);
-        vwVal = cX + (xX - cX) * t;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        vwVal = eX + (cX - eX) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        vwVal = cX + (xX - cX) * k;
       } else {
         vwVal = cX;
       }
 
       vwVal = Math.max(-50, Math.min(50, vwVal));
 
+      const viewportW = Math.max(window.innerWidth, 1);
       const desiredPx = (vwVal / 100) * viewportW;
 
-      const maxLeftShift = -rect.left; // don’t go past left edge
-      const maxRightShift = viewportW - rect.right; // don’t go past right edge
+      const rect = selectedElement.getBoundingClientRect();
+      const maxLeftShift = -rect.left;
+      const maxRightShift = viewportW - rect.right;
       const clampedPx = Math.max(
         maxLeftShift,
         Math.min(desiredPx, maxRightShift)
@@ -240,29 +234,21 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     const observer = new MutationObserver(updateXTransform);
     observer.observe(content, { attributes: true, attributeFilter: ["style"] });
 
-    setInterval(updateXTransform, 150);
     ScrollTrigger.refresh(true);
     ScrollTrigger.update(true);
 
     function loopArrow() {
-      const rect = selectedElement.getBoundingClientRect();
-      const viewportH = Math.max(window.innerHeight, 1);
-      const ratio = 1 - Math.min(Math.max(rect.top / viewportH, 0), 1);
-
-      arrow.style.left = `${ratio * 100}%`;
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
       const s = start();
       const e = end();
       const buffer = 0.001;
 
-      if (ratio < s - buffer) {
-        arrow.style.backgroundColor = "#EF7C2F";
-      } else if (ratio > e + buffer) {
-        arrow.style.backgroundColor = "#F6B67B";
-      } else {
-        arrow.style.backgroundColor = "#FFFFFF";
-      }
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
 
       requestAnimationFrame(loopArrow);
     }
@@ -276,6 +262,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
