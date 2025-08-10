@@ -582,8 +582,8 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           rotate: deg,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
+          ease: ease === "none" ? "power1.out" : ease, // smoother easing
+          duration: ease === "none" ? 0.2 : 0.6, // minimal smoothness
           overwrite: true,
         });
       }
@@ -634,4 +634,5 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(content, arrow);
   });
 }
+
 
