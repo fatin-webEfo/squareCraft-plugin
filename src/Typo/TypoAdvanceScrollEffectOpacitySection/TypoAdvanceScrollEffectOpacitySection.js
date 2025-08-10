@@ -90,7 +90,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
                  id="Typo-opacity-advance-entry-count"
                  class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                >
-                 0px
+                 0%
                </p>
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                  <span
@@ -142,7 +142,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
                  id="Typo-opacity-advance-center-count"
                  class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                >
-                 0px
+                 0%
                </p>
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                  <span
@@ -194,7 +194,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
                  id="Typo-opacity-advance-exit-count"
                  class="sc-font-thin sc-roboto sc-universal sc-font-size-11"
                >
-                 0px
+                 0%
                </p>
                <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                  <span
