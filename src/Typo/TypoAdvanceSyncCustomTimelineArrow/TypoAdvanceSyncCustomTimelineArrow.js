@@ -280,8 +280,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
-  // prevent duplicate binds on the same element
   if (selectedElement.dataset.opacitySyncBound === "1") return;
   selectedElement.dataset.opacitySyncBound = "1";
 
@@ -309,36 +307,36 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       return clamp100(Number.isNaN(n) ? def : n);
     };
 
-    // 0..100 values (default 100 so fully visible by default)
     const entryV = () => getVarPct("--sc-Typo-opacity-scroll-entry", 100);
     const centerV = () => getVarPct("--sc-Typo-opacity-scroll-center", 100);
     const exitV = () => getVarPct("--sc-Typo-opacity-scroll-exit", 100);
 
-    // 0..1 positions
     const start = () => getVarPct("--sc-Typo-opacity-scroll-start", 0) / 100;
     const end = () => getVarPct("--sc-Typo-opacity-scroll-end", 100) / 100;
 
     gsap.registerPlugin(ScrollTrigger);
-    // kill prior triggers on this element (if any)
     ScrollTrigger.getAll().forEach((t) => {
       if (t.trigger === selectedElement) t.kill();
     });
 
-    // default opacity 100%
     gsap.set(content, { opacity: 1 });
+
+    arrow.style.left = "0%";
+    arrow.style.transform = "translateX(-50%)";
+    arrow.style.backgroundColor = "#FFFFFF";
+    arrow.style.zIndex = "2";
 
     let lastOpacity = null;
 
     const updateOpacity = () => {
-      const t = getViewportProgress(selectedElement); // 0..1 center-based
+      const t = getViewportProgress(selectedElement);
       const s = start();
       const e = end();
-
       const eV = entryV();
       const cV = centerV();
       const xV = exitV();
 
-      let val; // 0..100
+      let val;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
         val = eV + (cV - eV) * k;
@@ -357,7 +355,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = window.__typoScrollEase || "none";
         gsap.to(content, {
           opacity,
-          ease: ease === "none" ? "power1.out" : ease, // minimal smoothness
+          ease: ease === "none" ? "power1.out" : ease,
           duration: ease === "none" ? 0.2 : 0.6,
           overwrite: true,
         });
@@ -394,7 +392,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       requestAnimationFrame(loopArrow);
     }
 
-    // ensure track positioning
     const track = arrow.parentElement;
     if (track && getComputedStyle(track).position === "static")
       track.style.position = "relative";

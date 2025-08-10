@@ -2651,8 +2651,6 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
       let val = getCurrent();
       val = type === "inc" ? val + 1 : val - 1;
 
-      const min = 0;
-
       if (bulletId.includes("start")) {
         val = Math.max(0, Math.min(val, endVal - 4));
         startVal = val;
@@ -2660,7 +2658,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
         val = Math.max(startVal + 4, Math.min(val, 100));
         endVal = val;
       } else {
-        val = Math.max(min, Math.min(100, val));
+        val = Math.max(0, Math.min(100, val));
       }
 
       updateFn(val);
@@ -2670,7 +2668,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
           ? "Value"
           : "count"
       );
-      document.getElementById(countId).textContent = val + "%";
+      setCount(document.getElementById(countId), val);
     };
 
     if (btnInc) btnInc.onclick = () => clickHandler("inc");
@@ -2696,7 +2694,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
     const el = document.getElementById(id);
     if (!el) return 0;
     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(raw.replace("%", "")) || 0;
+    return parseInt(String(raw).replace("%", "")) || 0;
   };
 
   setup(
@@ -2747,40 +2745,46 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
       if (lastFocused.includes("entry")) {
         entryVal = Math.max(0, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
-        document.getElementById("Typo-opacity-advance-entry-count").value =
-          entryVal + "%";
+        setCount(
+          document.getElementById("Typo-opacity-advance-entry-count"),
+          entryVal
+        );
       }
       if (lastFocused.includes("center")) {
         centerVal = Math.max(0, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
-        document.getElementById("Typo-opacity-advance-center-count").value =
-          centerVal + "%";
+        setCount(
+          document.getElementById("Typo-opacity-advance-center-count"),
+          centerVal
+        );
       }
       if (lastFocused.includes("exit")) {
         exitVal = Math.max(0, Math.min(100, exitVal + direction));
         updateExit(exitVal);
-        document.getElementById("Typo-opacity-advance-exit-count").value =
-          exitVal + "%";
+        setCount(
+          document.getElementById("Typo-opacity-advance-exit-count"),
+          exitVal
+        );
       }
       if (lastFocused.includes("start")) {
         startVal = getVal("Typo-opacity-timelineStartValue");
         endVal = getVal("Typo-opacity-timelineEndValue");
-        startVal += direction;
-        startVal = Math.max(0, Math.min(startVal, endVal - 4));
-
+        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        document.getElementById("Typo-opacity-timelineStartValue").textContent =
-          startVal + "%";
+        setCount(
+          document.getElementById("Typo-opacity-timelineStartValue"),
+          startVal
+        );
       }
       if (lastFocused.includes("end")) {
         startVal = getVal("Typo-opacity-timelineStartValue");
         endVal = getVal("Typo-opacity-timelineEndValue");
-        endVal += direction;
-        endVal = Math.max(startVal + 4, Math.min(endVal, 100));
-
+        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        document.getElementById("Typo-opacity-timelineEndValue").textContent =
-          endVal + "%";
+        setCount(
+          document.getElementById("Typo-opacity-timelineEndValue"),
+          endVal
+        );
       }
     };
 
@@ -2893,28 +2897,57 @@ export function opacityinitEffectAnimationDropdownToggle(getSelectedElement) {
 }
 
 export function opacityinitTypoAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("Typo-opacity-timeline-start-bullet");
-  const endBullet   = document.getElementById("Typo-opacity-timeline-end-bullet");
-  const startFill   = document.getElementById("Typo-opacity-timeline-start-fill");
-  const endFill     = document.getElementById("Typo-opacity-timeline-end-fill");
-  const startValue  = document.getElementById("Typo-opacity-timelineStartValue");
-  const endValue    = document.getElementById("Typo-opacity-timelineEndValue");
+  const startBullet = document.getElementById(
+    "Typo-opacity-timeline-start-bullet"
+  );
+  const endBullet = document.getElementById("Typo-opacity-timeline-end-bullet");
+  const startFill = document.getElementById("Typo-opacity-timeline-start-fill");
+  const endFill = document.getElementById("Typo-opacity-timeline-end-fill");
+  const startValue = document.getElementById("Typo-opacity-timelineStartValue");
+  const endValue = document.getElementById("Typo-opacity-timelineEndValue");
 
-  const entryBullet = document.getElementById("Typo-opacity-advance-entry-bullet");
-  const entryFill   = document.getElementById("Typo-opacity-advance-entry-fill");
-  const entryCount  = document.getElementById("Typo-opacity-advance-entry-count");
+  const entryBullet = document.getElementById(
+    "Typo-opacity-advance-entry-bullet"
+  );
+  const entryFill = document.getElementById("Typo-opacity-advance-entry-fill");
+  const entryCount = document.getElementById(
+    "Typo-opacity-advance-entry-count"
+  );
 
-  const centerBullet = document.getElementById("Typo-opacity-advance-center-bullet");
-  const centerFill   = document.getElementById("Typo-opacity-advance-center-fill");
-  const centerCount  = document.getElementById("Typo-opacity-advance-center-count");
+  const centerBullet = document.getElementById(
+    "Typo-opacity-advance-center-bullet"
+  );
+  const centerFill = document.getElementById(
+    "Typo-opacity-advance-center-fill"
+  );
+  const centerCount = document.getElementById(
+    "Typo-opacity-advance-center-count"
+  );
 
-  const exitBullet = document.getElementById("Typo-opacity-advance-exit-bullet");
-  const exitFill   = document.getElementById("Typo-opacity-advance-exit-fill");
-  const exitCount  = document.getElementById("Typo-opacity-advance-exit-count");
+  const exitBullet = document.getElementById(
+    "Typo-opacity-advance-exit-bullet"
+  );
+  const exitFill = document.getElementById("Typo-opacity-advance-exit-fill");
+  const exitCount = document.getElementById("Typo-opacity-advance-exit-count");
 
-  if (!startBullet || !endBullet || !startFill || !endFill ||
-      !startValue || !endValue || !entryBullet || !entryFill || !entryCount ||
-      !centerBullet || !centerFill || !centerCount || !exitBullet || !exitFill || !exitCount) return;
+  if (
+    !startBullet ||
+    !endBullet ||
+    !startFill ||
+    !endFill ||
+    !startValue ||
+    !endValue ||
+    !entryBullet ||
+    !entryFill ||
+    !entryCount ||
+    !centerBullet ||
+    !centerFill ||
+    !centerCount ||
+    !exitBullet ||
+    !exitFill ||
+    !exitCount
+  )
+    return;
 
   const clamp100 = (n) => Math.max(0, Math.min(100, n));
 
@@ -2930,22 +2963,35 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-      if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
-      else countEl.textContent = `${val}%`;
+      setCount(countEl, val);
 
       const el = getSelectedElement?.();
-      const styleId = el?.id ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}` : null;
+      const styleId = el?.id
+        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
+        : null;
 
-      if (["--sc-Typo-opacity-scroll-entry","--sc-Typo-opacity-scroll-center","--sc-Typo-opacity-scroll-exit"].includes(cssVar)) {
+      if (
+        [
+          "--sc-Typo-opacity-scroll-entry",
+          "--sc-Typo-opacity-scroll-center",
+          "--sc-Typo-opacity-scroll-exit",
+        ].includes(cssVar)
+      ) {
         const bulletLeft = val;
         const fillLeft = 0;
         const fillWidth = val;
 
         gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill,   { left: `${fillLeft}%`, width: `${fillWidth}%`, backgroundColor: "var(--sc-Typo-theme-accent)" });
+        gsap.set(fill, {
+          left: `${fillLeft}%`,
+          width: `${fillWidth}%`,
+          backgroundColor: "var(--sc-Typo-theme-accent)",
+        });
 
         if (cssVar === "--sc-Typo-opacity-scroll-entry") {
-          const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
+          const arrow = document.getElementById(
+            "Typo-opacity-custom-timeline-arrow"
+          );
           if (arrow) arrow.style.left = `${bulletLeft}%`;
         }
 
@@ -2956,7 +3002,11 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
           const width = 100 - val;
-          gsap.set(fill, { width: `${width}%`, left: `${val}%`, backgroundColor: "#F6B67B" });
+          gsap.set(fill, {
+            width: `${width}%`,
+            left: `${val}%`,
+            backgroundColor: "#F6B67B",
+          });
         }
       }
 
@@ -2969,7 +3019,8 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
           document.head.appendChild(styleTag);
         }
         const contentEl = el2.querySelector(".sqs-block-content");
-        if (contentEl) styleTag.textContent = `#${el2.id} .sqs-block-content { ${cssVar}: ${val}%; }`;
+        if (contentEl)
+          styleTag.textContent = `#${el2.id} .sqs-block-content { ${cssVar}: ${val}%; }`;
         ScrollTrigger.refresh();
         ScrollTrigger.update(true);
       }
@@ -2981,89 +3032,198 @@ export function opacityinitTypoAdvanceStyles(getSelectedElement) {
     return getVarPct(el, cssVar, def);
   };
 
-  // Proper defaults for start/end
-  let currentStartVal = getCurrentPercentage("--sc-Typo-opacity-scroll-start", 0);
-  let currentEndVal   = getCurrentPercentage("--sc-Typo-opacity-scroll-end", 100);
+  let currentStartVal = getCurrentPercentage(
+    "--sc-Typo-opacity-scroll-start",
+    0
+  );
+  let currentEndVal = getCurrentPercentage("--sc-Typo-opacity-scroll-end", 100);
 
   const updateStart = (val) => {
     currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
-    updateField(startBullet, startFill, startValue, "--sc-Typo-opacity-scroll-start", "left", 0, 100)(currentStartVal);
+    updateField(
+      startBullet,
+      startFill,
+      startValue,
+      "--sc-Typo-opacity-scroll-start",
+      "left",
+      0,
+      100
+    )(currentStartVal);
   };
 
   const updateEnd = (val) => {
     currentEndVal = Math.max(currentStartVal + 4, Math.min(val, 100));
-    updateField(endBullet, endFill, endValue, "--sc-Typo-opacity-scroll-end", "right", 0, 100)(currentEndVal);
+    updateField(
+      endBullet,
+      endFill,
+      endValue,
+      "--sc-Typo-opacity-scroll-end",
+      "right",
+      0,
+      100
+    )(currentEndVal);
   };
 
-  const updateEntry  = updateField(entryBullet,  entryFill,  entryCount,  "--sc-Typo-opacity-scroll-entry");
-  const updateCenter = updateField(centerBullet, centerFill, centerCount, "--sc-Typo-opacity-scroll-center");
-  const updateExit   = updateField(exitBullet,   exitFill,   exitCount,   "--sc-Typo-opacity-scroll-exit");
+  const updateEntry = updateField(
+    entryBullet,
+    entryFill,
+    entryCount,
+    "--sc-Typo-opacity-scroll-entry"
+  );
+  const updateCenter = updateField(
+    centerBullet,
+    centerFill,
+    centerCount,
+    "--sc-Typo-opacity-scroll-center"
+  );
+  const updateExit = updateField(
+    exitBullet,
+    exitFill,
+    exitCount,
+    "--sc-Typo-opacity-scroll-exit"
+  );
 
-  // initialize from CSS vars (entry/center/exit default to 100 if missing)
   updateEntry(getCurrentPercentage("--sc-Typo-opacity-scroll-entry", 100));
   updateCenter(getCurrentPercentage("--sc-Typo-opacity-scroll-center", 100));
   updateExit(getCurrentPercentage("--sc-Typo-opacity-scroll-exit", 100));
 
-  // set bullets to actual values (not forced 0%)
   updateStart(currentStartVal);
   gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 });
-  updateEnd(currentEndVal);
+  setCount(startValue, currentStartVal);
 
-  const makeDraggable = (bullet, updateFn, type="normal", min = 0, max = 100) => {
+  updateEnd(currentEndVal);
+  setCount(endValue, currentEndVal);
+
+  const makeDraggable = (
+    bullet,
+    updateFn,
+    type = "normal",
+    min = 0,
+    max = 100
+  ) => {
     bullet.onmousedown = (e) => {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
       const onMouseMove = (event) => {
-        const clientX = Math.max(rect.left, Math.min(rect.right, event.clientX));
-        const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
+        const clientX = Math.max(
+          rect.left,
+          Math.min(rect.right, event.clientX)
+        );
+        const percent =
+          ((clientX - rect.left) / rect.width) * (max - min) + min;
         let clamped = Math.round(Math.max(min, Math.min(percent, max)));
 
         if (bullet === startBullet) {
           clamped = Math.max(0, Math.min(clamped, currentEndVal));
           currentStartVal = clamped;
           updateStart(clamped);
+          setCount(startValue, clamped);
         } else if (bullet === endBullet) {
           clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
           currentEndVal = clamped;
           updateEnd(clamped);
+          setCount(endValue, clamped);
         } else {
           updateFn(clamped);
         }
       };
 
       document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", () => document.removeEventListener("mousemove", onMouseMove), { once: true });
+      document.addEventListener(
+        "mouseup",
+        () => document.removeEventListener("mousemove", onMouseMove),
+        { once: true }
+      );
     };
   };
 
   makeDraggable(startBullet, updateStart, "start", 0, 100);
-  makeDraggable(endBullet,   updateEnd,   "end",   0, 100);
+  makeDraggable(endBullet, updateEnd, "end", 0, 100);
   makeDraggable(entryBullet, updateEntry, "normal", 0, 100);
-  makeDraggable(centerBullet,updateCenter,"normal", 0, 100);
-  makeDraggable(exitBullet,  updateExit,  "normal", 0, 100);
+  makeDraggable(centerBullet, updateCenter, "normal", 0, 100);
+  makeDraggable(exitBullet, updateExit, "normal", 0, 100);
 
   [
-    { id: "Typo-opacity-advance-entry-reset",  bullet: entryBullet,  fill: entryFill,  count: entryCount,  css: "--sc-Typo-opacity-scroll-entry",  def: 100 },
-    { id: "Typo-opacity-advance-center-reset", bullet: centerBullet, fill: centerFill, count: centerCount, css: "--sc-Typo-opacity-scroll-center", def: 100 },
-    { id: "Typo-opacity-advance-exit-reset",   bullet: exitBullet,   fill: exitFill,   count: exitCount,   css: "--sc-Typo-opacity-scroll-exit",   def: 100 },
+    {
+      id: "Typo-opacity-advance-entry-reset",
+      bullet: entryBullet,
+      fill: entryFill,
+      count: entryCount,
+      css: "--sc-Typo-opacity-scroll-entry",
+      def: 100,
+    },
+    {
+      id: "Typo-opacity-advance-center-reset",
+      bullet: centerBullet,
+      fill: centerFill,
+      count: centerCount,
+      css: "--sc-Typo-opacity-scroll-center",
+      def: 100,
+    },
+    {
+      id: "Typo-opacity-advance-exit-reset",
+      bullet: exitBullet,
+      fill: exitFill,
+      count: exitCount,
+      css: "--sc-Typo-opacity-scroll-exit",
+      def: 100,
+    },
   ].forEach(({ id, bullet, fill, count, css, def }) => {
     const btn = document.getElementById(id);
     if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(def);
   });
 
-  // wire up the rest from your module
-  opacityattachAdvanceTimelineIncrementDecrement(updateEntry, updateCenter, updateExit, updateStart, updateEnd);
-  opacityattachCustomTimelineReset(updateStart, updateEnd, updateEntry, updateCenter, updateExit);
+  opacityattachAdvanceTimelineIncrementDecrement(
+    updateEntry,
+    updateCenter,
+    updateExit,
+    updateStart,
+    updateEnd
+  );
+  opacityattachCustomTimelineReset(
+    updateStart,
+    updateEnd,
+    updateEntry,
+    updateCenter,
+    updateExit
+  );
   opacityinitEffectAnimationDropdownToggle(getSelectedElement);
 
-  // Click on the field track to jump (0..100 range)
-  opacityattachFieldClickListener("Typo-opacity-advance-entry-field",  entryBullet,  entryCount,  updateEntry, 0, 100);
-  opacityattachFieldClickListener("Typo-opacity-advance-center-field", centerBullet, centerCount, updateCenter, 0, 100);
-  opacityattachFieldClickListener("Typo-opacity-advance-exit-field",   exitBullet,   exitCount,   updateExit,   0, 100);
+  opacityattachFieldClickListener(
+    "Typo-opacity-advance-entry-field",
+    entryBullet,
+    entryCount,
+    updateEntry,
+    0,
+    100
+  );
+  opacityattachFieldClickListener(
+    "Typo-opacity-advance-center-field",
+    centerBullet,
+    centerCount,
+    updateCenter,
+    0,
+    100
+  );
+  opacityattachFieldClickListener(
+    "Typo-opacity-advance-exit-field",
+    exitBullet,
+    exitCount,
+    updateExit,
+    0,
+    100
+  );
 }
 
-function opacityattachFieldClickListener(fieldId, bullet, countEl, updateFn, min = 0, max = 100) {
+function opacityattachFieldClickListener(
+  fieldId,
+  bullet,
+  countEl,
+  updateFn,
+  min = 0,
+  max = 100
+) {
   const field = document.getElementById(fieldId);
   if (!field || !bullet || !countEl) return;
   field.addEventListener("click", (e) => {
@@ -3071,7 +3231,12 @@ function opacityattachFieldClickListener(fieldId, bullet, countEl, updateFn, min
     const clickX = e.clientX - rect.left;
     const percent = (clickX / rect.width) * (max - min) + min;
     const clamped = Math.round(Math.max(min, Math.min(percent, max)));
-    countEl.value = clamped + "%";
+    setCount(countEl, clamped);
     updateFn(clamped);
   });
 }
+
+
+// 
+
+
