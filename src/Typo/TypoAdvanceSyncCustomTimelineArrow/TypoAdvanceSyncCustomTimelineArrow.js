@@ -264,6 +264,7 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 
+
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
