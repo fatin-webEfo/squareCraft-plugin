@@ -1011,9 +1011,6 @@ function opacityattachAdvanceTimelineIncrementDecrement(
   updateExit
 ) {
   let lastFocused = null;
-  let keyHoldInterval = null;
-  let keyHoldTimeout = null;
-  let lastPressedKey = null;
 
   function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
@@ -1082,40 +1079,53 @@ function opacityattachAdvanceTimelineIncrementDecrement(
     "Typo-opacity-advance-exit-bullet"
   );
 
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused) return;
-    if (
-      (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
-      keyHoldInterval || keyHoldTimeout
-    ) return;
-
-    lastPressedKey = e.key;
-    const dir = e.key === "ArrowRight" ? 1 : -1;
-
-    const update = () => {
-      const id = `${lastFocused.replace("-bullet", "-count")}`;
-      const val = getVal(id) + dir;
-      if (lastFocused.includes("entry"))  updateEntry(Math.max(0, Math.min(100, val)));
-      if (lastFocused.includes("center")) updateCenter(Math.max(0, Math.min(100, val)));
-      if (lastFocused.includes("exit"))   updateExit(Math.max(0, Math.min(100, val)));
-    };
-
-    update();
-    keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(update, 100);
-    }, 300);
-  });
-
-  document.addEventListener("keyup", (e) => {
-    if (e.key === lastPressedKey) {
-      clearInterval(keyHoldInterval);
-      clearTimeout(keyHoldTimeout);
-      keyHoldInterval = null;
-      keyHoldTimeout = null;
+  if (!window.__scOpacityKeysBound) {
+    window.__scOpacityKeysBound = true;
+    let keyHoldInterval = null,
+      keyHoldTimeout = null,
       lastPressedKey = null;
-    }
-  });
+
+    document.addEventListener("keydown", (e) => {
+      if (!lastFocused) return;
+      if (
+        (e.key !== "ArrowRight" && e.key !== "ArrowLeft") ||
+        keyHoldInterval ||
+        keyHoldTimeout
+      )
+        return;
+
+      lastPressedKey = e.key;
+      const dir = e.key === "ArrowRight" ? 1 : -1;
+
+      const update = () => {
+        const id = `${lastFocused.replace("-bullet", "-count")}`;
+        const val = getVal(id) + dir;
+        if (lastFocused.includes("entry"))
+          updateEntry(Math.max(0, Math.min(100, val)));
+        if (lastFocused.includes("center"))
+          updateCenter(Math.max(0, Math.min(100, val)));
+        if (lastFocused.includes("exit"))
+          updateExit(Math.max(0, Math.min(100, val)));
+      };
+
+      update();
+      keyHoldTimeout = setTimeout(() => {
+        keyHoldInterval = setInterval(update, 100);
+      }, 300);
+    });
+
+    document.addEventListener("keyup", (e) => {
+      if (e.key === lastPressedKey) {
+        clearInterval(keyHoldInterval);
+        clearTimeout(keyHoldTimeout);
+        keyHoldInterval = null;
+        keyHoldTimeout = null;
+        lastPressedKey = null;
+      }
+    });
+  }
 }
+
 
 function opacityattachCustomTimelineReset(updateStart, updateEnd, updateEntry, updateCenter, updateExit) {
 
