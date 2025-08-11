@@ -2045,7 +2045,7 @@ function rotateattachCustomTimelineReset(
     };
 }
 
-function rotateinitEffectAnimationDropdownToggle() {
+export function rotateinitEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("Typo-rotate-custom-timeline-arrow");
   const start = document.getElementById("Typo-rotate-timeline-start-bullet");
   const end = document.getElementById("Typo-rotate-timeline-end-bullet");
