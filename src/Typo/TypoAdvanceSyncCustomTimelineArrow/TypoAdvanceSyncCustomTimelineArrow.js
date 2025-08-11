@@ -266,9 +266,6 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  const content = selectedElement.querySelector(".sqs-block-content");
-  if (!content) return;
-
   function waitForElements(cb, retries = 20) {
     const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -277,29 +274,37 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     const endBullet = document.getElementById(
       "Typo-opacity-timeline-end-bullet"
     );
-    if (arrow && startBullet && endBullet) cb(arrow, startBullet, endBullet);
+    if (arrow && startBullet && endBullet) cb(arrow);
     else if (retries > 0)
       setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
 
   waitForElements((arrow) => {
-    // make sure it’s visible on the first frame (before the loop recolors it)
-    arrow.style.backgroundColor = "#fff";
-    arrow.style.zIndex = "2";
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (!content) return;
+
+    // ensure visible first frame
+    arrow.style.backgroundColor = "#FFFFFF";
     arrow.style.pointerEvents = "none";
 
-    const getVar = (v) =>
+    const getVarPct = (name) =>
       parseFloat(
-        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
+        getComputedStyle(content).getPropertyValue(name).trim().replace("%", "")
       ) || 0;
 
-    const start = () => getVar("--sc-Typo-opacity-scroll-start") / 100;
-    const end = () => getVar("--sc-Typo-opacity-scroll-end") / 100;
-    const entry = () => getVar("--sc-Typo-opacity-scroll-entry") / 100;
-    const center = () => getVar("--sc-Typo-opacity-scroll-center") / 100;
-    const exit = () => getVar("--sc-Typo-opacity-scroll-exit") / 100;
+    // Percent → normalized helpers (match vertical’s pattern)
+    const start = () => getVarPct("--sc-Typo-opacity-scroll-start") / 100; // 0..1
+    const end = () => getVarPct("--sc-Typo-opacity-scroll-end") / 100; // 0..1
+    const entry = () => getVarPct("--sc-Typo-opacity-scroll-entry") / 100; // 0..1
+    const center = () => getVarPct("--sc-Typo-opacity-scroll-center") / 100; // 0..1
+    const exit = () => getVarPct("--sc-Typo-opacity-scroll-exit") / 100; // 0..1
 
-    // kill any old triggers for this element
+    // Smooth exactly like your vertical
+    const customEase = window.__typoScrollEase || "none";
+    const ease = customEase === "none" ? "power1.out" : customEase;
+    const duration = customEase === "none" ? 0.16 : 0.36;
+
+    // Kill any old triggers for this element
     if (window.ScrollTrigger) {
       ScrollTrigger.getAll().forEach((t) => {
         if (
@@ -310,27 +315,35 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
+    let lastO = null;
     const applyOpacity = () => {
-      const t = getViewportProgress(selectedElement);
-      const s = start(),
-        e = end();
-      const ent = entry(),
-        cen = center(),
-        exi = exit();
+      const t = getViewportProgress(selectedElement); // 0..1 (same helper you use everywhere)
+      const s = start();
+      const e = end();
+
+      const ent = entry();
+      const cen = center();
+      const exi = exit();
 
       let o;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        o = ent + (cen - ent) * k;
+        o = ent + (cen - ent) * k; // ramp Entry → Center before start
       } else if (t > e) {
         const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        o = cen + (exi - cen) * k;
+        o = cen + (exi - cen) * k; // ramp Center → Exit after end
       } else {
-        o = cen;
+        o = cen; // hold Center inside [start, end]
       }
-      gsap.set(content, { opacity: Math.max(0, Math.min(1, o)) });
+
+      o = Math.max(0, Math.min(1, o));
+      if (o !== lastO) {
+        lastO = o;
+        gsap.to(content, { opacity: o, ease, duration, overwrite: true });
+      }
     };
 
+    // Keep the arrow in sync + color bands identical to vertical
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
@@ -339,11 +352,14 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start(),
         e = end(),
         buffer = 0.001;
-      arrow.style.backgroundColor =
-        t < s - buffer ? "#EF7C2F" : t > e + buffer ? "#F6B67B" : "#FFFFFF";
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+
       requestAnimationFrame(loopArrow);
     }
 
+    // Trigger updates on scroll (stable like your vertical)
     if (window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
       ScrollTrigger.create({
@@ -359,12 +375,16 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", applyOpacity, { passive: true });
     }
 
-    // first paint
-    arrow.style.left = `${getViewportProgress(selectedElement) * 100}%`;
+    // Also react instantly when sliders write CSS vars
+    const observer = new MutationObserver(applyOpacity);
+    observer.observe(content, { attributes: true, attributeFilter: ["style"] });
+
+    // First paint
     applyOpacity();
     loopArrow();
   });
 }
+
 
 
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
