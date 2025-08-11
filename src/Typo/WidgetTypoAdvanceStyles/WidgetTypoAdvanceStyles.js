@@ -1157,7 +1157,6 @@ export function opacityinitEffectAnimationDropdownToggle() {
   }
 }
 
-// ⬇️ replace your opacityinitTypoAdvanceStyles with this
 export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("Typo-opacity-timeline-start-bullet");
   const endBullet   = document.getElementById("Typo-opacity-timeline-end-bullet");

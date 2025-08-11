@@ -535,6 +535,7 @@ function animateWidgetClose(el, duration = 0.2) {
             horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+            TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -974,6 +975,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
                  // typo
                  TypoAdvanceSyncCustomTimelineArrow(selectedElement);
                  TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+                 TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
                  TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
                  TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
 
