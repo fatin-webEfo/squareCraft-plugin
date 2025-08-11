@@ -2586,12 +2586,10 @@ export function blurinitTypoAdvanceStyles(getSelectedElement) {
           }
         }
       } else {
-        // timeline start/end
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         if (position === "left") {
           gsap.set(startFill, { width: `${val}%`, left: "0" });
         } else {
-          // mimic vertical end-fill behavior
           gsap.set(endFill, {
             left: "auto",
             transform: `scaleX(${(100 - val) / 100})`,
