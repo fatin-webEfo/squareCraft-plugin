@@ -675,7 +675,16 @@ export function TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement) {
     killed: false,
     lastTarget: NaN,
     lastVars: "",
-    proxy: { o: +getComputedStyle(content).blur || 1 },
+    proxy: {
+      o:
+        parseFloat(
+          (getComputedStyle(content).filter.match(/blur\(([^)]+)\)/) || [
+            ,
+            "0",
+          ])[1]
+        ) || 0,
+    },
+
     kill() {
       this.killed = true;
       if (this.st) this.st.kill();
@@ -685,28 +694,43 @@ export function TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement) {
     },
   };
 
-  const drive = (val) => {
-    const ease = window.__typoScrollEase || "none";
-    if (!hasGsap) {
-      content.style.setProperty("blur", String(val), "important");
-      state.lastTarget = val;
-      return;
-    }
-    if (val !== state.lastTarget) {
-      state.lastTarget = val;
-      gsap.killTweensOf(state.proxy);
-      gsap.to(state.proxy, {
-        o: val,
-        ease: ease === "none" ? "none" : ease,
-        duration: ease === "none" ? 0 : 0.6,
-        overwrite: true,
-        onUpdate: () =>
-          content.style.setProperty("blur", String(state.proxy.o), "important"),
-      });
-    } else {
-      content.style.setProperty("blur", String(val), "important");
-    }
-  };
+const drive = (val) => {
+  const maxPx =
+    parseFloat(
+      getComputedStyle(content).getPropertyValue("--sc-Typo-blur-max")
+    ) || 16;
+  const px = val * maxPx;
+
+  const ease = window.__typoScrollEase || "none";
+
+  if (!hasGsap) {
+    content.style.setProperty("filter", `blur(${px}px)`, "important");
+    state.lastTarget = val;
+    return;
+  }
+
+  // GSAP tween toward target blur(px)
+  if (val !== state.lastTarget) {
+    state.lastTarget = val;
+    gsap.killTweensOf(state.proxy);
+    gsap.to(state.proxy, {
+      o: px,
+      ease: ease === "none" ? "none" : ease,
+      duration: ease === "none" ? 0 : 0.6,
+      overwrite: true,
+      onUpdate: () => {
+        content.style.setProperty(
+          "filter",
+          `blur(${state.proxy.o}px)`,
+          "important"
+        );
+      },
+    });
+  } else {
+    content.style.setProperty("filter", `blur(${px}px)`, "important");
+  }
+};
+
 
   const arrow = document.getElementById("Typo-blur-custom-timeline-arrow");
   const updateArrow = (t, s, e) => {

@@ -470,7 +470,6 @@ function animateWidgetClose(el, duration = 0.2) {
     }
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
-
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
