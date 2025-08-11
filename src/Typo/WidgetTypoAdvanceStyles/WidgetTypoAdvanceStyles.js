@@ -2610,9 +2610,9 @@ export function blurinitTypoAdvanceStyles(getSelectedElement) {
   const defaults = {
     "--sc-Typo-blur-scroll-start": 0,
     "--sc-Typo-blur-scroll-end": 100,
-    "--sc-Typo-blur-scroll-entry": 100,
-    "--sc-Typo-blur-scroll-center": 100,
-    "--sc-Typo-blur-scroll-exit": 100,
+    "--sc-Typo-blur-scroll-entry": 0,
+    "--sc-Typo-blur-scroll-center": 0,
+    "--sc-Typo-blur-scroll-exit": 0,
   };
 
   const getVarPct = (cssVar) => {

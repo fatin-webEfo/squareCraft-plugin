@@ -741,28 +741,27 @@ const drive = (val) => {
       t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
   };
 
-  const apply = () => {
-    const t = getViewportProgress(selectedElement);
-    const s = start(),
-      e = end();
-    const ent = entry(),
-      cen = center(),
-      exi = exit();
+ const apply = () => {
+   const t = getViewportProgress(selectedElement);
+   const s = start(),
+     e = end();
+   const ent = entry(),
+     cen = center(),
+     exi = exit();
 
-    let o;
-    if (t < s) {
-      const k = s <= 0 ? 1 : Math.min(t / s, 1);
-      o = ent + (cen - ent) * k;
-    } else if (t > e) {
-      const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-      o = cen + (exi - cen) * k;
-    } else {
-      o = cen;
-    }
+   let o;
+   if (t <= s) {
+     o = ent; // hold entry value before start (no ramp)
+   } else if (t >= e) {
+     o = exi; // hold exit value after end (no ramp)
+   } else {
+     o = cen; // inside the window
+   }
 
-    drive(Math.max(0, Math.min(1, o)));
-    updateArrow(t, s, e);
-  };
+   drive(Math.max(0, Math.min(1, o)));
+   updateArrow(t, s, e);
+ };
+
 
   if (hasGsap) {
     ScrollTrigger.getById?.(`typo-blur:${selectedElement.id}`)?.kill();
