@@ -1654,7 +1654,7 @@ export function scaleinitEffectAnimationDropdownToggle() {
     gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
   }
 }
-
+  
 export function scaleinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
     "Typo-scale-timeline-start-bullet"
