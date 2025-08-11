@@ -407,8 +407,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   REG.set(selectedElement, state);
 }
 
-
-
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
