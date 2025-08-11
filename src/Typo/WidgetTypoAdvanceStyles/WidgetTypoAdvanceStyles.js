@@ -1117,8 +1117,8 @@ function opacityattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-
 function opacityattachCustomTimelineReset(updateStart, updateEnd, updateEntry, updateCenter, updateExit) {
+
   const btn = document.getElementById("Typo-opacity-custom-timeline-reset");
   if (!btn) return;
   btn.onclick = () => {
