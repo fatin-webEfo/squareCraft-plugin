@@ -1,5 +1,22 @@
 (async function squareCraft() {
   // icon set fast
+  function triggerLaunchAnimation() {
+    const icon = document.querySelector(".sc-toolbar-icon");
+    if (window.gsap && icon) {
+      gsap.fromTo(
+        icon,
+        { scale: 0.9, opacity: 0.6 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: true,
+        }
+      );
+    }
+  }
+
 function loadStylesheetOnce(href) {
   return new Promise((resolve, reject) => {
     const existing = Array.from(document.styleSheets).find(
@@ -58,7 +75,6 @@ function animateWidgetOpen(el, duration = 0.2) {
 
 function animateWidgetClose(el, duration = 0.2) {
   if (!el) return;
-
   if (!window.gsap) {
     el.style.visibility = "hidden";
     el.style.opacity = "0";
@@ -66,7 +82,6 @@ function animateWidgetClose(el, duration = 0.2) {
     el.style.overflow = "hidden";
     return;
   }
-
   const curH = el.getBoundingClientRect().height || 0;
   el.style.overflow = "hidden";
   gsap.fromTo(
@@ -86,27 +101,6 @@ function animateWidgetClose(el, duration = 0.2) {
   );
 }
 
-
-function animateWidgetClose(el, duration = 0.2) {
-  if (!el) return;
-  const curH = el.getBoundingClientRect().height || 0;
-  el.style.overflow = "hidden";
-  gsap.fromTo(
-    el,
-    { height: curH, opacity: 1 },
-    {
-      height: 0,
-      opacity: 0,
-      duration,
-      ease: "power2.in",
-      onComplete: () => {
-        el.style.visibility = "hidden";
-        el.style.overflow = "hidden";
-      },
-      overwrite: true,
-    }
-  );
-}
 
   try {
     const { injectNavbarIcon } = await import(
@@ -278,7 +272,7 @@ function animateWidgetClose(el, duration = 0.2) {
     scaleinitButtonAdvanceStyles,
     rotateinitButtonAdvanceStyles,
     blurinitButtonAdvanceStyles,
-  } = await import(
+  } = await import( 
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
   );
   const {
