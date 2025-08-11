@@ -268,10 +268,10 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const content = selectedElement.querySelector(".sqs-block-content");
   if (!content) return;
 
-  const readPct = (cssVar, def) => {
-    const raw = getComputedStyle(content).getPropertyValue(cssVar).trim();
-    const n = parseFloat(raw.replace("%", ""));
-    return Number.isFinite(n) ? n : def;
+  const readPct = (v, d) => {
+    const raw = getComputedStyle(content).getPropertyValue(v);
+    const n = parseFloat(String(raw).replace("%", "").trim());
+    return Number.isFinite(n) ? n : d;
   };
 
   const start = () => readPct("--sc-Typo-opacity-scroll-start", 0) / 100;
@@ -291,12 +291,32 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
   }
 
-  let last = -1;
+  const proxy = { o: parseFloat(getComputedStyle(content).opacity) || 1 };
+  let lastTarget = proxy.o;
+
+  const drive = (val) => {
+    const ease = window.__typoScrollEase || "none";
+    if (val !== lastTarget) {
+      lastTarget = val;
+      gsap.killTweensOf(proxy);
+      gsap.to(proxy, {
+        o: val,
+        ease: ease === "none" ? "none" : ease,
+        duration: ease === "none" ? 0 : 0.6,
+        overwrite: true,
+        onUpdate: () =>
+          content.style.setProperty("opacity", String(proxy.o), "important"),
+      });
+    } else {
+      content.style.setProperty("opacity", String(val), "important");
+    }
+  };
+
   const apply = () => {
     const t = getViewportProgress(selectedElement);
     const s = start(),
-      e = end(),
-      ent = entry(),
+      e = end();
+    const ent = entry(),
       cen = center(),
       exi = exit();
     let o;
@@ -309,17 +329,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     } else {
       o = cen;
     }
-    o = Math.max(0, Math.min(1, o));
-    if (o !== last) {
-      last = o;
-      const ease = window.__typoScrollEase || "none";
-      gsap.to(content, {
-        opacity: o,
-        ease: ease === "none" ? "none" : ease,
-        duration: ease === "none" ? 0 : 0.6,
-        overwrite: true,
-      });
-    }
+    drive(Math.max(0, Math.min(1, o)));
   };
 
   if (window.gsap && window.ScrollTrigger) {
