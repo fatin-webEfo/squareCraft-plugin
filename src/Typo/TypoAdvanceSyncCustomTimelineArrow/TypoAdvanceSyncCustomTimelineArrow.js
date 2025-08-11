@@ -268,6 +268,14 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const content = selectedElement.querySelector(".sqs-block-content");
   if (!content) return;
 
+  // ensure only one controller per element
+  const REG = (window.__scOpacityReg ||= new WeakMap());
+  REG.get(selectedElement)?.kill?.();
+
+  const hasGsap = !!window.gsap;
+  const hasST = !!window.ScrollTrigger;
+  if (hasGsap && hasST) gsap.registerPlugin(ScrollTrigger);
+
   const readPct = (v, d) => {
     const raw = getComputedStyle(content).getPropertyValue(v);
     const n = parseFloat(String(raw).replace("%", "").trim());
@@ -280,32 +288,44 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const center = () => readPct("--sc-Typo-opacity-scroll-center", 100) / 100;
   const exit = () => readPct("--sc-Typo-opacity-scroll-exit", 100) / 100;
 
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.getAll().forEach((t) => {
-      if (
-        t.trigger === selectedElement &&
-        t.vars?.id?.startsWith("typo-opacity:")
-      )
-        t.kill();
-    });
-  }
-
-  const proxy = { o: +getComputedStyle(content).opacity || 1 };
-  let lastTarget = -1;
+  const state = {
+    st: null,
+    raf: 0,
+    tick: 0,
+    killed: false,
+    lastTarget: NaN,
+    lastVars: "",
+    proxy: { o: +getComputedStyle(content).opacity || 1 },
+    kill() {
+      this.killed = true;
+      if (this.st) this.st.kill();
+      cancelAnimationFrame(this.raf);
+      clearTimeout(this.tick);
+      REG.delete(selectedElement);
+    },
+  };
 
   const drive = (val) => {
     const ease = window.__typoScrollEase || "none";
-    if (val !== lastTarget) {
-      lastTarget = val;
-      gsap.killTweensOf(proxy);
-      gsap.to(proxy, {
+    if (!hasGsap) {
+      content.style.setProperty("opacity", String(val), "important");
+      state.lastTarget = val;
+      return;
+    }
+    if (val !== state.lastTarget) {
+      state.lastTarget = val;
+      gsap.killTweensOf(state.proxy);
+      gsap.to(state.proxy, {
         o: val,
         ease: ease === "none" ? "none" : ease,
         duration: ease === "none" ? 0 : 0.6,
         overwrite: true,
         onUpdate: () =>
-          content.style.setProperty("opacity", String(proxy.o), "important"),
+          content.style.setProperty(
+            "opacity",
+            String(state.proxy.o),
+            "important"
+          ),
       });
     } else {
       content.style.setProperty("opacity", String(val), "important");
@@ -315,10 +335,11 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const apply = () => {
     const t = getViewportProgress(selectedElement);
     const s = start(),
-      e = end(),
-      ent = entry(),
+      e = end();
+    const ent = entry(),
       cen = center(),
       exi = exit();
+
     let o;
     if (t < s) {
       const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -332,9 +353,9 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     drive(Math.max(0, Math.min(1, o)));
   };
 
-  let st;
-  if (window.gsap && window.ScrollTrigger) {
-    st = ScrollTrigger.create({
+  if (hasGsap && hasST) {
+    ScrollTrigger.getById?.(`typo-opacity:${selectedElement.id}`)?.kill();
+    state.st = ScrollTrigger.create({
       id: `typo-opacity:${selectedElement.id}`,
       trigger: selectedElement,
       start: "top bottom",
@@ -347,39 +368,36 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     window.addEventListener("scroll", apply, { passive: true });
   }
 
-  const headObserver = new MutationObserver(apply);
-  headObserver.observe(document.head, { childList: true, subtree: true });
-  const contentObserver = new MutationObserver(apply);
-  contentObserver.observe(content, {
-    attributes: true,
-    attributeFilter: ["style"],
-  });
-  const tick = setInterval(apply, 120);
-
   const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
-  let run = true;
   const loopArrow = () => {
-    if (!run || !arrow) return;
+    if (state.killed) return;
     const t = getViewportProgress(selectedElement);
-    arrow.style.left = `${t * 100}%`;
-    arrow.style.transform = "translateX(-50%)";
-    const s = start(),
-      e = end();
-    arrow.style.backgroundColor =
-      t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
-    requestAnimationFrame(loopArrow);
+    if (arrow) {
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start(),
+        e = end();
+      arrow.style.backgroundColor =
+        t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
+    }
+    state.raf = requestAnimationFrame(loopArrow);
+  };
+
+  const pollVars = () => {
+    if (state.killed) return;
+    const key = [start(), end(), entry(), center(), exit()].join("|");
+    if (key !== state.lastVars) {
+      state.lastVars = key;
+      apply();
+    }
+    state.tick = setTimeout(pollVars, 120);
   };
 
   apply();
   loopArrow();
+  pollVars();
 
-  return () => {
-    run = false;
-    headObserver.disconnect();
-    contentObserver.disconnect();
-    clearInterval(tick);
-    if (st) st.kill();
-  };
+  REG.set(selectedElement, state);
 }
 
 
