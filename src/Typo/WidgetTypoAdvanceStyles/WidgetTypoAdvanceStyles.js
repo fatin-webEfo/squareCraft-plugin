@@ -1751,6 +1751,7 @@ export function scaleinitTypoAdvanceStyles(getSelectedElement) {
             });
       }
 
+      
       if (el && el.id?.startsWith("block-")) {
         let styleTag = document.getElementById(styleId);
         if (!styleTag) {
