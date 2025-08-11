@@ -268,17 +268,17 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const content = selectedElement.querySelector(".sqs-block-content");
   if (!content) return;
 
-  const readPct = (v, d = 0) => {
-    const raw = getComputedStyle(content).getPropertyValue(v);
-    const n = parseFloat(String(raw).replace("%", ""));
-    return Number.isFinite(n) ? n : d;
+  const readPct = (cssVar, def) => {
+    const raw = getComputedStyle(content).getPropertyValue(cssVar).trim();
+    const n = parseFloat(raw.replace("%", ""));
+    return Number.isFinite(n) ? n : def;
   };
 
   const start = () => readPct("--sc-Typo-opacity-scroll-start", 0) / 100;
   const end = () => readPct("--sc-Typo-opacity-scroll-end", 100) / 100;
-  const entry = () => readPct("--sc-Typo-opacity-scroll-entry", 0) / 100;
-  const center = () => readPct("--sc-Typo-opacity-scroll-center", 0) / 100;
-  const exit = () => readPct("--sc-Typo-opacity-scroll-exit", 0) / 100;
+  const entry = () => readPct("--sc-Typo-opacity-scroll-entry", 100) / 100;
+  const center = () => readPct("--sc-Typo-opacity-scroll-center", 100) / 100;
+  const exit = () => readPct("--sc-Typo-opacity-scroll-exit", 100) / 100;
 
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
@@ -344,9 +344,8 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.style.transform = "translateX(-50%)";
     const s = start(),
       e = end();
-    const buffer = 0.001;
     arrow.style.backgroundColor =
-      t < s - buffer ? "#EF7C2F" : t > e + buffer ? "#F6B67B" : "#FFFFFF";
+      t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
     requestAnimationFrame(loopArrow);
   };
 
