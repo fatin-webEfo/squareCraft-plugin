@@ -268,13 +268,11 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const content = selectedElement.querySelector(".sqs-block-content");
   if (!content) return;
 
-  // ensure only one controller per element
   const REG = (window.__scOpacityReg ||= new WeakMap());
   REG.get(selectedElement)?.kill?.();
 
-  const hasGsap = !!window.gsap;
-  const hasST = !!window.ScrollTrigger;
-  if (hasGsap && hasST) gsap.registerPlugin(ScrollTrigger);
+  const hasGsap = !!window.gsap && !!window.ScrollTrigger;
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
 
   const readPct = (v, d) => {
     const raw = getComputedStyle(content).getPropertyValue(v);
@@ -295,6 +293,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     killed: false,
     lastTarget: NaN,
     lastVars: "",
+    phase: "",
     proxy: { o: +getComputedStyle(content).opacity || 1 },
     kill() {
       this.killed = true;
@@ -303,6 +302,36 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       clearTimeout(this.tick);
       REG.delete(selectedElement);
     },
+  };
+
+  const setPhase = (p) => {
+    if (state.phase === p) return;
+    state.phase = p;
+    content.dataset.scOpacityPhase = p;
+    const groups = {
+      entry: [
+        "Typo-opacity-advance-entry-bullet",
+        "Typo-opacity-advance-entry-fill",
+        "Typo-opacity-advance-entry-count",
+      ],
+      center: [
+        "Typo-opacity-advance-center-bullet",
+        "Typo-opacity-advance-center-fill",
+        "Typo-opacity-advance-center-count",
+      ],
+      exit: [
+        "Typo-opacity-advance-exit-bullet",
+        "Typo-opacity-advance-exit-fill",
+        "Typo-opacity-advance-exit-count",
+      ],
+    };
+    Object.keys(groups).forEach((k) => {
+      const active = k === p;
+      groups[k].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle("sc-active", active);
+      });
+    });
   };
 
   const drive = (val) => {
@@ -333,27 +362,30 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   };
 
   const apply = () => {
-    const t = getViewportProgress(selectedElement);
     const s = start(),
       e = end();
+    if (!(e > s)) return;
+    const t = getViewportProgress(selectedElement);
     const ent = entry(),
       cen = center(),
       exi = exit();
-
     let o;
     if (t < s) {
+      setPhase("entry");
       const k = s <= 0 ? 1 : Math.min(t / s, 1);
       o = ent + (cen - ent) * k;
     } else if (t > e) {
+      setPhase("exit");
       const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
       o = cen + (exi - cen) * k;
     } else {
+      setPhase("center");
       o = cen;
     }
     drive(Math.max(0, Math.min(1, o)));
   };
 
-  if (hasGsap && hasST) {
+  if (hasGsap) {
     ScrollTrigger.getById?.(`typo-opacity:${selectedElement.id}`)?.kill();
     state.st = ScrollTrigger.create({
       id: `typo-opacity:${selectedElement.id}`,
@@ -396,7 +428,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   apply();
   loopArrow();
   pollVars();
-
   REG.set(selectedElement, state);
 }
 
