@@ -293,7 +293,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     killed: false,
     lastTarget: NaN,
     lastVars: "",
-    phase: "",
     proxy: { o: +getComputedStyle(content).opacity || 1 },
     kill() {
       this.killed = true;
@@ -302,36 +301,6 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       clearTimeout(this.tick);
       REG.delete(selectedElement);
     },
-  };
-
-  const setPhase = (p) => {
-    if (state.phase === p) return;
-    state.phase = p;
-    content.dataset.scOpacityPhase = p;
-    const groups = {
-      entry: [
-        "Typo-opacity-advance-entry-bullet",
-        "Typo-opacity-advance-entry-fill",
-        "Typo-opacity-advance-entry-count",
-      ],
-      center: [
-        "Typo-opacity-advance-center-bullet",
-        "Typo-opacity-advance-center-fill",
-        "Typo-opacity-advance-center-count",
-      ],
-      exit: [
-        "Typo-opacity-advance-exit-bullet",
-        "Typo-opacity-advance-exit-fill",
-        "Typo-opacity-advance-exit-count",
-      ],
-    };
-    Object.keys(groups).forEach((k) => {
-      const active = k === p;
-      groups[k].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle("sc-active", active);
-      });
-    });
   };
 
   const drive = (val) => {
@@ -361,28 +330,36 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
+  const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
+  const updateArrow = (t, s, e) => {
+    if (!arrow) return;
+    arrow.style.left = `${t * 100}%`;
+    arrow.style.transform = "translateX(-50%)";
+    arrow.style.backgroundColor =
+      t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
+  };
+
   const apply = () => {
+    const t = getViewportProgress(selectedElement);
     const s = start(),
       e = end();
-    if (!(e > s)) return;
-    const t = getViewportProgress(selectedElement);
     const ent = entry(),
       cen = center(),
       exi = exit();
+
     let o;
     if (t < s) {
-      setPhase("entry");
       const k = s <= 0 ? 1 : Math.min(t / s, 1);
       o = ent + (cen - ent) * k;
     } else if (t > e) {
-      setPhase("exit");
       const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
       o = cen + (exi - cen) * k;
     } else {
-      setPhase("center");
       o = cen;
     }
+
     drive(Math.max(0, Math.min(1, o)));
+    updateArrow(t, s, e);
   };
 
   if (hasGsap) {
@@ -394,28 +371,30 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       end: "bottom top",
       scrub: 1,
       onUpdate: apply,
+      onRefresh: apply,
     });
     ScrollTrigger.refresh(true);
   } else {
     window.addEventListener("scroll", apply, { passive: true });
   }
 
-  const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
-  const loopArrow = () => {
-    if (state.killed) return;
-    const t = getViewportProgress(selectedElement);
-    if (arrow) {
-      arrow.style.left = `${t * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
-      const s = start(),
-        e = end();
-      arrow.style.backgroundColor =
-        t < s - 0.001 ? "#EF7C2F" : t > e + 0.001 ? "#F6B67B" : "#FFFFFF";
-    }
-    state.raf = requestAnimationFrame(loopArrow);
-  };
+  const headObserver = new MutationObserver(apply);
+  headObserver.observe(document.head, { childList: true, subtree: true });
+  const contentObserver = new MutationObserver(apply);
+  contentObserver.observe(content, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+  window.addEventListener("resize", apply, { passive: true });
 
-  const pollVars = () => {
+  state.raf = requestAnimationFrame(function loop() {
+    if (!state.killed) {
+      apply();
+      state.raf = requestAnimationFrame(loop);
+    }
+  });
+
+  state.tick = setTimeout(function pollVars() {
     if (state.killed) return;
     const key = [start(), end(), entry(), center(), exit()].join("|");
     if (key !== state.lastVars) {
@@ -423,14 +402,10 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
       apply();
     }
     state.tick = setTimeout(pollVars, 120);
-  };
+  }, 120);
 
-  apply();
-  loopArrow();
-  pollVars();
   REG.set(selectedElement, state);
 }
-
 
 
 
