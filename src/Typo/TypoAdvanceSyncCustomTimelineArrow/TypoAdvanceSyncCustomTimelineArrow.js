@@ -433,6 +433,7 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
 
 
 
+
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
