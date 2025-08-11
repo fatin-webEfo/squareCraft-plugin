@@ -291,8 +291,8 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
   }
 
-  const proxy = { o: parseFloat(getComputedStyle(content).opacity) || 1 };
-  let lastTarget = proxy.o;
+  const proxy = { o: +getComputedStyle(content).opacity || 1 };
+  let lastTarget = -1;
 
   const drive = (val) => {
     const ease = window.__typoScrollEase || "none";
@@ -315,8 +315,8 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
   const apply = () => {
     const t = getViewportProgress(selectedElement);
     const s = start(),
-      e = end();
-    const ent = entry(),
+      e = end(),
+      ent = entry(),
       cen = center(),
       exi = exit();
     let o;
@@ -332,8 +332,9 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     drive(Math.max(0, Math.min(1, o)));
   };
 
+  let st;
   if (window.gsap && window.ScrollTrigger) {
-    ScrollTrigger.create({
+    st = ScrollTrigger.create({
       id: `typo-opacity:${selectedElement.id}`,
       trigger: selectedElement,
       start: "top bottom",
@@ -346,9 +347,19 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
     window.addEventListener("scroll", apply, { passive: true });
   }
 
+  const headObserver = new MutationObserver(apply);
+  headObserver.observe(document.head, { childList: true, subtree: true });
+  const contentObserver = new MutationObserver(apply);
+  contentObserver.observe(content, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+  const tick = setInterval(apply, 120);
+
   const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
+  let run = true;
   const loopArrow = () => {
-    if (!arrow) return;
+    if (!run || !arrow) return;
     const t = getViewportProgress(selectedElement);
     arrow.style.left = `${t * 100}%`;
     arrow.style.transform = "translateX(-50%)";
@@ -361,7 +372,16 @@ export function TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   apply();
   loopArrow();
+
+  return () => {
+    run = false;
+    headObserver.disconnect();
+    contentObserver.disconnect();
+    clearInterval(tick);
+    if (st) st.kill();
+  };
 }
+
 
 
 export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
