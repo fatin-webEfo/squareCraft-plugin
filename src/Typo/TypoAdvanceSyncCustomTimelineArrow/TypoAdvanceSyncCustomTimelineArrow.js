@@ -664,9 +664,9 @@ export function TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   const start = () => readPct("--sc-Typo-blur-scroll-start", 0) / 100;
   const end = () => readPct("--sc-Typo-blur-scroll-end", 100) / 100;
-  const entry = () => readPct("--sc-Typo-blur-scroll-entry", 100) / 100;
-  const center = () => readPct("--sc-Typo-blur-scroll-center", 100) / 100;
-  const exit = () => readPct("--sc-Typo-blur-scroll-exit", 100) / 100;
+  const entry = () => readPct("--sc-Typo-blur-scroll-entry", 0) / 100;
+  const center = () => readPct("--sc-Typo-blur-scroll-center", 0) / 100;
+  const exit = () => readPct("--sc-Typo-blur-scroll-exit", 0) / 100;
 
   const state = {
     st: null,
