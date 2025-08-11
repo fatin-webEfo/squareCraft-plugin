@@ -1629,7 +1629,7 @@ function scaleattachCustomTimelineReset(
     };
 }
 
-function scaleinitEffectAnimationDropdownToggle() {
+export function scaleinitEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("Typo-scale-custom-timeline-arrow");
   const start = document.getElementById("Typo-scale-timeline-start-bullet");
   const end = document.getElementById("Typo-scale-timeline-end-bullet");
