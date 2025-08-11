@@ -278,8 +278,10 @@ function animateWidgetClose(el, duration = 0.2) {
   const {
     initTypoAdvanceStyles,
     horizontalinitTypoAdvanceStyles,
+    blurinitTypoAdvanceStyles,
     opacityinitTypoAdvanceStyles,
     horizontalinitEffectAnimationDropdownToggle,
+    blurinitEffectAnimationDropdownToggle,
     scaleinitEffectAnimationDropdownToggle,
     rotateinitEffectAnimationDropdownToggle,
     opacityinitEffectAnimationDropdownToggle,
@@ -307,6 +309,7 @@ function animateWidgetClose(el, duration = 0.2) {
     TypoOpacityAdvanceSyncCustomTimelineArrow,
     TypoScaleAdvanceSyncCustomTimelineArrow,
     TypoRotateAdvanceSyncCustomTimelineArrow,
+    TypoBlurAdvanceSyncCustomTimelineArrow
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceSyncCustomTimelineArrow/TypoAdvanceSyncCustomTimelineArrow.js"
   );
@@ -471,6 +474,7 @@ function animateWidgetClose(el, duration = 0.2) {
       horizontalinitButtonAdvanceStyles(() => selectedElement);
       initTypoAdvanceStyles(() => selectedElement);
       horizontalinitTypoAdvanceStyles(() => selectedElement);
+      blurinitTypoAdvanceStyles(() => selectedElement);
       opacityinitTypoAdvanceStyles(() => selectedElement);
       scaleinitTypoAdvanceStyles(() => selectedElement);
       rotateinitTypoAdvanceStyles(() => selectedElement);
@@ -532,6 +536,7 @@ function animateWidgetClose(el, duration = 0.2) {
             TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+            TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
             opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
             TypoAdvanceSyncCustomTimelineArrow(selectedElement);
             scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
@@ -551,6 +556,7 @@ function animateWidgetClose(el, duration = 0.2) {
       initButtonIconPositionToggle(() => selectedElement);
       initEffectAnimationDropdownToggle(() => selectedElement);
       horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+      blurinitEffectAnimationDropdownToggle(() => selectedElement);
       scaleinitEffectAnimationDropdownToggle(() => selectedElement);
       rotateinitEffectAnimationDropdownToggle(() => selectedElement);
       opacityinitEffectAnimationDropdownToggle(() => selectedElement);
@@ -893,6 +899,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
    // effect dropdowns
    initEffectAnimationDropdownToggle(() => selectedElement);
    horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+   blurinitEffectAnimationDropdownToggle(() => selectedElement);
    scaleinitEffectAnimationDropdownToggle(() => selectedElement);
    rotateinitEffectAnimationDropdownToggle(() => selectedElement);
    opacityinitEffectAnimationDropdownToggle(() => selectedElement);
@@ -969,6 +976,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
                  TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
                  TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
                  TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+                 TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
 
                  // reset hooks
                  initButtonAdvanceScrollEffectReset(selectedElement);
