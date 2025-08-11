@@ -1141,31 +1141,49 @@ function opacityattachCustomTimelineReset(updateStart, updateEnd, updateEntry, u
 }
 
 
-export function opacityinitEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("Typo-opacity-custom-timeline-arrow");
-  const start = document.getElementById("Typo-opacity-timeline-start-bullet");
-  const end = document.getElementById("Typo-opacity-timeline-end-bullet");
+export function opacityInitEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById(
+    "Typo-opacity-effect-animation-type-arrow"
+  );
+  const list = document.getElementById(
+    "Typo-opacity-effect-animation-type-list"
+  );
+  const display = document.getElementById(
+    "Typo-opacity-effect-animation-value"
+  );
 
-  if (!arrow || !start || !end) return;
+  if (!arrow || !list || !display) return;
 
-  const parent = arrow.parentElement;
-  const parentBox = parent.getBoundingClientRect();
-  const arrowBox = arrow.getBoundingClientRect();
-  const startBox = start.getBoundingClientRect();
-  const endBox = end.getBoundingClientRect();
+  arrow.onclick = () => {
+    list.classList.toggle("sc-hidden");
+  };
 
-  const arrowCenter = arrowBox.left + arrowBox.width / 2;
-  const startCenter = startBox.left + startBox.width / 2;
-  const endCenter = endBox.left + endBox.width / 2;
+  const items = list.querySelectorAll("[data-value]");
+  items.forEach((item) => {
+    item.onclick = () => {
+      const selected = item.getAttribute("data-value");
+      display.textContent = item.textContent;
+      display.setAttribute("data-value", selected);
+      const el =
+        typeof getSelectedElement === "function" ? getSelectedElement() : null;
+      if (el && el.id?.startsWith("block-")) {
+        el.querySelector(".sqs-block-content")?.style.setProperty(
+          "--sc-Typo-opacity-effect-animation",
+          selected
+        );
+      }
 
-  if (arrowCenter <= startCenter + 1) {
-    gsap.to(arrow, { backgroundColor: "rgb(239, 124, 47)", duration: 0.3 });
-  } else if (arrowCenter >= endCenter - 1) {
-    gsap.to(arrow, { backgroundColor: "rgb(246, 182, 123)", duration: 0.3 });
-  } else {
-    gsap.to(arrow, { backgroundColor: "#FFFFFF", duration: 0.3 });
-  }
+      list.classList.add("sc-hidden");
+    };
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!arrow.contains(e.target) && !list.contains(e.target)) {
+      list.classList.add("sc-hidden");
+    }
+  });
 }
+
 
 export function opacityinitTypoAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
