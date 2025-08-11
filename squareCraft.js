@@ -896,7 +896,6 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
    scaleinitEffectAnimationDropdownToggle(() => selectedElement);
    rotateinitEffectAnimationDropdownToggle(() => selectedElement);
    opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-
    WidgetTypoSectionStateControls();
    initImageStateTabToggle();
    initButtonStructureGapTypeToggle();
@@ -939,8 +938,6 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
    initHoverButtonEffectDropdowns();
    initImageUploadPreview(() => selectedElement);
 
-   // 6) finally reveal with animation (height 0 → auto, opacity 0 → 1)
-   requestAnimationFrame(() => animateWidgetOpen(widgetContainer, 0.2));
 
    // 7) if we came from a clicked block, finish detection + wire effects
    if (clickedBlock) {
