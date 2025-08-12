@@ -16,19 +16,21 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
   const allIds = [...Object.values(marginMap), ...Object.values(paddingMap)];
   const getEl = (id) => document.getElementById(id);
 
-  const readPx = (el) => {
-    if (!el) return 0;
-    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
-    return Number.isFinite(n) ? Math.max(0, n) : 0; // clamp >= 0 (tweak if you want negatives)
-  };
+ const readPx = (el) => {
+   if (!el) return 0;
+   const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+   const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
+   return Number.isFinite(n) ? Math.max(0, Math.min(999, n)) : 0;
+ };
 
-  const writePx = (el, v) => {
-    if (!el) return;
-    const s = `${Math.max(0, Math.round(v))}px`;
-    if (el.tagName === "INPUT") el.value = s;
-    else el.textContent = s;
-  };
+
+ const writePx = (el, v) => {
+   if (!el) return;
+   const s = `${Math.max(0, Math.min(999, Math.round(v)))}px`;
+   if (el.tagName === "INPUT") el.value = s;
+   else el.textContent = s;
+ };
+
 
   const updateStyles = () => {
     const block =

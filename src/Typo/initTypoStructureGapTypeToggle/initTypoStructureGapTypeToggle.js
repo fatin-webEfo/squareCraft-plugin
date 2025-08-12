@@ -65,9 +65,11 @@ export function initTypoStructureGapTypeToggle() {
   };
 
   // helpers
+  const MAX_PX = 999;
+
   const $ = (id) => document.getElementById(id);
   const clamp01 = (n) => Math.max(0, Math.min(1, n));
-  const clampPx = (n) => Math.max(0, Math.min(100, Math.round(n || 0)));
+const clampPx = (n) => Math.max(0, Math.min(MAX_PX, Math.round(n || 0)));
   const parsePx = (el) => {
     if (!el) return 0;
     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
@@ -216,7 +218,7 @@ export function initTypoStructureGapTypeToggle() {
       bullet.style.left = `${percent}%`;
       fill.style.width = `${percent}%`;
 
-      const value = Math.round(percent); // px value 0..100
+const value = Math.round((percent / 100) * MAX_PX);
       const activeTab = tabKey();
       const countIds = idMap[activeTab] || [];
 
@@ -267,7 +269,7 @@ export function initTypoStructureGapTypeToggle() {
 
   const setSlider = (bullet, fill, pxVal) => {
     if (!bullet || !fill) return;
-    const percent = clampPx(pxVal); // same mapping: 1px == 1%
+const percent = (clampPx(pxVal) / MAX_PX) * 100;
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
   };
@@ -287,7 +289,7 @@ export function initTypoStructureGapTypeToggle() {
      const raw = el.tagName === "INPUT" ? el.value : el.textContent;
      const v = Math.max(
        0,
-       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
+       Math.min(MAX_PX, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
      );
      const activeSide = sideFromTab(activeMarginTab);
      if (activeSide === "all" || activeSide === side) {
