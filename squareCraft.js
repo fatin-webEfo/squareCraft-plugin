@@ -100,17 +100,6 @@ function animateWidgetClose(el, duration = 0.2) {
     }
   );
 }
-function fastInjectIconWhenDOMReady() {
-  const run = () => injectIcon(); // same function, just run it
-  if (
-    document.readyState === "complete" ||
-    document.readyState === "interactive"
-  ) {
-    run();
-  } else {
-    document.addEventListener("DOMContentLoaded", run, { once: true });
-  }
-}
 
 
   try {
@@ -118,8 +107,6 @@ function fastInjectIconWhenDOMReady() {
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
     );
     injectNavbarIcon();
-    
-  fastInjectIconWhenDOMReady();
   } catch (error) {
     console.error("🚨 Failed to load navbar icon script", error);
   }
@@ -1151,23 +1138,20 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
   adjustWidgetPosition();
 
   function injectIcon() {
-   async function waitForTargets(selector) {
-     const now = safeQuerySelectorAll(selector);
-     if (now.length) return now;
-
-     return new Promise((resolve) => {
-       const root = isSameOrigin ? parent.document.body : document.body;
-       const mo = new MutationObserver(() => {
-         const els = safeQuerySelectorAll(selector);
-         if (els.length) {
-           mo.disconnect();
-           resolve(els);
-         }
-       });
-       mo.observe(root, { childList: true, subtree: true });
-     });
-   }
-
+    async function waitForTargets(selector, timeout = 4000, interval = 100) {
+      const start = Date.now();
+      return new Promise((resolve) => {
+        const check = () => {
+          const elements = safeQuerySelectorAll(selector);
+          if (elements.length > 0 || Date.now() - start > timeout) {
+            resolve(elements);
+          } else {
+            setTimeout(check, interval);
+          }
+        };
+        check();
+      });
+    }
 
     async function injectIconIntoTargetElements() {
       const targets = await waitForTargets(
@@ -1234,7 +1218,21 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
     }
   }
 
+  function fastInjectIconWhenDOMReady() {
+    const run = () => requestIdleCallback(() => injectIcon());
 
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      run();
+    } else {
+      document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") run();
+      });
+    }
+  }
+  fastInjectIconWhenDOMReady();
 
   handleSectionFind();
   function checkView() {
