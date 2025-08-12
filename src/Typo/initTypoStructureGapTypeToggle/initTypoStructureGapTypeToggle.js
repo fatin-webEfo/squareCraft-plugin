@@ -68,7 +68,6 @@ export function initTypoStructureGapTypeToggle() {
   const MAX_PX = 999;
 
   const $ = (id) => document.getElementById(id);
-  const clamp01 = (n) => Math.max(0, Math.min(1, n));
 const clampPx = (n) => Math.max(0, Math.min(MAX_PX, Math.round(n || 0)));
   const parsePx = (el) => {
     if (!el) return 0;
@@ -76,13 +75,12 @@ const clampPx = (n) => Math.max(0, Math.min(MAX_PX, Math.round(n || 0)));
     const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
     return clampPx(Number.isFinite(n) ? n : 0);
   };
-  const writePx = (el, v, fire = true) => {
-    if (!el) return;
-    const s = `${clampPx(v)}px`;
-    if (el.tagName === "INPUT") el.value = s;
-    else el.textContent = s;
-    if (fire) el.dispatchEvent(new Event("input", { bubbles: true }));
-  };
+const writePx = (el, v) => {
+  if (!el) return;
+  const s = String(Math.max(0, Math.min(999, Math.round(v))));
+  if (el.tagName === "INPUT") el.value = s;
+  else el.textContent = s;
+};
 
   let activeMarginTab = "Typo-advance-margin-gap-all";
   let activePaddingTab = "Typo-advance-padding-gap-all";
@@ -282,65 +280,71 @@ const percent = (clampPx(pxVal) / MAX_PX) * 100;
     return "all";
   };
 
- const bindMarginInput = (side) => {
-   const el = document.getElementById(marginCountIds[side]);
-   if (!el) return;
-   el.addEventListener("input", () => {
-     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-     const v = Math.max(
-       0,
-       Math.min(MAX_PX, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
-     );
-     const activeSide = sideFromTab(activeMarginTab);
-     if (activeSide === "all" || activeSide === side) {
-       setSlider(
-         document.getElementById("Typo-advance-margin-gap-bullet"),
-         document.getElementById("Typo-advance-margin-gap-fill"),
-         v
-       );
-     }
-     el.dispatchEvent(new Event("change", { bubbles: true }));
-   });
-   el.addEventListener("blur", () => {
-     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-     const v = Math.max(
-       0,
-       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
-     );
-     if (el.tagName === "INPUT") el.value = `${v}px`;
-     else el.textContent = `${v}px`;
-   });
- };
+const bindMarginInput = (side) => {
+  const el = document.getElementById(marginCountIds[side]);
+  if (!el) return;
+  el.addEventListener("input", () => {
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const v = Math.max(
+      0,
+      Math.min(MAX_PX, parseInt(String(raw).replace(/[^\d]/g, ""), 10) || 0)
+    );
+    const activeSide = sideFromTab(activeMarginTab);
+    if (activeSide === "all" || activeSide === side) {
+      setSlider(
+        document.getElementById("Typo-advance-margin-gap-bullet"),
+        document.getElementById("Typo-advance-margin-gap-fill"),
+        v
+      );
+    }
+    // keep the field numeric-only
+    if (el.tagName === "INPUT") el.value = String(v);
+    else el.textContent = String(v);
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  el.addEventListener("blur", () => {
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const v = Math.max(
+      0,
+      Math.min(MAX_PX, parseInt(String(raw).replace(/[^\d]/g, ""), 10) || 0)
+    );
+    if (el.tagName === "INPUT") el.value = String(v);
+    else el.textContent = String(v); // no 'px'
+  });
+};
 
- const bindPaddingInput = (side) => {
-   const el = document.getElementById(paddingCountIds[side]);
-   if (!el) return;
-   el.addEventListener("input", () => {
-     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-     const v = Math.max(
-       0,
-       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
-     );
-     const activeSide = sideFromTab(activePaddingTab);
-     if (activeSide === "all" || activeSide === side) {
-       setSlider(
-         document.getElementById("Typo-advance-padding-gap-bullet"),
-         document.getElementById("Typo-advance-padding-gap-fill"),
-         v
-       );
-     }
-     el.dispatchEvent(new Event("change", { bubbles: true }));
-   });
-   el.addEventListener("blur", () => {
-     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-     const v = Math.max(
-       0,
-       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
-     );
-     if (el.tagName === "INPUT") el.value = `${v}px`;
-     else el.textContent = `${v}px`;
-   });
- };
+const bindPaddingInput = (side) => {
+  const el = document.getElementById(paddingCountIds[side]);
+  if (!el) return;
+  el.addEventListener("input", () => {
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const v = Math.max(
+      0,
+      Math.min(MAX_PX, parseInt(String(raw).replace(/[^\d]/g, ""), 10) || 0)
+    );
+    const activeSide = sideFromTab(activePaddingTab);
+    if (activeSide === "all" || activeSide === side) {
+      setSlider(
+        document.getElementById("Typo-advance-padding-gap-bullet"),
+        document.getElementById("Typo-advance-padding-gap-fill"),
+        v
+      );
+    }
+    if (el.tagName === "INPUT") el.value = String(v);
+    else el.textContent = String(v);
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+  el.addEventListener("blur", () => {
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const v = Math.max(
+      0,
+      Math.min(MAX_PX, parseInt(String(raw).replace(/[^\d]/g, ""), 10) || 0)
+    );
+    if (el.tagName === "INPUT") el.value = String(v);
+    else el.textContent = String(v);
+  });
+};
+
 
 
   ["top", "bottom", "left", "right"].forEach(bindMarginInput);
