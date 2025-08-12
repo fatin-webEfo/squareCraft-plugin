@@ -145,12 +145,10 @@ export function TypoAdvanceStructureSection() {
               class="Typo-structure-margin-right-fill"
             ></div>
           </div>
-          <p id="Typo-structure-margin-right-count"
-            class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
+           <input id="Typo-structure-margin-right-count"
+            class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
             style="left: 30px"
-          >
-            0px
-          </p>
+            value="0px">
         </div>
       </div>
       <div class="sc-relative sc-items-center sc-flex-col">
