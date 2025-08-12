@@ -76,15 +76,12 @@ const writePx = (el, v) => {
 
   allIds.forEach(bindInputHandlers);
 
-  // initial normalization (ensures all start with "0px") then paint
   allIds.forEach((id) => writePx(getEl(id), readPx(getEl(id))));
   updateStyles();
 
   function resetStructureStyles() {
-    // reset counts to 0px
     allIds.forEach((id) => writePx(getEl(id), 0));
 
-    // reset sliders if present
     const marginFill = document.getElementById("Typo-advance-margin-gap-fill");
     const marginBullet = document.getElementById(
       "Typo-advance-margin-gap-bullet"
@@ -101,7 +98,6 @@ const writePx = (el, v) => {
     if (paddingFill) paddingFill.style.width = "0%";
     if (paddingBullet) paddingBullet.style.left = "0%";
 
-    // reset active tab highlights
     [
       "Typo-advance-margin-gap-all",
       "Typo-advance-margin-gap-top",
