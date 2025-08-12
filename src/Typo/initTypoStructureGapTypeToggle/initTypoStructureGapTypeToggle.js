@@ -185,54 +185,70 @@ export function initTypoStructureGapTypeToggle() {
     },
   ];
 
-  sliders.forEach(({ bulletId, fillId, tabKey, idMap }) => {
-    const bullet = document.getElementById(bulletId);
-    const fill = document.getElementById(fillId);
-    const bar = bullet?.parentElement;
-    if (!bullet || !fill || !bar) return;
+sliders.forEach(({ bulletId, fillId, tabKey, idMap }) => {
+  const bullet = document.getElementById(bulletId);
+  const fill = document.getElementById(fillId);
+  const bar = bullet?.parentElement;
+  if (!bullet || !fill || !bar) return;
 
-    let isDragging = false;
+  const getClientX = (evt) =>
+    evt.touches && evt.touches[0] ? evt.touches[0].clientX : evt.clientX;
 
-    const onMouseMove = (e) => {
-      if (!isDragging) return;
-      setTabHeight(true);
-      const rect = bar.getBoundingClientRect();
-      let x = e.clientX - rect.left;
-      x = Math.max(0, Math.min(x, rect.width));
-      const percent = (x / rect.width) * 100;
-      bullet.style.left = `${percent}%`;
-      fill.style.width = `${percent}%`;
+  const applyFromX = (clientX) => {
+    const rect = bar.getBoundingClientRect();
+    let x = clientX - rect.left;
+    x = Math.max(0, Math.min(x, rect.width));
 
-      const value = Math.round((percent / 100) * 100);
-      const activeTab = tabKey();
-      const countIds = idMap[activeTab] || [];
+    const percent = (x / rect.width) * 100; // 0..100
+    bullet.style.left = `${percent}%`;
+    fill.style.width = `${percent}%`;
 
-      countIds.forEach((id) => {
-        if (typeof window.initTypoAdvanceStructureStyles === "function") {
-          window.initTypoAdvanceStructureStyles(() =>
-            document.getElementById(selectedBlockId)
-          );
-        }
+    const value = Math.round(percent); // px value 0..100
+    const activeTab = tabKey();
+    const countIds = idMap[activeTab] || [];
 
-        const el = document.getElementById(id);
-        if (el) el.innerText = `${value}px`;
-      });
-    };
-
-    const stopDrag = () => {
-      isDragging = false;
-      setTabHeight(true);
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", stopDrag);
-    };
-
-    bullet.addEventListener("mousedown", () => {
-      isDragging = true;
-      setTabHeight(true);
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener("mouseup", stopDrag);
+    countIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === "INPUT") el.value = `${value}px`;
+      else el.textContent = `${value}px`;
+      // notify listeners in initTypoAdvanceStructureStyles
+      el.dispatchEvent(new Event("input", { bubbles: true }));
     });
-  });
+  };
+
+  const onMove = (evt) => {
+    setTabHeight(true);
+    applyFromX(getClientX(evt));
+    if (evt.cancelable) evt.preventDefault();
+  };
+
+  const stop = () => {
+    window.removeEventListener("mousemove", onMove);
+    window.removeEventListener("mouseup", stop);
+    window.removeEventListener("touchmove", onMove);
+    window.removeEventListener("touchend", stop);
+  };
+
+  const start = (evt) => {
+    setTabHeight(true);
+    onMove(evt);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", stop);
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", stop);
+    if (evt.cancelable) evt.preventDefault();
+  };
+
+  // drag bullet
+  bullet.addEventListener("mousedown", start);
+  bullet.addEventListener("touchstart", start, { passive: false });
+
+  // click/drag anywhere on the bar to jump
+  bar.addEventListener("mousedown", (e) => start(e));
+  bar.addEventListener("touchstart", (e) => start(e), { passive: false });
+});
+
 
   document.addEventListener("click", (e) => {
     const clickedInsideAllowed = allAllowedIds.some((id) => {

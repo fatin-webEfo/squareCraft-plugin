@@ -1,12 +1,11 @@
 export function initTypoAdvanceStructureStyles(getSelectedElement) {
+  // IDs of the 8 input fields
   const marginMap = {
     top: "Typo-structure-margin-top-count",
     bottom: "Typo-structure-margin-bottom-count",
     left: "Typo-structure-margin-left-count",
     right: "Typo-structure-margin-right-count",
   };
-
-  
   const paddingMap = {
     top: "Typo-structure-padding-top-count",
     bottom: "Typo-structure-padding-bottom-count",
@@ -14,13 +13,30 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     right: "Typo-structure-padding-right-count",
   };
 
+  const allIds = [...Object.values(marginMap), ...Object.values(paddingMap)];
+  const getEl = (id) => document.getElementById(id);
+
+  const readPx = (el) => {
+    if (!el) return 0;
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
+    return Number.isFinite(n) ? Math.max(0, n) : 0; // clamp >= 0 (tweak if you want negatives)
+  };
+
+  const writePx = (el, v) => {
+    if (!el) return;
+    const s = `${Math.max(0, Math.round(v))}px`;
+    if (el.tagName === "INPUT") el.value = s;
+    else el.textContent = s;
+  };
+
   const updateStyles = () => {
-    const block = getSelectedElement();
+    const block =
+      typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!block) return;
 
     const blockId = block.id;
-   const TypoSelector = `#${blockId} .sqs-block-content`;
-;
+    const TypoSelector = `#${blockId} .sqs-block-content`;
 
     const styleId = `sc-structure-style-${blockId}`;
     let styleTag = document.getElementById(styleId);
@@ -33,55 +49,42 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     const cssParts = [];
 
     Object.entries(marginMap).forEach(([side, id]) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`margin-${side}:${value}px !important`);
-      }
+      const v = readPx(getEl(id));
+      cssParts.push(`margin-${side}:${v}px !important`);
     });
-
     Object.entries(paddingMap).forEach(([side, id]) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`padding-${side}:${value}px !important`);
-      }
+      const v = readPx(getEl(id));
+      cssParts.push(`padding-${side}:${v}px !important`);
     });
 
-    const cssString = `${TypoSelector} { ${cssParts.join("; ")} }`;
-    styleTag.innerHTML = cssString;
-
+    styleTag.textContent = `${TypoSelector} { ${cssParts.join("; ")} }`;
   };
 
-  const observer = new MutationObserver(updateStyles);
+  // bind to each input so typing and slider-driven updates both apply styles
+  const bindInputHandlers = (id) => {
+    const el = getEl(id);
+    if (!el) return;
 
-  Object.values({ ...marginMap, ...paddingMap }).forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      observer.observe(el, {
-        characterData: true,
-        subtree: true,
-        childList: true,
-      });
-    }
-  });
+    const normalize = () => writePx(el, readPx(el)); // enforce "Npx" on blur
+    const onAny = () => updateStyles();
 
+    el.addEventListener("input", onAny);
+    el.addEventListener("change", onAny);
+    el.addEventListener("blur", normalize);
+  };
+
+  allIds.forEach(bindInputHandlers);
+
+  // initial normalization (ensures all start with "0px") then paint
+  allIds.forEach((id) => writePx(getEl(id), readPx(getEl(id))));
   updateStyles();
 
   function resetStructureStyles() {
-    Object.values(marginMap).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = "0px";
-    });
+    // reset counts to 0px
+    allIds.forEach((id) => writePx(getEl(id), 0));
 
-    Object.values(paddingMap).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = "0px";
-    });
-
-    const marginFill = document.getElementById(
-      "Typo-advance-margin-gap-fill"
-    );
+    // reset sliders if present
+    const marginFill = document.getElementById("Typo-advance-margin-gap-fill");
     const marginBullet = document.getElementById(
       "Typo-advance-margin-gap-bullet"
     );
@@ -97,57 +100,45 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     if (paddingFill) paddingFill.style.width = "0%";
     if (paddingBullet) paddingBullet.style.left = "0%";
 
-    const marginIds = [
+    // reset active tab highlights
+    [
       "Typo-advance-margin-gap-all",
       "Typo-advance-margin-gap-top",
       "Typo-advance-margin-gap-bottom",
       "Typo-advance-margin-gap-left",
       "Typo-advance-margin-gap-right",
-    ];
-    const paddingIds = [
       "Typo-advance-padding-gap-all",
       "Typo-advance-padding-gap-top",
       "Typo-advance-padding-gap-bottom",
       "Typo-advance-padding-gap-left",
       "Typo-advance-padding-gap-right",
-    ];
-
-    marginIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("sc-bg-454545");
-    });
-
-    paddingIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("sc-bg-454545");
-    });
-
-    const marginAll = document.getElementById("Typo-advance-margin-gap-all");
-    const paddingAll = document.getElementById(
-      "Typo-advance-padding-gap-all"
+    ].forEach((id) =>
+      document.getElementById(id)?.classList.remove("sc-bg-454545")
     );
 
-    if (marginAll) marginAll.classList.add("sc-bg-454545");
-    if (paddingAll) paddingAll.classList.add("sc-bg-454545");
+    document
+      .getElementById("Typo-advance-margin-gap-all")
+      ?.classList.add("sc-bg-454545");
+    document
+      .getElementById("Typo-advance-padding-gap-all")
+      ?.classList.add("sc-bg-454545");
 
-    const allMarginFills = [
+    // show all visualization fills again
+    [
       "Typo-structure-margin-top-fill",
       "Typo-structure-margin-bottom-fill",
       "Typo-structure-margin-left-fill",
       "Typo-structure-margin-right-fill",
-    ];
-    allMarginFills.forEach((id) => {
+    ].forEach((id) => {
       const fill = document.getElementById(id);
       if (fill) fill.style.display = "block";
     });
-
-    const allPaddingFills = [
+    [
       "Typo-structure-padding-top",
       "Typo-structure-padding-bottom",
       "Typo-structure-padding-left",
       "Typo-structure-padding-right",
-    ];
-    allPaddingFills.forEach((id) => {
+    ].forEach((id) => {
       const fill = document.getElementById(id);
       if (fill) fill.style.display = "block";
     });
@@ -155,17 +146,14 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
     updateStyles();
   }
 
-  const marginResetBtn = document.getElementById("Typo-advance-margin-reset");
-  const paddingResetBtn = document.getElementById(
-    "Typo-advance-padding-reset"
-  );
-  const allResetBtn = document.getElementById(
-    "Typo-advance-structure-reset-all"
-  );
-
-  if (marginResetBtn)
-    marginResetBtn.addEventListener("click", resetStructureStyles);
-  if (paddingResetBtn)
-    paddingResetBtn.addEventListener("click", resetStructureStyles);
-  if (allResetBtn) allResetBtn.addEventListener("click", resetStructureStyles);
+  // hook reset buttons
+  document
+    .getElementById("Typo-advance-margin-reset")
+    ?.addEventListener("click", resetStructureStyles);
+  document
+    .getElementById("Typo-advance-padding-reset")
+    ?.addEventListener("click", resetStructureStyles);
+  document
+    .getElementById("Typo-advance-structure-reset-all")
+    ?.addEventListener("click", resetStructureStyles);
 }
