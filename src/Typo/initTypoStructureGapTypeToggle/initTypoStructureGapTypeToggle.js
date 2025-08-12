@@ -280,48 +280,66 @@ export function initTypoStructureGapTypeToggle() {
     return "all";
   };
 
-  // When inputs change, sync the right slider
-  const bindMarginInput = (side) => {
-    const el = $(marginCountIds[side]);
-    if (!el) return;
-    el.addEventListener("input", () => {
-      const v = parsePx(el);
-      const activeSide = sideFromTab(activeMarginTab);
+ const bindMarginInput = (side) => {
+   const el = document.getElementById(marginCountIds[side]);
+   if (!el) return;
+   el.addEventListener("input", () => {
+     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+     const v = Math.max(
+       0,
+       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
+     );
+     const activeSide = sideFromTab(activeMarginTab);
+     if (activeSide === "all" || activeSide === side) {
+       setSlider(
+         document.getElementById("Typo-advance-margin-gap-bullet"),
+         document.getElementById("Typo-advance-margin-gap-fill"),
+         v
+       );
+     }
+     el.dispatchEvent(new Event("change", { bubbles: true }));
+   });
+   el.addEventListener("blur", () => {
+     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+     const v = Math.max(
+       0,
+       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
+     );
+     if (el.tagName === "INPUT") el.value = `${v}px`;
+     else el.textContent = `${v}px`;
+   });
+ };
 
-      if (activeSide === "all") {
-        // typing any margin input while ALL is active -> set all to the same value
-        Object.values(marginCountIds).forEach((id) => writePx($(id), v, false));
-        // fire one event to trigger styles (updateStyles already bound to inputs)
-        el.dispatchEvent(new Event("change", { bubbles: true }));
-        setSlider(marginBullet, marginFill, v);
-      } else if (activeSide === side) {
-        // only move slider if the edited input matches the active side
-        setSlider(marginBullet, marginFill, v);
-      }
-      // else: do not move slider (side not active), but styles still update from input listener
-    });
-    el.addEventListener("blur", () => writePx(el, parsePx(el), false));
-  };
+ const bindPaddingInput = (side) => {
+   const el = document.getElementById(paddingCountIds[side]);
+   if (!el) return;
+   el.addEventListener("input", () => {
+     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+     const v = Math.max(
+       0,
+       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
+     );
+     const activeSide = sideFromTab(activePaddingTab);
+     if (activeSide === "all" || activeSide === side) {
+       setSlider(
+         document.getElementById("Typo-advance-padding-gap-bullet"),
+         document.getElementById("Typo-advance-padding-gap-fill"),
+         v
+       );
+     }
+     el.dispatchEvent(new Event("change", { bubbles: true }));
+   });
+   el.addEventListener("blur", () => {
+     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+     const v = Math.max(
+       0,
+       Math.min(100, parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10) || 0)
+     );
+     if (el.tagName === "INPUT") el.value = `${v}px`;
+     else el.textContent = `${v}px`;
+   });
+ };
 
-  const bindPaddingInput = (side) => {
-    const el = $(paddingCountIds[side]);
-    if (!el) return;
-    el.addEventListener("input", () => {
-      const v = parsePx(el);
-      const activeSide = sideFromTab(activePaddingTab);
-
-      if (activeSide === "all") {
-        Object.values(paddingCountIds).forEach((id) =>
-          writePx($(id), v, false)
-        );
-        el.dispatchEvent(new Event("change", { bubbles: true }));
-        setSlider(paddingBullet, paddingFill, v);
-      } else if (activeSide === side) {
-        setSlider(paddingBullet, paddingFill, v);
-      }
-    });
-    el.addEventListener("blur", () => writePx(el, parsePx(el), false));
-  };
 
   ["top", "bottom", "left", "right"].forEach(bindMarginInput);
   ["top", "bottom", "left", "right"].forEach(bindPaddingInput);
