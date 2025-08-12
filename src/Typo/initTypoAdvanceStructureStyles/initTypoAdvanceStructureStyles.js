@@ -24,12 +24,12 @@ export function initTypoAdvanceStructureStyles(getSelectedElement) {
  };
 
 
- const writePx = (el, v) => {
-   if (!el) return;
-   const s = `${Math.max(0, Math.min(999, Math.round(v)))}px`;
-   if (el.tagName === "INPUT") el.value = s;
-   else el.textContent = s;
- };
+const writePx = (el, v) => {
+  if (!el) return;
+  const s = String(Math.max(0, Math.min(999, Math.round(v))));
+  if (el.tagName === "INPUT") el.value = s;
+  else el.textContent = s;
+};
 
 
   const updateStyles = () => {
