@@ -1,5 +1,4 @@
   import { NavbarIconHtml } from "https://fatin-webefo.github.io/squareCraft-plugin/NavbarIconHtml.js";
-  import { ToolbarIconHtml } from "https://fatin-webefo.github.io/squareCraft-plugin/ToolbarIconHtml.js";
 
   export function injectNavbarIcon() {
 
