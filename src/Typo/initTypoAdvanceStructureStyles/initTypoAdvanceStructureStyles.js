@@ -62,7 +62,6 @@ const writePx = (el, v) => {
     styleTag.textContent = `${TypoSelector} { ${cssParts.join("; ")} }`;
   };
 
-  // bind to each input so typing and slider-driven updates both apply styles
   const bindInputHandlers = (id) => {
     const el = getEl(id);
     if (!el) return;
