@@ -50,111 +50,132 @@ export function initTypoStructureGapTypeToggle() {
     "Typo-advance-padding-gap-right": ["Typo-structure-padding-right"],
   };
 
+  // input IDs (your new inputs)
+  const marginCountIds = {
+    top: "Typo-structure-margin-top-count",
+    bottom: "Typo-structure-margin-bottom-count",
+    left: "Typo-structure-margin-left-count",
+    right: "Typo-structure-margin-right-count",
+  };
+  const paddingCountIds = {
+    top: "Typo-structure-padding-top-count",
+    bottom: "Typo-structure-padding-bottom-count",
+    left: "Typo-structure-padding-left-count",
+    right: "Typo-structure-padding-right-count",
+  };
+
+  // helpers
+  const $ = (id) => document.getElementById(id);
+  const clamp01 = (n) => Math.max(0, Math.min(1, n));
+  const clampPx = (n) => Math.max(0, Math.min(100, Math.round(n || 0)));
+  const parsePx = (el) => {
+    if (!el) return 0;
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
+    return clampPx(Number.isFinite(n) ? n : 0);
+  };
+  const writePx = (el, v, fire = true) => {
+    if (!el) return;
+    const s = `${clampPx(v)}px`;
+    if (el.tagName === "INPUT") el.value = s;
+    else el.textContent = s;
+    if (fire) el.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+
   let activeMarginTab = "Typo-advance-margin-gap-all";
   let activePaddingTab = "Typo-advance-padding-gap-all";
 
   function setTabHeight(active = true) {
-    const tabWrapper = document.getElementById("tabContentWrapper");
+    const tabWrapper = $("tabContentWrapper");
     if (!tabWrapper) return;
     tabWrapper.classList.add("sc-transition-all");
     tabWrapper.classList.remove("sc-h-350", "sc-h-375");
     tabWrapper.classList.add(active ? "sc-h-375" : "sc-h-350");
   }
 
+  // UI tab switching — MARGIN
   marginIds.forEach((id) => {
-    const el = document.getElementById(id);
+    const el = $(id);
     if (!el) return;
     el.addEventListener("click", () => {
       activeMarginTab = id;
 
-      marginIds.forEach((btnId) => {
-        const btn = document.getElementById(btnId);
-        if (btn) btn.classList.remove("sc-bg-454545");
-      });
+      marginIds.forEach((btnId) => $(btnId)?.classList.remove("sc-bg-454545"));
       el.classList.add("sc-bg-454545");
 
-      const allMarginFills = [
+      [
         "Typo-structure-margin-top-fill",
         "Typo-structure-margin-bottom-fill",
         "Typo-structure-margin-left-fill",
         "Typo-structure-margin-right-fill",
-      ];
-      allMarginFills.forEach((id) => {
-        const fill = document.getElementById(id);
-        if (fill) fill.style.display = "none";
+      ].forEach((fid) => {
+        const f = $(fid);
+        if (f) f.style.display = "none";
       });
 
-      const activeFills = marginFillIds[id] || [];
-      activeFills.forEach((fillId) => {
-        const fill = document.getElementById(fillId);
-        if (fill) fill.style.display = "block";
+      (marginFillIds[id] || []).forEach((fid) => {
+        const f = $(fid);
+        if (f) f.style.display = "block";
       });
 
-      const fillBar = document.getElementById("Typo-advance-margin-gap-fill");
-      const bullet = document.getElementById(
-        "Typo-advance-margin-gap-bullet"
-      );
-      if (fillBar) fillBar.style.display = "block";
-      if (bullet) bullet.style.display = "block";
+      $("Typo-advance-margin-gap-fill")?.style &&
+        ($("Typo-advance-margin-gap-fill").style.display = "block");
+      $("Typo-advance-margin-gap-bullet")?.style &&
+        ($("Typo-advance-margin-gap-bullet").style.display = "block");
 
       setTabHeight(true);
+      // snap slider to the newly-focused input(s)
+      refreshMarginSliderFromInputs();
     });
   });
 
+  // UI tab switching — PADDING
   paddingIds.forEach((id) => {
-    const el = document.getElementById(id);
+    const el = $(id);
     if (!el) return;
     el.addEventListener("click", () => {
       activePaddingTab = id;
 
-      paddingIds.forEach((btnId) => {
-        const btn = document.getElementById(btnId);
-        if (btn) btn.classList.remove("sc-bg-454545");
-      });
+      paddingIds.forEach((btnId) => $(btnId)?.classList.remove("sc-bg-454545"));
       el.classList.add("sc-bg-454545");
 
-      const allPaddingFills = [
+      [
         "Typo-structure-padding-top",
         "Typo-structure-padding-bottom",
         "Typo-structure-padding-left",
         "Typo-structure-padding-right",
-      ];
-      allPaddingFills.forEach((id) => {
-        const fill = document.getElementById(id);
-        if (fill) fill.style.display = "none";
+      ].forEach((fid) => {
+        const f = $(fid);
+        if (f) f.style.display = "none";
       });
 
-      const activeFills = paddingFillIds[id] || [];
-      activeFills.forEach((fillId) => {
-        const fill = document.getElementById(fillId);
-        if (fill) fill.style.display = "block";
+      (paddingFillIds[id] || []).forEach((fid) => {
+        const f = $(fid);
+        if (f) f.style.display = "block";
       });
 
       setTabHeight(true);
+      // snap slider to the newly-focused input(s)
+      refreshPaddingSliderFromInputs();
     });
   });
 
+  // ===== SLIDERS (drag updates inputs) =====
   const sliders = [
     {
       bulletId: "Typo-advance-margin-gap-bullet",
       fillId: "Typo-advance-margin-gap-fill",
       tabKey: () => activeMarginTab,
       idMap: {
-        "Typo-advance-margin-gap-top": ["Typo-structure-margin-top-count"],
-        "Typo-advance-margin-gap-bottom": [
-          "Typo-structure-margin-bottom-count",
-        ],
-        "Typo-advance-margin-gap-left": [
-          "Typo-structure-margin-left-count",
-        ],
-        "Typo-advance-margin-gap-right": [
-          "Typo-structure-margin-right-count",
-        ],
+        "Typo-advance-margin-gap-top": [marginCountIds.top],
+        "Typo-advance-margin-gap-bottom": [marginCountIds.bottom],
+        "Typo-advance-margin-gap-left": [marginCountIds.left],
+        "Typo-advance-margin-gap-right": [marginCountIds.right],
         "Typo-advance-margin-gap-all": [
-          "Typo-structure-margin-top-count",
-          "Typo-structure-margin-bottom-count",
-          "Typo-structure-margin-left-count",
-          "Typo-structure-margin-right-count",
+          marginCountIds.top,
+          marginCountIds.bottom,
+          marginCountIds.left,
+          marginCountIds.right,
         ],
       },
     },
@@ -163,101 +184,180 @@ export function initTypoStructureGapTypeToggle() {
       fillId: "Typo-advance-padding-gap-fill",
       tabKey: () => activePaddingTab,
       idMap: {
-        "Typo-advance-padding-gap-top": [
-          "Typo-structure-padding-top-count",
-        ],
-        "Typo-advance-padding-gap-bottom": [
-          "Typo-structure-padding-bottom-count",
-        ],
-        "Typo-advance-padding-gap-left": [
-          "Typo-structure-padding-left-count",
-        ],
-        "Typo-advance-padding-gap-right": [
-          "Typo-structure-padding-right-count",
-        ],
+        "Typo-advance-padding-gap-top": [paddingCountIds.top],
+        "Typo-advance-padding-gap-bottom": [paddingCountIds.bottom],
+        "Typo-advance-padding-gap-left": [paddingCountIds.left],
+        "Typo-advance-padding-gap-right": [paddingCountIds.right],
         "Typo-advance-padding-gap-all": [
-          "Typo-structure-padding-top-count",
-          "Typo-structure-padding-bottom-count",
-          "Typo-structure-padding-left-count",
-          "Typo-structure-padding-right-count",
+          paddingCountIds.top,
+          paddingCountIds.bottom,
+          paddingCountIds.left,
+          paddingCountIds.right,
         ],
       },
     },
   ];
 
-sliders.forEach(({ bulletId, fillId, tabKey, idMap }) => {
-  const bullet = document.getElementById(bulletId);
-  const fill = document.getElementById(fillId);
-  const bar = bullet?.parentElement;
-  if (!bullet || !fill || !bar) return;
+  sliders.forEach(({ bulletId, fillId, tabKey, idMap }) => {
+    const bullet = $(bulletId);
+    const fill = $(fillId);
+    const bar = bullet?.parentElement;
+    if (!bullet || !fill || !bar) return;
 
-  const getClientX = (evt) =>
-    evt.touches && evt.touches[0] ? evt.touches[0].clientX : evt.clientX;
+    const getClientX = (evt) =>
+      evt.touches && evt.touches[0] ? evt.touches[0].clientX : evt.clientX;
 
-  const applyFromX = (clientX) => {
-    const rect = bar.getBoundingClientRect();
-    let x = clientX - rect.left;
-    x = Math.max(0, Math.min(x, rect.width));
+    const applyFromX = (clientX) => {
+      const rect = bar.getBoundingClientRect();
+      let x = clientX - rect.left;
+      x = Math.max(0, Math.min(x, rect.width));
 
-    const percent = (x / rect.width) * 100; // 0..100
+      const percent = (x / rect.width) * 100; // 0..100
+      bullet.style.left = `${percent}%`;
+      fill.style.width = `${percent}%`;
+
+      const value = Math.round(percent); // px value 0..100
+      const activeTab = tabKey();
+      const countIds = idMap[activeTab] || [];
+
+      countIds.forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+        writePx(el, value, true); // update input + fire input event
+      });
+    };
+
+    const onMove = (evt) => {
+      setTabHeight(true);
+      applyFromX(getClientX(evt));
+      if (evt.cancelable) evt.preventDefault();
+    };
+
+    const stop = () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", stop);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", stop);
+    };
+
+    const start = (evt) => {
+      setTabHeight(true);
+      onMove(evt);
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("mouseup", stop);
+      window.addEventListener("touchmove", onMove, { passive: false });
+      window.addEventListener("touchend", stop);
+      if (evt.cancelable) evt.preventDefault();
+    };
+
+    // drag bullet
+    bullet.addEventListener("mousedown", start);
+    bullet.addEventListener("touchstart", start, { passive: false });
+
+    // click/drag anywhere on the bar to jump
+    bar.addEventListener("mousedown", (e) => start(e));
+    bar.addEventListener("touchstart", (e) => start(e), { passive: false });
+  });
+
+  // ===== INPUTS (typing updates sliders) =====
+  const marginBullet = $("Typo-advance-margin-gap-bullet");
+  const marginFill = $("Typo-advance-margin-gap-fill");
+  const paddingBullet = $("Typo-advance-padding-gap-bullet");
+  const paddingFill = $("Typo-advance-padding-gap-fill");
+
+  const setSlider = (bullet, fill, pxVal) => {
+    if (!bullet || !fill) return;
+    const percent = clampPx(pxVal); // same mapping: 1px == 1%
     bullet.style.left = `${percent}%`;
     fill.style.width = `${percent}%`;
+  };
 
-    const value = Math.round(percent); // px value 0..100
-    const activeTab = tabKey();
-    const countIds = idMap[activeTab] || [];
+  const sideFromTab = (tabId) => {
+    if (tabId.includes("top")) return "top";
+    if (tabId.includes("bottom")) return "bottom";
+    if (tabId.includes("left")) return "left";
+    if (tabId.includes("right")) return "right";
+    return "all";
+  };
 
-    countIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (el.tagName === "INPUT") el.value = `${value}px`;
-      else el.textContent = `${value}px`;
-      // notify listeners in initTypoAdvanceStructureStyles
-      el.dispatchEvent(new Event("input", { bubbles: true }));
+  // When inputs change, sync the right slider
+  const bindMarginInput = (side) => {
+    const el = $(marginCountIds[side]);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      const v = parsePx(el);
+      const activeSide = sideFromTab(activeMarginTab);
+
+      if (activeSide === "all") {
+        // typing any margin input while ALL is active -> set all to the same value
+        Object.values(marginCountIds).forEach((id) => writePx($(id), v, false));
+        // fire one event to trigger styles (updateStyles already bound to inputs)
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+        setSlider(marginBullet, marginFill, v);
+      } else if (activeSide === side) {
+        // only move slider if the edited input matches the active side
+        setSlider(marginBullet, marginFill, v);
+      }
+      // else: do not move slider (side not active), but styles still update from input listener
     });
+    el.addEventListener("blur", () => writePx(el, parsePx(el), false));
   };
 
-  const onMove = (evt) => {
-    setTabHeight(true);
-    applyFromX(getClientX(evt));
-    if (evt.cancelable) evt.preventDefault();
+  const bindPaddingInput = (side) => {
+    const el = $(paddingCountIds[side]);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      const v = parsePx(el);
+      const activeSide = sideFromTab(activePaddingTab);
+
+      if (activeSide === "all") {
+        Object.values(paddingCountIds).forEach((id) =>
+          writePx($(id), v, false)
+        );
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+        setSlider(paddingBullet, paddingFill, v);
+      } else if (activeSide === side) {
+        setSlider(paddingBullet, paddingFill, v);
+      }
+    });
+    el.addEventListener("blur", () => writePx(el, parsePx(el), false));
   };
 
-  const stop = () => {
-    window.removeEventListener("mousemove", onMove);
-    window.removeEventListener("mouseup", stop);
-    window.removeEventListener("touchmove", onMove);
-    window.removeEventListener("touchend", stop);
-  };
+  ["top", "bottom", "left", "right"].forEach(bindMarginInput);
+  ["top", "bottom", "left", "right"].forEach(bindPaddingInput);
 
-  const start = (evt) => {
-    setTabHeight(true);
-    onMove(evt);
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", stop);
-    window.addEventListener("touchmove", onMove, { passive: false });
-    window.addEventListener("touchend", stop);
-    if (evt.cancelable) evt.preventDefault();
-  };
+  // Initial slider position = current inputs (avg when "All" is active)
+  function refreshMarginSliderFromInputs() {
+    const activeSide = sideFromTab(activeMarginTab);
+    let v = 0;
+    if (activeSide === "all") {
+      const vals = Object.values(marginCountIds).map((id) => parsePx($(id)));
+      v = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    } else {
+      v = parsePx($(marginCountIds[activeSide]));
+    }
+    setSlider(marginBullet, marginFill, v);
+  }
+  function refreshPaddingSliderFromInputs() {
+    const activeSide = sideFromTab(activePaddingTab);
+    let v = 0;
+    if (activeSide === "all") {
+      const vals = Object.values(paddingCountIds).map((id) => parsePx($(id)));
+      v = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+    } else {
+      v = parsePx($(paddingCountIds[activeSide]));
+    }
+    setSlider(paddingBullet, paddingFill, v);
+  }
 
-  // drag bullet
-  bullet.addEventListener("mousedown", start);
-  bullet.addEventListener("touchstart", start, { passive: false });
-
-  // click/drag anywhere on the bar to jump
-  bar.addEventListener("mousedown", (e) => start(e));
-  bar.addEventListener("touchstart", (e) => start(e), { passive: false });
-});
-
+  refreshMarginSliderFromInputs();
+  refreshPaddingSliderFromInputs();
 
   document.addEventListener("click", (e) => {
     const clickedInsideAllowed = allAllowedIds.some((id) => {
-      const el = document.getElementById(id);
+      const el = $(id);
       return el && el.contains(e.target);
     });
-
-    if (!clickedInsideAllowed) {
-      setTabHeight(false);
-    }
+    if (!clickedInsideAllowed) setTabHeight(false);
   });
 }
