@@ -365,6 +365,7 @@ let injectNavbarIconFn;
   const { initImageStateTabToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/initImageStateTabToggle/initImageStateTabToggle.js"
   );
+  
   const { WidgetImageHoverToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageHoverToggleControls/WidgetImageHoverToggleControls.js"
   );
