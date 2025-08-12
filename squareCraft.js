@@ -1151,7 +1151,7 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
   adjustWidgetPosition();
 
   function injectIcon() {
-   async function waitForTargets(selector, timeout = 4000, interval = 100) {
+   async function waitForTargets(selector) {
      const now = safeQuerySelectorAll(selector);
      if (now.length) return now;
 
