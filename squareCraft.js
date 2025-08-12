@@ -101,21 +101,24 @@ function animateWidgetClose(el, duration = 0.2) {
   );
 }
 
+let injectNavbarIconFn;
+
 
   try {
     const { injectNavbarIcon } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/injectNavbarIcon.js"
     );
-    injectNavbarIcon();
+      injectNavbarIconFn = injectNavbarIcon;
+      injectNavbarIconFn();
   } catch (error) {
     console.error("🚨 Failed to load navbar icon script", error);
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => {
-      requestAnimationFrame(() => injectNavbarIcon());
+      requestAnimationFrame(() => injectNavbarIconFn());
     });
   } else {
-    requestAnimationFrame(() => injectNavbarIcon());
+    requestAnimationFrame(() => injectNavbarIconFn());
   }
   // icon set fast
   function attachGlobalClickListener() {
