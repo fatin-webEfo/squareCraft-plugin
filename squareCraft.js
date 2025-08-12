@@ -943,7 +943,9 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
      },
    ]);
    initHoverButtonSectionToggleControls();
-   hoverTypoTabSelect();
+  if (typeof hoverTypoTabSelect === "function") {
+    hoverTypoTabSelect({ target: widgetContainer });
+  }
    initHoverButtonEffectDropdowns();
    initImageUploadPreview(() => selectedElement);
 
