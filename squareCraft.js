@@ -49,26 +49,28 @@ function makeIcon() {
     "display:inline-flex;align-items:center;justify-content:center;cursor:pointer;";
   wrap.appendChild(img);
 
-  wrap.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const fn = HOST_WIN.toggleWidgetVisibility || window.toggleWidgetVisibility;
-    if (typeof fn === "function") {
-      fn(null, null); // don’t pass the event object
-    } else {
-      (HOST_WIN.__sc_toggleQueue ||= []).push(1); // store a simple token
-    }
-    // tiny feedback (optional)
-    try {
-      wrap.animate(
-        [
-          { transform: "scale(.92)", opacity: 0.7 },
-          { transform: "scale(1)", opacity: 1 },
-        ],
-        { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
-      );
-    } catch {}
-  });
+ wrap.addEventListener("click", (e) => {
+   e.preventDefault();
+   e.stopPropagation();
+
+   (HOST_WIN.__sc_toggleQueue ||= []).push([null, null]);
+
+   const fn = HOST_WIN.toggleWidgetVisibility || window.toggleWidgetVisibility;
+   if (typeof fn === "function") {
+     HOST_WIN.__sc_toggleQueue.splice(0).forEach((args) => fn(...args));
+   }
+
+   try {
+     wrap.animate(
+       [
+         { transform: "scale(.92)", opacity: 0.7 },
+         { transform: "scale(1)", opacity: 1 },
+       ],
+       { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
+     );
+   } catch {}
+ });
+
 
   return wrap;
 }
@@ -120,8 +122,12 @@ window.toggleWidgetVisibility = toggleWidgetVisibility; // extra safety
 
 const q = HOST_WIN.__sc_toggleQueue;
 if (Array.isArray(q) && q.length) {
-  q.splice(0).forEach(() => toggleWidgetVisibility(null, null));
+  const fn = toggleWidgetVisibility;
+  q.splice(0).forEach((args) =>
+    fn(...(Array.isArray(args) ? args : [null, null]))
+  );
 }
+
 
   function triggerLaunchAnimation() {
     const icon = document.querySelector(".sc-toolbar-icon");
@@ -140,28 +146,32 @@ if (Array.isArray(q) && q.length) {
     }
   }
 
-  function loadStylesheetOnce(href) {
-    return new Promise((resolve, reject) => {
-      const existing = Array.from(document.styleSheets).find(
+function loadStylesheetOnce(href) {
+  return new Promise((resolve, reject) => {
+    const existsLink = document.querySelector(`link[href="${href}"]`);
+    const existing =
+      existsLink ||
+      Array.from(document.styleSheets).find(
         (ss) => ss.href && ss.href.includes(href)
       );
-      if (existing) {
-        resolve();
-        return;
-      }
+    if (existing) {
+      resolve();
+      return;
+    }
 
-      const link = document.createElement("link");
-      link.rel = "preload";
-      link.as = "style";
-      link.href = href;
-      link.onload = () => {
-        link.rel = "stylesheet";
-        resolve();
-      };
-      link.onerror = reject;
-      document.head.appendChild(link);
-    });
-  }
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "style";
+    link.href = href;
+    link.onload = () => {
+      link.rel = "stylesheet";
+      resolve();
+    };
+    link.onerror = reject;
+    document.head.appendChild(link);
+  });
+}
+
   function animateWidgetOpen(el, duration = 0.2) {
     if (!el) return;
 
@@ -1128,27 +1138,35 @@ if (Array.isArray(q) && q.length) {
         });
     }
   }
+let __sc_creating = false;
 
-  async function createWidget(clickedBlock) {
-    try {
-      const module = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
-      );
-      const htmlString = module.html();
+ async function createWidget(clickedBlock) {
+   if (__sc_creating || widgetLoaded) return; // <— add
+   __sc_creating = true; // <— add
+   try {
+     const module = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/html.js"
+     );
+     const htmlString = module.html();
 
-      if (typeof htmlString === "string" && htmlString.trim().length > 0) {
-        await loadWidgetFromString(htmlString, clickedBlock); // ← IMPORTANT
-        setTimeout(() => {
-          if (typeof module.initToggleSwitch === "function") {
-            module.initToggleSwitch();
-          }
-        }, 200);
-      }
-    } catch (err) {
-      console.error("🚨 Error loading HTML module:", err);
-    }
-    triggerLaunchAnimation();
-  }
+     if (typeof htmlString === "string" && htmlString.trim().length > 0) {
+       await loadWidgetFromString(htmlString, clickedBlock);
+       setTimeout(() => {
+         if (typeof module.initToggleSwitch === "function") {
+           module.initToggleSwitch();
+         }
+       }, 200);
+     } else {
+       console.error("🚨 html() returned empty/invalid");
+     }
+   } catch (err) {
+     console.error("🚨 Error loading HTML module:", err);
+   } finally {
+     __sc_creating = false; // <— add
+   }
+   triggerLaunchAnimation();
+ }
+
 
   function waitForElement(selector, timeout = 3000) {
     return new Promise((resolve, reject) => {
