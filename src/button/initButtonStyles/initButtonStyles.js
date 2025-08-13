@@ -396,6 +396,7 @@ export function initButtonIconPositionToggle(getSelectedElement) {
       };
     });
 }
+
 setTimeout(() => {
   const section = document.getElementById("buttoniconPositionSection");
   if (section) {
