@@ -19,55 +19,35 @@
    preload.as = "image";
    preload.href = SRC;
    d.head.appendChild(preload);
- function makeIcon() {
-   const SRC =
-     "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
+function makeIcon() {
+  const img = d.createElement("img");
+  img.src =
+    "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
+  img.alt = "sc";
+  img.decoding = "async";
+  img.fetchPriority = "high";
+  img.style.cssText = "width:16px;height:16px;display:block;";
 
-   const img = new Image();
-   img.src = SRC;
-   img.alt = "sc";
-   img.decoding = "async";
-   img.fetchPriority = "high";
-   img.style.cssText = "width:20px;height:20px;display:block;";
+  const wrap = d.createElement("span");
+  wrap.className = "sc-toolbar-icon sc-z-99999";
+  wrap.style.cssText =
+    "display:inline-flex;align-items:center;justify-content:center;cursor:pointer;";
 
-   const wrap = document.createElement("span");
-   wrap.className = "sc-toolbar-icon sc-z-99999";
-   wrap.style.cssText = [
-     "display:inline-flex",
-     "align-items:center",
-     "justify-content:center",
-     "width:35px",
-     "height:35px",
-     "border-radius:20%",
-     "cursor:pointer",
-     "background:#fff",
-     "margin-left:6px",
-     "box-shadow:0 0 0 1px rgba(0,0,0,.06)",
-   ].join(";");
+  wrap.appendChild(img);
 
-   wrap.appendChild(img);
+  wrap.addEventListener("click", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (typeof window.toggleWidgetVisibility === "function") {
+      window.toggleWidgetVisibility(e, null);
+    } else {
+      (window.__sc_toggleQueue ||= []).push([e, null]);
+    }
+  });
 
-   wrap.addEventListener("click", (e) => {
-     e.stopPropagation();
-     e.preventDefault();
-     if (typeof window.toggleWidgetVisibility === "function") {
-       window.toggleWidgetVisibility(e, null);
-     } else {
-       (window.__sc_toggleQueue ||= []).push([e, null]);
-     }
-     try {
-       wrap.animate(
-         [
-           { transform: "scale(.92)", opacity: 0.7 },
-           { transform: "scale(1)", opacity: 1 },
-         ],
-         { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
-       );
-     } catch {}
-   });
+  return wrap;
+}
 
-   return wrap;
- }
 
  const MATCH = ".tidILMJ7AVANuKwS";
  function insertIcon(t) {
