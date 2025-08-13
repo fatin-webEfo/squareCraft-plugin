@@ -23,6 +23,7 @@
      const img = new Image();
      img.src = SRC;
      img.alt = "sc";
+     img.width = "24";
      img.decoding = "async";
      img.fetchPriority = "high";
      const wrap = d.createElement("span");
