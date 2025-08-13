@@ -172,39 +172,44 @@ function loadStylesheetOnce(href) {
   });
 }
 
-  function animateWidgetOpen(el, duration = 0.2) {
-    if (!el) return;
+function animateWidgetOpen(el, duration = 0.2) {
+  if (!el) return;
 
-    // Fallback if GSAP not ready yet (first click)
-    if (!window.gsap) {
-      el.style.visibility = "visible";
-      el.style.opacity = "1";
+  const content = el.firstElementChild;
+
+  // make it measurable before we decide GSAP or fallback
+  el.style.visibility = "visible";
+  el.style.opacity = "1";
+  el.style.overflow = "hidden";
+
+  const fullH = content ? content.scrollHeight : 320;
+
+  if (!window.gsap) {
+    el.style.height = fullH + "px";
+    requestAnimationFrame(() => {
       el.style.height = "auto";
       el.style.overflow = "visible";
-      return;
-    }
-
-    const content = el.firstElementChild;
-    el.style.visibility = "visible";
-    el.style.overflow = "hidden";
-    const fullH = content ? content.scrollHeight : 320;
-
-    gsap.fromTo(
-      el,
-      { height: 0, opacity: 0 },
-      {
-        height: fullH,
-        opacity: 1,
-        duration,
-        ease: "power2.out",
-        onComplete: () => {
-          el.style.height = "auto";
-          el.style.overflow = "visible";
-        },
-        overwrite: true,
-      }
-    );
+    });
+    return;
   }
+
+  gsap.fromTo(
+    el,
+    { height: 0, opacity: 0 },
+    {
+      height: fullH,
+      opacity: 1,
+      duration,
+      ease: "power2.out",
+      onComplete: () => {
+        el.style.height = "auto";
+        el.style.overflow = "visible";
+      },
+      overwrite: true,
+    }
+  );
+}
+
 
   function animateWidgetClose(el, duration = 0.2) {
     if (!el) return;
