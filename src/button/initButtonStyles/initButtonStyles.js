@@ -3,15 +3,7 @@ let selectedElement = null;
 function getSelectedElement() {
   return selectedElement;
 }
-setTimeout(() => {
 
-  const section = document.getElementById("buttoniconPositionSection");
-  if (section) {
-    initButtonIconPositionToggle(getSelectedElement);
-  } else {
-    console.warn("⛔ buttoniconPositionSection not found");
-  }
-}, 200);
 
 export function initButtonFontFamilyControls(getSelectedElement) {
   const GOOGLE_FONTS_API =
@@ -404,7 +396,14 @@ export function initButtonIconPositionToggle(getSelectedElement) {
       };
     });
 }
-
+setTimeout(() => {
+  const section = document.getElementById("buttoniconPositionSection");
+  if (section) {
+    initButtonIconPositionToggle(getSelectedElement);
+  } else {
+    console.warn("⛔ buttoniconPositionSection not found");
+  }
+}, 200);
 let normalRotationInitialized = false;
 
 export function initButtonIconRotationControl(getSelectedElement) {
