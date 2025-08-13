@@ -310,23 +310,6 @@ function animateWidgetOpen(el, duration = 0.2) {
       : document.querySelector(selector);
   }
 
-  function safeQuerySelectorAll(selector) {
-    try {
-      if (parent && parent !== window && parent.document !== document) {
-        return parent.document.querySelectorAll(selector);
-      }
-    } catch (err) {
-      if (err.name === "SecurityError") {
-        console.warn(
-          `⚠️ Cross-origin restriction: falling back to current document for selectorAll: ${selector}`
-        );
-      } else {
-        console.error(`❌ Error in safeQuerySelectorAll("${selector}"):`, err);
-      }
-    }
-    return document.querySelectorAll(selector);
-  }
-
   let selectedElement = null;
   let widgetContainer = null;
 
