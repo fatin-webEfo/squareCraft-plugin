@@ -27,10 +27,9 @@ function makeIcon() {
   img.decoding = "async";
   img.fetchPriority = "high";
   img.loading = "eager";
-  img.width = "30px";
-  img.borderRadius = "20%";
-   img.style.cssText =
-    "width:16px;height:16px;display:block;";
+  img.style.borderRadius = "20%";
+  img.style.cssText =
+    "width:30px;height:30px;display:block;";
 
   const wrap = d.createElement("span");
   wrap.className = "sc-toolbar-icon sc-z-99999";
