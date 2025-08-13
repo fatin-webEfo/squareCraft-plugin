@@ -19,75 +19,83 @@
    preload.as = "image";
    preload.href = SRC;
    d.head.appendChild(preload);
-   function makeIcon() {
-     const img = new Image();
-     img.src = SRC;
-     img.alt = "sc";
-     img.width = "24";
-     img.decoding = "async";
-     img.fetchPriority = "high";
-     const wrap = d.createElement("span");
-     wrap.className = "sc-toolbar-icon sc-z-99999";
-     wrap.style.cssText =
-       "position:absolute;top:50%;right:36px;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:20%;cursor:pointer;background:#fff;z-index:10";
-     wrap.appendChild(img);
-     wrap.addEventListener("click", (e) => {
-       e.stopPropagation();
-       e.preventDefault();
-       if (typeof window.toggleWidgetVisibility === "function") {
-         window.toggleWidgetVisibility(e, null);
-       } else {
-         (window.__sc_toggleQueue ||= []).push([e, null]);
+ function makeIcon() {
+   const SRC =
+     "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
+
+   const img = new Image();
+   img.src = SRC;
+   img.alt = "sc";
+   img.decoding = "async";
+   img.fetchPriority = "high";
+   img.style.cssText = "width:20px;height:20px;display:block;";
+
+   const wrap = document.createElement("span");
+   wrap.className = "sc-toolbar-icon sc-z-99999";
+   wrap.style.cssText = [
+     "display:inline-flex",
+     "align-items:center",
+     "justify-content:center",
+     "width:35px",
+     "height:35px",
+     "border-radius:20%",
+     "cursor:pointer",
+     "background:#fff",
+     "margin-left:6px",
+     "box-shadow:0 0 0 1px rgba(0,0,0,.06)",
+   ].join(";");
+
+   wrap.appendChild(img);
+
+   wrap.addEventListener("click", (e) => {
+     e.stopPropagation();
+     e.preventDefault();
+     if (typeof window.toggleWidgetVisibility === "function") {
+       window.toggleWidgetVisibility(e, null);
+     } else {
+       (window.__sc_toggleQueue ||= []).push([e, null]);
+     }
+     try {
+       wrap.animate(
+         [
+           { transform: "scale(.92)", opacity: 0.7 },
+           { transform: "scale(1)", opacity: 1 },
+         ],
+         { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
+       );
+     } catch {}
+   });
+
+   return wrap;
+ }
+
+ const MATCH = ".tidILMJ7AVANuKwS";
+ function insertIcon(t) {
+   if (!t || t.dataset.scIconInjected === "1") return;
+
+   if (t.querySelector(".sc-toolbar-icon")) {
+     t.dataset.scIconInjected = "1";
+     return;
+   }
+
+   const del = t.querySelector('[aria-label="Remove"]');
+   if (!del) {
+     const once = new MutationObserver(() => {
+       const x = t.querySelector('[aria-label="Remove"]');
+       if (x) {
+         once.disconnect();
+         insertIcon(t);
        }
-       try {
-         wrap.animate(
-           [
-             { transform: "translateY(-50%) scale(.92)", opacity: 0.7 },
-             { transform: "translateY(-50%) scale(1)", opacity: 1 },
-           ],
-           { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
-         );
-       } catch (_) {}
      });
-     return wrap;
+     once.observe(t, { childList: true, subtree: true });
+     return;
    }
 
-   function insertIcon(t) {
-     if (!t || t.dataset.scIconInjected === "1") return;
-     if (getComputedStyle(t).position === "static")
-       t.style.position = "relative";
-     if (t.querySelector(".sc-toolbar-icon")) {
-       t.dataset.scIconInjected = "1";
-       return;
-     }
-     const icon = makeIcon();
-     t.appendChild(icon);
-     t.dataset.scIconInjected = "1";
-   }
+   const icon = makeIcon();
+   del.parentNode.insertBefore(icon, del.nextSibling);
+   t.dataset.scIconInjected = "1";
+ }
 
-   const MATCH = ".tidILMJ7AVANuKwS";
-   function insertIcon(t) {
-     if (!t || t.dataset.scIconInjected === "1") return;
-     if (t.querySelector(".sc-toolbar-icon")) {
-       t.dataset.scIconInjected = "1";
-       return;
-     }
-     const del = t.querySelector('[aria-label="Remove"]');
-     if (!del) {
-       const once = new MutationObserver(() => {
-         const x = t.querySelector('[aria-label="Remove"]');
-         if (x) {
-           once.disconnect();
-           insertIcon(t);
-         }
-       });
-       once.observe(t, { childList: true, subtree: true });
-       return;
-     }
-     const icon = makeIcon();
-     del.parentNode.insertBefore(icon, del.nextSibling);
-     t.dataset.scIconInjected = "1";
-   }
    d.querySelectorAll(MATCH).forEach(insertIcon);
    const mo = new MutationObserver((recs) => {
      for (const r of recs) {
@@ -918,12 +926,17 @@
       }
     }
   }
-  window.toggleWidgetVisibility = toggleWidgetVisibility;
+
+
+window.toggleWidgetVisibility = toggleWidgetVisibility;
 
 if (window.__sc_toggleQueue && window.__sc_toggleQueue.length) {
   const q = window.__sc_toggleQueue.splice(0);
   q.forEach(([e, b]) => toggleWidgetVisibility(e, b));
 }
+
+
+
   function handleAndDetect(clickedBlock) {
     handleBlockClick(
       { target: clickedBlock },
