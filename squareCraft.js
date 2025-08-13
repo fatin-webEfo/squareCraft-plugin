@@ -918,6 +918,8 @@
       }
     }
   }
+  window.toggleWidgetVisibility = toggleWidgetVisibility;
+
 if (window.__sc_toggleQueue && window.__sc_toggleQueue.length) {
   const q = window.__sc_toggleQueue.splice(0);
   q.forEach(([e, b]) => toggleWidgetVisibility(e, b));
