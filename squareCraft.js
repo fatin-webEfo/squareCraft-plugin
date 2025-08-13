@@ -28,7 +28,7 @@
      const wrap = d.createElement("span");
      wrap.className = "sc-toolbar-icon sc-z-99999";
      wrap.style.cssText =
-       "display:inline-flex;align-items:center;justify-content:center;width:35px;height:35px;border-radius:20%;cursor:pointer;background:#fff;margin-left:6px;box-shadow:0 0 0 1px rgba(0,0,0,.06)";
+       "position:absolute;top:50%;right:36px;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:20%;cursor:pointer;background:#fff;z-index:10";
      wrap.appendChild(img);
      wrap.addEventListener("click", (e) => {
        e.stopPropagation();
@@ -41,8 +41,8 @@
        try {
          wrap.animate(
            [
-             { transform: "scale(.92)", opacity: 0.7 },
-             { transform: "scale(1)", opacity: 1 },
+             { transform: "translateY(-50%) scale(.92)", opacity: 0.7 },
+             { transform: "translateY(-50%) scale(1)", opacity: 1 },
            ],
            { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
          );
@@ -50,6 +50,20 @@
      });
      return wrap;
    }
+
+   function insertIcon(t) {
+     if (!t || t.dataset.scIconInjected === "1") return;
+     if (getComputedStyle(t).position === "static")
+       t.style.position = "relative";
+     if (t.querySelector(".sc-toolbar-icon")) {
+       t.dataset.scIconInjected = "1";
+       return;
+     }
+     const icon = makeIcon();
+     t.appendChild(icon);
+     t.dataset.scIconInjected = "1";
+   }
+
    const MATCH = ".tidILMJ7AVANuKwS";
    function insertIcon(t) {
      if (!t || t.dataset.scIconInjected === "1") return;
