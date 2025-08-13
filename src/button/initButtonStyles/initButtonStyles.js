@@ -419,10 +419,9 @@ export function initButtonIconRotationControl(getSelectedElement) {
   const fill = document.getElementById("buttonIconRotationradiusFill");
   const field = document.getElementById("buttonIconRotationradiusField");
   const label = document.getElementById("buttoniconRotationradiusCount");
+
   const incBtn = document.getElementById("buttoniconRotationIncrease");
   const decBtn = document.getElementById("buttoniconRotationDecrease");
-
-  if (!bullet || !fill || !field || !label) return;
 
   let currentRotation = 0;
   let userInteracted = false;
@@ -1312,8 +1311,7 @@ export function initButtonShadowControls(getSelectedElement) {
 
 
 window.syncButtonStylesFromElement = function (selectedElement) {
-   selectedElement  === "function" ? selected() : selected;
-  if (!selectedElement || !(selectedElement instanceof Element)) return;
+  if (!selectedElement) return;
 
   const sampleButton = selectedElement.querySelector(
     "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
