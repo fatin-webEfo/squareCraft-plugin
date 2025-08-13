@@ -1,5 +1,14 @@
 (async function squareCraft() {
-
+const HOST_DOC = (() => {
+  try {
+    if (parent && parent !== window) {
+      void parent.document.body;
+      return parent.document;
+    }
+  } catch (_) {}
+  return document;
+})();
+const HOST_WIN = HOST_DOC.defaultView || window;
 
  (() => {
    let d = document;
@@ -21,81 +30,98 @@
    preload.as = "image";
    preload.href = SRC;
    d.head.appendChild(preload);
+
 function makeIcon() {
-  const img = d.createElement("img");
+  const img = HOST_DOC.createElement("img");
   img.src =
     "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
   img.alt = "sc";
   img.decoding = "async";
   img.fetchPriority = "high";
   img.loading = "eager";
-  img.style.borderRadius = "20%";
- img.style.cssText = "width:30px;height:30px;display:block;border-radius:20%;";
+  img.style.cssText = "width:30px;height:30px;display:block;";
+  // make sure theme CSS can’t flatten it
+  img.style.setProperty("border-radius", "20%", "important");
 
-
-  const wrap = d.createElement("span");
+  const wrap = HOST_DOC.createElement("span");
   wrap.className = "sc-toolbar-icon sc-z-99999";
   wrap.style.cssText =
     "display:inline-flex;align-items:center;justify-content:center;cursor:pointer;";
-
   wrap.appendChild(img);
 
   wrap.addEventListener("click", (e) => {
-    e.stopPropagation();
     e.preventDefault();
-    if (typeof window.toggleWidgetVisibility === "function") {
-      window.toggleWidgetVisibility(e, null);
+    e.stopPropagation();
+    const fn = HOST_WIN.toggleWidgetVisibility || window.toggleWidgetVisibility;
+    if (typeof fn === "function") {
+      fn(null, null); // don’t pass the event object
     } else {
-      (window.__sc_toggleQueue ||= []).push([e, null]);
+      (HOST_WIN.__sc_toggleQueue ||= []).push(1); // store a simple token
     }
+    // tiny feedback (optional)
+    try {
+      wrap.animate(
+        [
+          { transform: "scale(.92)", opacity: 0.7 },
+          { transform: "scale(1)", opacity: 1 },
+        ],
+        { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
+      );
+    } catch {}
   });
 
   return wrap;
 }
 
 
- const MATCH = ".tidILMJ7AVANuKwS";
- function insertIcon(t) {
-   if (!t || t.dataset.scIconInjected === "1") return;
 
-   if (t.querySelector(".sc-toolbar-icon")) {
-     t.dataset.scIconInjected = "1";
-     return;
-   }
+const MATCH = ".tidILMJ7AVANuKwS";
 
-   const del = t.querySelector('[aria-label="Remove"]');
-   if (!del) {
-     const once = new MutationObserver(() => {
-       const x = t.querySelector('[aria-label="Remove"]');
-       if (x) {
-         once.disconnect();
-         insertIcon(t);
-       }
-     });
-     once.observe(t, { childList: true, subtree: true });
-     return;
-   }
+function insertIcon(t) {
+  if (!t || t.dataset.scIconInjected === "1") return;
+  if (t.querySelector(".sc-toolbar-icon")) {
+    t.dataset.scIconInjected = "1";
+    return;
+  }
 
-   const icon = makeIcon();
-   del.parentNode.insertBefore(icon, del.nextSibling);
-   t.dataset.scIconInjected = "1";
- }
+  const del = t.querySelector('[aria-label="Remove"]');
+  if (!del) {
+    const once = new MutationObserver(() => {
+      const x = t.querySelector('[aria-label="Remove"]');
+      if (x) {
+        once.disconnect();
+        insertIcon(t);
+      }
+    });
+    once.observe(t, { childList: true, subtree: true });
+    return;
+  }
+  del.parentNode.insertBefore(makeIcon(), del.nextSibling);
+  t.dataset.scIconInjected = "1";
+}
 
-   d.querySelectorAll(MATCH).forEach(insertIcon);
-   const mo = new MutationObserver((recs) => {
-     for (const r of recs) {
-       for (const n of r.addedNodes) {
-         if (n.nodeType !== 1) continue;
-         if (n.matches?.(MATCH)) insertIcon(n);
-         n.querySelectorAll?.(MATCH).forEach(insertIcon);
-       }
-     }
-   });
-   mo.observe(d.body, { childList: true, subtree: true });
-   window.__sc_forceIconScan = () =>
-     d.querySelectorAll(MATCH).forEach(insertIcon);
+HOST_DOC.querySelectorAll(MATCH).forEach(insertIcon);
+new MutationObserver((recs) => {
+  for (const r of recs)
+    for (const n of r.addedNodes) {
+      if (n.nodeType !== 1) continue;
+      if (n.matches?.(MATCH)) insertIcon(n);
+      n.querySelectorAll?.(MATCH).forEach(insertIcon);
+    }
+}).observe(HOST_DOC.body, { childList: true, subtree: true });
+
+
+HOST_WIN.__sc_forceIconScan = () =>
+  HOST_DOC.querySelectorAll(MATCH).forEach(insertIcon);
  })();
 
+HOST_WIN.toggleWidgetVisibility = toggleWidgetVisibility;
+window.toggleWidgetVisibility = toggleWidgetVisibility; // extra safety
+
+const q = HOST_WIN.__sc_toggleQueue;
+if (Array.isArray(q) && q.length) {
+  q.splice(0).forEach(() => toggleWidgetVisibility(null, null));
+}
 
   function triggerLaunchAnimation() {
     const icon = document.querySelector(".sc-toolbar-icon");
@@ -912,13 +938,6 @@ function makeIcon() {
     }
   }
 
-
-window.toggleWidgetVisibility = toggleWidgetVisibility;
-
-if (window.__sc_toggleQueue && window.__sc_toggleQueue.length) {
-  const q = window.__sc_toggleQueue.splice(0);
-  q.forEach(([e, b]) => toggleWidgetVisibility(e, b));
-}
 
 
 
