@@ -1,4 +1,6 @@
 (async function squareCraft() {
+
+
  (() => {
    let d = document;
    try {
@@ -28,8 +30,8 @@ function makeIcon() {
   img.fetchPriority = "high";
   img.loading = "eager";
   img.style.borderRadius = "20%";
-  img.style.cssText =
-    "width:30px;height:30px;display:block;";
+ img.style.cssText = "width:30px;height:30px;display:block;border-radius:20%;";
+
 
   const wrap = d.createElement("span");
   wrap.className = "sc-toolbar-icon sc-z-99999";
