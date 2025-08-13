@@ -1,4 +1,77 @@
 (async function squareCraft() {
+  (() => {
+    let rootDoc = document;
+    try {
+      if (parent && parent !== window) {
+        void parent.document.body;
+        rootDoc = parent.document;
+      }
+    } catch (_) {}
+    const ICON_SVG = `<svg viewBox="0 0 48 48" width="36" height="36" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b8cff"/><stop offset="1" stop-color="#7fdbb0"/></linearGradient></defs><rect x="2" y="2" rx="10" ry="10" width="44" height="44" fill="url(#g)"/><path d="M14 30c2.5 3 6 4 10 4 6 0 10-2 10-6 0-8-16-4-16-10 0-2.5 2.5-4 6-4 3.5 0 6 .8 8 2" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>`;
+    function makeIcon() {
+      const wrap = rootDoc.createElement("span");
+      wrap.className = "sc-toolbar-icon sc-z-99999";
+      wrap.style.cssText =
+        "display:inline-flex;align-items:center;justify-content:center;width:35px;height:35px;border-radius:20%;cursor:pointer;background:#fff;margin-left:6px;box-shadow:0 0 0 1px rgba(0,0,0,.06)";
+      wrap.innerHTML = ICON_SVG;
+      wrap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (typeof window.toggleWidgetVisibility === "function") {
+          window.toggleWidgetVisibility(e, null);
+        } else {
+          (window.__sc_toggleQueue ||= []).push([e, null]);
+        }
+        try {
+          wrap.animate(
+            [
+              { transform: "scale(.92)", opacity: 0.7 },
+              { transform: "scale(1)", opacity: 1 },
+            ],
+            { duration: 180, easing: "cubic-bezier(.22,.61,.36,1)" }
+          );
+        } catch {}
+      });
+      return wrap;
+    }
+    const MATCH = ".tidILMJ7AVANuKwS";
+    function insertIcon(toolbarEl) {
+      if (!toolbarEl || toolbarEl.dataset.scIconInjected === "1") return;
+      if (toolbarEl.querySelector(".sc-toolbar-icon")) {
+        toolbarEl.dataset.scIconInjected = "1";
+        return;
+      }
+      const deleteBtn = toolbarEl.querySelector('[aria-label="Remove"]');
+      if (!deleteBtn) {
+        const once = new MutationObserver(() => {
+          const del = toolbarEl.querySelector('[aria-label="Remove"]');
+          if (del) {
+            once.disconnect();
+            insertIcon(toolbarEl);
+          }
+        });
+        once.observe(toolbarEl, { childList: true, subtree: true });
+        return;
+      }
+      const icon = makeIcon();
+      deleteBtn.parentNode.insertBefore(icon, deleteBtn.nextSibling);
+      toolbarEl.dataset.scIconInjected = "1";
+    }
+    rootDoc.querySelectorAll(MATCH).forEach(insertIcon);
+    const mo = new MutationObserver((recs) => {
+      for (const r of recs) {
+        for (const n of r.addedNodes) {
+          if (n.nodeType !== 1) continue;
+          if (n.matches?.(MATCH)) insertIcon(n);
+          n.querySelectorAll?.(MATCH).forEach(insertIcon);
+        }
+      }
+    });
+    mo.observe(rootDoc.body, { childList: true, subtree: true });
+    window.__sc_forceIconScan = () =>
+      rootDoc.querySelectorAll(MATCH).forEach(insertIcon);
+  })();
+
   function triggerLaunchAnimation() {
     const icon = document.querySelector(".sc-toolbar-icon");
     if (window.gsap && icon) {
@@ -1144,97 +1217,10 @@ if (window.__sc_toggleQueue && window.__sc_toggleQueue.length) {
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
 
-  (function bootToolbarIcon() {
-    const ICON_SRC =
-      "https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-only-logo.svg";
 
-    const preconnect = document.createElement("link");
-    preconnect.rel = "preconnect";
-    preconnect.href = new URL(ICON_SRC).origin;
-    preconnect.crossOrigin = "anonymous";
-    document.head.appendChild(preconnect);
 
-    const preload = document.createElement("link");
-    preload.rel = "preload";
-    preload.as = "image";
-    preload.href = ICON_SRC;
-    document.head.appendChild(preload);
 
-    let isSameOrigin = true;
-    try {
-      void parent.document;
-    } catch (_) {
-      isSameOrigin = false;
-    }
-    const rootDoc = isSameOrigin ? parent.document : document;
 
-    const iconTemplate = new Image();
-    iconTemplate.src = ICON_SRC;
-    iconTemplate.alt = "sc";
-    iconTemplate.decoding = "async";
-    iconTemplate.fetchPriority = "high";
-    iconTemplate.className = "sc-toolbar-icon sc-z-99999";
-    Object.assign(iconTemplate.style, {
-      width: "35px",
-      height: "35px",
-      borderRadius: "20%",
-      cursor: "pointer",
-      backgroundColor: "white",
-      marginLeft: "6px",
-    });
-
-    function insertIcon(toolbarEl) {
-      if (!toolbarEl || toolbarEl.dataset.scIconInjected === "1") return;
-
-      const deleteBtn = toolbarEl.querySelector('[aria-label="Remove"]');
-      if (!deleteBtn) {
-        const once = new MutationObserver(() => {
-          const del = toolbarEl.querySelector('[aria-label="Remove"]');
-          if (del) {
-            once.disconnect();
-            insertIcon(toolbarEl);
-          }
-        });
-        once.observe(toolbarEl, { childList: true, subtree: true });
-        return;
-      }
-
-      if (toolbarEl.querySelector(".sc-toolbar-icon")) {
-        toolbarEl.dataset.scIconInjected = "1";
-        return;
-      }
-
-      const icon = iconTemplate.cloneNode(true);
-      icon.addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        evt.preventDefault();
-        if (typeof toggleWidgetVisibility === "function") {
-          toggleWidgetVisibility(evt, null);
-        } else {
-          (window.__sc_toggleQueue ||= []).push([evt, null]);
-        }
-      });
-
-      deleteBtn.parentNode.insertBefore(icon, deleteBtn.nextSibling);
-      toolbarEl.dataset.scIconInjected = "1";
-    }
-
-    // 4) process any existing toolbars immediately
-    const MATCH = ".tidILMJ7AVANuKwS";
-    rootDoc.querySelectorAll(MATCH).forEach(insertIcon);
-
-    // 5) watch for toolbars as they are created (no polling, fires instantly)
-    const mo = new MutationObserver((records) => {
-      for (const r of records) {
-        for (const n of r.addedNodes) {
-          if (n.nodeType !== 1) continue;
-          if (n.matches?.(MATCH)) insertIcon(n);
-          n.querySelectorAll?.(MATCH).forEach(insertIcon);
-        }
-      }
-    });
-    mo.observe(rootDoc.body, { childList: true, subtree: true });
-  })();
 
   function checkView() {
     const isMobile = window.innerWidth <= 768;
