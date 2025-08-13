@@ -1312,8 +1312,7 @@ export function initButtonShadowControls(getSelectedElement) {
 
 
 window.syncButtonStylesFromElement = function (selectedElement) {
-  const selectedElement =
-    typeof selected === "function" ? selected() : selected;
+   selectedElement  === "function" ? selected() : selected;
   if (!selectedElement || !(selectedElement instanceof Element)) return;
 
   const sampleButton = selectedElement.querySelector(
