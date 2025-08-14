@@ -925,6 +925,13 @@ async function toggleWidgetVisibility(event, clickedBlock = null) {
     widgetContainer.style.height === "0px";
 
   if (isHidden) {
+     if (widgetContainer) {
+       widgetContainer.style.setProperty("position", "fixed", "important");
+       widgetContainer.style.setProperty("right", "100px", "important");
+       widgetContainer.style.setProperty("top", "100px", "important");
+       widgetContainer.style.removeProperty("left");
+       widgetContainer.style.removeProperty("transform");
+     }
     if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
     else {
       widgetContainer.style.visibility = "visible";
@@ -1005,6 +1012,65 @@ async function loadWidgetFromString(htmlString, clickedBlock) {
   document.body.appendChild(widgetContainer);
 
   initImageMaskControls(() => selectedElement);
+  function makeWidgetDraggable() {
+    if (!widgetContainer) return;
+
+    // make inline style win even if theme/widget CSS tries to force fixed
+    widgetContainer.style.setProperty("position", "absolute", "important");
+    widgetContainer.style.setProperty("z-index", "999999", "important");
+    widgetContainer.style.left = "10px";
+    widgetContainer.style.top = "10px";
+
+    let offsetX = 0,
+      offsetY = 0,
+      isDragging = false;
+
+    function startDrag(event) {
+      const draggableElement = event.target.closest("#sc-grabbing");
+      if (!draggableElement || event.target.closest(".sc-dropdown")) return;
+
+      event.preventDefault();
+      isDragging = true;
+
+      let clientX = event.clientX || event.touches?.[0]?.clientX;
+      let clientY = event.clientY || event.touches?.[0]?.clientY;
+
+      offsetX = clientX - widgetContainer.getBoundingClientRect().left;
+      offsetY = clientY - widgetContainer.getBoundingClientRect().top;
+
+      document.addEventListener("mousemove", moveAt);
+      document.addEventListener("mouseup", stopDragging);
+      document.addEventListener("touchmove", moveAt);
+      document.addEventListener("touchend", stopDragging);
+    }
+
+    function moveAt(event) {
+      if (!isDragging) return;
+
+      let clientX = event.clientX || event.touches?.[0]?.clientX;
+      let clientY = event.clientY || event.touches?.[0]?.clientY;
+
+      const newX = clientX - offsetX;
+      const newY = clientY - offsetY;
+
+      widgetContainer.style.left = `${newX}px`;
+      widgetContainer.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+      isDragging = false;
+      document.removeEventListener("mousemove", moveAt);
+      document.removeEventListener("mouseup", stopDragging);
+      document.removeEventListener("touchmove", moveAt);
+      document.removeEventListener("touchend", stopDragging);
+    }
+
+    widgetContainer.removeEventListener("mousedown", startDrag);
+    widgetContainer.removeEventListener("touchstart", startDrag);
+
+    widgetContainer.addEventListener("mousedown", startDrag);
+    widgetContainer.addEventListener("touchstart", startDrag);
+  }
   makeWidgetDraggable();
 
   setTimeout(() => {
@@ -1159,74 +1225,17 @@ function waitForElement(selector, timeout = 3000) {
   });
 }
 
-function makeWidgetDraggable() {
-  if (!widgetContainer) return;
 
-  // make inline style win even if theme/widget CSS tries to force fixed
-  widgetContainer.style.setProperty("position", "absolute", "important");
-  widgetContainer.style.setProperty("z-index", "999999", "important");
-  widgetContainer.style.left = "10px";
-  widgetContainer.style.top = "10px";
-
-  let offsetX = 0, offsetY = 0, isDragging = false;
-
-  function startDrag(event) {
-    const draggableElement = event.target.closest("#sc-grabbing");
-    if (!draggableElement || event.target.closest(".sc-dropdown")) return;
-
-    event.preventDefault();
-    isDragging = true;
-
-    let clientX = event.clientX || event.touches?.[0]?.clientX;
-    let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-    offsetX = clientX - widgetContainer.getBoundingClientRect().left;
-    offsetY = clientY - widgetContainer.getBoundingClientRect().top;
-
-    document.addEventListener("mousemove", moveAt);
-    document.addEventListener("mouseup", stopDragging);
-    document.addEventListener("touchmove", moveAt);
-    document.addEventListener("touchend", stopDragging);
-  }
-
-  function moveAt(event) {
-    if (!isDragging) return;
-
-    let clientX = event.clientX || event.touches?.[0]?.clientX;
-    let clientY = event.clientY || event.touches?.[0]?.clientY;
-
-    const newX = clientX - offsetX;
-    const newY = clientY - offsetY;
-
-    widgetContainer.style.left = `${newX}px`;
-    widgetContainer.style.top = `${newY}px`;
-  }
-
-  function stopDragging() {
-    isDragging = false;
-    document.removeEventListener("mousemove", moveAt);
-    document.removeEventListener("mouseup", stopDragging);
-    document.removeEventListener("touchmove", moveAt);
-    document.removeEventListener("touchend", stopDragging);
-  }
-
-  widgetContainer.removeEventListener("mousedown", startDrag);
-  widgetContainer.removeEventListener("touchstart", startDrag);
-
-  widgetContainer.addEventListener("mousedown", startDrag);
-  widgetContainer.addEventListener("touchstart", startDrag);
-}
 
 // (removed the second, duplicate body click closer here — attachGlobalClickListener handles it)
 
 function adjustWidgetPosition() {
   if (!widgetContainer) return;
-
-  if (window.innerWidth <= 768) {
-    widgetContainer.style.left = "auto";
-    widgetContainer.style.right = "0px";
-    widgetContainer.style.top = "100px";
-  }
+  widgetContainer.style.setProperty("position", "fixed", "important");
+  widgetContainer.style.setProperty("right", "100px", "important");
+  widgetContainer.style.setProperty("top", "100px", "important");
+  widgetContainer.style.removeProperty("left");
+  widgetContainer.style.removeProperty("transform");
 }
 
 window.addEventListener("resize", adjustWidgetPosition);
@@ -1284,6 +1293,10 @@ function moveWidgetToMobileContainer() {
       "❌ Mobile container not found. Widget remains in default location."
     );
   }
+
+   if (!document.body.contains(widgetContainer))
+     document.body.appendChild(widgetContainer);
+   adjustWidgetPosition();
 }
 
 fetchModifications();
@@ -1291,6 +1304,9 @@ fetchModifications();
 function moveWidgetToDesktop() {
   if (!widgetContainer) return;
   document.body.appendChild(widgetContainer);
+   if (!document.body.contains(widgetContainer))
+     document.body.appendChild(widgetContainer);
+   adjustWidgetPosition();
 }
 
 checkView();
