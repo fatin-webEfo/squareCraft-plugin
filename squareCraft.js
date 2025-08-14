@@ -1,9 +1,9 @@
 
 (async function squareCraft() {
-  let widgetReadyPromise = null; 
-  let lastToggleAt = 0; 
+  let widgetReadyPromise = null; // single‑flight fence
+  let lastToggleAt = 0; // debounce rapid clicks
   let justOpenedUntil = 0; // grace period for the body-closer
-  let __sc_creating = false;
+
   const HOST_DOC = (() => {
     try {
       if (parent && parent !== window) {
@@ -79,8 +79,7 @@ document.body.addEventListener("click", (e) => {
 
   const isInsideWidget = widgetContainer?.contains(e.target);
   const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-  const isHiddenInput =
-    e.target.tagName === "INPUT" && e.target.type === "file";
+  const isHiddenInput = e.target.tagName === "INPUT" && e.target.type === "file";
 
   if (
     !isInsideWidget &&
@@ -1259,6 +1258,7 @@ document.body.addEventListener("click", (e) => {
         });
     }
   }
+  let __sc_creating = false;
 
   async function createWidget(clickedBlock) {
     if (__sc_creating || widgetLoaded) return;
