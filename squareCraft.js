@@ -3,7 +3,7 @@
   let widgetReadyPromise = null; 
   let lastToggleAt = 0; 
   let justOpenedUntil = 0; 
-
+  let __sc_creating = false;
   const HOST_DOC = (() => {
     try {
       if (parent && parent !== window) {
@@ -1261,7 +1261,7 @@ document.body.addEventListener("click", (e) => {
         });
     }
   }
-  let __sc_creating = false;
+
 
   async function createWidget(clickedBlock) {
     if (__sc_creating || widgetLoaded) return;
