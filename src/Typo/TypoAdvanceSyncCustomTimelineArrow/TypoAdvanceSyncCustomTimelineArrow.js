@@ -427,18 +427,17 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(content, arrow) {
-   const getVar = (v, def) => {
-     const raw = getComputedStyle(content)
-       .getPropertyValue(v)
-       .trim()
-       .replace("%", "");
-     const n = parseFloat(raw);
-     return Number.isFinite(n) ? n : def;
-   };
+    const getVar = (v, def) => {
+      const raw = getComputedStyle(content)
+        .getPropertyValue(v)
+        .trim()
+        .replace("%", "");
+      const n = parseFloat(raw);
+      return Number.isFinite(n) ? n : def;
+    };
 
-   const start = () => getVar("--sc-Typo-scale-scroll-start", 0) / 100;
-   const end = () => getVar("--sc-Typo-scale-scroll-end", 100) / 100;
-
+    const start = () => getVar("--sc-Typo-scale-scroll-start", 0) / 100;
+    const end = () => getVar("--sc-Typo-scale-scroll-end", 100) / 100;
 
     const entry = () => getVar("--sc-Typo-scale-scroll-entry") / 2;
     const center = () => getVar("--sc-Typo-scale-scroll-center") / 2;
@@ -510,9 +509,9 @@ export function TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start();
       const e = end();
       const buffer = 0.001;
-if (!(e > s)) {
-  e = s + 1;
-}
+      if (!(e > s)) {
+        e = s + 1;
+      }
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -561,7 +560,6 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
     const start = () => getVar("--sc-Typo-rotate-scroll-start", 0) / 100;
     const end = () => getVar("--sc-Typo-rotate-scroll-end", 100) / 100;
 
-
     const entryDeg = () =>
       parseFloat(
         getComputedStyle(content).getPropertyValue(
@@ -580,7 +578,6 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
           "--sc-Typo-rotate-scroll-exit"
         )
       ) || 0;
-
 
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
@@ -641,9 +638,9 @@ export function TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start();
       const e = end();
       const buffer = 0.001;
-if (!(e > s)) {
-  e = s + 1;
-}
+      if (!(e > s)) {
+        e = s + 1;
+      }
       if (t < s - buffer) {
         arrow.style.backgroundColor = "#EF7C2F";
       } else if (t > e + buffer) {
