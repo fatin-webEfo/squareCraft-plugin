@@ -74,24 +74,6 @@
      }
    }
  }
-document.body.addEventListener("click", (e) => {
-  if (performance.now() < justOpenedUntil) return; // short grace period
-
-  const isInsideWidget = widgetContainer?.contains(e.target);
-  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-  const isHiddenInput = e.target.tagName === "INPUT" && e.target.type === "file";
-
-  if (
-    !isInsideWidget &&
-    !isToolbarIcon &&
-    !isHiddenInput &&
-    widgetContainer &&
-    widgetContainer.style.visibility !== "hidden" &&
-    widgetContainer.style.opacity !== "0"
-  ) {
-    animateWidgetClose(widgetContainer, 0.2);
-  }
-});
 
   (() => {
     let d = document;
