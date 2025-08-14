@@ -1,8 +1,8 @@
 
 (async function squareCraft() {
-  let widgetReadyPromise = null; // single‑flight fence
-  let lastToggleAt = 0; // debounce rapid clicks
-  let justOpenedUntil = 0; // grace period for the body-closer
+  let widgetReadyPromise = null; 
+  let lastToggleAt = 0; 
+  let justOpenedUntil = 0; 
 
   const HOST_DOC = (() => {
     try {
