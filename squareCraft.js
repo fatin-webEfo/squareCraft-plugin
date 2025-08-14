@@ -1012,65 +1012,81 @@ async function loadWidgetFromString(htmlString, clickedBlock) {
   document.body.appendChild(widgetContainer);
 
   initImageMaskControls(() => selectedElement);
-  function makeWidgetDraggable() {
-    if (!widgetContainer) return;
+ function makeWidgetDraggable() {
+   if (!widgetContainer) return;
 
-    // make inline style win even if theme/widget CSS tries to force fixed
-    widgetContainer.style.setProperty("position", "absolute", "important");
-    widgetContainer.style.setProperty("z-index", "999999", "important");
-    widgetContainer.style.left = "10px";
-    widgetContainer.style.top = "10px";
+   // Default pin position every time this runs
+   widgetContainer.style.setProperty("position", "fixed", "important");
+   widgetContainer.style.setProperty("z-index", "999999", "important");
+   widgetContainer.style.setProperty("top", "100px", "important");
+   widgetContainer.style.setProperty("right", "100px", "important");
+   widgetContainer.style.removeProperty("left");
+   widgetContainer.style.removeProperty("transform"); // ensure no prior transforms fight us
 
-    let offsetX = 0,
-      offsetY = 0,
-      isDragging = false;
+   let offsetX = 0,
+     offsetY = 0,
+     isDragging = false;
 
-    function startDrag(event) {
-      const draggableElement = event.target.closest("#sc-grabbing");
-      if (!draggableElement || event.target.closest(".sc-dropdown")) return;
+   function startDrag(event) {
+     const draggableElement = event.target.closest("#sc-grabbing");
+     if (!draggableElement || event.target.closest(".sc-dropdown")) return;
 
-      event.preventDefault();
-      isDragging = true;
+     event.preventDefault();
+     isDragging = true;
 
-      let clientX = event.clientX || event.touches?.[0]?.clientX;
-      let clientY = event.clientY || event.touches?.[0]?.clientY;
+     const rect = widgetContainer.getBoundingClientRect();
+     const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+     const clientY = event.touches ? event.touches[0].clientY : event.clientY;
 
-      offsetX = clientX - widgetContainer.getBoundingClientRect().left;
-      offsetY = clientY - widgetContainer.getBoundingClientRect().top;
+     offsetX = clientX - rect.left;
+     offsetY = clientY - rect.top;
 
-      document.addEventListener("mousemove", moveAt);
-      document.addEventListener("mouseup", stopDragging);
-      document.addEventListener("touchmove", moveAt);
-      document.addEventListener("touchend", stopDragging);
-    }
+     // When dragging starts, switch to left/top coords for smooth movement
+     widgetContainer.style.removeProperty("right");
+     widgetContainer.style.left = rect.left + "px";
 
-    function moveAt(event) {
-      if (!isDragging) return;
+     document.addEventListener("mousemove", moveAt);
+     document.addEventListener("mouseup", stopDragging);
+     document.addEventListener("touchmove", moveAt, { passive: false });
+     document.addEventListener("touchend", stopDragging);
+   }
 
-      let clientX = event.clientX || event.touches?.[0]?.clientX;
-      let clientY = event.clientY || event.touches?.[0]?.clientY;
+   function moveAt(event) {
+     if (!isDragging) return;
 
-      const newX = clientX - offsetX;
-      const newY = clientY - offsetY;
+     const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+     const clientY = event.touches ? event.touches[0].clientY : event.clientY;
 
-      widgetContainer.style.left = `${newX}px`;
-      widgetContainer.style.top = `${newY}px`;
-    }
+     const maxX = window.innerWidth - widgetContainer.offsetWidth;
+     const maxY = window.innerHeight - widgetContainer.offsetHeight;
 
-    function stopDragging() {
-      isDragging = false;
-      document.removeEventListener("mousemove", moveAt);
-      document.removeEventListener("mouseup", stopDragging);
-      document.removeEventListener("touchmove", moveAt);
-      document.removeEventListener("touchend", stopDragging);
-    }
+     const newX = Math.max(0, Math.min(maxX, clientX - offsetX));
+     const newY = Math.max(0, Math.min(maxY, clientY - offsetY));
 
-    widgetContainer.removeEventListener("mousedown", startDrag);
-    widgetContainer.removeEventListener("touchstart", startDrag);
+     widgetContainer.style.left = newX + "px";
+     widgetContainer.style.top = newY + "px";
 
-    widgetContainer.addEventListener("mousedown", startDrag);
-    widgetContainer.addEventListener("touchstart", startDrag);
-  }
+     if (event.cancelable) event.preventDefault();
+   }
+
+   function stopDragging() {
+     isDragging = false;
+     document.removeEventListener("mousemove", moveAt);
+     document.removeEventListener("mouseup", stopDragging);
+     document.removeEventListener("touchmove", moveAt);
+     document.removeEventListener("touchend", stopDragging);
+   }
+
+   // Clean old listeners before binding
+   widgetContainer.removeEventListener("mousedown", startDrag);
+   widgetContainer.removeEventListener("touchstart", startDrag);
+
+   widgetContainer.addEventListener("mousedown", startDrag);
+   widgetContainer.addEventListener("touchstart", startDrag, {
+     passive: false,
+   });
+ }
+
   makeWidgetDraggable();
 
   setTimeout(() => {
