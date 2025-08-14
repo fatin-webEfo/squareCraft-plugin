@@ -2,9 +2,8 @@
 (async function squareCraft() {
   let widgetReadyPromise = null; 
   let lastToggleAt = 0; 
-  let justOpenedUntil = 0; 
+  let justOpenedUntil = 0; // grace period for the body-closer
   let __sc_creating = false;
-
   const HOST_DOC = (() => {
     try {
       if (parent && parent !== window) {
@@ -75,7 +74,25 @@
      }
    }
  }
+document.body.addEventListener("click", (e) => {
+  if (performance.now() < justOpenedUntil) return; // short grace period
 
+  const isInsideWidget = widgetContainer?.contains(e.target);
+  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+  const isHiddenInput =
+    e.target.tagName === "INPUT" && e.target.type === "file";
+
+  if (
+    !isInsideWidget &&
+    !isToolbarIcon &&
+    !isHiddenInput &&
+    widgetContainer &&
+    widgetContainer.style.visibility !== "hidden" &&
+    widgetContainer.style.opacity !== "0"
+  ) {
+    animateWidgetClose(widgetContainer, 0.2);
+  }
+});
 
   (() => {
     let d = document;
