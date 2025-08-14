@@ -75,7 +75,8 @@
    }
  }
 document.body.addEventListener("click", (e) => {
-  if (performance.now() < justOpenedUntil) return; // short grace period
+  // ignore outside-clicks for a short moment after opening
+  if (performance.now() < justOpenedUntil) return;
 
   const isInsideWidget = widgetContainer?.contains(e.target);
   const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
@@ -93,6 +94,7 @@ document.body.addEventListener("click", (e) => {
     animateWidgetClose(widgetContainer, 0.2);
   }
 });
+
 
   (() => {
     let d = document;
@@ -1316,29 +1318,29 @@ document.body.addEventListener("click", (e) => {
     });
   }
 
-  // (removed the second, duplicate body click closer here — attachGlobalClickListener handles it)
+function adjustWidgetPosition() {
+  if (!widgetContainer || widgetContainer.parentNode !== document.body) return;
+  widgetContainer.style.setProperty("position", "fixed", "important");
+  widgetContainer.style.setProperty("right", "100px", "important");
+  widgetContainer.style.setProperty("top", "100px", "important");
+  widgetContainer.style.removeProperty("left");
+  widgetContainer.style.removeProperty("transform");
+}
 
-  function adjustWidgetPosition() {
-    if (!widgetContainer) return;
-    widgetContainer.style.setProperty("position", "fixed", "important");
-    widgetContainer.style.setProperty("right", "100px", "important");
-    widgetContainer.style.setProperty("top", "100px", "important");
-    widgetContainer.style.removeProperty("left");
-    widgetContainer.style.removeProperty("transform");
-  }
 
   window.addEventListener("resize", adjustWidgetPosition);
   adjustWidgetPosition();
 
-  function checkView() {
-    const isMobile = window.innerWidth <= 768;
-
-    if (isMobile) {
-      moveWidgetToMobileContainer();
-    } else {
-      moveWidgetToDesktop();
-    }
+function checkView() {
+  if (!widgetLoaded || !widgetContainer) return;
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    moveWidgetToMobileContainer();
+  } else {
+    moveWidgetToDesktop();
   }
+}
+
 
   function moveWidgetToMobileContainer() {
     if (!widgetContainer) return;
@@ -1383,20 +1385,19 @@ document.body.addEventListener("click", (e) => {
       );
     }
 
-    if (!document.body.contains(widgetContainer))
-      document.body.appendChild(widgetContainer);
-    adjustWidgetPosition();
+
   }
 
   fetchModifications();
 
-  function moveWidgetToDesktop() {
-    if (!widgetContainer) return;
+function moveWidgetToDesktop() {
+  if (!widgetContainer) return;
+  if (widgetContainer.parentNode !== document.body) {
     document.body.appendChild(widgetContainer);
-    if (!document.body.contains(widgetContainer))
-      document.body.appendChild(widgetContainer);
-    adjustWidgetPosition();
   }
+  adjustWidgetPosition();
+}
+
 
   checkView();
   window.addEventListener("resize", checkView);
