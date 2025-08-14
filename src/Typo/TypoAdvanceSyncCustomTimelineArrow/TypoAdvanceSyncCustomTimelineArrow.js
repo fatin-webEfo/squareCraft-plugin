@@ -155,16 +155,21 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(content, arrow) {
-    const getVar = (v) =>
-      parseFloat(
-        getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
-      ) || 0;
+   const getVar = (v, def) => {
+     const raw = getComputedStyle(content)
+       .getPropertyValue(v)
+       .trim()
+       .replace("%", "");
+     const n = parseFloat(raw);
+     return Number.isFinite(n) ? n : def;
+   };
+
+   const start = () => getVar("--sc-Typo-horizontal-scroll-start", 0) / 100;
+   const end = () => getVar("--sc-Typo-horizontal-scroll-end", 100) / 100;
 
     const entryX = () => getVar("--sc-Typo-horizontal-scroll-entry") / 2;
     const centerX = () => getVar("--sc-Typo-horizontal-scroll-center") / 2;
     const exitX = () => getVar("--sc-Typo-horizontal-scroll-exit") / 2;
-    const start = () => getVar("--sc-Typo-horizontal-scroll-start") / 100;
-    const end = () => getVar("--sc-Typo-horizontal-scroll-end") / 100;
 
     if (!document.documentElement.classList.contains("sc-no-x-scroll")) {
       document.documentElement.classList.add("sc-no-x-scroll");
@@ -245,7 +250,9 @@ export function TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start();
       const e = end();
       const buffer = 0.001;
-
+if (!(e > s)) {
+  e = s + 1;
+}
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
