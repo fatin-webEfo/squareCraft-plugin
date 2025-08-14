@@ -14,56 +14,67 @@
     return document;
   })();
   const HOST_WIN = HOST_DOC.defaultView || window;
-  async function toggleWidgetVisibility(event, clickedBlock = null) {
-    event?.stopPropagation?.();
+ async function toggleWidgetVisibility(event, clickedBlock = null) {
+   event?.stopPropagation?.();
 
-    if (!widgetLoaded) {
-      await createWidget(clickedBlock);
-    }
+   // debounce double-clicks
+   const now = performance.now();
+   if (now - lastToggleAt < 200) return;
+   lastToggleAt = now;
 
-    const isHidden =
-      !widgetContainer ||
-      widgetContainer.style.visibility === "hidden" ||
-      widgetContainer.style.opacity === "0" ||
-      widgetContainer.style.height === "0px";
+   // single‑flight create (prevents duplicates + “nothing happens”)
+   if (!widgetContainer) {
+     widgetReadyPromise ||= (async () => {
+       await createWidget(clickedBlock);
+       return widgetContainer;
+     })();
+     await widgetReadyPromise;
+   }
 
-    if (isHidden) {
-      if (widgetContainer) {
-        widgetContainer.style.setProperty("position", "fixed", "important");
-        widgetContainer.style.setProperty("right", "100px", "important");
-        widgetContainer.style.setProperty("top", "100px", "important");
-        widgetContainer.style.removeProperty("left");
-        widgetContainer.style.removeProperty("transform");
-      }
-      if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
-      else {
-        widgetContainer.style.visibility = "visible";
-        widgetContainer.style.opacity = "1";
-        widgetContainer.style.height = "auto";
-        widgetContainer.style.overflow = "visible";
-      }
-    } else {
-      if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
-      else {
-        widgetContainer.style.visibility = "hidden";
-        widgetContainer.style.opacity = "0";
-        widgetContainer.style.height = "0";
-        widgetContainer.style.overflow = "hidden";
-      }
-    }
+   const isHidden =
+     !widgetContainer ||
+     widgetContainer.style.visibility === "hidden" ||
+     widgetContainer.style.opacity === "0" ||
+     widgetContainer.style.height === "0px";
 
-    if (clickedBlock) {
-      try {
-        await waitForElement(
-          "#typoSection, #imageSection, #buttonSection",
-          4000
-        );
-        handleAndDetect(clickedBlock);
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
-  }
+   if (isHidden) {
+     widgetContainer.style.setProperty("position", "fixed", "important");
+     widgetContainer.style.setProperty("right", "100px", "important");
+     widgetContainer.style.setProperty("top", "100px", "important");
+     widgetContainer.style.removeProperty("left");
+     widgetContainer.style.removeProperty("transform");
+
+     if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
+     else {
+       widgetContainer.style.visibility = "visible";
+       widgetContainer.style.opacity = "1";
+       widgetContainer.style.height = "auto";
+       widgetContainer.style.overflow = "visible";
+     }
+     justOpenedUntil = performance.now() + 300; // ignore immediate outside-clicks
+   } else {
+     if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
+     else {
+       widgetContainer.style.visibility = "hidden";
+       widgetContainer.style.opacity = "0";
+       widgetContainer.style.height = "0";
+       widgetContainer.style.overflow = "hidden";
+     }
+   }
+
+   if (clickedBlock) {
+     try {
+       await waitForElement(
+         "#typoSection, #imageSection, #buttonSection",
+         4000
+       );
+       handleAndDetect(clickedBlock);
+     } catch (err) {
+       console.error(err.message);
+     }
+   }
+ }
+
   (() => {
     let d = document;
     try {
