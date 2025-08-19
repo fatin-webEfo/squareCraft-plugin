@@ -625,9 +625,6 @@ document.body.addEventListener("click", (e) => {
   const { initImageUploadPreview } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonSectionToggleControls/initImageUploadPreview.js"
   );
-  const { initImageMaskControls } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
-  );
   const { getSquarespaceThemeStyles } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js"
   );
@@ -1051,7 +1048,15 @@ document.body.addEventListener("click", (e) => {
 
     document.body.appendChild(widgetContainer);
 
-    initImageMaskControls(() => selectedElement);
+   try {
+     const { initImageMaskControls } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+     );
+     initImageMaskControls(() => selectedElement);
+   } catch (e) {
+     console.warn("initImageMaskControls load failed:", e);
+   }
+
 
     function makeWidgetDraggable() {
       if (!widgetContainer) return;
