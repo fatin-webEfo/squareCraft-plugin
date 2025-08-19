@@ -56,12 +56,11 @@
         class="sc-mt-8 sc-flex-col sc-pb-30px sc-items-center sc-justify-center sc-gap-2"
       >
         <div class="sc-relative sc-mt-2 sc-items-center sc-flex-col">
-          <p  id="button-structure-margin-top-count"
-            class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-            style="bottom: 30px"
-          >
-            0px
-          </p>
+          <input  id="button-structure-margin-top-count"
+             class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+          style="bottom: 30px"
+        >
           <div class="button-structure-margin-top-box">
             <div
               id="button-structure-margin-top-fill"
@@ -71,12 +70,11 @@
         </div>
         <div class="sc-flex sc-items-center sc-justify-center sc-gap-2">
           <div class="sc-flex sc-items-center sc-relative">
-            <p  id="button-structure-margin-left-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="right: 30px"
-            >
-              0px
-            </p>
+            <input  id="button-structure-margin-left-count"
+              class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="right: 30px"
+          >
             <div class="button-structure-margin-left-box">
               <div
                 id="button-structure-margin-left-fill"
@@ -91,30 +89,27 @@
               class="sc-cursor-pointer"
               alt=""
             />
-            <p  id="button-structure-padding-right-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="right: 18px"
-            >
-              0px
-            </p>
-            <p id="button-structure-padding-top-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="top: 18px"
-            >
-              0px
-            </p>
-            <p id="button-structure-padding-left-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="left: 18px"
-            >
-              0px
-            </p>
-            <p id="button-structure-padding-bottom-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="bottom: 18px"
-            >
-              0px
-            </p>
+            <input  id="button-structure-padding-right-count"
+             class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="right: 18px"
+          >
+            <input id="button-structure-padding-top-count"
+              class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="top: 18px"
+          >
+             
+            <input id="button-structure-padding-left-count"
+               class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="left: 18px"
+          >
+            <input id="button-structure-padding-bottom-count"
+              class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="bottom: 18px"
+          >
 
             <div
               id="button-structure-padding-left"
@@ -146,11 +141,10 @@
               ></div>
             </div>
             <p id="button-structure-margin-right-count"
-              class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-              style="left: 30px"
+             class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+            style="left: 30px"
             >
-              0px
-            </p>
           </div>
         </div>
         <div class="sc-relative sc-items-center sc-flex-col">
@@ -161,11 +155,10 @@
             ></div>
           </div>
           <p  id="button-structure-margin-bottom-count"
-            class="sc-universal sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute"
-            style="top: 30px"
+           class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
+            value="0"
+          style="top: 30px"
           >
-            0px
-          </p>
         </div>
       </div>
 

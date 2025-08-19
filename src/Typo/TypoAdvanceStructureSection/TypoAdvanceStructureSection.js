@@ -147,7 +147,6 @@ export function TypoAdvanceStructureSection() {
             class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
             value="0"
             style="left: 30px"
-            
             >
           </div>
 
