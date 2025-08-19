@@ -17,12 +17,10 @@
  async function toggleWidgetVisibility(event, clickedBlock = null) {
    event?.stopPropagation?.();
 
-   // debounce double-clicks
    const now = performance.now();
    if (now - lastToggleAt < 200) return;
    lastToggleAt = now;
 
-   // single‑flight create (prevents duplicates + “nothing happens”)
    if (!widgetContainer) {
      widgetReadyPromise ||= (async () => {
        await createWidget(clickedBlock);
@@ -51,7 +49,7 @@
        widgetContainer.style.height = "auto";
        widgetContainer.style.overflow = "visible";
      }
-     justOpenedUntil = performance.now() + 300; // ignore immediate outside-clicks
+     justOpenedUntil = performance.now() + 300; 
    } else {
      if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
      else {
@@ -209,7 +207,6 @@ document.body.addEventListener("click", (e) => {
   }
 
   function triggerLaunchAnimation() {
-    // use host doc so it works when icon lives in parent
     const icon = HOST_DOC.querySelector(".sc-toolbar-icon");
     if (window.gsap && icon) {
       gsap.fromTo(
