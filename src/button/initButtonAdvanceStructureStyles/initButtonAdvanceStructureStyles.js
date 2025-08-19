@@ -5,7 +5,6 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     left: "button-structure-margin-left-count",
     right: "button-structure-margin-right-count",
   };
-
   const paddingMap = {
     top: "button-structure-padding-top-count",
     bottom: "button-structure-padding-bottom-count",
@@ -13,14 +12,33 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     right: "button-structure-padding-right-count",
   };
 
+  const allIds = [...Object.values(marginMap), ...Object.values(paddingMap)];
+  const $ = (id) => document.getElementById(id);
+
+  const clamp = (n) => Math.max(0, Math.min(999, Math.round(n || 0)));
+  const readPx = (el) => {
+    if (!el) return 0;
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    const n = parseInt(String(raw).replace(/[^\-0-9]/g, ""), 10);
+    return clamp(Number.isFinite(n) ? n : 0);
+  };
+  const writePx = (el, v) => {
+    if (!el) return;
+    const s = String(clamp(v));
+    if (el.tagName === "INPUT") el.value = s;
+    else el.textContent = s;
+  };
+
   const updateStyles = () => {
-    const block = getSelectedElement();
+    const block =
+      typeof getSelectedElement === "function" ? getSelectedElement() : null;
     if (!block) return;
 
     const blockId = block.id;
-    const buttonSelector = `#${blockId} a`;
+    // Target both anchor-buttons and button elements inside the block
+    const buttonSelector = `#${blockId} a, #${blockId} button`;
 
-    const styleId = `sc-structure-style-${blockId}`;
+    const styleId = `sc-button-structure-style-${blockId}`; // unique from Typo
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
       styleTag = document.createElement("style");
@@ -29,53 +47,35 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     }
 
     const cssParts = [];
-
     Object.entries(marginMap).forEach(([side, id]) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`margin-${side}:${value}px !important`);
-      }
+      cssParts.push(`margin-${side}:${readPx($(id))}px !important`);
     });
-
     Object.entries(paddingMap).forEach(([side, id]) => {
-      const el = document.getElementById(id);
-      if (el) {
-        const value = parseInt(el.textContent.replace("px", "").trim()) || 0;
-        cssParts.push(`padding-${side}:${value}px !important`);
-      }
+      cssParts.push(`padding-${side}:${readPx($(id))}px !important`);
     });
 
-    const cssString = `${buttonSelector} { ${cssParts.join("; ")} }`;
-    styleTag.innerHTML = cssString;
-
+    styleTag.textContent = `${buttonSelector} { ${cssParts.join("; ")} }`;
   };
 
-  const observer = new MutationObserver(updateStyles);
+  // Bind inputs
+  const bind = (id) => {
+    const el = $(id);
+    if (!el) return;
+    const onAny = () => updateStyles();
+    const normalize = () => writePx(el, readPx(el));
+    el.addEventListener("input", onAny);
+    el.addEventListener("change", onAny);
+    el.addEventListener("blur", normalize);
+  };
+  allIds.forEach(bind);
 
-  Object.values({ ...marginMap, ...paddingMap }).forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      observer.observe(el, {
-        characterData: true,
-        subtree: true,
-        childList: true,
-      });
-    }
-  });
-
+  // Initialize values and styles once
+  allIds.forEach((id) => writePx($(id), readPx($(id))));
   updateStyles();
 
+  // Reset handler (kept consistent with your UI)
   function resetStructureStyles() {
-    Object.values(marginMap).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = "0px";
-    });
-
-    Object.values(paddingMap).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerText = "0px";
-    });
+    allIds.forEach((id) => writePx($(id), 0));
 
     const marginFill = document.getElementById(
       "button-advance-margin-gap-fill"
@@ -89,81 +89,63 @@ export function initButtonAdvanceStructureStyles(getSelectedElement) {
     const paddingBullet = document.getElementById(
       "button-advance-padding-gap-bullet"
     );
-
     if (marginFill) marginFill.style.width = "0%";
     if (marginBullet) marginBullet.style.left = "0%";
     if (paddingFill) paddingFill.style.width = "0%";
     if (paddingBullet) paddingBullet.style.left = "0%";
 
-    const marginIds = [
+    [
       "button-advance-margin-gap-all",
       "button-advance-margin-gap-top",
       "button-advance-margin-gap-bottom",
       "button-advance-margin-gap-left",
       "button-advance-margin-gap-right",
-    ];
-    const paddingIds = [
       "button-advance-padding-gap-all",
       "button-advance-padding-gap-top",
       "button-advance-padding-gap-bottom",
       "button-advance-padding-gap-left",
       "button-advance-padding-gap-right",
-    ];
-
-    marginIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("sc-bg-454545");
-    });
-
-    paddingIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove("sc-bg-454545");
-    });
-
-    const marginAll = document.getElementById("button-advance-margin-gap-all");
-    const paddingAll = document.getElementById(
-      "button-advance-padding-gap-all"
+    ].forEach((id) =>
+      document.getElementById(id)?.classList.remove("sc-bg-454545")
     );
 
-    if (marginAll) marginAll.classList.add("sc-bg-454545");
-    if (paddingAll) paddingAll.classList.add("sc-bg-454545");
+    document
+      .getElementById("button-advance-margin-gap-all")
+      ?.classList.add("sc-bg-454545");
+    document
+      .getElementById("button-advance-padding-gap-all")
+      ?.classList.add("sc-bg-454545");
 
-    const allMarginFills = [
+    [
       "button-structure-margin-top-fill",
       "button-structure-margin-bottom-fill",
       "button-structure-margin-left-fill",
       "button-structure-margin-right-fill",
-    ];
-    allMarginFills.forEach((id) => {
-      const fill = document.getElementById(id);
-      if (fill) fill.style.display = "block";
+    ].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "block";
     });
 
-    const allPaddingFills = [
+    [
       "button-structure-padding-top",
       "button-structure-padding-bottom",
       "button-structure-padding-left",
       "button-structure-padding-right",
-    ];
-    allPaddingFills.forEach((id) => {
-      const fill = document.getElementById(id);
-      if (fill) fill.style.display = "block";
+    ].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "block";
     });
 
     updateStyles();
   }
 
-  const marginResetBtn = document.getElementById("button-advance-margin-reset");
-  const paddingResetBtn = document.getElementById(
-    "button-advance-padding-reset"
-  );
-  const allResetBtn = document.getElementById(
-    "button-advance-structure-reset-all"
-  );
-
-  if (marginResetBtn)
-    marginResetBtn.addEventListener("click", resetStructureStyles);
-  if (paddingResetBtn)
-    paddingResetBtn.addEventListener("click", resetStructureStyles);
-  if (allResetBtn) allResetBtn.addEventListener("click", resetStructureStyles);
+  document
+    .getElementById("button-advance-margin-reset")
+    ?.addEventListener("click", resetStructureStyles);
+  document
+    .getElementById("button-advance-padding-reset")
+    ?.addEventListener("click", resetStructureStyles);
+  document
+    .getElementById("button-advance-structure-reset-all")
+    ?.addEventListener("click", resetStructureStyles);
 }
