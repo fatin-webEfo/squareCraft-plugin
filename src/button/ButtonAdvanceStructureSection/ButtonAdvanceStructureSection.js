@@ -140,7 +140,7 @@
                 class="button-structure-margin-right-fill"
               ></div>
             </div>
-            <p id="button-structure-margin-right-count"
+            <input id="button-structure-margin-right-count"
              class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
             value="0"
             style="left: 30px"
@@ -154,7 +154,7 @@
               class="button-structure-margin-bottom-fill"
             ></div>
           </div>
-          <p  id="button-structure-margin-bottom-count"
+          <input  id="button-structure-margin-bottom-count"
            class="sc-universal sc-input sc-w-30px  sc-text-sm sc-text-gray-300 sc-font-thin sc-absolute sc-text-center"
             value="0"
           style="top: 30px"
