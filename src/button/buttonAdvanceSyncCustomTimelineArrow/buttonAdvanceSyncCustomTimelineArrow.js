@@ -17,9 +17,6 @@ function getViewportProgress(el) {
   return Math.max(0, Math.min(1, t));
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 6) rAF arrow + button Y translation (mirrors typo version logic)
-// ─────────────────────────────────────────────────────────────────────────────
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
   if (selectedElement.__scBtnRafActive) return;
