@@ -137,27 +137,6 @@ export function button_initEffectAnimationDropdownToggle() {
 }
 
 
-
-function attachCustomTimelineReset(
-  updateStart,
-  updateEnd,
-  updateEntry,
-  updateCenter,
-  updateExit
-) {
-  const resetBtn = document.getElementById("vertical-custom-timeline-reset");
-  if (!resetBtn) return;
-  resetBtn.onclick = () => {
-    updateStart(0);
-    updateEnd(100);
-    updateEntry(0);
-    updateCenter(0);
-    updateExit(0);
-  };
-}
-
-
-
 export function initButtonAdvanceStyles(getSelectedElement) {
   // cache refs
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
