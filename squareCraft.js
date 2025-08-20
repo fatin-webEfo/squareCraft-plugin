@@ -543,10 +543,17 @@
   const { handleSectionFind } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
   );
-const { ButtonAdvanceToggleControls } = await import(
-  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
-);
-ButtonAdvanceToggleControls();
+(async () => {
+  try {
+    const { ButtonAdvanceToggleControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
+    );
+    ButtonAdvanceToggleControls();
+  } catch (e) {
+    console.error("ButtonAdvanceToggleControls (post-load) failed:", e);
+  }
+})();
+
 
   const { TypoAdvanceToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
