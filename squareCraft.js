@@ -1142,6 +1142,7 @@ document.body.addEventListener("click", (e) => {
     }
 
     makeWidgetDraggable();
+
     setTimeout(() => {
       const placeholders = widgetContainer.querySelectorAll(
         ".sc-arrow-placeholder"
