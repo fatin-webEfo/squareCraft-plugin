@@ -5,27 +5,38 @@ function getViewportProgress(el) {
     '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
   );
   const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+
   const visibleTop = th;
   const visibleHeight = Math.max(1, vh - th);
+
   const r = el.getBoundingClientRect();
   const center = r.top + r.height / 2;
+
   let t = (center - visibleTop) / visibleHeight;
   if (Number.isNaN(t)) t = 0.5;
   return Math.max(0, Math.min(1, t));
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+// Button timeline sync with basic smoothing + safe reinit per selected block
+// ────────────────────────────────────────────────────────────────────────────
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
+
+  // cancel any previous loop bound to this element
   if (typeof selectedElement.__scBtnCancel === "function") {
     selectedElement.__scBtnCancel();
   }
   if (selectedElement.__scBtnRafActive) {
+    // just to be safe; will be reset below
     selectedElement.__scBtnRafActive = false;
   }
 
+  // smoothing factors (0..1). Higher = snappier.
   const SMOOTH_ARROW = 0.18;
   const SMOOTH_Y = 0.15;
 
+  // timeline / UI nodes
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   const border = document.getElementById("vertical-custom-timeline-border");
   const startBul = document.getElementById("vertical-timeline-start-bullet");
@@ -37,11 +48,14 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   );
   if (!arrow || !border || !startBul || !endBul || !dropdown) return;
 
+  // ensure basic transitions for timeline parts (when GSAP isn't animating)
   (function ensureTimelineTransitions() {
     const add = (el, v) => {
       if (el && !el.style.transition) el.style.transition = v;
     };
+    // arrow motion + color
     add(arrow, "left 140ms ease-out, background-color 140ms ease-out");
+    // bullets & fills
     add(startBul, "left 140ms ease-out");
     add(endBul, "left 140ms ease-out");
     add(
@@ -52,6 +66,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       endFill,
       "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out"
     );
+    // button translateY fallback
     const btn = getButton();
     if (btn && !btn.style.transition)
       btn.style.transition = "transform 180ms ease-out";
@@ -127,6 +142,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
+  // one-time dropdown wiring (non-destructive)
   const arrowTrigger = document.getElementById(
     "vertical-effect-animation-type-arrow"
   );
@@ -156,6 +172,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
   }
 
+  // loop control & state
   let running = true;
   selectedElement.__scBtnRafActive = true;
   selectedElement.__scBtnCancel = () => {
@@ -163,6 +180,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     selectedElement.__scBtnRafActive = false;
   };
 
+  // smoothing state
   let smoothedLeft = null;
   let smoothedYvh = null;
 
@@ -193,6 +211,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       return;
     }
 
+    // refresh bounds so live edits reflect immediately
     startPct = getPctVar(btnNow, "--sc-vertical-scroll-start", startPct);
     endPct = getPctVar(btnNow, "--sc-vertical-scroll-end", endPct);
     if (endPct < startPct + 4) endPct = startPct + 4;
@@ -203,6 +222,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (p01 < 0) p01 = 0;
     else if (p01 > 1) p01 = 1;
 
+    // compute targets
     const targetLeft = startPct + p01 * span;
     const trip = readTriplet(btnNow);
     const eased = ease01(p01, currentEase());
@@ -216,12 +236,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
     const targetYvh = yPct / 2;
 
+    // on first frame for a new selection, snap so color is always correct immediately
     if (smoothedLeft == null) smoothedLeft = targetLeft;
     if (smoothedYvh == null) smoothedYvh = targetYvh;
 
+    // smooth both
     smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
     smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
 
+    // move arrow
     if (window.gsap) {
       gsap.to(arrow, {
         left: smoothedLeft + "%",
@@ -233,7 +256,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       qArrowLeft(smoothedLeft);
     }
 
+    // color based on current start/end
     updateArrowColor(smoothedLeft, startPct, endPct);
+
+    // move button
     qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
 
     requestAnimationFrame(frame);
