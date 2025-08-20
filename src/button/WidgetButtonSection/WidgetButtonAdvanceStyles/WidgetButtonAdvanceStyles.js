@@ -1,4 +1,4 @@
- function attachAdvanceTimelineIncrementDecrement(
+function attachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit
@@ -9,6 +9,7 @@
     if (btnInc) btnInc.onclick = () => updateFn((getCurrent() || 0) + 1);
     if (btnDec) btnDec.onclick = () => updateFn((getCurrent() || 0) - 1);
   }
+
   const getEntry = () =>
     parseInt(
       (
@@ -30,6 +31,7 @@
           ?.textContent || "0%"
       ).replace("%", "")
     ) || 0;
+
   setup(
     "vertical-button-advance-entry-increase",
     "vertical-button-advance-entry-decrease",
@@ -80,6 +82,55 @@ export function button_initEffectAnimationDropdownToggle() {
     "vertical-effect-animation-value"
   );
   if (!arrow || !dropdown || !container || !displayValue) return;
+
+  arrow.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("sc-hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!container.contains(e.target)) dropdown.classList.add("sc-hidden");
+  });
+
+  dropdown.querySelectorAll("[data-value]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const selected = item.getAttribute("data-value");
+      displayValue.textContent = selected;
+      dropdown.classList.add("sc-hidden");
+    });
+  });
+}
+
+function attachCustomTimelineReset(
+  updateStart,
+  updateEnd,
+  updateEntry,
+  updateCenter,
+  updateExit
+) {
+  const resetBtn = document.getElementById("vertical-custom-timeline-reset");
+  if (!resetBtn) return;
+  resetBtn.onclick = () => {
+    updateStart(0);
+    updateEnd(100);
+    updateEntry(0);
+    updateCenter(0);
+    updateExit(0);
+  };
+}
+
+export function button_initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById(
+    "vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "vertical-effect-animation-value"
+  );
+  if (!arrow || !dropdown || !container || !displayValue) return;
   arrow.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("sc-hidden");
@@ -97,12 +148,14 @@ export function button_initEffectAnimationDropdownToggle() {
 }
 
 export function initButtonAdvanceStyles(getSelectedElement) {
+  // cache refs
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
   const endBullet = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
   const endFill = document.getElementById("vertical-timeline-end-fill");
   const startValue = document.getElementById("vertical-timelineStartValue");
   const endValue = document.getElementById("vertical-timelineEndValue");
+
   const entryBullet = document.getElementById(
     "vertical-button-advance-entry-bullet"
   );
@@ -112,6 +165,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const entryCount = document.getElementById(
     "vertical-button-advance-entry-count"
   );
+
   const centerBullet = document.getElementById(
     "vertical-button-advance-center-bullet"
   );
@@ -121,6 +175,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const centerCount = document.getElementById(
     "vertical-button-advance-center-count"
   );
+
   const exitBullet = document.getElementById(
     "vertical-button-advance-exit-bullet"
   );
@@ -128,6 +183,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const exitCount = document.getElementById(
     "vertical-button-advance-exit-count"
   );
+
   if (
     !startBullet ||
     !endBullet ||
@@ -147,9 +203,44 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   )
     return;
 
-  const writeVarToSelectedButton = (cssVar, val) => {
-    const el = getSelectedElement?.();
-    if (!el || !el.id?.startsWith("block-")) return;
+  const el = getSelectedElement?.();
+  if (!el) return;
+
+  const btn = el.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  );
+  if (!btn) return;
+
+  // state
+  const readPct = (v) => {
+    const n = parseFloat(String(v).replace("%", ""));
+    return Number.isFinite(n) ? n : 0;
+  };
+
+  let startPct =
+    readPct(
+      getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-start")
+    ) || 0;
+  let endPct =
+    readPct(
+      getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-end")
+    ) || 100;
+
+  if (endPct < startPct + 4) endPct = startPct + 4;
+
+  let entryPct = readPct(
+    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-entry")
+  );
+  let centerPct = readPct(
+    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-center")
+  );
+  let exitPct = readPct(
+    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
+  );
+
+  // write CSS vars to the actual button (scoped with style tag)
+  function writeVar(cssVar, val) {
     const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -157,192 +248,152 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    styleTag.textContent = `#${el.id} a.sqs-block-button-element, #${el.id} button.sqs-button-element--primary, #${el.id} button.sqs-button-element--secondary, #${el.id} button.sqs-button-element--tertiary {\n  ${cssVar}: ${val}%;\n}`;
-  };
+    styleTag.textContent = `#${el.id} a.sqs-block-button-element, #${el.id} button.sqs-button-element--primary, #${el.id} button.sqs-button-element--secondary, #${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; }`;
+  }
 
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-      countEl.textContent = `${val}%`;
-      if (
-        [
-          "--sc-vertical-scroll-entry",
-          "--sc-vertical-scroll-center",
-          "--sc-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-      } else if (position === "left") {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, { width: `${val}%`, left: "0" });
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0",
-          right: "auto",
-          transform: `scaleX(${(100 - val) / 100})`,
-          transformOrigin: "right",
-          width: "100%",
-          backgroundColor: "#F6B67B",
-        });
-      }
-      writeVarToSelectedButton(cssVar, val);
-    };
+  // initial mirror to UI
+  function paintStartEnd() {
+    startValue.textContent = `${Math.round(startPct)}%`;
+    endValue.textContent = `${Math.round(endPct)}%`;
 
-  const makeDraggable = (
-    bullet,
-    updateFn,
-    type = "normal",
-    min = -100,
-    max = 100
-  ) => {
+    // bullets
+    gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
+    gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
+
+    // fills
+    gsap.set(startFill, {
+      left: "0%",
+      width: `${startPct}%`,
+      backgroundColor: "var(--sc-theme-accent)",
+    });
+    const endWidth = Math.max(0, 100 - endPct);
+    gsap.set(endFill, {
+      left: `${endPct}%`,
+      width: `${endWidth}%`,
+      backgroundColor: "#F6B67B",
+    });
+  }
+
+  function paintTriplet() {
+    entryCount.textContent = `${Math.round(entryPct)}%`;
+    centerCount.textContent = `${Math.round(centerPct)}%`;
+    exitCount.textContent = `${Math.round(exitPct)}%`;
+
+    function paintOne(bullet, fill, v) {
+      const percent = (v + 100) / 2; // map -100..100 → 0..100
+      const fillLeft = v < 0 ? percent : 50;
+      const fillWidth = Math.abs(v / 2);
+
+      gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
+      gsap.set(fill, {
+        left: `${fillLeft}%`,
+        width: `${fillWidth}%`,
+        backgroundColor: "var(--sc-theme-accent)",
+      });
+    }
+    paintOne(entryBullet, entryFill, entryPct);
+    paintOne(centerBullet, centerFill, centerPct);
+    paintOne(exitBullet, exitFill, exitPct);
+  }
+
+  // writers with clamping + CSS var sync
+  function setStart(val) {
+    startPct = Math.max(0, Math.min(val, endPct - 4));
+    writeVar("--sc-vertical-scroll-start", startPct);
+    paintStartEnd();
+  }
+  function setEnd(val) {
+    endPct = Math.max(startPct + 4, Math.min(val, 100));
+    writeVar("--sc-vertical-scroll-end", endPct);
+    paintStartEnd();
+  }
+
+  function setEntry(val) {
+    entryPct = Math.max(-100, Math.min(100, val));
+    writeVar("--sc-vertical-scroll-entry", entryPct);
+    paintTriplet();
+  }
+  function setCenter(val) {
+    centerPct = Math.max(-100, Math.min(100, val));
+    writeVar("--sc-vertical-scroll-center", centerPct);
+    paintTriplet();
+  }
+  function setExit(val) {
+    exitPct = Math.max(-100, Math.min(100, val));
+    writeVar("--sc-vertical-scroll-exit", exitPct);
+    paintTriplet();
+  }
+
+  // init UI from state
+  writeVar("--sc-vertical-scroll-start", startPct);
+  writeVar("--sc-vertical-scroll-end", endPct);
+  writeVar("--sc-vertical-scroll-entry", entryPct);
+  writeVar("--sc-vertical-scroll-center", centerPct);
+  writeVar("--sc-vertical-scroll-exit", exitPct);
+  paintStartEnd();
+  paintTriplet();
+
+  // draggers
+  function makeDraggable(bullet, setter, type, min = -100, max = 100) {
     bullet.onmousedown = (e) => {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
-      const onMouseMove = (event) => {
+
+      const onMove = (ev) => {
         const clientX = Math.max(
           rect.left,
-          Math.min(rect.right, event.clientX)
+          Math.min(rect.right, ev.touches ? ev.touches[0].clientX : ev.clientX)
         );
         const percent =
           ((clientX - rect.left) / rect.width) * (max - min) + min;
-        let clamped = Math.round(Math.max(min, Math.min(max, percent)));
-        const startPos = parseFloat(startBullet.style.left || "0");
-        const endPos = parseFloat(endBullet.style.left || "100");
-        if (type === "start" && clamped >= endPos - 4) updateFn(endPos - 4);
-        else if (type === "end" && clamped <= startPos + 4)
-          updateFn(startPos + 4);
-        else updateFn(clamped);
+        let v = Math.round(percent);
+
+        if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
+        if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
+        if (type === "normal") v = Math.max(min, Math.min(v, max));
+
+        setter(v);
       };
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", onMouseMove);
-        },
-        { once: true }
-      );
+
+      const onUp = () => {
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+        document.removeEventListener("touchmove", onMove);
+        document.removeEventListener("touchend", onUp);
+      };
+
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp, { once: true });
+      document.addEventListener("touchmove", onMove, { passive: false });
+      document.addEventListener("touchend", onUp, { once: true });
     };
-  };
+  }
 
-  const updateStart = updateField(
-    startBullet,
-    startFill,
-    startValue,
-    "--sc-vertical-scroll-start",
-    "left",
-    0,
-    100
-  );
-  const updateEnd = updateField(
-    endBullet,
-    endFill,
-    endValue,
-    "--sc-vertical-scroll-end",
-    "right",
-    0,
-    100
-  );
-  const updateEntry = updateField(
-    entryBullet,
-    entryFill,
-    entryCount,
-    "--sc-vertical-scroll-entry"
-  );
-  const updateCenter = updateField(
-    centerBullet,
-    centerFill,
-    centerCount,
-    "--sc-vertical-scroll-center"
-  );
-  const updateExit = updateField(
-    exitBullet,
-    exitFill,
-    exitCount,
-    "--sc-vertical-scroll-exit"
-  );
+  makeDraggable(startBullet, setStart, "start", 0, 100);
+  makeDraggable(endBullet, setEnd, "end", 0, 100);
+  makeDraggable(entryBullet, setEntry, "normal", -100, 100);
+  makeDraggable(centerBullet, setCenter, "normal", -100, 100);
+  makeDraggable(exitBullet, setExit, "normal", -100, 100);
 
-  const getCurrentPercentage = (cssVar) => {
-    const el = getSelectedElement?.();
-    if (!el) return 0;
-    const btn = el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!btn) return 0;
-    const val = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-    const parsed = parseFloat(val.replace("%", ""));
-    return Number.isFinite(parsed)
-      ? parsed
-      : cssVar === "--sc-vertical-scroll-end"
-      ? 100
-      : 0;
-  };
-
-  const initStart = getCurrentPercentage("--sc-vertical-scroll-start");
-  const initEnd = getCurrentPercentage("--sc-vertical-scroll-end");
-  updateStart(initStart);
-  updateEnd(initEnd);
-  updateEntry(getCurrentPercentage("--sc-vertical-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-vertical-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-vertical-scroll-exit"));
-
-  makeDraggable(startBullet, updateStart, "start", 0, 100);
-  makeDraggable(endBullet, updateEnd, "end", 0, 100);
-  makeDraggable(entryBullet, updateEntry, "normal");
-  makeDraggable(centerBullet, updateCenter, "normal");
-  makeDraggable(exitBullet, updateExit, "normal");
-
+  // reset buttons
   [
-    {
-      id: "vertical-button-advance-entry-reset",
-      bullet: entryBullet,
-      fill: entryFill,
-      count: entryCount,
-      css: "--sc-vertical-scroll-entry",
-    },
-    {
-      id: "vertical-button-advance-center-reset",
-      bullet: centerBullet,
-      fill: centerFill,
-      count: centerCount,
-      css: "--sc-vertical-scroll-center",
-    },
-    {
-      id: "vertical-button-advance-exit-reset",
-      bullet: exitBullet,
-      fill: exitFill,
-      count: exitCount,
-      css: "--sc-vertical-scroll-exit",
-    },
-  ].forEach(({ id, bullet, fill, count, css }) => {
-    const btn = document.getElementById(id);
-    if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
+    { id: "vertical-button-advance-entry-reset", setter: () => setEntry(0) },
+    { id: "vertical-button-advance-center-reset", setter: () => setCenter(0) },
+    { id: "vertical-button-advance-exit-reset", setter: () => setExit(0) },
+  ].forEach(({ id, setter }) => {
+    const b = document.getElementById(id);
+    if (b) b.onclick = setter;
   });
 
-  attachAdvanceTimelineIncrementDecrement(
-    updateEntry,
-    updateCenter,
-    updateExit
-  );
-  attachCustomTimelineReset(
-    updateStart,
-    updateEnd,
-    updateEntry,
-    updateCenter,
-    updateExit
-  );
-  initEffectAnimationDropdownToggle();
+  // inc/dec arrows (reuse your function name)
+  attachAdvanceTimelineIncrementDecrement(setEntry, setCenter, setExit);
+
+  // timeline reset button
+  attachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
+
+  // keep your dropdown wiring
+  button_initEffectAnimationDropdownToggle();
 }
 
 // horizontal
