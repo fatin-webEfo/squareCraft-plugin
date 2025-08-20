@@ -543,9 +543,11 @@
   const { handleSectionFind } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
   );
-  const { ButtonAdvanceToggleControls } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
-  );
+const { ButtonAdvanceToggleControls } = await import(
+  "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
+);
+ButtonAdvanceToggleControls();
+
   const { TypoAdvanceToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
   );
@@ -638,9 +640,17 @@
   const { getSquarespaceThemeStyles } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js"
   );
-  const { tooltipControls } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/button/tooltipControls/tooltipControls.js"
-  );
+(async () => {
+  try {
+    const { tooltipControls } = await import(
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/tooltipControls/tooltipControls.js"
+    );
+    tooltipControls();
+  } catch (e) {
+    console.error("tooltipControls import failed:", e);
+  }
+})();
+
   const { initBorderColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
   );
@@ -689,7 +699,7 @@
   });
 
   document.body.addEventListener("click", (event) => {
-    ButtonAdvanceToggleControls();
+
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
     if (selectedElement) {
@@ -745,7 +755,6 @@
     }
 
     setTimeout(() => {
-      ButtonAdvanceToggleControls();
       handleBlockClick(event, {
         getTextType,
         getHoverTextType,
@@ -1172,7 +1181,6 @@
             cloneClassList.forEach((cls) => svg.classList.add(cls));
             span.replaceWith(svg);
           });
-          ButtonAdvanceToggleControls();
         } catch (e) {
           console.error("createHoverableArrowSVG import failed:", e);
         }
@@ -1180,9 +1188,6 @@
     }, 100);
 
     widgetLoaded = true;
-
-    tooltipControls();
-    ButtonAdvanceToggleControls();
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
