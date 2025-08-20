@@ -9,6 +9,7 @@
 }
 
 :root {
+  /* button */
   --sc-vertical-scroll-entry: 0%;
   --sc-vertical-scroll-center: 0%;
   --sc-vertical-scroll-exit: 0%;

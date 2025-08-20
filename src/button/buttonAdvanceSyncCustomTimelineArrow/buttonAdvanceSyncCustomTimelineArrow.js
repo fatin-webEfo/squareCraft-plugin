@@ -1,6 +1,19 @@
+function getViewportProgress(el) {
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  if (vh <= 0) return 0.5;
+  const toolbar = document.querySelector('[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader');
+  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+  const visibleTop = th;
+  const visibleHeight = Math.max(1, vh - th);
+  const r = el.getBoundingClientRect();
+  const center = r.top + r.height / 2;
+  let t = (center - visibleTop) / visibleHeight;
+  if (Number.isNaN(t)) t = 0.5;
+  return Math.max(0, Math.min(1, t));
+}
+
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   let isTracking = false;
   let lastY = null;
   const transition = { ease: "power2.out" };
@@ -11,148 +24,97 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const startBullet = document.getElementById("vertical-timeline-start-bullet");
     const endBullet = document.getElementById("vertical-timeline-end-bullet");
     const dropdown = document.getElementById("vertical-effect-animation-type-list");
-
-    if (arrow && border && startBullet && endBullet && dropdown) {
-      callback(arrow, border, startBullet, endBullet, dropdown);
-    } else if (retries > 0) {
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
+    if (arrow && border && startBullet && endBullet && dropdown) callback(arrow, border, startBullet, endBullet, dropdown);
+    else if (retries > 0) setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
 
-  function updateArrowPosition(
-    arrow,
-    border,
-    startBullet,
-    endBullet,
-    dropdown
-  ) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const top = rect.top;
-    const percentFromTop = top / viewportHeight;
-    const scrollBasedLeft = Math.max(
-      0,
-      Math.min(100, 100 - 100 * percentFromTop)
-    );
-    arrow.style.left = `${scrollBasedLeft}%`;
+  function updateArrowPosition(arrow, _border, startBullet, endBullet, _dropdown) {
+    const t = getViewportProgress(selectedElement);
+    const leftPct = Math.max(0, Math.min(100, t * 100));
+    arrow.style.left = `${leftPct}%`;
     arrow.style.transform = "translateX(-50%)";
-
     const startLeft = parseFloat(startBullet.style.left || "0");
     const endLeft = parseFloat(endBullet.style.left || "100");
     const centerLeft = (startLeft + endLeft) / 2;
-
-    const btn = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
+    const btn = selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary");
     if (!btn) return;
-
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%")
-        ? (parseFloat(value) / 100) * 100
-        : parseFloat(value) || 0;
+    const getPctVar = (cssVar) => {
+      const v = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+      const n = parseFloat(v.replace("%", ""));
+      return Number.isFinite(n) ? n : 0;
     };
-
-    const entryY = getVHFromCSSVar("--sc-vertical-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-vertical-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-vertical-scroll-exit");
-
-    let y = 0;
-    let apply = false;
-
-    if (scrollBasedLeft <= startLeft + 1) {
+    const entryY = getPctVar("--sc-vertical-scroll-entry");
+    const centerY = getPctVar("--sc-vertical-scroll-center");
+    const exitY = getPctVar("--sc-vertical-scroll-exit");
+    let y = 0, apply = false;
+    if (leftPct <= startLeft + 1) {
       arrow.style.backgroundColor = "#EF7C2F";
       if (entryY !== 0) {
-        const progress = scrollBasedLeft / (startLeft + 1);
-        y = entryY * progress;
+        const p = startLeft <= 0 ? 1 : Math.min(leftPct / (startLeft + 1), 1);
+        y = entryY * p;
         apply = true;
       }
-    } else if (scrollBasedLeft >= endLeft - 1) {
+    } else if (leftPct >= endLeft - 1) {
       arrow.style.backgroundColor = "#F6B67B";
       if (exitY !== 0) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = exitY * progress;
+        const denom = 100 - endLeft + 1;
+        const p = denom <= 0 ? 1 : 1 - (100 - leftPct) / denom;
+        y = exitY * p;
         apply = true;
       }
     } else {
       arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
+      if (leftPct > startLeft + 1 && leftPct < centerLeft - 1) {
+        if (entryY !== 0 || centerY !== 0) {
+          const p = (leftPct - startLeft) / (centerLeft - startLeft);
+          y = entryY + (centerY - entryY) * p;
           apply = true;
         }
-      } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
+      } else if (leftPct > centerLeft + 1 && leftPct < endLeft - 1) {
+        if (centerY !== 0 || exitY !== 0) {
+          const p = (leftPct - centerLeft) / (endLeft - centerLeft);
+          y = centerY + (exitY - centerY) * p;
           apply = true;
         }
       }
     }
-
-    const finalY = apply ? y : 0;
-
-    if (lastY !== finalY) {
-
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
-      });
-      lastY = finalY;
+    const finalYvh = apply ? y / 2 : 0;
+    if (lastY !== finalYvh) {
+      gsap.to(btn, { duration: 0.3, ease: transition.ease, transform: `translateY(${finalYvh.toFixed(2)}vh)`, overwrite: true });
+      lastY = finalYvh;
     }
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
     if (isTracking) return;
     isTracking = true;
-    function loop() {
+    (function loop() {
       updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
       requestAnimationFrame(loop);
-    }
-    loop();
+    })();
   }
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById("vertical-effect-animation-type-arrow");
-
     if (arrowTrigger && dropdown) {
       arrowTrigger.addEventListener("click", (e) => {
         e.stopPropagation();
         dropdown.classList.toggle("sc-hidden");
       });
-
       document.addEventListener("click", (e) => {
-        if (
-          !arrowTrigger.contains(e.target) &&
-          !dropdown.contains(e.target) &&
-          !dropdown.classList.contains("sc-hidden")
-        ) {
+        if (!arrowTrigger.contains(e.target) && !dropdown.contains(e.target) && !dropdown.classList.contains("sc-hidden")) {
           dropdown.classList.add("sc-hidden");
         }
       });
-
       dropdown.querySelectorAll("[data-value]").forEach((item) => {
         item.addEventListener("click", () => {
           const selectedEffect = item.getAttribute("data-value");
           const display = dropdown.previousElementSibling;
-          if (display?.querySelector("p")) {
-            display.querySelector("p").textContent = selectedEffect;
-          }
-          transition.ease = selectedEffect || "power2.out";
+          if (display?.querySelector("p")) display.querySelector("p").textContent = selectedEffect;
           dropdown.classList.add("sc-hidden");
         });
       });
     }
-
     trackLoop(arrow, border, startBullet, endBullet, dropdown);
   });
 }
@@ -325,8 +287,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   });
 }
 
-
-
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -492,8 +452,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
-
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -607,8 +565,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
       lastY = finalY;
     }
-    
-    
   }
 
   function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
@@ -620,7 +576,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
     loop();
   }
-  
 
   waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
     const arrowTrigger = document.getElementById(
@@ -660,11 +615,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
-
-export function rotatebuttonAdvanceSyncCustomTimelineArrow(
-  selectedElement
-) {
+export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   let isTracking = false;
@@ -674,9 +625,7 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("rotate-custom-timeline-arrow");
     const border = document.getElementById("rotate-custom-timeline-border");
-    const startBullet = document.getElementById(
-      "rotate-timeline-start-bullet"
-    );
+    const startBullet = document.getElementById("rotate-timeline-start-bullet");
     const endBullet = document.getElementById("rotate-timeline-end-bullet");
     const dropdown = document.getElementById(
       "rotate-effect-animation-type-list"
@@ -828,7 +777,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(
   });
 }
 
-
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -839,13 +787,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
     const border = document.getElementById("blur-custom-timeline-border");
-    const startBullet = document.getElementById(
-      "blur-timeline-start-bullet"
-    );
+    const startBullet = document.getElementById("blur-timeline-start-bullet");
     const endBullet = document.getElementById("blur-timeline-end-bullet");
-    const dropdown = document.getElementById(
-      "blur-effect-animation-type-list"
-    );
+    const dropdown = document.getElementById("blur-effect-animation-type-list");
 
     if (arrow && border && startBullet && endBullet && dropdown) {
       callback(arrow, border, startBullet, endBullet, dropdown);
