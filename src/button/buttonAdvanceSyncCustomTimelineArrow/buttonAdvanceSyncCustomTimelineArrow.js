@@ -16,13 +16,9 @@ function getViewportProgress(el) {
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-  if (selectedElement.__scBtnRafActive) {
-    window.__scBtnLastEl = selectedElement;
-    return;
-  }
+
   if (
     window.__scBtnLastEl &&
-    window.__scBtnLastEl !== selectedElement &&
     typeof window.__scBtnLastEl.__scBtnCancel === "function"
   ) {
     window.__scBtnLastEl.__scBtnCancel();
@@ -31,6 +27,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   const SMOOTH_ARROW = 0.18;
   const SMOOTH_Y = 0.15;
+  const EDGE_EPS = 0.015; // 1.5% of the span
 
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   const startBul = document.getElementById("vertical-timeline-start-bullet");
@@ -42,19 +39,16 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const lerp = (a, b, t) => a + (b - a) * t;
 
   if (!window.gsap) {
-    if (!arrow.style.transition)
-      arrow.style.transition =
-        "left 140ms ease-out, background-color 140ms ease-out";
-    if (!startBul.style.transition)
-      startBul.style.transition = "left 140ms ease-out";
-    if (!endBul.style.transition)
-      endBul.style.transition = "left 140ms ease-out";
-    if (!startFill.style.transition)
-      startFill.style.transition =
-        "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-    if (!endFill.style.transition)
-      endFill.style.transition =
-        "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+    arrow.style.transition ||=
+      "left 140ms ease-out, background-color 140ms ease-out";
+    startBul.style.transition ||= "left 140ms ease-out";
+    endBul.style.transition ||= "left 140ms ease-out";
+    startFill.style.transition ||=
+      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+    endFill.style.transition ||=
+      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+  } else {
+    gsap.killTweensOf(arrow, "backgroundColor");
   }
 
   const qArrowLeft =
@@ -72,7 +66,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!b) return;
     if (window.gsap) gsap.set(b, { transform: v, overwrite: true });
     else {
-      if (!b.style.transition) b.style.transition = "transform 180ms ease-out";
+      b.style.transition ||= "transform 180ms ease-out";
       b.style.transform = v;
     }
   };
@@ -136,24 +130,18 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   selectedElement.__scBtnCancel = () => {
     running = false;
     selectedElement.__scBtnRafActive = false;
+    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
   };
 
   let smoothedLeft = null;
   let smoothedYvh = null;
 
-  const updateArrowColor = (curLeft, s, e) => {
-    const atStart = Math.abs(curLeft - s) <= 1;
-    const atEnd = Math.abs(curLeft - e) <= 1;
-    const color = atStart ? "#EF7C2F" : atEnd ? "#F6B67B" : "#FFFFFF";
-    if (window.gsap)
-      gsap.to(arrow, {
-        backgroundColor: color,
-        duration: 0.18,
-        ease: "power1.out",
-        overwrite: true,
-      });
-    else arrow.style.backgroundColor = color;
-  };
+  function applyArrowColor(p01) {
+    const c =
+      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
+    if (window.gsap) gsap.set(arrow, { backgroundColor: c, overwrite: true });
+    else arrow.style.backgroundColor = c;
+  }
 
   function frame() {
     if (!running || !document.body.contains(selectedElement)) {
@@ -197,7 +185,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
 
     qArrowLeft(smoothedLeft);
-    updateArrowColor(smoothedLeft, startPct, endPct);
+    applyArrowColor(p01);
     qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
 
     requestAnimationFrame(frame);
