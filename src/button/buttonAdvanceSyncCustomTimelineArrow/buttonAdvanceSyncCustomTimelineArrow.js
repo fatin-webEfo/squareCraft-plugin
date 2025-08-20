@@ -16,9 +16,13 @@ function getViewportProgress(el) {
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
+  if (selectedElement.__scBtnRafActive) {
+    window.__scBtnLastEl = selectedElement;
+    return;
+  }
   if (
     window.__scBtnLastEl &&
+    window.__scBtnLastEl !== selectedElement &&
     typeof window.__scBtnLastEl.__scBtnCancel === "function"
   ) {
     window.__scBtnLastEl.__scBtnCancel();
@@ -33,7 +37,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const endBul = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
   const endFill = document.getElementById("vertical-timeline-end-fill");
-
   if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
 
   const lerp = (a, b, t) => a + (b - a) * t;
