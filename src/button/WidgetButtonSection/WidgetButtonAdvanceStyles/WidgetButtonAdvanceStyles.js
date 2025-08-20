@@ -132,9 +132,7 @@ function attachAdvanceTimelineIncrementDecrement(
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 2) Reset keeps signature; just calls provided updaters
-// ─────────────────────────────────────────────────────────────────────────────
+
 function attachCustomTimelineReset(
   updateStart,
   updateEnd,
@@ -152,10 +150,6 @@ function attachCustomTimelineReset(
     updateExit(0);
   };
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// 3) Dropdown toggle (safe re-init + outside click + Escape) and optional CSS var write
-// ─────────────────────────────────────────────────────────────────────────────
 export function button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("vertical-effect-animation-type-arrow");
   const dropdown = document.getElementById(
@@ -225,9 +219,7 @@ export function button_initEffectAnimationDropdownToggle() {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 4) Button advance styles (mirrors typo version semantics & clamping)
-// ─────────────────────────────────────────────────────────────────────────────
+
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
   const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -482,9 +474,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 5) Viewport progress (unchanged semantics)
-// ─────────────────────────────────────────────────────────────────────────────
 
 
 // horizontal

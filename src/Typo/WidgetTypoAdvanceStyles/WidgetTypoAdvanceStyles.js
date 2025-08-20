@@ -1,4 +1,4 @@
- function attachAdvanceTimelineIncrementDecrement(
+export function attachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
