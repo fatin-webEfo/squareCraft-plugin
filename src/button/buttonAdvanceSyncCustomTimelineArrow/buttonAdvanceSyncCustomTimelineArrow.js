@@ -22,6 +22,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (selectedElement.__scBtnRafActive) return;
   selectedElement.__scBtnRafActive = true;
 
+  const SMOOTH_ARROW = 0.18; // 0..1 (higher = snappier)
+  const SMOOTH_Y = 0.15; // 0..1
+
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   const border = document.getElementById("vertical-custom-timeline-border");
   const startBul = document.getElementById("vertical-timeline-start-bullet");
@@ -30,6 +33,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     "vertical-effect-animation-type-list"
   );
   if (!arrow || !border || !startBul || !endBul || !dropdown) return;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
 
   const qArrowLeft =
     (window.gsap && gsap.quickSetter(arrow, "left", "%")) ||
@@ -90,15 +95,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     return map[name] || "none";
   };
 
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const blendY = (p01, trip) => {
-    if (p01 <= 0) return trip.entry;
-    if (p01 >= 1) return trip.exit;
-    const mid = 0.5;
-    if (p01 <= mid) return lerp(trip.entry, trip.center, p01 / mid);
-    return lerp(trip.center, trip.exit, (p01 - mid) / (1 - mid));
-  };
-
   const ease01 = (t, easeName) => {
     if (!window.gsap || easeName === "none") return t;
     try {
@@ -108,7 +104,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
-  // one-time dropdown wiring (non-destructive)
   const arrowTrigger = document.getElementById(
     "vertical-effect-animation-type-arrow"
   );
@@ -138,7 +133,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
   }
 
-  let lastAppliedVh = null;
+  let smoothedLeft = null;
+  let smoothedYvh = null;
+
   function frame() {
     if (!document.body.contains(selectedElement)) {
       selectedElement.__scBtnRafActive = false;
@@ -154,41 +151,69 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     endPct = getPctVar(btnNow, "--sc-vertical-scroll-end", endPct);
     if (endPct < startPct + 4) endPct = startPct + 4;
 
-    const t = getViewportProgress(selectedElement) * 100;
+    const t =
+      (function getViewportProgress(el) {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        if (vh <= 0) return 0.5;
+        const toolbar = document.querySelector(
+          '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+        );
+        const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+        const visibleTop = th;
+        const visibleHeight = Math.max(1, vh - th);
+        const r = el.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        let tt = (center - visibleTop) / visibleHeight;
+        if (Number.isNaN(tt)) tt = 0.5;
+        return Math.max(0, Math.min(1, tt));
+      })(selectedElement) * 100;
+
     const span = Math.max(1, endPct - startPct);
     let p01 = (t - startPct) / span;
     if (p01 < 0) p01 = 0;
     if (p01 > 1) p01 = 1;
 
-    const arrowLeft = startPct + p01 * span;
-    qArrowLeft(arrowLeft);
+    const targetLeft = startPct + p01 * span;
 
-    if (arrowLeft <= startPct + 1) arrow.style.backgroundColor = "#EF7C2F";
-    else if (arrowLeft >= endPct - 1) arrow.style.backgroundColor = "#F6B67B";
+    if (smoothedLeft == null) smoothedLeft = targetLeft;
+    else smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
+    qArrowLeft(smoothedLeft);
+
+    if (smoothedLeft <= startPct + 1) arrow.style.backgroundColor = "#EF7C2F";
+    else if (smoothedLeft >= endPct - 1)
+      arrow.style.backgroundColor = "#F6B67B";
     else arrow.style.backgroundColor = "#FFFFFF";
 
     const trip = readTriplet();
     const eased = ease01(p01, currentEase());
-    const yPct = blendY(eased, trip);
-    const yVh = yPct / 2;
+    const yPct =
+      eased <= 0
+        ? trip.entry
+        : eased >= 1
+        ? trip.exit
+        : eased <= 0.5
+        ? lerp(trip.entry, trip.center, eased / 0.5)
+        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
+    const targetYvh = yPct / 2;
 
-    if (yVh !== lastAppliedVh) {
-      if (window.gsap) {
-        gsap.to(btnNow, {
-          duration: 0.25,
-          ease: currentEase() || "power2.out",
-          transform: `translateY(${yVh.toFixed(2)}vh)`,
-          overwrite: true,
-        });
-      } else {
-        qBtnTrans(`translateY(${yVh.toFixed(2)}vh)`);
-      }
-      lastAppliedVh = yVh;
+    // smooth the button translateY
+    if (smoothedYvh == null) smoothedYvh = targetYvh;
+    else smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
+
+    if (window.gsap) {
+      gsap.set(btnNow, {
+        transform: `translateY(${smoothedYvh.toFixed(2)}vh)`,
+        overwrite: true,
+      });
+    } else {
+      qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
     }
+
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 }
+
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
