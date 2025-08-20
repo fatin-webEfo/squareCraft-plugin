@@ -83,23 +83,60 @@ export function button_initEffectAnimationDropdownToggle() {
   );
   if (!arrow || !dropdown || !container || !displayValue) return;
 
-  arrow.addEventListener("click", (e) => {
+  // Prevent double-binding if this function is called multiple times
+  if (container.dataset.scDropdownBound === "1") return;
+  container.dataset.scDropdownBound = "1";
+
+  const open = () => dropdown.classList.remove("sc-hidden");
+  const close = () => dropdown.classList.add("sc-hidden");
+  const toggle = () => dropdown.classList.toggle("sc-hidden");
+  const isOpen = () => !dropdown.classList.contains("sc-hidden");
+
+  // Arrow toggles the dropdown
+  arrow.addEventListener(
+    "click",
+    (e) => {
+      e.stopPropagation();
+      toggle();
+    },
+    { passive: true }
+  );
+
+  // Clicks inside the dropdown shouldn’t bubble to document
+  dropdown.addEventListener("click", (e) => {
     e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
   });
 
-  document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) dropdown.classList.add("sc-hidden");
-  });
+  // Close when clicking outside the container
+  const onDocClick = (e) => {
+    if (!container.contains(e.target)) close();
+  };
+  document.addEventListener("click", onDocClick);
 
+  // Close on Escape
+  const onKey = (e) => {
+    if (e.key === "Escape" && isOpen()) close();
+  };
+  document.addEventListener("keydown", onKey);
+
+  // Select a value
   dropdown.querySelectorAll("[data-value]").forEach((item) => {
     item.addEventListener("click", () => {
       const selected = item.getAttribute("data-value");
       displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
+      close();
     });
   });
+
+  // Cleanup hook if you ever need to re-init (optional)
+  container.__scDropdownDispose = () => {
+    document.removeEventListener("click", onDocClick);
+    document.removeEventListener("keydown", onKey);
+    delete container.dataset.scDropdownBound;
+  };
 }
+
+
 
 function attachCustomTimelineReset(
   updateStart,
@@ -119,33 +156,7 @@ function attachCustomTimelineReset(
   };
 }
 
-export function button_initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
-  const dropdown = document.getElementById(
-    "vertical-effect-animation-type-list"
-  );
-  const container = document.getElementById(
-    "vertical-effect-animation-dropdown-container"
-  );
-  const displayValue = document.getElementById(
-    "vertical-effect-animation-value"
-  );
-  if (!arrow || !dropdown || !container || !displayValue) return;
-  arrow.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("sc-hidden");
-  });
-  document.addEventListener("click", (e) => {
-    if (!container.contains(e.target)) dropdown.classList.add("sc-hidden");
-  });
-  dropdown.querySelectorAll("[data-value]").forEach((item) => {
-    item.addEventListener("click", () => {
-      const selected = item.getAttribute("data-value");
-      displayValue.textContent = selected;
-      dropdown.classList.add("sc-hidden");
-    });
-  });
-}
+
 
 export function initButtonAdvanceStyles(getSelectedElement) {
   // cache refs
