@@ -493,6 +493,7 @@ document.body.addEventListener("click", (e) => {
     scaleinitButtonAdvanceStyles,
     rotateinitButtonAdvanceStyles,
     blurinitButtonAdvanceStyles,
+    button_initEffectAnimationDropdownToggle
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
   );
@@ -773,6 +774,7 @@ document.body.addEventListener("click", (e) => {
       initButtonFontColorPaletteToggle(themeColors, () => selectedElement);
       initButtonIconPositionToggle(() => selectedElement);
       initEffectAnimationDropdownToggle(() => selectedElement);
+      button_initEffectAnimationDropdownToggle(() => selectedElement);
       horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
       blurinitEffectAnimationDropdownToggle(() => selectedElement);
       scaleinitEffectAnimationDropdownToggle(() => selectedElement);
@@ -1142,7 +1144,6 @@ document.body.addEventListener("click", (e) => {
     }
 
     makeWidgetDraggable();
-
     setTimeout(() => {
       const placeholders = widgetContainer.querySelectorAll(
         ".sc-arrow-placeholder"
@@ -1166,6 +1167,8 @@ document.body.addEventListener("click", (e) => {
     tooltipControls();
     ButtonAdvanceToggleControls();
     initButtonSectionToggleControls();
+    initEffectAnimationDropdownToggle(() => selectedElement);
+    button_initEffectAnimationDropdownToggle(() => selectedElement);
     initEffectAnimationDropdownToggle(() => selectedElement);
     horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
     blurinitEffectAnimationDropdownToggle(() => selectedElement);
