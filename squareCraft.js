@@ -1,7 +1,7 @@
 
 (async function squareCraft() {
-  let widgetReadyPromise = null;
-  let lastToggleAt = 0;
+  let widgetReadyPromise = null; 
+  let lastToggleAt = 0; 
   let justOpenedUntil = 0; // grace period for the body-closer
   let __sc_creating = false;
   const HOST_DOC = (() => {
@@ -14,83 +14,83 @@
     return document;
   })();
   const HOST_WIN = HOST_DOC.defaultView || window;
-  async function toggleWidgetVisibility(event, clickedBlock = null) {
-    event?.stopPropagation?.();
+ async function toggleWidgetVisibility(event, clickedBlock = null) {
+   event?.stopPropagation?.();
 
-    const now = performance.now();
-    if (now - lastToggleAt < 200) return;
-    lastToggleAt = now;
+   const now = performance.now();
+   if (now - lastToggleAt < 200) return;
+   lastToggleAt = now;
 
-    if (!widgetContainer) {
-      widgetReadyPromise ||= (async () => {
-        await createWidget(clickedBlock);
-        return widgetContainer;
-      })();
-      await widgetReadyPromise;
-    }
+   if (!widgetContainer) {
+     widgetReadyPromise ||= (async () => {
+       await createWidget(clickedBlock);
+       return widgetContainer;
+     })();
+     await widgetReadyPromise;
+   }
 
-    const isHidden =
-      !widgetContainer ||
-      widgetContainer.style.visibility === "hidden" ||
-      widgetContainer.style.opacity === "0" ||
-      widgetContainer.style.height === "0px";
+   const isHidden =
+     !widgetContainer ||
+     widgetContainer.style.visibility === "hidden" ||
+     widgetContainer.style.opacity === "0" ||
+     widgetContainer.style.height === "0px";
 
-    if (isHidden) {
-      widgetContainer.style.setProperty("position", "fixed", "important");
-      widgetContainer.style.setProperty("right", "100px", "important");
-      widgetContainer.style.setProperty("top", "100px", "important");
-      widgetContainer.style.removeProperty("left");
-      widgetContainer.style.removeProperty("transform");
+   if (isHidden) {
+     widgetContainer.style.setProperty("position", "fixed", "important");
+     widgetContainer.style.setProperty("right", "100px", "important");
+     widgetContainer.style.setProperty("top", "100px", "important");
+     widgetContainer.style.removeProperty("left");
+     widgetContainer.style.removeProperty("transform");
 
-      if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
-      else {
-        widgetContainer.style.visibility = "visible";
-        widgetContainer.style.opacity = "1";
-        widgetContainer.style.height = "auto";
-        widgetContainer.style.overflow = "visible";
-      }
-      justOpenedUntil = performance.now() + 300;
-    } else {
-      if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
-      else {
-        widgetContainer.style.visibility = "hidden";
-        widgetContainer.style.opacity = "0";
-        widgetContainer.style.height = "0";
-        widgetContainer.style.overflow = "hidden";
-      }
-    }
+     if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
+     else {
+       widgetContainer.style.visibility = "visible";
+       widgetContainer.style.opacity = "1";
+       widgetContainer.style.height = "auto";
+       widgetContainer.style.overflow = "visible";
+     }
+     justOpenedUntil = performance.now() + 300; 
+   } else {
+     if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
+     else {
+       widgetContainer.style.visibility = "hidden";
+       widgetContainer.style.opacity = "0";
+       widgetContainer.style.height = "0";
+       widgetContainer.style.overflow = "hidden";
+     }
+   }
 
-    if (clickedBlock) {
-      try {
-        await waitForElement(
-          "#typoSection, #imageSection, #buttonSection",
-          4000
-        );
-        handleAndDetect(clickedBlock);
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
+   if (clickedBlock) {
+     try {
+       await waitForElement(
+         "#typoSection, #imageSection, #buttonSection",
+         4000
+       );
+       handleAndDetect(clickedBlock);
+     } catch (err) {
+       console.error(err.message);
+     }
+   }
+ }
+document.body.addEventListener("click", (e) => {
+  if (performance.now() < justOpenedUntil) return; // short grace period
+
+  const isInsideWidget = widgetContainer?.contains(e.target);
+  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+  const isHiddenInput =
+    e.target.tagName === "INPUT" && e.target.type === "file";
+
+  if (
+    !isInsideWidget &&
+    !isToolbarIcon &&
+    !isHiddenInput &&
+    widgetContainer &&
+    widgetContainer.style.visibility !== "hidden" &&
+    widgetContainer.style.opacity !== "0"
+  ) {
+    animateWidgetClose(widgetContainer, 0.2);
   }
-  document.body.addEventListener("click", (e) => {
-    if (performance.now() < justOpenedUntil) return; // short grace period
-
-    const isInsideWidget = widgetContainer?.contains(e.target);
-    const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-    const isHiddenInput =
-      e.target.tagName === "INPUT" && e.target.type === "file";
-
-    if (
-      !isInsideWidget &&
-      !isToolbarIcon &&
-      !isHiddenInput &&
-      widgetContainer &&
-      widgetContainer.style.visibility !== "hidden" &&
-      widgetContainer.style.opacity !== "0"
-    ) {
-      animateWidgetClose(widgetContainer, 0.2);
-    }
-  });
+});
 
   (() => {
     let d = document;
@@ -493,7 +493,7 @@
     scaleinitButtonAdvanceStyles,
     rotateinitButtonAdvanceStyles,
     blurinitButtonAdvanceStyles,
-    button_initEffectAnimationDropdownToggle,
+    button_initEffectAnimationDropdownToggle
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
   );
@@ -543,18 +543,9 @@
   const { handleSectionFind } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
   );
-(async () => {
-  try {
-    const { ButtonAdvanceToggleControls } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
-    );
-    ButtonAdvanceToggleControls();
-  } catch (e) {
-    console.error("ButtonAdvanceToggleControls (post-load) failed:", e);
-  }
-})();
-
-
+  const { ButtonAdvanceToggleControls } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
+  );
   const { TypoAdvanceToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/Typo/TypoAdvanceToggleControls/TypoAdvanceToggleControls.js"
   );
@@ -620,18 +611,9 @@
     "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetTypoSection/WidgetTypoSectionStateControls/WidgetTypoSectionStateControls.js"
   );
 
-
-  (async () => {
-    try {
-      const { initImageSectionToggleControls } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
-      );
-      initImageSectionToggleControls();
-    } catch (e) {
-      console.error("initImageSectionToggleControls import failed:", e);
-    }
-  })();
-
+  const { initImageSectionToggleControls } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initImageSectionToggleControls.js"
+  );
   const {
     initHoverButtonSectionToggleControls,
     initHoverButtonEffectDropdowns,
@@ -647,21 +629,15 @@
   const { getSquarespaceThemeStyles } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/getSquarespaceThemeStyles.js"
   );
-(async () => {
-  try {
-    const { tooltipControls } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/button/tooltipControls/tooltipControls.js"
-    );
-    tooltipControls();
-  } catch (e) {
-    console.error("tooltipControls import failed:", e);
-  }
-})();
-
+  const { tooltipControls } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/button/tooltipControls/tooltipControls.js"
+  );
   const { initBorderColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
   );
-
+  const { createHoverableArrowSVG } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
+  );
   const { initButtonFontColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
   );
@@ -706,7 +682,7 @@
   });
 
   document.body.addEventListener("click", (event) => {
-
+    ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
     if (selectedElement) {
@@ -762,6 +738,7 @@
     }
 
     setTimeout(() => {
+      ButtonAdvanceToggleControls();
       handleBlockClick(event, {
         getTextType,
         getHoverTextType,
@@ -1019,6 +996,8 @@
 
   addHeadingEventListeners();
 
+
+
   function handleAndDetect(clickedBlock) {
     handleBlockClick(
       { target: clickedBlock },
@@ -1071,14 +1050,15 @@
 
     document.body.appendChild(widgetContainer);
 
-    try {
-      const { initImageMaskControls } = await import(
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
-      );
-      initImageMaskControls(() => selectedElement);
-    } catch (e) {
-      console.warn("initImageMaskControls load failed:", e);
-    }
+   try {
+     const { initImageMaskControls } = await import(
+       "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+     );
+     initImageMaskControls(() => selectedElement);
+   } catch (e) {
+     console.warn("initImageMaskControls load failed:", e);
+   }
+
 
     function makeWidgetDraggable() {
       if (!widgetContainer) return;
@@ -1165,36 +1145,28 @@
 
     makeWidgetDraggable();
 
-    // OLD (remove it):
-    // setTimeout(() => { const placeholders = ... const svg = createHoverableArrowSVG(...)
-
-    // NEW:
     setTimeout(() => {
-      (async () => {
-        try {
-          const { createHoverableArrowSVG } = await import(
-            "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
-          );
-          const placeholders = widgetContainer.querySelectorAll(
-            ".sc-arrow-placeholder"
-          );
-          placeholders.forEach((span) => {
-            const isRotate = span.classList.contains("sc-rotate-180");
-            const cloneClassList = Array.from(span.classList);
-            const originalId = span.getAttribute("id") || "";
-            const id =
-              originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-            const svg = createHoverableArrowSVG(id, isRotate);
-            cloneClassList.forEach((cls) => svg.classList.add(cls));
-            span.replaceWith(svg);
-          });
-        } catch (e) {
-          console.error("createHoverableArrowSVG import failed:", e);
-        }
-      })();
+      const placeholders = widgetContainer.querySelectorAll(
+        ".sc-arrow-placeholder"
+      );
+      placeholders.forEach((span) => {
+        const isRotate = span.classList.contains("sc-rotate-180");
+        const cloneClassList = Array.from(span.classList);
+        const originalId = span.getAttribute("id") || "";
+        const id =
+          originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+        const svg = createHoverableArrowSVG(id, isRotate);
+        cloneClassList.forEach((cls) => svg.classList.add(cls));
+        span.replaceWith(svg);
+      });
+      ButtonAdvanceToggleControls();
     }, 100);
 
     widgetLoaded = true;
+
+    initImageSectionToggleControls();
+    tooltipControls();
+    ButtonAdvanceToggleControls();
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
