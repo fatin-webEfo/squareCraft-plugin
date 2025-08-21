@@ -16,6 +16,7 @@ function getViewportProgress(el) {
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
+
   if (
     window.__scBtnLastEl &&
     typeof window.__scBtnLastEl.__scBtnCancel === "function"
@@ -159,9 +160,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const t = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
-    let p01 = (t - startPct) / span;
-    if (p01 < 0) p01 = 0;
-    else if (p01 > 1) p01 = 1;
+    let p01 = Math.max(0, Math.min(1, (t - startPct) / span));
 
     const targetLeft = startPct + p01 * span;
 
@@ -180,8 +179,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (smoothedLeft == null) smoothedLeft = targetLeft;
     if (smoothedYvh == null) smoothedYvh = targetYvh;
 
-    smoothedLeft = smoothedLeft + (targetLeft - smoothedLeft) * SMOOTH_ARROW;
-    smoothedYvh = smoothedYvh + (targetYvh - smoothedYvh) * SMOOTH_Y;
+    smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
+    smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
 
     qArrowLeft(smoothedLeft);
     applyArrowColor(p01);
@@ -197,6 +196,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
 ) {
   if (!selectedElement) return;
+
   if (
     window.__scHorBtnLastEl &&
     typeof window.__scHorBtnLastEl.__scBtnCancel === "function"
@@ -241,12 +241,10 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
 
-  let qBtnXvw = null;
   const setBtnXvw = (btn, xvw) => {
     if (!btn) return;
     if (window.gsap) {
-      qBtnXvw ||= gsap.quickSetter(btn, "x", "vw");
-      qBtnXvw(xvw);
+      gsap.set(btn, { x: xvw + "vw", overwrite: true });
     } else {
       const t = btn.style.transform || "";
       const clean = t.replace(/translateX\([^)]+\)/, "").trim();
@@ -344,9 +342,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
     const t = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
-    let p01 = (t - startPct) / span;
-    if (p01 < 0) p01 = 0;
-    else if (p01 > 1) p01 = 1;
+    let p01 = Math.max(0, Math.min(1, (t - startPct) / span));
 
     const targetTop = startPct + p01 * span;
 
@@ -360,7 +356,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         : eased <= 0.5
         ? trip.entry + (trip.center - trip.entry) * (eased / 0.5)
         : trip.center + (trip.exit - trip.center) * ((eased - 0.5) / 0.5);
-    const targetXvw = xPct / 2;
+    const targetXvw = xPct / 2; // -100..100 → -50..50vw
 
     if (smoothedTop == null) smoothedTop = targetTop;
     if (smoothedXvw == null) smoothedXvw = targetXvw;
@@ -521,7 +517,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   REG.set(selectedElement, state);
 }
-
 
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
