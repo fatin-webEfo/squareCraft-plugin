@@ -1,22 +1,43 @@
 function getViewportProgress(el) {
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  if (vh <= 0) return 0.5;
-  const toolbar = document.querySelector(
-    '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-  );
-  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-  const visibleTop = th;
-  const visibleHeight = Math.max(1, vh - th);
-  const r = el.getBoundingClientRect();
-  const center = r.top + r.height / 2;
-  let t = (center - visibleTop) / visibleHeight;
-  if (Number.isNaN(t)) t = 0.5;
-  return Math.max(0, Math.min(1, t));
+  try {
+    const target = el;
+    const cs = getComputedStyle(target);
+    const hasH =
+      (
+        cs.getPropertyValue("--sc-horizontal-scroll-start") ||
+        cs.getPropertyValue("--sc-Typo-horizontal-scroll-start") ||
+        ""
+      ).trim() !== "";
+    if (hasH) {
+      const vw = window.innerWidth || document.documentElement.clientWidth;
+      if (vw <= 0) return 0.5;
+      const r = el.getBoundingClientRect();
+      const center = r.left + r.width / 2;
+      let t = center / Math.max(1, vw);
+      if (Number.isNaN(t)) t = 0.5;
+      return Math.max(0, Math.min(1, t));
+    } else {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (vh <= 0) return 0.5;
+      const toolbar = document.querySelector(
+        '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+      );
+      const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+      const visibleTop = th;
+      const visibleHeight = Math.max(1, vh - th);
+      const r = el.getBoundingClientRect();
+      const center = r.top + r.height / 2;
+      let t = (center - visibleTop) / visibleHeight;
+      if (Number.isNaN(t)) t = 0.5;
+      return Math.max(0, Math.min(1, t));
+    }
+  } catch {
+    return 0.5;
+  }
 }
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   if (
     window.__scBtnLastEl &&
     typeof window.__scBtnLastEl.__scBtnCancel === "function"
@@ -59,7 +80,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
+    ) || selectedElement;
 
   const qBtnTrans = (v) => {
     const b = getButton();
@@ -160,7 +181,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const t = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
-    let p01 = Math.max(0, Math.min(1, (t - startPct) / span));
+    let p01 = (t - startPct) / span;
+    if (p01 < 0) p01 = 0;
+    else if (p01 > 1) p01 = 1;
 
     const targetLeft = startPct + p01 * span;
 
@@ -172,8 +195,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : eased >= 1
         ? trip.exit
         : eased <= 0.5
-        ? trip.entry + (trip.center - trip.entry) * (eased / 0.5)
-        : trip.center + (trip.exit - trip.center) * ((eased - 0.5) / 0.5);
+        ? lerp(trip.entry, trip.center, eased / 0.5)
+        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
     const targetYvh = yPct / 2;
 
     if (smoothedLeft == null) smoothedLeft = targetLeft;
@@ -196,7 +219,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
 ) {
   if (!selectedElement) return;
-
   if (
     window.__scHorBtnLastEl &&
     typeof window.__scHorBtnLastEl.__scBtnCancel === "function"
@@ -235,16 +257,18 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     (window.gsap && gsap.quickSetter(arrow, "top", "%")) ||
     ((v) => (arrow.style.top = v + "%"));
 
-  const getButton = () =>
+  const getButtonOrSelf = () =>
     selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
+    ) || selectedElement;
 
+  let qBtnXvw = null;
   const setBtnXvw = (btn, xvw) => {
     if (!btn) return;
     if (window.gsap) {
-      gsap.set(btn, { x: xvw + "vw", overwrite: true });
+      qBtnXvw ||= gsap.quickSetter(btn, "x", "vw");
+      qBtnXvw(xvw);
     } else {
       const t = btn.style.transform || "";
       const clean = t.replace(/translateX\([^)]+\)/, "").trim();
@@ -254,22 +278,26 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   };
 
   const getPctVar = (el, cssVar, fallback = 0) => {
-    const v = getComputedStyle(el).getPropertyValue(cssVar).trim();
-    const n = parseFloat(v.replace("%", ""));
+    let v = getComputedStyle(el).getPropertyValue(cssVar).trim();
+    let n = parseFloat(v.replace("%", ""));
+    if (!Number.isFinite(n)) {
+      v = getComputedStyle(selectedElement).getPropertyValue(cssVar).trim();
+      n = parseFloat(v.replace("%", ""));
+    }
     return Number.isFinite(n) ? n : fallback;
   };
 
-  const btn0 = getButton();
-  if (!btn0) return;
+  const targetEl0 = getButtonOrSelf();
+  if (!targetEl0) return;
 
-  let startPct = getPctVar(btn0, "--sc-horizontal-scroll-start", 0);
-  let endPct = getPctVar(btn0, "--sc-horizontal-scroll-end", 100);
+  let startPct = getPctVar(targetEl0, "--sc-horizontal-scroll-start", 0);
+  let endPct = getPctVar(targetEl0, "--sc-horizontal-scroll-end", 100);
   if (endPct < startPct + 4) endPct = startPct + 4;
 
-  const readTriplet = (btn) => ({
-    entry: getPctVar(btn, "--sc-horizontal-scroll-entry", 0),
-    center: getPctVar(btn, "--sc-horizontal-scroll-center", 0),
-    exit: getPctVar(btn, "--sc-horizontal-scroll-exit", 0),
+  const readTriplet = (el) => ({
+    entry: getPctVar(el, "--sc-horizontal-scroll-entry", 0),
+    center: getPctVar(el, "--sc-horizontal-scroll-center", 0),
+    exit: getPctVar(el, "--sc-horizontal-scroll-exit", 0),
   });
 
   const dropdown = document.getElementById(
@@ -330,23 +358,25 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
       selectedElement.__scBtnRafActive = false;
       return;
     }
-    const btnNow = getButton();
-    if (!btnNow) {
+    const elNow = getButtonOrSelf();
+    if (!elNow) {
       selectedElement.__scBtnRafActive = false;
       return;
     }
 
-    startPct = getPctVar(btnNow, "--sc-horizontal-scroll-start", startPct);
-    endPct = getPctVar(btnNow, "--sc-horizontal-scroll-end", endPct);
+    startPct = getPctVar(elNow, "--sc-horizontal-scroll-start", startPct);
+    endPct = getPctVar(elNow, "--sc-horizontal-scroll-end", endPct);
     if (endPct < startPct + 4) endPct = startPct + 4;
 
     const t = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
-    let p01 = Math.max(0, Math.min(1, (t - startPct) / span));
+    let p01 = (t - startPct) / span;
+    if (p01 < 0) p01 = 0;
+    else if (p01 > 1) p01 = 1;
 
     const targetTop = startPct + p01 * span;
 
-    const trip = readTriplet(btnNow);
+    const trip = readTriplet(elNow);
     const eased = ease01(p01, currentEase());
     const xPct =
       eased <= 0
@@ -354,9 +384,9 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         : eased >= 1
         ? trip.exit
         : eased <= 0.5
-        ? trip.entry + (trip.center - trip.entry) * (eased / 0.5)
-        : trip.center + (trip.exit - trip.center) * ((eased - 0.5) / 0.5);
-    const targetXvw = xPct / 2; // -100..100 → -50..50vw
+        ? lerp(trip.entry, trip.center, eased / 0.5)
+        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
+    const targetXvw = xPct / 2;
 
     if (smoothedTop == null) smoothedTop = targetTop;
     if (smoothedXvw == null) smoothedXvw = targetXvw;
@@ -366,7 +396,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
     qArrowTop(smoothedTop);
     applyArrowColor(p01);
-    setBtnXvw(btnNow, +smoothedXvw.toFixed(2));
+    setBtnXvw(elNow, +smoothedXvw.toFixed(2));
 
     requestAnimationFrame(frame);
   }
