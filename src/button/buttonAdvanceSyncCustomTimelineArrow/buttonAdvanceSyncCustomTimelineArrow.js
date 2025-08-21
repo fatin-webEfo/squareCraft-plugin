@@ -243,13 +243,19 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
 
-  const qBtnTrans = (v) => {
-    const b = getButton();
-    if (!b) return;
-    if (window.gsap) gsap.set(b, { transform: v, overwrite: true });
-    else {
-      b.style.transition ||= "transform 180ms ease-out";
-      b.style.transform = v;
+  // GSAP quickSetter for X in vw so we don’t clobber other transform parts
+  let qBtnXvw = null;
+  const setBtnXvw = (btn, xvw) => {
+    if (!btn) return;
+    if (window.gsap) {
+      qBtnXvw ||= gsap.quickSetter(btn, "x", "vw");
+      qBtnXvw(xvw);
+    } else {
+      // fallback: minimal transform merge for translateX
+      const t = btn.style.transform || "";
+      const clean = t.replace(/translateX\([^)]+\)/, "").trim();
+      btn.style.transform = (clean + ` translateX(${xvw}vw)`).trim();
+      btn.style.transition ||= "transform 180ms ease-out";
     }
   };
 
@@ -340,24 +346,8 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     endPct = getPctVar(btnNow, "--sc-horizontal-scroll-end", endPct);
     if (endPct < startPct + 4) endPct = startPct + 4;
 
-    // reuse vertical viewport progress (scroll position) to drive horizontal effect
-    const t =
-      (function getViewportProgress(el) {
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        if (vh <= 0) return 0.5;
-        const toolbar = document.querySelector(
-          '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-        );
-        const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-        const visibleTop = th;
-        const visibleHeight = Math.max(1, vh - th);
-        const r = el.getBoundingClientRect();
-        const center = r.top + r.height / 2;
-        let tt = (center - visibleTop) / visibleHeight;
-        if (Number.isNaN(tt)) tt = 0.5;
-        return Math.max(0, Math.min(1, tt));
-      })(selectedElement) * 100;
-
+    // use the same viewport progress (0..1) against horizontal start/end
+    const t = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
     let p01 = (t - startPct) / span;
     if (p01 < 0) p01 = 0;
@@ -375,8 +365,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         : eased <= 0.5
         ? lerp(trip.entry, trip.center, eased / 0.5)
         : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
-
-    const targetXvw = xPct / 2; // mirror of vertical using vw
+    const targetXvw = xPct / 2; // -100..100 → -50..50vw
 
     if (smoothedTop == null) smoothedTop = targetTop;
     if (smoothedXvw == null) smoothedXvw = targetXvw;
@@ -386,13 +375,14 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
     qArrowTop(smoothedTop);
     applyArrowColor(p01);
-    qBtnTrans(`translateX(${smoothedXvw.toFixed(2)}vw)`);
+    setBtnXvw(btnNow, +smoothedXvw.toFixed(2));
 
     requestAnimationFrame(frame);
   }
 
   requestAnimationFrame(frame);
 }
+
 
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
