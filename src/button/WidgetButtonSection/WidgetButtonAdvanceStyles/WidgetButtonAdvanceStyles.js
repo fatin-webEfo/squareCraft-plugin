@@ -607,7 +607,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   });
 }
 
- function horizontalattachCustomTimelineReset(
+export function horizontalattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
