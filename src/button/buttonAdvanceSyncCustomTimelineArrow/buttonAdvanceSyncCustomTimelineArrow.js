@@ -24,16 +24,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   window.__scBtnLastEl = selectedElement;
 
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
-  const startBul = document.getElementById("vertical-timeline-start-bullet");
-  const endBul = document.getElementById("vertical-timeline-end-bullet");
-  const startFill = document.getElementById("vertical-timeline-start-fill");
-  const endFill = document.getElementById("vertical-timeline-end-fill");
-  if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
+  if (!arrow) return;
 
   const getButton = () =>
     selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || selectedElement;
 
   const qArrowLeft =
@@ -55,6 +50,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     return Number.isFinite(n) ? n : fb;
   };
 
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const EDGE_EPS = 0.015;
+  const SMOOTH_ARROW = 0.18;
+  const SMOOTH_Y = 0.15;
+
   const easeName = () => {
     const display = document.querySelector("#vertical-effect-animation-value");
     const name = display?.textContent?.trim() || "none";
@@ -75,12 +75,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     };
     return map[name] || "none";
   };
-
-  if (!arrow.style.backgroundColor) arrow.style.backgroundColor = "#FFFFFF";
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const EDGE_EPS = 0.015;
-  const SMOOTH_ARROW = 0.18;
-  const SMOOTH_Y = 0.15;
 
   let running = true;
   selectedElement.__scBtnRafActive = true;
@@ -146,8 +140,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   requestAnimationFrame(frame);
 }
-
-
 
 
 
