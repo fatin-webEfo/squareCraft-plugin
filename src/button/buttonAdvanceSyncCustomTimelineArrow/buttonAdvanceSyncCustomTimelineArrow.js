@@ -220,7 +220,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 
-
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
 ) {
