@@ -2,127 +2,179 @@
 function getViewportProgress(el) {
   const vh = window.innerHeight || document.documentElement.clientHeight;
   if (vh <= 0) return 0.5;
-  const toolbar = document.querySelector(
+  const tb = document.querySelector(
     '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
   );
-  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-  const visibleTop = th;
-  const visibleHeight = Math.max(1, vh - th);
-  const r = el.getBoundingClientRect();
-  const center = r.top + r.height / 2;
-  let t = (center - visibleTop) / visibleHeight;
+  const th = tb ? tb.getBoundingClientRect().height : 0;
+  const visTop = th,
+    visH = Math.max(1, vh - th);
+  const r = el.getBoundingClientRect(),
+    c = r.top + r.height / 2;
+  let t = (c - visTop) / visH;
   if (Number.isNaN(t)) t = 0.5;
   return Math.max(0, Math.min(1, t));
 }
-export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+
+export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-  function waitForElements(cb, retries = 20) {
-    const arrow = document.getElementById("vertical-custom-timeline-arrow");
-    const sb = document.getElementById("vertical-timeline-start-bullet");
-    const eb = document.getElementById("vertical-timeline-end-bullet");
-    if (arrow && sb && eb) cb(arrow);
-    else if (retries > 0)
-      setTimeout(() => waitForElements(cb, retries - 1), 100);
+  if (
+    window.__scBtnLastEl &&
+    typeof window.__scBtnLastEl.__scBtnCancel === "function"
+  )
+    window.__scBtnLastEl.__scBtnCancel();
+  window.__scBtnLastEl = selectedElement;
+
+  function ensureArrow() {
+    let a = document.getElementById("vertical-custom-timeline-arrow");
+    if (!a) {
+      const sb = document.getElementById("vertical-timeline-start-bullet");
+      if (sb && sb.parentElement) {
+        a = document.createElement("div");
+        a.id = "vertical-custom-timeline-arrow";
+        sb.parentElement.appendChild(a);
+      }
+    }
+    return a;
   }
-  function setupScrollAnimation(arrow) {
-    const getButton = () =>
-      selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      ) || selectedElement;
-    const btn = getButton();
-    const getVar = (v) =>
-      parseFloat(
-        getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
-      ) || 0;
-    const entryY = () => getVar("--sc-vertical-scroll-entry") / 2;
-    const centerY = () => getVar("--sc-vertical-scroll-center") / 2;
-    const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
-    const start = () => getVar("--sc-vertical-scroll-start") / 100;
-    const end = () => getVar("--sc-vertical-scroll-end") / 100;
-    const mapEase = (n) =>
-      ({
-        none: "none",
-        Linear: "none",
-        linear: "none",
-        "ease-in": "power1.in",
-        "ease-out": "power1.out",
-        "ease-in-out": "power1.inOut",
-        "power1.out": "power1.out",
-        "power2.out": "power2.out",
-        "power3.out": "power3.out",
-        "power4.out": "power4.out",
-        "expo.out": "expo.out",
-        "elastic.out": "elastic.out",
-        "bounce.out": "bounce.out",
-      }[n] || "none");
-    const easeName = () =>
-      mapEase(
-        (
-          document.querySelector("#vertical-effect-animation-value")
-            ?.textContent || "none"
-        ).trim()
-      );
-    let currentY = null,
-      exitLocked = false;
-    const BUF = 0.001;
-    const tick = () => {
+  function ensureDeps() {
+    return new Promise((r) => {
+      (function w(i) {
+        if (window.gsap && window.ScrollTrigger) r(true);
+        else if (i <= 0) r(false);
+        else setTimeout(() => w(i - 1), 100);
+      })(60);
+    });
+  }
+
+  const ok = await ensureDeps();
+  const arrow = ensureArrow();
+  if (!ok || !arrow) return;
+
+  const getBtn = () =>
+    selectedElement.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    ) || selectedElement;
+  const btn = getBtn();
+
+  const read = (name, fb) => {
+    const v = getComputedStyle(btn).getPropertyValue(name).trim();
+    if (!v) return fb;
+    const n = parseFloat(v.replace("%", ""));
+    return Number.isFinite(n) ? n : fb;
+  };
+  let s = read("--sc-vertical-scroll-start", 0) / 100;
+  let e = read("--sc-vertical-scroll-end", 100) / 100;
+  if (!(e > s)) {
+    s = 0;
+    e = 1;
+  }
+  let ent = read("--sc-vertical-scroll-entry", 0) / 2;
+  let cen = read("--sc-vertical-scroll-center", 0) / 2;
+  let ex = read("--sc-vertical-scroll-exit", 0) / 2;
+
+  const valEl = document.querySelector("#vertical-effect-animation-value");
+  const easeMap = (n) =>
+    ({
+      none: "none",
+      Linear: "none",
+      linear: "none",
+      "ease-in": "power1.in",
+      "ease-out": "power1.out",
+      "ease-in-out": "power1.inOut",
+      "power1.out": "power1.out",
+      "power2.out": "power2.out",
+      "power3.out": "power3.out",
+      "power4.out": "power4.out",
+      "expo.out": "expo.out",
+      "elastic.out": "elastic.out",
+      "bounce.out": "bounce.out",
+    }[n] || "none");
+  const curEase = () => easeMap((valEl?.textContent || "none").trim());
+
+  gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.getAll().forEach((t) => {
+    if (t.trigger === selectedElement) t.kill();
+  });
+
+  arrow.style.transition = "none";
+  btn.style.willChange = "transform";
+
+  const setLeft = gsap.quickSetter(arrow, "left", "%");
+  const setBg = gsap.quickSetter(arrow, "backgroundColor");
+  let toY = gsap.quickTo(btn, "y", {
+    duration: 0.35,
+    ease: "power1.out",
+    overwrite: true,
+  });
+  let easeName = curEase();
+
+  const mo = new MutationObserver(() => {
+    s = read("--sc-vertical-scroll-start", 0) / 100;
+    e = read("--sc-vertical-scroll-end", 100) / 100;
+    if (!(e > s)) {
+      s = 0;
+      e = 1;
+    }
+    ent = read("--sc-vertical-scroll-entry", 0) / 2;
+    cen = read("--sc-vertical-scroll-center", 0) / 2;
+    ex = read("--sc-vertical-scroll-exit", 0) / 2;
+  });
+  mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
+
+  let exitLocked = false,
+    prevLeft = NaN,
+    prevCol = "";
+  const BUF = 0.001;
+
+  const st = ScrollTrigger.create({
+    trigger: selectedElement,
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 1,
+    onUpdate: () => {
       const t = getViewportProgress(selectedElement);
-      const s = start(),
-        e = end();
-      const eY = entryY(),
-        cY = centerY(),
-        xY = exitY();
+      const l = t * 100;
+      if (l !== prevLeft) {
+        setLeft(l);
+        prevLeft = l;
+      }
+      const col = t < s - BUF ? "#EF7C2F" : t > e + BUF ? "#F6B67B" : "#FFFFFF";
+      if (col !== prevCol) {
+        setBg(col);
+        prevCol = col;
+      }
       if (!exitLocked && t >= e + BUF) exitLocked = true;
       if (exitLocked && t <= s - BUF) exitLocked = false;
       let y;
-      if (exitLocked) y = xY;
+      if (exitLocked) y = ex;
       else if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        y = eY + (cY - eY) * k;
+        y = ent + (cen - ent) * k;
       } else if (t > e) {
         const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        y = cY + (xY - cY) * k;
-      } else y = cY;
+        y = cen + (ex - cen) * k;
+      } else y = cen;
       y = Math.max(-50, Math.min(50, y));
-      if (y !== currentY) {
-        currentY = y;
-        const ease = easeName();
-        gsap.to(btn, {
-          y: `${y}vh`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
+      const en = curEase();
+      if (en !== easeName) {
+        easeName = en;
+        toY = gsap.quickTo(btn, "y", {
+          duration: en === "none" ? 0 : 0.35,
+          ease: en,
           overwrite: true,
         });
       }
-    };
-    gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.getAll().forEach((t) => {
-      if (t.trigger === selectedElement) t.kill();
-    });
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: tick,
-    });
-    const arrowLoop = () => {
-      const t = getViewportProgress(selectedElement);
-      arrow.style.left = `${t * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
-      const s = start(),
-        e = end();
-      if (t < s - BUF) arrow.style.backgroundColor = "#EF7C2F";
-      else if (t > e + BUF) arrow.style.backgroundColor = "#F6B67B";
-      else arrow.style.backgroundColor = "#FFFFFF";
-      requestAnimationFrame(arrowLoop);
-    };
-    arrowLoop();
-  }
-  waitForElements((arrow) => setupScrollAnimation(arrow));
+      toY(`${y}vh`);
+    },
+  });
+
+  selectedElement.__scBtnCancel = () => {
+    try {
+      mo.disconnect();
+      st.kill();
+    } catch {}
+  };
 }
-
-
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
