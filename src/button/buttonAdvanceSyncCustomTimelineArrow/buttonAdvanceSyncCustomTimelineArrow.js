@@ -1,4 +1,3 @@
-
 function getViewportProgress(el) {
   const vh = window.innerHeight || document.documentElement.clientHeight;
   if (vh <= 0) return 0.5;
@@ -24,18 +23,6 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     window.__scBtnLastEl.__scBtnCancel();
   window.__scBtnLastEl = selectedElement;
 
-  function ensureArrow() {
-    let a = document.getElementById("vertical-custom-timeline-arrow");
-    if (!a) {
-      const sb = document.getElementById("vertical-timeline-start-bullet");
-      if (sb && sb.parentElement) {
-        a = document.createElement("div");
-        a.id = "vertical-custom-timeline-arrow";
-        sb.parentElement.appendChild(a);
-      }
-    }
-    return a;
-  }
   function ensureDeps() {
     return new Promise((r) => {
       (function w(i) {
@@ -44,6 +31,31 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         else setTimeout(() => w(i - 1), 100);
       })(60);
     });
+  }
+  function ensureArrow() {
+    const sb = document.getElementById("vertical-timeline-start-bullet");
+    const cont =
+      sb?.closest(".vertical-custom-timeline-border") ||
+      sb?.parentElement ||
+      document.getElementById("vertical-timeline-start-bullet")?.parentElement;
+    if (!cont) return null;
+    cont.style.position = "relative";
+    let a = document.getElementById("vertical-custom-timeline-arrow");
+    if (!a) {
+      a = document.createElement("div");
+      a.id = "vertical-custom-timeline-arrow";
+      cont.appendChild(a);
+    }
+    a.style.position = "absolute";
+    a.style.width = "10px";
+    a.style.height = "10px";
+    a.style.top = "5px";
+    a.style.transform = "translateX(-50%)";
+    a.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
+    a.style.zIndex = "2";
+    a.style.pointerEvents = "none";
+    if (!a.style.backgroundColor) a.style.backgroundColor = "#FFFFFF";
+    return a;
   }
 
   const ok = await ensureDeps();
@@ -55,13 +67,13 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || selectedElement;
   const btn = getBtn();
-
   const read = (name, fb) => {
     const v = getComputedStyle(btn).getPropertyValue(name).trim();
     if (!v) return fb;
     const n = parseFloat(v.replace("%", ""));
     return Number.isFinite(n) ? n : fb;
   };
+
   let s = read("--sc-vertical-scroll-start", 0) / 100;
   let e = read("--sc-vertical-scroll-end", 100) / 100;
   if (!(e > s)) {
@@ -96,9 +108,6 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (t.trigger === selectedElement) t.kill();
   });
 
-  arrow.style.transition = "none";
-  btn.style.willChange = "transform";
-
   const setLeft = gsap.quickSetter(arrow, "left", "%");
   const setBg = gsap.quickSetter(arrow, "backgroundColor");
   let toY = gsap.quickTo(btn, "y", {
@@ -107,6 +116,9 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     overwrite: true,
   });
   let easeName = curEase();
+
+  const initL = getViewportProgress(selectedElement) * 100;
+  setLeft(initL);
 
   const mo = new MutationObserver(() => {
     s = read("--sc-vertical-scroll-start", 0) / 100;
@@ -175,7 +187,6 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     } catch {}
   };
 }
-
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
