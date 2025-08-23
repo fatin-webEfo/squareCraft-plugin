@@ -12,7 +12,6 @@ function attachAdvanceTimelineIncrementDecrement(
   let keyHoldTimeout = null;
   let lastPressedKey = null;
 
-  // helpers to read current % (from textContent like "12%")
   const readPct = (elId, fallback = 0) => {
     const el = document.getElementById(elId);
     if (!el) return fallback;
@@ -21,7 +20,6 @@ function attachAdvanceTimelineIncrementDecrement(
     return Number.isFinite(n) ? n : fallback;
   };
 
-  // write helper (handles input or plain text)
   const writePct = (elId, val) => {
     const el = document.getElementById(elId);
     if (!el) return;
@@ -29,7 +27,6 @@ function attachAdvanceTimelineIncrementDecrement(
     else el.textContent = `${val}%`;
   };
 
-  // clamp in -100..100
   const clampTriplet = (v) => Math.max(-100, Math.min(100, v));
 
   function setup(
@@ -90,7 +87,6 @@ function attachAdvanceTimelineIncrementDecrement(
     "vertical-button-advance-exit-count"
   );
 
-  // keyboard hold: ArrowRight/ArrowLeft on whichever bullet was last focused
   document.addEventListener("keydown", (e) => {
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
       return;
@@ -132,7 +128,6 @@ function attachAdvanceTimelineIncrementDecrement(
   });
 }
 
-
 function attachCustomTimelineReset(
   updateStart,
   updateEnd,
@@ -150,6 +145,7 @@ function attachCustomTimelineReset(
     updateExit(0);
   };
 }
+
 export function button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("vertical-effect-animation-type-arrow");
   const dropdown = document.getElementById(
@@ -195,7 +191,7 @@ export function button_initEffectAnimationDropdownToggle() {
         item.getAttribute("data-value") || item.textContent.trim();
       displayValue.textContent = selected;
 
-      // Optional: persist selection on the selected button as a CSS var (if available)
+      // persist on selected button as CSS var (optional)
       try {
         const el =
           typeof getSelectedElement === "function"
@@ -218,7 +214,6 @@ export function button_initEffectAnimationDropdownToggle() {
     delete container.dataset.scDropdownBound;
   };
 }
-
 
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
@@ -309,67 +304,62 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
   );
 
- function writeVar(cssVar, val) {
-   const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
-   let styleTag = document.getElementById(styleId);
-   if (!styleTag) {
-     styleTag = document.createElement("style");
-     styleTag.id = styleId;
-     document.head.appendChild(styleTag);
-   }
-   const twin = cssVar.replace("--sc-vertical-", "--sc-Typo-vertical-");
-
-   styleTag.textContent =
-     `#${el.id} a.sqs-block-button-element,` +
-     `#${el.id} button.sqs-button-element--primary,` +
-     `#${el.id} button.sqs-button-element--secondary,` +
-     `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
- }
-
-
-function paintStartEnd() {
-  startValue.textContent = `${Math.round(startPct)}%`;
-  endValue.textContent = `${Math.round(endPct)}%`;
-
-  const endScale = Math.max(0, (100 - endPct) / 100);
-
-  if (window.gsap) {
-    gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
-    gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
-
-    // left band (accent)
-    gsap.set(startFill, {
-      left: "0%",
-      width: `${startPct}%`,
-      backgroundColor: "var(--sc-theme-accent)", // or your exact var
-    });
-
-    // right band (yellow) — anchor to the right like Typo
-    gsap.set(endFill, {
-      left: "auto",
-      width: "100%",
-      transform: `scaleX(${endScale})`,
-      transformOrigin: "right",
-      backgroundColor: "#F6B67B",
-    });
-  } else {
-    startBullet.style.left = `${startPct}%`;
-    endBullet.style.left = `${endPct}%`;
-
-    startFill.style.left = `0%`;
-    startFill.style.width = `${startPct}%`;
-    startFill.style.backgroundColor = "var(--sc-theme-accent)";
-
-    // fallback that mimics scaleX from right
-    endFill.style.left = "auto";
-    endFill.style.right = "0";
-    endFill.style.width = "100%";
-    endFill.style.transformOrigin = "right";
-    endFill.style.transform = `scaleX(${endScale})`;
-    endFill.style.backgroundColor = "#F6B67B";
+  function writeVar(cssVar, val) {
+    const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
+    let styleTag = document.getElementById(styleId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+    const twin = cssVar.replace("--sc-vertical-", "--sc-Typo-vertical-");
+    styleTag.textContent =
+      `#${el.id} a.sqs-block-button-element,` +
+      `#${el.id} button.sqs-button-element--primary,` +
+      `#${el.id} button.sqs-button-element--secondary,` +
+      `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
   }
-}
 
+  function paintStartEnd() {
+    startValue.textContent = `${Math.round(startPct)}%`;
+    endValue.textContent = `${Math.round(endPct)}%`;
+
+    const endScale = Math.max(0, (100 - endPct) / 100);
+
+    if (window.gsap) {
+      gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
+      gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
+
+      gsap.set(startFill, {
+        left: "0%",
+        width: `${startPct}%`,
+        backgroundColor: "var(--sc-theme-accent)",
+      });
+
+      // anchor yellow band to the right; scaleX controls visible width
+      gsap.set(endFill, {
+        left: "auto",
+        width: "100%",
+        transform: `scaleX(${endScale})`,
+        transformOrigin: "right",
+        backgroundColor: "#F6B67B",
+      });
+    } else {
+      startBullet.style.left = `${startPct}%`;
+      endBullet.style.left = `${endPct}%`;
+
+      startFill.style.left = `0%`;
+      startFill.style.width = `${startPct}%`;
+      startFill.style.backgroundColor = "var(--sc-theme-accent)";
+
+      endFill.style.left = "auto";
+      endFill.style.right = "0";
+      endFill.style.width = "100%";
+      endFill.style.transformOrigin = "right";
+      endFill.style.transform = `scaleX(${endScale})`;
+      endFill.style.backgroundColor = "#F6B67B";
+    }
+  }
 
   function paintTriplet() {
     entryCount.textContent = `${Math.round(entryPct)}%`;
@@ -394,6 +384,7 @@ function paintStartEnd() {
         fill.style.width = `${fillWidth}%`;
       }
     };
+
     paintOne(entryBullet, entryFill, entryPct);
     paintOne(centerBullet, centerFill, centerPct);
     paintOne(exitBullet, exitFill, exitPct);
@@ -425,6 +416,7 @@ function paintStartEnd() {
     paintTriplet();
   }
 
+  // initial sync
   writeVar("--sc-vertical-scroll-start", startPct);
   writeVar("--sc-vertical-scroll-end", endPct);
   writeVar("--sc-vertical-scroll-entry", entryPct);
@@ -489,7 +481,6 @@ function paintStartEnd() {
   attachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
   button_initEffectAnimationDropdownToggle();
 
-  // expose setters if you want to call them elsewhere (optional, non-breaking)
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
 }
 

@@ -27,33 +27,44 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   const SMOOTH_ARROW = 0.18;
   const SMOOTH_Y = 0.15;
-  const EDGE_EPS = 0.015; // 1.5% of the span
+  const EDGE_EPS = 0.015;
 
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   const startBul = document.getElementById("vertical-timeline-start-bullet");
   const endBul = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
   const endFill = document.getElementById("vertical-timeline-end-fill");
+  const startValEl = document.getElementById("vertical-timelineStartValue");
+  const endValEl = document.getElementById("vertical-timelineEndValue");
   if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
 
   const lerp = (a, b, t) => a + (b - a) * t;
 
+  // soft fallbacks if GSAP is missing
   if (!window.gsap) {
     arrow.style.transition ||=
       "left 140ms ease-out, background-color 140ms ease-out";
     startBul.style.transition ||= "left 140ms ease-out";
     endBul.style.transition ||= "left 140ms ease-out";
-    startFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-    endFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+    startFill.style.transition ||= "width 140ms ease-out, left 140ms ease-out";
+    endFill.style.transition ||= "width 140ms ease-out, left 140ms ease-out";
   } else {
     gsap.killTweensOf(arrow, "backgroundColor");
   }
 
-  const qArrowLeft =
-    (window.gsap && gsap.quickSetter(arrow, "left", "%")) ||
-    ((v) => (arrow.style.left = v + "%"));
+  const qSet = (el, prop, unit) =>
+    (window.gsap && gsap.quickSetter(el, prop, unit)) ||
+    ((v) => {
+      el.style[prop] = typeof v === "number" ? v + (unit || "") : v;
+    });
+
+  const qArrowLeft = qSet(arrow, "left", "%");
+  const qStartBulLeft = qSet(startBul, "left", "%");
+  const qEndBulLeft = qSet(endBul, "left", "%");
+  const qStartFillLeft = qSet(startFill, "left", "%");
+  const qStartFillWidth = qSet(startFill, "width", "%");
+  const qEndFillLeft = qSet(endFill, "left", "%");
+  const qEndFillWidth = qSet(endFill, "width", "%");
 
   const getButton = () =>
     selectedElement.querySelector(
@@ -71,24 +82,23 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
-  const getPctVar = (el, cssVar, fallback = 0) => {
-    const v = getComputedStyle(el).getPropertyValue(cssVar).trim();
-    const n = parseFloat(v.replace("%", ""));
+  // local reader for % CSS vars (no external helpers)
+  const readPct = (el, cssVar, fallback = 0) => {
+    const raw = getComputedStyle(el).getPropertyValue(cssVar).trim();
+    const n = parseFloat(raw.replace("%", ""));
     return Number.isFinite(n) ? n : fallback;
   };
 
-  const btn0 = getButton();
-  if (!btn0) return;
+  let running = true;
+  selectedElement.__scBtnRafActive = true;
+  selectedElement.__scBtnCancel = () => {
+    running = false;
+    selectedElement.__scBtnRafActive = false;
+    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
+  };
 
-  let startPct = getPctVar(btn0, "--sc-vertical-scroll-start", 0);
-  let endPct = getPctVar(btn0, "--sc-vertical-scroll-end", 100);
-  if (endPct < startPct + 4) endPct = startPct + 4;
-
-  const readTriplet = (btn) => ({
-    entry: getPctVar(btn, "--sc-vertical-scroll-entry", 0),
-    center: getPctVar(btn, "--sc-vertical-scroll-center", 0),
-    exit: getPctVar(btn, "--sc-vertical-scroll-exit", 0),
-  });
+  let smoothedLeft = null;
+  let smoothedYvh = null;
 
   const dropdown = document.getElementById(
     "vertical-effect-animation-type-list"
@@ -97,7 +107,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const display = dropdown?.previousElementSibling?.querySelector(
       "#vertical-effect-animation-value"
     );
-    const name = display?.textContent?.trim() || "none";
+    const name = (display?.textContent || "").trim() || "none";
     const map = {
       none: "none",
       Linear: "none",
@@ -125,17 +135,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
-  let running = true;
-  selectedElement.__scBtnRafActive = true;
-  selectedElement.__scBtnCancel = () => {
-    running = false;
-    selectedElement.__scBtnRafActive = false;
-    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
-  };
-
-  let smoothedLeft = null;
-  let smoothedYvh = null;
-
   function applyArrowColor(p01) {
     const c =
       p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
@@ -143,40 +142,65 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else arrow.style.backgroundColor = c;
   }
 
+  function paintStartEnd(startPct, endPct) {
+    // bullets
+    qStartBulLeft(startPct);
+    qEndBulLeft(endPct);
+    // fills
+    qStartFillLeft(0);
+    qStartFillWidth(startPct);
+    const endWidth = Math.max(0, 100 - endPct);
+    qEndFillLeft(endPct);
+    qEndFillWidth(endWidth);
+    // text labels if present
+    if (startValEl) startValEl.textContent = `${Math.round(startPct)}%`;
+    if (endValEl) endValEl.textContent = `${Math.round(endPct)}%`;
+  }
+
   function frame() {
     if (!running || !document.body.contains(selectedElement)) {
       selectedElement.__scBtnRafActive = false;
       return;
     }
+
     const btnNow = getButton();
     if (!btnNow) {
       selectedElement.__scBtnRafActive = false;
       return;
     }
 
-    startPct = getPctVar(btnNow, "--sc-vertical-scroll-start", startPct);
-    endPct = getPctVar(btnNow, "--sc-vertical-scroll-end", endPct);
-    if (endPct < startPct + 4) endPct = startPct + 4;
+    // read live values from the actual selected button (keeps UI in sync)
+    let startPct = readPct(btnNow, "--sc-vertical-scroll-start", 0);
+    let endPct = readPct(btnNow, "--sc-vertical-scroll-end", 100);
+    if (endPct < startPct + 4) endPct = startPct + 4; // enforce gap
 
-    const t = getViewportProgress(selectedElement) * 100;
+    // paint timeline UI every frame so bullets/fills follow external changes
+    paintStartEnd(startPct, endPct);
+
+    const tAbs = getViewportProgress(selectedElement) * 100;
     const span = Math.max(1, endPct - startPct);
-    let p01 = (t - startPct) / span;
+    let p01 = (tAbs - startPct) / span;
     if (p01 < 0) p01 = 0;
     else if (p01 > 1) p01 = 1;
 
     const targetLeft = startPct + p01 * span;
 
-    const trip = readTriplet(btnNow);
+    // vertical triplet, easing over the 0..1 window
+    const entry = readPct(btnNow, "--sc-vertical-scroll-entry", 0);
+    const center = readPct(btnNow, "--sc-vertical-scroll-center", 0);
+    const exit = readPct(btnNow, "--sc-vertical-scroll-exit", 0);
+
     const eased = ease01(p01, currentEase());
     const yPct =
       eased <= 0
-        ? trip.entry
+        ? entry
         : eased >= 1
-        ? trip.exit
+        ? exit
         : eased <= 0.5
-        ? lerp(trip.entry, trip.center, eased / 0.5)
-        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
-    const targetYvh = yPct / 2;
+        ? lerp(entry, center, eased / 0.5)
+        : lerp(center, exit, (eased - 0.5) / 0.5);
+
+    const targetYvh = yPct / 2; // your UI uses % → vh/2 mapping
 
     if (smoothedLeft == null) smoothedLeft = targetLeft;
     if (smoothedYvh == null) smoothedYvh = targetYvh;
@@ -382,7 +406,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
   requestAnimationFrame(frame);
 }
-
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
