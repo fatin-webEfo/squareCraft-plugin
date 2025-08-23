@@ -309,48 +309,67 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
   );
 
-  function writeVar(cssVar, val) {
-    const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-    styleTag.textContent =
-      `#${el.id} a.sqs-block-button-element,` +
-      `#${el.id} button.sqs-button-element--primary,` +
-      `#${el.id} button.sqs-button-element--secondary,` +
-      `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; }`;
-  }
+ function writeVar(cssVar, val) {
+   const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
+   let styleTag = document.getElementById(styleId);
+   if (!styleTag) {
+     styleTag = document.createElement("style");
+     styleTag.id = styleId;
+     document.head.appendChild(styleTag);
+   }
+   const twin = cssVar.replace("--sc-vertical-", "--sc-Typo-vertical-");
 
-  function paintStartEnd() {
-    startValue.textContent = `${Math.round(startPct)}%`;
-    endValue.textContent = `${Math.round(endPct)}%`;
+   styleTag.textContent =
+     `#${el.id} a.sqs-block-button-element,` +
+     `#${el.id} button.sqs-button-element--primary,` +
+     `#${el.id} button.sqs-button-element--secondary,` +
+     `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
+ }
 
-    if (window.gsap) {
-      gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
-      gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
-      gsap.set(startFill, {
-        left: "0%",
-        width: `${startPct}%`,
-        backgroundColor: "var(--sc-theme-accent)",
-      });
-      const endWidth = Math.max(0, 100 - endPct);
-      gsap.set(endFill, {
-        left: `${endPct}%`,
-        width: `${endWidth}%`,
-        backgroundColor: "#F6B67B",
-      });
-    } else {
-      startBullet.style.left = `${startPct}%`;
-      endBullet.style.left = `${endPct}%`;
-      startFill.style.left = `0%`;
-      startFill.style.width = `${startPct}%`;
-      endFill.style.left = `${endPct}%`;
-      endFill.style.width = `${Math.max(0, 100 - endPct)}%`;
-    }
+
+function paintStartEnd() {
+  startValue.textContent = `${Math.round(startPct)}%`;
+  endValue.textContent = `${Math.round(endPct)}%`;
+
+  const endScale = Math.max(0, (100 - endPct) / 100);
+
+  if (window.gsap) {
+    gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
+    gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
+
+    // left band (accent)
+    gsap.set(startFill, {
+      left: "0%",
+      width: `${startPct}%`,
+      backgroundColor: "var(--sc-theme-accent)", // or your exact var
+    });
+
+    // right band (yellow) — anchor to the right like Typo
+    gsap.set(endFill, {
+      left: "auto",
+      width: "100%",
+      transform: `scaleX(${endScale})`,
+      transformOrigin: "right",
+      backgroundColor: "#F6B67B",
+    });
+  } else {
+    startBullet.style.left = `${startPct}%`;
+    endBullet.style.left = `${endPct}%`;
+
+    startFill.style.left = `0%`;
+    startFill.style.width = `${startPct}%`;
+    startFill.style.backgroundColor = "var(--sc-theme-accent)";
+
+    // fallback that mimics scaleX from right
+    endFill.style.left = "auto";
+    endFill.style.right = "0";
+    endFill.style.width = "100%";
+    endFill.style.transformOrigin = "right";
+    endFill.style.transform = `scaleX(${endScale})`;
+    endFill.style.backgroundColor = "#F6B67B";
   }
+}
+
 
   function paintTriplet() {
     entryCount.textContent = `${Math.round(entryPct)}%`;
