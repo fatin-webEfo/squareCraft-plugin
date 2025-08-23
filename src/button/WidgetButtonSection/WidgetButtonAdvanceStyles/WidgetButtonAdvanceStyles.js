@@ -242,6 +242,7 @@ export function button_initEffectAnimationDropdownToggle() {
   };
 }
 
+
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
   const endBullet = document.getElementById("vertical-timeline-end-bullet");
@@ -338,56 +339,51 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       `#${el.id} button.sqs-button-element--secondary,` +
       `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
   }
-  function updateField(
-    bullet,
-    fill,
-    countEl,
-    cssVar,
-    position = "left",
-    min = -100,
-    max = 100
-  ) {
-    return (val) => {
-      val = Math.max(min, Math.min(max, val));
-      if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
-      else countEl.textContent = `${val}%`;
-      if (
-        [
-          "--sc-vertical-scroll-entry",
-          "--sc-vertical-scroll-center",
-          "--sc-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
-        bullet.style.left = `${bulletLeft}%`;
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-        if (cssVar === "--sc-vertical-scroll-entry") {
-          const a = document.getElementById("vertical-custom-timeline-arrow");
-          if (a) a.style.left = `${bulletLeft}%`;
-        }
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        position === "left"
-          ? gsap.set(fill, { width: `${val}%`, left: "0" })
-          : gsap.set(fill, {
-              left: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
-              transformOrigin: "right",
-              width: "100%",
-              backgroundColor: "#F6B67B",
-            });
-      }
-      writeVar(cssVar, val);
-    };
-  }
+ function updateField(
+   bullet,
+   fill,
+   countEl,
+   cssVar,
+   position = "left",
+   min = -100,
+   max = 100
+ ) {
+   return (val) => {
+     val = Math.max(min, Math.min(max, val));
+     if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
+     else countEl.textContent = `${val}%`;
+     if (
+       [
+         "--sc-vertical-scroll-entry",
+         "--sc-vertical-scroll-center",
+         "--sc-vertical-scroll-exit",
+       ].includes(cssVar)
+     ) {
+       const percent = (val + 100) / 2;
+       const fillLeft = val < 0 ? percent : 50;
+       const fillWidth = Math.abs(val / 2);
+       gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
+       gsap.set(fill, {
+         left: `${fillLeft}%`,
+         width: `${fillWidth}%`,
+         backgroundColor: "var(--sc-theme-accent)",
+       });
+     } else {
+       gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+       if (position === "left") gsap.set(fill, { width: `${val}%`, left: "0" });
+       else
+         gsap.set(fill, {
+           left: "auto",
+           transform: `scaleX(${(100 - val) / 100})`,
+           transformOrigin: "right",
+           width: "100%",
+           backgroundColor: "#F6B67B",
+         });
+     }
+     writeVar(cssVar, val);
+   };
+ }
+
   const setStart = (v) => {
     startPct = Math.max(0, Math.min(v, endPct - 4));
     updateField(
