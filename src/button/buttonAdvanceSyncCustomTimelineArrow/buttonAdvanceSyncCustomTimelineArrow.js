@@ -76,6 +76,12 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     return map[name] || "none";
   };
 
+  if (!arrow.style.backgroundColor) arrow.style.backgroundColor = "#FFFFFF";
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const EDGE_EPS = 0.015;
+  const SMOOTH_ARROW = 0.18;
+  const SMOOTH_Y = 0.15;
+
   let running = true;
   selectedElement.__scBtnRafActive = true;
   selectedElement.__scBtnCancel = () => {
@@ -84,35 +90,36 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
   };
 
-  if (!arrow.style.backgroundColor) arrow.style.backgroundColor = "#FFFFFF";
-
-  const lerp = (a, b, t) => a + (b - a) * t;
+  let smoothedLeft = null;
+  let smoothedYvh = null;
 
   function frame() {
     if (!running || !document.body.contains(selectedElement)) return;
 
-    const btn = getButton();
+    const b = getButton();
     const t01 = getViewportProgress(selectedElement);
-    const t = t01 * 100;
+    const targetArrow = t01 * 100;
 
-    qArrowLeft(t);
+    if (smoothedLeft == null) smoothedLeft = targetArrow;
+    smoothedLeft = lerp(smoothedLeft, targetArrow, SMOOTH_ARROW);
+    qArrowLeft(smoothedLeft);
 
-    const s = getPct(btn, "--sc-vertical-scroll-start", 0);
-    const e = getPct(btn, "--sc-vertical-scroll-end", 100);
-    const entry = getPct(btn, "--sc-vertical-scroll-entry", 0);
-    const center = getPct(btn, "--sc-vertical-scroll-center", 0);
-    const exit = getPct(btn, "--sc-vertical-scroll-exit", 0);
+    const s = getPct(b, "--sc-vertical-scroll-start", 0);
+    const e = getPct(b, "--sc-vertical-scroll-end", 100);
+    const entry = getPct(b, "--sc-vertical-scroll-entry", 0);
+    const center = getPct(b, "--sc-vertical-scroll-center", 0);
+    const exit = getPct(b, "--sc-vertical-scroll-exit", 0);
 
     const color =
-      t01 < s / 100 - 0.001
+      t01 <= s / 100 - EDGE_EPS
         ? "#EF7C2F"
-        : t01 > e / 100 + 0.001
+        : t01 >= e / 100 + EDGE_EPS
         ? "#F6B67B"
         : "#FFFFFF";
     qArrowBg(color);
 
     const span = Math.max(1, e - s);
-    let p01 = (t - s) / span;
+    let p01 = (t01 * 100 - s) / span;
     if (p01 < 0) p01 = 0;
     else if (p01 > 1) p01 = 1;
 
@@ -128,13 +135,18 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         : eased <= 0.5
         ? lerp(entry, center, eased / 0.5)
         : lerp(center, exit, (eased - 0.5) / 0.5);
-    qBtnTrans(`translateY(${(yPct / 2).toFixed(2)}vh)`);
+    const targetYvh = yPct / 2;
+
+    if (smoothedYvh == null) smoothedYvh = targetYvh;
+    smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
+    qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
 
     requestAnimationFrame(frame);
   }
 
   requestAnimationFrame(frame);
 }
+
 
 
 
