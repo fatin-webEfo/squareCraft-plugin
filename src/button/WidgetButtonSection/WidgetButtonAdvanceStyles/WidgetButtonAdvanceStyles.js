@@ -11,7 +11,6 @@ function attachAdvanceTimelineIncrementDecrement(
   let keyHoldInterval = null;
   let keyHoldTimeout = null;
   let lastPressedKey = null;
-
   const readPct = (elId, fallback = 0) => {
     const el = document.getElementById(elId);
     if (!el) return fallback;
@@ -19,16 +18,13 @@ function attachAdvanceTimelineIncrementDecrement(
     const n = parseInt(raw, 10);
     return Number.isFinite(n) ? n : fallback;
   };
-
   const writePct = (elId, val) => {
     const el = document.getElementById(elId);
     if (!el) return;
     if (el.tagName === "INPUT") el.value = `${val}%`;
     else el.textContent = `${val}%`;
   };
-
   const clampTriplet = (v) => Math.max(-100, Math.min(100, v));
-
   function setup(
     idIncrease,
     idDecrease,
@@ -39,17 +35,14 @@ function attachAdvanceTimelineIncrementDecrement(
   ) {
     const btnInc = document.getElementById(idIncrease);
     const btnDec = document.getElementById(idDecrease);
-
     const click = (dir) => {
       let v = getCurrent();
       v = clampTriplet(v + (dir === "inc" ? 1 : -1));
       updateFn(v);
       writePct(countId, v);
     };
-
     if (btnInc) btnInc.onclick = () => click("inc");
     if (btnDec) btnDec.onclick = () => click("dec");
-
     const bullet = document.getElementById(bulletId);
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
@@ -57,11 +50,9 @@ function attachAdvanceTimelineIncrementDecrement(
       bullet.addEventListener("focus", () => (lastFocused = bulletId));
     }
   }
-
   const getEntry = () => readPct("vertical-button-advance-entry-count", 0);
   const getCenter = () => readPct("vertical-button-advance-center-count", 0);
   const getExit = () => readPct("vertical-button-advance-exit-count", 0);
-
   setup(
     "vertical-button-advance-entry-increase",
     "vertical-button-advance-entry-decrease",
@@ -86,15 +77,12 @@ function attachAdvanceTimelineIncrementDecrement(
     "vertical-button-advance-exit-bullet",
     "vertical-button-advance-exit-count"
   );
-
   document.addEventListener("keydown", (e) => {
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
       return;
     if (keyHoldInterval || keyHoldTimeout) return;
-
     const dir = e.key === "ArrowRight" ? 1 : -1;
     lastPressedKey = e.key;
-
     const step = () => {
       if (lastFocused.includes("entry")) {
         const v = clampTriplet(getEntry() + dir);
@@ -110,13 +98,11 @@ function attachAdvanceTimelineIncrementDecrement(
         writePct("vertical-button-advance-exit-count", v);
       }
     };
-
     step();
     keyHoldTimeout = setTimeout(() => {
       keyHoldInterval = setInterval(step, 100);
     }, 300);
   });
-
   document.addEventListener("keyup", (e) => {
     if (e.key === lastPressedKey) {
       clearInterval(keyHoldInterval);
@@ -160,12 +146,10 @@ export function button_initEffectAnimationDropdownToggle() {
   if (!arrow || !dropdown || !container || !displayValue) return;
   if (container.dataset.scDropdownBound === "1") return;
   container.dataset.scDropdownBound = "1";
-
   const open = () => dropdown.classList.remove("sc-hidden");
   const close = () => dropdown.classList.add("sc-hidden");
   const toggle = () => dropdown.classList.toggle("sc-hidden");
   const isOpen = () => !dropdown.classList.contains("sc-hidden");
-
   arrow.addEventListener(
     "click",
     (e) => {
@@ -175,7 +159,6 @@ export function button_initEffectAnimationDropdownToggle() {
     { passive: true }
   );
   dropdown.addEventListener("click", (e) => e.stopPropagation());
-
   const onDocClick = (e) => {
     if (!container.contains(e.target)) close();
   };
@@ -184,22 +167,18 @@ export function button_initEffectAnimationDropdownToggle() {
   };
   document.addEventListener("click", onDocClick);
   document.addEventListener("keydown", onKey);
-
   dropdown.querySelectorAll("[data-value]").forEach((item) => {
     item.addEventListener("click", () => {
       const selected =
         item.getAttribute("data-value") || item.textContent.trim();
       displayValue.textContent = selected;
-
-      // persist on selected button as CSS var (optional)
       try {
         const el =
           typeof getSelectedElement === "function"
             ? getSelectedElement()
             : null;
         const btn = el?.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-            "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         );
         if (btn)
           btn.style.setProperty("--sc-vertical-effect-animation", selected);
@@ -207,7 +186,6 @@ export function button_initEffectAnimationDropdownToggle() {
       close();
     });
   });
-
   container.__scDropdownDispose = () => {
     document.removeEventListener("click", onDocClick);
     document.removeEventListener("keydown", onKey);
@@ -222,7 +200,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const endFill = document.getElementById("vertical-timeline-end-fill");
   const startValue = document.getElementById("vertical-timelineStartValue");
   const endValue = document.getElementById("vertical-timelineEndValue");
-
   const entryBullet = document.getElementById(
     "vertical-button-advance-entry-bullet"
   );
@@ -232,7 +209,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const entryCount = document.getElementById(
     "vertical-button-advance-entry-count"
   );
-
   const centerBullet = document.getElementById(
     "vertical-button-advance-center-bullet"
   );
@@ -242,7 +218,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const centerCount = document.getElementById(
     "vertical-button-advance-center-count"
   );
-
   const exitBullet = document.getElementById(
     "vertical-button-advance-exit-bullet"
   );
@@ -250,7 +225,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const exitCount = document.getElementById(
     "vertical-button-advance-exit-count"
   );
-
+  const arrow = document.getElementById("vertical-custom-timeline-arrow");
   if (
     !startBullet ||
     !endBullet ||
@@ -266,24 +241,21 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     !centerCount ||
     !exitBullet ||
     !exitFill ||
-    !exitCount
+    !exitCount ||
+    !arrow
   )
     return;
-
   const el = getSelectedElement?.();
   if (!el) return;
-
-  const btn = el.querySelector(
-    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-  );
+  const btn =
+    el.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    ) || el;
   if (!btn) return;
-
   const readPct = (v) => {
     const n = parseFloat(String(v).replace("%", ""));
     return Number.isFinite(n) ? n : 0;
   };
-
   let startPct =
     readPct(
       getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-start")
@@ -293,7 +265,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-end")
     ) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
-
   let entryPct = readPct(
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-entry")
   );
@@ -303,7 +274,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   let exitPct = readPct(
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
   );
-
   function writeVar(cssVar, val) {
     const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
     let styleTag = document.getElementById(styleId);
@@ -313,30 +283,20 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
     const twin = cssVar.replace("--sc-vertical-", "--sc-Typo-vertical-");
-    styleTag.textContent =
-      `#${el.id} a.sqs-block-button-element,` +
-      `#${el.id} button.sqs-button-element--primary,` +
-      `#${el.id} button.sqs-button-element--secondary,` +
-      `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
+    styleTag.textContent = `#${el.id} a.sqs-block-button-element,#${el.id} button.sqs-button-element--primary,#${el.id} button.sqs-button-element--secondary,#${el.id} button.sqs-button-element--tertiary{${cssVar}: ${val}%; ${twin}: ${val}%;}`;
   }
-
   function paintStartEnd() {
     startValue.textContent = `${Math.round(startPct)}%`;
     endValue.textContent = `${Math.round(endPct)}%`;
-
     const endScale = Math.max(0, (100 - endPct) / 100);
-
     if (window.gsap) {
       gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
       gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
-
       gsap.set(startFill, {
         left: "0%",
         width: `${startPct}%`,
         backgroundColor: "var(--sc-theme-accent)",
       });
-
-      // anchor yellow band to the right; scaleX controls visible width
       gsap.set(endFill, {
         left: "auto",
         width: "100%",
@@ -347,11 +307,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     } else {
       startBullet.style.left = `${startPct}%`;
       endBullet.style.left = `${endPct}%`;
-
       startFill.style.left = `0%`;
       startFill.style.width = `${startPct}%`;
       startFill.style.backgroundColor = "var(--sc-theme-accent)";
-
       endFill.style.left = "auto";
       endFill.style.right = "0";
       endFill.style.width = "100%";
@@ -359,18 +317,21 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       endFill.style.transform = `scaleX(${endScale})`;
       endFill.style.backgroundColor = "#F6B67B";
     }
+    arrow.style.opacity = "1";
+    arrow.style.display = "block";
+    arrow.style.position = arrow.style.position || "absolute";
+    arrow.style.transform = "translateX(-50%)";
+    arrow.style.left = `${startPct}%`;
+    arrow.style.zIndex = "999999";
   }
-
   function paintTriplet() {
     entryCount.textContent = `${Math.round(entryPct)}%`;
     centerCount.textContent = `${Math.round(centerPct)}%`;
     exitCount.textContent = `${Math.round(exitPct)}%`;
-
     const paintOne = (bullet, fill, v) => {
-      const percent = (v + 100) / 2; // -100..100 → 0..100
+      const percent = (v + 100) / 2;
       const fillLeft = v < 0 ? percent : 50;
       const fillWidth = Math.abs(v / 2);
-
       if (window.gsap) {
         gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
         gsap.set(fill, {
@@ -384,12 +345,10 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         fill.style.width = `${fillWidth}%`;
       }
     };
-
     paintOne(entryBullet, entryFill, entryPct);
     paintOne(centerBullet, centerFill, centerPct);
     paintOne(exitBullet, exitFill, exitPct);
   }
-
   function setStart(val) {
     startPct = Math.max(0, Math.min(val, endPct - 4));
     writeVar("--sc-vertical-scroll-start", startPct);
@@ -415,8 +374,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     writeVar("--sc-vertical-scroll-exit", exitPct);
     paintTriplet();
   }
-
-  // initial sync
   writeVar("--sc-vertical-scroll-start", startPct);
   writeVar("--sc-vertical-scroll-end", endPct);
   writeVar("--sc-vertical-scroll-entry", entryPct);
@@ -424,14 +381,12 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   writeVar("--sc-vertical-scroll-exit", exitPct);
   paintStartEnd();
   paintTriplet();
-
   function makeDraggable(bullet, setter, type, min = -100, max = 100) {
     if (!bullet) return;
     bullet.onmousedown = (e) => {
       e.preventDefault();
       const container = bullet.parentElement;
       const rect = container.getBoundingClientRect();
-
       const onMove = (ev) => {
         const clientX = Math.max(
           rect.left,
@@ -440,34 +395,28 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         const percent =
           ((clientX - rect.left) / rect.width) * (max - min) + min;
         let v = Math.round(percent);
-
         if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
         if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
         if (type === "normal") v = Math.max(min, Math.min(v, max));
-
         setter(v);
       };
-
       const onUp = () => {
         document.removeEventListener("mousemove", onMove);
         document.removeEventListener("mouseup", onUp);
         document.removeEventListener("touchmove", onMove);
         document.removeEventListener("touchend", onUp);
       };
-
       document.addEventListener("mousemove", onMove);
       document.addEventListener("mouseup", onUp, { once: true });
       document.addEventListener("touchmove", onMove, { passive: false });
       document.addEventListener("touchend", onUp, { once: true });
     };
   }
-
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
   makeDraggable(entryBullet, setEntry, "normal", -100, 100);
   makeDraggable(centerBullet, setCenter, "normal", -100, 100);
   makeDraggable(exitBullet, setExit, "normal", -100, 100);
-
   [
     { id: "vertical-button-advance-entry-reset", setter: () => setEntry(0) },
     { id: "vertical-button-advance-center-reset", setter: () => setCenter(0) },
@@ -476,14 +425,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
   });
-
   attachAdvanceTimelineIncrementDecrement(setEntry, setCenter, setExit);
   attachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
   button_initEffectAnimationDropdownToggle();
-
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
 }
-
 
 
 // horizontal
