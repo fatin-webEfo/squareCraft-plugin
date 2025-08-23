@@ -412,60 +412,78 @@ setTimeout(() => {
 let normalRotationInitialized = false;
 
 export function initButtonIconRotationControl(getSelectedElement) {
-  if (normalRotationInitialized) return;
-  normalRotationInitialized = true;
+  const root = document.getElementById("sc-widget-container") || document;
+  // If you have a dedicated section wrapper, use it; otherwise root:
+  const section = root.querySelector("#buttonIconRotationSection") || root;
 
-  const bullet = document.getElementById("buttonIconRotationradiusBullet");
-  const fill = document.getElementById("buttonIconRotationradiusFill");
-  const field = document.getElementById("buttonIconRotationradiusField");
-  const label = document.getElementById("buttoniconRotationradiusCount");
+  // Bind once per render
+  if (section.dataset.scRotationInited === "1") return;
 
-  const incBtn = document.getElementById("buttoniconRotationIncrease");
-  const decBtn = document.getElementById("buttoniconRotationDecrease");
+  const needSelectors = [
+    "#buttonIconRotationradiusBullet",
+    "#buttonIconRotationradiusFill",
+    "#buttonIconRotationradiusField",
+    "#buttoniconRotationradiusCount",
+  ];
+  const q = (sel) => root.querySelector(sel);
+  const ready = () => needSelectors.every((sel) => q(sel));
+
+  // Wait for the widget DOM if it's not there yet
+  if (!ready()) {
+    const mo = new MutationObserver(() => {
+      if (ready()) {
+        mo.disconnect();
+        initButtonIconRotationControl(getSelectedElement); // re-enter once ready
+      }
+    });
+    mo.observe(root, { childList: true, subtree: true });
+    return;
+  }
+
+  // Mark as inited only after controls are present
+  section.dataset.scRotationInited = "1";
+
+  const bullet = q("#buttonIconRotationradiusBullet");
+  const fill = q("#buttonIconRotationradiusFill");
+  const field = q("#buttonIconRotationradiusField");
+  const label = q("#buttoniconRotationradiusCount");
+
+  // Optional buttons (may not exist in some states)
+  const incBtn = q("#buttoniconRotationIncrease");
+  const decBtn = q("#buttoniconRotationDecrease");
 
   let currentRotation = 0;
   let userInteracted = false;
 
-  function applyRotation() {
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
+  function getBtnFromSelection() {
+    const sel = getSelectedElement?.();
+    return sel?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-    if (!btn) return;
-
-    const typeClass = [...btn.classList].find((cls) =>
-      cls.startsWith("sqs-button-element--")
-    );
-    if (!typeClass) return;
-
-    const buttons = document.querySelectorAll(`a.${typeClass}`);
-    buttons.forEach((button) => {
-      const icon = button.querySelector(
-        ".sqscraft-button-icon, .sqscraft-image-icon"
-      );
-      if (icon) {
-        icon.style.transform = `rotate(${currentRotation}deg)`;
-      }
-    });
   }
 
-  function updateUI(clientX) {
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    const centerX = rect.width / 2;
-    const deltaX = x - centerX;
-    currentRotation = Math.round((deltaX / centerX) * 180);
+  function getTypeClass(btn) {
+    return [...btn.classList].find((cls) =>
+      cls.startsWith("sqs-button-element--")
+    );
+  }
 
-    const percent = (x / rect.width) * 100;
-    bullet.style.left = `${percent}%`;
+  function applyRotation() {
+    const btn = getBtnFromSelection();
+    if (!btn) return;
+    const typeClass = getTypeClass(btn);
+    if (!typeClass) return;
 
-    const fillStart = 50;
-    fill.style.left = `${Math.min(percent, fillStart)}%`;
-    fill.style.width = `${Math.abs(percent - fillStart)}%`;
-
-    label.textContent = `${currentRotation}deg`;
-
-    applyRotation();
+    document
+      .querySelectorAll(`a.${typeClass}, button.${typeClass}`)
+      .forEach((b) => {
+        b.querySelectorAll(
+          ".sqscraft-button-icon, .sqscraft-image-icon"
+        ).forEach((icon) => {
+          icon.style.transform = `rotate(${currentRotation}deg)`;
+        });
+      });
   }
 
   function updateFromRotationValue(value) {
@@ -474,22 +492,26 @@ export function initButtonIconRotationControl(getSelectedElement) {
     const percent = ((clamped + 180) / 360) * 100;
 
     bullet.style.left = `${percent}%`;
-
     const center = 50;
     fill.style.left = `${Math.min(percent, center)}%`;
     fill.style.width = `${Math.abs(percent - center)}%`;
-
     label.textContent = `${clamped}deg`;
+
     applyRotation();
+  }
+
+  function updateUI(clientX) {
+    const rect = field.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const centerX = rect.width / 2;
+    const deltaX = x - centerX;
+    const newValue = Math.round((deltaX / centerX) * 180);
+    updateFromRotationValue(newValue);
   }
 
   function syncFromIconRotation() {
     if (userInteracted) return;
-
-    const selectedElement = getSelectedElement?.();
-    const btn = selectedElement?.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    );
+    const btn = getBtnFromSelection();
     if (!btn) return;
 
     const icon = btn.querySelector(
@@ -501,21 +523,15 @@ export function initButtonIconRotationControl(getSelectedElement) {
     }
 
     const match = icon.style.transform?.match(/rotate\((-?\d+(?:\.\d+)?)deg\)/);
-    if (match) {
-      const rotation = parseFloat(match[1]);
-      if (!isNaN(rotation)) {
-        updateFromRotationValue(rotation);
-        return;
-      }
-    }
-
-    updateFromRotationValue(0);
+    const current = match ? parseFloat(match[1]) : 0;
+    updateFromRotationValue(isNaN(current) ? 0 : current);
   }
 
+  // Listeners (elements are guaranteed to exist here)
   bullet.addEventListener("mousedown", (e) => {
     e.preventDefault();
     userInteracted = true;
-    const move = (e) => updateUI(e.clientX);
+    const move = (ev) => updateUI(ev.clientX);
     const up = () => {
       document.removeEventListener("mousemove", move);
       document.removeEventListener("mouseup", up);
@@ -539,8 +555,10 @@ export function initButtonIconRotationControl(getSelectedElement) {
     updateFromRotationValue(currentRotation - 1);
   });
 
+  // Initial sync (slight delay to allow fonts/layout settle if needed)
   setTimeout(syncFromIconRotation, 50);
 }
+
 
 export function initButtonIconSizeControl(getSelectedElement) {
   const bullet = document.getElementById("buttonIconSizeradiusBullet");
