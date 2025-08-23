@@ -1,42 +1,45 @@
-function attachAdvanceTimelineIncrementDecrement(
+export function attachCustomTimelineReset(
+  updateStart,
+  updateEnd,
+  updateEntry,
+  updateCenter,
+  updateExit
+) {
+  const btn =
+    document.getElementById("vertical-custom-timeline-reset") ||
+    document.getElementById("Typo-vertical-custom-timeline-reset");
+  if (!btn) return;
+  btn.onclick = () => {
+    updateStart(0);
+    updateEnd(100);
+    updateEntry(0);
+    updateCenter(0);
+    updateExit(0);
+  };
+}
+
+export function attachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
   updateStart,
   updateEnd
 ) {
-  let lastFocused = null;
-  let keyHoldInterval = null;
-  let keyHoldTimeout = null;
-  let lastPressedKey = null;
-
-  let entryVal = 0;
-  let centerVal = 0;
-  let exitVal = 0;
-  let startVal = 0;
-  let endVal = 0;
-
-  const readPct = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    const raw = (el.tagName === "INPUT" ? el.value : el.textContent) || "0%";
-    const n = parseInt(String(raw).replace("%", ""), 10);
-    return Number.isFinite(n) ? n : 0;
-  };
-
-  const writePct = (id, v) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (el.tagName === "INPUT") el.value = v + "%";
-    else el.textContent = v + "%";
-  };
-
-  function setup(idInc, idDec, getCurrent, updateFn, bulletId) {
-    const bInc = document.getElementById(idInc);
-    const bDec = document.getElementById(idDec);
-    const click = (type) => {
-      let v = getCurrent();
-      v = type === "inc" ? v + 1 : v - 1;
+  let lastFocused = null,
+    keyHoldInterval = null,
+    keyHoldTimeout = null,
+    lastPressedKey = null;
+  let entryVal = 0,
+    centerVal = 0,
+    exitVal = 0,
+    startVal = 0,
+    endVal = 0;
+  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
+    const btnInc = document.getElementById(idIncrease);
+    const btnDec = document.getElementById(idDecrease);
+    const clickHandler = (type) => {
+      let val = getCurrent();
+      val = type === "inc" ? val + 1 : val - 1;
       const min =
         bulletId.includes("entry") ||
         bulletId.includes("center") ||
@@ -44,43 +47,46 @@ function attachAdvanceTimelineIncrementDecrement(
           ? -100
           : 0;
       if (bulletId.includes("start")) {
-        v = Math.max(0, Math.min(v, endVal - 4));
-        startVal = v;
+        val = Math.max(0, Math.min(val, endVal - 4));
+        startVal = val;
       } else if (bulletId.includes("end")) {
-        v = Math.max(startVal + 4, Math.min(v, 100));
-        endVal = v;
+        val = Math.max(startVal + 4, Math.min(val, 100));
+        endVal = val;
       } else {
-        v = Math.max(min, Math.min(100, v));
+        val = Math.max(min, Math.min(100, val));
       }
-      updateFn(v);
+      updateFn(val);
       const countId = bulletId.replace(
         "bullet",
         bulletId.includes("start") || bulletId.includes("end")
           ? "Value"
           : "count"
       );
-      writePct(countId, v);
+      document.getElementById(countId).textContent = val + "%";
     };
-    if (bInc) bInc.onclick = () => click("inc");
-    if (bDec) bDec.onclick = () => click("dec");
+    if (btnInc) btnInc.onclick = () => clickHandler("inc");
+    if (btnDec) btnDec.onclick = () => clickHandler("dec");
     const bullet = document.getElementById(bulletId);
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
       bullet.addEventListener("click", () => (lastFocused = bulletId));
       bullet.addEventListener("focus", () => {
         lastFocused = bulletId;
-        const v = getCurrent();
-        if (bulletId.includes("entry")) entryVal = v;
-        if (bulletId.includes("center")) centerVal = v;
-        if (bulletId.includes("exit")) exitVal = v;
-        if (bulletId.includes("start")) startVal = v;
-        if (bulletId.includes("end")) endVal = v;
+        const val = getCurrent();
+        if (bulletId.includes("entry")) entryVal = val;
+        if (bulletId.includes("center")) centerVal = val;
+        if (bulletId.includes("exit")) exitVal = val;
+        if (bulletId.includes("start")) startVal = val;
+        if (bulletId.includes("end")) endVal = val;
       });
     }
   }
-
-  const getVal = (id) => readPct(id);
-
+  const getVal = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
+    return parseInt(raw.replace("%", "")) || 0;
+  };
   setup(
     "vertical-button-advance-entry-increase",
     "vertical-button-advance-entry-decrease",
@@ -116,50 +122,53 @@ function attachAdvanceTimelineIncrementDecrement(
     updateEnd,
     "vertical-timeline-end-bullet"
   );
-
   document.addEventListener("keydown", (e) => {
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
       return;
     if (keyHoldInterval || keyHoldTimeout) return;
-    const dir = e.key === "ArrowRight" ? 1 : -1;
+    const direction = e.key === "ArrowRight" ? 1 : -1;
     lastPressedKey = e.key;
-    const step = () => {
+    const update = () => {
       if (lastFocused.includes("entry")) {
-        entryVal = Math.max(-100, Math.min(100, entryVal + dir));
+        entryVal = Math.max(-100, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
-        writePct("vertical-button-advance-entry-count", entryVal);
+        document.getElementById("vertical-button-advance-entry-count").value =
+          entryVal + "%";
       }
       if (lastFocused.includes("center")) {
-        centerVal = Math.max(-100, Math.min(100, centerVal + dir));
+        centerVal = Math.max(-100, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
-        writePct("vertical-button-advance-center-count", centerVal);
+        document.getElementById("vertical-button-advance-center-count").value =
+          centerVal + "%";
       }
       if (lastFocused.includes("exit")) {
-        exitVal = Math.max(-100, Math.min(100, exitVal + dir));
+        exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
-        writePct("vertical-button-advance-exit-count", exitVal);
+        document.getElementById("vertical-button-advance-exit-count").value =
+          exitVal + "%";
       }
       if (lastFocused.includes("start")) {
         startVal = getVal("vertical-timelineStartValue");
         endVal = getVal("vertical-timelineEndValue");
-        startVal = Math.max(0, Math.min(startVal + dir, endVal - 4));
+        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        writePct("vertical-timelineStartValue", startVal);
+        document.getElementById("vertical-timelineStartValue").textContent =
+          startVal + "%";
       }
       if (lastFocused.includes("end")) {
         startVal = getVal("vertical-timelineStartValue");
         endVal = getVal("vertical-timelineEndValue");
-        endVal = Math.max(startVal + 4, Math.min(endVal + dir, 100));
+        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        writePct("vertical-timelineEndValue", endVal);
+        document.getElementById("vertical-timelineEndValue").textContent =
+          endVal + "%";
       }
     };
-    step();
+    update();
     keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(step, 100);
+      keyHoldInterval = setInterval(update, 100);
     }, 300);
   });
-
   document.addEventListener("keyup", (e) => {
     if (e.key === lastPressedKey) {
       clearInterval(keyHoldInterval);
@@ -171,41 +180,17 @@ function attachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function attachCustomTimelineReset(
-  updateStart,
-  updateEnd,
-  updateEntry,
-  updateCenter,
-  updateExit
-) {
-  const resetBtn =
-    document.getElementById("vertical-custom-timeline-reset") ||
-    document.getElementById("Typo-vertical-custom-timeline-reset");
-  if (!resetBtn) return;
-  resetBtn.onclick = () => {
-    updateStart(0);
-    updateEnd(100);
-    updateEntry(0);
-    updateCenter(0);
-    updateExit(0);
-  };
-}
-
 export function button_initEffectAnimationDropdownToggle() {
-  const arrow =
-    document.getElementById("vertical-effect-animation-type-arrow") ||
-    document.getElementById("Typo-vertical-effect-animation-type-arrow");
-  const dropdown =
-    document.getElementById("vertical-effect-animation-type-list") ||
-    document.getElementById("Typo-vertical-effect-animation-type-list");
-  const container =
-    document.getElementById("vertical-effect-animation-dropdown-container") ||
-    document.getElementById(
-      "Typo-vertical-effect-animation-dropdown-container"
-    );
-  const displayValue =
-    document.getElementById("vertical-effect-animation-value") ||
-    document.getElementById("Typo-vertical-effect-animation-value");
+  const arrow = document.getElementById("vertical-effect-animation-type-arrow");
+  const dropdown = document.getElementById(
+    "vertical-effect-animation-type-list"
+  );
+  const container = document.getElementById(
+    "vertical-effect-animation-dropdown-container"
+  );
+  const displayValue = document.getElementById(
+    "vertical-effect-animation-value"
+  );
   if (!arrow || !dropdown || !container || !displayValue) return;
   if (container.dataset.scDropdownBound === "1") return;
   container.dataset.scDropdownBound = "1";
@@ -242,11 +227,11 @@ export function button_initEffectAnimationDropdownToggle() {
             : null;
         const btn =
           el?.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           ) || el;
         if (btn)
           btn.style.setProperty("--sc-vertical-effect-animation", selected);
-      } catch (_) {}
+      } catch {}
       close();
     });
   });
@@ -258,55 +243,37 @@ export function button_initEffectAnimationDropdownToggle() {
 }
 
 export function initButtonAdvanceStyles(getSelectedElement) {
-  const startBullet =
-    document.getElementById("vertical-timeline-start-bullet") ||
-    document.getElementById("Typo-vertical-timeline-start-bullet");
-  const endBullet =
-    document.getElementById("vertical-timeline-end-bullet") ||
-    document.getElementById("Typo-vertical-timeline-end-bullet");
-  const startFill =
-    document.getElementById("vertical-timeline-start-fill") ||
-    document.getElementById("Typo-vertical-timeline-start-fill");
-  const endFill =
-    document.getElementById("vertical-timeline-end-fill") ||
-    document.getElementById("Typo-vertical-timeline-end-fill");
-  const startValue =
-    document.getElementById("vertical-timelineStartValue") ||
-    document.getElementById("Typo-vertical-timelineStartValue");
-  const endValue =
-    document.getElementById("vertical-timelineEndValue") ||
-    document.getElementById("Typo-vertical-timelineEndValue");
-
-  const entryBullet =
-    document.getElementById("vertical-button-advance-entry-bullet") ||
-    document.getElementById("Typo-vertical-advance-entry-bullet");
-  const entryFill =
-    document.getElementById("vertical-button-advance-entry-fill") ||
-    document.getElementById("Typo-vertical-advance-entry-fill");
-  const entryCount =
-    document.getElementById("vertical-button-advance-entry-count") ||
-    document.getElementById("Typo-vertical-advance-entry-count");
-
-  const centerBullet =
-    document.getElementById("vertical-button-advance-center-bullet") ||
-    document.getElementById("Typo-vertical-advance-center-bullet");
-  const centerFill =
-    document.getElementById("vertical-button-advance-center-fill") ||
-    document.getElementById("Typo-vertical-advance-center-fill");
-  const centerCount =
-    document.getElementById("vertical-button-advance-center-count") ||
-    document.getElementById("Typo-vertical-advance-center-count");
-
-  const exitBullet =
-    document.getElementById("vertical-button-advance-exit-bullet") ||
-    document.getElementById("Typo-vertical-advance-exit-bullet");
-  const exitFill =
-    document.getElementById("vertical-button-advance-exit-fill") ||
-    document.getElementById("Typo-vertical-advance-exit-fill");
-  const exitCount =
-    document.getElementById("vertical-button-advance-exit-count") ||
-    document.getElementById("Typo-vertical-advance-exit-count");
-
+  const startBullet = document.getElementById("vertical-timeline-start-bullet");
+  const endBullet = document.getElementById("vertical-timeline-end-bullet");
+  const startFill = document.getElementById("vertical-timeline-start-fill");
+  const endFill = document.getElementById("vertical-timeline-end-fill");
+  const startValue = document.getElementById("vertical-timelineStartValue");
+  const endValue = document.getElementById("vertical-timelineEndValue");
+  const entryBullet = document.getElementById(
+    "vertical-button-advance-entry-bullet"
+  );
+  const entryFill = document.getElementById(
+    "vertical-button-advance-entry-fill"
+  );
+  const entryCount = document.getElementById(
+    "vertical-button-advance-entry-count"
+  );
+  const centerBullet = document.getElementById(
+    "vertical-button-advance-center-bullet"
+  );
+  const centerFill = document.getElementById(
+    "vertical-button-advance-center-fill"
+  );
+  const centerCount = document.getElementById(
+    "vertical-button-advance-center-count"
+  );
+  const exitBullet = document.getElementById(
+    "vertical-button-advance-exit-bullet"
+  );
+  const exitFill = document.getElementById("vertical-button-advance-exit-fill");
+  const exitCount = document.getElementById(
+    "vertical-button-advance-exit-count"
+  );
   if (
     !startBullet ||
     !endBullet ||
@@ -325,20 +292,16 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     !exitCount
   )
     return;
-
   const el = getSelectedElement?.();
   if (!el) return;
-
   const btn =
     el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || el;
-
   const readPct = (v) => {
     const n = parseFloat(String(v).replace("%", ""));
     return Number.isFinite(n) ? n : 0;
   };
-
   let startPct =
     readPct(
       getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-start")
@@ -348,7 +311,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-end")
     ) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
-
   let entryPct = readPct(
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-entry")
   );
@@ -358,7 +320,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   let exitPct = readPct(
     getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
   );
-
   function writeVar(cssVar, val) {
     const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
     let styleTag = document.getElementById(styleId);
@@ -368,103 +329,145 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       document.head.appendChild(styleTag);
     }
     const twin = cssVar.replace("--sc-vertical-", "--sc-Typo-vertical-");
-    styleTag.textContent = `#${el.id} a.sqs-block-button-element,#${el.id} button.sqs-button-element--primary,#${el.id} button.sqs-button-element--secondary,#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
+    styleTag.textContent =
+      `#${el.id} a.sqs-button-element--primary,` +
+      `#${el.id} a.sqs-button-element--secondary,` +
+      `#${el.id} a.sqs-button-element--tertiary,` +
+      `#${el.id} a.sqs-block-button-element,` +
+      `#${el.id} button.sqs-button-element--primary,` +
+      `#${el.id} button.sqs-button-element--secondary,` +
+      `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
   }
-
-  function paintStartEnd() {
-    startValue.textContent = `${Math.round(startPct)}%`;
-    endValue.textContent = `${Math.round(endPct)}%`;
-    const endScale = Math.max(0, (100 - endPct) / 100);
-    if (window.gsap) {
-      gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
-      gsap.set(endBullet, { left: `${endPct}%`, xPercent: -50 });
-      gsap.set(startFill, {
-        left: "0%",
-        width: `${startPct}%`,
-        backgroundColor: "var(--sc-theme-accent)",
-      });
-      gsap.set(endFill, {
-        left: "auto",
-        width: "100%",
-        transform: `scaleX(${endScale})`,
-        transformOrigin: "right",
-        backgroundColor: "#F6B67B",
-      });
-    } else {
-      startBullet.style.left = `${startPct}%`;
-      endBullet.style.left = `${endPct}%`;
-      startFill.style.left = `0%`;
-      startFill.style.width = `${startPct}%`;
-      startFill.style.backgroundColor = "var(--sc-theme-accent)";
-      endFill.style.left = "auto";
-      endFill.style.right = "0";
-      endFill.style.width = "100%";
-      endFill.style.transformOrigin = "right";
-      endFill.style.transform = `scaleX(${endScale})`;
-      endFill.style.backgroundColor = "#F6B67B";
-    }
-  }
-
-  function paintTriplet() {
-    entryCount.textContent = `${Math.round(entryPct)}%`;
-    centerCount.textContent = `${Math.round(centerPct)}%`;
-    exitCount.textContent = `${Math.round(exitPct)}%`;
-    const paintOne = (bullet, fill, v) => {
-      const percent = (v + 100) / 2;
-      const fillLeft = v < 0 ? percent : 50;
-      const fillWidth = Math.abs(v / 2);
-      if (window.gsap) {
-        gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
+  function updateField(
+    bullet,
+    fill,
+    countEl,
+    cssVar,
+    position = "left",
+    min = -100,
+    max = 100
+  ) {
+    return (val) => {
+      val = Math.max(min, Math.min(max, val));
+      if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
+      else countEl.textContent = `${val}%`;
+      if (
+        [
+          "--sc-vertical-scroll-entry",
+          "--sc-vertical-scroll-center",
+          "--sc-vertical-scroll-exit",
+        ].includes(cssVar)
+      ) {
+        const percent = (val + 100) / 2;
+        const bulletLeft = percent;
+        const fillLeft = val < 0 ? percent : 50;
+        const fillWidth = Math.abs(val / 2);
+        bullet.style.left = `${bulletLeft}%`;
+        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
           backgroundColor: "var(--sc-theme-accent)",
         });
+        if (cssVar === "--sc-vertical-scroll-entry") {
+          const a = document.getElementById("vertical-custom-timeline-arrow");
+          if (a) a.style.left = `${bulletLeft}%`;
+        }
       } else {
-        bullet.style.left = `${percent}%`;
-        fill.style.left = `${fillLeft}%`;
-        fill.style.width = `${fillWidth}%`;
+        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
+        position === "left"
+          ? gsap.set(fill, { width: `${val}%`, left: "0" })
+          : gsap.set(fill, {
+              left: "auto",
+              transform: `scaleX(${(100 - val) / 100})`,
+              transformOrigin: "right",
+              width: "100%",
+              backgroundColor: "#F6B67B",
+            });
       }
+      writeVar(cssVar, val);
     };
-    paintOne(entryBullet, entryFill, entryPct);
-    paintOne(centerBullet, centerFill, centerPct);
-    paintOne(exitBullet, exitFill, exitPct);
   }
-
-  function setStart(v) {
+  const setStart = (v) => {
     startPct = Math.max(0, Math.min(v, endPct - 4));
-    writeVar("--sc-vertical-scroll-start", startPct);
-    paintStartEnd();
-  }
-  function setEnd(v) {
+    updateField(
+      startBullet,
+      startFill,
+      startValue,
+      "--sc-vertical-scroll-start",
+      "left",
+      0,
+      100
+    )(startPct);
+  };
+  const setEnd = (v) => {
     endPct = Math.max(startPct + 4, Math.min(v, 100));
-    writeVar("--sc-vertical-scroll-end", endPct);
-    paintStartEnd();
+    updateField(
+      endBullet,
+      endFill,
+      endValue,
+      "--sc-vertical-scroll-end",
+      "right",
+      0,
+      100
+    )(endPct);
+  };
+  const setEntry = updateField(
+    entryBullet,
+    entryFill,
+    entryCount,
+    "--sc-vertical-scroll-entry"
+  );
+  const setCenter = updateField(
+    centerBullet,
+    centerFill,
+    centerCount,
+    "--sc-vertical-scroll-center"
+  );
+  const setExit = updateField(
+    exitBullet,
+    exitFill,
+    exitCount,
+    "--sc-vertical-scroll-exit"
+  );
+  setEntry(entryPct);
+  setCenter(centerPct);
+  setExit(exitPct);
+  setStart(startPct);
+  gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
+  setEnd(endPct);
+  function bindTripletInput(input, fn) {
+    input.addEventListener("input", (e) => {
+      let v = parseInt(e.target.value.replace("%", "").trim());
+      if (isNaN(v)) v = 0;
+      v = Math.max(-100, Math.min(100, v));
+      e.target.value = v + "%";
+      fn(v);
+    });
+    input.addEventListener("blur", (e) => {
+      let v = parseInt(e.target.value.replace("%", "").trim());
+      if (isNaN(v)) v = 0;
+      v = Math.max(-100, Math.min(100, v));
+      e.target.value = v + "%";
+      fn(v);
+    });
+    input.addEventListener("keydown", (e) => {
+      if (
+        !/[0-9\-]/.test(e.key) &&
+        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
+          e.key
+        )
+      )
+        e.preventDefault();
+    });
+    input.addEventListener("focus", (e) => {
+      const v = parseInt(e.target.value.replace("%", "").trim()) || 0;
+      e.target.value = v;
+    });
   }
-  function setEntry(v) {
-    entryPct = Math.max(-100, Math.min(100, v));
-    writeVar("--sc-vertical-scroll-entry", entryPct);
-    paintTriplet();
-  }
-  function setCenter(v) {
-    centerPct = Math.max(-100, Math.min(100, v));
-    writeVar("--sc-vertical-scroll-center", centerPct);
-    paintTriplet();
-  }
-  function setExit(v) {
-    exitPct = Math.max(-100, Math.min(100, v));
-    writeVar("--sc-vertical-scroll-exit", exitPct);
-    paintTriplet();
-  }
-
-  writeVar("--sc-vertical-scroll-start", startPct);
-  writeVar("--sc-vertical-scroll-end", endPct);
-  writeVar("--sc-vertical-scroll-entry", entryPct);
-  writeVar("--sc-vertical-scroll-center", centerPct);
-  writeVar("--sc-vertical-scroll-exit", exitPct);
-  paintStartEnd();
-  paintTriplet();
-
+  bindTripletInput(entryCount, setEntry);
+  bindTripletInput(centerCount, setCenter);
+  bindTripletInput(exitCount, setExit);
   function makeDraggable(bullet, setter, type, min = -100, max = 100) {
     if (!bullet) return;
     bullet.onmousedown = (e) => {
@@ -496,24 +499,19 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       document.addEventListener("touchend", onUp, { once: true });
     };
   }
-
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
-  makeDraggable(entryBullet, setEntry, "normal", -100, 100);
-  makeDraggable(centerBullet, setCenter, "normal", -100, 100);
-  makeDraggable(exitBullet, setExit, "normal", -100, 100);
-
+  makeDraggable(entryBullet, setEntry, "normal");
+  makeDraggable(centerBullet, setCenter, "normal");
+  makeDraggable(exitBullet, setExit, "normal");
   [
     { id: "vertical-button-advance-entry-reset", setter: () => setEntry(0) },
     { id: "vertical-button-advance-center-reset", setter: () => setCenter(0) },
     { id: "vertical-button-advance-exit-reset", setter: () => setExit(0) },
   ].forEach(({ id, setter }) => {
-    const b =
-      document.getElementById(id) ||
-      document.getElementById(id.replace("vertical-", "Typo-"));
+    const b = document.getElementById(id);
     if (b) b.onclick = setter;
   });
-
   attachAdvanceTimelineIncrementDecrement(
     setEntry,
     setCenter,
@@ -523,10 +521,12 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   );
   attachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
   button_initEffectAnimationDropdownToggle();
-
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
-
-  if (typeof buttonAdvanceSyncCustomTimelineArrow === "function")
+  if (
+    window.gsap &&
+    window.ScrollTrigger &&
+    typeof buttonAdvanceSyncCustomTimelineArrow === "function"
+  )
     buttonAdvanceSyncCustomTimelineArrow(el);
 }
 
