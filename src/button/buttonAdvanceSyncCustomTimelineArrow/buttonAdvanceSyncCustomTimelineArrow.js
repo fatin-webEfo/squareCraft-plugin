@@ -1,192 +1,100 @@
-function getViewportProgress(el) {
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  if (vh <= 0) return 0.5;
-  const tb = document.querySelector(
-    '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-  );
-  const th = tb ? tb.getBoundingClientRect().height : 0;
-  const visTop = th,
-    visH = Math.max(1, vh - th);
-  const r = el.getBoundingClientRect(),
-    c = r.top + r.height / 2;
-  let t = (c - visTop) / visH;
-  if (Number.isNaN(t)) t = 0.5;
-  return Math.max(0, Math.min(1, t));
+function getViewportProgress(el){
+  const vh=window.innerHeight||document.documentElement.clientHeight; if(vh<=0)return .5;
+  const tb=document.querySelector('[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader');
+  const th=tb?tb.getBoundingClientRect().height:0;
+  const visTop=th, visH=Math.max(1,vh-th);
+  const r=el.getBoundingClientRect(), c=r.top+r.height/2;
+  let t=(c-visTop)/visH; if(Number.isNaN(t))t=.5;
+  return Math.max(0,Math.min(1,t))
 }
 
-export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
-  if (!selectedElement) return;
-  if (
-    window.__scBtnLastEl &&
-    typeof window.__scBtnLastEl.__scBtnCancel === "function"
-  )
-    window.__scBtnLastEl.__scBtnCancel();
-  window.__scBtnLastEl = selectedElement;
+export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement){
+  if(!selectedElement)return;
+  if(window.__scBtnLastEl&&typeof window.__scBtnLastEl.__scBtnCancel==="function")window.__scBtnLastEl.__scBtnCancel();
+  window.__scBtnLastEl=selectedElement;
 
-  function ensureDeps() {
-    return new Promise((r) => {
-      (function w(i) {
-        if (window.gsap && window.ScrollTrigger) r(true);
-        else if (i <= 0) r(false);
-        else setTimeout(() => w(i - 1), 100);
-      })(60);
-    });
-  }
-  function ensureArrow() {
-    const sb = document.getElementById("vertical-timeline-start-bullet");
-    const cont =
-      sb?.closest(".vertical-custom-timeline-border") ||
-      sb?.parentElement ||
-      document.getElementById("vertical-timeline-start-bullet")?.parentElement;
-    if (!cont) return null;
-    cont.style.position = "relative";
-    let a = document.getElementById("vertical-custom-timeline-arrow");
-    if (!a) {
-      a = document.createElement("div");
-      a.id = "vertical-custom-timeline-arrow";
-      cont.appendChild(a);
-    }
-    a.style.position = "absolute";
-    a.style.width = "10px";
-    a.style.height = "10px";
-    a.style.top = "5px";
-    a.style.transform = "translateX(-50%)";
-    a.style.clipPath = "polygon(50% 0%, 0% 100%, 100% 100%)";
-    a.style.zIndex = "2";
-    a.style.pointerEvents = "none";
-    if (!a.style.backgroundColor) a.style.backgroundColor = "#FFFFFF";
-    return a;
+  function ensureDeps(){return new Promise(r=>{(function w(i){if(window.gsap&&window.ScrollTrigger)r(true);else if(i<=0)r(false);else setTimeout(()=>w(i-1),100)})(60)})}
+  function ensureArrow(){
+    const sb=document.getElementById("vertical-timeline-start-bullet");
+    const cont=sb?.closest(".vertical-custom-timeline-border")||sb?.parentElement||document.getElementById("vertical-timeline-start-bullet")?.parentElement;
+    if(!cont)return null;
+    cont.style.position="relative";
+    let a=document.getElementById("vertical-custom-timeline-arrow");
+    if(!a){a=document.createElement("div");a.id="vertical-custom-timeline-arrow";cont.appendChild(a)}
+    a.style.position="absolute";
+    a.style.width="10px";
+    a.style.height="10px";
+    a.style.top="5px";
+    a.style.transform="translateX(-50%)";
+    a.style.clipPath="polygon(50% 0%, 0% 100%, 100% 100%)";
+    a.style.zIndex="2";
+    a.style.pointerEvents="none";
+    if(!a.style.backgroundColor)a.style.backgroundColor="#FFFFFF";
+    return a
   }
 
-  const ok = await ensureDeps();
-  const arrow = ensureArrow();
-  if (!ok || !arrow) return;
+  const ok=await ensureDeps();
+  const arrow=ensureArrow();
+  if(!ok||!arrow)return;
 
-  const getBtn = () =>
-    selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    ) || selectedElement;
-  const btn = getBtn();
-  const read = (name, fb) => {
-    const v = getComputedStyle(btn).getPropertyValue(name).trim();
-    if (!v) return fb;
-    const n = parseFloat(v.replace("%", ""));
-    return Number.isFinite(n) ? n : fb;
-  };
+  const getBtn=()=>selectedElement.querySelector("a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary")||selectedElement;
+  const btn=getBtn();
+  const read=(name,fb)=>{const v=getComputedStyle(btn).getPropertyValue(name).trim(); if(!v)return fb; const n=parseFloat(v.replace("%","")); return Number.isFinite(n)?n:fb};
 
-  let s = read("--sc-vertical-scroll-start", 0) / 100;
-  let e = read("--sc-vertical-scroll-end", 100) / 100;
-  if (!(e > s)) {
-    s = 0;
-    e = 1;
-  }
-  let ent = read("--sc-vertical-scroll-entry", 0) / 2;
-  let cen = read("--sc-vertical-scroll-center", 0) / 2;
-  let ex = read("--sc-vertical-scroll-exit", 0) / 2;
+  let s=read("--sc-vertical-scroll-start",0)/100;
+  let e=read("--sc-vertical-scroll-end",100)/100;
+  if(!(e>s)){s=0;e=1}
+  let ent=read("--sc-vertical-scroll-entry",0)/2;
+  let cen=read("--sc-vertical-scroll-center",0)/2;
+  let ex =read("--sc-vertical-scroll-exit",0)/2;
 
-  const valEl = document.querySelector("#vertical-effect-animation-value");
-  const easeMap = (n) =>
-    ({
-      none: "none",
-      Linear: "none",
-      linear: "none",
-      "ease-in": "power1.in",
-      "ease-out": "power1.out",
-      "ease-in-out": "power1.inOut",
-      "power1.out": "power1.out",
-      "power2.out": "power2.out",
-      "power3.out": "power3.out",
-      "power4.out": "power4.out",
-      "expo.out": "expo.out",
-      "elastic.out": "elastic.out",
-      "bounce.out": "bounce.out",
-    }[n] || "none");
-  const curEase = () => easeMap((valEl?.textContent || "none").trim());
+  const valEl=document.querySelector("#vertical-effect-animation-value");
+  const easeMap=n=>({none:"none",Linear:"none",linear:"none","ease-in":"power1.in","ease-out":"power1.out","ease-in-out":"power1.inOut","power1.out":"power1.out","power2.out":"power2.out","power3.out":"power3.out","power4.out":"power4.out","expo.out":"expo.out","elastic.out":"elastic.out","bounce.out":"bounce.out"}[n]||"none");
+  const curEase=()=>easeMap((valEl?.textContent||"none").trim());
 
   gsap.registerPlugin(ScrollTrigger);
-  ScrollTrigger.getAll().forEach((t) => {
-    if (t.trigger === selectedElement) t.kill();
-  });
+  ScrollTrigger.getAll().forEach(t=>{if(t.trigger===selectedElement)t.kill()});
 
-  const setLeft = gsap.quickSetter(arrow, "left", "%");
-  const setBg = gsap.quickSetter(arrow, "backgroundColor");
-  let toY = gsap.quickTo(btn, "y", {
-    duration: 0.35,
-    ease: "power1.out",
-    overwrite: true,
-  });
-  let easeName = curEase();
+  const setLeft=gsap.quickSetter(arrow,"left","%");
+  const setBg=gsap.quickSetter(arrow,"backgroundColor");
+  let toY=gsap.quickTo(btn,"y",{duration:.35,ease:"power1.out",overwrite:true});
+  let easeName=curEase();
 
-  const initL = getViewportProgress(selectedElement) * 100;
+  const initL=getViewportProgress(selectedElement)*100;
   setLeft(initL);
 
-  const mo = new MutationObserver(() => {
-    s = read("--sc-vertical-scroll-start", 0) / 100;
-    e = read("--sc-vertical-scroll-end", 100) / 100;
-    if (!(e > s)) {
-      s = 0;
-      e = 1;
-    }
-    ent = read("--sc-vertical-scroll-entry", 0) / 2;
-    cen = read("--sc-vertical-scroll-center", 0) / 2;
-    ex = read("--sc-vertical-scroll-exit", 0) / 2;
-  });
-  mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
+  const mo=new MutationObserver(()=>{s=read("--sc-vertical-scroll-start",0)/100; e=read("--sc-vertical-scroll-end",100)/100; if(!(e>s)){s=0;e=1} ent=read("--sc-vertical-scroll-entry",0)/2; cen=read("--sc-vertical-scroll-center",0)/2; ex=read("--sc-vertical-scroll-exit",0)/2});
+  mo.observe(btn,{attributes:true,attributeFilter:["style"]});
 
-  let exitLocked = false,
-    prevLeft = NaN,
-    prevCol = "";
-  const BUF = 0.001;
+  let exitLocked=false, prevLeft=NaN, prevCol="";
+  const BUF=0.001;
 
-  const st = ScrollTrigger.create({
-    trigger: selectedElement,
-    start: "top bottom",
-    end: "bottom top",
-    scrub: 1,
-    onUpdate: () => {
-      const t = getViewportProgress(selectedElement);
-      const l = t * 100;
-      if (l !== prevLeft) {
-        setLeft(l);
-        prevLeft = l;
-      }
-      const col = t < s - BUF ? "#EF7C2F" : t > e + BUF ? "#F6B67B" : "#FFFFFF";
-      if (col !== prevCol) {
-        setBg(col);
-        prevCol = col;
-      }
-      if (!exitLocked && t >= e + BUF) exitLocked = true;
-      if (exitLocked && t <= s - BUF) exitLocked = false;
+  const st=ScrollTrigger.create({
+    trigger:selectedElement,
+    start:"top bottom",
+    end:"bottom top",
+    scrub:1,
+    onUpdate:()=>{
+      const t=getViewportProgress(selectedElement);
+      const l=t*100;
+      if(l!==prevLeft){setLeft(l);prevLeft=l}
+      const col=t<s-BUF?"#EF7C2F":(t>e+BUF?"#F6B67B":"#FFFFFF");
+      if(col!==prevCol){setBg(col);prevCol=col}
+      if(!exitLocked&&t>=e+BUF)exitLocked=true;
+      if(exitLocked&&t<=s-BUF)exitLocked=false;
       let y;
-      if (exitLocked) y = ex;
-      else if (t < s) {
-        const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        y = ent + (cen - ent) * k;
-      } else if (t > e) {
-        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        y = cen + (ex - cen) * k;
-      } else y = cen;
-      y = Math.max(-50, Math.min(50, y));
-      const en = curEase();
-      if (en !== easeName) {
-        easeName = en;
-        toY = gsap.quickTo(btn, "y", {
-          duration: en === "none" ? 0 : 0.35,
-          ease: en,
-          overwrite: true,
-        });
-      }
-      toY(`${y}vh`);
-    },
+      if(exitLocked)y=ex; else if(t<s){const k=s<=0?1:Math.min(t/s,1);y=ent+(cen-ent)*k} else if(t>e){const k=1-e<=0?1:Math.min((t-e)/(1-e),1);y=cen+(ex-cen)*k} else y=cen;
+      y=Math.max(-50,Math.min(50,y));
+      const en=curEase();
+      if(en!==easeName){easeName=en;toY=gsap.quickTo(btn,"y",{duration:en==="none"?0:.35,ease:en,overwrite:true})}
+      toY(`${y}vh`)
+    }
   });
 
-  selectedElement.__scBtnCancel = () => {
-    try {
-      mo.disconnect();
-      st.kill();
-    } catch {}
-  };
+  selectedElement.__scBtnCancel=()=>{try{mo.disconnect();st.kill()}catch{}}
 }
+
+
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
