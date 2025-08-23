@@ -490,13 +490,7 @@ if (typeof buttonAdvanceSyncCustomTimelineArrow === "function")
 }
 
 
-// horizontal
-// ──────────────────────────────────────────────────────────────
-// BUTTON — HORIZONTAL TIMELINE VARIANTS
-// IDs start with "horizontal-*" and we use TOP/HEIGHT (not left/width).
-// CSS vars used on the button element:
-//   --sc-horizontal-scroll-start | --sc-horizontal-scroll-end
-//   --sc-horizontal-scroll-entry | --sc-horizontal-scroll-center | --sc-horizontal-scroll-exit
+
 // ──────────────────────────────────────────────────────────────
 
  function horizontalattachAdvanceTimelineIncrementDecrement(
