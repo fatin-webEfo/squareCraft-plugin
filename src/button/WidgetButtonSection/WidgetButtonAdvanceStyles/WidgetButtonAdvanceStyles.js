@@ -484,7 +484,8 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
 
   if (window.gsap && window.ScrollTrigger) {
-    buttonAdvanceSyncCustomTimelineArrow(el);
+if (typeof buttonAdvanceSyncCustomTimelineArrow === "function")
+  buttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
 
