@@ -17,24 +17,18 @@ function getViewportProgress(el) {
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  // kill previous run bound to this element
+  // kill prior instance bound to this element
   if (typeof selectedElement.__scBtnCancel === "function") {
     try {
       selectedElement.__scBtnCancel();
     } catch {}
   }
 
-  // --- ensure rail/bullets exist; retry next frame if DOM not ready yet ---
+  // ensure arrow exists in the same rail as bullets
   let arrow = document.getElementById("vertical-custom-timeline-arrow");
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
   const endBullet = document.getElementById("vertical-timeline-end-bullet");
-
-  if (!startBullet || !endBullet) {
-    // re-enter on next frame until the bullets are there
-    return requestAnimationFrame(() =>
-      buttonAdvanceSyncCustomTimelineArrow(selectedElement)
-    );
-  }
+  if (!startBullet || !endBullet) return;
 
   const rail = startBullet.parentElement;
   if (!arrow) {
@@ -42,18 +36,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.id = "vertical-custom-timeline-arrow";
     rail.appendChild(arrow);
   }
+  if (getComputedStyle(rail).position === "static")
+    rail.style.position = "relative";
 
-  // rail must allow absolute children
-  const railStyle = getComputedStyle(rail);
-  if (railStyle.position === "static") rail.style.position = "relative";
-  rail.style.overflow = "visible";
-
-  // visible defaults (in case CSS didn’t load yet)
+  // arrow fallback style (visible even if CSS didn’t load)
   Object.assign(arrow.style, {
     position: "absolute",
     width: "10px",
     height: "10px",
-    top: "5px", // If clipped, change to "0px"
+    top: "5px",
     left: "50%",
     transform: "translateX(-50%)",
     clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
@@ -62,17 +53,17 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     pointerEvents: "none",
   });
 
-  // pick the button element (anchor/button) or fallback to selectedElement
+  // pick a button inside or fallback to the block
   const getButton = () =>
     selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, " +
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element," +
         "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || selectedElement;
 
   const btn = getButton();
   if (!btn) return;
 
-  // give target an id and install a CSS-var driven transform (immune to theme overrides)
+  // stable id + CSS-var driven transform (wins via !important)
   if (!btn.id) btn.id = `scbtn-${Math.random().toString(36).slice(2, 9)}`;
   const ruleId = `sc-y-rule-${btn.id}`;
   if (!document.getElementById(ruleId)) {
@@ -82,26 +73,19 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     document.head.appendChild(st);
   }
 
-  // helpers
+  // read % helper (fallback: button -> block -> :root)
   const readPct = (cssVar, fb = 0) => {
-    // try on the button first
-    let v = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-    let n = parseFloat(v.replace("%", ""));
-    if (!Number.isFinite(n)) {
-      // try on the selected element
-      v = getComputedStyle(selectedElement).getPropertyValue(cssVar).trim();
-      n = parseFloat(v.replace("%", ""));
-      if (!Number.isFinite(n)) {
-        // last resort: documentElement
-        v = getComputedStyle(document.documentElement)
-          .getPropertyValue(cssVar)
-          .trim();
-        n = parseFloat(v.replace("%", ""));
-      }
-    }
-    return Number.isFinite(n) ? n : fb;
+    const take = (el) => {
+      const v = getComputedStyle(el).getPropertyValue(cssVar).trim();
+      const n = parseFloat(v.replace("%", ""));
+      return Number.isFinite(n) ? n : null;
+    };
+    return (
+      take(btn) ?? take(selectedElement) ?? take(document.documentElement) ?? fb
+    );
   };
 
+  // ease from UI
   const mapEase = (n) =>
     ({
       none: "none",
@@ -118,7 +102,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "elastic.out": "elastic.out",
       "bounce.out": "bounce.out",
     }[n] || "none");
-
   const uiEase = () =>
     mapEase(
       (
@@ -126,48 +109,62 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           ?.textContent || "none"
       ).trim()
     );
-
   const lerp = (a, b, t) => a + (b - a) * t;
 
-  // cancel hook + state
-  let running = true;
+  // cleanup hook
+  let rafId = 0,
+    stInst = null;
   selectedElement.__scBtnCancel = () => {
-    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    if (stInst && window.ScrollTrigger) stInst.kill();
   };
 
+  // smoothing
   let smLeft = null,
-    smY = null; // smoothed values
+    smY = null;
   const SMOOTH_ARROW = 0.18;
   const SMOOTH_Y = 0.15;
-  const EDGE_EPS = 0.015; // 1.5% of span
+  const EDGE_EPS = 0.015;
 
-  function frame() {
-    if (!running || !document.body.contains(selectedElement)) return;
+  // updater — can use ScrollTrigger progress if provided
+  const update = (stProg /* 0..1 or undefined */) => {
+    let sPct = readPct("--sc-vertical-scroll-start", 0);
+    let ePct = readPct("--sc-vertical-scroll-end", 100);
+    if (ePct < sPct + 4) ePct = sPct + 4;
 
-    // timeline window
-    const sPct0 = readPct("--sc-vertical-scroll-start", 0);
-    let ePct0 = readPct("--sc-vertical-scroll-end", 100);
-    const sPct = sPct0;
-    const ePct = ePct0 < sPct + 4 ? sPct + 4 : ePct0; // enforce min 4%
-
-    // triplet percentages (-100..100)
     const entry = readPct("--sc-vertical-scroll-entry", 0);
     const center = readPct("--sc-vertical-scroll-center", 0);
     const exit = readPct("--sc-vertical-scroll-exit", 0);
 
-    // element center progress 0..1
-    const t01 = getViewportProgress(selectedElement);
+    // progress of the element’s center (0..1)
+    let t01;
+    if (typeof stProg === "number") {
+      // exact ScrollTrigger progress (handles custom scrollers/pinning)
+      t01 = Math.max(0, Math.min(1, stProg));
+    } else {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const toolbar = document.querySelector(
+        '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+      );
+      const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+      const r = selectedElement.getBoundingClientRect();
+      t01 = Math.max(
+        0,
+        Math.min(1, (r.top + r.height / 2 - th) / Math.max(1, vh - th))
+      );
+    }
+
+    // map to [start..end] window
     const span = Math.max(1, ePct - sPct);
-    let p01 = (t01 * 100 - sPct) / span; // normalize into start..end
+    let p01 = (t01 * 100 - sPct) / span;
     if (p01 < 0) p01 = 0;
     else if (p01 > 1) p01 = 1;
 
-    // eased phase for Y
-    const easeName = uiEase();
-    const eased =
-      window.gsap && easeName !== "none" ? gsap.parseEase(easeName)(p01) : p01;
+    // easing for y
+    const en = uiEase();
+    const eased = window.gsap && en !== "none" ? gsap.parseEase(en)(p01) : p01;
 
-    // piecewise: entry -> center -> exit
+    // entry → center → exit
     const yPct =
       eased <= 0
         ? entry
@@ -177,8 +174,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         ? lerp(entry, center, eased / 0.5)
         : lerp(center, exit, (eased - 0.5) / 0.5);
 
-    const targetLeft = sPct + p01 * span; // 0..100 on rail
-    const targetYvh = Math.max(-50, Math.min(50, yPct / 2)); // clamp
+    const targetLeft = sPct + p01 * span; // 0..100
+    const targetYvh = Math.max(-50, Math.min(50, yPct / 2)); // ±50vh
 
     if (smLeft == null) smLeft = targetLeft;
     if (smY == null) smY = targetYvh;
@@ -186,21 +183,42 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     smLeft = lerp(smLeft, targetLeft, SMOOTH_ARROW);
     smY = lerp(smY, targetYvh, SMOOTH_Y);
 
-    // arrow position + color
-    arrow.style.left = smLeft + "%";
+    // arrow
+    if (window.gsap) gsap.set(arrow, { left: smLeft + "%", overwrite: true });
+    else arrow.style.left = smLeft + "%";
     arrow.style.transform = "translateX(-50%)";
     const col =
       p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
-    arrow.style.backgroundColor = col;
+    if (window.gsap) gsap.set(arrow, { backgroundColor: col, overwrite: true });
+    else arrow.style.backgroundColor = col;
 
-    // move button via CSS var (keeps theme styles intact)
+    // button translate via CSS var
     btn.style.setProperty("--sc-scroll-y", smY.toFixed(2) + "vh");
+  };
 
-    requestAnimationFrame(frame);
+  // drive updates (prefer ScrollTrigger’s progress so it matches GSAP scroller)
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.getAll().forEach((t) => {
+      if (t.trigger === selectedElement) t.kill();
+    });
+    stInst = ScrollTrigger.create({
+      trigger: selectedElement,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 1,
+      onUpdate: (self) => update(self.progress),
+    });
+    update(0); // set initial position
+  } else {
+    const loop = () => {
+      update();
+      rafId = requestAnimationFrame(loop);
+    };
+    loop();
   }
-
-  requestAnimationFrame(frame);
 }
+
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
