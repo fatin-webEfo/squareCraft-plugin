@@ -17,217 +17,179 @@ function getViewportProgress(el) {
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  // cancel previous binding on this element
+  // cancel any previous hook on this element
   if (selectedElement.__scBtnCancel) {
     try {
       selectedElement.__scBtnCancel();
     } catch (_) {}
   }
 
-  // --- wait for/ensure arrow in the same rail as the bullets ---
-  let arrow = document.getElementById("vertical-custom-timeline-arrow");
-  const sb = document.getElementById("vertical-timeline-start-bullet");
-  const eb = document.getElementById("vertical-timeline-end-bullet");
-  if (!arrow && sb && sb.parentElement) {
-    arrow = document.createElement("div");
-    arrow.id = "vertical-custom-timeline-arrow";
-    sb.parentElement.appendChild(arrow);
-  }
-  if (!arrow || !sb || !eb) return;
-
-  // make sure the rail can position absolutely positioned children
-  const rail = sb.parentElement;
-  if (getComputedStyle(rail).position === "static") {
-    rail.style.position = "relative";
+  function waitForElements(cb, retries = 20) {
+    const arrow = document.getElementById("vertical-custom-timeline-arrow");
+    const sb = document.getElementById("vertical-timeline-start-bullet");
+    const eb = document.getElementById("vertical-timeline-end-bullet");
+    if (arrow && sb && eb) cb(arrow);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
 
-  // visible arrow defaults (in case CSS didn’t load yet)
-  Object.assign(arrow.style, {
-    position: "absolute",
-    width: "10px",
-    height: "10px",
-    top: "5px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
-    background: "#fff",
-    zIndex: "3",
-    pointerEvents: "none",
-  });
+  function setupScrollAnimation(arrow) {
+    // target to READ vars from (button) …
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
 
-  // --- target element to move (button if present, else block) ---
-  const btn =
-    selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    ) || selectedElement;
+    // …but target to MOVE is the content wrapper (mirrors Typo)
+    const content = selectedElement.querySelector(".sqs-block-content") || btn;
 
-  // give the target a stable id so we can bind a CSS rule with !important
-  if (!btn.id) {
-    btn.id = `scbtn-${Math.random().toString(36).slice(2, 9)}`;
-  }
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
 
-  // create a rule that applies transform via CSS variable with !important.
-  // This dodges theme rules that might set transform with !important.
-  const ruleId = `sc-y-rule-${btn.id}`;
-  if (!document.getElementById(ruleId)) {
-    const st = document.createElement("style");
-    st.id = ruleId;
-    st.textContent = `
-      #${btn.id} { transform: translateY(var(--sc-scroll-y, 0vh)) !important; will-change: transform; }
-    `;
-    document.head.appendChild(st);
-  }
+    const entryY = () => getVar("--sc-vertical-scroll-entry") / 2;
+    const centerY = () => getVar("--sc-vertical-scroll-center") / 2;
+    const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
+    const start = () => getVar("--sc-vertical-scroll-start") / 100;
+    const end = () => getVar("--sc-vertical-scroll-end") / 100;
 
-  // utility to read percentages (fallback to the element or document if needed)
-  const readPct = (name, fb) => {
-    const tryEl = (el) => {
-      const v = getComputedStyle(el).getPropertyValue(name).trim();
-      const n = parseFloat(v.replace("%", ""));
-      return Number.isFinite(n) ? n : null;
-    };
-    return (
-      tryEl(btn) ??
-      tryEl(selectedElement) ??
-      tryEl(document.documentElement) ??
-      fb
-    );
-  };
+    const mapEase = (n) =>
+      ({
+        none: "none",
+        Linear: "none",
+        linear: "none",
+        "ease-in": "power1.in",
+        "ease-out": "power1.out",
+        "ease-in-out": "power1.inOut",
+        "power1.out": "power1.out",
+        "power2.out": "power2.out",
+        "power3.out": "power3.out",
+        "power4.out": "power4.out",
+        "expo.out": "expo.out",
+        "elastic.out": "elastic.out",
+        "bounce.out": "bounce.out",
+      }[n] || "none");
 
-  // vars (normalized)
-  const pctStart = () => (readPct("--sc-vertical-scroll-start", 0) || 0) / 100;
-  const pctEnd = () => (readPct("--sc-vertical-scroll-end", 100) || 100) / 100;
-  const entryY = () => (readPct("--sc-vertical-scroll-entry", 0) || 0) / 2; // -> vh
-  const centerY = () => (readPct("--sc-vertical-scroll-center", 0) || 0) / 2; // -> vh
-  const exitY = () => (readPct("--sc-vertical-scroll-exit", 0) || 0) / 2; // -> vh
+    const easeName = () =>
+      mapEase(
+        (
+          document.querySelector("#vertical-effect-animation-value")
+            ?.textContent || "none"
+        ).trim()
+      );
 
-  // easing read from UI
-  const mapEase = (n) =>
-    ({
-      none: "none",
-      Linear: "none",
-      linear: "none",
-      "ease-in": "power1.in",
-      "ease-out": "power1.out",
-      "ease-in-out": "power1.inOut",
-      "power1.out": "power1.out",
-      "power2.out": "power2.out",
-      "power3.out": "power3.out",
-      "power4.out": "power4.out",
-      "expo.out": "expo.out",
-      "elastic.out": "elastic.out",
-      "bounce.out": "bounce.out",
-    }[n] || "none");
-
-  const easeName = () =>
-    mapEase(
-      (
-        document.querySelector("#vertical-effect-animation-value")
-          ?.textContent || "none"
-      ).trim()
-    );
-
-  // GSAP setup (safe even if already registered)
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    // kill any prior trigger bound to this selectedElement
-    ScrollTrigger.getAll().forEach((t) => {
-      if (t.trigger === selectedElement) t.kill();
+    // make sure rail can hold the arrow
+    const sb = document.getElementById("vertical-timeline-start-bullet");
+    if (
+      sb &&
+      sb.parentElement &&
+      getComputedStyle(sb.parentElement).position === "static"
+    ) {
+      sb.parentElement.style.position = "relative";
+    }
+    Object.assign(arrow.style, {
+      position: "absolute",
+      transform: "translateX(-50%)",
+      zIndex: "3",
+      pointerEvents: "none",
     });
-  }
 
-  let exitLocked = false;
-  const BUF = 0.001;
-
-  // tween the CSS variable (GSAP supports CSS vars on style)
-  const tweenVar = (val) => {
-    const en = easeName();
-    if (window.gsap) {
-      gsap.to(btn, {
-        "--sc-scroll-y": val, // e.g. "12vh"
-        duration: en === "none" ? 0 : 0.35,
-        ease: en === "none" ? "none" : en,
-        overwrite: true,
-        force3D: true,
-      });
-    } else {
-      // fallback without GSAP
-      btn.style.setProperty("--sc-scroll-y", val);
-    }
-  };
-
-  const update = () => {
-    let s = pctStart();
-    let e = pctEnd();
-    if (!(e > s)) {
-      s = 0;
-      e = 1;
-    }
-
-    const t = getViewportProgress(selectedElement);
-    const eY = entryY(),
-      cY = centerY(),
-      xY = exitY();
-
-    // lock to exit once we've crossed end; unlock if we go back before start
-    if (!exitLocked && t >= e + BUF) exitLocked = true;
-    if (exitLocked && t <= s - BUF) exitLocked = false;
-
-    let y;
-    if (exitLocked) {
-      y = xY;
-    } else if (t < s) {
-      const k = s <= 0 ? 1 : Math.min(t / s, 1);
-      y = eY + (cY - eY) * k;
-    } else if (t > e) {
-      const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-      y = cY + (xY - cY) * k;
-    } else {
-      y = cY;
-    }
-
-    // clamp to sane range
-    if (y < -50) y = -50;
-    if (y > 50) y = 50;
-
-    tweenVar(`${y}vh`);
-
-    // arrow position + color
-    const leftPct = (t * 100).toFixed(3) + "%";
-    if (arrow.style.left !== leftPct) arrow.style.left = leftPct;
-    arrow.style.transform = "translateX(-50%)";
-    arrow.style.backgroundColor =
-      t < s - BUF ? "#EF7C2F" : t > e + BUF ? "#F6B67B" : "#FFFFFF";
-  };
-
-  // drive updates
-  let rafId = 0;
-  if (window.gsap && window.ScrollTrigger) {
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: update,
-    });
-  } else {
-    // fallback if ScrollTrigger not present
-    const loop = () => {
-      update();
-      rafId = requestAnimationFrame(loop);
-    };
-    loop();
-  }
-
-  // cancel hook
-  selectedElement.__scBtnCancel = () => {
-    if (rafId) cancelAnimationFrame(rafId);
-    if (window.ScrollTrigger) {
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
       ScrollTrigger.getAll().forEach((t) => {
         if (t.trigger === selectedElement) t.kill();
       });
     }
-  };
+
+    let currentY = null;
+    let exitLocked = false;
+    const BUF = 0.001;
+
+    const updateY = () => {
+      const t = getViewportProgress(selectedElement);
+      let s = start(),
+        e = end();
+      if (!(e > s)) {
+        s = 0;
+        e = 1;
+      }
+
+      const eY = entryY(),
+        cY = centerY(),
+        xY = exitY();
+
+      // lock at exit after end; unlock if we scroll back before start
+      if (!exitLocked && t >= e + BUF) exitLocked = true;
+      if (exitLocked && t <= s - BUF) exitLocked = false;
+
+      let y;
+      if (exitLocked) y = xY;
+      else if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        y = eY + (cY - eY) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        y = cY + (xY - cY) * k;
+      } else {
+        y = cY;
+      }
+      y = Math.max(-50, Math.min(50, y));
+
+      if (y !== currentY) {
+        currentY = y;
+        const ease = easeName();
+        gsap.to(content, {
+          y: `${y}vh`,
+          ease,
+          duration: ease === "none" ? 0 : 0.6,
+          overwrite: true,
+          force3D: true,
+        });
+      }
+
+      // arrow sync
+      arrow.style.left = (t * 100).toFixed(3) + "%";
+      arrow.style.backgroundColor =
+        t < s - BUF ? "#EF7C2F" : t > e + BUF ? "#F6B67B" : "#FFFFFF";
+    };
+
+    if (window.gsap && window.ScrollTrigger) {
+      ScrollTrigger.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateY,
+      });
+    } else {
+      // fallback without ScrollTrigger
+      const loop = () => {
+        updateY();
+        requestAnimationFrame(loop);
+      };
+      loop();
+    }
+
+    // Also refresh on style mutations (when sliders change vars)
+    const mo = new MutationObserver(updateY);
+    mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
+
+    selectedElement.__scBtnCancel = () => {
+      try {
+        mo.disconnect();
+      } catch (_) {}
+      if (window.ScrollTrigger) {
+        ScrollTrigger.getAll().forEach((t) => {
+          if (t.trigger === selectedElement) t.kill();
+        });
+      }
+    };
+  }
+
+  waitForElements((arrow) => setupScrollAnimation(arrow));
 }
+
 
 
 
