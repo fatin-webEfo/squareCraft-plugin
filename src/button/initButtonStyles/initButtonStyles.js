@@ -183,7 +183,6 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 export function initButtonStyles(selectedBlock) {
   if (!selectedBlock) return;
 
-  // Ensure the block has a stable id
   if (!selectedBlock.id) {
     selectedBlock.id = `sc-block-${Math.random().toString(36).slice(2, 9)}`;
   }
@@ -202,18 +201,15 @@ export function initButtonStyles(selectedBlock) {
     return { block, btn, typeClass: typeClass || "" };
   };
 
-  // Initial snapshot (for fallbacks)
   let { btn: initBtn, typeClass: initType } = findButtonAndType(selectedBlock);
   if (!initBtn || !initType) return;
 
   const prevId = document.body.dataset.scLastBlockId || "";
   const blockChanged = prevId !== selectedBlock.id;
 
-  // Record the active selection
   document.body.dataset.scLastBlockId = selectedBlock.id;
   document.body.dataset.scLastButtonType = initType;
 
-  // Always compute the live target at handler time (avoids stale closures)
   const getLiveTarget = () => {
     const id = document.body.dataset.scLastBlockId;
     const fromDom = id ? document.getElementById(id) : null;
@@ -227,7 +223,6 @@ export function initButtonStyles(selectedBlock) {
     };
   };
 
-  // ---- Utilities that use the live target ----
   function updateGlobalStyle(property, value) {
     const { typeClass } = getLiveTarget();
     if (!typeClass) return;
@@ -265,7 +260,6 @@ export function initButtonStyles(selectedBlock) {
     styleTag.innerHTML = rules.join("\n");
   }
 
-  // ---- Font size & letter spacing ----
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
   const letterSpacingInput = document.getElementById(
     "scButtonLetterSpacingInput"
@@ -288,14 +282,12 @@ export function initButtonStyles(selectedBlock) {
       updateGlobalStyle("letter-spacing", `${e.target.value}px`);
   }
 
-  // ---- Capitalization controls ----
   const capBtnIds = [
     "scButtonAllCapital",
     "scButtonAllSmall",
     "scButtonFirstCapital",
   ];
 
-  // Reset active state when switching blocks
   if (blockChanged) {
     capBtnIds.forEach((id) => {
       const el = document.getElementById(id);
@@ -320,7 +312,6 @@ export function initButtonStyles(selectedBlock) {
       const { block, typeClass } = getLiveTarget();
       if (!typeClass) return;
 
-      // refresh globals so subsequent handlers know the right selection
       document.body.dataset.scLastBlockId = block.id;
       document.body.dataset.scLastButtonType = typeClass;
 
@@ -332,7 +323,6 @@ export function initButtonStyles(selectedBlock) {
 .${typeClass} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }
 `.trim();
 
-      // Toggle off if the same transform is already applied
       if (
         styleTag &&
         new RegExp(`text-transform:\\s*${value}`, "i").test(

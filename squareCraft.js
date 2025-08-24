@@ -691,6 +691,27 @@ setTimeout(async () => {
   const themeColors = await getSquarespaceThemeStyles();
 
   let isTrackingArrow = false;
+document.addEventListener(
+  "click",
+  (e) => {
+    const blk = e.target.closest('[id^="block-"]');
+    if (!blk) return;
+    if (!blk.id) blk.id = `sc-block-${Math.random().toString(36).slice(2, 9)}`;
+    const ASEL =
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary";
+    const BSEL =
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
+    const btn = blk.querySelector(ASEL) || blk.querySelector(BSEL);
+    if (!btn) return;
+    const type =
+      [...btn.classList].find((c) => c.startsWith("sqs-button-element--")) ||
+      "";
+    document.body.dataset.scLastBlockId = blk.id;
+    document.body.dataset.scLastButtonType = type;
+    window.selectedBlockId = blk.id;
+  },
+  true
+);
 
   window.addEventListener("scroll", () => {
     const selected = document.querySelector('[id^="block-"].sc-font-modified');
