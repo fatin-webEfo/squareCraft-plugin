@@ -352,8 +352,6 @@ export function initButtonStyles(selectedBlock) {
 }
 
 
-
-
 export function initButtonIconPositionToggle(getSelectedElement) {
   const root = document.getElementById("sc-widget-container") || document;
 
