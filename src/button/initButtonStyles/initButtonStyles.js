@@ -271,17 +271,11 @@ export function initButtonStyles(selectedButtonElement) {
       const transformButton = document.getElementById(id);
       if (transformButton) {
         transformButton.onclick = () => {
-          const transformMap = {
-            scButtonAllCapital: "sc-text-upper",
-            scButtonAllSmall: "sc-text-lower",
-            scButtonFirstCapital: "sc-text-capitalize",
-          };
-          const activeClass = transformMap[id];
-
           const isAlreadyActive = transformButton.classList.contains(
             "sc-activeTab-border"
           );
 
+          // reset tab states
           [
             "scButtonAllCapital",
             "scButtonAllSmall",
@@ -294,51 +288,45 @@ export function initButtonStyles(selectedButtonElement) {
             }
           });
 
-          const spans = document.querySelectorAll(
-            `.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`
-          );
+          const styleId = `sc-transform-style-${typeClass}`;
+          const existing = document.getElementById(styleId);
 
           if (isAlreadyActive) {
-            transformButton.classList.remove("sc-activeTab-border");
+            // turning off -> remove override so theme/default applies
+            if (existing) existing.remove();
             transformButton.classList.add("sc-inActiveTab-border");
-
-            spans.forEach((span) => {
-              span.classList.remove(
-                "sc-text-upper",
-                "sc-text-lower",
-                "sc-text-capitalize"
-              );
-            });
-          } else {
-            transformButton.classList.remove("sc-inActiveTab-border");
-            transformButton.classList.add("sc-activeTab-border");
-
-            const transformValueMap = {
-              scButtonAllCapital: "uppercase",
-              scButtonAllSmall: "lowercase",
-              scButtonFirstCapital: "capitalize",
-            };
-            const value = transformValueMap[id];
-
-            const styleId = `sc-transform-style-${typeClass}`;
-            let styleTag = document.getElementById(styleId);
-            if (!styleTag) {
-              styleTag = document.createElement("style");
-              styleTag.id = styleId;
-              document.head.appendChild(styleTag);
-            }
-            styleTag.innerHTML = `
-  .${typeClass} span,
-  .${typeClass} .sqs-add-to-cart-button-inner {
-    text-transform: ${value} !important;
-  }
-`;
+            return;
           }
+
+          // activate clicked tab
+          transformButton.classList.remove("sc-inActiveTab-border");
+          transformButton.classList.add("sc-activeTab-border");
+
+          const transformValueMap = {
+            scButtonAllCapital: "uppercase",
+            scButtonAllSmall: "lowercase",
+            scButtonFirstCapital: "capitalize",
+          };
+          const value = transformValueMap[id];
+
+          let styleTag = existing;
+          if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = styleId;
+            document.head.appendChild(styleTag);
+          }
+          styleTag.innerHTML = `
+.${typeClass} span,
+.${typeClass} .sqs-add-to-cart-button-inner {
+  text-transform: ${value} !important;
+}
+`;
         };
       }
     }
   );
 }
+
 
 export function initButtonIconPositionToggle(getSelectedElement) {
   const root = document.getElementById("sc-widget-container") || document;
@@ -409,7 +397,6 @@ setTimeout(() => {
     console.warn("⛔ buttoniconPositionSection not found");
   }
 }, 200);
-let normalRotationInitialized = false;
 
 export function initButtonIconRotationControl(getSelectedElement) {
   const root = document.getElementById("sc-widget-container") || document;
@@ -1809,9 +1796,6 @@ export function initButtonBorderResetHandlers(getSelectedElement) {
     });
   });
 }
-
-
-
 
 
 setTimeout(() => {
