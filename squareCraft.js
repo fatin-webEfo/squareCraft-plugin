@@ -7,30 +7,30 @@
     let lastToggleAt = 0;
 
     let justOpenedUntil = 0;
-     function loadScript(src) {
-       return new Promise((resolve, reject) => {
-         if (document.querySelector(`script[src="${src}"]`)) return resolve();
-         const s = document.createElement("script");
-         s.src = src;
-         s.async = false; // keep execution order
-         s.onload = resolve;
-         s.onerror = reject;
-         document.head.appendChild(s);
-       });
-     }
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) return resolve();
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = false; // keep execution order
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
 
-     async function ensureGsap() {
-       if (window.gsap) return;
-       const urls = [
-         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js",
-         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js",
-         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollSmoother.min.js",
-       ];
-       await Promise.all(urls.map(loadScript));
-       for (let i = 0; i < 40 && !window.gsap; i++) {
-         await new Promise((r) => setTimeout(r, 25));
-       }
-     }
+    async function ensureGsap() {
+      if (window.gsap) return;
+      const urls = [
+        "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js",
+        "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js",
+        "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollSmoother.min.js",
+      ];
+      await Promise.all(urls.map(loadScript));
+      for (let i = 0; i < 40 && !window.gsap; i++) {
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    }
 
     let __sc_creating = false;
     const HOST_DOC = (() => {
@@ -436,30 +436,31 @@
         : document.querySelector(selector);
     }
 
-   let selectedElement = null;
-   let widgetContainer = document.getElementById("sc-widget-container") || null;
+    let selectedElement = null;
+    let widgetContainer =
+      document.getElementById("sc-widget-container") || null;
 
-   let widgetLoaded = !!widgetContainer;
-if (document.body.dataset.scPrimaryCloser !== "1") {
-  document.body.dataset.scPrimaryCloser = "1";
-  document.body.addEventListener("click", (e) => {
-    if (performance.now() < justOpenedUntil) return;
-    const isInsideWidget = widgetContainer?.contains(e.target);
-    const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-    const isHiddenInput =
-      e.target.tagName === "INPUT" && e.target.type === "file";
-    if (
-      !isInsideWidget &&
-      !isToolbarIcon &&
-      !isHiddenInput &&
-      widgetContainer &&
-      widgetContainer.style.visibility !== "hidden" &&
-      widgetContainer.style.opacity !== "0"
-    ) {
-      animateWidgetClose(widgetContainer, 0.2);
+    let widgetLoaded = !!widgetContainer;
+    if (document.body.dataset.scPrimaryCloser !== "1") {
+      document.body.dataset.scPrimaryCloser = "1";
+      document.body.addEventListener("click", (e) => {
+        if (performance.now() < justOpenedUntil) return;
+        const isInsideWidget = widgetContainer?.contains(e.target);
+        const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+        const isHiddenInput =
+          e.target.tagName === "INPUT" && e.target.type === "file";
+        if (
+          !isInsideWidget &&
+          !isToolbarIcon &&
+          !isHiddenInput &&
+          widgetContainer &&
+          widgetContainer.style.visibility !== "hidden" &&
+          widgetContainer.style.opacity !== "0"
+        ) {
+          animateWidgetClose(widgetContainer, 0.2);
+        }
+      });
     }
-  });
-}
 
     const widgetScript = document.getElementById("sc-script");
 
@@ -487,7 +488,6 @@ if (document.body.dataset.scPrimaryCloser !== "1") {
         document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
       }
     }
-  
 
     let lastClickedBlockId = null;
     let lastClickedElement = null;
@@ -732,207 +732,212 @@ if (document.body.dataset.scPrimaryCloser !== "1") {
         isTrackingArrow = true;
       }
     });
-await ensureGsap().catch(() => {});
-if (window.gsap) {
-  initEffectAnimationDropdownToggle(() => selectedElement);
-  button_initEffectAnimationDropdownToggle(() => selectedElement);
-  horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
-  horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-  blurinitEffectAnimationDropdownToggle(() => selectedElement);
-  scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-  rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-  opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-}
-
-
-document.body.addEventListener("click", async (event) => {
-  console.groupCollapsed("%c[SC] body click", "color:#6b8afd;font-weight:600");
-  console.time("[SC] click->post-init");
-
-  // 1) Make GSAP available before any GSAP-dependent init
-  await ensureGsap().catch(() => {});
-  console.log("GSAP ready:", !!window.gsap);
-
-  // 2) Fast UI toggles (safe even without a selection)
-  try {
-    ButtonAdvanceToggleControls();
-    TypoAdvanceToggleControls();
-    WidgetButtonPresetTabControls();
-    console.log("Base toggles updated.");
-  } catch (e) {
-    console.warn("Base toggles error:", e);
-  }
-
-  // 3) If a Squarespace block was clicked, schedule detection
-  const clickedBlock = event.target.closest('[id^="block-"]');
-  if (clickedBlock) {
-    console.log("Clicked block:", clickedBlock.id);
-    try {
-      scheduleDetect(clickedBlock);
-    } catch (e) {
-      console.warn("scheduleDetect error:", e);
-    }
-  } else {
-    console.log("Click not on a Squarespace block.");
-  }
-
-  // 4) One-off triggers (palette)
-  if (event.target.closest("#border-color-select")) {
-    setTimeout(() => {
-      try {
-        initBorderColorPaletteToggle(themeColors);
-        console.log("Border color palette opened.");
-      } catch (e) {
-        console.warn("initBorderColorPaletteToggle error:", e);
-      }
-    }, 100);
-  }
-
-  // 5) Defer post-selection initializers so handleBlockClick() can set selectedElement
-  setTimeout(() => {
-    // Expect handleBlockClick to have set this
-    console.log("selectedElement:", selectedElement?.id || "(none)");
-    if (!selectedElement) {
-      console.timeEnd("[SC] click->post-init");
-      console.groupEnd();
-      return;
-    }
-
-    // 5a) Common inits (no type assumption)
-    try {
-      initImageUploadPreview(() => selectedElement);
-      setTimeout(() => {
-        try {
-          initImageSectionControls();
-        } catch (e) {
-          console.warn("initImageSectionControls error:", e);
-        }
-      }, 100);
-      console.log("Common inits applied.");
-    } catch (e) {
-      console.warn("Common inits error:", e);
-    }
-
-    // 5b) GSAP-dependent dropdown/effects (only if GSAP is present)
+    await ensureGsap().catch(() => {});
     if (window.gsap) {
-      try {
-        initEffectAnimationDropdownToggle(() => selectedElement);
-        button_initEffectAnimationDropdownToggle(() => selectedElement);
-        horizontal_button_initEffectAnimationDropdownToggle(
-          () => selectedElement
-        );
-        horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-        blurinitEffectAnimationDropdownToggle(() => selectedElement);
-        scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-        rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-        opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-        console.log("GSAP dropdown/effects initialised.");
-      } catch (e) {
-        console.warn("GSAP effects init error:", e);
-      }
-    } else {
-      console.warn("GSAP not available; skipping effects initialisers.");
-    }
-
-    // 5c) Button-specific initialisers (guarded)
-    const buttonSelector =
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
-    const hasButton = selectedElement.querySelector(buttonSelector);
-
-    if (hasButton) {
-      try {
-        // Base + advanced
-        initButtonStyles(selectedElement);
-        initButtonAdvanceStyles(() => selectedElement);
-        horizontalinitButtonAdvanceStyles(() => selectedElement);
-        initButtonAdvanceStructureStyles(() => selectedElement);
-
-        // Icon/border/shadow/font controls
-        initButtonIconRotationControl(() => selectedElement);
-        initButtonIconSizeControl(() => selectedElement);
-        initButtonIconSpacingControl(() => selectedElement);
-        initButtonBorderControl(() => selectedElement);
-        initButtonShadowControls(() => selectedElement);
-        initButtonFontFamilyControls(() => selectedElement);
-        initButtonBorderTypeToggle(
-          () => selectedElement,
-          (sel) => {
-            if (sel) sel.dispatchEvent(new Event("reapplyBorder"));
-          }
-        );
-        initButtonBorderRadiusControl(() => selectedElement);
-        resetAllButtonStyles(() => selectedElement);
-        initButtonBorderResetHandlers(() => selectedElement);
-
-        // Hover controls
-        initHoverButtonIconRotationControl(() => selectedElement);
-        initHoverButtonIconSizeControl(() => selectedElement);
-        initHoverButtonIconSpacingControl(() => selectedElement);
-        initHoverButtonBorderRadiusControl(() => selectedElement);
-        initHoverButtonBorderTypeToggle(() => selectedElement);
-        initHoverButtonBorderControl(() => selectedElement);
-        applyHoverButtonEffects(() => selectedElement);
-
-        // Arrow timeline syncs
-        try {
-          buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-          horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-          opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-          scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-          rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-          blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-        } catch (e) {
-          console.warn("Button timeline sync error:", e);
-        }
-
-        console.log("Button initialisers applied.");
-      } catch (e) {
-        console.warn("Button initialisers error:", e);
-      }
-    } else {
-      console.log("Selected block has no button; skipped button initialisers.");
-    }
-
-    // 5d) Typography-specific initialisers (guarded)
-    const hasText = selectedElement.querySelector("h1,h2,h3,h4,p");
-    if (hasText) {
-      try {
-        initTypoAdvanceStyles(() => selectedElement);
-        horizontalinitTypoAdvanceStyles(() => selectedElement);
-        blurinitTypoAdvanceStyles(() => selectedElement);
-        opacityinitTypoAdvanceStyles(() => selectedElement);
-        scaleinitTypoAdvanceStyles(() => selectedElement);
-        rotateinitTypoAdvanceStyles(() => selectedElement);
-        initTypoAdvanceStructureStyles(() => selectedElement);
-
-        // Typo timeline syncs
-        try {
-          TypoAdvanceSyncCustomTimelineArrow(selectedElement);
-          TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
-          TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
-          TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
-          TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
-          TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
-        } catch (e) {
-          console.warn("Typo timeline sync error:", e);
-        }
-
-        console.log("Typography initialisers applied.");
-      } catch (e) {
-        console.warn("Typography initialisers error:", e);
-      }
-    } else {
-      console.log(
-        "Selected block has no text; skipped typography initialisers."
+      initEffectAnimationDropdownToggle(() => selectedElement);
+      button_initEffectAnimationDropdownToggle(() => selectedElement);
+      horizontal_button_initEffectAnimationDropdownToggle(
+        () => selectedElement
       );
+      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+      blurinitEffectAnimationDropdownToggle(() => selectedElement);
+      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
     }
 
-    console.timeEnd("[SC] click->post-init");
-    console.groupEnd();
-  }, 50);
-});
+    document.body.addEventListener("click", async (event) => {
+      console.groupCollapsed(
+        "%c[SC] body click",
+        "color:#6b8afd;font-weight:600"
+      );
+      console.time("[SC] click->post-init");
 
+      // 1) Make GSAP available before any GSAP-dependent init
+      await ensureGsap().catch(() => {});
+      console.log("GSAP ready:", !!window.gsap);
+
+      // 2) Fast UI toggles (safe even without a selection)
+      try {
+        ButtonAdvanceToggleControls();
+        TypoAdvanceToggleControls();
+        WidgetButtonPresetTabControls();
+        console.log("Base toggles updated.");
+      } catch (e) {
+        console.warn("Base toggles error:", e);
+      }
+
+      // 3) If a Squarespace block was clicked, schedule detection
+      const clickedBlock = event.target.closest('[id^="block-"]');
+      if (clickedBlock) {
+        console.log("Clicked block:", clickedBlock.id);
+        try {
+          scheduleDetect(clickedBlock);
+        } catch (e) {
+          console.warn("scheduleDetect error:", e);
+        }
+      } else {
+        console.log("Click not on a Squarespace block.");
+      }
+
+      // 4) One-off triggers (palette)
+      if (event.target.closest("#border-color-select")) {
+        setTimeout(() => {
+          try {
+            initBorderColorPaletteToggle(themeColors);
+            console.log("Border color palette opened.");
+          } catch (e) {
+            console.warn("initBorderColorPaletteToggle error:", e);
+          }
+        }, 100);
+      }
+
+      // 5) Defer post-selection initializers so handleBlockClick() can set selectedElement
+      setTimeout(() => {
+        // Expect handleBlockClick to have set this
+        console.log("selectedElement:", selectedElement?.id || "(none)");
+        if (!selectedElement) {
+          console.timeEnd("[SC] click->post-init");
+          console.groupEnd();
+          return;
+        }
+
+        // 5a) Common inits (no type assumption)
+        try {
+          initImageUploadPreview(() => selectedElement);
+          setTimeout(() => {
+            try {
+              initImageSectionControls();
+            } catch (e) {
+              console.warn("initImageSectionControls error:", e);
+            }
+          }, 100);
+          console.log("Common inits applied.");
+        } catch (e) {
+          console.warn("Common inits error:", e);
+        }
+
+        // 5b) GSAP-dependent dropdown/effects (only if GSAP is present)
+        if (window.gsap) {
+          try {
+            initEffectAnimationDropdownToggle(() => selectedElement);
+            button_initEffectAnimationDropdownToggle(() => selectedElement);
+            horizontal_button_initEffectAnimationDropdownToggle(
+              () => selectedElement
+            );
+            horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+            blurinitEffectAnimationDropdownToggle(() => selectedElement);
+            scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+            rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+            opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+            console.log("GSAP dropdown/effects initialised.");
+          } catch (e) {
+            console.warn("GSAP effects init error:", e);
+          }
+        } else {
+          console.warn("GSAP not available; skipping effects initialisers.");
+        }
+
+        // 5c) Button-specific initialisers (guarded)
+        const buttonSelector =
+          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+          "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
+        const hasButton = selectedElement.querySelector(buttonSelector);
+
+        if (hasButton) {
+          try {
+            // Base + advanced
+            initButtonStyles(selectedElement);
+            initButtonAdvanceStyles(() => selectedElement);
+            horizontalinitButtonAdvanceStyles(() => selectedElement);
+            initButtonAdvanceStructureStyles(() => selectedElement);
+
+            // Icon/border/shadow/font controls
+            initButtonIconRotationControl(() => selectedElement);
+            initButtonIconSizeControl(() => selectedElement);
+            initButtonIconSpacingControl(() => selectedElement);
+            initButtonBorderControl(() => selectedElement);
+            initButtonShadowControls(() => selectedElement);
+            initButtonFontFamilyControls(() => selectedElement);
+            initButtonBorderTypeToggle(
+              () => selectedElement,
+              (sel) => {
+                if (sel) sel.dispatchEvent(new Event("reapplyBorder"));
+              }
+            );
+            initButtonBorderRadiusControl(() => selectedElement);
+            resetAllButtonStyles(() => selectedElement);
+            initButtonBorderResetHandlers(() => selectedElement);
+
+            // Hover controls
+            initHoverButtonIconRotationControl(() => selectedElement);
+            initHoverButtonIconSizeControl(() => selectedElement);
+            initHoverButtonIconSpacingControl(() => selectedElement);
+            initHoverButtonBorderRadiusControl(() => selectedElement);
+            initHoverButtonBorderTypeToggle(() => selectedElement);
+            initHoverButtonBorderControl(() => selectedElement);
+            applyHoverButtonEffects(() => selectedElement);
+
+            // Arrow timeline syncs
+            try {
+              buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+              horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+              opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+              scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+              rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+              blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+            } catch (e) {
+              console.warn("Button timeline sync error:", e);
+            }
+
+            console.log("Button initialisers applied.");
+          } catch (e) {
+            console.warn("Button initialisers error:", e);
+          }
+        } else {
+          console.log(
+            "Selected block has no button; skipped button initialisers."
+          );
+        }
+
+        // 5d) Typography-specific initialisers (guarded)
+        const hasText = selectedElement.querySelector("h1,h2,h3,h4,p");
+        if (hasText) {
+          try {
+            initTypoAdvanceStyles(() => selectedElement);
+            horizontalinitTypoAdvanceStyles(() => selectedElement);
+            blurinitTypoAdvanceStyles(() => selectedElement);
+            opacityinitTypoAdvanceStyles(() => selectedElement);
+            scaleinitTypoAdvanceStyles(() => selectedElement);
+            rotateinitTypoAdvanceStyles(() => selectedElement);
+            initTypoAdvanceStructureStyles(() => selectedElement);
+
+            // Typo timeline syncs
+            try {
+              TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+              TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+              TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
+              TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+              TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+              TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
+            } catch (e) {
+              console.warn("Typo timeline sync error:", e);
+            }
+
+            console.log("Typography initialisers applied.");
+          } catch (e) {
+            console.warn("Typography initialisers error:", e);
+          }
+        } else {
+          console.log(
+            "Selected block has no text; skipped typography initialisers."
+          );
+        }
+
+        console.timeEnd("[SC] click->post-init");
+        console.groupEnd();
+      }, 50);
+    });
 
     document.body.addEventListener("click", (event) => {
       ButtonAdvanceToggleControls();
@@ -1266,192 +1271,264 @@ document.body.addEventListener("click", async (event) => {
       detectBlockElementTypes(clickedBlock);
     }
 
+
+
     async function loadWidgetFromString(htmlString, clickedBlock) {
-      if (widgetContainer) return;
-
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "sc-widget-container";
-      widgetContainer.classList.add(
-        "sc-fixed",
-        "sc-text-color-white",
-        "sc-universal",
-        "sc-z-999999"
+      console.groupCollapsed(
+        "%c[SC] loadWidgetFromString",
+        "color:#6b8afd;font-weight:600"
       );
-      Object.assign(widgetContainer.style, {
-        visibility: "hidden",
-        opacity: "0",
-        height: "0px",
-        overflow: "hidden",
-        willChange: "height, opacity, transform",
-      });
 
-      const cssHref =
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-      try {
-        await loadStylesheetOnce(cssHref);
-      } catch (e) {}
-
-      const contentWrapper = document.createElement("div");
-      contentWrapper.innerHTML = htmlString;
-      widgetContainer.appendChild(contentWrapper);
-      document.body.appendChild(widgetContainer);
-
-      try {
-        const { initImageMaskControls } = await import(
-          "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
-        );
-        initImageMaskControls(() => selectedElement);
-      } catch (e) {}
-
-      function makeWidgetDraggable() {
+      // Helper: run a block only once per page/session (per container)
+      const once = (key, fn) => {
         if (!widgetContainer) return;
-        widgetContainer.style.setProperty("position", "fixed", "important");
-        widgetContainer.style.setProperty("z-index", "999999", "important");
-        widgetContainer.style.setProperty("top", "100px", "important");
-        widgetContainer.style.setProperty("right", "100px", "important");
-        widgetContainer.style.removeProperty("left");
-        widgetContainer.style.removeProperty("transform");
-
-        let offsetX = 0,
-          offsetY = 0,
-          isDragging = false;
-
-        function startDrag(event) {
-          const draggableElement = event.target.closest("#sc-grabbing");
-          if (!draggableElement || event.target.closest(".sc-dropdown")) return;
-          event.preventDefault();
-          isDragging = true;
-
-          const rect = widgetContainer.getBoundingClientRect();
-          const clientX = event.touches
-            ? event.touches[0].clientX
-            : event.clientX;
-          const clientY = event.touches
-            ? event.touches[0].clientY
-            : event.clientY;
-
-          offsetX = clientX - rect.left;
-          offsetY = clientY - rect.top;
-
-          widgetContainer.style.removeProperty("right");
-          widgetContainer.style.left = rect.left + "px";
-
-          document.addEventListener("mousemove", moveAt);
-          document.addEventListener("mouseup", stopDragging);
-          document.addEventListener("touchmove", moveAt, { passive: false });
-          document.addEventListener("touchend", stopDragging);
+        if (widgetContainer.dataset[key] === "1") return;
+        try {
+          fn?.();
+        } finally {
+          widgetContainer.dataset[key] = "1";
         }
+      };
 
-        function moveAt(event) {
-          if (!isDragging) return;
-          const clientX = event.touches
-            ? event.touches[0].clientX
-            : event.clientX;
-          const clientY = event.touches
-            ? event.touches[0].clientY
-            : event.clientY;
-
-          const maxX = window.innerWidth - widgetContainer.offsetWidth;
-          const maxY = window.innerHeight - widgetContainer.offsetHeight;
-
-          const newX = Math.max(0, Math.min(maxX, clientX - offsetX));
-          const newY = Math.max(0, Math.min(maxY, clientY - offsetY));
-
-          widgetContainer.style.left = newX + "px";
-          widgetContainer.style.top = newY + "px";
-
-          if (event.cancelable) event.preventDefault();
-        }
-
-        function stopDragging() {
-          isDragging = false;
-          document.removeEventListener("mousemove", moveAt);
-          document.removeEventListener("mouseup", stopDragging);
-          document.removeEventListener("touchmove", moveAt);
-          document.removeEventListener("touchend", stopDragging);
-        }
-
-        widgetContainer.removeEventListener("mousedown", startDrag);
-        widgetContainer.removeEventListener("touchstart", startDrag);
-        widgetContainer.addEventListener("mousedown", startDrag);
-        widgetContainer.addEventListener("touchstart", startDrag, {
-          passive: false,
+      // 1) Create container (if missing)
+      if (!widgetContainer) {
+        widgetContainer = document.createElement("div");
+        widgetContainer.id = "sc-widget-container";
+        widgetContainer.classList.add(
+          "sc-fixed",
+          "sc-text-color-white",
+          "sc-universal",
+          "sc-z-999999"
+        );
+        Object.assign(widgetContainer.style, {
+          visibility: "hidden",
+          opacity: "0",
+          height: "0px",
+          overflow: "hidden",
+          willChange: "height, opacity, transform",
+          position: "fixed",
+          right: "100px",
+          top: "100px",
+          zIndex: "999999",
         });
+        document.body.appendChild(widgetContainer);
+        console.log("Container created.");
+      } else {
+        console.log("Container already exists.");
       }
 
-      makeWidgetDraggable();
+      // 2) Inject CSS (once)
+      try {
+        await loadStylesheetOnce(
+          "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css"
+        );
+      } catch (e) {
+        console.warn("parent.css failed to load (continuing).", e);
+      }
+
+      // 3) Inject markup only if we haven't already placed our root
+      if (!widgetContainer.querySelector("[data-sc-root]")) {
+        const contentWrapper = document.createElement("div");
+        // mark the root so future calls won't re-insert the UI
+        const html = (typeof htmlString === "string" ? htmlString : "").trim();
+        contentWrapper.innerHTML = html;
+        if (!contentWrapper.firstElementChild) {
+          console.warn("htmlString was empty/invalid; skipping DOM injection.");
+        } else {
+          contentWrapper.firstElementChild.setAttribute("data-sc-root", "1");
+          widgetContainer.appendChild(contentWrapper);
+          console.log("Widget UI injected.");
+        }
+      } else {
+        console.log("UI already injected; skipping markup.");
+      }
+
+      // 4) One-time: draggable widget
+      once("draggableInited", () => {
+        const makeWidgetDraggable = () => {
+          let offsetX = 0,
+            offsetY = 0,
+            isDragging = false;
+
+          function startDrag(event) {
+            const dragHandle = event.target.closest("#sc-grabbing");
+            if (!dragHandle || event.target.closest(".sc-dropdown")) return;
+            event.preventDefault();
+            isDragging = true;
+
+            const rect = widgetContainer.getBoundingClientRect();
+            const pt = event.touches ? event.touches[0] : event;
+            offsetX = pt.clientX - rect.left;
+            offsetY = pt.clientY - rect.top;
+
+            widgetContainer.style.removeProperty("right");
+            widgetContainer.style.left = rect.left + "px";
+
+            document.addEventListener("mousemove", moveAt);
+            document.addEventListener("mouseup", stopDragging);
+            document.addEventListener("touchmove", moveAt, { passive: false });
+            document.addEventListener("touchend", stopDragging);
+          }
+
+          function moveAt(event) {
+            if (!isDragging) return;
+            const pt = event.touches ? event.touches[0] : event;
+            const maxX = window.innerWidth - widgetContainer.offsetWidth;
+            const maxY = window.innerHeight - widgetContainer.offsetHeight;
+            const newX = Math.max(0, Math.min(maxX, pt.clientX - offsetX));
+            const newY = Math.max(0, Math.min(maxY, pt.clientY - offsetY));
+            widgetContainer.style.left = newX + "px";
+            widgetContainer.style.top = newY + "px";
+            if (event.cancelable) event.preventDefault();
+          }
+
+          function stopDragging() {
+            isDragging = false;
+            document.removeEventListener("mousemove", moveAt);
+            document.removeEventListener("mouseup", stopDragging);
+            document.removeEventListener("touchmove", moveAt);
+            document.removeEventListener("touchend", stopDragging);
+          }
+
+          widgetContainer.addEventListener("mousedown", startDrag);
+          widgetContainer.addEventListener("touchstart", startDrag, {
+            passive: false,
+          });
+        };
+
+        makeWidgetDraggable();
+        console.log("Draggable wired.");
+      });
+
+      // 5) One-time: replace arrow placeholders with SVGs
+      once("arrowSvgsInited", async () => {
+        try {
+          const { createHoverableArrowSVG } = await import(
+            "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
+          );
+          const placeholders = widgetContainer.querySelectorAll(
+            ".sc-arrow-placeholder"
+          );
+          placeholders.forEach((span) => {
+            const isRotate = span.classList.contains("sc-rotate-180");
+            const cloneClassList = Array.from(span.classList);
+            const originalId = span.getAttribute("id") || "";
+            const id =
+              originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+            const svg = createHoverableArrowSVG(id, isRotate);
+            cloneClassList.forEach((cls) => svg.classList.add(cls));
+            span.replaceWith(svg);
+          });
+          console.log("Arrow SVGs injected.");
+        } catch (e) {
+          console.warn("Arrow SVG injection failed (continuing).", e);
+        }
+      });
+
+      // 6) One-time: image mask controls (safe if missing)
+      once("imageMaskInited", async () => {
+        try {
+          const { initImageMaskControls } = await import(
+            "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+          );
+          initImageMaskControls(() => selectedElement);
+          console.log("Image mask controls initialised.");
+        } catch (e) {
+          console.warn("initImageMaskControls() failed (continuing).", e);
+        }
+      });
+
+      // 7) One-time: base UI wiring (no GSAP required)
+      once("uiInited", () => {
+        try {
+          initImageSectionToggleControls();
+          tooltipControls();
+          ButtonAdvanceToggleControls();
+          initButtonSectionToggleControls();
+          WidgetTypoSectionStateControls();
+          initImageStateTabToggle();
+          initButtonStructureGapTypeToggle();
+          initTypoStructureGapTypeToggle();
+          WidgetImageHoverToggleControls();
+          initHoverTypoTabControls([
+            {
+              buttonId: "typo-all-hover-font-button",
+              sectionId: "typo-all-hover-font-section",
+            },
+            {
+              buttonId: "typo-all-hover-border-button",
+              sectionId: "typo-all-hover-border-section",
+            },
+            {
+              buttonId: "typo-all-hover-shadow-button",
+              sectionId: "typo-all-hover-shadow-section",
+            },
+            {
+              buttonId: "typo-all-hover-effects-button",
+              sectionId: "typo-all-hover-effects-section",
+            },
+            {
+              buttonId: "typo-bold-hover-font-button",
+              sectionId: "typo-bold-hover-font-section",
+            },
+            {
+              buttonId: "typo-italic-hover-font-button",
+              sectionId: "typo-italic-hover-font-section",
+            },
+            {
+              buttonId: "typo-link-hover-font-button",
+              sectionId: "typo-link-hover-font-section",
+            },
+          ]);
+          initHoverButtonSectionToggleControls();
+          initHoverButtonEffectDropdowns();
+          console.log("Base UI initialised.");
+        } catch (e) {
+          console.warn("Base UI init failed:", e);
+        }
+      });
+
+      // 8) One-time: GSAP-dependent dropdown/effects
+      await ensureGsap().catch(() => {});
+      once("effectsInited", () => {
+        if (!window.gsap) {
+          console.warn("GSAP unavailable; skipping effects init.");
+          return;
+        }
+        try {
+          initEffectAnimationDropdownToggle(() => selectedElement);
+          button_initEffectAnimationDropdownToggle(() => selectedElement);
+          horizontal_button_initEffectAnimationDropdownToggle(
+            () => selectedElement
+          );
+          horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+          blurinitEffectAnimationDropdownToggle(() => selectedElement);
+          scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+          rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+          opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+          console.log("GSAP effects initialised.");
+        } catch (e) {
+          console.warn("Effects init failed:", e);
+        }
+      });
 
       widgetLoaded = true;
 
-      initImageSectionToggleControls();
-      tooltipControls();
-      ButtonAdvanceToggleControls();
-      initButtonSectionToggleControls();
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      button_initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontal_button_initEffectAnimationDropdownToggle(
-        () => selectedElement
-      );
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-      blurinitEffectAnimationDropdownToggle(() => selectedElement);
-      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-      WidgetTypoSectionStateControls();
-      initImageStateTabToggle();
-      initButtonStructureGapTypeToggle();
-      initTypoStructureGapTypeToggle();
-      WidgetImageHoverToggleControls();
-
-      initHoverTypoTabControls([
-        {
-          buttonId: "typo-all-hover-font-button",
-          sectionId: "typo-all-hover-font-section",
-        },
-        {
-          buttonId: "typo-all-hover-border-button",
-          sectionId: "typo-all-hover-border-section",
-        },
-        {
-          buttonId: "typo-all-hover-shadow-button",
-          sectionId: "typo-all-hover-shadow-section",
-        },
-        {
-          buttonId: "typo-all-hover-effects-button",
-          sectionId: "typo-all-hover-effects-section",
-        },
-        {
-          buttonId: "typo-bold-hover-font-button",
-          sectionId: "typo-bold-hover-font-section",
-        },
-        {
-          buttonId: "typo-italic-hover-font-button",
-          sectionId: "typo-italic-hover-font-section",
-        },
-        {
-          buttonId: "typo-link-hover-font-button",
-          sectionId: "typo-link-hover-font-section",
-        },
-      ]);
-      initHoverButtonSectionToggleControls();
-      if (typeof hoverTypoTabSelect === "function")
-        hoverTypoTabSelect({ target: widgetContainer });
-      initHoverButtonEffectDropdowns();
-      initImageUploadPreview(() => selectedElement);
-
+      // 9) If we were called with a block, sync selection + types after panels exist
       if (clickedBlock) {
-        waitForElement("#typoSection, #imageSection, #buttonSection")
-          .then(() => {
-            handleBlockClick(
-              { target: clickedBlock },
-              {
-                getTextType,
-                getHoverTextType,
-                selectedElement,
-                setSelectedElement: (val) => {
-                  selectedElement = val;
-                  setTimeout(() => {
+        try {
+          await waitForElement("#typoSection, #imageSection, #buttonSection");
+          handleBlockClick(
+            { target: clickedBlock },
+            {
+              getTextType,
+              getHoverTextType,
+              selectedElement,
+              setSelectedElement: (val) => {
+                selectedElement = val;
+                // timeline syncs (deferred)
+                setTimeout(() => {
+                  try {
                     buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                     horizontalbuttonAdvanceSyncCustomTimelineArrow(
                       selectedElement
@@ -1473,19 +1550,26 @@ document.body.addEventListener("click", async (event) => {
                     TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
 
                     initButtonAdvanceScrollEffectReset(selectedElement);
-                  }, 300);
-                },
-                setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                setLastClickedElement: (val) => (lastClickedElement = val),
-                setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
-                setLastActiveAlignmentElement: (val) =>
-                  (lastActiveAlignmentElement = val),
-              }
-            );
-            detectBlockElementTypes(clickedBlock);
-          })
-          .catch(() => {});
+                  } catch (e) {
+                    console.warn("Timeline sync error:", e);
+                  }
+                }, 300);
+              },
+              setLastClickedBlockId: (v) => (lastClickedBlockId = v),
+              setLastClickedElement: (v) => (lastClickedElement = v),
+              setLastAppliedAlignment: (v) => (lastAppliedAlignment = v),
+              setLastActiveAlignmentElement: (v) =>
+                (lastActiveAlignmentElement = v),
+            }
+          );
+          detectBlockElementTypes(clickedBlock);
+          console.log("Clicked block processed:", clickedBlock.id);
+        } catch (e) {
+          console.warn("Post-load selection failed:", e);
+        }
       }
+
+      console.groupEnd();
     }
 
     async function createWidget(clickedBlock) {
