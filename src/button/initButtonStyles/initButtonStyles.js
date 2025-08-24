@@ -211,6 +211,17 @@ export function initButtonStyles(selectedButtonElement) {
   );
   if (!typeClass) return;
 
+  // 🔧 IMPORTANT: Reset capitalization tab UI whenever a new element/type is initialized
+  ["scButtonAllCapital", "scButtonAllSmall", "scButtonFirstCapital"].forEach(
+    (btnId) => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.classList.remove("sc-activeTab-border");
+        btn.classList.add("sc-inActiveTab-border");
+      }
+    }
+  );
+
   function updateGlobalStyle(property, value) {
     const styleId = `sc-style-${blockId}-${typeClass}`;
     let styleTag = document.getElementById(styleId);
@@ -276,7 +287,7 @@ export function initButtonStyles(selectedButtonElement) {
             "sc-activeTab-border"
           );
 
-          // reset UI tabs
+          // Always reset the 3 tabs’ visual state on click
           [
             "scButtonAllCapital",
             "scButtonAllSmall",
@@ -293,12 +304,13 @@ export function initButtonStyles(selectedButtonElement) {
           const existing = document.getElementById(styleId);
 
           if (isAlreadyActive) {
-            if (existing) existing.remove(); // turn off for THIS block only
+            // Turning off for THIS block + type only
+            if (existing) existing.remove();
             transformButton.classList.add("sc-inActiveTab-border");
             return;
           }
 
-          // activate clicked tab
+          // Activate clicked tab and apply to LAST-CLICKED block/type only
           transformButton.classList.remove("sc-inActiveTab-border");
           transformButton.classList.add("sc-activeTab-border");
 
