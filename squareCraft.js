@@ -1,6 +1,5 @@
 
   (async function squareCraft() {
-    // ---- SINGLETON BOOT GUARD ----
     if (window.__SC_WIDGET_INIT__) return;
     window.__SC_WIDGET_INIT__ = true;
 
@@ -416,6 +415,26 @@
    let widgetContainer = document.getElementById("sc-widget-container") || null;
 
    let widgetLoaded = !!widgetContainer;
+if (document.body.dataset.scPrimaryCloser !== "1") {
+  document.body.dataset.scPrimaryCloser = "1";
+  document.body.addEventListener("click", (e) => {
+    if (performance.now() < justOpenedUntil) return;
+    const isInsideWidget = widgetContainer?.contains(e.target);
+    const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+    const isHiddenInput =
+      e.target.tagName === "INPUT" && e.target.type === "file";
+    if (
+      !isInsideWidget &&
+      !isToolbarIcon &&
+      !isHiddenInput &&
+      widgetContainer &&
+      widgetContainer.style.visibility !== "hidden" &&
+      widgetContainer.style.opacity !== "0"
+    ) {
+      animateWidgetClose(widgetContainer, 0.2);
+    }
+  });
+}
 
     const widgetScript = document.getElementById("sc-script");
 
