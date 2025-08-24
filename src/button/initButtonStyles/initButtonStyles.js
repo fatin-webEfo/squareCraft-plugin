@@ -180,45 +180,58 @@ export function initButtonFontFamilyControls(getSelectedElement) {
   }
 }
 
-export function initButtonStyles(selectedButtonElement) {
-  if (!selectedButtonElement) return;
+export function initButtonStyles(selectedBlock) {
+  if (!selectedBlock) return;
 
-  // Give the block a stable id
-  if (!selectedButtonElement.id) {
-    selectedButtonElement.id = `sc-block-${Math.random()
-      .toString(36)
-      .slice(2, 9)}`;
+  // Ensure the block has a stable id
+  if (!selectedBlock.id) {
+    selectedBlock.id = `sc-block-${Math.random().toString(36).slice(2, 9)}`;
   }
-  const curBlockId = selectedButtonElement.id;
-  const prevBlockId = document.body.dataset.scLastBlockId || "";
-  const blockChanged = prevBlockId !== curBlockId;
 
-  // Find a button inside this block
-  const buttonElement =
-    selectedButtonElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
-    ) ||
-    selectedButtonElement.querySelector(
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  const ASEL =
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary";
+  const BSEL =
+    "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
+
+  const findButtonAndType = (block) => {
+    const btn = block?.querySelector(ASEL) || block?.querySelector(BSEL);
+    if (!btn) return { block, btn: null, typeClass: "" };
+    const typeClass = [...btn.classList].find((c) =>
+      c.startsWith("sqs-button-element--")
     );
-  if (!buttonElement) return;
+    return { block, btn, typeClass: typeClass || "" };
+  };
 
-  const typeClass = [...buttonElement.classList].find((c) =>
-    c.startsWith("sqs-button-element--")
-  );
-  if (!typeClass) return;
+  // Initial snapshot (for fallbacks)
+  let { btn: initBtn, typeClass: initType } = findButtonAndType(selectedBlock);
+  if (!initBtn || !initType) return;
 
-  // Mark this as the currently active selection (used by handlers)
-  document.body.dataset.scLastBlockId = curBlockId;
-  document.body.dataset.scLastButtonType = typeClass;
+  const prevId = document.body.dataset.scLastBlockId || "";
+  const blockChanged = prevId !== selectedBlock.id;
 
-  const fontSizeInput = document.getElementById("scButtonFontSizeInput");
-  const letterSpacingInput = document.getElementById(
-    "scButtonLetterSpacingInput"
-  );
-  const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
+  // Record the active selection
+  document.body.dataset.scLastBlockId = selectedBlock.id;
+  document.body.dataset.scLastButtonType = initType;
 
+  // Always compute the live target at handler time (avoids stale closures)
+  const getLiveTarget = () => {
+    const id = document.body.dataset.scLastBlockId;
+    const fromDom = id ? document.getElementById(id) : null;
+    const base = fromDom?.isConnected ? fromDom : selectedBlock;
+    const { btn, typeClass } = findButtonAndType(base);
+    return {
+      block: base,
+      btn: btn || initBtn,
+      typeClass:
+        typeClass || document.body.dataset.scLastButtonType || initType,
+    };
+  };
+
+  // ---- Utilities that use the live target ----
   function updateGlobalStyle(property, value) {
+    const { typeClass } = getLiveTarget();
+    if (!typeClass) return;
+
     const styleId = `sc-style-${typeClass}`;
     let styleTag = document.getElementById(styleId);
     if (!styleTag) {
@@ -235,28 +248,34 @@ export function initButtonStyles(selectedButtonElement) {
       .filter(Boolean)
       .map((r) => r + "}");
 
-    function upsert(selector) {
+    const upsert = (selector) => {
       const idx = rules.findIndex((r) => r.includes(selector));
       const newRule = `${selector} { ${property}: ${value} !important; }`;
       if (idx !== -1) {
         rules[idx] = rules[idx]
-          .replace(new RegExp(`${property}:\\s*.*?;`, "gi"), "")
+          .replace(new RegExp(`${property}:\\s*[^;]+;`, "i"), "")
           .replace("}", ` ${property}: ${value} !important; }`);
       } else {
         rules.push(newRule);
       }
-    }
+    };
 
     upsert(baseSelector);
     upsert(textSelector);
     styleTag.innerHTML = rules.join("\n");
   }
 
-  // Font size
+  // ---- Font size & letter spacing ----
+  const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+  const letterSpacingInput = document.getElementById(
+    "scButtonLetterSpacingInput"
+  );
+  const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
+
   if (fontSizeOptions && fontSizeInput) {
     fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
       item.onclick = () => {
-        fontSizeInput.value = item.getAttribute("data-value");
+        fontSizeInput.value = item.getAttribute("data-value") || "";
         fontSizeInput.dispatchEvent(new Event("input"));
       };
     });
@@ -264,20 +283,19 @@ export function initButtonStyles(selectedButtonElement) {
       updateGlobalStyle("font-size", `${e.target.value}px`);
   }
 
-  // Letter spacing
   if (letterSpacingInput) {
     letterSpacingInput.oninput = (e) =>
       updateGlobalStyle("letter-spacing", `${e.target.value}px`);
   }
 
-  // --- Capitalization controls ---
+  // ---- Capitalization controls ----
   const capBtnIds = [
     "scButtonAllCapital",
     "scButtonAllSmall",
     "scButtonFirstCapital",
   ];
 
-  // Reset active border when switching blocks
+  // Reset active state when switching blocks
   if (blockChanged) {
     capBtnIds.forEach((id) => {
       const el = document.getElementById(id);
@@ -287,36 +305,34 @@ export function initButtonStyles(selectedButtonElement) {
     });
   }
 
-  // Wire handlers (stamp with this block id; fix globals on mismatch)
+  const valueMap = {
+    scButtonAllCapital: "uppercase",
+    scButtonAllSmall: "lowercase",
+    scButtonFirstCapital: "capitalize",
+  };
+
   capBtnIds.forEach((id) => {
-    const btn = document.getElementById(id);
-    if (!btn) return;
+    const uiBtn = document.getElementById(id);
+    if (!uiBtn) return;
 
-    btn.onclick = null; // clear old
-    btn.onclick = () => {
-      // If a late init overwrote globals, correct them now so the FIRST click is right.
-      if (document.body.dataset.scLastBlockId !== curBlockId) {
-        document.body.dataset.scLastBlockId = curBlockId;
-        document.body.dataset.scLastButtonType = typeClass;
-      }
+    uiBtn.onclick = null; // clear previous handler
+    uiBtn.onclick = () => {
+      const { block, typeClass } = getLiveTarget();
+      if (!typeClass) return;
 
-      const liveType = document.body.dataset.scLastButtonType || typeClass;
+      // refresh globals so subsequent handlers know the right selection
+      document.body.dataset.scLastBlockId = block.id;
+      document.body.dataset.scLastButtonType = typeClass;
 
-      const valueMap = {
-        scButtonAllCapital: "uppercase",
-        scButtonAllSmall: "lowercase",
-        scButtonFirstCapital: "capitalize",
-      };
       const value = valueMap[id];
-
-      const styleId = `sc-transform-style-${liveType}`;
+      const styleId = `sc-transform-style-${typeClass}`;
       let styleTag = document.getElementById(styleId);
       const css = `
-.${liveType} span,
-.${liveType} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }
+.${typeClass} span,
+.${typeClass} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }
 `.trim();
 
-      // Toggle: if same transform already active for this TYPE, remove it
+      // Toggle off if the same transform is already applied
       if (
         styleTag &&
         new RegExp(`text-transform:\\s*${value}`, "i").test(
@@ -333,7 +349,6 @@ export function initButtonStyles(selectedButtonElement) {
         return;
       }
 
-      // Replace or create the transform for this TYPE
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
@@ -341,7 +356,7 @@ export function initButtonStyles(selectedButtonElement) {
       }
       styleTag.textContent = css;
 
-      // UI: only the clicked one is active
+      // UI state
       capBtnIds.forEach((bid) => {
         const el = document.getElementById(bid);
         if (!el) return;
@@ -352,6 +367,7 @@ export function initButtonStyles(selectedButtonElement) {
     };
   });
 }
+
 
 
 
