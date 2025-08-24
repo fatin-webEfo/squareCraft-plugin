@@ -2,6 +2,7 @@
   (async function squareCraft() {
     let widgetReadyPromise = null;
     let lastToggleAt = 0;
+
     let justOpenedUntil = 0; // grace period for the body-closer
     let __sc_creating = false;
     const HOST_DOC = (() => {
@@ -632,27 +633,29 @@
     const { initBorderColorPaletteToggle } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
     );
+   
+    
     setTimeout(async () => {
+      if (!widgetContainer) return;
+      const { createHoverableArrowSVG } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
+      );
       const placeholders = widgetContainer.querySelectorAll(
         ".sc-arrow-placeholder"
       );
-      try {
-        const { createHoverableArrowSVG } = await import(
-          "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
-        );
-        placeholders.forEach((span) => {
-          const isRotate = span.classList.contains("sc-rotate-180");
-          const cloneClassList = Array.from(span.classList);
-          const originalId = span.getAttribute("id") || "";
-          const id =
-            originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-          const svg = createHoverableArrowSVG(id, isRotate);
-          cloneClassList.forEach((cls) => svg.classList.add(cls));
-          span.replaceWith(svg);
-        });
-      } catch {}
+      placeholders.forEach((span) => {
+        const isRotate = span.classList.contains("sc-rotate-180");
+        const cloneClassList = Array.from(span.classList);
+        const originalId = span.getAttribute("id") || "";
+        const id =
+          originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+        const svg = createHoverableArrowSVG(id, isRotate);
+        cloneClassList.forEach((cls) => svg.classList.add(cls));
+        span.replaceWith(svg);
+      });
       ButtonAdvanceToggleControls();
     }, 100);
+
 
     const { initButtonFontColorPaletteToggle } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
