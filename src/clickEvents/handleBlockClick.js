@@ -26,27 +26,81 @@ export async function handleBlockClick(event, context) {
   setSelectedElement(block);
   block.classList.add("sc-selected");
 
-  if (typeof window.syncButtonStylesFromElement === "function") {
-    window.syncButtonStylesFromElement(block);
-  }
-  if (typeof window.syncHoverButtonStylesFromElement === "function") {
-    window.syncHoverButtonStylesFromElement(block);
-  }
-  if (typeof window.updateActiveButtonBars === "function") {
-    window.updateActiveButtonBars();
-  }
-
   setLastClickedBlockId(block.id);
   setLastClickedElement(block);
+
+  const fastType = (() => {
+    if (
+      block.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      )
+    )
+      return "button";
+    if (
+      block.classList.contains("sqs-block-image") ||
+      block.querySelector(
+        ".sqs-image-content .fluid-image-editor-wrapper img, .fluid-image-editor-wrapper img"
+      )
+    )
+      return "image";
+    if (block.querySelector("h1,h2,h3,h4,p")) return "text";
+    return "text";
+  })();
+
+  await waitForIds([
+    "typoSection",
+    "imageSection",
+    "buttonSection",
+    "advancedTypoSection",
+    "advancedImageSection",
+    "advancedButtonSection",
+    "presetTypoSection",
+    "presetImageSection",
+    "presetButtonSection",
+  ]);
+
+  const hide = (id) => document.getElementById(id)?.classList.add("sc-hidden");
+  const show = (id) =>
+    document.getElementById(id)?.classList.remove("sc-hidden");
+
+  [
+    "typoSection",
+    "imageSection",
+    "buttonSection",
+    "advancedTypoSection",
+    "advancedImageSection",
+    "advancedButtonSection",
+    "presetTypoSection",
+    "presetImageSection",
+    "presetButtonSection",
+  ].forEach(hide);
+
+  if (fastType === "text") {
+    show("typoSection");
+    show("advancedTypoSection");
+    show("presetTypoSection");
+  } else if (fastType === "image") {
+    show("imageSection");
+    show("advancedImageSection");
+    show("presetImageSection");
+  } else {
+    show("buttonSection");
+    show("advancedButtonSection");
+    show("presetButtonSection");
+  }
+
+  if (typeof window.syncButtonStylesFromElement === "function")
+    window.syncButtonStylesFromElement(block);
+  if (typeof window.syncHoverButtonStylesFromElement === "function")
+    window.syncHoverButtonStylesFromElement(block);
+  if (typeof window.updateActiveButtonBars === "function")
+    window.updateActiveButtonBars();
 
   let appliedTextAlign = window.getComputedStyle(block).textAlign;
   if (!appliedTextAlign || appliedTextAlign === "start") {
     const nested = block.querySelector("h1,h2,h3,h4,p");
-    if (nested) {
-      appliedTextAlign = window.getComputedStyle(nested).textAlign;
-    }
+    if (nested) appliedTextAlign = window.getComputedStyle(nested).textAlign;
   }
-
   if (appliedTextAlign) {
     setLastAppliedAlignment(appliedTextAlign);
     const map = {
@@ -62,6 +116,8 @@ export async function handleBlockClick(event, context) {
       setLastActiveAlignmentElement(activeIcon);
     }
   }
+
+  if (fastType !== "text") return;
 
   const allParts = [
     "heading1Part",
@@ -86,10 +142,10 @@ export async function handleBlockClick(event, context) {
 
   innerTextElements.forEach((el) => {
     const tag = el.tagName.toLowerCase();
-    const result = getTextType(tag, el);
-    if (result) {
-      visibleParts.add(`${result.type}Part`);
-      el.style.border = `1px solid ${result.borderColor}`;
+    const r = getTextType(tag, el);
+    if (r) {
+      visibleParts.add(`${r.type}Part`);
+      el.style.border = `1px solid ${r.borderColor}`;
       el.style.borderRadius = "4px";
       el.style.padding = "2px 4px";
     }
@@ -99,9 +155,7 @@ export async function handleBlockClick(event, context) {
 
   allParts.forEach((id) => {
     const part = document.getElementById(id);
-    if (part) {
-      part.classList.toggle("sc-hidden", !visibleParts.has(id));
-    }
+    if (part) part.classList.toggle("sc-hidden", !visibleParts.has(id));
   });
 
   visibleParts.forEach((partId) => {
@@ -116,17 +170,15 @@ export async function handleBlockClick(event, context) {
         : "p";
       b.querySelectorAll(t).forEach((el) => {
         const r = getTextType(t, el);
-        if (r?.type === typeId) {
-          el.style.outline = `2px solid ${r.borderColor}`;
-        }
+        if (r?.type === typeId) el.style.outline = `2px solid ${r.borderColor}`;
       });
     };
 
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
-      b.querySelectorAll("h1,h2,h3,h4,p").forEach((el) => {
-        el.style.outline = "";
-      });
+      b.querySelectorAll("h1,h2,h3,h4,p").forEach(
+        (el) => (el.style.outline = "")
+      );
     };
   });
 
@@ -136,10 +188,10 @@ export async function handleBlockClick(event, context) {
 
   innerTextElements.forEach((el) => {
     const tag = el.tagName.toLowerCase();
-    const result = getHoverTextType(tag, el);
-    if (result) {
-      visibleHoverParts.add(`hover-${result.type}Part`);
-      el.style.border = `1px dashed ${result.borderColor}`;
+    const r = getHoverTextType(tag, el);
+    if (r) {
+      visibleHoverParts.add(`hover-${r.type}Part`);
+      el.style.border = `1px dashed ${r.borderColor}`;
       el.style.borderRadius = "4px";
       el.style.padding = "2px 4px";
     }
@@ -149,9 +201,7 @@ export async function handleBlockClick(event, context) {
 
   hoverParts.forEach((id) => {
     const part = document.getElementById(id);
-    if (part) {
-      part.classList.toggle("sc-hidden", !visibleHoverParts.has(id));
-    }
+    if (part) part.classList.toggle("sc-hidden", !visibleHoverParts.has(id));
   });
 
   visibleHoverParts.forEach((partId) => {
@@ -166,19 +216,25 @@ export async function handleBlockClick(event, context) {
         : "p";
       b.querySelectorAll(t).forEach((el) => {
         const r = getHoverTextType(t, el);
-        if (r?.type === typeId) {
+        if (r?.type === typeId)
           el.style.outline = `2px dashed ${r.borderColor}`;
-        }
       });
     };
 
     tab.onmouseleave = () => {
       const b = document.getElementById(block.id);
-      b.querySelectorAll("h1,h2,h3,h4,p").forEach((el) => {
-        el.style.outline = "";
-      });
+      b.querySelectorAll("h1,h2,h3,h4,p").forEach(
+        (el) => (el.style.outline = "")
+      );
     };
   });
+}
+
+async function waitForIds(ids, tries = 20, delay = 50) {
+  for (let i = 0; i < tries; i++) {
+    if (ids.every((id) => document.getElementById(id))) return;
+    await new Promise((r) => setTimeout(r, delay));
+  }
 }
 
 async function waitForPartsAndTabsReady(allParts, allTabs) {
