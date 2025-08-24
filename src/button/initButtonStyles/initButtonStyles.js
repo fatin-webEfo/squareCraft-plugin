@@ -183,6 +183,17 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
+  // ensure the block has a stable id so we can detect block switches
+  if (!selectedButtonElement.id) {
+    selectedButtonElement.id = `sc-block-${Math.random()
+      .toString(36)
+      .slice(2, 9)}`;
+  }
+  const curBlockId = selectedButtonElement.id;
+  const prevBlockId = document.body.dataset.scLastBlockId || "";
+  const blockChanged = prevBlockId !== curBlockId;
+  document.body.dataset.scLastBlockId = curBlockId;
+
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
   const letterSpacingInput = document.getElementById(
     "scButtonLetterSpacingInput"
@@ -204,8 +215,7 @@ export function initButtonStyles(selectedButtonElement) {
   );
   if (!typeClass) return;
 
-  // Always remember the last-clicked button TYPE globally so the controls
-  // target that type on first click after switching selection.
+  // remember the last-clicked TYPE globally; all changes apply to that TYPE (sitewide)
   document.body.dataset.scLastButtonType = typeClass;
 
   function updateGlobalStyle(property, value) {
@@ -248,7 +258,7 @@ export function initButtonStyles(selectedButtonElement) {
     styleTag.innerHTML = allRules.join("\n");
   }
 
-  // Font size dropdown + input
+  // font size
   if (fontSizeOptions && fontSizeInput) {
     fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
       item.onclick = () => {
@@ -264,7 +274,7 @@ export function initButtonStyles(selectedButtonElement) {
     };
   }
 
-  // Letter spacing input
+  // letter spacing
   if (letterSpacingInput) {
     letterSpacingInput.oninput = (e) => {
       const spacing = e.target.value;
@@ -272,56 +282,63 @@ export function initButtonStyles(selectedButtonElement) {
     };
   }
 
-  // Capitalization controls (toggle: first click apply, second click undo)
+  // capitalization controls
   const capBtnIds = [
     "scButtonAllCapital",
     "scButtonAllSmall",
     "scButtonFirstCapital",
   ];
 
-  // Reflect current active transform for this TYPE in the UI
-  (function syncCapTabUIFromStyle() {
-    const styleId = `sc-transform-style-${typeClass}`;
-    const styleTag = document.getElementById(styleId);
-    const val = styleTag?.textContent || "";
-
-    const map = {
-      scButtonAllCapital: /text-transform:\s*uppercase/i,
-      scButtonAllSmall: /text-transform:\s*lowercase/i,
-      scButtonFirstCapital: /text-transform:\s*capitalize/i,
-    };
-
-    let anyActive = false;
+  // If user clicked to a DIFFERENT block, reset the active-border UI immediately.
+  if (blockChanged) {
     capBtnIds.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
-      const shouldActive = styleTag && map[id].test(val);
-      el.classList.toggle("sc-activeTab-border", !!shouldActive);
-      el.classList.toggle("sc-inActiveTab-border", !shouldActive);
-      if (shouldActive) anyActive = true;
+      el.classList.remove("sc-activeTab-border");
+      el.classList.add("sc-inActiveTab-border");
     });
+  } else {
+    // Same block: reflect current TYPE transform state into UI
+    (function syncCapTabUIFromStyle() {
+      const styleId = `sc-transform-style-${typeClass}`;
+      const styleTag = document.getElementById(styleId);
+      const val = styleTag?.textContent || "";
 
-    // If none match, ensure all show inactive border
-    if (!anyActive) {
+      const map = {
+        scButtonAllCapital: /text-transform:\s*uppercase/i,
+        scButtonAllSmall: /text-transform:\s*lowercase/i,
+        scButtonFirstCapital: /text-transform:\s*capitalize/i,
+      };
+
+      let anyActive = false;
       capBtnIds.forEach((id) => {
         const el = document.getElementById(id);
         if (!el) return;
-        el.classList.remove("sc-activeTab-border");
-        el.classList.add("sc-inActiveTab-border");
+        const shouldActive = styleTag && map[id].test(val);
+        el.classList.toggle("sc-activeTab-border", !!shouldActive);
+        el.classList.toggle("sc-inActiveTab-border", !shouldActive);
+        if (shouldActive) anyActive = true;
       });
-    }
-  })();
+
+      if (!anyActive) {
+        capBtnIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.classList.remove("sc-activeTab-border");
+          el.classList.add("sc-inActiveTab-border");
+        });
+      }
+    })();
+  }
 
   capBtnIds.forEach((id) => {
     const transformButton = document.getElementById(id);
     if (!transformButton) return;
 
-    // Ensure no stale handler interferes
-    transformButton.onclick = null;
+    transformButton.onclick = null; // clear any old handler
 
     transformButton.onclick = () => {
-      // Always use the current LAST-SELECTED TYPE so first click after switching selection
-      // applies to the correct (latest) type, not the previous one.
+      // ensure we always apply to the LAST selected TYPE
       const liveType = document.body.dataset.scLastButtonType || typeClass;
 
       const transformValueMap = {
@@ -340,7 +357,7 @@ export function initButtonStyles(selectedButtonElement) {
 }
 `.trim();
 
-      // Toggle logic: if same transform is already active for this TYPE -> remove (undo).
+      // Toggle: if this transform is already active for this TYPE, undo it
       if (
         styleTag &&
         new RegExp(`text-transform:\\s*${value}`, "i").test(
@@ -348,7 +365,6 @@ export function initButtonStyles(selectedButtonElement) {
         )
       ) {
         styleTag.remove();
-        // turn all to inactive
         capBtnIds.forEach((btnId) => {
           const el = document.getElementById(btnId);
           if (!el) return;
@@ -358,7 +374,7 @@ export function initButtonStyles(selectedButtonElement) {
         return;
       }
 
-      // Otherwise apply/replace the transform for this TYPE
+      // Apply/replace transform for the TYPE
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
@@ -366,7 +382,7 @@ export function initButtonStyles(selectedButtonElement) {
       }
       styleTag.textContent = css;
 
-      // Update UI: set only the clicked one active
+      // UI: only clicked one is active
       capBtnIds.forEach((btnId) => {
         const el = document.getElementById(btnId);
         if (!el) return;
