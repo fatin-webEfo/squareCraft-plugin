@@ -422,6 +422,7 @@ setTimeout(() => {
   }
 }, 200);
 
+
 export function initButtonIconRotationControl(getSelectedElement) {
   const root = document.getElementById("sc-widget-container") || document;
   // If you have a dedicated section wrapper, use it; otherwise root:

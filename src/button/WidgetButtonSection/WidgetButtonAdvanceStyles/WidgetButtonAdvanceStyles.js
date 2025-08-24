@@ -34,18 +34,22 @@ export function attachAdvanceTimelineIncrementDecrement(
     exitVal = 0,
     startVal = 0,
     endVal = 0;
+
   function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
     const btnDec = document.getElementById(idDecrease);
+
     const clickHandler = (type) => {
       let val = getCurrent();
       val = type === "inc" ? val + 1 : val - 1;
+
       const min =
         bulletId.includes("entry") ||
         bulletId.includes("center") ||
         bulletId.includes("exit")
           ? -100
           : 0;
+
       if (bulletId.includes("start")) {
         val = Math.max(0, Math.min(val, endVal - 4));
         startVal = val;
@@ -55,6 +59,7 @@ export function attachAdvanceTimelineIncrementDecrement(
       } else {
         val = Math.max(min, Math.min(100, val));
       }
+
       updateFn(val);
       const countId = bulletId.replace(
         "bullet",
@@ -62,10 +67,15 @@ export function attachAdvanceTimelineIncrementDecrement(
           ? "Value"
           : "count"
       );
-      document.getElementById(countId).textContent = val + "%";
+      const el = document.getElementById(countId);
+      if (!el) return;
+      if (el.tagName === "INPUT") el.value = val + "%";
+      else el.textContent = val + "%";
     };
+
     if (btnInc) btnInc.onclick = () => clickHandler("inc");
     if (btnDec) btnDec.onclick = () => clickHandler("dec");
+
     const bullet = document.getElementById(bulletId);
     if (bullet) {
       bullet.setAttribute("tabindex", "0");
@@ -81,12 +91,14 @@ export function attachAdvanceTimelineIncrementDecrement(
       });
     }
   }
+
   const getVal = (id) => {
     const el = document.getElementById(id);
     if (!el) return 0;
     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(raw.replace("%", "")) || 0;
+    return parseInt(String(raw).replace("%", "")) || 0;
   };
+
   setup(
     "vertical-button-advance-entry-increase",
     "vertical-button-advance-entry-decrease",
@@ -122,53 +134,58 @@ export function attachAdvanceTimelineIncrementDecrement(
     updateEnd,
     "vertical-timeline-end-bullet"
   );
+
   document.addEventListener("keydown", (e) => {
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
       return;
     if (keyHoldInterval || keyHoldTimeout) return;
+
     const direction = e.key === "ArrowRight" ? 1 : -1;
     lastPressedKey = e.key;
+
     const update = () => {
       if (lastFocused.includes("entry")) {
         entryVal = Math.max(-100, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
-        document.getElementById("vertical-button-advance-entry-count").value =
-          entryVal + "%";
+        const el = document.getElementById("vertical-button-advance-entry-count");
+        if (el) el.value = entryVal + "%";
       }
       if (lastFocused.includes("center")) {
         centerVal = Math.max(-100, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
-        document.getElementById("vertical-button-advance-center-count").value =
-          centerVal + "%";
+        const el = document.getElementById("vertical-button-advance-center-count");
+        if (el) el.value = centerVal + "%";
       }
       if (lastFocused.includes("exit")) {
         exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
-        document.getElementById("vertical-button-advance-exit-count").value =
-          exitVal + "%";
+        const el = document.getElementById("vertical-button-advance-exit-count");
+        if (el) el.value = exitVal + "%";
       }
       if (lastFocused.includes("start")) {
         startVal = getVal("vertical-timelineStartValue");
         endVal = getVal("vertical-timelineEndValue");
         startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        document.getElementById("vertical-timelineStartValue").textContent =
-          startVal + "%";
+        const el = document.getElementById("vertical-timelineStartValue");
+        if (el) el.textContent = startVal + "%";
       }
       if (lastFocused.includes("end")) {
         startVal = getVal("vertical-timelineStartValue");
         endVal = getVal("vertical-timelineEndValue");
         endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        document.getElementById("vertical-timelineEndValue").textContent =
-          endVal + "%";
+        const el = document.getElementById("vertical-timelineEndValue");
+        if (el) el.textContent = endVal + "%";
       }
     };
+
     update();
     keyHoldTimeout = setTimeout(() => {
       keyHoldInterval = setInterval(update, 100);
     }, 300);
   });
+
   document.addEventListener("keyup", (e) => {
     if (e.key === lastPressedKey) {
       clearInterval(keyHoldInterval);
@@ -182,66 +199,54 @@ export function attachAdvanceTimelineIncrementDecrement(
 
 export function button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById("vertical-effect-animation-type-arrow");
-  const dropdown = document.getElementById(
-    "vertical-effect-animation-type-list"
-  );
-  const container = document.getElementById(
-    "vertical-effect-animation-dropdown-container"
-  );
-  const displayValue = document.getElementById(
-    "vertical-effect-animation-value"
-  );
+  const dropdown = document.getElementById("vertical-effect-animation-type-list");
+  const container = document.getElementById("vertical-effect-animation-dropdown-container");
+  const displayValue = document.getElementById("vertical-effect-animation-value");
   if (!arrow || !dropdown || !container || !displayValue) return;
   if (container.dataset.scDropdownBound === "1") return;
   container.dataset.scDropdownBound = "1";
+
   const open = () => dropdown.classList.remove("sc-hidden");
   const close = () => dropdown.classList.add("sc-hidden");
   const toggle = () => dropdown.classList.toggle("sc-hidden");
   const isOpen = () => !dropdown.classList.contains("sc-hidden");
-  arrow.addEventListener(
-    "click",
-    (e) => {
-      e.stopPropagation();
-      toggle();
-    },
-    { passive: true }
-  );
+
+  arrow.addEventListener("click", (e) => { e.stopPropagation(); toggle(); }, { passive: true });
   dropdown.addEventListener("click", (e) => e.stopPropagation());
-  const onDocClick = (e) => {
-    if (!container.contains(e.target)) close();
-  };
-  const onKey = (e) => {
-    if (e.key === "Escape" && isOpen()) close();
-  };
+
+  const onDocClick = (e) => { if (!container.contains(e.target)) close(); };
+  const onKey = (e) => { if (e.key === "Escape" && isOpen()) close(); };
+
   document.addEventListener("click", onDocClick);
   document.addEventListener("keydown", onKey);
+
   dropdown.querySelectorAll("[data-value]").forEach((item) => {
     item.addEventListener("click", () => {
-      const selected =
-        item.getAttribute("data-value") || item.textContent.trim();
-      displayValue.textContent = selected;
+      const selected = item.getAttribute("data-value") || item.textContent.trim();
+      displayValue.textContent = item.textContent.trim();
+      displayValue.setAttribute("data-value", selected);
+
       try {
         const el =
-          typeof getSelectedElement === "function"
-            ? getSelectedElement()
-            : null;
+          typeof getSelectedElement === "function" ? getSelectedElement() : null;
         const btn =
           el?.querySelector(
             "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           ) || el;
-        if (btn)
-          btn.style.setProperty("--sc-vertical-effect-animation", selected);
+        if (btn) btn.style.setProperty("--sc-vertical-effect-animation", selected);
+        window.__typoScrollEase = selected; // keep parity with Typo
       } catch {}
+
       close();
     });
   });
+
   container.__scDropdownDispose = () => {
     document.removeEventListener("click", onDocClick);
     document.removeEventListener("keydown", onKey);
     delete container.dataset.scDropdownBound;
   };
 }
-
 
 export function initButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("vertical-timeline-start-bullet");
@@ -251,52 +256,23 @@ export function initButtonAdvanceStyles(getSelectedElement) {
   const startValue = document.getElementById("vertical-timelineStartValue");
   const endValue = document.getElementById("vertical-timelineEndValue");
 
-  const entryBullet = document.getElementById(
-    "vertical-button-advance-entry-bullet"
-  );
-  const entryFill = document.getElementById(
-    "vertical-button-advance-entry-fill"
-  );
-  const entryCount = document.getElementById(
-    "vertical-button-advance-entry-count"
-  );
+  const entryBullet = document.getElementById("vertical-button-advance-entry-bullet");
+  const entryFill = document.getElementById("vertical-button-advance-entry-fill");
+  const entryCount = document.getElementById("vertical-button-advance-entry-count");
 
-  const centerBullet = document.getElementById(
-    "vertical-button-advance-center-bullet"
-  );
-  const centerFill = document.getElementById(
-    "vertical-button-advance-center-fill"
-  );
-  const centerCount = document.getElementById(
-    "vertical-button-advance-center-count"
-  );
+  const centerBullet = document.getElementById("vertical-button-advance-center-bullet");
+  const centerFill = document.getElementById("vertical-button-advance-center-fill");
+  const centerCount = document.getElementById("vertical-button-advance-center-count");
 
-  const exitBullet = document.getElementById(
-    "vertical-button-advance-exit-bullet"
-  );
+  const exitBullet = document.getElementById("vertical-button-advance-exit-bullet");
   const exitFill = document.getElementById("vertical-button-advance-exit-fill");
-  const exitCount = document.getElementById(
-    "vertical-button-advance-exit-count"
-  );
+  const exitCount = document.getElementById("vertical-button-advance-exit-count");
 
   if (
-    !startBullet ||
-    !endBullet ||
-    !startFill ||
-    !endFill ||
-    !startValue ||
-    !endValue ||
-    !entryBullet ||
-    !entryFill ||
-    !entryCount ||
-    !centerBullet ||
-    !centerFill ||
-    !centerCount ||
-    !exitBullet ||
-    !exitFill ||
-    !exitCount
-  )
-    return;
+    !startBullet || !endBullet || !startFill || !endFill ||
+    !startValue || !endValue || !entryBullet || !entryFill || !entryCount ||
+    !centerBullet || !centerFill || !centerCount || !exitBullet || !exitFill || !exitCount
+  ) return;
 
   const el = getSelectedElement?.();
   if (!el) return;
@@ -312,25 +288,13 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     return Number.isFinite(n) ? n : 0;
   };
 
-  let startPct =
-    readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-start")
-    ) || 0;
-  let endPct =
-    readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-end")
-    ) || 100;
+  let startPct = readPct(getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-start")) || 0;
+  let endPct = readPct(getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-end")) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
 
-  let entryPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-entry")
-  );
-  let centerPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-center")
-  );
-  let exitPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit")
-  );
+  let entryPct = readPct(getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-entry"));
+  let centerPct = readPct(getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-center"));
+  let exitPct = readPct(getComputedStyle(btn).getPropertyValue("--sc-vertical-scroll-exit"));
 
   function writeVar(cssVar, val) {
     const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
@@ -351,16 +315,9 @@ export function initButtonAdvanceStyles(getSelectedElement) {
       `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
   }
 
-  function updateField(
-    bullet,
-    fill,
-    countEl,
-    cssVar,
-    position = "left",
-    min = -100,
-    max = 100
-  ) {
-    return (val) => {
+  const updateField =
+    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+    (val) => {
       val = Math.max(min, Math.min(max, val));
 
       if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
@@ -371,7 +328,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         cssVar === "--sc-vertical-scroll-center" ||
         cssVar === "--sc-vertical-scroll-exit"
       ) {
-        const percent = (val + 100) / 2; // bullet at [-100..100] → [0..100]
+        const percent = (val + 100) / 2;
         const fillLeft = val < 0 ? percent : 50;
         const fillWidth = Math.abs(val / 2);
 
@@ -379,14 +336,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
         gsap.set(fill, {
           left: `${fillLeft}%`,
           width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
+          backgroundColor: "var(--sc-Typo-theme-accent)",
         });
 
-        // 🔁 keep the rail arrow in sync while user drags Entry
-        if (cssVar === "--sc-vertical-scroll-entry") {
-          const a = document.getElementById("vertical-custom-timeline-arrow");
-          if (a) a.style.left = `${percent}%`;
-        }
+        const a = document.getElementById("vertical-custom-timeline-arrow");
+        if (cssVar === "--sc-vertical-scroll-entry" && a) a.style.left = `${percent}%`;
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         if (position === "left") {
@@ -404,7 +358,6 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
       writeVar(cssVar, val);
     };
-  }
 
   const setStart = (v) => {
     startPct = Math.max(0, Math.min(v, endPct - 4));
@@ -474,11 +427,8 @@ export function initButtonAdvanceStyles(getSelectedElement) {
     input.addEventListener("keydown", (e) => {
       if (
         !/[0-9\-]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
-          e.key
-        )
-      )
-        e.preventDefault();
+        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(e.key)
+      ) e.preventDefault();
     });
     input.addEventListener("focus", (e) => {
       const v = parseInt(e.target.value.replace("%", "").trim()) || 0;
@@ -500,8 +450,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
           rect.left,
           Math.min(rect.right, ev.touches ? ev.touches[0].clientX : ev.clientX)
         );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
+        const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
         let v = Math.round(percent);
         if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
         if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
@@ -547,14 +496,11 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
   el.__scButtonAdvance = { setStart, setEnd, setEntry, setCenter, setExit };
 
-  if (
-    window.gsap &&
-    window.ScrollTrigger &&
-    typeof buttonAdvanceSyncCustomTimelineArrow === "function"
-  ) {
+  if (window.gsap && window.ScrollTrigger && typeof buttonAdvanceSyncCustomTimelineArrow === "function") {
     buttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
+
 
 
 // ──────────────────────────────────────────────────────────────
