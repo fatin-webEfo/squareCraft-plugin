@@ -6,7 +6,23 @@
     let widgetReadyPromise = null;
     let lastToggleAt = 0;
 
-    let justOpenedUntil = 0; // grace period for the body-closer
+    let justOpenedUntil = 0;
+      function loadGSAPCDN() {
+        const scripts = [
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js",
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js",
+          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js",
+        ];
+        scripts.forEach((src) => {
+          const existing = document.getElementById("sc-widget-container");
+          if (existing) {
+            widgetContainer = existing;
+            widgetLoaded = true;
+            return;
+          }
+        });
+      }
+      loadGSAPCDN();
     let __sc_creating = false;
     const HOST_DOC = (() => {
       try {
@@ -462,22 +478,7 @@ if (document.body.dataset.scPrimaryCloser !== "1") {
         document.cookie = `sc_w_id=${widgetId}; path=.squarespace.com;`;
       }
     }
-    function loadGSAPCDN() {
-      const scripts = [
-        "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js",
-        "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js",
-        "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js",
-      ];
-      scripts.forEach((src) => {
-        const existing = document.getElementById("sc-widget-container");
-        if (existing) {
-          widgetContainer = existing;
-          widgetLoaded = true;
-          return;
-        }
-      });
-    }
-    loadGSAPCDN();
+  
 
     let lastClickedBlockId = null;
     let lastClickedElement = null;
