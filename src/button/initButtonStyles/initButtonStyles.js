@@ -182,26 +182,24 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 
 export function initButtonStyles(selectedBlock) {
   if (!selectedBlock) return;
-
-  if (!selectedBlock.id) {
+  if (!selectedBlock.id)
     selectedBlock.id = `sc-block-${Math.random().toString(36).slice(2, 9)}`;
-  }
 
   const ASEL =
     "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary";
   const BSEL =
     "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
 
-  const findButtonAndType = (block) => {
-    const btn = block?.querySelector(ASEL) || block?.querySelector(BSEL);
-    if (!btn) return { block, btn: null, typeClass: "" };
-    const typeClass = [...btn.classList].find((c) =>
-      c.startsWith("sqs-button-element--")
-    );
-    return { block, btn, typeClass: typeClass || "" };
+  const findBtn = (blk) => {
+    const btn = blk?.querySelector(ASEL) || blk?.querySelector(BSEL);
+    if (!btn) return { block: blk, btn: null, typeClass: "" };
+    const typeClass =
+      [...btn.classList].find((c) => c.startsWith("sqs-button-element--")) ||
+      "";
+    return { block: blk, btn, typeClass };
   };
 
-  let { btn: initBtn, typeClass: initType } = findButtonAndType(selectedBlock);
+  let { btn: initBtn, typeClass: initType } = findBtn(selectedBlock);
   if (!initBtn || !initType) return;
 
   const prevId = document.body.dataset.scLastBlockId || "";
@@ -210,21 +208,20 @@ export function initButtonStyles(selectedBlock) {
   document.body.dataset.scLastBlockId = selectedBlock.id;
   document.body.dataset.scLastButtonType = initType;
 
-  const getLiveTarget = () => {
-    const id = document.body.dataset.scLastBlockId;
-    const fromDom = id ? document.getElementById(id) : null;
-    const base = fromDom?.isConnected ? fromDom : selectedBlock;
-    const { btn, typeClass } = findButtonAndType(base);
+  const liveTarget = () => {
+    const viaWindow =
+      window.selectedBlockId && document.getElementById(window.selectedBlockId);
+    const base = viaWindow?.isConnected ? viaWindow : selectedBlock;
+    const { btn, typeClass } = findBtn(base);
     return {
       block: base,
       btn: btn || initBtn,
-      typeClass:
-        typeClass || document.body.dataset.scLastButtonType || initType,
+      typeClass: typeClass || initType,
     };
   };
 
   function updateGlobalStyle(property, value) {
-    const { typeClass } = getLiveTarget();
+    const { typeClass } = liveTarget();
     if (!typeClass) return;
 
     const styleId = `sc-style-${typeClass}`;
@@ -307,9 +304,9 @@ export function initButtonStyles(selectedBlock) {
     const uiBtn = document.getElementById(id);
     if (!uiBtn) return;
 
-    uiBtn.onclick = null; // clear previous handler
+    uiBtn.onclick = null;
     uiBtn.onclick = () => {
-      const { block, typeClass } = getLiveTarget();
+      const { block, typeClass } = liveTarget();
       if (!typeClass) return;
 
       document.body.dataset.scLastBlockId = block.id;
@@ -318,10 +315,7 @@ export function initButtonStyles(selectedBlock) {
       const value = valueMap[id];
       const styleId = `sc-transform-style-${typeClass}`;
       let styleTag = document.getElementById(styleId);
-      const css = `
-.${typeClass} span,
-.${typeClass} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }
-`.trim();
+      const css = `.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }`;
 
       if (
         styleTag &&
@@ -346,7 +340,6 @@ export function initButtonStyles(selectedBlock) {
       }
       styleTag.textContent = css;
 
-      // UI state
       capBtnIds.forEach((bid) => {
         const el = document.getElementById(bid);
         if (!el) return;
