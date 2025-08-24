@@ -7,22 +7,31 @@
     let lastToggleAt = 0;
 
     let justOpenedUntil = 0;
-      function loadGSAPCDN() {
-        const scripts = [
-          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js",
-          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js",
-          "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js",
-        ];
-        scripts.forEach((src) => {
-          const existing = document.getElementById("sc-widget-container");
-          if (existing) {
-            widgetContainer = existing;
-            widgetLoaded = true;
-            return;
-          }
-        });
-      }
-      loadGSAPCDN();
+     function loadScript(src) {
+       return new Promise((resolve, reject) => {
+         if (document.querySelector(`script[src="${src}"]`)) return resolve();
+         const s = document.createElement("script");
+         s.src = src;
+         s.async = false; // keep execution order
+         s.onload = resolve;
+         s.onerror = reject;
+         document.head.appendChild(s);
+       });
+     }
+
+     async function ensureGsap() {
+       if (window.gsap) return;
+       const urls = [
+         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js",
+         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js",
+         "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollSmoother.min.js",
+       ];
+       await Promise.all(urls.map(loadScript));
+       for (let i = 0; i < 40 && !window.gsap; i++) {
+         await new Promise((r) => setTimeout(r, 25));
+       }
+     }
+
     let __sc_creating = false;
     const HOST_DOC = (() => {
       try {
@@ -723,6 +732,23 @@ if (document.body.dataset.scPrimaryCloser !== "1") {
         isTrackingArrow = true;
       }
     });
+await ensureGsap().catch(() => {});
+if (window.gsap) {
+  initEffectAnimationDropdownToggle(() => selectedElement);
+  button_initEffectAnimationDropdownToggle(() => selectedElement);
+  horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
+  horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+  blurinitEffectAnimationDropdownToggle(() => selectedElement);
+  scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+  rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+  opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+}
+document.body.addEventListener("click", async (event) => {
+  await ensureGsap().catch(() => {});
+
+  if (window.gsap) {
+  }
+});
 
     document.body.addEventListener("click", (event) => {
       ButtonAdvanceToggleControls();
