@@ -183,6 +183,13 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
+  if (!selectedButtonElement.id) {
+    selectedButtonElement.id = `sc-block-${Math.random()
+      .toString(36)
+      .slice(2, 9)}`;
+  }
+  const blockId = selectedButtonElement.id;
+
   const fontSizeInput = document.getElementById("scButtonFontSizeInput");
   const letterSpacingInput = document.getElementById(
     "scButtonLetterSpacingInput"
@@ -205,20 +212,16 @@ export function initButtonStyles(selectedButtonElement) {
   if (!typeClass) return;
 
   function updateGlobalStyle(property, value) {
-    const styleId = `sc-style-${typeClass}`;
+    const styleId = `sc-style-${blockId}-${typeClass}`;
     let styleTag = document.getElementById(styleId);
-
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
 
-    const baseSelector = `.${typeClass}`;
-    const textSelector = `
-      .${typeClass} span,
-      .${typeClass} .sqs-add-to-cart-button-inner
-    `.trim();
+    const baseSelector = `#${blockId} .${typeClass}`;
+    const textSelector = `#${blockId} .${typeClass} span, #${blockId} .${typeClass} .sqs-add-to-cart-button-inner`;
 
     const allRules = styleTag.innerHTML
       .split("}")
@@ -228,10 +231,9 @@ export function initButtonStyles(selectedButtonElement) {
     function updateRule(selector) {
       const index = allRules.findIndex((r) => r.includes(selector));
       const newRule = `${selector} { ${property}: ${value} !important; }`;
-
       if (index !== -1) {
         allRules[index] = allRules[index]
-          .replace(new RegExp(`${property}:.*?;`, "g"), "")
+          .replace(new RegExp(`${property}:\\s*.*?;`, "g"), "")
           .replace("}", ` ${property}: ${value} !important; }`);
       } else {
         allRules.push(newRule);
@@ -240,7 +242,6 @@ export function initButtonStyles(selectedButtonElement) {
 
     updateRule(baseSelector);
     updateRule(textSelector);
-
     styleTag.innerHTML = allRules.join("\n");
   }
 
@@ -275,7 +276,7 @@ export function initButtonStyles(selectedButtonElement) {
             "sc-activeTab-border"
           );
 
-          // reset tab states
+          // reset UI tabs
           [
             "scButtonAllCapital",
             "scButtonAllSmall",
@@ -288,12 +289,11 @@ export function initButtonStyles(selectedButtonElement) {
             }
           });
 
-          const styleId = `sc-transform-style-${typeClass}`;
+          const styleId = `sc-transform-style-${blockId}-${typeClass}`;
           const existing = document.getElementById(styleId);
 
           if (isAlreadyActive) {
-            // turning off -> remove override so theme/default applies
-            if (existing) existing.remove();
+            if (existing) existing.remove(); // turn off for THIS block only
             transformButton.classList.add("sc-inActiveTab-border");
             return;
           }
@@ -316,8 +316,8 @@ export function initButtonStyles(selectedButtonElement) {
             document.head.appendChild(styleTag);
           }
           styleTag.innerHTML = `
-.${typeClass} span,
-.${typeClass} .sqs-add-to-cart-button-inner {
+#${blockId} .${typeClass} span,
+#${blockId} .${typeClass} .sqs-add-to-cart-button-inner {
   text-transform: ${value} !important;
 }
 `;
@@ -326,6 +326,7 @@ export function initButtonStyles(selectedButtonElement) {
     }
   );
 }
+
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
