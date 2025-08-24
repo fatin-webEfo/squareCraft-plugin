@@ -743,12 +743,196 @@ if (window.gsap) {
   rotateinitEffectAnimationDropdownToggle(() => selectedElement);
   opacityinitEffectAnimationDropdownToggle(() => selectedElement);
 }
-document.body.addEventListener("click", async (event) => {
-  await ensureGsap().catch(() => {});
 
-  if (window.gsap) {
+
+document.body.addEventListener("click", async (event) => {
+  console.groupCollapsed("%c[SC] body click", "color:#6b8afd;font-weight:600");
+  console.time("[SC] click->post-init");
+
+  // 1) Make GSAP available before any GSAP-dependent init
+  await ensureGsap().catch(() => {});
+  console.log("GSAP ready:", !!window.gsap);
+
+  // 2) Fast UI toggles (safe even without a selection)
+  try {
+    ButtonAdvanceToggleControls();
+    TypoAdvanceToggleControls();
+    WidgetButtonPresetTabControls();
+    console.log("Base toggles updated.");
+  } catch (e) {
+    console.warn("Base toggles error:", e);
   }
+
+  // 3) If a Squarespace block was clicked, schedule detection
+  const clickedBlock = event.target.closest('[id^="block-"]');
+  if (clickedBlock) {
+    console.log("Clicked block:", clickedBlock.id);
+    try {
+      scheduleDetect(clickedBlock);
+    } catch (e) {
+      console.warn("scheduleDetect error:", e);
+    }
+  } else {
+    console.log("Click not on a Squarespace block.");
+  }
+
+  // 4) One-off triggers (palette)
+  if (event.target.closest("#border-color-select")) {
+    setTimeout(() => {
+      try {
+        initBorderColorPaletteToggle(themeColors);
+        console.log("Border color palette opened.");
+      } catch (e) {
+        console.warn("initBorderColorPaletteToggle error:", e);
+      }
+    }, 100);
+  }
+
+  // 5) Defer post-selection initializers so handleBlockClick() can set selectedElement
+  setTimeout(() => {
+    // Expect handleBlockClick to have set this
+    console.log("selectedElement:", selectedElement?.id || "(none)");
+    if (!selectedElement) {
+      console.timeEnd("[SC] click->post-init");
+      console.groupEnd();
+      return;
+    }
+
+    // 5a) Common inits (no type assumption)
+    try {
+      initImageUploadPreview(() => selectedElement);
+      setTimeout(() => {
+        try {
+          initImageSectionControls();
+        } catch (e) {
+          console.warn("initImageSectionControls error:", e);
+        }
+      }, 100);
+      console.log("Common inits applied.");
+    } catch (e) {
+      console.warn("Common inits error:", e);
+    }
+
+    // 5b) GSAP-dependent dropdown/effects (only if GSAP is present)
+    if (window.gsap) {
+      try {
+        initEffectAnimationDropdownToggle(() => selectedElement);
+        button_initEffectAnimationDropdownToggle(() => selectedElement);
+        horizontal_button_initEffectAnimationDropdownToggle(
+          () => selectedElement
+        );
+        horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+        blurinitEffectAnimationDropdownToggle(() => selectedElement);
+        scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+        rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+        opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+        console.log("GSAP dropdown/effects initialised.");
+      } catch (e) {
+        console.warn("GSAP effects init error:", e);
+      }
+    } else {
+      console.warn("GSAP not available; skipping effects initialisers.");
+    }
+
+    // 5c) Button-specific initialisers (guarded)
+    const buttonSelector =
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
+    const hasButton = selectedElement.querySelector(buttonSelector);
+
+    if (hasButton) {
+      try {
+        // Base + advanced
+        initButtonStyles(selectedElement);
+        initButtonAdvanceStyles(() => selectedElement);
+        horizontalinitButtonAdvanceStyles(() => selectedElement);
+        initButtonAdvanceStructureStyles(() => selectedElement);
+
+        // Icon/border/shadow/font controls
+        initButtonIconRotationControl(() => selectedElement);
+        initButtonIconSizeControl(() => selectedElement);
+        initButtonIconSpacingControl(() => selectedElement);
+        initButtonBorderControl(() => selectedElement);
+        initButtonShadowControls(() => selectedElement);
+        initButtonFontFamilyControls(() => selectedElement);
+        initButtonBorderTypeToggle(
+          () => selectedElement,
+          (sel) => {
+            if (sel) sel.dispatchEvent(new Event("reapplyBorder"));
+          }
+        );
+        initButtonBorderRadiusControl(() => selectedElement);
+        resetAllButtonStyles(() => selectedElement);
+        initButtonBorderResetHandlers(() => selectedElement);
+
+        // Hover controls
+        initHoverButtonIconRotationControl(() => selectedElement);
+        initHoverButtonIconSizeControl(() => selectedElement);
+        initHoverButtonIconSpacingControl(() => selectedElement);
+        initHoverButtonBorderRadiusControl(() => selectedElement);
+        initHoverButtonBorderTypeToggle(() => selectedElement);
+        initHoverButtonBorderControl(() => selectedElement);
+        applyHoverButtonEffects(() => selectedElement);
+
+        // Arrow timeline syncs
+        try {
+          buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+          horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+          opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+          scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+          rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+          blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+        } catch (e) {
+          console.warn("Button timeline sync error:", e);
+        }
+
+        console.log("Button initialisers applied.");
+      } catch (e) {
+        console.warn("Button initialisers error:", e);
+      }
+    } else {
+      console.log("Selected block has no button; skipped button initialisers.");
+    }
+
+    // 5d) Typography-specific initialisers (guarded)
+    const hasText = selectedElement.querySelector("h1,h2,h3,h4,p");
+    if (hasText) {
+      try {
+        initTypoAdvanceStyles(() => selectedElement);
+        horizontalinitTypoAdvanceStyles(() => selectedElement);
+        blurinitTypoAdvanceStyles(() => selectedElement);
+        opacityinitTypoAdvanceStyles(() => selectedElement);
+        scaleinitTypoAdvanceStyles(() => selectedElement);
+        rotateinitTypoAdvanceStyles(() => selectedElement);
+        initTypoAdvanceStructureStyles(() => selectedElement);
+
+        // Typo timeline syncs
+        try {
+          TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+          TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+          TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
+          TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+          TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+          TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
+        } catch (e) {
+          console.warn("Typo timeline sync error:", e);
+        }
+
+        console.log("Typography initialisers applied.");
+      } catch (e) {
+        console.warn("Typography initialisers error:", e);
+      }
+    } else {
+      console.log(
+        "Selected block has no text; skipped typography initialisers."
+      );
+    }
+
+    console.timeEnd("[SC] click->post-init");
+    console.groupEnd();
+  }, 50);
 });
+
 
     document.body.addEventListener("click", (event) => {
       ButtonAdvanceToggleControls();
