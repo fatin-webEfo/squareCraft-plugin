@@ -183,7 +183,7 @@ export function initButtonFontFamilyControls(getSelectedElement) {
 export function initButtonStyles(selectedButtonElement) {
   if (!selectedButtonElement) return;
 
-  // ensure the block has a stable id so we can detect block switches
+  // Give the block a stable id
   if (!selectedButtonElement.id) {
     selectedButtonElement.id = `sc-block-${Math.random()
       .toString(36)
@@ -192,14 +192,8 @@ export function initButtonStyles(selectedButtonElement) {
   const curBlockId = selectedButtonElement.id;
   const prevBlockId = document.body.dataset.scLastBlockId || "";
   const blockChanged = prevBlockId !== curBlockId;
-  document.body.dataset.scLastBlockId = curBlockId;
 
-  const fontSizeInput = document.getElementById("scButtonFontSizeInput");
-  const letterSpacingInput = document.getElementById(
-    "scButtonLetterSpacingInput"
-  );
-  const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
-
+  // Find a button inside this block
   const buttonElement =
     selectedButtonElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary"
@@ -207,21 +201,26 @@ export function initButtonStyles(selectedButtonElement) {
     selectedButtonElement.querySelector(
       "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-
   if (!buttonElement) return;
 
-  const typeClass = [...buttonElement.classList].find((cls) =>
-    cls.startsWith("sqs-button-element--")
+  const typeClass = [...buttonElement.classList].find((c) =>
+    c.startsWith("sqs-button-element--")
   );
   if (!typeClass) return;
 
-  // remember the last-clicked TYPE globally; all changes apply to that TYPE (sitewide)
+  // Mark this as the currently active selection (used by handlers)
+  document.body.dataset.scLastBlockId = curBlockId;
   document.body.dataset.scLastButtonType = typeClass;
+
+  const fontSizeInput = document.getElementById("scButtonFontSizeInput");
+  const letterSpacingInput = document.getElementById(
+    "scButtonLetterSpacingInput"
+  );
+  const fontSizeOptions = document.getElementById("scButtonFontSizeOptions");
 
   function updateGlobalStyle(property, value) {
     const styleId = `sc-style-${typeClass}`;
     let styleTag = document.getElementById(styleId);
-
     if (!styleTag) {
       styleTag = document.createElement("style");
       styleTag.id = styleId;
@@ -229,67 +228,56 @@ export function initButtonStyles(selectedButtonElement) {
     }
 
     const baseSelector = `.${typeClass}`;
-    const textSelector = `
-      .${typeClass} span,
-      .${typeClass} .sqs-add-to-cart-button-inner
-    `.trim();
+    const textSelector = `.${typeClass} span, .${typeClass} .sqs-add-to-cart-button-inner`;
 
-    const allRules = styleTag.innerHTML
+    const rules = styleTag.innerHTML
       .split("}")
       .filter(Boolean)
       .map((r) => r + "}");
 
-    function updateRule(selector) {
-      const index = allRules.findIndex((r) => r.includes(selector));
+    function upsert(selector) {
+      const idx = rules.findIndex((r) => r.includes(selector));
       const newRule = `${selector} { ${property}: ${value} !important; }`;
-
-      if (index !== -1) {
-        allRules[index] = allRules[index]
-          .replace(new RegExp(`${property}:\\s*.*?;`, "g"), "")
+      if (idx !== -1) {
+        rules[idx] = rules[idx]
+          .replace(new RegExp(`${property}:\\s*.*?;`, "gi"), "")
           .replace("}", ` ${property}: ${value} !important; }`);
       } else {
-        allRules.push(newRule);
+        rules.push(newRule);
       }
     }
 
-    updateRule(baseSelector);
-    updateRule(textSelector);
-
-    styleTag.innerHTML = allRules.join("\n");
+    upsert(baseSelector);
+    upsert(textSelector);
+    styleTag.innerHTML = rules.join("\n");
   }
 
-  // font size
+  // Font size
   if (fontSizeOptions && fontSizeInput) {
     fontSizeOptions.querySelectorAll(".sc-dropdown-item").forEach((item) => {
       item.onclick = () => {
-        const selectedSize = item.getAttribute("data-value");
-        fontSizeInput.value = selectedSize;
+        fontSizeInput.value = item.getAttribute("data-value");
         fontSizeInput.dispatchEvent(new Event("input"));
       };
     });
-
-    fontSizeInput.oninput = (e) => {
-      const fontSize = e.target.value;
-      updateGlobalStyle("font-size", `${fontSize}px`);
-    };
+    fontSizeInput.oninput = (e) =>
+      updateGlobalStyle("font-size", `${e.target.value}px`);
   }
 
-  // letter spacing
+  // Letter spacing
   if (letterSpacingInput) {
-    letterSpacingInput.oninput = (e) => {
-      const spacing = e.target.value;
-      updateGlobalStyle("letter-spacing", `${spacing}px`);
-    };
+    letterSpacingInput.oninput = (e) =>
+      updateGlobalStyle("letter-spacing", `${e.target.value}px`);
   }
 
-  // capitalization controls
+  // --- Capitalization controls ---
   const capBtnIds = [
     "scButtonAllCapital",
     "scButtonAllSmall",
     "scButtonFirstCapital",
   ];
 
-  // If user clicked to a DIFFERENT block, reset the active-border UI immediately.
+  // Reset active border when switching blocks
   if (blockChanged) {
     capBtnIds.forEach((id) => {
       const el = document.getElementById(id);
@@ -297,67 +285,38 @@ export function initButtonStyles(selectedButtonElement) {
       el.classList.remove("sc-activeTab-border");
       el.classList.add("sc-inActiveTab-border");
     });
-  } else {
-    // Same block: reflect current TYPE transform state into UI
-    (function syncCapTabUIFromStyle() {
-      const styleId = `sc-transform-style-${typeClass}`;
-      const styleTag = document.getElementById(styleId);
-      const val = styleTag?.textContent || "";
-
-      const map = {
-        scButtonAllCapital: /text-transform:\s*uppercase/i,
-        scButtonAllSmall: /text-transform:\s*lowercase/i,
-        scButtonFirstCapital: /text-transform:\s*capitalize/i,
-      };
-
-      let anyActive = false;
-      capBtnIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const shouldActive = styleTag && map[id].test(val);
-        el.classList.toggle("sc-activeTab-border", !!shouldActive);
-        el.classList.toggle("sc-inActiveTab-border", !shouldActive);
-        if (shouldActive) anyActive = true;
-      });
-
-      if (!anyActive) {
-        capBtnIds.forEach((id) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          el.classList.remove("sc-activeTab-border");
-          el.classList.add("sc-inActiveTab-border");
-        });
-      }
-    })();
   }
 
+  // Wire handlers (stamp with this block id; fix globals on mismatch)
   capBtnIds.forEach((id) => {
-    const transformButton = document.getElementById(id);
-    if (!transformButton) return;
+    const btn = document.getElementById(id);
+    if (!btn) return;
 
-    transformButton.onclick = null; // clear any old handler
+    btn.onclick = null; // clear old
+    btn.onclick = () => {
+      // If a late init overwrote globals, correct them now so the FIRST click is right.
+      if (document.body.dataset.scLastBlockId !== curBlockId) {
+        document.body.dataset.scLastBlockId = curBlockId;
+        document.body.dataset.scLastButtonType = typeClass;
+      }
 
-    transformButton.onclick = () => {
-      // ensure we always apply to the LAST selected TYPE
       const liveType = document.body.dataset.scLastButtonType || typeClass;
 
-      const transformValueMap = {
+      const valueMap = {
         scButtonAllCapital: "uppercase",
         scButtonAllSmall: "lowercase",
         scButtonFirstCapital: "capitalize",
       };
-      const value = transformValueMap[id];
+      const value = valueMap[id];
 
       const styleId = `sc-transform-style-${liveType}`;
       let styleTag = document.getElementById(styleId);
       const css = `
 .${liveType} span,
-.${liveType} .sqs-add-to-cart-button-inner {
-  text-transform: ${value} !important;
-}
+.${liveType} .sqs-add-to-cart-button-inner { text-transform: ${value} !important; }
 `.trim();
 
-      // Toggle: if this transform is already active for this TYPE, undo it
+      // Toggle: if same transform already active for this TYPE, remove it
       if (
         styleTag &&
         new RegExp(`text-transform:\\s*${value}`, "i").test(
@@ -365,8 +324,8 @@ export function initButtonStyles(selectedButtonElement) {
         )
       ) {
         styleTag.remove();
-        capBtnIds.forEach((btnId) => {
-          const el = document.getElementById(btnId);
+        capBtnIds.forEach((bid) => {
+          const el = document.getElementById(bid);
           if (!el) return;
           el.classList.remove("sc-activeTab-border");
           el.classList.add("sc-inActiveTab-border");
@@ -374,7 +333,7 @@ export function initButtonStyles(selectedButtonElement) {
         return;
       }
 
-      // Apply/replace transform for the TYPE
+      // Replace or create the transform for this TYPE
       if (!styleTag) {
         styleTag = document.createElement("style");
         styleTag.id = styleId;
@@ -382,17 +341,18 @@ export function initButtonStyles(selectedButtonElement) {
       }
       styleTag.textContent = css;
 
-      // UI: only clicked one is active
-      capBtnIds.forEach((btnId) => {
-        const el = document.getElementById(btnId);
+      // UI: only the clicked one is active
+      capBtnIds.forEach((bid) => {
+        const el = document.getElementById(bid);
         if (!el) return;
-        const active = btnId === id;
+        const active = bid === id;
         el.classList.toggle("sc-activeTab-border", active);
         el.classList.toggle("sc-inActiveTab-border", !active);
       });
     };
   });
 }
+
 
 
 export function initButtonIconPositionToggle(getSelectedElement) {
