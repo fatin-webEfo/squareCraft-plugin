@@ -1166,22 +1166,7 @@ setTimeout(async () => {
     }
 
     makeWidgetDraggable();
-    setTimeout(() => {
-      const placeholders = widgetContainer.querySelectorAll(
-        ".sc-arrow-placeholder"
-      );
-      placeholders.forEach((span) => {
-        const isRotate = span.classList.contains("sc-rotate-180");
-        const cloneClassList = Array.from(span.classList);
-        const originalId = span.getAttribute("id") || "";
-        const id =
-          originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-        const svg = createHoverableArrowSVG(id, isRotate);
-        cloneClassList.forEach((cls) => svg.classList.add(cls));
-        span.replaceWith(svg);
-      });
-      ButtonAdvanceToggleControls();
-    }, 100);
+
 
     widgetLoaded = true;
 
