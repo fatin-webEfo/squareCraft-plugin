@@ -414,34 +414,25 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  function waitForElements(callback, retries = 20) {
+  function waitForElements(cb, retries = 20) {
     const arrow = document.getElementById("scale-custom-timeline-arrow");
     const startBullet = document.getElementById("scale-timeline-start-bullet");
     const endBullet = document.getElementById("scale-timeline-end-bullet");
-    if (arrow && startBullet && endBullet) callback(arrow);
+    if (arrow && startBullet && endBullet) cb(arrow);
     else if (retries > 0)
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
+      setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
 
-  function setupScrollAnimation(btn, arrow) {
-    // allow overscale to render outside
-    (function makeOverflowVisible() {
-      const set = (el) => {
-        if (el) el.style.overflow = "visible";
-      };
-      set(selectedElement);
-      set(selectedElement.parentElement);
-      set(selectedElement.querySelector(".sqs-block-content"));
-      if (
-        !/relative|absolute|fixed|sticky/.test(getComputedStyle(btn).position)
-      )
-        btn.style.position = "relative";
-      btn.style.transformOrigin ||= "50% 50%";
-      btn.style.willChange = "transform";
-      btn.style.zIndex ||= "2";
-    })();
+  function setup(btnArrow) {
+    const varSource =
+      selectedElement.querySelector(".sqs-block-content") ||
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) ||
+      selectedElement;
 
-    const readRaw = (v) => getComputedStyle(btn).getPropertyValue(v).trim();
+    const readRaw = (v) =>
+      getComputedStyle(varSource).getPropertyValue(v).trim();
     const readPct = (v, fb = 0) => {
       const n = parseFloat(readRaw(v).replace("%", ""));
       return Number.isFinite(n) ? n : fb;
@@ -453,6 +444,12 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const end = () =>
       (parseFloat(readRaw("--sc-scale-scroll-end").replace("%", "")) || 100) /
       100;
+    const pctForZone = (zone) =>
+      zone === "before"
+        ? readPct("--sc-scale-scroll-entry", 0)
+        : zone === "after"
+        ? readPct("--sc-scale-scroll-exit", 0)
+        : readPct("--sc-scale-scroll-center", 0);
 
     const easeName = () => {
       const el = document.getElementById("scale-effect-animation-value");
@@ -487,122 +484,98 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let activeZone = null; // "entry" | "center" | "exit" while dragging
-    let rafId = null; // per-drag RAF loop
-    let lastApplied = null; // last scale applied
-    let quickTo = null; // gsap.quickTo for scale
+    selectedElement.style.overflow = "visible";
+    selectedElement.style.transformOrigin ||= "50% 50%";
+    selectedElement.style.willChange = "transform";
+    if (
+      !/relative|absolute|fixed|sticky/.test(
+        getComputedStyle(selectedElement).position
+      )
+    ) {
+      selectedElement.style.position = "relative";
+    }
+    selectedElement.style.zIndex ||= "2";
+    const parent = selectedElement.parentElement;
+    if (parent) parent.style.overflow = "visible";
+    const content = selectedElement.querySelector(".sqs-block-content");
+    if (content) content.style.overflow = "visible";
+
+    let activeZone = null;
+    let rafId = null;
+    let lastScale = 1;
+    let quick = null;
     let quickEase = null;
     const EPS = 0.001;
 
     const ensureQuick = () => {
       if (!gs) return null;
       const e = easeName();
-      if (!quickTo || quickEase !== e) {
+      if (!quick || quickEase !== e) {
         quickEase = e;
-        quickTo = gs.quickTo(btn, "scale", {
+        quick = gs.quickTo(selectedElement, "scale", {
           duration: e === "none" ? 0.25 : 0.45,
           ease: e,
           overwrite: true,
         });
       }
-      return quickTo;
+      return quick;
     };
 
-    const applyScale = (sc) => {
+    const applyScale = (s) => {
       if (gs) {
         const q = ensureQuick();
-        q ? q(sc) : gs.set(btn, { scale: sc, overwrite: true });
+        q ? q(s) : gs.set(selectedElement, { scale: s, overwrite: true });
       } else {
-        // smooth fallback
-        const target = sc;
-        let s = lastApplied ?? 1;
-        const step = () => {
-          s += (target - s) * 0.18;
-          if (Math.abs(target - s) < 0.001) s = target;
-          const without = (btn.style.transform || "")
-            .replace(/(?:^|\s)scale\([^)]+\)/, "")
-            .trim();
-          btn.style.transform = (without + ` scale(${s})`).trim();
-          lastApplied = s;
-          if (s !== target && activeZone) rafId = requestAnimationFrame(step);
-        };
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(step);
-      }
-      lastApplied = sc;
-    };
-
-    const neutralizeScale = () => {
-      if (lastApplied == null || Math.abs(lastApplied - 1) < 1e-4) return;
-      if (gs) {
-        const q = ensureQuick();
-        q ? q(1) : gs.set(btn, { scale: 1, overwrite: true });
-      } else {
-        const without = (btn.style.transform || "")
+        const without = (selectedElement.style.transform || "")
           .replace(/(?:^|\s)scale\([^)]+\)/, "")
           .trim();
-        btn.style.transform = (without + " scale(1)").trim();
+        selectedElement.style.transform = (without + ` scale(${s})`).trim();
       }
-      lastApplied = 1;
+      lastScale = s;
     };
 
-    const computeScaleFromVars = () => {
-      const t = getViewportProgress(selectedElement);
-      const s = start(),
-        e = end();
-      const zone = t < s - EPS ? "before" : t > e + EPS ? "after" : "inside";
+    const neutralize = () => {
+      if (Math.abs(lastScale - 1) < 1e-4) return;
+      applyScale(1);
+    };
 
-      // Only respond when dragging the matching zone’s bullet
+    const computeZone = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      return t < s - EPS ? "before" : t > e + EPS ? "after" : "inside";
+    };
+
+    const tick = () => {
+      if (!activeZone) return;
+      const zone = computeZone();
       const allowed =
         activeZone === "entry"
           ? "before"
           : activeZone === "center"
           ? "inside"
-          : activeZone === "exit"
-          ? "after"
-          : null;
-
-      if (!allowed || zone !== allowed) return null;
-
-      const varName =
-        zone === "before"
-          ? "--sc-scale-scroll-entry"
-          : zone === "after"
-          ? "--sc-scale-scroll-exit"
-          : "--sc-scale-scroll-center";
-
-      // map [-100..100]% → [0..2] with 1 at 0
-      let pct = readPct(varName, 0);
-      pct = Math.max(-100, Math.min(100, pct));
-      return Math.max(0, 1 + pct / 100);
-    };
-
-    const tick = () => {
-      if (!activeZone) return; // safety
-      const sc = computeScaleFromVars();
-      if (sc == null) {
-        neutralizeScale();
-      } else if (lastApplied == null || Math.abs(sc - lastApplied) > 1e-4) {
-        applyScale(sc);
+          : "after";
+      if (zone !== allowed) {
+        neutralize();
+      } else {
+        let pct = pctForZone(zone);
+        pct = Math.max(-100, Math.min(100, pct));
+        const sc = Math.max(0, 1 + pct / 100);
+        if (Math.abs(sc - lastScale) > 1e-4) applyScale(sc);
       }
       rafId = requestAnimationFrame(tick);
     };
 
-    // ScrollTrigger just for arrow color/position and to re-evaluate zone on scroll
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
         start: "top bottom",
         end: "bottom top",
         scrub: 1,
-        onUpdate: () => {
-          if (!activeZone) return; /* keep zone gating */
-        },
       });
       ST.refresh(true);
     }
 
-    // Drag sources (only these start styling)
     const entryBullet =
       document.getElementById("scale-button-advance-entry-bullet") ||
       document.getElementById("scale-advance-entry-bullet");
@@ -621,7 +594,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const onUp = () => {
       activeZone = null;
       cancelAnimationFrame(rafId);
-      neutralizeScale();
+      neutralize();
     };
 
     if (entryBullet) {
@@ -642,35 +615,26 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         passive: true,
       });
     }
+
     document.addEventListener("mouseup", onUp);
     document.addEventListener("touchend", onUp, { passive: true });
     document.addEventListener("touchcancel", onUp, { passive: true });
 
-    // Arrow loop
     (function loopArrow() {
       const t = getViewportProgress(selectedElement);
-      arrow.style.left = `${t * 100}%`;
-      arrow.style.transform = "translateX(-50%)";
+      btnArrow.style.left = `${t * 100}%`;
+      btnArrow.style.transform = "translateX(-50%)";
       const s = start(),
         e = end();
-      if (t < s - EPS) arrow.style.backgroundColor = "#EF7C2F";
-      else if (t > e + EPS) arrow.style.backgroundColor = "#F6B67B";
-      else arrow.style.backgroundColor = "#FFFFFF";
+      if (t < s - EPS) btnArrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + EPS) btnArrow.style.backgroundColor = "#F6B67B";
+      else btnArrow.style.backgroundColor = "#FFFFFF";
       requestAnimationFrame(loopArrow);
     })();
   }
 
-  waitForElements((arrow) => {
-    const btn =
-      selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      ) || selectedElement;
-    if (!btn) return;
-    setupScrollAnimation(btn, arrow);
-  });
+  waitForElements((arrow) => setup(arrow));
 }
-
-
 
 
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
