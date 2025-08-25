@@ -414,165 +414,144 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("scale-custom-timeline-arrow");
-    const border = document.getElementById("scale-custom-timeline-border");
     const startBullet = document.getElementById("scale-timeline-start-bullet");
     const endBullet = document.getElementById("scale-timeline-end-bullet");
-    const dropdown = document.getElementById(
-      "scale-effect-animation-type-list"
-    );
-
-    if (arrow && border && startBullet && endBullet && dropdown) {
-      callback(arrow, border, startBullet, endBullet, dropdown);
-    } else if (retries > 0) {
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
   }
 
-  function updateArrowPosition(
-    arrow,
-    border,
-    startBullet,
-    endBullet,
-    dropdown
-  ) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const top = rect.top;
-    const percentFromTop = top / viewportHeight;
-    const scrollBasedLeft = Math.max(
-      0,
-      Math.min(100, 100 - 100 * percentFromTop)
-    );
-    arrow.style.left = `${scrollBasedLeft}%`;
-    arrow.style.transform = "translateX(-50%)";
-
-    const startLeft = parseFloat(startBullet.style.left || "0");
-    const endLeft = parseFloat(endBullet.style.left || "100");
-    const centerLeft = (startLeft + endLeft) / 2;
-
-    const btn = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!btn) return;
-
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%")
-        ? (parseFloat(value) / 100) * 100
-        : parseFloat(value) || 0;
+  function setupScrollAnimation(btn, arrow) {
+    const readPct = (v, fb = 0) => {
+      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+      const n = parseFloat(raw.replace("%", ""));
+      return Number.isFinite(n) ? n : fb;
     };
 
-    const entryY = getVHFromCSSVar("--sc-scale-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-scale-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-scale-scroll-exit");
+    const entry = () => readPct("--sc-scale-scroll-entry", 100);
+    const center = () => readPct("--sc-scale-scroll-center", 100);
+    const exit = () => readPct("--sc-scale-scroll-exit", 100);
+    const start = () => readPct("--sc-scale-scroll-start", 0) / 100;
+    const end = () => readPct("--sc-scale-scroll-end", 100) / 100;
 
-    let y = 0;
-    let apply = false;
+    const easeName = () => {
+      const el = document.getElementById("scale-effect-animation-value");
+      const n =
+        el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
+      const map = {
+        none: "none",
+        Linear: "none",
+        linear: "none",
+        "ease-in": "power1.in",
+        "ease-out": "power1.out",
+        "ease-in-out": "power1.inOut",
+        "power1.out": "power1.out",
+        "power2.out": "power2.out",
+        "power3.out": "power3.out",
+        "power4.out": "power4.out",
+        "expo.out": "expo.out",
+        "elastic.out": "elastic.out",
+        "bounce.out": "bounce.out",
+      };
+      return (
+        map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+      );
+    };
 
-    if (scrollBasedLeft <= startLeft + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = scrollBasedLeft / (startLeft + 1);
-        y = entryY * progress;
-        apply = true;
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) {
+      gs.registerPlugin(ST);
+      ST.getAll().forEach((t) => {
+        if (t.trigger === selectedElement) t.kill();
+      });
+    }
+
+    let lastScale = null;
+
+    const updateScale = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const en = entry();
+      const ce = center();
+      const ex = exit();
+
+      let v;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        v = en + (ce - en) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        v = ce + (ex - ce) * k;
+      } else {
+        v = ce;
       }
-    } else if (scrollBasedLeft >= endLeft - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = exitY * progress;
-        apply = true;
+
+      v = Math.max(0, v); // prevent negative scale
+      const sc = v / 100;
+
+      if (sc !== lastScale) {
+        lastScale = sc;
+        const ease = easeName();
+        if (gs) {
+          gs.to(btn, {
+            scale: sc,
+            ease,
+            duration: ease === "none" ? 0.25 : 0.6,
+            overwrite: true,
+          });
+        } else {
+          btn.style.transform = `scale(${sc})`;
+        }
       }
+    };
+
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateScale,
+      });
+      ST.refresh(true);
     } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
-      }
+      window.addEventListener("scroll", updateScale, { passive: true });
+      window.addEventListener("resize", updateScale, { passive: true });
     }
 
-    const finalY = apply ? y : 0;
+    const observer = new MutationObserver(updateScale);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateScale, 150);
 
-    if (lastY !== finalY) {
-      btn.removeAttribute("style");
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        scale: Math.max(0.01, 1 + finalY / 100),
-      });
-      lastY = finalY;
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loopArrow);
     }
+    loopArrow();
   }
 
-  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById(
-      "scale-effect-animation-type-arrow"
-    );
-
-    if (arrowTrigger && dropdown) {
-      arrowTrigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle("sc-hidden");
-      });
-
-      document.addEventListener("click", (e) => {
-        if (
-          !arrowTrigger.contains(e.target) &&
-          !dropdown.contains(e.target) &&
-          !dropdown.classList.contains("sc-hidden")
-        ) {
-          dropdown.classList.add("sc-hidden");
-        }
-      });
-
-      dropdown.querySelectorAll("[data-value]").forEach((item) => {
-        item.addEventListener("click", () => {
-          const selectedEffect = item.getAttribute("data-value");
-          const display = dropdown.previousElementSibling;
-          if (display?.querySelector("p")) {
-            display.querySelector("p").textContent = selectedEffect;
-          }
-          transition.ease = selectedEffect || "power2.out";
-          dropdown.classList.add("sc-hidden");
-        });
-      });
-    }
-
-    trackLoop(arrow, border, startBullet, endBullet, dropdown);
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
   });
 }
+
 
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;

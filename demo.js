@@ -1,4 +1,4 @@
-export function opacityattachAdvanceTimelineIncrementDecrement(
+export function scaleattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
@@ -81,40 +81,40 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
   };
 
   setup(
-    "opacity-button-advance-entry-increase",
-    "opacity-button-advance-entry-decrease",
-    () => getVal("opacity-button-advance-entry-count"),
+    "scale-button-advance-entry-increase",
+    "scale-button-advance-entry-decrease",
+    () => getVal("scale-button-advance-entry-count"),
     updateEntry,
-    "opacity-button-advance-entry-bullet"
+    "scale-button-advance-entry-bullet"
   );
   setup(
-    "opacity-button-advance-center-increase",
-    "opacity-button-advance-center-decrease",
-    () => getVal("opacity-button-advance-center-count"),
+    "scale-button-advance-center-increase",
+    "scale-button-advance-center-decrease",
+    () => getVal("scale-button-advance-center-count"),
     updateCenter,
-    "opacity-button-advance-center-bullet"
+    "scale-button-advance-center-bullet"
   );
   setup(
-    "opacity-button-advance-exit-increase",
-    "opacity-button-advance-exit-decrease",
-    () => getVal("opacity-button-advance-exit-count"),
+    "scale-button-advance-exit-increase",
+    "scale-button-advance-exit-decrease",
+    () => getVal("scale-button-advance-exit-count"),
     updateExit,
-    "opacity-button-advance-exit-bullet"
+    "scale-button-advance-exit-bullet"
   );
 
   const startBullet = document.getElementById(
-    "opacity-timeline-start-bullet"
+    "scale-timeline-start-bullet"
   );
-  const endBullet = document.getElementById("opacity-timeline-end-bullet");
+  const endBullet = document.getElementById("scale-timeline-end-bullet");
   if (startBullet)
     startBullet.addEventListener(
       "focus",
-      () => (lastFocused = "opacity-timeline-start-bullet")
+      () => (lastFocused = "scale-timeline-start-bullet")
     );
   if (endBullet)
     endBullet.addEventListener(
       "focus",
-      () => (lastFocused = "opacity-timeline-end-bullet")
+      () => (lastFocused = "scale-timeline-end-bullet")
     );
 
   document.addEventListener("keydown", (e) => {
@@ -130,7 +130,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
         entryVal = Math.max(-100, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
         const el = document.getElementById(
-          "opacity-button-advance-entry-count"
+          "scale-button-advance-entry-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -141,7 +141,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
         centerVal = Math.max(-100, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
         const el = document.getElementById(
-          "opacity-button-advance-center-count"
+          "scale-button-advance-center-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -152,7 +152,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
         exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
         const el = document.getElementById(
-          "opacity-button-advance-exit-count"
+          "scale-button-advance-exit-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -160,19 +160,19 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
             : (el.textContent = exitVal + "%");
       }
       if (lastFocused.includes("start")) {
-        startVal = getVal("opacity-timelineStartValue");
-        endVal = getVal("opacity-timelineEndValue");
+        startVal = getVal("scale-timelineStartValue");
+        endVal = getVal("scale-timelineEndValue");
         startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        const el = document.getElementById("opacity-timelineStartValue");
+        const el = document.getElementById("scale-timelineStartValue");
         if (el) el.textContent = startVal + "%";
       }
       if (lastFocused.includes("end")) {
-        startVal = getVal("opacity-timelineStartValue");
-        endVal = getVal("opacity-timelineEndValue");
+        startVal = getVal("scale-timelineStartValue");
+        endVal = getVal("scale-timelineEndValue");
         endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        const el = document.getElementById("opacity-timelineEndValue");
+        const el = document.getElementById("scale-timelineEndValue");
         if (el) el.textContent = endVal + "%";
       }
     };
@@ -194,14 +194,14 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function opacityattachCustomTimelineReset(
+function scaleattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
   updateCenter,
   updateExit
 ) {
-  const btn = document.getElementById("opacity-custom-timeline-reset");
+  const btn = document.getElementById("scale-custom-timeline-reset");
   if (btn)
     btn.onclick = () => {
       updateStart(0);
@@ -212,12 +212,12 @@ function opacityattachCustomTimelineReset(
     };
 }
 
-export function opacitybutton_initEffectAnimationDropdownToggle() {
+export function scale_button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById(
-    "opacity-effect-animation-type-arrow"
+    "scale-effect-animation-type-arrow"
   );
-  const list = document.getElementById("opacity-effect-animation-type-list");
-  const display = document.getElementById("opacity-effect-animation-value");
+  const list = document.getElementById("scale-effect-animation-type-list");
+  const display = document.getElementById("scale-effect-animation-value");
   if (!arrow || !list || !display) return;
 
   arrow.onclick = () => {
@@ -240,7 +240,7 @@ export function opacitybutton_initEffectAnimationDropdownToggle() {
             "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           ) || el;
         if (btn)
-          btn.style.setProperty("--sc-opacity-effect-animation", selected);
+          btn.style.setProperty("--sc-scale-effect-animation", selected);
         window.__typoScrollEase = selected;
       } catch {}
       list.classList.add("sc-hidden");
@@ -254,44 +254,44 @@ export function opacitybutton_initEffectAnimationDropdownToggle() {
   });
 }
 
-export function opacityinitButtonAdvanceStyles(getSelectedElement) {
+export function scaleinitButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
-    "opacity-timeline-start-bullet"
+    "scale-timeline-start-bullet"
   );
-  const endBullet = document.getElementById("opacity-timeline-end-bullet");
-  const startFill = document.getElementById("opacity-timeline-start-fill");
-  const endFill = document.getElementById("opacity-timeline-end-fill");
-  const startValue = document.getElementById("opacity-timelineStartValue");
-  const endValue = document.getElementById("opacity-timelineEndValue");
+  const endBullet = document.getElementById("scale-timeline-end-bullet");
+  const startFill = document.getElementById("scale-timeline-start-fill");
+  const endFill = document.getElementById("scale-timeline-end-fill");
+  const startValue = document.getElementById("scale-timelineStartValue");
+  const endValue = document.getElementById("scale-timelineEndValue");
 
   const entryBullet = document.getElementById(
-    "opacity-button-advance-entry-bullet"
+    "scale-button-advance-entry-bullet"
   );
   const entryFill = document.getElementById(
-    "opacity-button-advance-entry-fill"
+    "scale-button-advance-entry-fill"
   );
   const entryCount = document.getElementById(
-    "opacity-button-advance-entry-count"
+    "scale-button-advance-entry-count"
   );
 
   const centerBullet = document.getElementById(
-    "opacity-button-advance-center-bullet"
+    "scale-button-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "opacity-button-advance-center-fill"
+    "scale-button-advance-center-fill"
   );
   const centerCount = document.getElementById(
-    "opacity-button-advance-center-count"
+    "scale-button-advance-center-count"
   );
 
   const exitBullet = document.getElementById(
-    "opacity-button-advance-exit-bullet"
+    "scale-button-advance-exit-bullet"
   );
   const exitFill = document.getElementById(
-    "opacity-button-advance-exit-fill"
+    "scale-button-advance-exit-fill"
   );
   const exitCount = document.getElementById(
-    "opacity-button-advance-exit-count"
+    "scale-button-advance-exit-count"
   );
 
   if (
@@ -329,22 +329,22 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
 
   let startPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-start")
+      getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-start")
     ) || 0;
   let endPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-end")
+      getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-end")
     ) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
 
   let entryPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-entry")
+    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-entry")
   );
   let centerPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-center")
+    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-center")
   );
   let exitPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-exit")
+    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-exit")
   );
 
   function writeVar(cssVar, val) {
@@ -355,7 +355,7 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    const twin = cssVar.replace("--sc-opacity-", "--sc-Typo-opacity-");
+    const twin = cssVar.replace("--sc-scale-", "--sc-Typo-scale-");
     styleTag.textContent =
       `#${el.id} a.sqs-button-element--primary,` +
       `#${el.id} a.sqs-button-element--secondary,` +
@@ -375,9 +375,9 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       else countEl.textContent = `${val}%`;
 
       if (
-        cssVar === "--sc-opacity-scroll-entry" ||
-        cssVar === "--sc-opacity-scroll-center" ||
-        cssVar === "--sc-opacity-scroll-exit"
+        cssVar === "--sc-scale-scroll-entry" ||
+        cssVar === "--sc-scale-scroll-center" ||
+        cssVar === "--sc-scale-scroll-exit"
       ) {
         const percent = (val + 100) / 2;
         const fillLeft = val < 0 ? percent : 50;
@@ -390,8 +390,8 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-theme-accent)",
         });
 
-        const a = document.getElementById("opacity-custom-timeline-arrow");
-        if (cssVar === "--sc-opacity-scroll-entry" && a)
+        const a = document.getElementById("scale-custom-timeline-arrow");
+        if (cssVar === "--sc-scale-scroll-entry" && a)
           a.style.left = `${percent}%`;
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
@@ -417,7 +417,7 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       startBullet,
       startFill,
       startValue,
-      "--sc-opacity-scroll-start",
+      "--sc-scale-scroll-start",
       "left",
       0,
       100
@@ -429,7 +429,7 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       endBullet,
       endFill,
       endValue,
-      "--sc-opacity-scroll-end",
+      "--sc-scale-scroll-end",
       "right",
       0,
       100
@@ -439,19 +439,19 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-opacity-scroll-entry"
+    "--sc-scale-scroll-entry"
   );
   const setCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-opacity-scroll-center"
+    "--sc-scale-scroll-center"
   );
   const setExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-opacity-scroll-exit"
+    "--sc-scale-scroll-exit"
   );
 
   setEntry(entryPct);
@@ -532,32 +532,32 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
   makeDraggable(exitBullet, setExit, "normal");
 
   [
-    { id: "opacity-button-advance-entry-reset", setter: () => setEntry(0) },
+    { id: "scale-button-advance-entry-reset", setter: () => setEntry(0) },
     {
-      id: "opacity-button-advance-center-reset",
+      id: "scale-button-advance-center-reset",
       setter: () => setCenter(0),
     },
-    { id: "opacity-button-advance-exit-reset", setter: () => setExit(0) },
+    { id: "scale-button-advance-exit-reset", setter: () => setExit(0) },
   ].forEach(({ id, setter }) => {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
   });
 
-  opacityattachAdvanceTimelineIncrementDecrement(
+  scaleattachAdvanceTimelineIncrementDecrement(
     setEntry,
     setCenter,
     setExit,
     setStart,
     setEnd
   );
-  opacityattachCustomTimelineReset(
+  scaleattachCustomTimelineReset(
     setStart,
     setEnd,
     setEntry,
     setCenter,
     setExit
   );
-  opacitybutton_initEffectAnimationDropdownToggle();
+  scale_button_initEffectAnimationDropdownToggle();
 
   if (
     window.gsap &&
