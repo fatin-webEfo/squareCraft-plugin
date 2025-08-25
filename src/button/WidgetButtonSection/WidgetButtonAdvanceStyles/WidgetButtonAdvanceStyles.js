@@ -767,7 +767,7 @@ function horizontalattachCustomTimelineReset(
     };
 }
 
-export function horizontalbutton_initEffectAnimationDropdownToggle() {
+export function horizontal_button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById(
     "horizontal-effect-animation-type-arrow"
   );
