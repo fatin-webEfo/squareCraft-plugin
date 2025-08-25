@@ -1,7 +1,6 @@
-
 (async function squareCraft() {
-  let widgetReadyPromise = null; 
-  let lastToggleAt = 0; 
+  let widgetReadyPromise = null;
+  let lastToggleAt = 0;
   let justOpenedUntil = 0; // grace period for the body-closer
   let __sc_creating = false;
   const HOST_DOC = (() => {
@@ -14,83 +13,83 @@
     return document;
   })();
   const HOST_WIN = HOST_DOC.defaultView || window;
- async function toggleWidgetVisibility(event, clickedBlock = null) {
-   event?.stopPropagation?.();
+  async function toggleWidgetVisibility(event, clickedBlock = null) {
+    event?.stopPropagation?.();
 
-   const now = performance.now();
-   if (now - lastToggleAt < 200) return;
-   lastToggleAt = now;
+    const now = performance.now();
+    if (now - lastToggleAt < 200) return;
+    lastToggleAt = now;
 
-   if (!widgetContainer) {
-     widgetReadyPromise ||= (async () => {
-       await createWidget(clickedBlock);
-       return widgetContainer;
-     })();
-     await widgetReadyPromise;
-   }
+    if (!widgetContainer) {
+      widgetReadyPromise ||= (async () => {
+        await createWidget(clickedBlock);
+        return widgetContainer;
+      })();
+      await widgetReadyPromise;
+    }
 
-   const isHidden =
-     !widgetContainer ||
-     widgetContainer.style.visibility === "hidden" ||
-     widgetContainer.style.opacity === "0" ||
-     widgetContainer.style.height === "0px";
+    const isHidden =
+      !widgetContainer ||
+      widgetContainer.style.visibility === "hidden" ||
+      widgetContainer.style.opacity === "0" ||
+      widgetContainer.style.height === "0px";
 
-   if (isHidden) {
-     widgetContainer.style.setProperty("position", "fixed", "important");
-     widgetContainer.style.setProperty("right", "100px", "important");
-     widgetContainer.style.setProperty("top", "100px", "important");
-     widgetContainer.style.removeProperty("left");
-     widgetContainer.style.removeProperty("transform");
+    if (isHidden) {
+      widgetContainer.style.setProperty("position", "fixed", "important");
+      widgetContainer.style.setProperty("right", "100px", "important");
+      widgetContainer.style.setProperty("top", "100px", "important");
+      widgetContainer.style.removeProperty("left");
+      widgetContainer.style.removeProperty("transform");
 
-     if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
-     else {
-       widgetContainer.style.visibility = "visible";
-       widgetContainer.style.opacity = "1";
-       widgetContainer.style.height = "auto";
-       widgetContainer.style.overflow = "visible";
-     }
-     justOpenedUntil = performance.now() + 300; 
-   } else {
-     if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
-     else {
-       widgetContainer.style.visibility = "hidden";
-       widgetContainer.style.opacity = "0";
-       widgetContainer.style.height = "0";
-       widgetContainer.style.overflow = "hidden";
-     }
-   }
+      if (window.gsap) animateWidgetOpen(widgetContainer, 0.2);
+      else {
+        widgetContainer.style.visibility = "visible";
+        widgetContainer.style.opacity = "1";
+        widgetContainer.style.height = "auto";
+        widgetContainer.style.overflow = "visible";
+      }
+      justOpenedUntil = performance.now() + 300;
+    } else {
+      if (window.gsap) animateWidgetClose(widgetContainer, 0.2);
+      else {
+        widgetContainer.style.visibility = "hidden";
+        widgetContainer.style.opacity = "0";
+        widgetContainer.style.height = "0";
+        widgetContainer.style.overflow = "hidden";
+      }
+    }
 
-   if (clickedBlock) {
-     try {
-       await waitForElement(
-         "#typoSection, #imageSection, #buttonSection",
-         4000
-       );
-       handleAndDetect(clickedBlock);
-     } catch (err) {
-       console.error(err.message);
-     }
-   }
- }
-document.body.addEventListener("click", (e) => {
-  if (performance.now() < justOpenedUntil) return; // short grace period
-
-  const isInsideWidget = widgetContainer?.contains(e.target);
-  const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
-  const isHiddenInput =
-    e.target.tagName === "INPUT" && e.target.type === "file";
-
-  if (
-    !isInsideWidget &&
-    !isToolbarIcon &&
-    !isHiddenInput &&
-    widgetContainer &&
-    widgetContainer.style.visibility !== "hidden" &&
-    widgetContainer.style.opacity !== "0"
-  ) {
-    animateWidgetClose(widgetContainer, 0.2);
+    if (clickedBlock) {
+      try {
+        await waitForElement(
+          "#typoSection, #imageSection, #buttonSection",
+          4000
+        );
+        handleAndDetect(clickedBlock);
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
   }
-});
+  document.body.addEventListener("click", (e) => {
+    if (performance.now() < justOpenedUntil) return; // short grace period
+
+    const isInsideWidget = widgetContainer?.contains(e.target);
+    const isToolbarIcon = e.target.closest(".sc-toolbar-icon");
+    const isHiddenInput =
+      e.target.tagName === "INPUT" && e.target.type === "file";
+
+    if (
+      !isInsideWidget &&
+      !isToolbarIcon &&
+      !isHiddenInput &&
+      widgetContainer &&
+      widgetContainer.style.visibility !== "hidden" &&
+      widgetContainer.style.opacity !== "0"
+    ) {
+      animateWidgetClose(widgetContainer, 0.2);
+    }
+  });
 
   (() => {
     let d = document;
@@ -494,7 +493,7 @@ document.body.addEventListener("click", (e) => {
     rotateinitButtonAdvanceStyles,
     blurinitButtonAdvanceStyles,
     button_initEffectAnimationDropdownToggle,
-    horizontal_button_initEffectAnimationDropdownToggle
+    horizontal_button_initEffectAnimationDropdownToggle,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
   );
@@ -636,27 +635,9 @@ document.body.addEventListener("click", (e) => {
   const { initBorderColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/initBorderColorPaletteToggle.js"
   );
-setTimeout(async () => {
-  const placeholders = widgetContainer.querySelectorAll(
-    ".sc-arrow-placeholder"
+  const { createHoverableArrowSVG } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
   );
-  try {
-    const { createHoverableArrowSVG } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/utils/createHoverableArrowSVG/createHoverableArrowSVG.js"
-    );
-    placeholders.forEach((span) => {
-      const isRotate = span.classList.contains("sc-rotate-180");
-      const cloneClassList = Array.from(span.classList);
-      const originalId = span.getAttribute("id") || "";
-      const id = originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-      const svg = createHoverableArrowSVG(id, isRotate);
-      cloneClassList.forEach((cls) => svg.classList.add(cls));
-      span.replaceWith(svg);
-    });
-  } catch {}
-  ButtonAdvanceToggleControls();
-}, 100);
-
   const { initButtonFontColorPaletteToggle } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonFontColorPaletteToggle/initButtonFontColorPaletteToggle.js"
   );
@@ -691,27 +672,6 @@ setTimeout(async () => {
   const themeColors = await getSquarespaceThemeStyles();
 
   let isTrackingArrow = false;
-document.addEventListener(
-  "click",
-  (e) => {
-    const blk = e.target.closest('[id^="block-"]');
-    if (!blk) return;
-    if (!blk.id) blk.id = `sc-block-${Math.random().toString(36).slice(2, 9)}`;
-    const ASEL =
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary";
-    const BSEL =
-      "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary";
-    const btn = blk.querySelector(ASEL) || blk.querySelector(BSEL);
-    if (!btn) return;
-    const type =
-      [...btn.classList].find((c) => c.startsWith("sqs-button-element--")) ||
-      "";
-    document.body.dataset.scLastBlockId = blk.id;
-    document.body.dataset.scLastButtonType = type;
-    window.selectedBlockId = blk.id;
-  },
-  true
-);
 
   window.addEventListener("scroll", () => {
     const selected = document.querySelector('[id^="block-"].sc-font-modified');
@@ -1039,8 +999,6 @@ document.addEventListener(
 
   addHeadingEventListeners();
 
-
-
   function handleAndDetect(clickedBlock) {
     handleBlockClick(
       { target: clickedBlock },
@@ -1093,15 +1051,14 @@ document.addEventListener(
 
     document.body.appendChild(widgetContainer);
 
-   try {
-     const { initImageMaskControls } = await import(
-       "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
-     );
-     initImageMaskControls(() => selectedElement);
-   } catch (e) {
-     console.warn("initImageMaskControls load failed:", e);
-   }
-
+    try {
+      const { initImageMaskControls } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+      );
+      initImageMaskControls(() => selectedElement);
+    } catch (e) {
+      console.warn("initImageMaskControls load failed:", e);
+    }
 
     function makeWidgetDraggable() {
       if (!widgetContainer) return;
@@ -1187,7 +1144,22 @@ document.addEventListener(
     }
 
     makeWidgetDraggable();
-
+    setTimeout(() => {
+      const placeholders = widgetContainer.querySelectorAll(
+        ".sc-arrow-placeholder"
+      );
+      placeholders.forEach((span) => {
+        const isRotate = span.classList.contains("sc-rotate-180");
+        const cloneClassList = Array.from(span.classList);
+        const originalId = span.getAttribute("id") || "";
+        const id =
+          originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+        const svg = createHoverableArrowSVG(id, isRotate);
+        cloneClassList.forEach((cls) => svg.classList.add(cls));
+        span.replaceWith(svg);
+      });
+      ButtonAdvanceToggleControls();
+    }, 100);
 
     widgetLoaded = true;
 
