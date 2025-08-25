@@ -27,7 +27,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   const track =
     document.getElementById("vertical-custom-timeline-border") ||
-    selectedElement.querySelector("#vertical-custom-timeline-border");
+    selectedElement.querySelector("#vertical-custom-timeline-border") ||
+    document.querySelector("#vertical-custom-timeline-border");
   if (!track) return;
 
   let arrow = document.getElementById("vertical-custom-timeline-arrow");
@@ -36,15 +37,15 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     arrow.id = "vertical-custom-timeline-arrow";
     track.appendChild(arrow);
   }
+  arrow.classList.remove("sc-hidden");
   arrow.style.display = "block";
+  arrow.style.background = arrow.style.background || "#FFFFFF";
   arrow.style.pointerEvents = "none";
   arrow.style.zIndex = "3";
 
-  const getButton = () =>
-    selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-  const btn = getButton();
+  const btn = selectedElement.querySelector(
+    "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+  );
   if (!btn) return;
 
   const gsapOK = !!window.gsap;
