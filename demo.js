@@ -1,4 +1,4 @@
-export function scaleattachAdvanceTimelineIncrementDecrement(
+export function rotateattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
@@ -81,40 +81,40 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
   };
 
   setup(
-    "scale-button-advance-entry-increase",
-    "scale-button-advance-entry-decrease",
-    () => getVal("scale-button-advance-entry-count"),
+    "rotate-button-advance-entry-increase",
+    "rotate-button-advance-entry-decrease",
+    () => getVal("rotate-button-advance-entry-count"),
     updateEntry,
-    "scale-button-advance-entry-bullet"
+    "rotate-button-advance-entry-bullet"
   );
   setup(
-    "scale-button-advance-center-increase",
-    "scale-button-advance-center-decrease",
-    () => getVal("scale-button-advance-center-count"),
+    "rotate-button-advance-center-increase",
+    "rotate-button-advance-center-decrease",
+    () => getVal("rotate-button-advance-center-count"),
     updateCenter,
-    "scale-button-advance-center-bullet"
+    "rotate-button-advance-center-bullet"
   );
   setup(
-    "scale-button-advance-exit-increase",
-    "scale-button-advance-exit-decrease",
-    () => getVal("scale-button-advance-exit-count"),
+    "rotate-button-advance-exit-increase",
+    "rotate-button-advance-exit-decrease",
+    () => getVal("rotate-button-advance-exit-count"),
     updateExit,
-    "scale-button-advance-exit-bullet"
+    "rotate-button-advance-exit-bullet"
   );
 
   const startBullet = document.getElementById(
-    "scale-timeline-start-bullet"
+    "rotate-timeline-start-bullet"
   );
-  const endBullet = document.getElementById("scale-timeline-end-bullet");
+  const endBullet = document.getElementById("rotate-timeline-end-bullet");
   if (startBullet)
     startBullet.addEventListener(
       "focus",
-      () => (lastFocused = "scale-timeline-start-bullet")
+      () => (lastFocused = "rotate-timeline-start-bullet")
     );
   if (endBullet)
     endBullet.addEventListener(
       "focus",
-      () => (lastFocused = "scale-timeline-end-bullet")
+      () => (lastFocused = "rotate-timeline-end-bullet")
     );
 
   document.addEventListener("keydown", (e) => {
@@ -130,7 +130,7 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
         entryVal = Math.max(-100, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
         const el = document.getElementById(
-          "scale-button-advance-entry-count"
+          "rotate-button-advance-entry-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -141,7 +141,7 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
         centerVal = Math.max(-100, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
         const el = document.getElementById(
-          "scale-button-advance-center-count"
+          "rotate-button-advance-center-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -152,7 +152,7 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
         exitVal = Math.max(-100, Math.min(100, exitVal + direction));
         updateExit(exitVal);
         const el = document.getElementById(
-          "scale-button-advance-exit-count"
+          "rotate-button-advance-exit-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -160,19 +160,19 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
             : (el.textContent = exitVal + "%");
       }
       if (lastFocused.includes("start")) {
-        startVal = getVal("scale-timelineStartValue");
-        endVal = getVal("scale-timelineEndValue");
+        startVal = getVal("rotate-timelineStartValue");
+        endVal = getVal("rotate-timelineEndValue");
         startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        const el = document.getElementById("scale-timelineStartValue");
+        const el = document.getElementById("rotate-timelineStartValue");
         if (el) el.textContent = startVal + "%";
       }
       if (lastFocused.includes("end")) {
-        startVal = getVal("scale-timelineStartValue");
-        endVal = getVal("scale-timelineEndValue");
+        startVal = getVal("rotate-timelineStartValue");
+        endVal = getVal("rotate-timelineEndValue");
         endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        const el = document.getElementById("scale-timelineEndValue");
+        const el = document.getElementById("rotate-timelineEndValue");
         if (el) el.textContent = endVal + "%";
       }
     };
@@ -194,14 +194,14 @@ export function scaleattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function scaleattachCustomTimelineReset(
+function rotateattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
   updateCenter,
   updateExit
 ) {
-  const btn = document.getElementById("scale-custom-timeline-reset");
+  const btn = document.getElementById("rotate-custom-timeline-reset");
   if (btn)
     btn.onclick = () => {
       updateStart(0);
@@ -212,12 +212,12 @@ function scaleattachCustomTimelineReset(
     };
 }
 
-export function scale_button_initEffectAnimationDropdownToggle() {
+export function rotate_button_initEffectAnimationDropdownToggle() {
   const arrow = document.getElementById(
-    "scale-effect-animation-type-arrow"
+    "rotate-effect-animation-type-arrow"
   );
-  const list = document.getElementById("scale-effect-animation-type-list");
-  const display = document.getElementById("scale-effect-animation-value");
+  const list = document.getElementById("rotate-effect-animation-type-list");
+  const display = document.getElementById("rotate-effect-animation-value");
   if (!arrow || !list || !display) return;
 
   arrow.onclick = () => {
@@ -240,7 +240,7 @@ export function scale_button_initEffectAnimationDropdownToggle() {
             "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           ) || el;
         if (btn)
-          btn.style.setProperty("--sc-scale-effect-animation", selected);
+          btn.style.setProperty("--sc-rotate-effect-animation", selected);
         window.__typoScrollEase = selected;
       } catch {}
       list.classList.add("sc-hidden");
@@ -254,44 +254,44 @@ export function scale_button_initEffectAnimationDropdownToggle() {
   });
 }
 
-export function scaleinitButtonAdvanceStyles(getSelectedElement) {
+export function rotateinitButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById(
-    "scale-timeline-start-bullet"
+    "rotate-timeline-start-bullet"
   );
-  const endBullet = document.getElementById("scale-timeline-end-bullet");
-  const startFill = document.getElementById("scale-timeline-start-fill");
-  const endFill = document.getElementById("scale-timeline-end-fill");
-  const startValue = document.getElementById("scale-timelineStartValue");
-  const endValue = document.getElementById("scale-timelineEndValue");
+  const endBullet = document.getElementById("rotate-timeline-end-bullet");
+  const startFill = document.getElementById("rotate-timeline-start-fill");
+  const endFill = document.getElementById("rotate-timeline-end-fill");
+  const startValue = document.getElementById("rotate-timelineStartValue");
+  const endValue = document.getElementById("rotate-timelineEndValue");
 
   const entryBullet = document.getElementById(
-    "scale-button-advance-entry-bullet"
+    "rotate-button-advance-entry-bullet"
   );
   const entryFill = document.getElementById(
-    "scale-button-advance-entry-fill"
+    "rotate-button-advance-entry-fill"
   );
   const entryCount = document.getElementById(
-    "scale-button-advance-entry-count"
+    "rotate-button-advance-entry-count"
   );
 
   const centerBullet = document.getElementById(
-    "scale-button-advance-center-bullet"
+    "rotate-button-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "scale-button-advance-center-fill"
+    "rotate-button-advance-center-fill"
   );
   const centerCount = document.getElementById(
-    "scale-button-advance-center-count"
+    "rotate-button-advance-center-count"
   );
 
   const exitBullet = document.getElementById(
-    "scale-button-advance-exit-bullet"
+    "rotate-button-advance-exit-bullet"
   );
   const exitFill = document.getElementById(
-    "scale-button-advance-exit-fill"
+    "rotate-button-advance-exit-fill"
   );
   const exitCount = document.getElementById(
-    "scale-button-advance-exit-count"
+    "rotate-button-advance-exit-count"
   );
 
   if (
@@ -329,22 +329,22 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
 
   let startPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-start")
+      getComputedStyle(btn).getPropertyValue("--sc-rotate-scroll-start")
     ) || 0;
   let endPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-end")
+      getComputedStyle(btn).getPropertyValue("--sc-rotate-scroll-end")
     ) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
 
   let entryPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-entry")
+    getComputedStyle(btn).getPropertyValue("--sc-rotate-scroll-entry")
   );
   let centerPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-center")
+    getComputedStyle(btn).getPropertyValue("--sc-rotate-scroll-center")
   );
   let exitPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-scale-scroll-exit")
+    getComputedStyle(btn).getPropertyValue("--sc-rotate-scroll-exit")
   );
 
   function writeVar(cssVar, val) {
@@ -355,7 +355,7 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    const twin = cssVar.replace("--sc-scale-", "--sc-Typo-scale-");
+    const twin = cssVar.replace("--sc-rotate-", "--sc-Typo-rotate-");
     styleTag.textContent =
       `#${el.id} a.sqs-button-element--primary,` +
       `#${el.id} a.sqs-button-element--secondary,` +
@@ -375,9 +375,9 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
       else countEl.textContent = `${val}%`;
 
       if (
-        cssVar === "--sc-scale-scroll-entry" ||
-        cssVar === "--sc-scale-scroll-center" ||
-        cssVar === "--sc-scale-scroll-exit"
+        cssVar === "--sc-rotate-scroll-entry" ||
+        cssVar === "--sc-rotate-scroll-center" ||
+        cssVar === "--sc-rotate-scroll-exit"
       ) {
         const percent = (val + 100) / 2;
         const fillLeft = val < 0 ? percent : 50;
@@ -390,8 +390,8 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
           backgroundColor: "var(--sc-theme-accent)",
         });
 
-        const a = document.getElementById("scale-custom-timeline-arrow");
-        if (cssVar === "--sc-scale-scroll-entry" && a)
+        const a = document.getElementById("rotate-custom-timeline-arrow");
+        if (cssVar === "--sc-rotate-scroll-entry" && a)
           a.style.left = `${percent}%`;
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
@@ -417,7 +417,7 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
       startBullet,
       startFill,
       startValue,
-      "--sc-scale-scroll-start",
+      "--sc-rotate-scroll-start",
       "left",
       0,
       100
@@ -429,7 +429,7 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
       endBullet,
       endFill,
       endValue,
-      "--sc-scale-scroll-end",
+      "--sc-rotate-scroll-end",
       "right",
       0,
       100
@@ -439,19 +439,19 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-scale-scroll-entry"
+    "--sc-rotate-scroll-entry"
   );
   const setCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-scale-scroll-center"
+    "--sc-rotate-scroll-center"
   );
   const setExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-scale-scroll-exit"
+    "--sc-rotate-scroll-exit"
   );
 
   setEntry(entryPct);
@@ -532,32 +532,32 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
   makeDraggable(exitBullet, setExit, "normal");
 
   [
-    { id: "scale-button-advance-entry-reset", setter: () => setEntry(0) },
+    { id: "rotate-button-advance-entry-reset", setter: () => setEntry(0) },
     {
-      id: "scale-button-advance-center-reset",
+      id: "rotate-button-advance-center-reset",
       setter: () => setCenter(0),
     },
-    { id: "scale-button-advance-exit-reset", setter: () => setExit(0) },
+    { id: "rotate-button-advance-exit-reset", setter: () => setExit(0) },
   ].forEach(({ id, setter }) => {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
   });
 
-  scaleattachAdvanceTimelineIncrementDecrement(
+  rotateattachAdvanceTimelineIncrementDecrement(
     setEntry,
     setCenter,
     setExit,
     setStart,
     setEnd
   );
-  scaleattachCustomTimelineReset(
+  rotateattachCustomTimelineReset(
     setStart,
     setEnd,
     setEntry,
     setCenter,
     setExit
   );
-  scale_button_initEffectAnimationDropdownToggle();
+  rotate_button_initEffectAnimationDropdownToggle();
 
   if (
     window.gsap &&

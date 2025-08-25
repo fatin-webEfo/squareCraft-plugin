@@ -424,10 +424,29 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
+    // allow scaled content to overflow its block container
+    const makeOverflowVisible = () => {
+      const set = (el) => {
+        if (el) el.style.overflow = "visible";
+      };
+      set(selectedElement);
+      set(selectedElement.parentElement);
+      set(selectedElement.querySelector(".sqs-block-content"));
+      btn.style.transformOrigin ||= "50% 50%";
+      btn.style.willChange = "transform";
+      if (
+        !/relative|absolute|fixed|sticky/.test(getComputedStyle(btn).position)
+      ) {
+        btn.style.position = "relative";
+      }
+      btn.style.zIndex ||= "2";
+    };
+    makeOverflowVisible();
+
     const readRaw = (v) => getComputedStyle(btn).getPropertyValue(v).trim();
     const readPct = (v, fb = 0) => {
       const n = parseFloat(readRaw(v).replace("%", ""));
-      return Number.isFinite(n) ? n : fb; // default 0 so we don't blow up scale by default
+      return Number.isFinite(n) ? n : fb;
     };
 
     const start = () =>
@@ -470,7 +489,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let activeZone = null; // "entry" | "center" | "exit" while dragging that bullet
+    let activeZone = null; // "entry" | "center" | "exit" while dragging those bullets
     let lastAppliedScale = null;
     let quickToScale = null;
     let quickEase = null;
@@ -490,26 +509,25 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       return quickToScale;
     };
 
-    const clearScale = () => {
-      if (gs) gs.killTweensOf(btn, "scale");
-      // strip only scale() from inline transform (keep translates/rotates from other effects)
-      const cur = btn.style.transform || "";
-      const stripped = cur.replace(/(?:^|\s)scale\([^)]+\)/, "").trim();
-      if (stripped !== cur) btn.style.transform = stripped;
-      lastAppliedScale = null;
+    const setScale1 = () => {
+      if (lastAppliedScale === null) return; // do nothing if we never applied
+      if (gs) {
+        const q = ensureQuick();
+        q ? q(1) : gs.set(btn, { scale: 1, overwrite: true });
+      } else {
+        const without = (btn.style.transform || "")
+          .replace(/(?:^|\s)scale\([^)]+\)/, "")
+          .trim();
+        btn.style.transform = (without + " scale(1)").trim();
+      }
+      lastAppliedScale = 1;
     };
 
     const applyScale = (sc) => {
       if (gs) {
         const q = ensureQuick();
-        q
-          ? q(sc)
-          : (btn.style.transform =
-              (btn.style.transform || "")
-                .replace(/(?:^|\s)scale\([^)]+\)/, "")
-                .trim() + ` scale(${sc})`);
+        q ? q(sc) : gs.set(btn, { scale: sc, overwrite: true });
       } else {
-        // lightweight smoothing fallback
         const cur = lastAppliedScale ?? sc;
         const target = sc;
         let s = cur;
@@ -544,7 +562,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           : null;
 
       if (!allowed || zone !== allowed) {
-        if (lastAppliedScale !== null) clearScale();
+        setScale1(); // keep other transforms, just return to neutral scale smoothly
         return;
       }
 
@@ -555,7 +573,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           ? "--sc-scale-scroll-exit"
           : "--sc-scale-scroll-center";
 
-      // pct can be -100..100 → map to scale 0..2 with 1 at 0
+      // map [-100..100]% → [0..2] with 1 at 0
       let pct = readPct(varName, 0);
       pct = Math.max(-100, Math.min(100, pct));
       const sc = Math.max(0, 1 + pct / 100);
@@ -579,8 +597,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("resize", updateScale, { passive: true });
     }
 
-    // Update while the UI writes CSS variables (your UI writes into <style> tags, so poll)
-    setInterval(updateScale, 120);
+    setInterval(updateScale, 120); // poll while UI writes CSS variables
 
     const entryBullet =
       document.getElementById("scale-button-advance-entry-bullet") ||
@@ -592,16 +609,13 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       document.getElementById("scale-button-advance-exit-bullet") ||
       document.getElementById("scale-advance-exit-bullet");
 
-    const startBullet = document.getElementById("scale-timeline-start-bullet");
-    const endBullet = document.getElementById("scale-timeline-end-bullet");
-
     const onDown = (zoneKey) => {
       activeZone = zoneKey;
       updateScale();
     };
     const onUp = () => {
       activeZone = null;
-      clearScale();
+      setScale1();
     };
 
     if (entryBullet) {
@@ -622,14 +636,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         passive: true,
       });
     }
-    if (startBullet) {
-      startBullet.addEventListener("mousedown", () => {});
-      startBullet.addEventListener("touchstart", () => {}, { passive: true });
-    }
-    if (endBullet) {
-      endBullet.addEventListener("mousedown", () => {});
-      endBullet.addEventListener("touchstart", () => {}, { passive: true });
-    }
 
     document.addEventListener("mouseup", onUp);
     document.addEventListener("touchend", onUp, { passive: true });
@@ -639,8 +645,8 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start();
-      const e = end();
+      const s = start(),
+        e = end();
       if (t < s - EPS) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + EPS) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -663,164 +669,152 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  let isTracking = false;
-  let lastY = null;
-  const transition = { ease: "power2.out" };
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("rotate-custom-timeline-arrow");
-    const border = document.getElementById("rotate-custom-timeline-border");
     const startBullet = document.getElementById("rotate-timeline-start-bullet");
     const endBullet = document.getElementById("rotate-timeline-end-bullet");
-    const dropdown = document.getElementById(
-      "rotate-effect-animation-type-list"
-    );
-
-    if (arrow && border && startBullet && endBullet && dropdown) {
-      callback(arrow, border, startBullet, endBullet, dropdown);
-    } else if (retries > 0) {
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
   }
 
-  function updateArrowPosition(
-    arrow,
-    border,
-    startBullet,
-    endBullet,
-    dropdown
-  ) {
-    const rect = selectedElement.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const top = rect.top;
-    const percentFromTop = top / viewportHeight;
-    const scrollBasedLeft = Math.max(
-      0,
-      Math.min(100, 100 - 100 * percentFromTop)
-    );
-    arrow.style.left = `${scrollBasedLeft}%`;
-    arrow.style.transform = "translateX(-50%)";
-
-    const startLeft = parseFloat(startBullet.style.left || "0");
-    const endLeft = parseFloat(endBullet.style.left || "100");
-    const centerLeft = (startLeft + endLeft) / 2;
-
-    const btn = selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!btn) return;
-
-    const getVHFromCSSVar = (cssVar) => {
-      const value = getComputedStyle(btn).getPropertyValue(cssVar).trim();
-      return value.endsWith("%")
-        ? (parseFloat(value) / 100) * 100
-        : parseFloat(value) || 0;
+  function setupScrollAnimation(btn, arrow) {
+    const readDeg = (v, fb = 0) => {
+      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+      const n = parseFloat(raw);
+      return Number.isFinite(n) ? n : fb;
+    };
+    const readPct = (v, fb = 0) => {
+      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+      const n = parseFloat(raw.replace("%", ""));
+      return Number.isFinite(n) ? n : fb;
     };
 
-    const entryY = getVHFromCSSVar("--sc-rotate-scroll-entry");
-    const centerY = getVHFromCSSVar("--sc-rotate-scroll-center");
-    const exitY = getVHFromCSSVar("--sc-rotate-scroll-exit");
+    const entryRot = () => readDeg("--sc-rotate-scroll-entry", 0);
+    const centerRot = () => readDeg("--sc-rotate-scroll-center", 0);
+    const exitRot = () => readDeg("--sc-rotate-scroll-exit", 0);
+    const start = () => readPct("--sc-rotate-scroll-start", 0) / 100;
+    const end = () => readPct("--sc-rotate-scroll-end", 100) / 100;
 
-    let y = 0;
-    let apply = false;
+    const easeName = () => {
+      const el = document.getElementById("rotate-effect-animation-value");
+      const n =
+        el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
+      const map = {
+        none: "none",
+        Linear: "none",
+        linear: "none",
+        "ease-in": "power1.in",
+        "ease-out": "power1.out",
+        "ease-in-out": "power1.inOut",
+        "power1.out": "power1.out",
+        "power2.out": "power2.out",
+        "power3.out": "power3.out",
+        "power4.out": "power4.out",
+        "expo.out": "expo.out",
+        "elastic.out": "elastic.out",
+        "bounce.out": "bounce.out",
+      };
+      return (
+        map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+      );
+    };
 
-    if (scrollBasedLeft <= startLeft + 1) {
-      arrow.style.backgroundColor = "#EF7C2F";
-      if (entryY !== 0) {
-        const progress = scrollBasedLeft / (startLeft + 1);
-        y = entryY * progress;
-        apply = true;
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) {
+      gs.registerPlugin(ST);
+      ST.getAll().forEach((t) => {
+        if (t.trigger === selectedElement) t.kill();
+      });
+    }
+
+    let lastDeg = null;
+
+    const setRotateFallback = (deg) => {
+      const cur = btn.style.transform || "";
+      const without = cur.replace(/(?:^|\s)rotate\([^)]+\)/, "").trim();
+      btn.style.transform = (without + ` rotate(${deg}deg)`).trim();
+    };
+
+    const updateRotation = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const en = entryRot();
+      const ce = centerRot();
+      const ex = exitRot();
+
+      let deg;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        deg = en + (ce - en) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        deg = ce + (ex - ce) * k;
+      } else {
+        deg = ce;
       }
-    } else if (scrollBasedLeft >= endLeft - 1) {
-      arrow.style.backgroundColor = "#F6B67B";
-      if (exitY !== 0) {
-        const progress = 1 - (100 - scrollBasedLeft) / (100 - endLeft + 1);
-        y = exitY * progress;
-        apply = true;
+
+      if (deg !== lastDeg) {
+        lastDeg = deg;
+        const ease = easeName();
+        if (gs) {
+          gs.to(btn, {
+            rotation: deg,
+            ease,
+            duration: ease === "none" ? 0.25 : 0.6,
+            overwrite: true,
+          });
+        } else {
+          setRotateFallback(deg);
+        }
       }
+    };
+
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateRotation,
+      });
+      ST.refresh(true);
     } else {
-      arrow.style.backgroundColor = "#FFFFFF";
-
-      if (scrollBasedLeft > startLeft + 1 && scrollBasedLeft < centerLeft - 1) {
-        if (entryY !== 0 && centerY !== 0) {
-          const progress =
-            (scrollBasedLeft - startLeft) / (centerLeft - startLeft);
-          y = entryY + (centerY - entryY) * progress;
-          apply = true;
-        }
-      } else if (
-        scrollBasedLeft > centerLeft + 1 &&
-        scrollBasedLeft < endLeft - 1
-      ) {
-        if (centerY !== 0 && exitY !== 0) {
-          const progress =
-            (scrollBasedLeft - centerLeft) / (endLeft - centerLeft);
-          y = centerY + (exitY - centerY) * progress;
-          apply = true;
-        }
-      }
+      window.addEventListener("scroll", updateRotation, { passive: true });
+      window.addEventListener("resize", updateRotation, { passive: true });
     }
 
-    const finalY = apply ? y : 0;
+    const observer = new MutationObserver(updateRotation);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateRotation, 150);
 
-    if (lastY !== finalY) {
-      gsap.to(btn, {
-        duration: 0.3,
-        ease: transition.ease,
-        transform: `translateY(${finalY.toFixed(2)}vh)`,
-      });
-      lastY = finalY;
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loopArrow);
     }
+    loopArrow();
   }
 
-  function trackLoop(arrow, border, startBullet, endBullet, dropdown) {
-    if (isTracking) return;
-    isTracking = true;
-    function loop() {
-      updateArrowPosition(arrow, border, startBullet, endBullet, dropdown);
-      requestAnimationFrame(loop);
-    }
-    loop();
-  }
-
-  waitForElements((arrow, border, startBullet, endBullet, dropdown) => {
-    const arrowTrigger = document.getElementById(
-      "rotate-effect-animation-type-arrow"
-    );
-
-    if (arrowTrigger && dropdown) {
-      arrowTrigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        dropdown.classList.toggle("sc-hidden");
-      });
-
-      document.addEventListener("click", (e) => {
-        if (
-          !arrowTrigger.contains(e.target) &&
-          !dropdown.contains(e.target) &&
-          !dropdown.classList.contains("sc-hidden")
-        ) {
-          dropdown.classList.add("sc-hidden");
-        }
-      });
-
-      dropdown.querySelectorAll("[data-value]").forEach((item) => {
-        item.addEventListener("click", () => {
-          const selectedEffect = item.getAttribute("data-value");
-          const display = dropdown.previousElementSibling;
-          if (display?.querySelector("p")) {
-            display.querySelector("p").textContent = selectedEffect;
-          }
-          transition.ease = selectedEffect || "power2.out";
-          dropdown.classList.add("sc-hidden");
-        });
-      });
-    }
-
-    trackLoop(arrow, border, startBullet, endBullet, dropdown);
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
   });
 }
+
 
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
