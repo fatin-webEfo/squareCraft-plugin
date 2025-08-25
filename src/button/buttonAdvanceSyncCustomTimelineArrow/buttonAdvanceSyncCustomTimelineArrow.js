@@ -145,23 +145,21 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   }
 
   function setupScrollAnimation(btn, arrow) {
-    const getVar = (v) =>
-      parseFloat(getComputedStyle(btn).getPropertyValue(v).trim()) || 0;
-    const entryX = () => getVar("--sc-horizontal-scroll-entry");
-    const centerX = () => getVar("--sc-horizontal-scroll-center");
-    const exitX = () => getVar("--sc-horizontal-scroll-exit");
-    const start = () =>
-      (parseFloat(
-        getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-start")
-      ) || 0) / 100;
-    const end = () =>
-      (parseFloat(
-        getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-end")
-      ) || 100) / 100;
+    const getPct = (v, fb = 0) => {
+      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+      const n = parseFloat(raw.replace("%", ""));
+      return Number.isFinite(n) ? n : fb;
+    };
+    const entryX = () => getPct("--sc-horizontal-scroll-entry");
+    const centerX = () => getPct("--sc-horizontal-scroll-center");
+    const exitX = () => getPct("--sc-horizontal-scroll-exit");
+    const start = () => getPct("--sc-horizontal-scroll-start", 0) / 100;
+    const end = () => getPct("--sc-horizontal-scroll-end", 100) / 100;
 
     const easeName = () => {
       const el = document.getElementById("horizontal-effect-animation-value");
-      const n = el?.getAttribute("data-value") || el?.textContent?.trim() || "";
+      const n =
+        el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
       const map = {
         none: "none",
         Linear: "none",
@@ -191,7 +189,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
       });
     }
 
-    let lastX = null;
+    let lastXPct = null;
 
     const updateXTransform = () => {
       const t = getViewportProgress(selectedElement);
@@ -200,28 +198,29 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
       const ex = entryX();
       const cx = centerX();
       const xx = exitX();
-      let x;
+      let xPct;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        x = ex + (cx - ex) * k;
+        xPct = ex + (cx - ex) * k;
       } else if (t > e) {
         const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        x = cx + (xx - cx) * k;
+        xPct = cx + (xx - cx) * k;
       } else {
-        x = cx;
+        xPct = cx;
       }
-      if (x !== lastX) {
-        lastX = x;
+      if (xPct !== lastXPct) {
+        lastXPct = xPct;
         const ease = easeName();
+        const target = (xPct / 2).toFixed(3) + "vw";
         if (gs) {
           gs.to(btn, {
-            x: `${x}px`,
+            x: target,
             ease,
             duration: ease === "none" ? 0.25 : 0.6,
             overwrite: true,
           });
         } else {
-          btn.style.transform = `translateX(${x}px)`;
+          btn.style.transform = `translateX(${target})`;
         }
       }
     };
@@ -256,7 +255,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
       else arrow.style.backgroundColor = "#FFFFFF";
       requestAnimationFrame(loopArrow);
     }
-
     loopArrow();
   }
 
@@ -269,6 +267,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     setupScrollAnimation(btn, arrow);
   });
 }
+
 
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
