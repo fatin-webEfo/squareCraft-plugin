@@ -666,6 +666,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 
+
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
