@@ -132,190 +132,144 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
 ) {
   if (!selectedElement) return;
-  if (
-    window.__scHorBtnLastEl &&
-    typeof window.__scHorBtnLastEl.__scBtnCancel === "function"
-  ) {
-    window.__scHorBtnLastEl.__scBtnCancel();
-  }
-  window.__scHorBtnLastEl = selectedElement;
 
-  const SMOOTH_ARROW = 0.18;
-  const SMOOTH_X = 0.15;
-  const EDGE_EPS = 0.015;
-
-  const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-  const startBul = document.getElementById("horizontal-timeline-start-bullet");
-  const endBul = document.getElementById("horizontal-timeline-end-bullet");
-  const startFill = document.getElementById("horizontal-timeline-start-fill");
-  const endFill = document.getElementById("horizontal-timeline-end-fill");
-  if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
-
-  const lerp = (a, b, t) => a + (b - a) * t;
-
-  if (!window.gsap) {
-    arrow.style.transition ||=
-      "left 140ms ease-out, background-color 140ms ease-out";
-    startBul.style.transition ||= "left 140ms ease-out";
-    endBul.style.transition ||= "left 140ms ease-out";
-    startFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-    endFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-  } else {
-    gsap.killTweensOf(arrow, "backgroundColor");
-  }
-
-  const qArrowLeft =
-    (window.gsap && gsap.quickSetter(arrow, "left", "%")) ||
-    ((v) => (arrow.style.left = v + "%"));
-
-  const getTarget = () =>
-    selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    ) || selectedElement;
-
-  let qBtnXvw = null;
-  const setBtnXvw = (btn, xvw) => {
-    if (!btn) return;
-    if (window.gsap) {
-      qBtnXvw ||= gsap.quickSetter(btn, "x", "vw");
-      qBtnXvw(xvw);
-    } else {
-      const t = btn.style.transform || "";
-      const clean = t.replace(/translateX\([^)]+\)/, "").trim();
-      btn.style.transform = (clean + ` translateX(${xvw}vw)`).trim();
-      btn.style.transition ||= "transform 180ms ease-out";
-    }
-  };
-
-  const getPctVar = (el, cssVar, fallback = 0) => {
-    let v = getComputedStyle(el).getPropertyValue(cssVar).trim();
-    let n = parseFloat(v.replace("%", ""));
-    if (!Number.isFinite(n)) {
-      v = getComputedStyle(selectedElement).getPropertyValue(cssVar).trim();
-      n = parseFloat(v.replace("%", ""));
-    }
-    return Number.isFinite(n) ? n : fallback;
-  };
-
-  const t0 = getTarget();
-  if (!t0) return;
-
-  let startPct = getPctVar(t0, "--sc-horizontal-scroll-start", 0);
-  let endPct = getPctVar(t0, "--sc-horizontal-scroll-end", 100);
-  if (endPct < startPct + 4) endPct = startPct + 4;
-
-  const readTriplet = (el) => ({
-    entry: getPctVar(el, "--sc-horizontal-scroll-entry", 0),
-    center: getPctVar(el, "--sc-horizontal-scroll-center", 0),
-    exit: getPctVar(el, "--sc-horizontal-scroll-exit", 0),
-  });
-
-  const dropdown = document.getElementById(
-    "horizontal-effect-animation-type-list"
-  );
-  const currentEase = () => {
-    const display = dropdown?.previousElementSibling?.querySelector(
-      "#horizontal-effect-animation-value"
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "horizontal-timeline-start-bullet"
     );
-    const name = display?.textContent?.trim() || "none";
-    const map = {
-      none: "none",
-      Linear: "none",
-      linear: "none",
-      "ease-in": "power1.in",
-      "ease-out": "power1.out",
-      "ease-in-out": "power1.inOut",
-      "power1.out": "power1.out",
-      "power2.out": "power2.out",
-      "power3.out": "power3.out",
-      "power4.out": "power4.out",
-      "expo.out": "expo.out",
-      "elastic.out": "elastic.out",
-      "bounce.out": "bounce.out",
-    };
-    return map[name] || "none";
-  };
-
-  const ease01 = (t, easeName) => {
-    if (!window.gsap || easeName === "none") return t;
-    try {
-      return gsap.parseEase(easeName)(t);
-    } catch {
-      return t;
-    }
-  };
-
-  let running = true;
-  selectedElement.__scBtnRafActive = true;
-  selectedElement.__scBtnCancel = () => {
-    running = false;
-    selectedElement.__scBtnRafActive = false;
-    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
-  };
-
-  let smoothedLeft = null;
-  let smoothedXvw = null;
-
-  const applyArrowColor = (p01) => {
-    const c =
-      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
-    if (window.gsap) gsap.set(arrow, { backgroundColor: c, overwrite: true });
-    else arrow.style.backgroundColor = c;
-  };
-
-  function frame() {
-    if (!running || !document.body.contains(selectedElement)) {
-      selectedElement.__scBtnRafActive = false;
-      return;
-    }
-    const elNow = getTarget();
-    if (!elNow) {
-      selectedElement.__scBtnRafActive = false;
-      return;
-    }
-
-    startPct = getPctVar(elNow, "--sc-horizontal-scroll-start", startPct);
-    endPct = getPctVar(elNow, "--sc-horizontal-scroll-end", endPct);
-    if (endPct < startPct + 4) endPct = startPct + 4;
-
-    const t = getViewportProgress(selectedElement) * 100;
-    const span = Math.max(1, endPct - startPct);
-    let p01 = (t - startPct) / span;
-    if (p01 < 0) p01 = 0;
-    else if (p01 > 1) p01 = 1;
-
-    const targetLeft = startPct + p01 * span;
-
-    const trip = readTriplet(elNow);
-    const eased = ease01(p01, currentEase());
-    const xPct =
-      eased <= 0
-        ? trip.entry
-        : eased >= 1
-        ? trip.exit
-        : eased <= 0.5
-        ? lerp(trip.entry, trip.center, eased / 0.5)
-        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
-    const targetXvw = xPct / 2;
-
-    if (smoothedLeft == null) smoothedLeft = targetLeft;
-    if (smoothedXvw == null) smoothedXvw = targetXvw;
-
-    smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
-    smoothedXvw = lerp(smoothedXvw, targetXvw, SMOOTH_X);
-
-    qArrowLeft(smoothedLeft);
-    applyArrowColor(p01);
-    setBtnXvw(elNow, +smoothedXvw.toFixed(2));
-
-    requestAnimationFrame(frame);
+    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
 
-  requestAnimationFrame(frame);
+  function setupScrollAnimation(btn, arrow) {
+    const getVar = (v) =>
+      parseFloat(getComputedStyle(btn).getPropertyValue(v).trim()) || 0;
+    const entryX = () => getVar("--sc-horizontal-scroll-entry");
+    const centerX = () => getVar("--sc-horizontal-scroll-center");
+    const exitX = () => getVar("--sc-horizontal-scroll-exit");
+    const start = () =>
+      (parseFloat(
+        getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-start")
+      ) || 0) / 100;
+    const end = () =>
+      (parseFloat(
+        getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-end")
+      ) || 100) / 100;
+
+    const easeName = () => {
+      const el = document.getElementById("horizontal-effect-animation-value");
+      const n = el?.getAttribute("data-value") || el?.textContent?.trim() || "";
+      const map = {
+        none: "none",
+        Linear: "none",
+        linear: "none",
+        "ease-in": "power1.in",
+        "ease-out": "power1.out",
+        "ease-in-out": "power1.inOut",
+        "power1.out": "power1.out",
+        "power2.out": "power2.out",
+        "power3.out": "power3.out",
+        "power4.out": "power4.out",
+        "expo.out": "expo.out",
+        "elastic.out": "elastic.out",
+        "bounce.out": "bounce.out",
+      };
+      return (
+        map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+      );
+    };
+
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) {
+      gs.registerPlugin(ST);
+      ST.getAll().forEach((t) => {
+        if (t.trigger === selectedElement) t.kill();
+      });
+    }
+
+    let lastX = null;
+
+    const updateXTransform = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const ex = entryX();
+      const cx = centerX();
+      const xx = exitX();
+      let x;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        x = ex + (cx - ex) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        x = cx + (xx - cx) * k;
+      } else {
+        x = cx;
+      }
+      if (x !== lastX) {
+        lastX = x;
+        const ease = easeName();
+        if (gs) {
+          gs.to(btn, {
+            x: `${x}px`,
+            ease,
+            duration: ease === "none" ? 0.25 : 0.6,
+            overwrite: true,
+          });
+        } else {
+          btn.style.transform = `translateX(${x}px)`;
+        }
+      }
+    };
+
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateXTransform,
+      });
+      ST.refresh(true);
+    } else {
+      window.addEventListener("scroll", updateXTransform, { passive: true });
+      window.addEventListener("resize", updateXTransform, { passive: true });
+    }
+
+    const observer = new MutationObserver(updateXTransform);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateXTransform, 150);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loopArrow);
+    }
+
+    loopArrow();
+  }
+
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
+  });
 }
+
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;

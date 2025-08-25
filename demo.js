@@ -1,564 +1,113 @@
-export function attachAdvanceTimelineIncrementDecrement(
-  updateEntry,
-  updateCenter,
-  updateExit,
-  updateStart,
-  updateEnd
-) {
-  let lastFocused = null;
-  let keyHoldInterval = null;
-  let keyHoldTimeout = null;
-  let lastPressedKey = null;
+export function horizontalbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+  if (!selectedElement) return;
 
-  let entryVal = 0;
-  let centerVal = 0;
-  let exitVal = 0;
-  let startVal = 0;
-  let endVal = 0;
-
-  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
-    const btnInc = document.getElementById(idIncrease);
-    const btnDec = document.getElementById(idDecrease);
-
-    const clickHandler = (type) => {
-      let val = getCurrent();
-      val = type === "inc" ? val + 1 : val - 1;
-
-      const min =
-        bulletId.includes("entry") ||
-        bulletId.includes("center") ||
-        bulletId.includes("exit")
-          ? -100
-          : 0;
-
-      if (bulletId.includes("start")) {
-        val = Math.max(0, Math.min(val, endVal - 4));
-        startVal = val;
-      } else if (bulletId.includes("end")) {
-        val = Math.max(startVal + 4, Math.min(val, 100));
-        endVal = val;
-      } else {
-        val = Math.max(min, Math.min(100, val));
-      }
-
-      updateFn(val);
-      const countId = bulletId.replace(
-        "bullet",
-        bulletId.includes("start") || bulletId.includes("end")
-          ? "Value"
-          : "count"
-      );
-      document.getElementById(countId).textContent = val + "%";
-    };
-
-    if (btnInc) btnInc.onclick = () => clickHandler("inc");
-    if (btnDec) btnDec.onclick = () => clickHandler("dec");
-
-    const bullet = document.getElementById(bulletId);
-    if (bullet) {
-      bullet.setAttribute("tabindex", "0");
-      bullet.addEventListener("click", () => (lastFocused = bulletId));
-      bullet.addEventListener("focus", () => {
-        lastFocused = bulletId;
-        const val = getCurrent();
-        if (bulletId.includes("entry")) entryVal = val;
-        if (bulletId.includes("center")) centerVal = val;
-        if (bulletId.includes("exit")) exitVal = val;
-        if (bulletId.includes("start")) startVal = val;
-        if (bulletId.includes("end")) endVal = val;
-      });
-    }
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("horizontal-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "horizontal-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
 
-  const getVal = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(raw.replace("%", "")) || 0;
-  };
+  function setupScrollAnimation(btn, arrow) {
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
+    const entryY = () => getVar("--sc-horizontal-scroll-entry") / 2;
+    const centerY = () => getVar("--sc-horizontal-scroll-center") / 2;
+    const exitY = () => getVar("--sc-horizontal-scroll-exit") / 2;
+    const start = () => getVar("--sc-horizontal-scroll-start") / 100;
+    const end = () => getVar("--sc-horizontal-scroll-end") / 100;
 
-  setup(
-    "vertical-button-advance-entry-increase",
-    "vertical-button-advance-entry-decrease",
-    () => getVal("vertical-button-advance-entry-count"),
-    updateEntry,
-    "vertical-button-advance-entry-bullet"
-  );
-  setup(
-    "vertical-button-advance-center-increase",
-    "vertical-button-advance-center-decrease",
-    () => getVal("vertical-button-advance-center-count"),
-    updateCenter,
-    "vertical-button-advance-center-bullet"
-  );
-  setup(
-    "vertical-button-advance-exit-increase",
-    "vertical-button-advance-exit-decrease",
-    () => getVal("vertical-button-advance-exit-count"),
-    updateExit,
-    "vertical-button-advance-exit-bullet"
-  );
-  setup(
-    "vertical-button-timeline-start-increase",
-    "vertical-button-timeline-start-decrease",
-    () => getVal("vertical-button-timelineStartValue"),
-    updateStart,
-    "vertical-button-timeline-start-bullet"
-  );
-  setup(
-    "vertical-button-timeline-end-increase",
-    "vertical-button-timeline-end-decrease",
-    () => getVal("vertical-button-timelineEndValue"),
-    updateEnd,
-    "vertical-button-timeline-end-bullet"
-  );
-
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
-      return;
-    if (keyHoldInterval || keyHoldTimeout) return;
-
-    const direction = e.key === "ArrowRight" ? 1 : -1;
-    lastPressedKey = e.key;
-
-    const update = () => {
-      if (lastFocused.includes("entry")) {
-        entryVal = Math.max(-100, Math.min(100, entryVal + direction));
-        updateEntry(entryVal);
-        document.getElementById("vertical-advance-entry-count").value =
-          entryVal + "%";
-      }
-      if (lastFocused.includes("center")) {
-        centerVal = Math.max(-100, Math.min(100, centerVal + direction));
-        updateCenter(centerVal);
-        document.getElementById("vertical-advance-center-count").value =
-          centerVal + "%";
-      }
-      if (lastFocused.includes("exit")) {
-        exitVal = Math.max(-100, Math.min(100, exitVal + direction));
-        updateExit(exitVal);
-        document.getElementById("vertical-advance-exit-count").value =
-          exitVal + "%";
-      }
-      if (lastFocused.includes("start")) {
-        startVal = getVal("vertical-timelineStartValue");
-        endVal = getVal("vertical-timelineEndValue");
-        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
-        updateStart(startVal);
-        document.getElementById(
-          "vertical-timelineStartValue"
-        ).textContent = startVal + "%";
-      }
-      if (lastFocused.includes("end")) {
-        startVal = getVal("vertical-timelineStartValue");
-        endVal = getVal("vertical-timelineEndValue");
-        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
-        updateEnd(endVal);
-        document.getElementById("vertical-timelineEndValue").textContent =
-          endVal + "%";
-      }
-    };
-
-    update();
-    keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(update, 100);
-    }, 300);
-  });
-
-  document.addEventListener("keyup", (e) => {
-    if (e.key === lastPressedKey) {
-      clearInterval(keyHoldInterval);
-      clearTimeout(keyHoldTimeout);
-      keyHoldInterval = null;
-      keyHoldTimeout = null;
-      lastPressedKey = null;
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) {
+      gs.registerPlugin(ST);
+      ST.getAll().forEach((t) => {
+        if (t.trigger === selectedElement) t.kill();
+      });
     }
-  });
-}
 
-function attachCustomTimelineReset(
-  updateStart,
-  updateEnd,
-  updateEntry,
-  updateCenter,
-  updateExit
-) {
-  const btn = document.getElementById("vertical-custom-timeline-reset");
-  if (btn)
-    btn.onclick = () => {
-      updateStart(0);
-      updateEnd(100);
-      updateEntry(0);
-      updateCenter(0);
-      updateExit(0);
-    };
-}
+    let currentY = null;
 
-export function button_initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "vertical-effect-animation-type-arrow"
-  );
-  const list = document.getElementById(
-    "vertical-effect-animation-type-list"
-  );
-  const display = document.getElementById(
-    "vertical-effect-animation-value"
-  );
-
-  if (!arrow || !list || !display) return;
-
-  arrow.onclick = () => {
-    list.classList.toggle("sc-hidden");
-  };
-
-  const items = list.querySelectorAll("[data-value]");
-  items.forEach((item) => {
-    item.onclick = () => {
-      const selected = item.getAttribute("data-value");
-      display.textContent = item.textContent;
-      display.setAttribute("data-value", selected);
-
-      const el =
-        typeof getSelectedElement === "function" ? getSelectedElement() : null;
-      if (el && el.id?.startsWith("block-")) {
-        el.querySelector(".sqs-block-content")?.style.setProperty(
-          "--sc-vertical-effect-animation",
-          selected
-        );
-      }
-
-      list.classList.add("sc-hidden");
-    };
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!arrow.contains(e.target) && !list.contains(e.target)) {
-      list.classList.add("sc-hidden");
-    }
-  });
-}
-
-export function initButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById(
-    "vertical-timeline-start-bullet"
-  );
-  const endBullet = document.getElementById(
-    "vertical-timeline-end-bullet"
-  );
-  const startFill = document.getElementById(
-    "vertical-timeline-start-fill"
-  );
-  const endFill = document.getElementById("vertical-timeline-end-fill");
-  const startValue = document.getElementById(
-    "vertical-timelineStartValue"
-  );
-  const endValue = document.getElementById("vertical-timelineEndValue");
-
-  const entryBullet = document.getElementById(
-    "vertical-advance-entry-bullet"
-  );
-  const entryFill = document.getElementById("vertical-advance-entry-fill");
-  const entryCount = document.getElementById(
-    "vertical-advance-entry-count"
-  );
-
-  const centerBullet = document.getElementById(
-    "vertical-advance-center-bullet"
-  );
-  const centerFill = document.getElementById(
-    "vertical-advance-center-fill"
-  );
-  const centerCount = document.getElementById(
-    "vertical-advance-center-count"
-  );
-
-  const exitBullet = document.getElementById(
-    "vertical-advance-exit-bullet"
-  );
-  const exitFill = document.getElementById("vertical-advance-exit-fill");
-  const exitCount = document.getElementById("vertical-advance-exit-count");
-
-  if (
-    !startBullet ||
-    !endBullet ||
-    !startFill ||
-    !endFill ||
-    !startValue ||
-    !endValue ||
-    !entryBullet ||
-    !entryFill ||
-    !entryCount ||
-    !centerBullet ||
-    !centerFill ||
-    !centerCount ||
-    !exitBullet ||
-    !exitFill ||
-    !exitCount
-  )
-    return;
-
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-      if (countEl.tagName === "INPUT") {
-        countEl.value = `${val}%`;
+    const updateYTransform = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const eY = entryY();
+      const cY = centerY();
+      const xY = exitY();
+      let y;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        y = eY + (cY - eY) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        y = cY + (xY - cY) * k;
       } else {
-        countEl.textContent = `${val}%`;
+        y = cY;
       }
-
-      const el = getSelectedElement?.();
-      const styleId = el?.id
-        ? `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`
-        : null;
-
-      if (
-        [
-          "--sc-vertical-scroll-entry",
-          "--sc-vertical-scroll-center",
-          "--sc-vertical-scroll-exit",
-        ].includes(cssVar)
-      ) {
-        const percent = (val + 100) / 2;
-        const bulletLeft = percent;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
-
-        bullet.style.left = `${bulletLeft}%`;
-        gsap.set(bullet, { left: `${bulletLeft}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-
-        if (cssVar === "--sc-vertical-scroll-entry") {
-          document.getElementById(
-            "vertical-custom-timeline-arrow"
-          ).style.left = `${bulletLeft}%`;
-        }
-
-        initEffectAnimationDropdownToggle();
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        position === "left"
-          ? gsap.set(fill, { width: `${val}%`, left: "0" })
-          : gsap.set(fill, {
-              left: "auto",
-              transform: `scaleX(${(100 - val) / 100})`,
-              transformOrigin: "right",
-              width: "100%",
-              backgroundColor: "#F6B67B",
-            });
-      }
-
-      if (el && el.id?.startsWith("block-")) {
-        let styleTag = document.getElementById(styleId);
-        if (!styleTag) {
-          styleTag = document.createElement("style");
-          styleTag.id = styleId;
-          document.head.appendChild(styleTag);
-        }
-        const contentEl = el.querySelector(".sqs-block-content");
-        if (contentEl) {
-          styleTag.textContent = `#${el.id} .sqs-block-content {\n  ${cssVar}: ${val}%;\n}`;
-        }
-      }
-    };
-
-  const getCurrentPercentage = (cssVar) => {
-    const el = getSelectedElement?.();
-    if (!el) return 0;
-    const contentEl = el.querySelector(".sqs-block-content");
-    if (!contentEl) return 0;
-    const val = getComputedStyle(contentEl).getPropertyValue(cssVar).trim();
-    const parsed = parseFloat(val.replace("%", ""));
-    if (isNaN(parsed)) {
-      return cssVar === "--sc-vertical-scroll-end" ? 100 : 0;
-    }
-    return parsed;
-  };
-
-  let currentStartVal = getCurrentPercentage("--sc-vertical-scroll-start");
-  let currentEndVal = getCurrentPercentage("--sc-vertical-scroll-end");
-
-  const updateStart = (val) => {
-    currentStartVal = Math.max(0, Math.min(val, currentEndVal - 4));
-    updateField(
-      startBullet,
-      startFill,
-      startValue,
-      "--sc-vertical-scroll-start",
-      "left",
-      0,
-      100
-    )(currentStartVal);
-  };
-
-  const updateEnd = (val) => {
-    currentEndVal = Math.max(currentStartVal + 4, Math.min(val, 100));
-    updateField(
-      endBullet,
-      endFill,
-      endValue,
-      "--sc-vertical-scroll-end",
-      "right",
-      0,
-      100
-    )(currentEndVal);
-  };
-
-  const updateEntry = updateField(
-    entryBullet,
-    entryFill,
-    entryCount,
-    "--sc-vertical-scroll-entry"
-  );
-  const updateCenter = updateField(
-    centerBullet,
-    centerFill,
-    centerCount,
-    "--sc-vertical-scroll-center"
-  );
-  const updateExit = updateField(
-    exitBullet,
-    exitFill,
-    exitCount,
-    "--sc-vertical-scroll-exit"
-  );
-
-  updateEntry(getCurrentPercentage("--sc-vertical-scroll-entry"));
-  updateCenter(getCurrentPercentage("--sc-vertical-scroll-center"));
-  updateExit(getCurrentPercentage("--sc-vertical-scroll-exit"));
-
-  updateStart(currentStartVal);
-  gsap.set(startBullet, { left: `${currentStartVal}%`, xPercent: -50 }); // ✅ force bullet visibility
-  updateEnd(currentEndVal);
-
-  const makeDraggable = (
-    bullet,
-    updateFn,
-    type = "normal",
-    min = -100,
-    max = 100
-  ) => {
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      const container = bullet.parentElement;
-      const rect = container.getBoundingClientRect();
-      const onMouseMove = (event) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, event.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        let clamped = Math.round(percent);
-
-        if (bullet === startBullet) {
-          clamped = Math.max(0, Math.min(clamped, currentEndVal));
-          currentStartVal = clamped; // ✅ Sync here
-          updateStart(clamped);
-        } else if (bullet === endBullet) {
-          clamped = Math.max(currentStartVal + 4, Math.min(clamped, 100));
-          currentEndVal = clamped; // ✅ Sync here
-          updateEnd(clamped);
+      y = Math.max(-50, Math.min(50, y));
+      if (y !== currentY) {
+        currentY = y;
+        const ease = window.__typoScrollEase || "none";
+        if (gs) {
+          gs.to(btn, {
+            y: `${y}vh`,
+            ease,
+            duration: ease === "none" ? 0 : 0.6,
+            overwrite: true,
+          });
         } else {
-          clamped = Math.max(min, Math.min(clamped, max));
-          updateFn(clamped);
+          btn.style.transform = `translateY(${y}vh)`;
         }
-      };
-
-      document.addEventListener("mousemove", onMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => document.removeEventListener("mousemove", onMouseMove),
-        { once: true }
-      );
-    };
-  };
-
-  [
-    { input: entryCount, fn: updateEntry },
-    { input: centerCount, fn: updateCenter },
-    { input: exitCount, fn: updateExit },
-  ].forEach(({ input, fn }) => {
-    input.addEventListener("input", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
-      fn(val);
-    });
-    input.addEventListener("blur", (e) => {
-      let val = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(val)) val = 0;
-      val = Math.max(-100, Math.min(100, val));
-      e.target.value = val + "%";
-      fn(val);
-    });
-    input.addEventListener("keydown", (e) => {
-      if (
-        !/[0-9\-]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
-          e.key
-        )
-      ) {
-        e.preventDefault();
       }
-    });
-    input.addEventListener("focus", (e) => {
-      const val = parseInt(e.target.value.replace("%", "").trim()) || 0;
-      e.target.value = val;
-    });
+    };
+
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateYTransform,
+      });
+      ST.refresh(true);
+    } else {
+      window.addEventListener("scroll", updateYTransform, { passive: true });
+      window.addEventListener("resize", updateYTransform, { passive: true });
+    }
+
+    const observer = new MutationObserver(updateYTransform);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateYTransform, 150);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loopArrow);
+    }
+
+    loopArrow();
+  }
+
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
   });
-
-  makeDraggable(startBullet, updateStart, "start", 0, 100);
-  makeDraggable(endBullet, updateEnd, "end", 0, 100);
-  makeDraggable(entryBullet, updateEntry, "normal");
-  makeDraggable(centerBullet, updateCenter, "normal");
-  makeDraggable(exitBullet, updateExit, "normal");
-
-  [
-    {
-      id: "vertical-advance-entry-reset",
-      bullet: entryBullet,
-      fill: entryFill,
-      count: entryCount,
-      css: "--sc-vertical-scroll-entry",
-    },
-    {
-      id: "vertical-advance-center-reset",
-      bullet: centerBullet,
-      fill: centerFill,
-      count: centerCount,
-      css: "--sc-vertical-scroll-center",
-    },
-    {
-      id: "vertical-advance-exit-reset",
-      bullet: exitBullet,
-      fill: exitFill,
-      count: exitCount,
-      css: "--sc-vertical-scroll-exit",
-    },
-  ].forEach(({ id, bullet, fill, count, css }) => {
-    const btn = document.getElementById(id);
-    if (btn) btn.onclick = () => updateField(bullet, fill, count, css)(0);
-  });
-
-  attachAdvanceTimelineIncrementDecrement(
-    updateEntry,
-    updateCenter,
-    updateExit,
-    updateStart,
-    updateEnd
-  );
-  attachCustomTimelineReset(
-    updateStart,
-    updateEnd,
-    updateEntry,
-    updateCenter,
-    updateExit
-  );
-  initEffectAnimationDropdownToggle(startBullet, endBullet);
 }
