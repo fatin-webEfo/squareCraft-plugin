@@ -14,18 +14,18 @@ function getViewportProgress(el) {
   return Math.max(0, Math.min(1, t));
 }
 
-export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
+export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById(
-      "Typo-vertical-custom-timeline-arrow"
+      "vertical-custom-timeline-arrow"
     );
     const startBullet = document.getElementById(
-      "Typo-vertical-timeline-start-bullet"
+      "vertical-timeline-start-bullet"
     );
     const endBullet = document.getElementById(
-      "Typo-vertical-timeline-end-bullet"
+      "vertical-timeline-end-bullet"
     );
 
     if (arrow && startBullet && endBullet) {
@@ -41,11 +41,11 @@ export function TypoAdvanceSyncCustomTimelineArrow(selectedElement) {
         getComputedStyle(content).getPropertyValue(v).trim().replace("%", "")
       ) || 0;
 
-    const entryY = () => getVar("--sc-Typo-vertical-scroll-entry") / 2;
-    const centerY = () => getVar("--sc-Typo-vertical-scroll-center") / 2;
-    const exitY = () => getVar("--sc-Typo-vertical-scroll-exit") / 2;
-    const start = () => getVar("--sc-Typo-vertical-scroll-start") / 100;
-    const end = () => getVar("--sc-Typo-vertical-scroll-end") / 100;
+    const entryY = () => getVar("--sc-vertical-scroll-entry") / 2;
+    const centerY = () => getVar("--sc-vertical-scroll-center") / 2;
+    const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
+    const start = () => getVar("--sc-vertical-scroll-start") / 100;
+    const end = () => getVar("--sc-vertical-scroll-end") / 100;
 
     gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.getAll().forEach((t) => {
