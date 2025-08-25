@@ -25,38 +25,43 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
   window.__scBtnLastEl = selectedElement;
 
-  const arrow = document.getElementById("vertical-custom-timeline-arrow");
-  const startBullet = document.getElementById("vertical-timeline-start-bullet");
-  const endBullet = document.getElementById("vertical-timeline-end-bullet");
-  const startFill = document.getElementById("vertical-timeline-start-fill");
-  const endFill = document.getElementById("vertical-timeline-end-fill");
-  if (!arrow || !startBullet || !endBullet || !startFill || !endFill) return;
+  const track =
+    document.getElementById("vertical-custom-timeline-border") ||
+    selectedElement.querySelector("#vertical-custom-timeline-border");
+  if (!track) return;
+
+  let arrow = document.getElementById("vertical-custom-timeline-arrow");
+  if (!arrow) {
+    arrow = document.createElement("div");
+    arrow.id = "vertical-custom-timeline-arrow";
+    track.appendChild(arrow);
+  }
+  arrow.style.display = "block";
+  arrow.style.pointerEvents = "none";
+  arrow.style.zIndex = "3";
 
   const getButton = () =>
     selectedElement.querySelector(
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
+  const btn = getButton();
+  if (!btn) return;
 
   const gsapOK = !!window.gsap;
+  if (gsapOK) gsap.set(btn, { willChange: "transform" });
   const qArrowLeft = gsapOK
     ? gsap.quickSetter(arrow, "left", "%")
     : (v) => {
         arrow.style.left = v + "%";
       };
-  const btn = getButton();
-  if (!btn) return;
-
-  if (gsapOK) {
-    gsap.set(btn, { willChange: "transform" });
-  }
   const qBtnY = gsapOK
     ? gsap.quickSetter(btn, "y", "vh")
     : (v) => {
         btn.style.transform = `translate3d(0, ${v}vh, 0)`;
       };
 
-  const mapEaseName = (name) => {
-    const m = {
+  const mapEase = (n) =>
+    ({
       none: "none",
       Linear: "none",
       linear: "none",
@@ -70,13 +75,11 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       "expo.out": "expo.out",
       "elastic.out": "elastic.out",
       "bounce.out": "bounce.out",
-    };
-    return m[name] || "none";
-  };
+    }[n] || "none");
   const currentEase = () => {
-    const disp = document.getElementById("vertical-effect-animation-value");
-    return mapEaseName(
-      disp?.getAttribute("data-value") || disp?.textContent?.trim() || "none"
+    const d = document.getElementById("vertical-effect-animation-value");
+    return mapEase(
+      d?.getAttribute("data-value") || d?.textContent?.trim() || "none"
     );
   };
   const ease01 = (t) => {
@@ -89,8 +92,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
   };
 
-  const readPct = (cssVar, fb = 0) => {
-    const v = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+  const readPct = (name, fb = 0) => {
+    const v = getComputedStyle(btn).getPropertyValue(name).trim();
     const n = parseFloat(v.replace("%", ""));
     return Number.isFinite(n) ? n : fb;
   };
@@ -103,8 +106,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
 
-  let smLeft = null;
-  let smY = null;
+  let smLeft = null,
+    smY = null;
 
   function frame() {
     if (!running || !document.body.contains(selectedElement)) return;
@@ -123,25 +126,24 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const targetLeft = s + p01 * span;
 
-    const EDGE_EPS = 0.015;
-    const c =
-      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
-    arrow.style.backgroundColor = c;
+    const EDGE = 0.015;
+    arrow.style.backgroundColor =
+      p01 <= EDGE ? "#EF7C2F" : p01 >= 1 - EDGE ? "#F6B67B" : "#FFFFFF";
 
-    const eased = ease01(p01);
+    const ez = ease01(p01);
     let yPct;
     if (p01 <= 0) yPct = entry;
     else if (p01 >= 1) yPct = exit;
-    else if (eased <= 0.5) yPct = lerp(entry, center, eased / 0.5);
-    else yPct = lerp(center, exit, (eased - 0.5) / 0.5);
+    else if (ez <= 0.5) yPct = lerp(entry, center, ez / 0.5);
+    else yPct = lerp(center, exit, (ez - 0.5) / 0.5);
 
     const targetYvh = Math.max(-50, Math.min(50, yPct)) / 2;
 
     if (smLeft == null) smLeft = targetLeft;
     if (smY == null) smY = targetYvh;
 
-    smLeft = smLeft + (targetLeft - smLeft) * 0.18;
-    smY = smY + (targetYvh - smY) * 0.15;
+    smLeft = smLeft + (targetLeft - smLeft) * 0.25;
+    smY = smY + (targetYvh - smY) * 0.2;
 
     qArrowLeft(smLeft);
     qBtnY(smY);
@@ -151,7 +153,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
   requestAnimationFrame(frame);
 }
-
 
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
