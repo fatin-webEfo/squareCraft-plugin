@@ -553,7 +553,7 @@ export function initButtonAdvanceStyles(getSelectedElement) {
 
 // ──────────────────────────────────────────────────────────────
 
-export function horizontalattachAdvanceTimelineIncrementDecrement(
+export function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
@@ -579,12 +579,7 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
       let val = getCurrent();
       val = type === "inc" ? val + 1 : val - 1;
 
-      const min =
-        bulletId.includes("entry") ||
-        bulletId.includes("center") ||
-        bulletId.includes("exit")
-          ? -100
-          : 0;
+      const min = 0;
 
       if (bulletId.includes("start")) {
         val = Math.max(0, Math.min(val, endVal - 4));
@@ -636,40 +631,38 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
   };
 
   setup(
-    "horizontal-button-advance-entry-increase",
-    "horizontal-button-advance-entry-decrease",
-    () => getVal("horizontal-button-advance-entry-count"),
+    "opacity-button-advance-entry-increase",
+    "opacity-button-advance-entry-decrease",
+    () => getVal("opacity-button-advance-entry-count"),
     updateEntry,
-    "horizontal-button-advance-entry-bullet"
+    "opacity-button-advance-entry-bullet"
   );
   setup(
-    "horizontal-button-advance-center-increase",
-    "horizontal-button-advance-center-decrease",
-    () => getVal("horizontal-button-advance-center-count"),
+    "opacity-button-advance-center-increase",
+    "opacity-button-advance-center-decrease",
+    () => getVal("opacity-button-advance-center-count"),
     updateCenter,
-    "horizontal-button-advance-center-bullet"
+    "opacity-button-advance-center-bullet"
   );
   setup(
-    "horizontal-button-advance-exit-increase",
-    "horizontal-button-advance-exit-decrease",
-    () => getVal("horizontal-button-advance-exit-count"),
+    "opacity-button-advance-exit-increase",
+    "opacity-button-advance-exit-decrease",
+    () => getVal("opacity-button-advance-exit-count"),
     updateExit,
-    "horizontal-button-advance-exit-bullet"
+    "opacity-button-advance-exit-bullet"
   );
 
-  const startBullet = document.getElementById(
-    "horizontal-timeline-start-bullet"
-  );
-  const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+  const startBullet = document.getElementById("opacity-timeline-start-bullet");
+  const endBullet = document.getElementById("opacity-timeline-end-bullet");
   if (startBullet)
     startBullet.addEventListener(
       "focus",
-      () => (lastFocused = "horizontal-timeline-start-bullet")
+      () => (lastFocused = "opacity-timeline-start-bullet")
     );
   if (endBullet)
     endBullet.addEventListener(
       "focus",
-      () => (lastFocused = "horizontal-timeline-end-bullet")
+      () => (lastFocused = "opacity-timeline-end-bullet")
     );
 
   document.addEventListener("keydown", (e) => {
@@ -682,10 +675,10 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
 
     const update = () => {
       if (lastFocused.includes("entry")) {
-        entryVal = Math.max(-100, Math.min(100, entryVal + direction));
+        entryVal = Math.max(0, Math.min(100, entryVal + direction));
         updateEntry(entryVal);
         const el = document.getElementById(
-          "horizontal-button-advance-entry-count"
+          "opacity-button-advance-entry-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -693,10 +686,10 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
             : (el.textContent = entryVal + "%");
       }
       if (lastFocused.includes("center")) {
-        centerVal = Math.max(-100, Math.min(100, centerVal + direction));
+        centerVal = Math.max(0, Math.min(100, centerVal + direction));
         updateCenter(centerVal);
         const el = document.getElementById(
-          "horizontal-button-advance-center-count"
+          "opacity-button-advance-center-count"
         );
         if (el)
           el.tagName === "INPUT"
@@ -704,30 +697,28 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
             : (el.textContent = centerVal + "%");
       }
       if (lastFocused.includes("exit")) {
-        exitVal = Math.max(-100, Math.min(100, exitVal + direction));
+        exitVal = Math.max(0, Math.min(100, exitVal + direction));
         updateExit(exitVal);
-        const el = document.getElementById(
-          "horizontal-button-advance-exit-count"
-        );
+        const el = document.getElementById("opacity-button-advance-exit-count");
         if (el)
           el.tagName === "INPUT"
             ? (el.value = exitVal + "%")
             : (el.textContent = exitVal + "%");
       }
       if (lastFocused.includes("start")) {
-        startVal = getVal("horizontal-timelineStartValue");
-        endVal = getVal("horizontal-timelineEndValue");
+        startVal = getVal("opacity-timelineStartValue");
+        endVal = getVal("opacity-timelineEndValue");
         startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
         updateStart(startVal);
-        const el = document.getElementById("horizontal-timelineStartValue");
+        const el = document.getElementById("opacity-timelineStartValue");
         if (el) el.textContent = startVal + "%";
       }
       if (lastFocused.includes("end")) {
-        startVal = getVal("horizontal-timelineStartValue");
-        endVal = getVal("horizontal-timelineEndValue");
+        startVal = getVal("opacity-timelineStartValue");
+        endVal = getVal("opacity-timelineEndValue");
         endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
         updateEnd(endVal);
-        const el = document.getElementById("horizontal-timelineEndValue");
+        const el = document.getElementById("opacity-timelineEndValue");
         if (el) el.textContent = endVal + "%";
       }
     };
@@ -749,30 +740,28 @@ export function horizontalattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function horizontalattachCustomTimelineReset(
+function opacityattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
   updateCenter,
   updateExit
 ) {
-  const btn = document.getElementById("horizontal-custom-timeline-reset");
+  const btn = document.getElementById("opacity-custom-timeline-reset");
   if (btn)
     btn.onclick = () => {
       updateStart(0);
       updateEnd(100);
-      updateEntry(0);
-      updateCenter(0);
-      updateExit(0);
+      updateEntry(100);
+      updateCenter(100);
+      updateExit(100);
     };
 }
 
-export function horizontalbutton_initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById(
-    "horizontal-effect-animation-type-arrow"
-  );
-  const list = document.getElementById("horizontal-effect-animation-type-list");
-  const display = document.getElementById("horizontal-effect-animation-value");
+export function opacitybutton_initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("opacity-effect-animation-type-arrow");
+  const list = document.getElementById("opacity-effect-animation-type-list");
+  const display = document.getElementById("opacity-effect-animation-value");
   if (!arrow || !list || !display) return;
 
   arrow.onclick = () => {
@@ -795,7 +784,7 @@ export function horizontalbutton_initEffectAnimationDropdownToggle() {
             "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
           ) || el;
         if (btn)
-          btn.style.setProperty("--sc-horizontal-effect-animation", selected);
+          btn.style.setProperty("--sc-opacity-effect-animation", selected);
         window.__typoScrollEase = selected;
       } catch {}
       list.classList.add("sc-hidden");
@@ -809,44 +798,40 @@ export function horizontalbutton_initEffectAnimationDropdownToggle() {
   });
 }
 
-export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById(
-    "horizontal-timeline-start-bullet"
-  );
-  const endBullet = document.getElementById("horizontal-timeline-end-bullet");
-  const startFill = document.getElementById("horizontal-timeline-start-fill");
-  const endFill = document.getElementById("horizontal-timeline-end-fill");
-  const startValue = document.getElementById("horizontal-timelineStartValue");
-  const endValue = document.getElementById("horizontal-timelineEndValue");
+export function opacityinitButtonAdvanceStyles(getSelectedElement) {
+  const startBullet = document.getElementById("opacity-timeline-start-bullet");
+  const endBullet = document.getElementById("opacity-timeline-end-bullet");
+  const startFill = document.getElementById("opacity-timeline-start-fill");
+  const endFill = document.getElementById("opacity-timeline-end-fill");
+  const startValue = document.getElementById("opacity-timelineStartValue");
+  const endValue = document.getElementById("opacity-timelineEndValue");
 
   const entryBullet = document.getElementById(
-    "horizontal-button-advance-entry-bullet"
+    "opacity-button-advance-entry-bullet"
   );
   const entryFill = document.getElementById(
-    "horizontal-button-advance-entry-fill"
+    "opacity-button-advance-entry-fill"
   );
   const entryCount = document.getElementById(
-    "horizontal-button-advance-entry-count"
+    "opacity-button-advance-entry-count"
   );
 
   const centerBullet = document.getElementById(
-    "horizontal-button-advance-center-bullet"
+    "opacity-button-advance-center-bullet"
   );
   const centerFill = document.getElementById(
-    "horizontal-button-advance-center-fill"
+    "opacity-button-advance-center-fill"
   );
   const centerCount = document.getElementById(
-    "horizontal-button-advance-center-count"
+    "opacity-button-advance-center-count"
   );
 
   const exitBullet = document.getElementById(
-    "horizontal-button-advance-exit-bullet"
+    "opacity-button-advance-exit-bullet"
   );
-  const exitFill = document.getElementById(
-    "horizontal-button-advance-exit-fill"
-  );
+  const exitFill = document.getElementById("opacity-button-advance-exit-fill");
   const exitCount = document.getElementById(
-    "horizontal-button-advance-exit-count"
+    "opacity-button-advance-exit-count"
   );
 
   if (
@@ -884,22 +869,22 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
 
   let startPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-start")
+      getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-start")
     ) || 0;
   let endPct =
     readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-end")
+      getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-end")
     ) || 100;
   if (endPct < startPct + 4) endPct = startPct + 4;
 
   let entryPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-entry")
+    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-entry")
   );
   let centerPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-center")
+    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-center")
   );
   let exitPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-horizontal-scroll-exit")
+    getComputedStyle(btn).getPropertyValue("--sc-opacity-scroll-exit")
   );
 
   function writeVar(cssVar, val) {
@@ -910,7 +895,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
       styleTag.id = styleId;
       document.head.appendChild(styleTag);
     }
-    const twin = cssVar.replace("--sc-horizontal-", "--sc-Typo-horizontal-");
+    const twin = cssVar.replace("--sc-opacity-", "--sc-Typo-opacity-");
     styleTag.textContent =
       `#${el.id} a.sqs-button-element--primary,` +
       `#${el.id} a.sqs-button-element--secondary,` +
@@ -922,7 +907,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
   }
 
   const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = -100, max = 100) =>
+    (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
 
@@ -930,30 +915,27 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
       else countEl.textContent = `${val}%`;
 
       if (
-        cssVar === "--sc-horizontal-scroll-entry" ||
-        cssVar === "--sc-horizontal-scroll-center" ||
-        cssVar === "--sc-horizontal-scroll-exit"
+        cssVar === "--sc-opacity-scroll-entry" ||
+        cssVar === "--sc-opacity-scroll-center" ||
+        cssVar === "--sc-opacity-scroll-exit"
       ) {
-        const percent = (val + 100) / 2;
-        const fillLeft = val < 0 ? percent : 50;
-        const fillWidth = Math.abs(val / 2);
-
+        const percent = val;
         gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
         gsap.set(fill, {
-          left: `${fillLeft}%`,
-          width: `${fillWidth}%`,
+          left: "0%",
+          width: `${percent}%`,
           backgroundColor: "var(--sc-theme-accent)",
         });
 
-        const a = document.getElementById("horizontal-custom-timeline-arrow");
-        if (cssVar === "--sc-horizontal-scroll-entry" && a)
+        const a = document.getElementById("opacity-custom-timeline-arrow");
+        if (cssVar === "--sc-opacity-scroll-entry" && a)
           a.style.left = `${percent}%`;
       } else {
         gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
         if (position === "left") {
           gsap.set(fill, { width: `${val}%`, left: "0" });
         } else {
-          gsap.set(fill, {
+          gsap.set(endFill, {
             left: "auto",
             transform: `scaleX(${(100 - val) / 100})`,
             transformOrigin: "right",
@@ -972,7 +954,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
       startBullet,
       startFill,
       startValue,
-      "--sc-horizontal-scroll-start",
+      "--sc-opacity-scroll-start",
       "left",
       0,
       100
@@ -984,7 +966,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
       endBullet,
       endFill,
       endValue,
-      "--sc-horizontal-scroll-end",
+      "--sc-opacity-scroll-end",
       "right",
       0,
       100
@@ -994,24 +976,33 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-horizontal-scroll-entry"
+    "--sc-opacity-scroll-entry",
+    "left",
+    0,
+    100
   );
   const setCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-horizontal-scroll-center"
+    "--sc-opacity-scroll-center",
+    "left",
+    0,
+    100
   );
   const setExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-horizontal-scroll-exit"
+    "--sc-opacity-scroll-exit",
+    "left",
+    0,
+    100
   );
 
-  setEntry(entryPct);
-  setCenter(centerPct);
-  setExit(exitPct);
+  setEntry(entryPct || 100);
+  setCenter(centerPct || 100);
+  setExit(exitPct || 100);
   setStart(startPct);
   gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
   setEnd(endPct);
@@ -1020,20 +1011,20 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
     input.addEventListener("input", (e) => {
       let v = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(v)) v = 0;
-      v = Math.max(-100, Math.min(100, v));
+      v = Math.max(0, Math.min(100, v));
       e.target.value = v + "%";
       fn(v);
     });
     input.addEventListener("blur", (e) => {
       let v = parseInt(e.target.value.replace("%", "").trim());
       if (isNaN(v)) v = 0;
-      v = Math.max(-100, Math.min(100, v));
+      v = Math.max(0, Math.min(100, v));
       e.target.value = v + "%";
       fn(v);
     });
     input.addEventListener("keydown", (e) => {
       if (
-        !/[0-9\-]/.test(e.key) &&
+        !/[0-9]/.test(e.key) &&
         !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
           e.key
         )
@@ -1049,7 +1040,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
   bindTripletInput(centerCount, setCenter);
   bindTripletInput(exitCount, setExit);
 
-  function makeDraggable(bullet, setter, type, min = -100, max = 100) {
+  function makeDraggable(bullet, setter, type, min = 0, max = 100) {
     if (!bullet) return;
     bullet.onmousedown = (e) => {
       e.preventDefault();
@@ -1082,46 +1073,44 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
   }
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
-  makeDraggable(entryBullet, setEntry, "normal");
-  makeDraggable(centerBullet, setCenter, "normal");
-  makeDraggable(exitBullet, setExit, "normal");
+  makeDraggable(entryBullet, setEntry, "normal", 0, 100);
+  makeDraggable(centerBullet, setCenter, "normal", 0, 100);
+  makeDraggable(exitBullet, setExit, "normal", 0, 100);
 
   [
-    { id: "horizontal-button-advance-entry-reset", setter: () => setEntry(0) },
-    {
-      id: "horizontal-button-advance-center-reset",
-      setter: () => setCenter(0),
-    },
-    { id: "horizontal-button-advance-exit-reset", setter: () => setExit(0) },
+    { id: "opacity-button-advance-entry-reset", setter: () => setEntry(100) },
+    { id: "opacity-button-advance-center-reset", setter: () => setCenter(100) },
+    { id: "opacity-button-advance-exit-reset", setter: () => setExit(100) },
   ].forEach(({ id, setter }) => {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
   });
 
-  horizontalattachAdvanceTimelineIncrementDecrement(
+  opacityattachAdvanceTimelineIncrementDecrement(
     setEntry,
     setCenter,
     setExit,
     setStart,
     setEnd
   );
-  horizontalattachCustomTimelineReset(
+  opacityattachCustomTimelineReset(
     setStart,
     setEnd,
     setEntry,
     setCenter,
     setExit
   );
-  horizontalbutton_initEffectAnimationDropdownToggle();
+  opacitybutton_initEffectAnimationDropdownToggle();
 
   if (
     window.gsap &&
     window.ScrollTrigger &&
-    typeof buttonAdvanceSyncCustomTimelineArrow === "function"
+    typeof opacitybuttonAdvanceSyncCustomTimelineArrow === "function"
   ) {
-    buttonAdvanceSyncCustomTimelineArrow(el);
+    opacitybuttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
+
 
 // horizontal
 
