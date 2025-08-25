@@ -14,185 +14,358 @@ function getViewportProgress(el) {
   return Math.max(0, Math.min(1, t));
 }
 
-export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
-  if (!selectedElement) return;
-
-  if (
-    window.__scBtnLastEl &&
-    typeof window.__scBtnLastEl.__scBtnCancel === "function"
-  ) {
-    window.__scBtnLastEl.__scBtnCancel();
-  }
-  window.__scBtnLastEl = selectedElement;
-
-  const SMOOTH_ARROW = 0.18;
-  const SMOOTH_Y = 0.15;
-  const EDGE_EPS = 0.015; // 1.5% of the span
-
+export function initButtonAdvanceScrollEffectVerticalControls(
+  getSelectedElement
+) {
+  const root = document.getElementById("button-advance-vertical-section");
+  if (!root) return;
   const arrow = document.getElementById("vertical-custom-timeline-arrow");
   const startBul = document.getElementById("vertical-timeline-start-bullet");
   const endBul = document.getElementById("vertical-timeline-end-bullet");
   const startFill = document.getElementById("vertical-timeline-start-fill");
   const endFill = document.getElementById("vertical-timeline-end-fill");
-  if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
-
-  const lerp = (a, b, t) => a + (b - a) * t;
-
-  if (!window.gsap) {
-    arrow.style.transition ||=
-      "left 140ms ease-out, background-color 140ms ease-out";
-    startBul.style.transition ||= "left 140ms ease-out";
-    endBul.style.transition ||= "left 140ms ease-out";
-    startFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-    endFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-  } else {
-    gsap.killTweensOf(arrow, "backgroundColor");
-  }
-
-  const qArrowLeft =
-    (window.gsap && gsap.quickSetter(arrow, "left", "%")) ||
-    ((v) => (arrow.style.left = v + "%"));
-
-  const getButton = () =>
-    selectedElement.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-
-  const qBtnTrans = (v) => {
-    const b = getButton();
-    if (!b) return;
-    if (window.gsap) gsap.set(b, { transform: v, overwrite: true });
-    else {
-      b.style.transition ||= "transform 180ms ease-out";
-      b.style.transform = v;
-    }
-  };
-
-  const getPctVar = (el, cssVar, fallback = 0) => {
-    const v = getComputedStyle(el).getPropertyValue(cssVar).trim();
-    const n = parseFloat(v.replace("%", ""));
-    return Number.isFinite(n) ? n : fallback;
-  };
-
-  const btn0 = getButton();
-  if (!btn0) return;
-
-  let startPct = getPctVar(btn0, "--sc-vertical-scroll-start", 0);
-  let endPct = getPctVar(btn0, "--sc-vertical-scroll-end", 100);
-  if (endPct < startPct + 4) endPct = startPct + 4;
-
-  const readTriplet = (btn) => ({
-    entry: getPctVar(btn, "--sc-vertical-scroll-entry", 0),
-    center: getPctVar(btn, "--sc-vertical-scroll-center", 0),
-    exit: getPctVar(btn, "--sc-vertical-scroll-exit", 0),
-  });
-
-  const dropdown = document.getElementById(
+  const startText = document.getElementById("vertical-timelineStartValue");
+  const endText = document.getElementById("vertical-timelineEndValue");
+  const entryBul = document.getElementById(
+    "vertical-button-advance-entry-bullet"
+  );
+  const entryFill = document.getElementById(
+    "vertical-button-advance-entry-fill"
+  );
+  const entryCount = document.getElementById(
+    "vertical-button-advance-entry-count"
+  );
+  const entryInc = document.getElementById(
+    "vertical-button-advance-entry-increase"
+  );
+  const entryDec = document.getElementById(
+    "vertical-button-advance-entry-decrease"
+  );
+  const centerBul = document.getElementById(
+    "vertical-button-advance-center-bullet"
+  );
+  const centerFill = document.getElementById(
+    "vertical-button-advance-center-fill"
+  );
+  const centerCount = document.getElementById(
+    "vertical-button-advance-center-count"
+  );
+  const centerInc = document.getElementById(
+    "vertical-button-advance-center-increase"
+  );
+  const centerDec = document.getElementById(
+    "vertical-button-advance-center-decrease"
+  );
+  const exitBul = document.getElementById(
+    "vertical-button-advance-exit-bullet"
+  );
+  const exitFill = document.getElementById("vertical-button-advance-exit-fill");
+  const exitCount = document.getElementById(
+    "vertical-button-advance-exit-count"
+  );
+  const exitInc = document.getElementById(
+    "vertical-button-advance-exit-increase"
+  );
+  const exitDec = document.getElementById(
+    "vertical-button-advance-exit-decrease"
+  );
+  const entryReset = document.getElementById(
+    "vertical-button-advance-entry-reset"
+  );
+  const centerReset = document.getElementById(
+    "vertical-button-advance-center-reset"
+  );
+  const exitReset = document.getElementById(
+    "vertical-button-advance-exit-reset"
+  );
+  const tlReset = document.getElementById("vertical-custom-timeline-reset");
+  const effectList = document.getElementById(
     "vertical-effect-animation-type-list"
   );
-  const currentEase = () => {
-    const display = dropdown?.previousElementSibling?.querySelector(
-      "#vertical-effect-animation-value"
+  const effectValueContainer = document.getElementById(
+    "vertical-effect-animation-value"
+  );
+  const effectArrow = document.getElementById(
+    "vertical-effect-animation-type-arrow"
+  );
+  if (
+    !arrow ||
+    !startBul ||
+    !endBul ||
+    !startFill ||
+    !endFill ||
+    !entryBul ||
+    !entryFill ||
+    !centerBul ||
+    !centerFill ||
+    !exitBul ||
+    !exitFill
+  )
+    return;
+
+  function btn() {
+    const sel = getSelectedElement?.();
+    if (!sel) return null;
+    return sel.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary,button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
-    const name = display?.textContent?.trim() || "none";
-    const map = {
-      none: "none",
-      Linear: "none",
-      linear: "none",
-      "ease-in": "power1.in",
-      "ease-out": "power1.out",
-      "ease-in-out": "power1.inOut",
-      "power1.out": "power1.out",
-      "power2.out": "power2.out",
-      "power3.out": "power3.out",
-      "power4.out": "power4.out",
-      "expo.out": "expo.out",
-      "elastic.out": "elastic.out",
-      "bounce.out": "bounce.out",
+  }
+  function getVar(el, name, fallback = 0) {
+    const v = getComputedStyle(el).getPropertyValue(name).trim();
+    const n = parseFloat(v.replace("%", ""));
+    return Number.isFinite(n) ? n : fallback;
+  }
+  function setVar(el, name, val) {
+    el.style.setProperty(name, typeof val === "number" ? `${val}` : `${val}`);
+  }
+  function clamp(n, min, max) {
+    return Math.min(max, Math.max(min, n));
+  }
+  function posFromPct(p) {
+    return clamp(p, 0, 100);
+  }
+  function pctText(n) {
+    return `${Math.round(n)}%`;
+  }
+  function midMap(v) {
+    return clamp((v + 100) / 2, 0, 100);
+  }
+  function midUnmap(pos) {
+    return clamp(pos * 2 - 100, -100, 100);
+  }
+  function qSet(el, prop, unit) {
+    if (window.gsap) return gsap.quickSetter(el, prop, unit);
+    return (v) => {
+      el.style[prop] = unit ? `${v}${unit}` : `${v}`;
     };
-    return map[name] || "none";
+  }
+  const qStartLeft = qSet(startBul, "left", "%");
+  const qEndLeft = qSet(endBul, "left", "%");
+  const qStartFillW = qSet(startFill, "width", "%");
+  const qEndFillScale = (v) => {
+    endFill.style.transformOrigin = "right";
+    endFill.style.width = "100%";
+    endFill.style.transform = `scaleX(${clamp(v, 0, 1)})`;
   };
+  const qEntryLeft = qSet(entryBul, "left", "%");
+  const qCenterLeft = qSet(centerBul, "left", "%");
+  const qExitLeft = qSet(exitBul, "left", "%");
+  const qEntryFillW = qSet(entryFill, "width", "%");
+  const qCenterFillW = qSet(centerFill, "width", "%");
+  const qExitFillW = qSet(exitFill, "width", "%");
 
-  const ease01 = (t, easeName) => {
-    if (!window.gsap || easeName === "none") return t;
-    try {
-      return gsap.parseEase(easeName)(t);
-    } catch {
-      return t;
+  function ensureDefaults(b) {
+    if (
+      getVar(b, "--sc-vertical-scroll-start", NaN) === 0 &&
+      getVar(b, "--sc-vertical-scroll-end", NaN) === 0
+    ) {
+      setVar(b, "--sc-vertical-scroll-start", "0");
+      setVar(b, "--sc-vertical-scroll-end", "100");
     }
-  };
-
-  let running = true;
-  selectedElement.__scBtnRafActive = true;
-  selectedElement.__scBtnCancel = () => {
-    running = false;
-    selectedElement.__scBtnRafActive = false;
-    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
-  };
-
-  let smoothedLeft = null;
-  let smoothedYvh = null;
-
-  function applyArrowColor(p01) {
-    const c =
-      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
-    if (window.gsap) gsap.set(arrow, { backgroundColor: c, overwrite: true });
-    else arrow.style.backgroundColor = c;
+    if (Number.isNaN(getVar(b, "--sc-vertical-scroll-entry", NaN)))
+      setVar(b, "--sc-vertical-scroll-entry", "-20");
+    if (Number.isNaN(getVar(b, "--sc-vertical-scroll-center", NaN)))
+      setVar(b, "--sc-vertical-scroll-center", "0");
+    if (Number.isNaN(getVar(b, "--sc-vertical-scroll-exit", NaN)))
+      setVar(b, "--sc-vertical-scroll-exit", "20");
   }
 
-  function frame() {
-    if (!running || !document.body.contains(selectedElement)) {
-      selectedElement.__scBtnRafActive = false;
-      return;
-    }
-    const btnNow = getButton();
-    if (!btnNow) {
-      selectedElement.__scBtnRafActive = false;
-      return;
-    }
-
-    startPct = getPctVar(btnNow, "--sc-vertical-scroll-start", startPct);
-    endPct = getPctVar(btnNow, "--sc-vertical-scroll-end", endPct);
-    if (endPct < startPct + 4) endPct = startPct + 4;
-
-    const t = getViewportProgress(selectedElement) * 100;
-    const span = Math.max(1, endPct - startPct);
-    let p01 = (t - startPct) / span;
-    if (p01 < 0) p01 = 0;
-    else if (p01 > 1) p01 = 1;
-
-    const targetLeft = startPct + p01 * span;
-
-    const trip = readTriplet(btnNow);
-    const eased = ease01(p01, currentEase());
-    const yPct =
-      eased <= 0
-        ? trip.entry
-        : eased >= 1
-        ? trip.exit
-        : eased <= 0.5
-        ? lerp(trip.entry, trip.center, eased / 0.5)
-        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
-    const targetYvh = yPct / 2;
-
-    if (smoothedLeft == null) smoothedLeft = targetLeft;
-    if (smoothedYvh == null) smoothedYvh = targetYvh;
-
-    smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
-    smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
-
-    qArrowLeft(smoothedLeft);
-    applyArrowColor(p01);
-    qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
-
-    requestAnimationFrame(frame);
+  function syncUI() {
+    const b = btn();
+    if (!b) return;
+    ensureDefaults(b);
+    let s = clamp(getVar(b, "--sc-vertical-scroll-start", 0), 0, 100);
+    let e = clamp(getVar(b, "--sc-vertical-scroll-end", 100), 0, 100);
+    if (e < s + 4) e = s + 4;
+    qStartLeft(s);
+    qStartFillW(s);
+    qEndLeft(e);
+    qEndFillScale((100 - e) / 100);
+    if (startText) startText.textContent = pctText(s);
+    if (endText) endText.textContent = pctText(e);
+    const ent = getVar(b, "--sc-vertical-scroll-entry", -20);
+    const cen = getVar(b, "--sc-vertical-scroll-center", 0);
+    const exi = getVar(b, "--sc-vertical-scroll-exit", 20);
+    const entPos = posFromPct(midMap(ent));
+    const cenPos = posFromPct(midMap(cen));
+    const exiPos = posFromPct(midMap(exi));
+    qEntryLeft(entPos);
+    qEntryFillW(entPos);
+    qCenterLeft(cenPos);
+    qCenterFillW(cenPos);
+    qExitLeft(exiPos);
+    qExitFillW(exiPos);
+    if (entryCount) entryCount.textContent = `${Math.round(ent)}%`;
+    if (centerCount) centerCount.textContent = `${Math.round(cen)}%`;
+    if (exitCount) exitCount.textContent = `${Math.round(exi)}%`;
   }
 
-  requestAnimationFrame(frame);
+  function dragX(el, onMove) {
+    let down = false,
+      rect = null;
+    const start = (e) => {
+      down = true;
+      rect = el.parentElement.getBoundingClientRect();
+      e.preventDefault();
+    };
+    const move = (e) => {
+      if (!down) return;
+      const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const pct = clamp((cx / rect.width) * 100, 0, 100);
+      onMove(pct);
+    };
+    const up = () => {
+      down = false;
+    };
+    el.addEventListener("mousedown", start);
+    el.addEventListener("touchstart", start, { passive: false });
+    window.addEventListener("mousemove", move);
+    window.addEventListener("touchmove", move, { passive: false });
+    window.addEventListener("mouseup", up);
+    window.addEventListener("touchend", up);
+  }
+
+  if (startBul)
+    dragX(startBul, (p) => {
+      const b = btn();
+      if (!b) return;
+      let e = clamp(getVar(b, "--sc-vertical-scroll-end", 100), 0, 100);
+      let s = clamp(p, 0, Math.max(0, e - 4));
+      setVar(b, "--sc-vertical-scroll-start", s);
+      syncUI();
+    });
+
+  if (endBul)
+    dragX(endBul, (p) => {
+      const b = btn();
+      if (!b) return;
+      let s = clamp(getVar(b, "--sc-vertical-scroll-start", 0), 0, 100);
+      let e = clamp(p, Math.min(100, s + 4), 100);
+      setVar(b, "--sc-vertical-scroll-end", e);
+      syncUI();
+    });
+
+  if (entryBul)
+    dragX(entryBul, (p) => {
+      const b = btn();
+      if (!b) return;
+      const v = midUnmap(p);
+      setVar(b, "--sc-vertical-scroll-entry", v);
+      syncUI();
+    });
+
+  if (centerBul)
+    dragX(centerBul, (p) => {
+      const b = btn();
+      if (!b) return;
+      const v = midUnmap(p);
+      setVar(b, "--sc-vertical-scroll-center", v);
+      syncUI();
+    });
+
+  if (exitBul)
+    dragX(exitBul, (p) => {
+      const b = btn();
+      if (!b) return;
+      const v = midUnmap(p);
+      setVar(b, "--sc-vertical-scroll-exit", v);
+      syncUI();
+    });
+
+  function stepVar(name, delta) {
+    const b = btn();
+    if (!b) return;
+    const v = getVar(b, name, 0) + delta;
+    setVar(b, name, clamp(v, -100, 100));
+    syncUI();
+  }
+
+  if (entryInc)
+    entryInc.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-entry", +5)
+    );
+  if (entryDec)
+    entryDec.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-entry", -5)
+    );
+  if (centerInc)
+    centerInc.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-center", +5)
+    );
+  if (centerDec)
+    centerDec.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-center", -5)
+    );
+  if (exitInc)
+    exitInc.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-exit", +5)
+    );
+  if (exitDec)
+    exitDec.addEventListener("click", () =>
+      stepVar("--sc-vertical-scroll-exit", -5)
+    );
+
+  if (entryReset)
+    entryReset.addEventListener("click", () => {
+      const b = btn();
+      if (!b) return;
+      setVar(b, "--sc-vertical-scroll-entry", "-20");
+      syncUI();
+    });
+  if (centerReset)
+    centerReset.addEventListener("click", () => {
+      const b = btn();
+      if (!b) return;
+      setVar(b, "--sc-vertical-scroll-center", "0");
+      syncUI();
+    });
+  if (exitReset)
+    exitReset.addEventListener("click", () => {
+      const b = btn();
+      if (!b) return;
+      setVar(b, "--sc-vertical-scroll-exit", "20");
+      syncUI();
+    });
+  if (tlReset)
+    tlReset.addEventListener("click", () => {
+      const b = btn();
+      if (!b) return;
+      setVar(b, "--sc-vertical-scroll-start", "0");
+      setVar(b, "--sc-vertical-scroll-end", "100");
+      setVar(b, "--sc-vertical-scroll-entry", "-20");
+      setVar(b, "--sc-vertical-scroll-center", "0");
+      setVar(b, "--sc-vertical-scroll-exit", "20");
+      syncUI();
+    });
+
+  if (effectArrow && effectList) {
+    effectArrow.addEventListener("click", () => {
+      effectList.classList.toggle("sc-hidden");
+    });
+    effectList.querySelectorAll("[data-value]").forEach((item) => {
+      item.addEventListener("click", () => {
+        const val = item.getAttribute("data-value") || "none";
+        if (effectValueContainer) effectValueContainer.textContent = val;
+        effectList.classList.add("sc-hidden");
+      });
+    });
+    document.addEventListener("click", (e) => {
+      if (!effectList.contains(e.target) && !effectArrow.contains(e.target))
+        effectList.classList.add("sc-hidden");
+    });
+  }
+
+  const b0 = btn();
+  if (b0) {
+    ensureDefaults(b0);
+    syncUI();
+  }
+  const mo = new MutationObserver(() => {
+    syncUI();
+  });
+  mo.observe(root, { childList: true, subtree: true });
 }
+
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
