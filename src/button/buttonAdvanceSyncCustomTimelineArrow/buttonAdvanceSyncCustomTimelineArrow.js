@@ -424,24 +424,22 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
-    // allow scaled content to overflow its block container
-    const makeOverflowVisible = () => {
+    // allow overscale to render outside
+    (function makeOverflowVisible() {
       const set = (el) => {
         if (el) el.style.overflow = "visible";
       };
       set(selectedElement);
       set(selectedElement.parentElement);
       set(selectedElement.querySelector(".sqs-block-content"));
-      btn.style.transformOrigin ||= "50% 50%";
-      btn.style.willChange = "transform";
       if (
         !/relative|absolute|fixed|sticky/.test(getComputedStyle(btn).position)
-      ) {
+      )
         btn.style.position = "relative";
-      }
+      btn.style.transformOrigin ||= "50% 50%";
+      btn.style.willChange = "transform";
       btn.style.zIndex ||= "2";
-    };
-    makeOverflowVisible();
+    })();
 
     const readRaw = (v) => getComputedStyle(btn).getPropertyValue(v).trim();
     const readPct = (v, fb = 0) => {
@@ -489,28 +487,53 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let activeZone = null; // "entry" | "center" | "exit" while dragging those bullets
-    let lastAppliedScale = null;
-    let quickToScale = null;
+    let activeZone = null; // "entry" | "center" | "exit" while dragging
+    let rafId = null; // per-drag RAF loop
+    let lastApplied = null; // last scale applied
+    let quickTo = null; // gsap.quickTo for scale
     let quickEase = null;
     const EPS = 0.001;
 
     const ensureQuick = () => {
       if (!gs) return null;
       const e = easeName();
-      if (!quickToScale || quickEase !== e) {
+      if (!quickTo || quickEase !== e) {
         quickEase = e;
-        quickToScale = gs.quickTo(btn, "scale", {
-          duration: e === "none" ? 0.25 : 0.6,
+        quickTo = gs.quickTo(btn, "scale", {
+          duration: e === "none" ? 0.25 : 0.45,
           ease: e,
           overwrite: true,
         });
       }
-      return quickToScale;
+      return quickTo;
     };
 
-    const setScale1 = () => {
-      if (lastAppliedScale === null) return; // do nothing if we never applied
+    const applyScale = (sc) => {
+      if (gs) {
+        const q = ensureQuick();
+        q ? q(sc) : gs.set(btn, { scale: sc, overwrite: true });
+      } else {
+        // smooth fallback
+        const target = sc;
+        let s = lastApplied ?? 1;
+        const step = () => {
+          s += (target - s) * 0.18;
+          if (Math.abs(target - s) < 0.001) s = target;
+          const without = (btn.style.transform || "")
+            .replace(/(?:^|\s)scale\([^)]+\)/, "")
+            .trim();
+          btn.style.transform = (without + ` scale(${s})`).trim();
+          lastApplied = s;
+          if (s !== target && activeZone) rafId = requestAnimationFrame(step);
+        };
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(step);
+      }
+      lastApplied = sc;
+    };
+
+    const neutralizeScale = () => {
+      if (lastApplied == null || Math.abs(lastApplied - 1) < 1e-4) return;
       if (gs) {
         const q = ensureQuick();
         q ? q(1) : gs.set(btn, { scale: 1, overwrite: true });
@@ -520,38 +543,16 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           .trim();
         btn.style.transform = (without + " scale(1)").trim();
       }
-      lastAppliedScale = 1;
+      lastApplied = 1;
     };
 
-    const applyScale = (sc) => {
-      if (gs) {
-        const q = ensureQuick();
-        q ? q(sc) : gs.set(btn, { scale: sc, overwrite: true });
-      } else {
-        const cur = lastAppliedScale ?? sc;
-        const target = sc;
-        let s = cur;
-        const step = () => {
-          s += (target - s) * 0.18;
-          if (Math.abs(target - s) < 0.001) s = target;
-          const without = (btn.style.transform || "")
-            .replace(/(?:^|\s)scale\([^)]+\)/, "")
-            .trim();
-          btn.style.transform = (without + ` scale(${s})`).trim();
-          lastAppliedScale = s;
-          if (s !== target) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      }
-      lastAppliedScale = sc;
-    };
-
-    const updateScale = () => {
+    const computeScaleFromVars = () => {
       const t = getViewportProgress(selectedElement);
-      const s = start();
-      const e = end();
-
+      const s = start(),
+        e = end();
       const zone = t < s - EPS ? "before" : t > e + EPS ? "after" : "inside";
+
+      // Only respond when dragging the matching zone’s bullet
       const allowed =
         activeZone === "entry"
           ? "before"
@@ -561,10 +562,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           ? "after"
           : null;
 
-      if (!allowed || zone !== allowed) {
-        setScale1(); // keep other transforms, just return to neutral scale smoothly
-        return;
-      }
+      if (!allowed || zone !== allowed) return null;
 
       const varName =
         zone === "before"
@@ -576,29 +574,35 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       // map [-100..100]% → [0..2] with 1 at 0
       let pct = readPct(varName, 0);
       pct = Math.max(-100, Math.min(100, pct));
-      const sc = Math.max(0, 1 + pct / 100);
-
-      if (lastAppliedScale == null || Math.abs(lastAppliedScale - sc) > 1e-4) {
-        applyScale(sc);
-      }
+      return Math.max(0, 1 + pct / 100);
     };
 
+    const tick = () => {
+      if (!activeZone) return; // safety
+      const sc = computeScaleFromVars();
+      if (sc == null) {
+        neutralizeScale();
+      } else if (lastApplied == null || Math.abs(sc - lastApplied) > 1e-4) {
+        applyScale(sc);
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    // ScrollTrigger just for arrow color/position and to re-evaluate zone on scroll
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
         start: "top bottom",
         end: "bottom top",
         scrub: 1,
-        onUpdate: updateScale,
+        onUpdate: () => {
+          if (!activeZone) return; /* keep zone gating */
+        },
       });
       ST.refresh(true);
-    } else {
-      window.addEventListener("scroll", updateScale, { passive: true });
-      window.addEventListener("resize", updateScale, { passive: true });
     }
 
-    setInterval(updateScale, 120); // poll while UI writes CSS variables
-
+    // Drag sources (only these start styling)
     const entryBullet =
       document.getElementById("scale-button-advance-entry-bullet") ||
       document.getElementById("scale-advance-entry-bullet");
@@ -611,11 +615,13 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const onDown = (zoneKey) => {
       activeZone = zoneKey;
-      updateScale();
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
     };
     const onUp = () => {
       activeZone = null;
-      setScale1();
+      cancelAnimationFrame(rafId);
+      neutralizeScale();
     };
 
     if (entryBullet) {
@@ -636,12 +642,12 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         passive: true,
       });
     }
-
     document.addEventListener("mouseup", onUp);
     document.addEventListener("touchend", onUp, { passive: true });
     document.addEventListener("touchcancel", onUp, { passive: true });
 
-    function loopArrow() {
+    // Arrow loop
+    (function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
@@ -651,8 +657,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       else if (t > e + EPS) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
       requestAnimationFrame(loopArrow);
-    }
-    loopArrow();
+    })();
   }
 
   waitForElements((arrow) => {
@@ -664,6 +669,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
+
 
 
 
