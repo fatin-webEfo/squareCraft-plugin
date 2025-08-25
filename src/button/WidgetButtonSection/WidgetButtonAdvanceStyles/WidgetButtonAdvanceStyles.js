@@ -1112,7 +1112,7 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
     setCenter,
     setExit
   );
-  horizontalbutton_initEffectAnimationDropdownToggle();
+  horizontal_button_initEffectAnimationDropdownToggle();
 
   if (
     window.gsap &&
