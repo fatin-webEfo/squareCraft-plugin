@@ -493,6 +493,7 @@
     rotateinitButtonAdvanceStyles,
     blurinitButtonAdvanceStyles,
     button_initEffectAnimationDropdownToggle,
+    opacitybutton_initEffectAnimationDropdownToggle,
     horizontal_button_initEffectAnimationDropdownToggle,
   } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/WidgetButtonSection/WidgetButtonAdvanceStyles/WidgetButtonAdvanceStyles.js"
@@ -775,6 +776,7 @@
       initButtonIconPositionToggle(() => selectedElement);
       initEffectAnimationDropdownToggle(() => selectedElement);
       button_initEffectAnimationDropdownToggle(() => selectedElement);
+      opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
       horizontal_button_initEffectAnimationDropdownToggle(
         () => selectedElement
       );
@@ -1169,6 +1171,7 @@
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
+    opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
     horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
     initEffectAnimationDropdownToggle(() => selectedElement);
     horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
