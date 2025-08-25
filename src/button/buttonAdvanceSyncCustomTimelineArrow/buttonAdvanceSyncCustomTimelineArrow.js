@@ -424,17 +424,25 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
-    const readPct = (v, fb = 0) => {
-      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+    const readRaw = (v) => getComputedStyle(btn).getPropertyValue(v).trim();
+    const readPct = (v, fb = 100) => {
+      const raw = readRaw(v);
       const n = parseFloat(raw.replace("%", ""));
       return Number.isFinite(n) ? n : fb;
     };
+    const isActiveVar = (v) => {
+      const raw = readRaw(v);
+      if (raw === "") return false;
+      const n = parseFloat(raw.replace("%", ""));
+      return Number.isFinite(n) && Math.abs(n - 100) > 1e-4;
+    };
 
-    const entry = () => readPct("--sc-scale-scroll-entry", 100);
-    const center = () => readPct("--sc-scale-scroll-center", 100);
-    const exit = () => readPct("--sc-scale-scroll-exit", 100);
-    const start = () => readPct("--sc-scale-scroll-start", 0) / 100;
-    const end = () => readPct("--sc-scale-scroll-end", 100) / 100;
+    const start = () =>
+      (parseFloat(readRaw("--sc-scale-scroll-start").replace("%", "")) || 0) /
+      100;
+    const end = () =>
+      (parseFloat(readRaw("--sc-scale-scroll-end").replace("%", "")) || 100) /
+      100;
 
     const easeName = () => {
       const el = document.getElementById("scale-effect-animation-value");
@@ -469,9 +477,17 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let lastZone = null; // 'before' | 'inside' | 'after'
-    let lastTarget = null; // numeric scale target (0..∞)
+    let lastZone = null;
+    let lastScale = null;
     const EPS = 0.001;
+
+    const clearScale = () => {
+      if (gs) gs.killTweensOf(btn);
+      const cur = btn.style.transform || "";
+      const stripped = cur.replace(/(?:^|\s)scale\([^)]+\)/, "").trim();
+      if (stripped !== cur) btn.style.transform = stripped;
+      lastScale = null;
+    };
 
     const applyScale = (sc) => {
       const ease = easeName();
@@ -494,22 +510,28 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start();
       const e = end();
 
-      let zone;
-      if (t < s - EPS) zone = "before";
-      else if (t > e + EPS) zone = "after";
-      else zone = "inside";
+      const zone = t < s - EPS ? "before" : t > e + EPS ? "after" : "inside";
+      const varName =
+        zone === "before"
+          ? "--sc-scale-scroll-entry"
+          : zone === "after"
+          ? "--sc-scale-scroll-exit"
+          : "--sc-scale-scroll-center";
 
-      let targetPct;
-      if (zone === "before") targetPct = entry();
-      else if (zone === "after") targetPct = exit();
-      else targetPct = center();
-
-      targetPct = Math.max(0, targetPct);
-      const sc = targetPct / 100;
-
-      if (zone !== lastZone || Math.abs(sc - (lastTarget ?? -1)) > 1e-4) {
+      const active = isActiveVar(varName);
+      if (!active) {
+        if (lastZone !== zone || lastScale !== null) clearScale();
         lastZone = zone;
-        lastTarget = sc;
+        return;
+      }
+
+      let pct = readPct(varName, 100);
+      pct = Math.max(0, pct);
+      const sc = pct / 100;
+
+      if (zone !== lastZone || Math.abs((lastScale ?? -1) - sc) > 1e-4) {
+        lastZone = zone;
+        lastScale = sc;
         applyScale(sc);
       }
     };
@@ -556,7 +578,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
-
 
 
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
