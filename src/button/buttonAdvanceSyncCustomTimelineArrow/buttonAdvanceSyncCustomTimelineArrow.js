@@ -17,81 +17,87 @@ function getViewportProgress(el) {
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  // --------------------------
-  // helpers (scoped to function)
-  // --------------------------
-  const gsapOK = !!window.gsap && !!window.ScrollTrigger;
+  if (
+    window.__scBtnLastEl &&
+    typeof window.__scBtnLastEl.__scBtnCancel === "function"
+  ) {
+    window.__scBtnLastEl.__scBtnCancel();
+  }
+  window.__scBtnLastEl = selectedElement;
 
-  function ensureArrowBaseCSS() {
-    if (document.getElementById("sc-btn-arrow-css")) return;
-    const style = document.createElement("style");
-    style.id = "sc-btn-arrow-css";
-    style.textContent = `
-      #vertical-custom-timeline-border,
-      #Typo-vertical-custom-timeline-border {
-        position: relative;
-      }
-      #vertical-custom-timeline-arrow,
-      #Typo-vertical-custom-timeline-arrow {
-        position: absolute;
-        width: 2px;
-        height: 12px;
-        top: 6px;
-        left: 0%;
-        transform: translateX(-50%);
-        background: #fff;
-        z-index: 3;
-      }
-    `;
-    document.head.appendChild(style);
+  const SMOOTH_ARROW = 0.18;
+  const SMOOTH_Y = 0.15;
+  const EDGE_EPS = 0.015; // 1.5% of the span
+
+  const arrow = document.getElementById("vertical-custom-timeline-arrow");
+  const startBul = document.getElementById("vertical-timeline-start-bullet");
+  const endBul = document.getElementById("vertical-timeline-end-bullet");
+  const startFill = document.getElementById("vertical-timeline-start-fill");
+  const endFill = document.getElementById("vertical-timeline-end-fill");
+  if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  if (!window.gsap) {
+    arrow.style.transition ||=
+      "left 140ms ease-out, background-color 140ms ease-out";
+    startBul.style.transition ||= "left 140ms ease-out";
+    endBul.style.transition ||= "left 140ms ease-out";
+    startFill.style.transition ||=
+      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+    endFill.style.transition ||=
+      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
+  } else {
+    gsap.killTweensOf(arrow, "backgroundColor");
   }
 
-  function ensureArrowEl() {
-    ensureArrowBaseCSS();
-    const container =
-      document.getElementById("vertical-custom-timeline-border") ||
-      document.getElementById("Typo-vertical-custom-timeline-border") ||
-      selectedElement; // last resort
-    if (!container) return null;
-
-    let arrow =
-      document.getElementById("vertical-custom-timeline-arrow") ||
-      document.getElementById("Typo-vertical-custom-timeline-arrow");
-
-    if (!arrow) {
-      arrow = document.createElement("div");
-      arrow.id = "vertical-custom-timeline-arrow"; // normalize to "vertical-*"
-      container.appendChild(arrow);
-    }
-    arrow.classList.remove("sc-hidden");
-    arrow.style.display = "block";
-    return arrow;
-  }
+  const qArrowLeft =
+    (window.gsap && gsap.quickSetter(arrow, "left", "%")) ||
+    ((v) => (arrow.style.left = v + "%"));
 
   const getButton = () =>
     selectedElement.querySelector(
-      [
-        "a.sqs-button-element--primary",
-        "a.sqs-button-element--secondary",
-        "a.sqs-button-element--tertiary",
-        "a.sqs-block-button-element",
-        "button.sqs-button-element--primary",
-        "button.sqs-button-element--secondary",
-        "button.sqs-button-element--tertiary",
-      ].join(", ")
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
+        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     );
 
-  const readPct = (btn, cssVar, fallback = 0) => {
-    if (!btn) return fallback;
-    const v = getComputedStyle(btn).getPropertyValue(cssVar).trim();
+  const qBtnTrans = (v) => {
+    const b = getButton();
+    if (!b) return;
+    if (window.gsap) gsap.set(b, { transform: v, overwrite: true });
+    else {
+      b.style.transition ||= "transform 180ms ease-out";
+      b.style.transform = v;
+    }
+  };
+
+  const getPctVar = (el, cssVar, fallback = 0) => {
+    const v = getComputedStyle(el).getPropertyValue(cssVar).trim();
     const n = parseFloat(v.replace("%", ""));
     return Number.isFinite(n) ? n : fallback;
   };
 
+  const btn0 = getButton();
+  if (!btn0) return;
+
+  let startPct = getPctVar(btn0, "--sc-vertical-scroll-start", 0);
+  let endPct = getPctVar(btn0, "--sc-vertical-scroll-end", 100);
+  if (endPct < startPct + 4) endPct = startPct + 4;
+
+  const readTriplet = (btn) => ({
+    entry: getPctVar(btn, "--sc-vertical-scroll-entry", 0),
+    center: getPctVar(btn, "--sc-vertical-scroll-center", 0),
+    exit: getPctVar(btn, "--sc-vertical-scroll-exit", 0),
+  });
+
+  const dropdown = document.getElementById(
+    "vertical-effect-animation-type-list"
+  );
   const currentEase = () => {
-    const disp = document.getElementById("vertical-effect-animation-value");
-    const name =
-      disp?.getAttribute("data-value") || disp?.textContent?.trim() || "none";
+    const display = dropdown?.previousElementSibling?.querySelector(
+      "#vertical-effect-animation-value"
+    );
+    const name = display?.textContent?.trim() || "none";
     const map = {
       none: "none",
       Linear: "none",
@@ -110,190 +116,81 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     return map[name] || "none";
   };
 
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-  // --------------------------------
-  // cancel any previous running loop
-  // --------------------------------
-  if (
-    window.__scBtnLastEl &&
-    typeof window.__scBtnLastEl.__scBtnCancel === "function"
-  ) {
-    window.__scBtnLastEl.__scBtnCancel();
-  }
-  window.__scBtnLastEl = selectedElement;
-
-  // make sure required DOM exists
-  const arrow = ensureArrowEl();
-  const startBul = document.getElementById("vertical-timeline-start-bullet");
-  const endBul = document.getElementById("vertical-timeline-end-bullet");
-  const startFill = document.getElementById("vertical-timeline-start-fill");
-  const endFill = document.getElementById("vertical-timeline-end-fill");
-  if (!arrow || !startBul || !endBul || !startFill || !endFill) return;
-
-  // light transitions when GSAP not available
-  if (!gsapOK) {
-    arrow.style.transition ||=
-      "left 140ms ease-out, background-color 140ms ease-out";
-    startBul.style.transition ||= "left 140ms ease-out";
-    endBul.style.transition ||= "left 140ms ease-out";
-    startFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-    endFill.style.transition ||=
-      "width 140ms ease-out, left 140ms ease-out, background-color 140ms ease-out";
-  } else {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.killTweensOf(arrow, "backgroundColor");
-    ScrollTrigger.getAll().forEach((t) => {
-      if (t.trigger === selectedElement) t.kill();
-    });
-  }
-
-  // quick setters for perf
-  const qArrowLeft =
-    (gsapOK && gsap.quickSetter(arrow, "left", "%")) ||
-    ((v) => (arrow.style.left = v + "%"));
-
-  const qBtnTransform = (v) => {
-    const b = getButton();
-    if (!b) return;
-    if (gsapOK) gsap.set(b, { transform: v, overwrite: true });
-    else {
-      b.style.transition ||= "transform 180ms ease-out";
-      b.style.transform = v;
+  const ease01 = (t, easeName) => {
+    if (!window.gsap || easeName === "none") return t;
+    try {
+      return gsap.parseEase(easeName)(t);
+    } catch {
+      return t;
     }
   };
 
-  // ----------------------
-  // main animation routine
-  // ----------------------
   let running = true;
-  let smoothedLeft = null; // arrow %
-  let smoothedYvh = null; // translateY in vh
-  const SMOOTH_ARROW = 0.18;
-  const SMOOTH_Y = 0.15;
-  const EDGE_EPS = 0.015; // 1.5% for color edge
+  selectedElement.__scBtnRafActive = true;
+  selectedElement.__scBtnCancel = () => {
+    running = false;
+    selectedElement.__scBtnRafActive = false;
+    if (window.gsap) gsap.killTweensOf(arrow, "backgroundColor");
+  };
 
-  function applyBtnTransform() {
-    const btn = getButton();
-    if (!btn) return;
+  let smoothedLeft = null;
+  let smoothedYvh = null;
 
-    let s = readPct(btn, "--sc-vertical-scroll-start", 0);
-    let e = readPct(btn, "--sc-vertical-scroll-end", 100);
-    if (!(e > s)) e = s + 4;
-
-    const t01 = getViewportProgress(selectedElement); // 0..1
-    // compute y% from entry/center/exit
-    const entry = readPct(btn, "--sc-vertical-scroll-entry", 0);
-    const center = readPct(btn, "--sc-vertical-scroll-center", 0);
-    const exit = readPct(btn, "--sc-vertical-scroll-exit", 0);
-
-    let yPct;
-    if (t01 < s / 100) {
-      const k = s <= 0 ? 1 : Math.min(t01 / (s / 100), 1);
-      yPct = entry + (center - entry) * k;
-    } else if (t01 > e / 100) {
-      const k =
-        1 - e / 100 <= 0 ? 1 : Math.min((t01 - e / 100) / (1 - e / 100), 1);
-      yPct = center + (exit - center) * k;
-    } else {
-      yPct = center;
-    }
-
-    yPct = clamp(yPct, -50, 50);
-    const targetYvh = yPct / 2; // keep parity with Typo (value/2 → vh)
-
-    // smooth + apply
-    if (smoothedYvh == null) smoothedYvh = targetYvh;
-    smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
-
-    const easeName = currentEase();
-    if (gsapOK && easeName !== "none") {
-      const proxy = { y: smoothedYvh };
-      gsap.killTweensOf(proxy);
-      gsap.to(proxy, {
-        y: targetYvh,
-        ease: easeName,
-        duration: 0.6,
-        overwrite: true,
-        onUpdate: () => qBtnTransform(`translateY(${proxy.y.toFixed(2)}vh)`),
-      });
-    } else {
-      qBtnTransform(`translateY(${smoothedYvh.toFixed(2)}vh)`);
-    }
+  function applyArrowColor(p01) {
+    const c =
+      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
+    if (window.gsap) gsap.set(arrow, { backgroundColor: c, overwrite: true });
+    else arrow.style.backgroundColor = c;
   }
 
   function frame() {
-    if (!running || !document.body.contains(selectedElement)) return;
+    if (!running || !document.body.contains(selectedElement)) {
+      selectedElement.__scBtnRafActive = false;
+      return;
+    }
+    const btnNow = getButton();
+    if (!btnNow) {
+      selectedElement.__scBtnRafActive = false;
+      return;
+    }
 
-    const btn = getButton();
-    if (!btn) return;
+    startPct = getPctVar(btnNow, "--sc-vertical-scroll-start", startPct);
+    endPct = getPctVar(btnNow, "--sc-vertical-scroll-end", endPct);
+    if (endPct < startPct + 4) endPct = startPct + 4;
 
-    let s = readPct(btn, "--sc-vertical-scroll-start", 0);
-    let e = readPct(btn, "--sc-vertical-scroll-end", 100);
-    if (e < s + 4) e = s + 4;
+    const t = getViewportProgress(selectedElement) * 100;
+    const span = Math.max(1, endPct - startPct);
+    let p01 = (t - startPct) / span;
+    if (p01 < 0) p01 = 0;
+    else if (p01 > 1) p01 = 1;
 
-    const t01 = getViewportProgress(selectedElement);
-    const span = Math.max(1, e - s);
-    let p01 = (t01 * 100 - s) / span;
-    p01 = clamp(p01, 0, 1);
+    const targetLeft = startPct + p01 * span;
 
-    const targetLeft = s + p01 * span;
+    const trip = readTriplet(btnNow);
+    const eased = ease01(p01, currentEase());
+    const yPct =
+      eased <= 0
+        ? trip.entry
+        : eased >= 1
+        ? trip.exit
+        : eased <= 0.5
+        ? lerp(trip.entry, trip.center, eased / 0.5)
+        : lerp(trip.center, trip.exit, (eased - 0.5) / 0.5);
+    const targetYvh = yPct / 2;
 
     if (smoothedLeft == null) smoothedLeft = targetLeft;
+    if (smoothedYvh == null) smoothedYvh = targetYvh;
+
     smoothedLeft = lerp(smoothedLeft, targetLeft, SMOOTH_ARROW);
+    smoothedYvh = lerp(smoothedYvh, targetYvh, SMOOTH_Y);
+
     qArrowLeft(smoothedLeft);
+    applyArrowColor(p01);
+    qBtnTrans(`translateY(${smoothedYvh.toFixed(2)}vh)`);
 
-    // color by region (before/inside/after)
-    const c =
-      p01 <= EDGE_EPS ? "#EF7C2F" : p01 >= 1 - EDGE_EPS ? "#F6B67B" : "#FFFFFF";
-    if (gsapOK) gsap.set(arrow, { backgroundColor: c, overwrite: true });
-    else arrow.style.backgroundColor = c;
-
-    applyBtnTransform();
     requestAnimationFrame(frame);
   }
 
-  // -------------
-  // ScrollTrigger
-  // -------------
-  if (gsapOK) {
-    ScrollTrigger.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: applyBtnTransform,
-      onRefresh: applyBtnTransform,
-    });
-    ScrollTrigger.refresh(true);
-  } else {
-    // fallback listeners if GSAP not present
-    const onScrollResize = () => applyBtnTransform();
-    window.addEventListener("scroll", onScrollResize, { passive: true });
-    window.addEventListener("resize", onScrollResize, { passive: true });
-  }
-
-  // -------------------
-  // cancel/cleanup hook
-  // -------------------
-  selectedElement.__scBtnCancel = () => {
-    running = false;
-    if (gsapOK) {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-      const b = getButton();
-      if (b) gsap.killTweensOf(b);
-      gsap.killTweensOf(arrow);
-    } else {
-      window.removeEventListener("scroll", applyBtnTransform);
-      window.removeEventListener("resize", applyBtnTransform);
-    }
-  };
-
-  // kick off RAF loop (arrow & transform smoothing)
   requestAnimationFrame(frame);
 }
 
