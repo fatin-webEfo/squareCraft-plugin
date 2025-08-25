@@ -469,43 +469,48 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let lastScale = null;
+    let lastZone = null; // 'before' | 'inside' | 'after'
+    let lastTarget = null; // numeric scale target (0..∞)
+    const EPS = 0.001;
+
+    const applyScale = (sc) => {
+      const ease = easeName();
+      if (gs) {
+        gs.to(btn, {
+          scale: sc,
+          ease,
+          duration: ease === "none" ? 0.25 : 0.6,
+          overwrite: true,
+        });
+      } else {
+        const cur = btn.style.transform || "";
+        const withoutScale = cur.replace(/(?:^|\s)scale\([^)]+\)/, "").trim();
+        btn.style.transform = (withoutScale + " scale(" + sc + ")").trim();
+      }
+    };
 
     const updateScale = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
       const e = end();
-      const en = entry();
-      const ce = center();
-      const ex = exit();
 
-      let v;
-      if (t < s) {
-        const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        v = en + (ce - en) * k;
-      } else if (t > e) {
-        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        v = ce + (ex - ce) * k;
-      } else {
-        v = ce;
-      }
+      let zone;
+      if (t < s - EPS) zone = "before";
+      else if (t > e + EPS) zone = "after";
+      else zone = "inside";
 
-      v = Math.max(0, v); // prevent negative scale
-      const sc = v / 100;
+      let targetPct;
+      if (zone === "before") targetPct = entry();
+      else if (zone === "after") targetPct = exit();
+      else targetPct = center();
 
-      if (sc !== lastScale) {
-        lastScale = sc;
-        const ease = easeName();
-        if (gs) {
-          gs.to(btn, {
-            scale: sc,
-            ease,
-            duration: ease === "none" ? 0.25 : 0.6,
-            overwrite: true,
-          });
-        } else {
-          btn.style.transform = `scale(${sc})`;
-        }
+      targetPct = Math.max(0, targetPct);
+      const sc = targetPct / 100;
+
+      if (zone !== lastZone || Math.abs(sc - (lastTarget ?? -1)) > 1e-4) {
+        lastZone = zone;
+        lastTarget = sc;
+        applyScale(sc);
       }
     };
 
@@ -533,7 +538,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       arrow.style.transform = "translateX(-50%)";
       const s = start();
       const e = end();
-      const buffer = 0.001;
+      const buffer = EPS;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -551,6 +556,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
+
 
 
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
