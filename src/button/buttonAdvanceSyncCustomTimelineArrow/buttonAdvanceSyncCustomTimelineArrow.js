@@ -36,11 +36,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
     const start = () => getVar("--sc-vertical-scroll-start") / 100;
     const end = () => getVar("--sc-vertical-scroll-end") / 100;
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     let currentY = null;
     const updateYTransform = () => {
       const t = getViewportProgress(selectedElement);
@@ -75,7 +73,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         }
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -89,11 +86,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", updateYTransform, { passive: true });
       window.addEventListener("resize", updateYTransform, { passive: true });
     }
-
     const observer = new MutationObserver(updateYTransform);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateYTransform, 150);
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
@@ -143,7 +138,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     const exitX = () => getPct("--sc-horizontal-scroll-exit");
     const start = () => getPct("--sc-horizontal-scroll-start", 0) / 100;
     const end = () => getPct("--sc-horizontal-scroll-end", 100) / 100;
-
     const easeName = () => {
       const el = document.getElementById("horizontal-effect-animation-value");
       const n =
@@ -167,11 +161,9 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
       );
     };
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     let lastXPct = null;
     const updateXTransform = () => {
       const t = getViewportProgress(selectedElement);
@@ -206,7 +198,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
         }
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -220,11 +211,9 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
       window.addEventListener("scroll", updateXTransform, { passive: true });
       window.addEventListener("resize", updateXTransform, { passive: true });
     }
-
     const observer = new MutationObserver(updateXTransform);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateXTransform, 150);
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
@@ -264,7 +253,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function setupScrollAnimation(btn, arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const els = [btn, content, selectedElement].filter(Boolean);
-    const sticky = { entry: 0, center: 0, exit: 0, start: 0, end: 100 };
+    const mem = { entry: 0, center: 0, exit: 0, start: 0, end: 100 };
     const readPctVarSticky = (keys, k, fb) => {
       for (const el of els) {
         const cs = getComputedStyle(el);
@@ -273,13 +262,13 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           if (raw) {
             const v = parseFloat(String(raw).trim().replace("%", ""));
             if (Number.isFinite(v)) {
-              sticky[k] = v;
+              mem[k] = v;
               return v;
             }
           }
         }
       }
-      return typeof sticky[k] === "number" ? sticky[k] : fb;
+      return typeof mem[k] === "number" ? mem[k] : fb;
     };
     const entry = () =>
       readPctVarSticky(
@@ -311,7 +300,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "end",
         100
       ) / 100;
-
     const easeName = () => {
       const el = document.getElementById("opacity-effect-animation-value");
       const n =
@@ -335,11 +323,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
       );
     };
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     let lastOpacity = null;
     const updateOpacity = () => {
       const t = getViewportProgress(selectedElement);
@@ -373,7 +359,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         else btn.style.opacity = String(op);
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -387,18 +372,16 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", updateOpacity, { passive: true });
       window.addEventListener("resize", updateOpacity, { passive: true });
     }
-
     const observer = new MutationObserver(updateOpacity);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateOpacity, 150);
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
+      const s = start(),
+        e = end(),
+        buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -435,7 +418,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setOverflow(selectedElement.querySelector(".sqs-block-content"));
     if (!btn.style.transformOrigin) btn.style.transformOrigin = "50% 50%";
     btn.style.willChange = "transform";
-
     const getPct = (v, fb = 0) => {
       const raw = getComputedStyle(btn).getPropertyValue(v).trim();
       const n = parseFloat(raw.replace("%", ""));
@@ -446,7 +428,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const exitPct = () => getPct("--sc-scale-scroll-exit", 0);
     const start = () => getPct("--sc-scale-scroll-start", 0) / 100;
     const end = () => getPct("--sc-scale-scroll-end", 100) / 100;
-
     const easeName = () => {
       const el = document.getElementById("scale-effect-animation-value");
       const n =
@@ -470,11 +451,9 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
       );
     };
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     let lastScale = null;
     const updateScale = () => {
       const t = getViewportProgress(selectedElement);
@@ -512,7 +491,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         }
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -526,11 +504,9 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", updateScale, { passive: true });
       window.addEventListener("resize", updateScale, { passive: true });
     }
-
     const observer = new MutationObserver(updateScale);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateScale, 150);
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
@@ -581,7 +557,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const exitRot = () => readDeg("--sc-rotate-scroll-exit", 0);
     const start = () => readPct("--sc-rotate-scroll-start", 0) / 100;
     const end = () => readPct("--sc-rotate-scroll-end", 100) / 100;
-
     const easeName = () => {
       const el = document.getElementById("rotate-effect-animation-value");
       const n =
@@ -605,18 +580,15 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
       );
     };
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     let lastDeg = null;
     const setRotateFallback = (deg) => {
       const cur = btn.style.transform || "";
       const without = cur.replace(/(?:^|\s)rotate\([^)]+\)/, "").trim();
       btn.style.transform = (without + ` rotate(${deg}deg)`).trim();
     };
-
     const updateRotation = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -647,7 +619,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         else setRotateFallback(deg);
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -661,11 +632,9 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", updateRotation, { passive: true });
       window.addEventListener("resize", updateRotation, { passive: true });
     }
-
     const observer = new MutationObserver(updateRotation);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateRotation, 150);
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
@@ -703,65 +672,53 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function setupScrollAnimation(btn, arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const readers = [btn, content, selectedElement].filter(Boolean);
-
-    const hasPctVar = (names) => {
-      for (const el of readers) {
-        const cs = getComputedStyle(el);
-        for (const n of names) {
-          const raw = cs.getPropertyValue(n);
-          const v = parseFloat(String(raw).trim().replace("%", ""));
-          if (Number.isFinite(v)) return true;
-        }
-      }
-      return false;
-    };
-    const setVarOnTargets = (names, val) => {
-      const targets = [btn, content].filter(Boolean);
-      names.forEach((n) => targets.forEach((t) => t.style.setProperty(n, val)));
-    };
-    const ensureDefaultPct = (names, def = "0%") => {
-      if (!hasPctVar(names)) setVarOnTargets(names, def);
-    };
-    ensureDefaultPct(
-      ["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"],
-      "0%"
-    );
-    ensureDefaultPct(
-      ["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"],
-      "0%"
-    );
-    ensureDefaultPct(
-      ["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"],
-      "0%"
-    );
-
-    const getPctVar = (names, fb = 0) => {
+    const mem = { entry: 0, center: 0, exit: 0, start: 0, end: 100 };
+    const getPctVarSticky = (names, k, fb = 0) => {
       for (const el of readers) {
         const cs = getComputedStyle(el);
         for (const n of names) {
           const raw = cs.getPropertyValue(n);
           if (raw) {
             const v = parseFloat(String(raw).trim().replace("%", ""));
-            if (Number.isFinite(v)) return v;
+            if (Number.isFinite(v)) {
+              mem[k] = v;
+              return v;
+            }
           }
         }
       }
-      return fb;
+      return typeof mem[k] === "number" ? mem[k] : fb;
     };
-
     const entryVal = () =>
-      getPctVar(["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"], 0);
+      getPctVarSticky(
+        ["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"],
+        "entry",
+        0
+      );
     const centerVal = () =>
-      getPctVar(["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"], 0);
+      getPctVarSticky(
+        ["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"],
+        "center",
+        0
+      );
     const exitVal = () =>
-      getPctVar(["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"], 0);
+      getPctVarSticky(
+        ["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"],
+        "exit",
+        0
+      );
     const start = () =>
-      getPctVar(["--sc-blur-scroll-start", "--sc-Typo-blur-scroll-start"], 0) /
-      100;
+      getPctVarSticky(
+        ["--sc-blur-scroll-start", "--sc-Typo-blur-scroll-start"],
+        "start",
+        0
+      ) / 100;
     const end = () =>
-      getPctVar(["--sc-blur-scroll-end", "--sc-Typo-blur-scroll-end"], 100) /
-      100;
-
+      getPctVarSticky(
+        ["--sc-blur-scroll-end", "--sc-Typo-blur-scroll-end"],
+        "end",
+        100
+      ) / 100;
     const easeName = () => {
       const el = document.getElementById("blur-effect-animation-value");
       const n =
@@ -785,11 +742,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
       );
     };
-
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-
     const computedFilter =
       getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
@@ -798,7 +753,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt, 0px))";
     if (!btn.style.getPropertyValue("--sc-blur-amt"))
       btn.style.setProperty("--sc-blur-amt", "0px");
-
     let lastBlur = null;
     const updateBlur = () => {
       const t = getViewportProgress(selectedElement);
@@ -823,17 +777,16 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = easeName();
         if (gs) {
           gs.to(btn, {
+            "--sc-blur-amt": `${b}px`,
             duration: ease === "none" ? 0.25 : 0.6,
             ease,
             overwrite: "auto",
-            css: { "--sc-blur-amt": `${b}px` },
           });
         } else {
           btn.style.setProperty("--sc-blur-amt", `${b}px`);
         }
       }
     };
-
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
@@ -847,12 +800,10 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("scroll", updateBlur, { passive: true });
       window.addEventListener("resize", updateBlur, { passive: true });
     }
-
     const observer = new MutationObserver(updateBlur);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateBlur, 150);
     updateBlur();
-
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
