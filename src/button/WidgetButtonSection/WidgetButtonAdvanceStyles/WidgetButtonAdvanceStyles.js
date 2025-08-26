@@ -1582,37 +1582,47 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
   bindTripletInput(centerCount, setCenter);
   bindTripletInput(exitCount, setExit);
 
-  function makeDraggable(bullet, setter, type, min = 0, max = 100) {
-    if (!bullet) return;
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      const container = bullet.parentElement;
-      const rect = container.getBoundingClientRect();
-      const onMove = (ev) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, ev.touches ? ev.touches[0].clientX : ev.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        let v = Math.round(percent);
-        if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
-        if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
-        if (type === "normal") v = Math.max(min, Math.min(v, max));
-        setter(v);
-      };
-      const onUp = () => {
-        document.removeEventListener("mousemove", onMove);
-        document.removeEventListener("mouseup", onUp);
-        document.removeEventListener("touchmove", onMove);
-        document.removeEventListener("touchend", onUp);
-      };
-      document.addEventListener("mousemove", onMove);
-      document.addEventListener("mouseup", onUp, { once: true });
-      document.addEventListener("touchmove", onMove, { passive: false });
-      document.addEventListener("touchend", onUp, { once: true });
-    };
-  }
+ function makeDraggable(bullet, setter, type, min = 0, max = 100) {
+   if (!bullet) return;
+
+   const startDrag = (startEvent) => {
+     startEvent.preventDefault();
+     const container = bullet.parentElement;
+     const rect = container.getBoundingClientRect();
+
+     const move = (ev) => {
+       const isTouch = ev.touches && ev.touches.length;
+       const clientX = Math.max(
+         rect.left,
+         Math.min(rect.right, isTouch ? ev.touches[0].clientX : ev.clientX)
+       );
+       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
+       let v = Math.round(percent);
+       if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
+       if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
+       if (type === "normal") v = Math.max(min, Math.min(v, max));
+       setter(v);
+     };
+
+     const end = () => {
+       document.removeEventListener("mousemove", move);
+       document.removeEventListener("mouseup", end);
+       document.removeEventListener("touchmove", move);
+       document.removeEventListener("touchend", end);
+       document.removeEventListener("touchcancel", end);
+     };
+
+     document.addEventListener("mousemove", move);
+     document.addEventListener("mouseup", end, { once: true });
+     document.addEventListener("touchmove", move, { passive: false });
+     document.addEventListener("touchend", end, { once: true });
+     document.addEventListener("touchcancel", end, { once: true });
+   };
+
+   bullet.addEventListener("mousedown", startDrag);
+   bullet.addEventListener("touchstart", startDrag, { passive: false });
+ }
+
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
   makeDraggable(entryBullet, setEntry, "normal");
