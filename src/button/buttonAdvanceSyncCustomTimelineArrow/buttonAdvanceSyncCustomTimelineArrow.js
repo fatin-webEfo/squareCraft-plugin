@@ -16,7 +16,6 @@ function getViewportProgress(el) {
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("vertical-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -27,7 +26,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
     const getVar = (v) =>
       parseFloat(
@@ -41,15 +39,9 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
     let currentY = null;
-
     const updateYTransform = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -76,7 +68,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
             y: `${y}vh`,
             ease,
             duration: ease === "none" ? 0 : 0.6,
-            overwrite: true,
+            overwrite: "auto",
           });
         } else {
           btn.style.transform = `translateY(${y}vh)`;
@@ -114,10 +106,8 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       else arrow.style.backgroundColor = "#FFFFFF";
       requestAnimationFrame(loopArrow);
     }
-
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -132,7 +122,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
 ) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("horizontal-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -143,7 +132,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
     const getPct = (v, fb = 0) => {
       const raw = getComputedStyle(btn).getPropertyValue(v).trim();
@@ -182,15 +170,9 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
     let lastXPct = null;
-
     const updateXTransform = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -217,7 +199,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
             x: target,
             ease,
             duration: ease === "none" ? 0.25 : 0.6,
-            overwrite: true,
+            overwrite: "auto",
           });
         } else {
           btn.style.transform = `translateX(${target})`;
@@ -257,7 +239,6 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     }
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -268,11 +249,8 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   });
 }
 
-export const __keep_getViewportProgress = getViewportProgress;
-
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("opacity-custom-timeline-arrow");
     const startBullet = document.getElementById(
@@ -283,13 +261,10 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const els = [btn, content, selectedElement].filter(Boolean);
-
     const sticky = { entry: 0, center: 0, exit: 0, start: 0, end: 100 };
-
     const readPctVarSticky = (keys, k, fb) => {
       for (const el of els) {
         const cs = getComputedStyle(el);
@@ -306,7 +281,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
       return typeof sticky[k] === "number" ? sticky[k] : fb;
     };
-
     const entry = () =>
       readPctVarSticky(
         ["--sc-opacity-scroll-entry", "--sc-Typo-opacity-scroll-entry"],
@@ -364,15 +338,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
     let lastOpacity = null;
-
     const updateOpacity = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -395,16 +363,14 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (op !== lastOpacity) {
         lastOpacity = op;
         const ease = easeName();
-        if (gs) {
+        if (gs)
           gs.to(btn, {
             opacity: op,
             ease,
             duration: ease === "none" ? 0.25 : 0.6,
-            overwrite: true,
+            overwrite: "auto",
           });
-        } else {
-          btn.style.opacity = String(op);
-        }
+        else btn.style.opacity = String(op);
       }
     };
 
@@ -430,9 +396,9 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start(),
-        e = end(),
-        buffer = 0.001;
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -440,7 +406,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -451,12 +416,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
-
-
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("scale-custom-timeline-arrow");
     const startBullet = document.getElementById("scale-timeline-start-bullet");
@@ -465,27 +426,21 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
-    // let the scaled element spill outside its container
-    const prepare = () => {
-      const set = (el) => {
-        if (el) el.style.overflow = "visible";
-      };
-      set(selectedElement);
-      set(selectedElement.parentElement);
-      set(selectedElement.querySelector(".sqs-block-content"));
-      if (!btn.style.transformOrigin) btn.style.transformOrigin = "50% 50%";
-      btn.style.willChange = "transform";
+    const setOverflow = (el) => {
+      if (el) el.style.overflow = "visible";
     };
-    prepare();
+    setOverflow(selectedElement);
+    setOverflow(selectedElement.parentElement);
+    setOverflow(selectedElement.querySelector(".sqs-block-content"));
+    if (!btn.style.transformOrigin) btn.style.transformOrigin = "50% 50%";
+    btn.style.willChange = "transform";
 
     const getPct = (v, fb = 0) => {
       const raw = getComputedStyle(btn).getPropertyValue(v).trim();
       const n = parseFloat(raw.replace("%", ""));
       return Number.isFinite(n) ? n : fb;
     };
-
     const entryPct = () => getPct("--sc-scale-scroll-entry", 0);
     const centerPct = () => getPct("--sc-scale-scroll-center", 0);
     const exitPct = () => getPct("--sc-scale-scroll-exit", 0);
@@ -518,15 +473,9 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
     let lastScale = null;
-
     const updateScale = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -534,8 +483,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const en = entryPct();
       const ce = centerPct();
       const ex = exitPct();
-
-      let p; // percentage in [-100..100]
+      let p;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
         p = en + (ce - en) * k;
@@ -545,10 +493,8 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         p = ce;
       }
-
       p = Math.max(-100, Math.min(100, p));
-      const sc = Math.max(0, 1 + p / 100); // map to [0..2], neutral at 1
-
+      const sc = Math.max(0, 1 + p / 100);
       if (sc !== lastScale) {
         lastScale = sc;
         const ease = easeName();
@@ -557,10 +503,9 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
             scale: sc,
             duration: ease === "none" ? 0.25 : 0.6,
             ease,
-            overwrite: true,
+            overwrite: "auto",
           });
         } else {
-          // fallback: minimal smoothing
           btn.style.transform =
             (btn.style.transform || "").replace(/scale\([^)]+\)/, "").trim() +
             ` scale(${sc})`;
@@ -600,7 +545,6 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -611,11 +555,8 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
-
 export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("rotate-custom-timeline-arrow");
     const startBullet = document.getElementById("rotate-timeline-start-bullet");
@@ -624,7 +565,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
     const readDeg = (v, fb = 0) => {
       const raw = getComputedStyle(btn).getPropertyValue(v).trim();
@@ -636,7 +576,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const n = parseFloat(raw.replace("%", ""));
       return Number.isFinite(n) ? n : fb;
     };
-
     const entryRot = () => readDeg("--sc-rotate-scroll-entry", 0);
     const centerRot = () => readDeg("--sc-rotate-scroll-center", 0);
     const exitRot = () => readDeg("--sc-rotate-scroll-exit", 0);
@@ -669,15 +608,9 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
     let lastDeg = null;
-
     const setRotateFallback = (deg) => {
       const cur = btn.style.transform || "";
       const without = cur.replace(/(?:^|\s)rotate\([^)]+\)/, "").trim();
@@ -691,7 +624,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const en = entryRot();
       const ce = centerRot();
       const ex = exitRot();
-
       let deg;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -702,20 +634,17 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         deg = ce;
       }
-
       if (deg !== lastDeg) {
         lastDeg = deg;
         const ease = easeName();
-        if (gs) {
+        if (gs)
           gs.to(btn, {
             rotation: deg,
             ease,
             duration: ease === "none" ? 0.25 : 0.6,
-            overwrite: true,
+            overwrite: "auto",
           });
-        } else {
-          setRotateFallback(deg);
-        }
+        else setRotateFallback(deg);
       }
     };
 
@@ -751,7 +680,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -762,10 +690,8 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-
   function waitForElements(callback, retries = 20) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
     const startBullet = document.getElementById("blur-timeline-start-bullet");
@@ -774,12 +700,10 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-
   function setupScrollAnimation(btn, arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const readers = [btn, content, selectedElement].filter(Boolean);
 
-    // ---------- set defaults: entry/center/exit = 0% ----------
     const hasPctVar = (names) => {
       for (const el of readers) {
         const cs = getComputedStyle(el);
@@ -810,7 +734,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       ["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"],
       "0%"
     );
-    // ----------------------------------------------------------
 
     const getPctVar = (names, fb = 0) => {
       for (const el of readers) {
@@ -865,14 +788,8 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
-    if (gs && ST) {
-      gs.registerPlugin(ST);
-      ST.getAll().forEach((t) => {
-        if (t.trigger === selectedElement) t.kill();
-      });
-    }
+    if (gs && ST) gs.registerPlugin(ST);
 
-    // Build valid base filter (strip 'none' & prior blur)
     const computedFilter =
       getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
@@ -883,7 +800,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       btn.style.setProperty("--sc-blur-amt", "0px");
 
     let lastBlur = null;
-
     const updateBlur = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
@@ -891,7 +807,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const en = entryVal();
       const ce = centerVal();
       const ex = exitVal();
-
       let b;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -902,9 +817,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         b = ce;
       }
-
       b = Math.max(0, Math.min(100, b));
-
       if (b !== lastBlur) {
         lastBlur = b;
         const ease = easeName();
@@ -912,7 +825,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           gs.to(btn, {
             duration: ease === "none" ? 0.25 : 0.6,
             ease,
-            overwrite: true,
+            overwrite: "auto",
             css: { "--sc-blur-amt": `${b}px` },
           });
         } else {
@@ -938,15 +851,15 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const observer = new MutationObserver(updateBlur);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateBlur, 150);
-    updateBlur(); // initialize once
+    updateBlur();
 
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start(),
-        e = end(),
-        buffer = 0.001;
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
@@ -954,7 +867,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     }
     loopArrow();
   }
-
   waitForElements((arrow) => {
     const btn =
       selectedElement.querySelector(
@@ -962,63 +874,5 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       ) || selectedElement;
     if (!btn) return;
     setupScrollAnimation(btn, arrow);
-  });
-}
-
-
-export function initButtonAdvanceScrollEffectReset(getSelectedElement) {
-  const resetBtn = document.getElementById("button-advance-scroll-reset");
-  if (!resetBtn) return;
-
-  resetBtn.addEventListener("click", () => {
-    const block = getSelectedElement();
-    if (!block) return;
-
-    const btn = block.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary," +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    );
-    if (!btn) return;
-
-    btn.removeAttribute("style");
-    btn.style.transform = "";
-    btn.style.opacity = "";
-    btn.style.filter = "";
-    btn.style.scale = "";
-    btn.style.rotate = "";
-    btn.style.transformOrigin = "";
-
-    btn.style.removeProperty("transform");
-    btn.style.removeProperty("opacity");
-    btn.style.removeProperty("filter");
-    btn.style.removeProperty("scale");
-    btn.style.removeProperty("rotate");
-    btn.style.removeProperty("transform-origin");
-
-    btn.style.removeProperty("--sc-vertical-scroll-entry");
-    btn.style.removeProperty("--sc-vertical-scroll-center");
-    btn.style.removeProperty("--sc-vertical-scroll-exit");
-
-    btn.style.removeProperty("--sc-horizontal-scroll-entry");
-    btn.style.removeProperty("--sc-horizontal-scroll-center");
-    btn.style.removeProperty("--sc-horizontal-scroll-exit");
-
-    btn.style.removeProperty("--sc-opacity-scroll-entry");
-    btn.style.removeProperty("--sc-opacity-scroll-center");
-    btn.style.removeProperty("--sc-opacity-scroll-exit");
-
-    btn.style.removeProperty("--sc-scale-scroll-entry");
-    btn.style.removeProperty("--sc-scale-scroll-center");
-    btn.style.removeProperty("--sc-scale-scroll-exit");
-
-    btn.style.removeProperty("--sc-rotate-scroll-entry");
-    btn.style.removeProperty("--sc-rotate-scroll-center");
-    btn.style.removeProperty("--sc-rotate-scroll-exit");
-
-    btn.style.removeProperty("--sc-blur-scroll-entry");
-    btn.style.removeProperty("--sc-blur-scroll-center");
-    btn.style.removeProperty("--sc-blur-scroll-exit");
-
-    console.log("🎯 Scroll Effects Reset for", btn);
   });
 }
