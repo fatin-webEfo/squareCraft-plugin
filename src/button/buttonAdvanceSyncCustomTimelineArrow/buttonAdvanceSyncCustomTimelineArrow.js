@@ -268,24 +268,7 @@ export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   });
 }
 
-
-if (typeof getViewportProgress !== "function") {
-  function getViewportProgress(el) {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    if (vh <= 0) return 0.5;
-    const toolbar = document.querySelector(
-      '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-    );
-    const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-    const visibleTop = th;
-    const visibleHeight = Math.max(1, vh - th);
-    const r = el.getBoundingClientRect();
-    const center = r.top + r.height / 2;
-    let t = (center - visibleTop) / visibleHeight;
-    if (Number.isNaN(t)) t = 0.5;
-    return Math.max(0, Math.min(1, t));
-  }
-}
+export const __keep_getViewportProgress = getViewportProgress;
 
 export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
