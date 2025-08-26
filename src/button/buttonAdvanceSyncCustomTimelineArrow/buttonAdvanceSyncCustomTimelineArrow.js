@@ -287,43 +287,62 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   function setupScrollAnimation(btn, arrow) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const els = [btn, content, selectedElement].filter(Boolean);
-    const readPctVar = (names, fb = 0) => {
+
+    const sticky = {
+      entry: 0,
+      center: 0,
+      exit: 0,
+      start: 0,
+      end: 1,
+    };
+
+    const readPctVarSticky = (keys, k, fb) => {
       for (const el of els) {
         const cs = getComputedStyle(el);
-        for (const n of names) {
-          const raw = cs.getPropertyValue(n);
+        for (const name of keys) {
+          const raw = cs.getPropertyValue(name);
           if (raw) {
             const v = parseFloat(String(raw).trim().replace("%", ""));
-            if (Number.isFinite(v)) return v;
+            if (Number.isFinite(v)) {
+              sticky[k] = v;
+              return v;
+            }
           }
         }
       }
+      // return last good value instead of a hard default
+      if (typeof sticky[k] === "number") return sticky[k];
       return fb;
     };
 
     const entry = () =>
-      readPctVar(
+      readPctVarSticky(
         ["--sc-opacity-scroll-entry", "--sc-Typo-opacity-scroll-entry"],
+        "entry",
         0
       );
     const center = () =>
-      readPctVar(
+      readPctVarSticky(
         ["--sc-opacity-scroll-center", "--sc-Typo-opacity-scroll-center"],
+        "center",
         0
       );
     const exit = () =>
-      readPctVar(
+      readPctVarSticky(
         ["--sc-opacity-scroll-exit", "--sc-Typo-opacity-scroll-exit"],
+        "exit",
         0
       );
     const start = () =>
-      readPctVar(
+      readPctVarSticky(
         ["--sc-opacity-scroll-start", "--sc-Typo-opacity-scroll-start"],
+        "start",
         0
       ) / 100;
     const end = () =>
-      readPctVar(
+      readPctVarSticky(
         ["--sc-opacity-scroll-end", "--sc-Typo-opacity-scroll-end"],
+        "end",
         100
       ) / 100;
 
@@ -369,6 +388,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const en = entry();
       const ce = center();
       const ex = exit();
+
       let v;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -379,19 +399,23 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         v = ce;
       }
+
       v = Math.max(0, Math.min(100, v));
       const op = v / 100;
+
       if (op !== lastOpacity) {
         lastOpacity = op;
         const ease = easeName();
-        if (gs)
+        if (gs) {
           gs.to(btn, {
             opacity: op,
             ease,
             duration: ease === "none" ? 0.25 : 0.6,
             overwrite: true,
           });
-        else btn.style.opacity = String(op);
+        } else {
+          btn.style.opacity = String(op);
+        }
       }
     };
 
@@ -417,12 +441,11 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
-      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
-      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
-      else arrow.style.backgroundColor = "#FFFFFF";
+      const s = start(),
+        e = end(),
+        buffer = 0.001;
+      arrow.style.backgroundColor =
+        t < s - buffer ? "#EF7C2F" : t > e + buffer ? "#F6B67B" : "#FFFFFF";
       requestAnimationFrame(loopArrow);
     }
     loopArrow();
