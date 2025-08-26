@@ -760,17 +760,35 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
-    const getPct = (v, fb = 0) => {
-      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
-      const n = parseFloat(raw.replace("%", ""));
-      return Number.isFinite(n) ? n : fb;
+    const content = selectedElement.querySelector(".sqs-block-content");
+    const readers = [btn, content, selectedElement].filter(Boolean);
+
+    const getPctVar = (names, fb = 0) => {
+      for (const el of readers) {
+        const cs = getComputedStyle(el);
+        for (const n of names) {
+          const raw = cs.getPropertyValue(n);
+          if (raw) {
+            const v = parseFloat(String(raw).trim().replace("%", ""));
+            if (Number.isFinite(v)) return v;
+          }
+        }
+      }
+      return fb;
     };
 
-    const entryVal = () => getPct("--sc-blur-scroll-entry", 0);
-    const centerVal = () => getPct("--sc-blur-scroll-center", 0);
-    const exitVal = () => getPct("--sc-blur-scroll-exit", 0);
-    const start = () => getPct("--sc-blur-scroll-start", 0) / 100;
-    const end = () => getPct("--sc-blur-scroll-end", 100) / 100;
+    const entryVal = () =>
+      getPctVar(["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"], 0);
+    const centerVal = () =>
+      getPctVar(["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"], 0);
+    const exitVal = () =>
+      getPctVar(["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"], 0);
+    const start = () =>
+      getPctVar(["--sc-blur-scroll-start", "--sc-Typo-blur-scroll-start"], 0) /
+      100;
+    const end = () =>
+      getPctVar(["--sc-blur-scroll-end", "--sc-Typo-blur-scroll-end"], 100) /
+      100;
 
     const easeName = () => {
       const el = document.getElementById("blur-effect-animation-value");
@@ -805,16 +823,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    // prepare a CSS variable for blur so we don't clobber other filters
-    const currentFilter = (getComputedStyle(btn).filter || "")
-      .replace(/blur\([^)]+\)/, "")
-      .trim();
+    const computedFilter =
+      getComputedStyle(btn).getPropertyValue("filter") || "";
+    const baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
     btn.style.filter =
-      (currentFilter ? currentFilter + " " : "") +
-      "blur(var(--sc-blur-amt, 0px))";
-    if (!btn.style.getPropertyValue("--sc-blur-amt")) {
-      btn.style.setProperty("--sc-blur-amt", "0");
-    }
+      (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt, 0px))";
+    if (!btn.style.getPropertyValue("--sc-blur-amt"))
+      btn.style.setProperty("--sc-blur-amt", "0px");
 
     let lastBlur = null;
 
@@ -826,7 +841,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const ce = centerVal();
       const ex = exitVal();
 
-      let b; // blur amount in px (0..100)
+      let b;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
         b = en + (ce - en) * k;
@@ -836,6 +851,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         b = ce;
       }
+
       b = Math.max(0, Math.min(100, b));
 
       if (b !== lastBlur) {
@@ -843,13 +859,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         const ease = easeName();
         if (gs) {
           gs.to(btn, {
-            "--sc-blur-amt": b,
+            "--sc-blur-amt": `${b}px`,
             duration: ease === "none" ? 0.25 : 0.6,
             ease,
             overwrite: true,
           });
         } else {
-          btn.style.setProperty("--sc-blur-amt", String(b));
+          btn.style.setProperty("--sc-blur-amt", `${b}px`);
         }
       }
     };
@@ -876,9 +892,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start();
-      const e = end();
-      const buffer = 0.001;
+      const s = start(),
+        e = end(),
+        buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
