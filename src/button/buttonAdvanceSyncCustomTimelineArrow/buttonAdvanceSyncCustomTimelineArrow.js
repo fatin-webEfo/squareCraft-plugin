@@ -829,16 +829,16 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 }
 
 
-export function logButtonAdvanceScrollEffectStyle(target) {
-  const el = typeof target === "function" ? target() : target;
-  const s = getButtonAdvanceScrollEffectStyle(el);
-  if (!s) {
-    console.log("button advance scroll effect style = null");
-    return;
-  }
-  console.log(
-    "button advance scroll effect style =\n" + JSON.stringify(s, null, 2)
-  );
-}
+// export function logButtonAdvanceScrollEffectStyle(target) {
+//   const el = typeof target === "function" ? target() : target;
+//   const s = getButtonAdvanceScrollEffectStyle(el);
+//   if (!s) {
+//     console.log("button advance scroll effect style = null");
+//     return;
+//   }
+//   console.log(
+//     "button advance scroll effect style =\n" + JSON.stringify(s, null, 2)
+//   );
+// }
 
-logButtonAdvanceScrollEffectStyle(selectedElement);
+// logButtonAdvanceScrollEffectStyle(selectedElement);
