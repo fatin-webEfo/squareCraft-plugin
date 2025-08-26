@@ -839,9 +839,11 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
+    // -- FIX 1: build a valid base filter (remove 'none' and any existing blur())
     const computedFilter =
       getComputedStyle(btn).getPropertyValue("filter") || "";
-    const baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
+    let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
+    if (baseFilter === "none") baseFilter = "";
     btn.style.filter =
       (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt, 0px))";
     if (!btn.style.getPropertyValue("--sc-blur-amt"))
@@ -857,7 +859,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const ce = centerVal();
       const ex = exitVal();
 
-      let b;
+      let b; // 0..100 (px)
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
         b = en + (ce - en) * k;
@@ -873,12 +875,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (b !== lastBlur) {
         lastBlur = b;
         const ease = easeName();
+        // -- FIX 2: tween CSS var via 'css:' so CSSPlugin handles it
         if (gs) {
           gs.to(btn, {
-            "--sc-blur-amt": `${b}px`,
             duration: ease === "none" ? 0.25 : 0.6,
             ease,
             overwrite: true,
+            css: { "--sc-blur-amt": `${b}px` },
           });
         } else {
           btn.style.setProperty("--sc-blur-amt", `${b}px`);
@@ -900,9 +903,11 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("resize", updateBlur, { passive: true });
     }
 
+    // keep in sync with UI updates
     const observer = new MutationObserver(updateBlur);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateBlur, 150);
+    updateBlur(); // set initial value
 
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
