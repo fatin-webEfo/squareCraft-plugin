@@ -934,7 +934,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
-
 export function initButtonAdvanceScrollEffectReset(getSelectedElement) {
   const resetBtn = document.getElementById("button-advance-scroll-reset");
   if (!resetBtn) return;
