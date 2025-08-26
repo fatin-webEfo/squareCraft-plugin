@@ -285,17 +285,47 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
-    const read = (v, fb = 0) => {
-      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
-      const n = parseFloat(raw.replace("%", ""));
-      return Number.isFinite(n) ? n : fb;
+    const content = selectedElement.querySelector(".sqs-block-content");
+    const els = [btn, content, selectedElement].filter(Boolean);
+    const readPctVar = (names, fb = 0) => {
+      for (const el of els) {
+        const cs = getComputedStyle(el);
+        for (const n of names) {
+          const raw = cs.getPropertyValue(n);
+          if (raw) {
+            const v = parseFloat(String(raw).trim().replace("%", ""));
+            if (Number.isFinite(v)) return v;
+          }
+        }
+      }
+      return fb;
     };
 
-    const entry = () => read("--sc-opacity-scroll-entry", 100);
-    const center = () => read("--sc-opacity-scroll-center", 100);
-    const exit = () => read("--sc-opacity-scroll-exit", 100);
-    const start = () => read("--sc-opacity-scroll-start", 0) / 100;
-    const end = () => read("--sc-opacity-scroll-end", 100) / 100;
+    const entry = () =>
+      readPctVar(
+        ["--sc-opacity-scroll-entry", "--sc-Typo-opacity-scroll-entry"],
+        0
+      );
+    const center = () =>
+      readPctVar(
+        ["--sc-opacity-scroll-center", "--sc-Typo-opacity-scroll-center"],
+        0
+      );
+    const exit = () =>
+      readPctVar(
+        ["--sc-opacity-scroll-exit", "--sc-Typo-opacity-scroll-exit"],
+        0
+      );
+    const start = () =>
+      readPctVar(
+        ["--sc-opacity-scroll-start", "--sc-Typo-opacity-scroll-start"],
+        0
+      ) / 100;
+    const end = () =>
+      readPctVar(
+        ["--sc-opacity-scroll-end", "--sc-Typo-opacity-scroll-end"],
+        100
+      ) / 100;
 
     const easeName = () => {
       const el = document.getElementById("opacity-effect-animation-value");
@@ -339,7 +369,6 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const en = entry();
       const ce = center();
       const ex = exit();
-
       let v;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -350,10 +379,8 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else {
         v = ce;
       }
-
       v = Math.max(0, Math.min(100, v));
       const op = v / 100;
-
       if (op !== lastOpacity) {
         lastOpacity = op;
         const ease = easeName();
@@ -424,37 +451,30 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 
   function setupScrollAnimation(btn, arrow) {
-    // allow scaled content to overflow its block container
-    const makeOverflowVisible = () => {
+    // let the scaled element spill outside its container
+    const prepare = () => {
       const set = (el) => {
         if (el) el.style.overflow = "visible";
       };
       set(selectedElement);
       set(selectedElement.parentElement);
       set(selectedElement.querySelector(".sqs-block-content"));
-      btn.style.transformOrigin ||= "50% 50%";
+      if (!btn.style.transformOrigin) btn.style.transformOrigin = "50% 50%";
       btn.style.willChange = "transform";
-      if (
-        !/relative|absolute|fixed|sticky/.test(getComputedStyle(btn).position)
-      ) {
-        btn.style.position = "relative";
-      }
-      btn.style.zIndex ||= "2";
     };
-    makeOverflowVisible();
+    prepare();
 
-    const readRaw = (v) => getComputedStyle(btn).getPropertyValue(v).trim();
-    const readPct = (v, fb = 0) => {
-      const n = parseFloat(readRaw(v).replace("%", ""));
+    const getPct = (v, fb = 0) => {
+      const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+      const n = parseFloat(raw.replace("%", ""));
       return Number.isFinite(n) ? n : fb;
     };
 
-    const start = () =>
-      (parseFloat(readRaw("--sc-scale-scroll-start").replace("%", "")) || 0) /
-      100;
-    const end = () =>
-      (parseFloat(readRaw("--sc-scale-scroll-end").replace("%", "")) || 100) /
-      100;
+    const entryPct = () => getPct("--sc-scale-scroll-entry", 0);
+    const centerPct = () => getPct("--sc-scale-scroll-center", 0);
+    const exitPct = () => getPct("--sc-scale-scroll-exit", 0);
+    const start = () => getPct("--sc-scale-scroll-start", 0) / 100;
+    const end = () => getPct("--sc-scale-scroll-end", 100) / 100;
 
     const easeName = () => {
       const el = document.getElementById("scale-effect-animation-value");
@@ -489,97 +509,46 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    let activeZone = null; // "entry" | "center" | "exit" while dragging those bullets
-    let lastAppliedScale = null;
-    let quickToScale = null;
-    let quickEase = null;
-    const EPS = 0.001;
-
-    const ensureQuick = () => {
-      if (!gs) return null;
-      const e = easeName();
-      if (!quickToScale || quickEase !== e) {
-        quickEase = e;
-        quickToScale = gs.quickTo(btn, "scale", {
-          duration: e === "none" ? 0.25 : 0.6,
-          ease: e,
-          overwrite: true,
-        });
-      }
-      return quickToScale;
-    };
-
-    const setScale1 = () => {
-      if (lastAppliedScale === null) return; // do nothing if we never applied
-      if (gs) {
-        const q = ensureQuick();
-        q ? q(1) : gs.set(btn, { scale: 1, overwrite: true });
-      } else {
-        const without = (btn.style.transform || "")
-          .replace(/(?:^|\s)scale\([^)]+\)/, "")
-          .trim();
-        btn.style.transform = (without + " scale(1)").trim();
-      }
-      lastAppliedScale = 1;
-    };
-
-    const applyScale = (sc) => {
-      if (gs) {
-        const q = ensureQuick();
-        q ? q(sc) : gs.set(btn, { scale: sc, overwrite: true });
-      } else {
-        const cur = lastAppliedScale ?? sc;
-        const target = sc;
-        let s = cur;
-        const step = () => {
-          s += (target - s) * 0.18;
-          if (Math.abs(target - s) < 0.001) s = target;
-          const without = (btn.style.transform || "")
-            .replace(/(?:^|\s)scale\([^)]+\)/, "")
-            .trim();
-          btn.style.transform = (without + ` scale(${s})`).trim();
-          lastAppliedScale = s;
-          if (s !== target) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      }
-      lastAppliedScale = sc;
-    };
+    let lastScale = null;
 
     const updateScale = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
       const e = end();
+      const en = entryPct();
+      const ce = centerPct();
+      const ex = exitPct();
 
-      const zone = t < s - EPS ? "before" : t > e + EPS ? "after" : "inside";
-      const allowed =
-        activeZone === "entry"
-          ? "before"
-          : activeZone === "center"
-          ? "inside"
-          : activeZone === "exit"
-          ? "after"
-          : null;
-
-      if (!allowed || zone !== allowed) {
-        setScale1(); // keep other transforms, just return to neutral scale smoothly
-        return;
+      let p; // percentage in [-100..100]
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        p = en + (ce - en) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        p = ce + (ex - ce) * k;
+      } else {
+        p = ce;
       }
 
-      const varName =
-        zone === "before"
-          ? "--sc-scale-scroll-entry"
-          : zone === "after"
-          ? "--sc-scale-scroll-exit"
-          : "--sc-scale-scroll-center";
+      p = Math.max(-100, Math.min(100, p));
+      const sc = Math.max(0, 1 + p / 100); // map to [0..2], neutral at 1
 
-      // map [-100..100]% → [0..2] with 1 at 0
-      let pct = readPct(varName, 0);
-      pct = Math.max(-100, Math.min(100, pct));
-      const sc = Math.max(0, 1 + pct / 100);
-
-      if (lastAppliedScale == null || Math.abs(lastAppliedScale - sc) > 1e-4) {
-        applyScale(sc);
+      if (sc !== lastScale) {
+        lastScale = sc;
+        const ease = easeName();
+        if (gs) {
+          gs.to(btn, {
+            scale: sc,
+            duration: ease === "none" ? 0.25 : 0.6,
+            ease,
+            overwrite: true,
+          });
+        } else {
+          // fallback: minimal smoothing
+          btn.style.transform =
+            (btn.style.transform || "").replace(/scale\([^)]+\)/, "").trim() +
+            ` scale(${sc})`;
+        }
       }
     };
 
@@ -597,58 +566,19 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("resize", updateScale, { passive: true });
     }
 
-    setInterval(updateScale, 120); // poll while UI writes CSS variables
-
-    const entryBullet =
-      document.getElementById("scale-button-advance-entry-bullet") ||
-      document.getElementById("scale-advance-entry-bullet");
-    const centerBullet =
-      document.getElementById("scale-button-advance-center-bullet") ||
-      document.getElementById("scale-advance-center-bullet");
-    const exitBullet =
-      document.getElementById("scale-button-advance-exit-bullet") ||
-      document.getElementById("scale-advance-exit-bullet");
-
-    const onDown = (zoneKey) => {
-      activeZone = zoneKey;
-      updateScale();
-    };
-    const onUp = () => {
-      activeZone = null;
-      setScale1();
-    };
-
-    if (entryBullet) {
-      entryBullet.addEventListener("mousedown", () => onDown("entry"));
-      entryBullet.addEventListener("touchstart", () => onDown("entry"), {
-        passive: true,
-      });
-    }
-    if (centerBullet) {
-      centerBullet.addEventListener("mousedown", () => onDown("center"));
-      centerBullet.addEventListener("touchstart", () => onDown("center"), {
-        passive: true,
-      });
-    }
-    if (exitBullet) {
-      exitBullet.addEventListener("mousedown", () => onDown("exit"));
-      exitBullet.addEventListener("touchstart", () => onDown("exit"), {
-        passive: true,
-      });
-    }
-
-    document.addEventListener("mouseup", onUp);
-    document.addEventListener("touchend", onUp, { passive: true });
-    document.addEventListener("touchcancel", onUp, { passive: true });
+    const observer = new MutationObserver(updateScale);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateScale, 150);
 
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start(),
-        e = end();
-      if (t < s - EPS) arrow.style.backgroundColor = "#EF7C2F";
-      else if (t > e + EPS) arrow.style.backgroundColor = "#F6B67B";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
       requestAnimationFrame(loopArrow);
     }
