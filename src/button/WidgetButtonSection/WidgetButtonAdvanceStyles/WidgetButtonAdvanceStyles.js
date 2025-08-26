@@ -1125,7 +1125,46 @@ export function horizontalinitButtonAdvanceStyles(getSelectedElement) {
 
 // horizontal
 
-// Opacity
+function __scSetOpacityVarOnButton(blockEl, cssVar, valPct) {
+  const v = `${Math.max(0, Math.min(100, valPct))}%`;
+  const content = blockEl?.querySelector(".sqs-block-content");
+  const btn =
+    blockEl?.querySelector(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    ) || blockEl;
+  const twin = cssVar.replace("--sc-opacity-", "--sc-Typo-opacity-");
+  if (btn) {
+    btn.style.setProperty(cssVar, v);
+    btn.style.setProperty(twin, v);
+  }
+  if (content) {
+    content.style.setProperty(cssVar, v);
+    content.style.setProperty(twin, v);
+  }
+}
+
+export function opacitybutton_initEffectAnimationDropdownToggle() {
+  const arrow = document.getElementById("opacity-effect-animation-type-arrow");
+  const list = document.getElementById("opacity-effect-animation-type-list");
+  const display = document.getElementById("opacity-effect-animation-value");
+  if (!arrow || !list || !display) return;
+  arrow.onclick = () => list.classList.toggle("sc-hidden");
+  const items = list.querySelectorAll("[data-value]");
+  items.forEach((item) => {
+    item.onclick = () => {
+      const selected = item.getAttribute("data-value");
+      display.textContent = item.textContent.trim();
+      display.setAttribute("data-value", selected);
+      window.__typoScrollEase = selected;
+      list.classList.add("sc-hidden");
+    };
+  });
+  document.addEventListener("click", (e) => {
+    if (!arrow.contains(e.target) && !list.contains(e.target))
+      list.classList.add("sc-hidden");
+  });
+}
+
 export function opacityattachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
@@ -1138,11 +1177,11 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
   let keyHoldTimeout = null;
   let lastPressedKey = null;
 
-  let entryVal = 0;
-  let centerVal = 0;
-  let exitVal = 0;
-  let startVal = 0;
-  let endVal = 0;
+  let entryVal = 0,
+    centerVal = 0,
+    exitVal = 0,
+    startVal = 0,
+    endVal = 100;
 
   function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
     const btnInc = document.getElementById(idIncrease);
@@ -1151,9 +1190,6 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
     const clickHandler = (type) => {
       let val = getCurrent();
       val = type === "inc" ? val + 1 : val - 1;
-
-      const min = 0;
-
       if (bulletId.includes("start")) {
         val = Math.max(0, Math.min(val, endVal - 4));
         startVal = val;
@@ -1161,9 +1197,8 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
         val = Math.max(startVal + 4, Math.min(val, 100));
         endVal = val;
       } else {
-        val = Math.max(min, Math.min(100, val));
+        val = Math.max(0, Math.min(100, val));
       }
-
       updateFn(val);
       const countId = bulletId.replace(
         "bullet",
@@ -1200,7 +1235,8 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
     const el = document.getElementById(id);
     if (!el) return 0;
     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(String(raw).replace("%", "")) || 0;
+    const n = parseInt(String(raw).replace(/[^\d-]/g, ""), 10);
+    return Number.isFinite(n) ? n : 0;
   };
 
   setup(
@@ -1224,19 +1260,20 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
     updateExit,
     "opacity-button-advance-exit-bullet"
   );
-
-  const startBullet = document.getElementById("opacity-timeline-start-bullet");
-  const endBullet = document.getElementById("opacity-timeline-end-bullet");
-  if (startBullet)
-    startBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "opacity-timeline-start-bullet")
-    );
-  if (endBullet)
-    endBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "opacity-timeline-end-bullet")
-    );
+  setup(
+    "opacity-timeline-start-increase",
+    "opacity-timeline-start-decrease",
+    () => getVal("opacity-timelineStartValue"),
+    updateStart,
+    "opacity-timeline-start-bullet"
+  );
+  setup(
+    "opacity-timeline-end-increase",
+    "opacity-timeline-end-decrease",
+    () => getVal("opacity-timelineEndValue"),
+    updateEnd,
+    "opacity-timeline-end-bullet"
+  );
 
   document.addEventListener("keydown", (e) => {
     if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
@@ -1313,7 +1350,7 @@ export function opacityattachAdvanceTimelineIncrementDecrement(
   });
 }
 
-function opacityattachCustomTimelineReset(
+export function opacityattachCustomTimelineReset(
   updateStart,
   updateEnd,
   updateEntry,
@@ -1325,50 +1362,10 @@ function opacityattachCustomTimelineReset(
     btn.onclick = () => {
       updateStart(0);
       updateEnd(100);
-      updateEntry(100);
-      updateCenter(100);
-      updateExit(100);
+      updateEntry(0);
+      updateCenter(0);
+      updateExit(0);
     };
-}
-
-export function opacitybutton_initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("opacity-effect-animation-type-arrow");
-  const list = document.getElementById("opacity-effect-animation-type-list");
-  const display = document.getElementById("opacity-effect-animation-value");
-  if (!arrow || !list || !display) return;
-
-  arrow.onclick = () => {
-    list.classList.toggle("sc-hidden");
-  };
-
-  const items = list.querySelectorAll("[data-value]");
-  items.forEach((item) => {
-    item.onclick = () => {
-      const selected = item.getAttribute("data-value");
-      display.textContent = item.textContent.trim();
-      display.setAttribute("data-value", selected);
-      try {
-        const el =
-          typeof getSelectedElement === "function"
-            ? getSelectedElement()
-            : null;
-        const btn =
-          el?.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          ) || el;
-        if (btn)
-          btn.style.setProperty("--sc-opacity-effect-animation", selected);
-        window.__typoScrollEase = selected;
-      } catch {}
-      list.classList.add("sc-hidden");
-    };
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!arrow.contains(e.target) && !list.contains(e.target)) {
-      list.classList.add("sc-hidden");
-    }
-  });
 }
 
 export function opacityinitButtonAdvanceStyles(getSelectedElement) {
@@ -1477,47 +1474,27 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       `#${el.id} button.sqs-button-element--primary,` +
       `#${el.id} button.sqs-button-element--secondary,` +
       `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
+    __scSetOpacityVarOnButton(el, cssVar, val);
   }
 
   const updateField =
     (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
     (val) => {
       val = Math.max(min, Math.min(max, val));
-
       if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
       else countEl.textContent = `${val}%`;
-
-      if (
-        cssVar === "--sc-opacity-scroll-entry" ||
-        cssVar === "--sc-opacity-scroll-center" ||
-        cssVar === "--sc-opacity-scroll-exit"
-      ) {
-        const percent = val;
-        gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0%",
-          width: `${percent}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-
-        const a = document.getElementById("opacity-custom-timeline-arrow");
-        if (cssVar === "--sc-opacity-scroll-entry" && a)
-          a.style.left = `${percent}%`;
+      window.gsap?.set(bullet, { left: `${val}%`, xPercent: -50 });
+      if (position === "left") {
+        window.gsap?.set(fill, { width: `${val}%`, left: "0" });
       } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        if (position === "left") {
-          gsap.set(fill, { width: `${val}%`, left: "0" });
-        } else {
-          gsap.set(endFill, {
-            left: "auto",
-            transform: `scaleX(${(100 - val) / 100})`,
-            transformOrigin: "right",
-            width: "100%",
-            backgroundColor: "#F6B67B",
-          });
-        }
+        window.gsap?.set(fill, {
+          left: "auto",
+          transform: `scaleX(${(100 - val) / 100})`,
+          transformOrigin: "right",
+          width: "100%",
+          backgroundColor: "#F6B67B",
+        });
       }
-
       writeVar(cssVar, val);
     };
 
@@ -1545,52 +1522,44 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
       100
     )(endPct);
   };
+
   const setEntry = updateField(
     entryBullet,
     entryFill,
     entryCount,
-    "--sc-opacity-scroll-entry",
-    "left",
-    0,
-    100
+    "--sc-opacity-scroll-entry"
   );
   const setCenter = updateField(
     centerBullet,
     centerFill,
     centerCount,
-    "--sc-opacity-scroll-center",
-    "left",
-    0,
-    100
+    "--sc-opacity-scroll-center"
   );
   const setExit = updateField(
     exitBullet,
     exitFill,
     exitCount,
-    "--sc-opacity-scroll-exit",
-    "left",
-    0,
-    100
+    "--sc-opacity-scroll-exit"
   );
 
-  setEntry(entryPct || 100);
-  setCenter(centerPct || 100);
-  setExit(exitPct || 100);
+  setEntry(entryPct);
+  setCenter(centerPct);
+  setExit(exitPct);
   setStart(startPct);
-  gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
+  window.gsap?.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
   setEnd(endPct);
 
   function bindTripletInput(input, fn) {
     input.addEventListener("input", (e) => {
-      let v = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(v)) v = 0;
+      let v = parseInt(String(e.target.value).replace(/[^\d-]/g, ""), 10);
+      if (!Number.isFinite(v)) v = 0;
       v = Math.max(0, Math.min(100, v));
       e.target.value = v + "%";
       fn(v);
     });
     input.addEventListener("blur", (e) => {
-      let v = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(v)) v = 0;
+      let v = parseInt(String(e.target.value).replace(/[^\d-]/g, ""), 10);
+      if (!Number.isFinite(v)) v = 0;
       v = Math.max(0, Math.min(100, v));
       e.target.value = v + "%";
       fn(v);
@@ -1605,8 +1574,8 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
         e.preventDefault();
     });
     input.addEventListener("focus", (e) => {
-      const v = parseInt(e.target.value.replace("%", "").trim()) || 0;
-      e.target.value = v;
+      const v = parseInt(String(e.target.value).replace(/[^\d-]/g, ""), 10);
+      e.target.value = Number.isFinite(v) ? v : 0;
     });
   }
   bindTripletInput(entryCount, setEntry);
@@ -1646,14 +1615,14 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
   }
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
-  makeDraggable(entryBullet, setEntry, "normal", 0, 100);
-  makeDraggable(centerBullet, setCenter, "normal", 0, 100);
-  makeDraggable(exitBullet, setExit, "normal", 0, 100);
+  makeDraggable(entryBullet, setEntry, "normal");
+  makeDraggable(centerBullet, setCenter, "normal");
+  makeDraggable(exitBullet, setExit, "normal");
 
   [
-    { id: "opacity-button-advance-entry-reset", setter: () => setEntry(100) },
-    { id: "opacity-button-advance-center-reset", setter: () => setCenter(100) },
-    { id: "opacity-button-advance-exit-reset", setter: () => setExit(100) },
+    { id: "opacity-button-advance-entry-reset", setter: () => setEntry(0) },
+    { id: "opacity-button-advance-center-reset", setter: () => setCenter(0) },
+    { id: "opacity-button-advance-exit-reset", setter: () => setExit(0) },
   ].forEach(({ id, setter }) => {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
@@ -1683,7 +1652,6 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
     opacitybuttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
-
 
 // Opacity
 
