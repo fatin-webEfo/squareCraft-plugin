@@ -779,6 +779,39 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const content = selectedElement.querySelector(".sqs-block-content");
     const readers = [btn, content, selectedElement].filter(Boolean);
 
+    // ---------- set defaults: entry/center/exit = 0% ----------
+    const hasPctVar = (names) => {
+      for (const el of readers) {
+        const cs = getComputedStyle(el);
+        for (const n of names) {
+          const raw = cs.getPropertyValue(n);
+          const v = parseFloat(String(raw).trim().replace("%", ""));
+          if (Number.isFinite(v)) return true;
+        }
+      }
+      return false;
+    };
+    const setVarOnTargets = (names, val) => {
+      const targets = [btn, content].filter(Boolean);
+      names.forEach((n) => targets.forEach((t) => t.style.setProperty(n, val)));
+    };
+    const ensureDefaultPct = (names, def = "0%") => {
+      if (!hasPctVar(names)) setVarOnTargets(names, def);
+    };
+    ensureDefaultPct(
+      ["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"],
+      "0%"
+    );
+    ensureDefaultPct(
+      ["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"],
+      "0%"
+    );
+    ensureDefaultPct(
+      ["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"],
+      "0%"
+    );
+    // ----------------------------------------------------------
+
     const getPctVar = (names, fb = 0) => {
       for (const el of readers) {
         const cs = getComputedStyle(el);
@@ -839,7 +872,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       });
     }
 
-    // -- FIX 1: build a valid base filter (remove 'none' and any existing blur())
+    // Build valid base filter (strip 'none' & prior blur)
     const computedFilter =
       getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
@@ -859,7 +892,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const ce = centerVal();
       const ex = exitVal();
 
-      let b; // 0..100 (px)
+      let b;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
         b = en + (ce - en) * k;
@@ -875,7 +908,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       if (b !== lastBlur) {
         lastBlur = b;
         const ease = easeName();
-        // -- FIX 2: tween CSS var via 'css:' so CSSPlugin handles it
         if (gs) {
           gs.to(btn, {
             duration: ease === "none" ? 0.25 : 0.6,
@@ -903,11 +935,10 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       window.addEventListener("resize", updateBlur, { passive: true });
     }
 
-    // keep in sync with UI updates
     const observer = new MutationObserver(updateBlur);
     observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
     setInterval(updateBlur, 150);
-    updateBlur(); // set initial value
+    updateBlur(); // initialize once
 
     function loopArrow() {
       const t = getViewportProgress(selectedElement);
@@ -933,6 +964,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
+
 
 export function initButtonAdvanceScrollEffectReset(getSelectedElement) {
   const resetBtn = document.getElementById("button-advance-scroll-reset");
