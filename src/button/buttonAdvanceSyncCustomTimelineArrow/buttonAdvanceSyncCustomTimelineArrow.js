@@ -667,11 +667,19 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
     const startBullet = document.getElementById("blur-timeline-start-bullet");
     const endBullet = document.getElementById("blur-timeline-end-bullet");
-    if (arrow && startBullet && endBullet) callback(arrow);
+    const entryBullet = document.getElementById("blur-timeline-entry-bullet");
+    const centerBullet = document.getElementById("blur-timeline-center-bullet");
+    const exitBullet = document.getElementById("blur-timeline-exit-bullet");
+    if (arrow && startBullet && endBullet)
+      callback({ arrow, entryBullet, centerBullet, exitBullet });
     else if (retries > 0)
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
-  function setupScrollAnimation(btn, arrow) {
+  function setupScrollAnimation(btn, refs) {
+    const arrow = refs.arrow;
+    const entryBullet = refs.entryBullet;
+    const centerBullet = refs.centerBullet;
+    const exitBullet = refs.exitBullet;
     const content = selectedElement.querySelector(".sqs-block-content");
     const readers = [btn, content, selectedElement].filter(Boolean);
     const readPctOr = (names, fb = 0) => {
@@ -687,44 +695,81 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
       return fb;
     };
-    const entryVal = () =>
-      readPctOr(["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"], 0);
-    const centerVal = () =>
-      readPctOr(["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"], 0);
-    const exitVal = () =>
-      readPctOr(["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"], 0);
     const start = () =>
       readPctOr(["--sc-blur-scroll-start", "--sc-Typo-blur-scroll-start"], 0) /
       100;
     const end = () =>
       readPctOr(["--sc-blur-scroll-end", "--sc-Typo-blur-scroll-end"], 100) /
       100;
-    const easeName = () => {
-      const el = document.getElementById("blur-effect-animation-value");
-      const n =
-        el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
-      const map = {
-        none: "none",
-        Linear: "none",
-        linear: "none",
-        "ease-in": "power1.in",
-        "ease-out": "power1.out",
-        "ease-in-out": "power1.inOut",
-        "power1.out": "power1.out",
-        "power2.out": "power2.out",
-        "power3.out": "power3.out",
-        "power4.out": "power4.out",
-        "expo.out": "expo.out",
-        "elastic.out": "elastic.out",
-        "bounce.out": "bounce.out",
-      };
-      return (
-        map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
-      );
-    };
     const gs = window.gsap;
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
+    const ensureVar = (el, name, val) => {
+      const cv = el.style.getPropertyValue(name);
+      if (!cv) el.style.setProperty(name, val);
+    };
+    [selectedElement, btn, content].forEach((el) => {
+      if (!el) return;
+      ensureVar(el, "--sc-blur-scroll-entry", "0%");
+      ensureVar(el, "--sc-blur-scroll-center", "0%");
+      ensureVar(el, "--sc-blur-scroll-exit", "0%");
+    });
+    const pctOf = (names, fb = 0) => readPctOr(names, fb);
+    const entryVal = () =>
+      pctOf(["--sc-blur-scroll-entry", "--sc-Typo-blur-scroll-entry"], 0);
+    const centerVal = () =>
+      pctOf(["--sc-blur-scroll-center", "--sc-Typo-blur-scroll-center"], 0);
+    const exitVal = () =>
+      pctOf(["--sc-blur-scroll-exit", "--sc-Typo-blur-scroll-exit"], 0);
+    const placeBulletFromVar = (bullet, v) => {
+      if (!bullet) return;
+      bullet.style.left = v + "%";
+      bullet.style.transform = "translateX(-50%)";
+    };
+    placeBulletFromVar(entryBullet, entryVal());
+    placeBulletFromVar(centerBullet, centerVal());
+    placeBulletFromVar(exitBullet, exitVal());
+    const setVarAll = (name, valPct) => {
+      const v = valPct + "%";
+      if (btn) btn.style.setProperty(name, v);
+      if (content) content.style.setProperty(name, v);
+      selectedElement.style.setProperty(name, v);
+    };
+    const bindDrag = (bullet, varName) => {
+      if (!bullet) return;
+      const track =
+        bullet.parentElement || arrow?.parentElement || document.body;
+      const move = (clientX) => {
+        const rect = track.getBoundingClientRect();
+        let pct =
+          rect.width > 0 ? ((clientX - rect.left) / rect.width) * 100 : 0;
+        pct = Math.max(0, Math.min(100, pct));
+        setVarAll(varName, pct);
+        bullet.style.left = pct + "%";
+        bullet.style.transform = "translateX(-50%)";
+        updateBlur();
+      };
+      const onDown = (e) => {
+        e.preventDefault();
+        const onMove = (ev) =>
+          move(ev.touches ? ev.touches[0].clientX : ev.clientX);
+        const onUp = () => {
+          document.removeEventListener("mousemove", onMove);
+          document.removeEventListener("mouseup", onUp);
+          document.removeEventListener("touchmove", onMove);
+          document.removeEventListener("touchend", onUp);
+        };
+        document.addEventListener("mousemove", onMove, { passive: false });
+        document.addEventListener("mouseup", onUp);
+        document.addEventListener("touchmove", onMove, { passive: false });
+        document.addEventListener("touchend", onUp);
+      };
+      bullet.addEventListener("mousedown", onDown);
+      bullet.addEventListener("touchstart", onDown, { passive: false });
+    };
+    bindDrag(entryBullet, "--sc-blur-scroll-entry");
+    bindDrag(centerBullet, "--sc-blur-scroll-center");
+    bindDrag(exitBullet, "--sc-blur-scroll-exit");
     const computedFilter =
       getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
@@ -754,12 +799,11 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       b = Math.max(0, Math.min(100, b));
       if (b !== lastBlur) {
         lastBlur = b;
-        const ease = easeName();
         if (gs) {
           gs.to(btn, {
             "--sc-blur-amt": `${b}px`,
-            duration: ease === "none" ? 0.25 : 0.6,
-            ease,
+            duration: 0.25,
+            ease: "none",
             overwrite: "auto",
           });
         } else {
@@ -797,14 +841,18 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       requestAnimationFrame(loopArrow);
     }
     loopArrow();
+    if (entryBullet && !entryBullet.style.left) entryBullet.style.left = "0%";
+    if (centerBullet && !centerBullet.style.left)
+      centerBullet.style.left = "0%";
+    if (exitBullet && !exitBullet.style.left) exitBullet.style.left = "0%";
   }
-  waitForElements((arrow) => {
+  waitForElements((refs) => {
     const btn =
       selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-    setupScrollAnimation(btn, arrow);
+    setupScrollAnimation(btn, refs);
   });
 }
 
