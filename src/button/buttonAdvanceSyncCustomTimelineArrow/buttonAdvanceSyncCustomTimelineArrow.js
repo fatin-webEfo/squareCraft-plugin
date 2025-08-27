@@ -715,7 +715,6 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     });
 }
 
-
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
   function wait(cb, retries = 20) {
@@ -962,7 +961,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setup(btn, refs);
   });
 }
-
 
 export function initButtonAdvanceScrollEffectReset(target) {
   const el = typeof target === "function" ? target() : target;
