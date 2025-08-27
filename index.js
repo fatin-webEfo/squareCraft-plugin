@@ -2,7 +2,7 @@ let __sc_ai_pipe = null;
 let __sc_tf_ready = false;
 let __sc_ui = null;
 
-async function __sc_load_tf() {
+export async function __sc_load_tf() {
   if (__sc_tf_ready) return;
   await new Promise((res, rej) => {
     const s = document.createElement("script");
