@@ -174,6 +174,14 @@ function __sc_ai_ui() {
 
   __sc_ui = box;
   return box;
+
+  function __btn(text, onClick) {
+    const button = document.createElement("button");
+    button.textContent = text;
+    button.onclick = onClick;
+    return button;
+  }
+
 }
 
 export { __sc_ai_init, __sc_ai_ui, __sc_ai_ask, __sc_apply_json };
