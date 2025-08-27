@@ -717,75 +717,99 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-  function wait(cb, retries = 20) {
+
+  function waitForElements(cb, retries = 20) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
+    const track =
+      document.getElementById("blur-timeline-track") || arrow?.parentElement;
     const startBullet = document.getElementById("blur-timeline-start-bullet");
     const endBullet = document.getElementById("blur-timeline-end-bullet");
     const entryBullet = document.getElementById("blur-timeline-entry-bullet");
     const centerBullet = document.getElementById("blur-timeline-center-bullet");
     const exitBullet = document.getElementById("blur-timeline-exit-bullet");
-    const track =
-      document.getElementById("blur-timeline-track") || arrow?.parentElement;
     if (
       arrow &&
+      track &&
       startBullet &&
       endBullet &&
       entryBullet &&
       centerBullet &&
-      exitBullet &&
-      track
-    )
+      exitBullet
+    ) {
       cb({
         arrow,
+        track,
         startBullet,
         endBullet,
         entryBullet,
         centerBullet,
         exitBullet,
-        track,
       });
-    else if (retries > 0) setTimeout(() => wait(cb, retries - 1), 100);
+    } else if (retries > 0)
+      setTimeout(() => waitForElements(cb, retries - 1), 100);
   }
-  function setup(btn, refs) {
+
+  function setupScrollAnimation(btn, refs) {
     const {
       arrow,
+      track,
       startBullet,
       endBullet,
       entryBullet,
       centerBullet,
       exitBullet,
-      track,
     } = refs;
-    const content = selectedElement.querySelector(".sqs-block-content");
+    const content = selectedElement.querySelector(".sqs-block-content") || null;
     const gs = window.gsap,
       ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-    const setImp = (el, p, v) => el && el.style.setProperty(p, v, "important");
-    setImp(track, "position", "relative");
-    [startBullet, endBullet, entryBullet, centerBullet, exitBullet].forEach(
-      (b) => {
-        if (!b) return;
-        setImp(b, "position", "absolute");
-        setImp(b, "top", "50%");
-        setImp(b, "transform", "translateX(-50%) translateY(-50%)");
-        setImp(b, "touch-action", "none");
-        setImp(b, "user-select", "none");
+
+    arrow.style.display = arrow.style.display || "block";
+    arrow.style.position = arrow.style.position || "absolute";
+    arrow.style.insetInlineStart = "0";
+    arrow.style.transform = "translateX(-50%)";
+    arrow.style.pointerEvents = "none";
+    if (track && getComputedStyle(track).position === "static")
+      track.style.position = "relative";
+
+    const setVar = (el, n, v) => el?.style?.setProperty(n, v, "important");
+
+    let state;
+    try {
+      state = JSON.parse(selectedElement.dataset.scBlurVals || "");
+    } catch {
+      state = null;
+    }
+    if (!state) state = { entry: 0, center: 0, exit: 0 };
+
+    const commit = () => {
+      selectedElement.dataset.scBlurVals = JSON.stringify(state);
+      setVar(selectedElement, "--sc-blur-scroll-entry", state.entry + "%");
+      setVar(selectedElement, "--sc-blur-scroll-center", state.center + "%");
+      setVar(selectedElement, "--sc-blur-scroll-exit", state.exit + "%");
+      setVar(btn, "--sc-blur-scroll-entry", state.entry + "%");
+      setVar(btn, "--sc-blur-scroll-center", state.center + "%");
+      setVar(btn, "--sc-blur-scroll-exit", state.exit + "%");
+      if (content) {
+        setVar(content, "--sc-blur-scroll-entry", state.entry + "%");
+        setVar(content, "--sc-blur-scroll-center", state.center + "%");
+        setVar(content, "--sc-blur-scroll-exit", state.exit + "%");
       }
-    );
-    setImp(arrow, "position", "absolute");
-    setImp(arrow, "top", "50%");
-    setImp(arrow, "left", "0%");
-    setImp(arrow, "transform", "translate(-50%,-50%)");
-    setImp(arrow, "opacity", "1");
-    setImp(arrow, "visibility", "visible");
-    setImp(arrow, "pointer-events", "none");
+    };
+    commit();
+
+    const place = (el, p) => {
+      el.style.left = p + "%";
+      el.style.transform = "translateX(-50%)";
+    };
+    place(startBullet, 0);
+    place(endBullet, 100);
+    place(entryBullet, state.entry);
+    place(centerBullet, state.center);
+    place(exitBullet, state.exit);
+
     const getPct = (names, fb = 0) => {
-      for (const el of [
-        btn,
-        content,
-        selectedElement,
-        document.documentElement,
-      ]) {
+      for (const el of [btn, content, selectedElement]) {
         if (!el) continue;
         const cs = getComputedStyle(el);
         for (const n of names) {
@@ -797,62 +821,41 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       }
       return fb;
     };
-    const start = () =>
-      getPct(["--sc-blur-scroll-start", "--sc-Typo-blur-scroll-start"], 0) /
-      100;
-    const end = () =>
-      getPct(["--sc-blur-scroll-end", "--sc-Typo-blur-scroll-end"], 100) / 100;
-    let state;
-    try {
-      state = JSON.parse(selectedElement.dataset.scBlurVals || "");
-    } catch {
-      state = null;
-    }
-    if (!state) state = { entry: 0, center: 0, exit: 0 };
-    const commit = () => {
-      selectedElement.dataset.scBlurVals = JSON.stringify(state);
-      setImp(selectedElement, "--sc-blur-scroll-entry", state.entry + "%");
-      setImp(selectedElement, "--sc-blur-scroll-center", state.center + "%");
-      setImp(selectedElement, "--sc-blur-scroll-exit", state.exit + "%");
-      setImp(btn, "--sc-blur-scroll-entry", state.entry + "%");
-      setImp(btn, "--sc-blur-scroll-center", state.center + "%");
-      setImp(btn, "--sc-blur-scroll-exit", state.exit + "%");
-      if (content) {
-        setImp(content, "--sc-blur-scroll-entry", state.entry + "%");
-        setImp(content, "--sc-blur-scroll-center", state.center + "%");
-        setImp(content, "--sc-blur-scroll-exit", state.exit + "%");
-      }
-    };
-    commit();
-    const place = (el, p) => {
-      if (!el) return;
-      setImp(el, "left", p + "%");
-    };
-    place(startBullet, 0);
-    place(endBullet, 100);
-    place(entryBullet, state.entry);
-    place(centerBullet, state.center);
-    place(exitBullet, state.exit);
-    const computedFilter =
-      getComputedStyle(btn).getPropertyValue("filter") || "";
-    let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
-    if (baseFilter === "none") baseFilter = "";
-    setImp(
-      btn,
-      "filter",
-      (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt,0px))"
-    );
+    const start = () => getPct(["--sc-blur-scroll-start"], 0) / 100;
+    const end = () => getPct(["--sc-blur-scroll-end"], 100) / 100;
+
+    const baseFilter = (getComputedStyle(btn).getPropertyValue("filter") || "")
+      .replace(/blur\([^)]+\)/, "")
+      .trim();
+    btn.style.filter =
+      (baseFilter && baseFilter !== "none" ? baseFilter + " " : "") +
+      "blur(var(--sc-blur-amt,0px))";
     if (!btn.style.getPropertyValue("--sc-blur-amt"))
       btn.style.setProperty("--sc-blur-amt", "0px");
-    let lastBlur = null,
-      dragging = false;
-    const update = () => {
-      const t = getViewportProgress(selectedElement);
+
+    let lastBlur = null;
+    let dragging = false;
+
+    const updateBlur = () => {
+      const vh =
+        window.innerHeight || document.documentElement.clientHeight || 1;
+      const toolbar = document.querySelector(
+        '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+      );
+      const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+      const visibleHeight = Math.max(1, vh - th);
+      const r = selectedElement.getBoundingClientRect();
+      const center = r.top + r.height / 2 - th;
+      let t = center / visibleHeight;
+      if (Number.isNaN(t)) t = 0.5;
+      t = Math.max(0, Math.min(1, t));
+
       const s = start();
       const e = end();
       const en = state.entry;
       const ce = state.center;
       const ex = state.exit;
+
       let b;
       if (t < s) {
         const k = s <= 0 ? 1 : Math.min(t / s, 1);
@@ -860,8 +863,11 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       } else if (t > e) {
         const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
         b = ce + (ex - ce) * k;
-      } else b = ce;
+      } else {
+        b = ce;
+      }
       b = Math.max(0, Math.min(100, b));
+
       if (b !== lastBlur) {
         lastBlur = b;
         if (dragging || !gs) btn.style.setProperty("--sc-blur-amt", b + "px");
@@ -873,92 +879,148 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
             overwrite: "auto",
           });
       }
+
+      arrow.style.left = t * 100 + "%";
+      arrow.style.transform = "translateX(-50%)";
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
     };
-    function bind(bullet, key) {
-      if (!bullet) return;
+
+    const bindDrag = (bullet, key) => {
+      const usePointer = "onpointerdown" in window;
       let rect = null,
         raf = 0,
-        lastPct = null,
-        prevTransition = bullet.style.transition || "";
-      const move = (e) => {
-        if (!dragging) return;
+        pid = null;
+
+      const moveCore = (clientX) => {
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(() => {
-          rect = track.getBoundingClientRect();
-          const cx = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
-          let pct = rect.width > 0 ? ((cx - rect.left) / rect.width) * 100 : 0;
+          if (!rect) rect = track.getBoundingClientRect();
+          let pct =
+            rect.width > 0 ? ((clientX - rect.left) / rect.width) * 100 : 0;
           pct = Math.max(0, Math.min(100, pct));
-          if (pct !== lastPct) {
-            lastPct = pct;
-            state[key] = pct;
-            commit();
-            place(bullet, pct);
-            update();
-          }
-          if (e.cancelable) e.preventDefault();
+          state[key] = pct;
+          commit();
+          place(bullet, pct);
+          updateBlur();
         });
       };
-      const up = (e) => {
-        dragging = false;
-        bullet.releasePointerCapture?.(e.pointerId);
-        window.removeEventListener("pointermove", move);
-        window.removeEventListener("pointerup", up);
-        document.body.style.removeProperty("user-select");
-        bullet.style.transition = prevTransition;
+
+      const onPointerMove = (e) => {
+        if (!dragging) return;
+        moveCore(e.clientX);
+        if (e.cancelable) e.preventDefault();
       };
-      const down = (e) => {
+      const onPointerUp = (e) => {
+        dragging = false;
+        if (pid !== null) {
+          try {
+            bullet.releasePointerCapture(pid);
+          } catch {}
+          pid = null;
+        }
+        window.removeEventListener("pointermove", onPointerMove);
+        window.removeEventListener("pointerup", onPointerUp);
+        window.removeEventListener("pointercancel", onPointerUp);
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
+      };
+
+      const onPointerDown = (e) => {
         e.preventDefault();
         e.stopPropagation();
         dragging = true;
         rect = track.getBoundingClientRect();
-        bullet.setPointerCapture?.(e.pointerId);
-        window.addEventListener("pointermove", move, { passive: false });
-        window.addEventListener("pointerup", up);
-        setImp(document.body, "user-select", "none");
-        bullet.style.transition = "none";
-        move(e);
+        pid = e.pointerId;
+        try {
+          bullet.setPointerCapture(pid);
+        } catch {}
+        window.addEventListener("pointermove", onPointerMove, {
+          passive: false,
+        });
+        window.addEventListener("pointerup", onPointerUp);
+        window.addEventListener("pointercancel", onPointerUp);
+        moveCore(e.clientX);
       };
-      bullet.addEventListener("pointerdown", down, { passive: false });
-    }
-    bind(entryBullet, "entry");
-    bind(centerBullet, "center");
-    bind(exitBullet, "exit");
+
+      const onMouseMove = (e) => {
+        if (!dragging) return;
+        moveCore(e.clientX);
+        if (e.cancelable) e.preventDefault();
+      };
+      const onMouseUp = () => onPointerUp({});
+      const onMouseDown = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragging = true;
+        rect = track.getBoundingClientRect();
+        window.addEventListener("mousemove", onMouseMove, { passive: false });
+        window.addEventListener("mouseup", onMouseUp);
+        moveCore(e.clientX);
+      };
+
+      const onTouchMove = (e) => {
+        if (!dragging) return;
+        const t = e.touches[0];
+        if (!t) return;
+        moveCore(t.clientX);
+        if (e.cancelable) e.preventDefault();
+      };
+      const onTouchEnd = () => onPointerUp({});
+      const onTouchStart = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragging = true;
+        rect = track.getBoundingClientRect();
+        window.addEventListener("touchmove", onTouchMove, { passive: false });
+        window.addEventListener("touchend", onTouchEnd);
+        const t = e.touches[0];
+        if (t) moveCore(t.clientX);
+      };
+
+      if (usePointer) bullet.addEventListener("pointerdown", onPointerDown);
+      else {
+        bullet.addEventListener("mousedown", onMouseDown);
+        bullet.addEventListener("touchstart", onTouchStart, { passive: false });
+      }
+    };
+
+    bindDrag(entryBullet, "entry");
+    bindDrag(centerBullet, "center");
+    bindDrag(exitBullet, "exit");
+
     if (gs && ST) {
       ST.create({
         trigger: selectedElement,
         start: "top bottom",
         end: "bottom top",
         scrub: 1,
-        onUpdate: update,
+        onUpdate: updateBlur,
       });
       ST.refresh(true);
     } else {
-      window.addEventListener("scroll", update, { passive: true });
-      window.addEventListener("resize", update, { passive: true });
+      window.addEventListener("scroll", updateBlur, { passive: true });
+      window.addEventListener("resize", updateBlur, { passive: true });
     }
-    const mo = new MutationObserver(update);
-    mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
-    update();
-    (function loop() {
-      const t = getViewportProgress(selectedElement);
-      setImp(arrow, "left", t * 100 + "%");
-      setImp(arrow, "transform", "translate(-50%,-50%)");
-      const s = start(),
-        e = end(),
-        buffer = 0.001;
-      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
-      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
-      else arrow.style.backgroundColor = "#FFFFFF";
-      requestAnimationFrame(loop);
-    })();
+
+    new MutationObserver(updateBlur).observe(btn, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+    updateBlur();
   }
-  wait((refs) => {
+
+  waitForElements((refs) => {
     const btn =
       selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-    setup(btn, refs);
+    setupScrollAnimation(btn, refs);
   });
 }
 
