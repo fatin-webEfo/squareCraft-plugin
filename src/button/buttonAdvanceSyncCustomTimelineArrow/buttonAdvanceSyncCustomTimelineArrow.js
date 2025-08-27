@@ -716,7 +716,9 @@ export function rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
 
 export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
-  function waitForElements(cb, retries = 20) {
+  if (selectedElement.__scBlurInit) return;
+  selectedElement.__scBlurInit = 1;
+  function wait(cb, retries = 20) {
     const arrow = document.getElementById("blur-custom-timeline-arrow");
     const startBullet = document.getElementById("blur-timeline-start-bullet");
     const endBullet = document.getElementById("blur-timeline-end-bullet");
@@ -725,7 +727,15 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const exitBullet = document.getElementById("blur-timeline-exit-bullet");
     const track =
       document.getElementById("blur-timeline-track") || arrow?.parentElement;
-    if (arrow && startBullet && endBullet && track)
+    if (
+      arrow &&
+      startBullet &&
+      endBullet &&
+      entryBullet &&
+      centerBullet &&
+      exitBullet &&
+      track
+    )
       cb({
         arrow,
         startBullet,
@@ -735,10 +745,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         exitBullet,
         track,
       });
-    else if (retries > 0)
-      setTimeout(() => waitForElements(cb, retries - 1), 100);
+    else if (retries > 0) setTimeout(() => wait(cb, retries - 1), 100);
   }
-  function setupScrollAnimation(btn, refs) {
+  function setup(btn, refs) {
     const {
       arrow,
       startBullet,
@@ -752,7 +761,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const gs = window.gsap,
       ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
-    const setVarImp = (el, n, v) => el?.style?.setProperty(n, v, "important");
+    const setImp = (el, n, v) => el?.style?.setProperty(n, v, "important");
+    const place = (el, p) => {
+      if (!el) return;
+      setImp(el, "left", p + "%");
+      setImp(el, "transform", "translateX(-50%)");
+      setImp(el, "position", "absolute");
+    };
     const getPct = (names, fb = 0) => {
       for (const el of [
         btn,
@@ -785,24 +800,19 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!state) state = { entry: 0, center: 0, exit: 0 };
     const commit = () => {
       selectedElement.dataset.scBlurVals = JSON.stringify(state);
-      setVarImp(selectedElement, "--sc-blur-scroll-entry", state.entry + "%");
-      setVarImp(selectedElement, "--sc-blur-scroll-center", state.center + "%");
-      setVarImp(selectedElement, "--sc-blur-scroll-exit", state.exit + "%");
-      setVarImp(btn, "--sc-blur-scroll-entry", state.entry + "%");
-      setVarImp(btn, "--sc-blur-scroll-center", state.center + "%");
-      setVarImp(btn, "--sc-blur-scroll-exit", state.exit + "%");
+      setImp(selectedElement, "--sc-blur-scroll-entry", state.entry + "%");
+      setImp(selectedElement, "--sc-blur-scroll-center", state.center + "%");
+      setImp(selectedElement, "--sc-blur-scroll-exit", state.exit + "%");
+      setImp(btn, "--sc-blur-scroll-entry", state.entry + "%");
+      setImp(btn, "--sc-blur-scroll-center", state.center + "%");
+      setImp(btn, "--sc-blur-scroll-exit", state.exit + "%");
       if (content) {
-        setVarImp(content, "--sc-blur-scroll-entry", state.entry + "%");
-        setVarImp(content, "--sc-blur-scroll-center", state.center + "%");
-        setVarImp(content, "--sc-blur-scroll-exit", state.exit + "%");
+        setImp(content, "--sc-blur-scroll-entry", state.entry + "%");
+        setImp(content, "--sc-blur-scroll-center", state.center + "%");
+        setImp(content, "--sc-blur-scroll-exit", state.exit + "%");
       }
     };
     commit();
-    const place = (el, p) => {
-      if (!el) return;
-      el.style.left = p + "%";
-      el.style.transform = "translateX(-50%)";
-    };
     place(startBullet, 0);
     place(endBullet, 100);
     place(entryBullet, state.entry);
@@ -812,13 +822,16 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
     if (baseFilter === "none") baseFilter = "";
-    btn.style.filter =
-      (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt,0px))";
+    setImp(
+      btn,
+      "filter",
+      (baseFilter ? baseFilter + " " : "") + "blur(var(--sc-blur-amt,0px))"
+    );
     if (!btn.style.getPropertyValue("--sc-blur-amt"))
       btn.style.setProperty("--sc-blur-amt", "0px");
     let lastBlur = null,
       dragging = false;
-    const updateBlur = () => {
+    const update = () => {
       const t = getViewportProgress(selectedElement);
       const s = start();
       const e = end();
@@ -848,25 +861,22 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     };
     const bindDrag = (bullet, key) => {
       if (!bullet) return;
-      let rect = null,
-        raf = 0;
+      let rect = null;
       const onMove = (e) => {
         if (!dragging) return;
-        const cx = e.touches ? e.touches[0].clientX : e.clientX;
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          rect = rect || track.getBoundingClientRect();
-          let pct = rect.width > 0 ? ((cx - rect.left) / rect.width) * 100 : 0;
-          pct = Math.max(0, Math.min(100, pct));
-          state[key] = pct;
-          commit();
-          place(bullet, pct);
-          updateBlur();
-        });
+        const cx = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
+        rect = rect || track.getBoundingClientRect();
+        let pct = rect.width > 0 ? ((cx - rect.left) / rect.width) * 100 : 0;
+        pct = Math.max(0, Math.min(100, pct));
+        state[key] = pct;
+        commit();
+        place(bullet, pct);
+        update();
         if (e.cancelable) e.preventDefault();
       };
-      const onUp = () => {
+      const onUp = (e) => {
         dragging = false;
+        bullet.releasePointerCapture?.(e?.pointerId);
         document.removeEventListener("mousemove", onMove);
         document.removeEventListener("mouseup", onUp);
         document.removeEventListener("touchmove", onMove);
@@ -875,15 +885,16 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const onDown = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
         dragging = true;
         rect = track.getBoundingClientRect();
+        bullet.setPointerCapture?.(e.pointerId);
         document.addEventListener("mousemove", onMove, { passive: false });
         document.addEventListener("mouseup", onUp);
         document.addEventListener("touchmove", onMove, { passive: false });
         document.addEventListener("touchend", onUp);
         onMove(e);
       };
+      bullet.addEventListener("pointerdown", onDown, { passive: false });
       bullet.addEventListener("mousedown", onDown);
       bullet.addEventListener("touchstart", onDown, { passive: false });
     };
@@ -896,20 +907,20 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         start: "top bottom",
         end: "bottom top",
         scrub: 1,
-        onUpdate: updateBlur,
+        onUpdate: update,
       });
       ST.refresh(true);
     } else {
-      window.addEventListener("scroll", updateBlur, { passive: true });
-      window.addEventListener("resize", updateBlur, { passive: true });
+      window.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update, { passive: true });
     }
-    const mo = new MutationObserver(updateBlur);
+    const mo = new MutationObserver(update);
     mo.observe(btn, { attributes: true, attributeFilter: ["style"] });
-    updateBlur();
+    update();
     (function loop() {
       const t = getViewportProgress(selectedElement);
-      arrow.style.left = t * 100 + "%";
-      arrow.style.transform = "translateX(-50%)";
+      setImp(arrow, "left", t * 100 + "%");
+      setImp(arrow, "transform", "translateX(-50%)");
       const s = start(),
         e = end(),
         buffer = 0.001;
@@ -919,13 +930,13 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       requestAnimationFrame(loop);
     })();
   }
-  waitForElements((refs) => {
+  wait((refs) => {
     const btn =
       selectedElement.querySelector(
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-    setupScrollAnimation(btn, refs);
+    setup(btn, refs);
   });
 }
 
