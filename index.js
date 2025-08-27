@@ -178,3 +178,4 @@ function __sc_ai_ui() {
 
 export { __sc_ai_init, __sc_ai_ui, __sc_ai_ask, __sc_apply_json };
 
+// index.js
