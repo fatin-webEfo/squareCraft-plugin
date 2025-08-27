@@ -115,291 +115,344 @@ function getViewportProgress(el) {
     });
   }
 
-  export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
-    selectedElement
-  ) {
-    if (!selectedElement) return;
-    function waitForElements(callback, retries = 20) {
-      const arrow = document.getElementById("horizontal-custom-timeline-arrow");
-      const startBullet = document.getElementById(
-        "horizontal-timeline-start-bullet"
-      );
-      const endBullet = document.getElementById("horizontal-timeline-end-bullet");
-      if (arrow && startBullet && endBullet) callback(arrow);
-      else if (retries > 0)
-        setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
-    function setupScrollAnimation(btn, arrow) {
-      const getPct = (v, fb = 0) => {
-        const raw = getComputedStyle(btn).getPropertyValue(v).trim();
-        const n = parseFloat(raw.replace("%", ""));
-        return Number.isFinite(n) ? n : fb;
-      };
-      const entryX = () => getPct("--sc-horizontal-scroll-entry");
-      const centerX = () => getPct("--sc-horizontal-scroll-center");
-      const exitX = () => getPct("--sc-horizontal-scroll-exit");
-      const start = () => getPct("--sc-horizontal-scroll-start", 0) / 100;
-      const end = () => getPct("--sc-horizontal-scroll-end", 100) / 100;
-      const easeName = () => {
-        const el = document.getElementById("horizontal-effect-animation-value");
-        const n =
-          el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
-        const map = {
-          none: "none",
-          Linear: "none",
-          linear: "none",
-          "ease-in": "power1.in",
-          "ease-out": "power1.out",
-          "ease-in-out": "power1.inOut",
-          "power1.out": "power1.out",
-          "power2.out": "power2.out",
-          "power3.out": "power3.out",
-          "power4.out": "power4.out",
-          "expo.out": "expo.out",
-          "elastic.out": "elastic.out",
-          "bounce.out": "bounce.out",
-        };
-        return (
-          map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+    export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
+      selectedElement
+    ) {
+      if (!selectedElement) return;
+      function waitForElements(callback, retries = 20) {
+        const arrow = document.getElementById("horizontal-custom-timeline-arrow");
+        const startBullet = document.getElementById(
+          "horizontal-timeline-start-bullet"
         );
-      };
-      const gs = window.gsap;
-      const ST = window.ScrollTrigger;
-      if (gs && ST) gs.registerPlugin(ST);
-      let lastXPct = null;
-      const updateXTransform = () => {
-        const t = getViewportProgress(selectedElement);
-        const s = start();
-        const e = end();
-        const ex = entryX();
-        const cx = centerX();
-        const xx = exitX();
-        let xPct;
-        if (t < s) {
-          const k = s <= 0 ? 1 : Math.min(t / s, 1);
-          xPct = ex + (cx - ex) * k;
-        } else if (t > e) {
-          const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-          xPct = cx + (xx - cx) * k;
-        } else {
-          xPct = cx;
-        }
-        if (xPct !== lastXPct) {
-          lastXPct = xPct;
-          const ease = easeName();
-          const target = (xPct / 2).toFixed(3) + "vw";
-          if (gs) {
-            gs.to(btn, {
-              x: target,
-              ease,
-              duration: ease === "none" ? 0.25 : 0.6,
-              overwrite: "auto",
-            });
+        const endBullet = document.getElementById("horizontal-timeline-end-bullet");
+        if (arrow && startBullet && endBullet) callback(arrow);
+        else if (retries > 0)
+          setTimeout(() => waitForElements(callback, retries - 1), 100);
+      }
+      function setupScrollAnimation(btn, arrow) {
+        const getPct = (v, fb = 0) => {
+          const raw = getComputedStyle(btn).getPropertyValue(v).trim();
+          const n = parseFloat(raw.replace("%", ""));
+          return Number.isFinite(n) ? n : fb;
+        };
+        const entryX = () => getPct("--sc-horizontal-scroll-entry");
+        const centerX = () => getPct("--sc-horizontal-scroll-center");
+        const exitX = () => getPct("--sc-horizontal-scroll-exit");
+        const start = () => getPct("--sc-horizontal-scroll-start", 0) / 100;
+        const end = () => getPct("--sc-horizontal-scroll-end", 100) / 100;
+        const easeName = () => {
+          const el = document.getElementById("horizontal-effect-animation-value");
+          const n =
+            el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
+          const map = {
+            none: "none",
+            Linear: "none",
+            linear: "none",
+            "ease-in": "power1.in",
+            "ease-out": "power1.out",
+            "ease-in-out": "power1.inOut",
+            "power1.out": "power1.out",
+            "power2.out": "power2.out",
+            "power3.out": "power3.out",
+            "power4.out": "power4.out",
+            "expo.out": "expo.out",
+            "elastic.out": "elastic.out",
+            "bounce.out": "bounce.out",
+          };
+          return (
+            map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+          );
+        };
+        const gs = window.gsap;
+        const ST = window.ScrollTrigger;
+        if (gs && ST) gs.registerPlugin(ST);
+        let lastXPct = null;
+        const updateXTransform = () => {
+          const t = getViewportProgress(selectedElement);
+          const s = start();
+          const e = end();
+          const ex = entryX();
+          const cx = centerX();
+          const xx = exitX();
+          let xPct;
+          if (t < s) {
+            const k = s <= 0 ? 1 : Math.min(t / s, 1);
+            xPct = ex + (cx - ex) * k;
+          } else if (t > e) {
+            const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+            xPct = cx + (xx - cx) * k;
           } else {
-            btn.style.transform = `translateX(${target})`;
+            xPct = cx;
           }
+          if (xPct !== lastXPct) {
+            lastXPct = xPct;
+            const ease = easeName();
+            const target = (xPct / 2).toFixed(3) + "vw";
+            if (gs) {
+              gs.to(btn, {
+                x: target,
+                ease,
+                duration: ease === "none" ? 0.25 : 0.6,
+                overwrite: "auto",
+              });
+            } else {
+              btn.style.transform = `translateX(${target})`;
+            }
+          }
+        };
+        if (gs && ST) {
+          ST.create({
+            trigger: selectedElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+            onUpdate: updateXTransform,
+          });
+          ST.refresh(true);
+        } else {
+          window.addEventListener("scroll", updateXTransform, { passive: true });
+          window.addEventListener("resize", updateXTransform, { passive: true });
         }
-      };
-      if (gs && ST) {
-        ST.create({
-          trigger: selectedElement,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          onUpdate: updateXTransform,
-        });
-        ST.refresh(true);
-      } else {
-        window.addEventListener("scroll", updateXTransform, { passive: true });
-        window.addEventListener("resize", updateXTransform, { passive: true });
+        const observer = new MutationObserver(updateXTransform);
+        observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+        setInterval(updateXTransform, 150);
+        function loopArrow() {
+          const t = getViewportProgress(selectedElement);
+          arrow.style.left = `${t * 100}%`;
+          arrow.style.transform = "translateX(-50%)";
+          const s = start();
+          const e = end();
+          const buffer = 0.001;
+          if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+          else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+          else arrow.style.backgroundColor = "#FFFFFF";
+          requestAnimationFrame(loopArrow);
+        }
+        loopArrow();
       }
-      const observer = new MutationObserver(updateXTransform);
-      observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
-      setInterval(updateXTransform, 150);
-      function loopArrow() {
-        const t = getViewportProgress(selectedElement);
-        arrow.style.left = `${t * 100}%`;
-        arrow.style.transform = "translateX(-50%)";
-        const s = start();
-        const e = end();
-        const buffer = 0.001;
-        if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
-        else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
-        else arrow.style.backgroundColor = "#FFFFFF";
-        requestAnimationFrame(loopArrow);
-      }
-      loopArrow();
+      waitForElements((arrow) => {
+        const btn =
+          selectedElement.querySelector(
+            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+          ) || selectedElement;
+        if (!btn) return;
+        setupScrollAnimation(btn, arrow);
+      });
     }
-    waitForElements((arrow) => {
-      const btn =
-        selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        ) || selectedElement;
-      if (!btn) return;
-      setupScrollAnimation(btn, arrow);
-    });
-  }
 
-  export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
-    if (!selectedElement) return;
-    function waitForElements(callback, retries = 20) {
-      const arrow = document.getElementById("opacity-custom-timeline-arrow");
-      const startBullet = document.getElementById(
-        "opacity-timeline-start-bullet"
-      );
-      const endBullet = document.getElementById("opacity-timeline-end-bullet");
-      if (arrow && startBullet && endBullet) callback(arrow);
-      else if (retries > 0)
-        setTimeout(() => waitForElements(callback, retries - 1), 100);
-    }
-    function setupScrollAnimation(btn, arrow) {
-      const content = selectedElement.querySelector(".sqs-block-content");
-      const els = [btn, content, selectedElement].filter(Boolean);
-      const mem = { entry: 0, center: 0, exit: 0, start: 0, end: 100 };
-      const readPctVarSticky = (keys, k, fb) => {
-        for (const el of els) {
-          const cs = getComputedStyle(el);
-          for (const name of keys) {
-            const raw = cs.getPropertyValue(name);
-            if (raw) {
-              const v = parseFloat(String(raw).trim().replace("%", ""));
-              if (Number.isFinite(v)) {
-                mem[k] = v;
-                return v;
-              }
+export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+  if (!selectedElement) return;
+  function waitForElements(cb, retries = 20) {
+    const arrow = document.getElementById("opacity-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "opacity-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById("opacity-timeline-end-bullet");
+    if (arrow && startBullet && endBullet) cb(arrow);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(cb, retries - 1), 100);
+  }
+  function setupScrollAnimation(btn, arrow) {
+    const content = selectedElement.querySelector(".sqs-block-content");
+    const els = [
+      btn,
+      content,
+      selectedElement,
+      document.documentElement,
+    ].filter(Boolean);
+    const mem = { entry: 100, center: 100, exit: 100, start: 0, end: 100 };
+    const setVarImp = (el, n, v) => el?.style?.setProperty(n, v, "important");
+    const readPctSticky = (names, k, fb) => {
+      for (const el of els) {
+        const cs = getComputedStyle(el);
+        for (const n of names) {
+          const raw = cs.getPropertyValue(n);
+          if (raw) {
+            const v = parseFloat(String(raw).trim().replace("%", ""));
+            if (Number.isFinite(v)) {
+              mem[k] = v;
+              return v;
             }
           }
         }
-        return typeof mem[k] === "number" ? mem[k] : fb;
-      };
-      const entry = () =>
-        readPctVarSticky(
-          ["--sc-opacity-scroll-entry", "--sc-Typo-opacity-scroll-entry"],
-          "entry",
-          0
-        );
-      const center = () =>
-        readPctVarSticky(
-          ["--sc-opacity-scroll-center", "--sc-Typo-opacity-scroll-center"],
-          "center",
-          0
-        );
-      const exit = () =>
-        readPctVarSticky(
-          ["--sc-opacity-scroll-exit", "--sc-Typo-opacity-scroll-exit"],
-          "exit",
-          0
-        );
-      const start = () =>
-        readPctVarSticky(
-          ["--sc-opacity-scroll-start", "--sc-Typo-opacity-scroll-start"],
-          "start",
-          0
-        ) / 100;
-      const end = () =>
-        readPctVarSticky(
-          ["--sc-opacity-scroll-end", "--sc-Typo-opacity-scroll-end"],
-          "end",
-          100
-        ) / 100;
-      const easeName = () => {
-        const el = document.getElementById("opacity-effect-animation-value");
-        const n =
-          el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
-        const map = {
-          none: "none",
-          Linear: "none",
-          linear: "none",
-          "ease-in": "power1.in",
-          "ease-out": "power1.out",
-          "ease-in-out": "power1.inOut",
-          "power1.out": "power1.out",
-          "power2.out": "power2.out",
-          "power3.out": "power3.out",
-          "power4.out": "power4.out",
-          "expo.out": "expo.out",
-          "elastic.out": "elastic.out",
-          "bounce.out": "bounce.out",
-        };
-        return (
-          map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
-        );
-      };
-      const gs = window.gsap;
-      const ST = window.ScrollTrigger;
-      if (gs && ST) gs.registerPlugin(ST);
-      let lastOpacity = null;
-      const updateOpacity = () => {
-        const t = getViewportProgress(selectedElement);
-        const s = start();
-        const e = end();
-        const en = entry();
-        const ce = center();
-        const ex = exit();
-        let v;
-        if (t < s) {
-          const k = s <= 0 ? 1 : Math.min(t / s, 1);
-          v = en + (ce - en) * k;
-        } else if (t > e) {
-          const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-          v = ce + (ex - ce) * k;
-        } else {
-          v = ce;
-        }
-        v = Math.max(0, Math.min(100, v));
-        const op = v / 100;
-        if (op !== lastOpacity) {
-          lastOpacity = op;
-          const ease = easeName();
-          if (gs)
-            gs.to(btn, {
-              opacity: op,
-              ease,
-              duration: ease === "none" ? 0.25 : 0.6,
-              overwrite: "auto",
-            });
-          else btn.style.opacity = String(op);
-        }
-      };
-      if (gs && ST) {
-        ST.create({
-          trigger: selectedElement,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          onUpdate: updateOpacity,
-        });
-        ST.refresh(true);
-      } else {
-        window.addEventListener("scroll", updateOpacity, { passive: true });
-        window.addEventListener("resize", updateOpacity, { passive: true });
       }
-      const observer = new MutationObserver(updateOpacity);
-      observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
-      setInterval(updateOpacity, 150);
-      function loopArrow() {
-        const t = getViewportProgress(selectedElement);
-        arrow.style.left = `${t * 100}%`;
-        arrow.style.transform = "translateX(-50%)";
-        const s = start(),
-          e = end(),
-          buffer = 0.001;
-        if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
-        else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
-        else arrow.style.backgroundColor = "#FFFFFF";
-        requestAnimationFrame(loopArrow);
+      mem[k] = typeof mem[k] === "number" ? mem[k] : fb;
+      return mem[k];
+    };
+    const entry = () =>
+      readPctSticky(
+        ["--sc-opacity-scroll-entry", "--sc-Typo-opacity-scroll-entry"],
+        "entry",
+        100
+      );
+    const center = () =>
+      readPctSticky(
+        ["--sc-opacity-scroll-center", "--sc-Typo-opacity-scroll-center"],
+        "center",
+        100
+      );
+    const exit = () =>
+      readPctSticky(
+        ["--sc-opacity-scroll-exit", "--sc-Typo-opacity-scroll-exit"],
+        "exit",
+        100
+      );
+    const start = () =>
+      readPctSticky(
+        ["--sc-opacity-scroll-start", "--sc-Typo-opacity-scroll-start"],
+        "start",
+        0
+      ) / 100;
+    const end = () =>
+      readPctSticky(
+        ["--sc-opacity-scroll-end", "--sc-Typo-opacity-scroll-end"],
+        "end",
+        100
+      ) / 100;
+    const prime = () => {
+      setVarImp(selectedElement, "--sc-opacity-scroll-entry", mem.entry + "%");
+      setVarImp(
+        selectedElement,
+        "--sc-opacity-scroll-center",
+        mem.center + "%"
+      );
+      setVarImp(selectedElement, "--sc-opacity-scroll-exit", mem.exit + "%");
+      setVarImp(btn, "--sc-opacity-scroll-entry", mem.entry + "%");
+      setVarImp(btn, "--sc-opacity-scroll-center", mem.center + "%");
+      setVarImp(btn, "--sc-opacity-scroll-exit", mem.exit + "%");
+      setVarImp(
+        document.documentElement,
+        "--sc-opacity-scroll-entry",
+        mem.entry + "%"
+      );
+      setVarImp(
+        document.documentElement,
+        "--sc-opacity-scroll-center",
+        mem.center + "%"
+      );
+      setVarImp(
+        document.documentElement,
+        "--sc-opacity-scroll-exit",
+        mem.exit + "%"
+      );
+      setVarImp(
+        document.documentElement,
+        "--sc-Typo-opacity-scroll-entry",
+        mem.entry + "%"
+      );
+      setVarImp(
+        document.documentElement,
+        "--sc-Typo-opacity-scroll-center",
+        mem.center + "%"
+      );
+      setVarImp(
+        document.documentElement,
+        "--sc-Typo-opacity-scroll-exit",
+        mem.exit + "%"
+      );
+      if (!btn.style.opacity || parseFloat(btn.style.opacity) === 0)
+        btn.style.opacity = "1";
+    };
+    entry();
+    center();
+    exit();
+    prime();
+    const gs = window.gsap,
+      ST = window.ScrollTrigger;
+    if (gs && ST) gs.registerPlugin(ST);
+    let lastOpacity = null;
+    const easeName = () => {
+      const el = document.getElementById("opacity-effect-animation-value");
+      const n =
+        el?.getAttribute("data-value") || el?.textContent?.trim() || "none";
+      const map = {
+        none: "none",
+        Linear: "none",
+        linear: "none",
+        "ease-in": "power1.in",
+        "ease-out": "power1.out",
+        "ease-in-out": "power1.inOut",
+        "power1.out": "power1.out",
+        "power2.out": "power2.out",
+        "power3.out": "power3.out",
+        "power4.out": "power4.out",
+        "expo.out": "expo.out",
+        "elastic.out": "elastic.out",
+        "bounce.out": "bounce.out",
+      };
+      return (
+        map[n] || window.__buttonScrollEase || window.__typoScrollEase || "none"
+      );
+    };
+    const updateOpacity = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const en = entry();
+      const ce = center();
+      const ex = exit();
+      let v;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        v = en + (ce - en) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        v = ce + (ex - ce) * k;
+      } else v = ce;
+      v = Math.max(0, Math.min(100, v));
+      const op = v / 100;
+      if (op !== lastOpacity) {
+        lastOpacity = op;
+        const ease = easeName();
+        if (gs)
+          gs.to(btn, {
+            opacity: op,
+            duration: ease === "none" ? 0.12 : 0.4,
+            ease,
+            overwrite: "auto",
+          });
+        else btn.style.opacity = String(op);
       }
-      loopArrow();
+    };
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateOpacity,
+      });
+      ST.refresh(true);
+    } else {
+      window.addEventListener("scroll", updateOpacity, { passive: true });
+      window.addEventListener("resize", updateOpacity, { passive: true });
     }
-    waitForElements((arrow) => {
-      const btn =
-        selectedElement.querySelector(
-          "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-        ) || selectedElement;
-      if (!btn) return;
-      setupScrollAnimation(btn, arrow);
-    });
+    const observer = new MutationObserver(updateOpacity);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateOpacity, 150);
+    updateOpacity();
+    (function loop() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start(),
+        e = end(),
+        buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loop);
+    })();
   }
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
+  });
+}
 
   export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!selectedElement) return;
