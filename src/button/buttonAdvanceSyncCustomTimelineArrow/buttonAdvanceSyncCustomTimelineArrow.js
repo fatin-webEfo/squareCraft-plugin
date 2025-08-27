@@ -454,6 +454,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
+
 export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     if (!selectedElement) return;
     function waitForElements(callback, retries = 20) {
