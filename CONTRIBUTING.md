@@ -1,0 +1,1 @@
+squarecraft.js
