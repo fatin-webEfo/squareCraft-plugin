@@ -3,12 +3,7 @@
   let lastToggleAt = 0;
   let justOpenedUntil = 0; // grace period for the body-closer
   let __sc_creating = false;
- const { __sc_ai_init, __sc_ai_ui } = await import(
-   "https://fatin-webefo.github.io/squareCraft-plugin/index.js"
- );
- await __sc_ai_init();
- __sc_ai_ui();
-
+  
   const HOST_DOC = (() => {
     try {
       if (parent && parent !== window) {
