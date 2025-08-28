@@ -3205,9 +3205,9 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
     100
   );
 
-  setEntry(entryPct || 100);
-  setCenter(centerPct || 100);
-  setExit(exitPct || 100);
+  setEntry(entryPct || 0);
+  setCenter(centerPct || 0);
+  setExit(exitPct || 0);
   setStart(startPct);
   gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
   setEnd(endPct);
@@ -3309,6 +3309,5 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
     blurbuttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
-
 
 // blur 

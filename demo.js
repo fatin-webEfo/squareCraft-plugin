@@ -1,248 +1,3 @@
-export function blurattachAdvanceTimelineIncrementDecrement(
-  updateEntry,
-  updateCenter,
-  updateExit,
-  updateStart,
-  updateEnd
-) {
-  let lastFocused = null;
-  let keyHoldInterval = null;
-  let keyHoldTimeout = null;
-  let lastPressedKey = null;
-
-  let entryVal = 0;
-  let centerVal = 0;
-  let exitVal = 0;
-  let startVal = 0;
-  let endVal = 0;
-
-  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
-    const btnInc = document.getElementById(idIncrease);
-    const btnDec = document.getElementById(idDecrease);
-
-    const clickHandler = (type) => {
-      let val = getCurrent();
-      val = type === "inc" ? val + 1 : val - 1;
-
-      const min = 0;
-
-      if (bulletId.includes("start")) {
-        val = Math.max(0, Math.min(val, endVal - 4));
-        startVal = val;
-      } else if (bulletId.includes("end")) {
-        val = Math.max(startVal + 4, Math.min(val, 100));
-        endVal = val;
-      } else {
-        val = Math.max(min, Math.min(100, val));
-      }
-
-      updateFn(val);
-      const countId = bulletId.replace(
-        "bullet",
-        bulletId.includes("start") || bulletId.includes("end")
-          ? "Value"
-          : "count"
-      );
-      const el = document.getElementById(countId);
-      if (!el) return;
-      if (el.tagName === "INPUT") el.value = val + "%";
-      else el.textContent = val + "%";
-    };
-
-    if (btnInc) btnInc.onclick = () => clickHandler("inc");
-    if (btnDec) btnDec.onclick = () => clickHandler("dec");
-
-    const bullet = document.getElementById(bulletId);
-    if (bullet) {
-      bullet.setAttribute("tabindex", "0");
-      bullet.addEventListener("click", () => (lastFocused = bulletId));
-      bullet.addEventListener("focus", () => {
-        lastFocused = bulletId;
-        const val = getCurrent();
-        if (bulletId.includes("entry")) entryVal = val;
-        if (bulletId.includes("center")) centerVal = val;
-        if (bulletId.includes("exit")) exitVal = val;
-        if (bulletId.includes("start")) startVal = val;
-        if (bulletId.includes("end")) endVal = val;
-      });
-    }
-  }
-
-  const getVal = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(String(raw).replace("%", "")) || 0;
-  };
-
-  setup(
-    "blur-button-advance-entry-increase",
-    "blur-button-advance-entry-decrease",
-    () => getVal("blur-button-advance-entry-count"),
-    updateEntry,
-    "blur-button-advance-entry-bullet"
-  );
-  setup(
-    "blur-button-advance-center-increase",
-    "blur-button-advance-center-decrease",
-    () => getVal("blur-button-advance-center-count"),
-    updateCenter,
-    "blur-button-advance-center-bullet"
-  );
-  setup(
-    "blur-button-advance-exit-increase",
-    "blur-button-advance-exit-decrease",
-    () => getVal("blur-button-advance-exit-count"),
-    updateExit,
-    "blur-button-advance-exit-bullet"
-  );
-
-  const startBullet = document.getElementById("blur-timeline-start-bullet");
-  const endBullet = document.getElementById("blur-timeline-end-bullet");
-  if (startBullet)
-    startBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "blur-timeline-start-bullet")
-    );
-  if (endBullet)
-    endBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "blur-timeline-end-bullet")
-    );
-
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
-      return;
-    if (keyHoldInterval || keyHoldTimeout) return;
-
-    const direction = e.key === "ArrowRight" ? 1 : -1;
-    lastPressedKey = e.key;
-
-    const update = () => {
-      if (lastFocused.includes("entry")) {
-        entryVal = Math.max(0, Math.min(100, entryVal + direction));
-        updateEntry(entryVal);
-        const el = document.getElementById(
-          "blur-button-advance-entry-count"
-        );
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = entryVal + "%")
-            : (el.textContent = entryVal + "%");
-      }
-      if (lastFocused.includes("center")) {
-        centerVal = Math.max(0, Math.min(100, centerVal + direction));
-        updateCenter(centerVal);
-        const el = document.getElementById(
-          "blur-button-advance-center-count"
-        );
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = centerVal + "%")
-            : (el.textContent = centerVal + "%");
-      }
-      if (lastFocused.includes("exit")) {
-        exitVal = Math.max(0, Math.min(100, exitVal + direction));
-        updateExit(exitVal);
-        const el = document.getElementById("blur-button-advance-exit-count");
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = exitVal + "%")
-            : (el.textContent = exitVal + "%");
-      }
-      if (lastFocused.includes("start")) {
-        startVal = getVal("blur-timelineStartValue");
-        endVal = getVal("blur-timelineEndValue");
-        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
-        updateStart(startVal);
-        const el = document.getElementById("blur-timelineStartValue");
-        if (el) el.textContent = startVal + "%";
-      }
-      if (lastFocused.includes("end")) {
-        startVal = getVal("blur-timelineStartValue");
-        endVal = getVal("blur-timelineEndValue");
-        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
-        updateEnd(endVal);
-        const el = document.getElementById("blur-timelineEndValue");
-        if (el) el.textContent = endVal + "%";
-      }
-    };
-
-    update();
-    keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(update, 100);
-    }, 300);
-  });
-
-  document.addEventListener("keyup", (e) => {
-    if (e.key === lastPressedKey) {
-      clearInterval(keyHoldInterval);
-      clearTimeout(keyHoldTimeout);
-      keyHoldInterval = null;
-      keyHoldTimeout = null;
-      lastPressedKey = null;
-    }
-  });
-}
-
-function blurattachCustomTimelineReset(
-  updateStart,
-  updateEnd,
-  updateEntry,
-  updateCenter,
-  updateExit
-) {
-  const btn = document.getElementById("blur-custom-timeline-reset");
-  if (btn)
-    btn.onclick = () => {
-      updateStart(0);
-      updateEnd(100);
-      updateEntry(100);
-      updateCenter(100);
-      updateExit(100);
-    };
-}
-
-export function blurbutton_initEffectAnimationDropdownToggle() {
-  const arrow = document.getElementById("blur-effect-animation-type-arrow");
-  const list = document.getElementById("blur-effect-animation-type-list");
-  const display = document.getElementById("blur-effect-animation-value");
-  if (!arrow || !list || !display) return;
-
-  arrow.onclick = () => {
-    list.classList.toggle("sc-hidden");
-  };
-
-  const items = list.querySelectorAll("[data-value]");
-  items.forEach((item) => {
-    item.onclick = () => {
-      const selected = item.getAttribute("data-value");
-      display.textContent = item.textContent.trim();
-      display.setAttribute("data-value", selected);
-      try {
-        const el =
-          typeof getSelectedElement === "function"
-            ? getSelectedElement()
-            : null;
-        const btn =
-          el?.querySelector(
-            "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-          ) || el;
-        if (btn)
-          btn.style.setProperty("--sc-blur-effect-animation", selected);
-        window.__typoScrollEase = selected;
-      } catch {}
-      list.classList.add("sc-hidden");
-    };
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!arrow.contains(e.target) && !list.contains(e.target)) {
-      list.classList.add("sc-hidden");
-    }
-  });
-}
-
 export function blurinitButtonAdvanceStyles(getSelectedElement) {
   const startBullet = document.getElementById("blur-timeline-start-bullet");
   const endBullet = document.getElementById("blur-timeline-end-bullet");
@@ -254,30 +9,20 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
   const entryBullet = document.getElementById(
     "blur-button-advance-entry-bullet"
   );
-  const entryFill = document.getElementById(
-    "blur-button-advance-entry-fill"
-  );
-  const entryCount = document.getElementById(
-    "blur-button-advance-entry-count"
-  );
+  const entryFill = document.getElementById("blur-button-advance-entry-fill");
+  const entryCount = document.getElementById("blur-button-advance-entry-count");
 
   const centerBullet = document.getElementById(
     "blur-button-advance-center-bullet"
   );
-  const centerFill = document.getElementById(
-    "blur-button-advance-center-fill"
-  );
+  const centerFill = document.getElementById("blur-button-advance-center-fill");
   const centerCount = document.getElementById(
     "blur-button-advance-center-count"
   );
 
-  const exitBullet = document.getElementById(
-    "blur-button-advance-exit-bullet"
-  );
+  const exitBullet = document.getElementById("blur-button-advance-exit-bullet");
   const exitFill = document.getElementById("blur-button-advance-exit-fill");
-  const exitCount = document.getElementById(
-    "blur-button-advance-exit-count"
-  );
+  const exitCount = document.getElementById("blur-button-advance-exit-count");
 
   if (
     !startBullet ||
@@ -313,13 +58,11 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
   };
 
   let startPct =
-    readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-start")
-    ) || 0;
+    readPct(getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-start")) ||
+    0;
   let endPct =
-    readPct(
-      getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-end")
-    ) || 100;
+    readPct(getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-end")) ||
+    100;
   if (endPct < startPct + 4) endPct = startPct + 4;
 
   let entryPct = readPct(
@@ -445,9 +188,9 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
     100
   );
 
-  setEntry(entryPct || 100);
-  setCenter(centerPct || 100);
-  setExit(exitPct || 100);
+  setEntry(entryPct || 0);
+  setCenter(centerPct || 0);
+  setExit(exitPct || 0);
   setStart(startPct);
   gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
   setEnd(endPct);
@@ -538,13 +281,7 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
     setStart,
     setEnd
   );
-  blurattachCustomTimelineReset(
-    setStart,
-    setEnd,
-    setEntry,
-    setCenter,
-    setExit
-  );
+  blurattachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
   blurbutton_initEffectAnimationDropdownToggle();
 
   if (
