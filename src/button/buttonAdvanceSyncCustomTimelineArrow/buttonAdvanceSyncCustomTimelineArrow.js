@@ -1,36 +1,63 @@
 
-
 function getViewportProgress(el) {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    if (vh <= 0) return 0.5;
-    const toolbar = document.querySelector(
-      '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-    );
-    const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-    const visibleTop = th;
-    const visibleHeight = Math.max(1, vh - th);
-    const r = el.getBoundingClientRect();
-    const center = r.top + r.height / 2;
-    let t = (center - visibleTop) / visibleHeight;
-    if (Number.isNaN(t)) t = 0.5;
-    return Math.max(0, Math.min(1, t));
-  }
+  if (!el) return 0.5;
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  if (vh <= 0) return 0.5;
+  const toolbar = document.querySelector(
+    '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+  );
+  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+  const visibleTop = th;
+  const visibleHeight = Math.max(1, vh - th);
 
-export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+  const center = rect.top + rect.height / 2;
+  let t = (center - visibleTop) / visibleHeight;
+
+  if (!isFinite(t)) t = 0.5;
+  return Math.max(0, Math.min(1, t));
+}
+
+function waitForElements() {
+  return new Promise((resolve, reject) => {
+    let retries = 20;
+    const interval = setInterval(() => {
+      const arrow = document.getElementById("vertical-custom-timeline-arrow");
+      const startBullet = document.getElementById(
+        "vertical-timeline-start-bullet"
+      );
+      const endBullet = document.getElementById("vertical-timeline-end-bullet");
+      if (arrow && startBullet && endBullet) {
+        clearInterval(interval);
+        resolve({ arrow, startBullet, endBullet });
+      } else if (retries-- <= 0) {
+        clearInterval(interval);
+        reject("Elements not found");
+      }
+    }, 100);
+  });
+}
+
+export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  function waitForElements(callback, retries = 20) {
-    const arrow = document.getElementById("vertical-custom-timeline-arrow");
-    const startBullet = document.getElementById(
-      "vertical-timeline-start-bullet"
-    );
-    const endBullet = document.getElementById("vertical-timeline-end-bullet");
-    if (arrow && startBullet && endBullet) callback(arrow);
-    else if (retries > 0)
-      setTimeout(() => waitForElements(callback, retries - 1), 100);
-  }
+  try {
+    const { arrow } = await waitForElements(); // wait for DOM
 
-  function setupScrollAnimation(btn, arrow) {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+
+    if (!btn || !(btn instanceof HTMLElement)) return;
+
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST && !ST._registered) {
+      gs.registerPlugin(ST);
+      ST._registered = true;
+    }
+
     const getVar = (v) =>
       parseFloat(
         getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
@@ -42,122 +69,51 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const start = () => getVar("--sc-vertical-scroll-start") / 100;
     const end = () => getVar("--sc-vertical-scroll-end") / 100;
 
-    const gs = window.gsap;
-    const ST = window.ScrollTrigger;
-    if (gs && ST) gs.registerPlugin(ST);
-
     let currentY = null;
 
-    // ======== NEW: Realtime Bullet Update ========
-    function bindBulletRealtime(prefix) {
-      const entryBullet = document.getElementById(`${prefix}-entry-bullet`);
-      const centerBullet = document.getElementById(`${prefix}-center-bullet`);
-      const exitBullet = document.getElementById(`${prefix}-exit-bullet`);
-
-      const entryField = document.getElementById(`${prefix}-entry-field`);
-      const centerField = document.getElementById(`${prefix}-center-field`);
-      const exitField = document.getElementById(`${prefix}-exit-field`);
-
-      if (!entryBullet || !centerBullet || !exitBullet) return;
-      if (!entryField || !centerField || !exitField) return;
-
-      // Helper to sync bullet with field
-      const sync = (field, bullet) => {
-        field.addEventListener("input", () => {
-          bullet.value = field.value;
-        });
-        // Optional: also sync on focus
-        field.addEventListener("focus", () => {
-          bullet.value = field.value;
-        });
-      };
-
-      sync(entryField, entryBullet);
-      sync(centerField, centerBullet);
-      sync(exitField, exitBullet);
-    }
-
-    // Call the realtime sync for vertical scroll bullets/fields
-    bindBulletRealtime("vertical-button-advance");
-
-    // ======== EXISTING Scroll Animation Logic ========
     const updateYTransform = () => {
       const t = getViewportProgress(selectedElement);
-      const s = start();
-      const e = end();
-      const eY = entryY();
-      const cY = centerY();
-      const xY = exitY();
+      const s = start(),
+        e = end();
+      const eY = entryY(),
+        cY = centerY(),
+        xY = exitY();
       let y;
-      if (t < s) {
-        const k = s <= 0 ? 1 : Math.min(t / s, 1);
-        y = eY + (cY - eY) * k;
-      } else if (t > e) {
-        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-        y = cY + (xY - cY) * k;
-      } else {
-        y = cY;
-      }
+
+      if (t < s) y = eY + (cY - eY) * (s ? Math.min(t / s, 1) : 1);
+      else if (t > e)
+        y = cY + (xY - cY) * (1 - e ? Math.min((t - e) / (1 - e), 1) : 1);
+      else y = cY;
+
       y = Math.max(-50, Math.min(50, y));
+
       if (y !== currentY) {
         currentY = y;
-        const ease = window.__typoScrollEase || "none";
-        if (gs) {
+        if (gs)
           gs.to(btn, {
             y: `${y}vh`,
-            ease,
-            duration: ease === "none" ? 0 : 0.6,
+            ease: "none",
+            duration: 0,
             overwrite: "auto",
           });
-        } else {
-          btn.style.transform = `translateY(${y}vh)`;
-        }
+        else btn.style.transform = `translateY(${y}vh)`;
       }
-    };
 
-    if (gs && ST) {
-      ST.create({
-        trigger: selectedElement,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: updateYTransform,
-      });
-      ST.refresh(true);
-    } else {
-      window.addEventListener("scroll", updateYTransform, { passive: true });
-      window.addEventListener("resize", updateYTransform, { passive: true });
-    }
-
-    const observer = new MutationObserver(updateYTransform);
-    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
-    setInterval(updateYTransform, 150);
-
-    function loopArrow() {
-      const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
-      const s = start();
-      const e = end();
       const buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
-      requestAnimationFrame(loopArrow);
-    }
-    loopArrow();
+
+      requestAnimationFrame(updateYTransform);
+    };
+
+    updateYTransform();
+  } catch (err) {
+    console.warn("Timeline arrow init failed:", err);
   }
-
-  waitForElements((arrow) => {
-    const btn =
-      selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      ) || selectedElement;
-    if (!btn) return;
-    setupScrollAnimation(btn, arrow);
-  });
 }
-
 
   export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     selectedElement
