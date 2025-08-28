@@ -16,26 +16,21 @@ function getViewportProgress(el) {
     return Math.max(0, Math.min(1, t));
   }
 
-export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
+export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
-  try {
-    const { arrow } = await waitForElements(); // wait for DOM
+  function waitForElements(callback, retries = 20) {
+    const arrow = document.getElementById("vertical-custom-timeline-arrow");
+    const startBullet = document.getElementById(
+      "vertical-timeline-start-bullet"
+    );
+    const endBullet = document.getElementById("vertical-timeline-end-bullet");
+    if (arrow && startBullet && endBullet) callback(arrow);
+    else if (retries > 0)
+      setTimeout(() => waitForElements(callback, retries - 1), 100);
+  }
 
-    const btn =
-      selectedElement.querySelector(
-        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-      ) || selectedElement;
-
-    if (!btn || !(btn instanceof HTMLElement)) return;
-
-    const gs = window.gsap;
-    const ST = window.ScrollTrigger;
-    if (gs && ST && !ST._registered) {
-      gs.registerPlugin(ST);
-      ST._registered = true;
-    }
-
+  function setupScrollAnimation(btn, arrow) {
     const getVar = (v) =>
       parseFloat(
         getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
@@ -47,51 +42,122 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const start = () => getVar("--sc-vertical-scroll-start") / 100;
     const end = () => getVar("--sc-vertical-scroll-end") / 100;
 
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) gs.registerPlugin(ST);
+
     let currentY = null;
 
+    // ======== NEW: Realtime Bullet Update ========
+    function bindBulletRealtime(prefix) {
+      const entryBullet = document.getElementById(`${prefix}-entry-bullet`);
+      const centerBullet = document.getElementById(`${prefix}-center-bullet`);
+      const exitBullet = document.getElementById(`${prefix}-exit-bullet`);
+
+      const entryField = document.getElementById(`${prefix}-entry-field`);
+      const centerField = document.getElementById(`${prefix}-center-field`);
+      const exitField = document.getElementById(`${prefix}-exit-field`);
+
+      if (!entryBullet || !centerBullet || !exitBullet) return;
+      if (!entryField || !centerField || !exitField) return;
+
+      // Helper to sync bullet with field
+      const sync = (field, bullet) => {
+        field.addEventListener("input", () => {
+          bullet.value = field.value;
+        });
+        // Optional: also sync on focus
+        field.addEventListener("focus", () => {
+          bullet.value = field.value;
+        });
+      };
+
+      sync(entryField, entryBullet);
+      sync(centerField, centerBullet);
+      sync(exitField, exitBullet);
+    }
+
+    // Call the realtime sync for vertical scroll bullets/fields
+    bindBulletRealtime("vertical-button-advance");
+
+    // ======== EXISTING Scroll Animation Logic ========
     const updateYTransform = () => {
       const t = getViewportProgress(selectedElement);
-      const s = start(),
-        e = end();
-      const eY = entryY(),
-        cY = centerY(),
-        xY = exitY();
+      const s = start();
+      const e = end();
+      const eY = entryY();
+      const cY = centerY();
+      const xY = exitY();
       let y;
-
-      if (t < s) y = eY + (cY - eY) * (s ? Math.min(t / s, 1) : 1);
-      else if (t > e)
-        y = cY + (xY - cY) * (1 - e ? Math.min((t - e) / (1 - e), 1) : 1);
-      else y = cY;
-
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        y = eY + (cY - eY) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        y = cY + (xY - cY) * k;
+      } else {
+        y = cY;
+      }
       y = Math.max(-50, Math.min(50, y));
-
       if (y !== currentY) {
         currentY = y;
-        if (gs)
+        const ease = window.__typoScrollEase || "none";
+        if (gs) {
           gs.to(btn, {
             y: `${y}vh`,
-            ease: "none",
-            duration: 0,
+            ease,
+            duration: ease === "none" ? 0 : 0.6,
             overwrite: "auto",
           });
-        else btn.style.transform = `translateY(${y}vh)`;
+        } else {
+          btn.style.transform = `translateY(${y}vh)`;
+        }
       }
+    };
 
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateYTransform,
+      });
+      ST.refresh(true);
+    } else {
+      window.addEventListener("scroll", updateYTransform, { passive: true });
+      window.addEventListener("resize", updateYTransform, { passive: true });
+    }
+
+    const observer = new MutationObserver(updateYTransform);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateYTransform, 150);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
       const buffer = 0.001;
       if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
       else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
       else arrow.style.backgroundColor = "#FFFFFF";
-
-      requestAnimationFrame(updateYTransform);
-    };
-
-    updateYTransform();
-  } catch (err) {
-    console.warn("Timeline arrow init failed:", err);
+      requestAnimationFrame(loopArrow);
+    }
+    loopArrow();
   }
+
+  waitForElements((arrow) => {
+    const btn =
+      selectedElement.querySelector(
+        "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+      ) || selectedElement;
+    if (!btn) return;
+    setupScrollAnimation(btn, arrow);
+  });
 }
+
 
   export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     selectedElement
