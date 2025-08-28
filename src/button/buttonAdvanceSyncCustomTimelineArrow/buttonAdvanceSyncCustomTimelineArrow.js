@@ -1,43 +1,20 @@
 
+
 function getViewportProgress(el) {
-  if (!el) return 0.5;
-  const rect = el.getBoundingClientRect();
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  if (vh <= 0) return 0.5;
-  const toolbar = document.querySelector(
-    '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
-  );
-  const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
-  const visibleTop = th;
-  const visibleHeight = Math.max(1, vh - th);
-
-  const center = rect.top + rect.height / 2;
-  let t = (center - visibleTop) / visibleHeight;
-
-  if (!isFinite(t)) t = 0.5;
-  return Math.max(0, Math.min(1, t));
-}
-
-function waitForElements() {
-  return new Promise((resolve, reject) => {
-    let retries = 20;
-    const interval = setInterval(() => {
-      const arrow = document.getElementById("vertical-custom-timeline-arrow");
-      const startBullet = document.getElementById(
-        "vertical-timeline-start-bullet"
-      );
-      const endBullet = document.getElementById("vertical-timeline-end-bullet");
-      if (arrow && startBullet && endBullet) {
-        clearInterval(interval);
-        resolve({ arrow, startBullet, endBullet });
-      } else if (retries-- <= 0) {
-        clearInterval(interval);
-        reject("Elements not found");
-      }
-    }, 100);
-  });
-}
-
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (vh <= 0) return 0.5;
+    const toolbar = document.querySelector(
+      '[data-routing="editor-toolbar"], .sqs-editor-controls, .sqs-navheader'
+    );
+    const th = toolbar ? toolbar.getBoundingClientRect().height : 0;
+    const visibleTop = th;
+    const visibleHeight = Math.max(1, vh - th);
+    const r = el.getBoundingClientRect();
+    const center = r.top + r.height / 2;
+    let t = (center - visibleTop) / visibleHeight;
+    if (Number.isNaN(t)) t = 0.5;
+    return Math.max(0, Math.min(1, t));
+  }
 
 export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
@@ -116,7 +93,7 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 }
 
-export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
+  export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     selectedElement
   ) {
     if (!selectedElement) return;
