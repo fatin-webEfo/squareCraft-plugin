@@ -866,6 +866,7 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   });
 }
 
+
 export function initButtonAdvanceScrollEffectReset(target) {
   const el = typeof target === "function" ? target() : target;
   if (!el) return;
