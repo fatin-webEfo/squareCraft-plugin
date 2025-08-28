@@ -3283,9 +3283,9 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
   makeDraggable(exitBullet, setExit, "normal", 0, 100);
 
   [
-    { id: "blur-button-advance-entry-reset", setter: () => setEntry(100) },
-    { id: "blur-button-advance-center-reset", setter: () => setCenter(100) },
-    { id: "blur-button-advance-exit-reset", setter: () => setExit(100) },
+    { id: "blur-button-advance-entry-reset", setter: () => setEntry(0) },
+    { id: "blur-button-advance-center-reset", setter: () => setCenter(0) },
+    { id: "blur-button-advance-exit-reset", setter: () => setExit(0) },
   ].forEach(({ id, setter }) => {
     const b = document.getElementById(id);
     if (b) b.onclick = setter;
