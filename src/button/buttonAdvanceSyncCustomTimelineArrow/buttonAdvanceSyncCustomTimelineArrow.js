@@ -788,37 +788,42 @@ function getViewportProgress(el) {
        }
      };
 
-     function loopArrow() {
-       const t = getViewportProgress(selectedElement);
-       const s = start();
-       const e = end();
-       arrow.style.left = `${t * 100}%`;
-       arrow.style.transform = "translateX(-50%)";
-       const buffer = 0.001;
-       let activeVal;
-       if (t <= s + buffer) {
-         activeVal = entryVal();
-         arrow.style.backgroundColor = "#EF7C2F";
-       } else if (t >= e - buffer) {
-         activeVal = exitVal();
-         arrow.style.backgroundColor = "#F6B67B";
-       } else {
-         activeVal = centerVal();
-         arrow.style.backgroundColor = "#FFFFFF";
-       }
-       const ease = easeName();
-       if (gs) {
-         gs.to(btn, {
-           "--sc-blur-amt": `${activeVal}px`,
-           duration: ease === "none" ? 0.25 : 0.6,
-           ease,
-           overwrite: "auto",
-         });
-       } else {
-         btn.style.setProperty("--sc-blur-amt", `${activeVal}px`);
-       }
-       requestAnimationFrame(loopArrow);
-     }
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+
+      let targetBlur;
+      if (t <= s) {
+        targetBlur = entryVal();
+        arrow.style.backgroundColor = "#EF7C2F";
+      } else if (t >= e) {
+        targetBlur = exitVal();
+        arrow.style.backgroundColor = "#F6B67B";
+      } else {
+        targetBlur = centerVal();
+        arrow.style.backgroundColor = "#FFFFFF";
+      }
+
+      if (targetBlur !== lastBlur) {
+        lastBlur = targetBlur;
+        const ease = easeName();
+        if (gs) {
+          gs.to(btn, {
+            "--sc-blur-amt": `${targetBlur}px`,
+            duration: ease === "none" ? 0.25 : 0.6,
+            ease,
+            overwrite: "auto",
+          });
+        } else {
+          btn.style.setProperty("--sc-blur-amt", `${targetBlur}px`);
+        }
+      }
+
+      requestAnimationFrame(loopArrow);
+    }
 
       if (gs && ST) {
         ST.create({
