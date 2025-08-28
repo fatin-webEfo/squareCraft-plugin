@@ -56,7 +56,7 @@ export function WidgetImageHoverState() {
 
               <div
                 id="image-hover-BorderField"
-                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
               >
                 <div
                   id="image-hover-BorderFill"
@@ -867,7 +867,7 @@ export function WidgetImageHoverState() {
 
                   <div
                     id="Image-hover-yAxisSlider"
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
                       id="Image-hover-yAxisBullet"

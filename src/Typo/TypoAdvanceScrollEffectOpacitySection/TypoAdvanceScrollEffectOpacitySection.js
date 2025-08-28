@@ -106,7 +106,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
            </div>
            <div
              id="Typo-opacity-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="Typo-opacity-advance-entry-fill"
@@ -158,7 +158,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
            </div>
            <div
              id="Typo-opacity-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="Typo-opacity-advance-center-fill"
@@ -210,7 +210,7 @@ export function TypoAdvanceScrollEffectOpacitySection() {
            </div>
            <div
              id="Typo-opacity-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="Typo-opacity-advance-exit-fill"

@@ -105,7 +105,7 @@ export function ButtonAdvanceScrollEffectRotateSection(){
            </div>
            <div
              id="rotate-button-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="rotate-button-advance-entry-fill"
@@ -157,7 +157,7 @@ export function ButtonAdvanceScrollEffectRotateSection(){
            </div>
            <div
              id="rotate-button-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="rotate-button-advance-center-fill"
@@ -209,7 +209,7 @@ export function ButtonAdvanceScrollEffectRotateSection(){
            </div>
            <div
              id="rotate-button-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="rotate-button-advance-exit-fill"

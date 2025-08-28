@@ -171,7 +171,7 @@ export function WidgetImageAdvanceSection(){
                 </div>
                 <div
 
-                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                 >
                   <div
 
@@ -227,7 +227,7 @@ export function WidgetImageAdvanceSection(){
                 </div>
                 <div
 
-                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                 >
                   <div
 
@@ -283,7 +283,7 @@ export function WidgetImageAdvanceSection(){
                 </div>
                 <div
 
-                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                 >
                   <div
 
@@ -339,7 +339,7 @@ export function WidgetImageAdvanceSection(){
                 </div>
                 <div
 
-                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                  class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                 >
                   <div
 
@@ -534,7 +534,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -590,7 +590,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -646,7 +646,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -702,7 +702,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -896,7 +896,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -952,7 +952,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1008,7 +1008,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1064,7 +1064,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1258,7 +1258,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1314,7 +1314,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1370,7 +1370,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1426,7 +1426,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1620,7 +1620,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1676,7 +1676,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1732,7 +1732,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1788,7 +1788,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -1981,7 +1981,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -2037,7 +2037,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -2093,7 +2093,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 
@@ -2149,7 +2149,7 @@ export function WidgetImageAdvanceSection(){
                   </div>
                   <div
 
-                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+                    class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
                   >
                     <div
 

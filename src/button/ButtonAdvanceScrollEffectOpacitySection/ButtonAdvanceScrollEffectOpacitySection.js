@@ -106,7 +106,7 @@ export function ButtonAdvanceScrollEffectOpacitySection(){
            </div>
            <div
              id="opacity-button-advance-entry-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="opacity-button-advance-entry-fill"
@@ -158,7 +158,7 @@ export function ButtonAdvanceScrollEffectOpacitySection(){
            </div>
            <div
              id="opacity-button-advance-center-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="opacity-button-advance-center-fill"
@@ -210,7 +210,7 @@ export function ButtonAdvanceScrollEffectOpacitySection(){
            </div>
            <div
              id="opacity-button-advance-exit-field"
-             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6"
+             class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer"
            >
              <div
                id="opacity-button-advance-exit-fill"

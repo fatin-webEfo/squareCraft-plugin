@@ -390,7 +390,7 @@ export function WidgetButtonNormalState() {
                         </div>
                      </div>
                   </div>
-                  <div id="buttonIconRotationradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonIconRotationradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
                      <div id="buttonIconRotationradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonIconRotationradiusBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -424,7 +424,7 @@ export function WidgetButtonNormalState() {
                      </div>
                   </div>
                </div>
-               <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+               <div id="buttonIconSizeradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
                   <div id="buttonIconSizeradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                   <div id="buttonIconSizeradiusBullet"
                      class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -462,7 +462,7 @@ export function WidgetButtonNormalState() {
                   </div>
                </div>
             </div>
-            <div id="buttonIconSpacingradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+            <div id="buttonIconSpacingradiusField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
                <div id="buttonIconSpacingradiusFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                <div id="buttonIconSpacingradiusBullet"
                   class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">
@@ -501,7 +501,7 @@ export function WidgetButtonNormalState() {
                      </div>
                   </div>
 
-                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+                  <div id="buttonBorderField" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
                      <div id="buttonBorderFill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
                      <div id="buttonBorderBullet"
                         class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half">

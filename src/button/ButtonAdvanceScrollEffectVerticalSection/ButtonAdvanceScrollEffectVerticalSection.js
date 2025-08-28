@@ -90,7 +90,7 @@ export function ButtonAdvanceScrollEffectVerticalSection(){
          </div>
          <div
            id="vertical-button-advance-entry-field"
-           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
            <div
              id="vertical-button-advance-entry-fill"
              class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
@@ -134,7 +134,7 @@ export function ButtonAdvanceScrollEffectVerticalSection(){
          </div>
          <div
            id="vertical-button-advance-center-field"
-           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
            <div
              id="vertical-button-advance-center-fill"
              class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
@@ -179,7 +179,7 @@ export function ButtonAdvanceScrollEffectVerticalSection(){
          </div>
          <div
            id="vertical-button-advance-exit-field"
-           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6">
+           class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
            <div
              id="vertical-button-advance-exit-fill"
              class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
