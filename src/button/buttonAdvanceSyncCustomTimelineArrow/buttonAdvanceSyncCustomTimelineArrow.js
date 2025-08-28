@@ -927,8 +927,22 @@ export function initButtonAdvanceScrollEffectReset(target) {
     "--sc-blur-scroll-start",
     "--sc-blur-scroll-end",
   ];
+
   [el, btn].forEach((node) =>
-    vars.forEach((v) => node.style.removeProperty(v))
+    vars.forEach((v) => {
+      node.style.removeProperty(v);
+
+      // Only change default reset values
+      if (v.includes("opacity")) {
+        node.style.setProperty(v, "100%");
+      } else if (
+        v.includes("entry") ||
+        v.includes("center") ||
+        v.includes("exit")
+      ) {
+        node.style.setProperty(v, "0%");
+      }
+    })
   );
 }
 
