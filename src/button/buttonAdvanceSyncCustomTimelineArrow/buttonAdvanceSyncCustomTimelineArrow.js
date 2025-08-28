@@ -756,39 +756,70 @@ function getViewportProgress(el) {
       if (!btn.style.getPropertyValue("--sc-blur-amt"))
         btn.style.setProperty("--sc-blur-amt", "0px");
       let lastBlur = null;
-      const updateBlur = () => {
-        const t = getViewportProgress(selectedElement);
-        const s = start();
-        const e = end();
-        const en = entryVal();
-        const ce = centerVal();
-        const ex = exitVal();
-        let b;
-        if (t < s) {
-          const k = s <= 0 ? 1 : Math.min(t / s, 1);
-          b = en + (ce - en) * k;
-        } else if (t > e) {
-          const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-          b = ce + (ex - ce) * k;
-        } else {
-          b = ce;
-        }
-        b = Math.max(0, Math.min(100, b));
-        if (b !== lastBlur) {
-          lastBlur = b;
-          const ease = easeName();
-          if (gs) {
-            gs.to(btn, {
-              "--sc-blur-amt": `${b}px`,
-              duration: ease === "none" ? 0.25 : 0.6,
-              ease,
-              overwrite: "auto",
-            });
-          } else {
-            btn.style.setProperty("--sc-blur-amt", `${b}px`);
-          }
-        }
-      };
+     const updateBlur = () => {
+       const t = getViewportProgress(selectedElement);
+       const s = start();
+       const e = end();
+       const en = entryVal();
+       const ce = centerVal();
+       const ex = exitVal();
+       let b;
+       if (t <= s) {
+         b = en + (ce - en) * Math.min(t / s, 1);
+       } else if (t >= e) {
+         b = ce + (ex - ce) * Math.min((t - e) / (1 - e), 1);
+       } else {
+         b = ce;
+       }
+       b = Math.max(0, Math.min(100, b));
+       if (b !== lastBlur) {
+         lastBlur = b;
+         const ease = easeName();
+         if (gs) {
+           gs.to(btn, {
+             "--sc-blur-amt": `${b}px`,
+             duration: ease === "none" ? 0.25 : 0.6,
+             ease,
+             overwrite: "auto",
+           });
+         } else {
+           btn.style.setProperty("--sc-blur-amt", `${b}px`);
+         }
+       }
+     };
+
+     function loopArrow() {
+       const t = getViewportProgress(selectedElement);
+       const s = start();
+       const e = end();
+       arrow.style.left = `${t * 100}%`;
+       arrow.style.transform = "translateX(-50%)";
+       const buffer = 0.001;
+       let activeVal;
+       if (t <= s + buffer) {
+         activeVal = entryVal();
+         arrow.style.backgroundColor = "#EF7C2F";
+       } else if (t >= e - buffer) {
+         activeVal = exitVal();
+         arrow.style.backgroundColor = "#F6B67B";
+       } else {
+         activeVal = centerVal();
+         arrow.style.backgroundColor = "#FFFFFF";
+       }
+       const ease = easeName();
+       if (gs) {
+         gs.to(btn, {
+           "--sc-blur-amt": `${activeVal}px`,
+           duration: ease === "none" ? 0.25 : 0.6,
+           ease,
+           overwrite: "auto",
+         });
+       } else {
+         btn.style.setProperty("--sc-blur-amt", `${activeVal}px`);
+       }
+       requestAnimationFrame(loopArrow);
+     }
+
       if (gs && ST) {
         ST.create({
           trigger: selectedElement,
