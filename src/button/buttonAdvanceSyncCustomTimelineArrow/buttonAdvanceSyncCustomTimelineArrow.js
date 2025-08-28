@@ -809,6 +809,7 @@ export function initButtonAdvanceScrollEffectReset(target) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || el;
 
+  // Kill ScrollTriggers
   const ST = window.ScrollTrigger;
   if (ST) {
     ST.getAll()
@@ -823,11 +824,13 @@ export function initButtonAdvanceScrollEffectReset(target) {
     ST.refresh(true);
   }
 
+  // Remove basic styles
   ["transform", "opacity", "filter"].forEach((p) => {
     btn.style.removeProperty(p);
   });
   btn.style.removeProperty("--sc-blur-amt");
 
+  // All scroll CSS variables
   const vars = [
     "--sc-vertical-scroll-entry",
     "--sc-vertical-scroll-center",
@@ -860,10 +863,25 @@ export function initButtonAdvanceScrollEffectReset(target) {
     "--sc-blur-scroll-start",
     "--sc-blur-scroll-end",
   ];
-  [el, btn].forEach((node) =>
-    vars.forEach((v) => node.style.removeProperty(v))
-  );
+
+  [el, btn].forEach((node) => {
+    vars.forEach((v) => {
+      node.style.removeProperty(v);
+
+      // Reset values depending on type
+      if (v.includes("opacity")) {
+        node.style.setProperty(v, "100%");
+      } else if (
+        v.includes("entry") ||
+        v.includes("center") ||
+        v.includes("exit")
+      ) {
+        node.style.setProperty(v, "0%");
+      }
+    });
+  });
 }
+
   // export function logButtonAdvanceScrollEffectStyle(target) {
   //   const el = typeof target === "function" ? target() : target;
   //   const s = getButtonAdvanceScrollEffectStyle(el);
