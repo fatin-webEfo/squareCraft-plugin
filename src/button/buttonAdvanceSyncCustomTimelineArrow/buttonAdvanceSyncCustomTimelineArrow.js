@@ -38,6 +38,7 @@ function waitForElements() {
   });
 }
 
+
 export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
