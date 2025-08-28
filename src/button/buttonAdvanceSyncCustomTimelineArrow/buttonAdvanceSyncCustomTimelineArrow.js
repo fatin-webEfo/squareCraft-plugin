@@ -115,7 +115,7 @@ export async function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   }
 }
 
-  export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
+export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     selectedElement
   ) {
     if (!selectedElement) return;
