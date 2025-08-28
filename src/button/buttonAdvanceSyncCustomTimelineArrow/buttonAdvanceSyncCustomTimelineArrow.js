@@ -883,10 +883,24 @@ export function initButtonAdvanceScrollEffectReset(target) {
     "--sc-blur-scroll-start",
     "--sc-blur-scroll-end",
   ];
-  [el, btn].forEach((node) =>
-    vars.forEach((v) => node.style.removeProperty(v))
-  );
+
+  [el, btn].forEach((node) => {
+    vars.forEach((v) => {
+      node.style.removeProperty(v);
+
+      if (v.includes("opacity")) {
+        node.style.setProperty(v, "100%");
+      } else if (
+        v.includes("entry") ||
+        v.includes("center") ||
+        v.includes("exit")
+      ) {
+        node.style.setProperty(v, "0%");
+      }
+    });
+  });
 }
+
   // export function logButtonAdvanceScrollEffectStyle(target) {
   //   const el = typeof target === "function" ? target() : target;
   //   const s = getButtonAdvanceScrollEffectStyle(el);
