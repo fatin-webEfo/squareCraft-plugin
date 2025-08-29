@@ -1,7 +1,7 @@
 (async function squareCraft() {
   let widgetReadyPromise = null;
   let lastToggleAt = 0;
-  let justOpenedUntil = 0; // grace period for the body-closer
+  let justOpenedUntil = 0; 
   let __sc_creating = false;
   
   const HOST_DOC = (() => {
@@ -10,7 +10,9 @@
         void parent.document.body;
         return parent.document;
       }
-    } catch (_) {}
+    } catch (_) {
+      
+    }
     return document;
   })();
   const HOST_WIN = HOST_DOC.defaultView || window;
