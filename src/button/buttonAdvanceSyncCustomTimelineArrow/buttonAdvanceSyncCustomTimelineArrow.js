@@ -106,6 +106,11 @@ export function initClickToMove(prefix, getTargetEl) {
     field.addEventListener("touchmove", move, { passive: false });
     document.addEventListener("touchend", end);
   });
+
+  keys.forEach((k) => {
+    const btn = ids(`${k}-reset`);
+    if (btn) btn.onclick = () => apply(k, 0);
+  });
 }
 
 
@@ -123,95 +128,120 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       setTimeout(() => waitForElements(callback, retries - 1), 100);
   }
 
-function setupScrollAnimation(btn, arrow) {
-  const getVar = (v) =>
-    parseFloat(
-      getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
-    ) || 0;
-  const entryY = () => getVar("--sc-vertical-scroll-entry") / 2;
-  const centerY = () => getVar("--sc-vertical-scroll-center") / 2;
-  const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
-  const start = () => getVar("--sc-vertical-scroll-start") / 100;
-  const end = () => getVar("--sc-vertical-scroll-end") / 100;
+  function setupScrollAnimation(btn, arrow) {
+    const getVar = (v) =>
+      parseFloat(
+        getComputedStyle(btn).getPropertyValue(v).trim().replace("%", "")
+      ) || 0;
 
-  const gs = window.gsap,
-    ST = window.ScrollTrigger;
-  if (gs && ST) gs.registerPlugin(ST);
+    const entryY = () => getVar("--sc-vertical-scroll-entry") / 2;
+    const centerY = () => getVar("--sc-vertical-scroll-center") / 2;
+    const exitY = () => getVar("--sc-vertical-scroll-exit") / 2;
+    const start = () => getVar("--sc-vertical-scroll-start") / 100;
+    const end = () => getVar("--sc-vertical-scroll-end") / 100;
 
-  let currentY = null;
-  btn.__sc_alive = true;
+    const gs = window.gsap;
+    const ST = window.ScrollTrigger;
+    if (gs && ST) gs.registerPlugin(ST);
 
-  const updateYTransform = () => {
-    const t = getViewportProgress(selectedElement);
-    const s = start(),
-      e = end();
-    const eY = entryY(),
-      cY = centerY(),
-      xY = exitY();
-    let y;
-    if (t < s) {
-      const k = s <= 0 ? 1 : Math.min(t / s, 1);
-      y = eY + (cY - eY) * k;
-    } else if (t > e) {
-      const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
-      y = cY + (xY - cY) * k;
-    } else {
-      y = cY;
-    }
-    y = Math.max(-50, Math.min(50, y));
-    if (y !== currentY) {
-      currentY = y;
-      const ease = window.__typoScrollEase || "none";
-      if (gs) {
-        gs.to(btn, {
-          y: `${y}vh`,
-          ease,
-          duration: ease === "none" ? 0 : 0.6,
-          overwrite: "auto",
+    let currentY = null;
+
+    // ======== NEW: Realtime Bullet Update ========
+    function bindBulletRealtime(prefix) {
+      const entryBullet = document.getElementById(`${prefix}-entry-bullet`);
+      const centerBullet = document.getElementById(`${prefix}-center-bullet`);
+      const exitBullet = document.getElementById(`${prefix}-exit-bullet`);
+
+      const entryField = document.getElementById(`${prefix}-entry-field`);
+      const centerField = document.getElementById(`${prefix}-center-field`);
+      const exitField = document.getElementById(`${prefix}-exit-field`);
+
+      if (!entryBullet || !centerBullet || !exitBullet) return;
+      if (!entryField || !centerField || !exitField) return;
+
+      // Helper to sync bullet with field
+      const sync = (field, bullet) => {
+        field.addEventListener("input", () => {
+          bullet.value = field.value;
         });
-      } else {
-        btn.style.transform = `translateY(${y}vh)`;
-      }
+        // Optional: also sync on focus
+        field.addEventListener("focus", () => {
+          bullet.value = field.value;
+        });
+      };
+
+      sync(entryField, entryBullet);
+      sync(centerField, centerBullet);
+      sync(exitField, exitBullet);
     }
-  };
 
-  if (gs && ST) {
-    ST.create({
-      trigger: selectedElement,
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: updateYTransform,
-    });
-    ST.refresh(true);
-  } else {
-    btn.__sc_scroll = updateYTransform;
-    btn.__sc_resize = updateYTransform;
-    window.addEventListener("scroll", btn.__sc_scroll, { passive: true });
-    window.addEventListener("resize", btn.__sc_resize, { passive: true });
+    bindBulletRealtime("vertical-button-advance");
+    const updateYTransform = () => {
+      const t = getViewportProgress(selectedElement);
+      const s = start();
+      const e = end();
+      const eY = entryY();
+      const cY = centerY();
+      const xY = exitY();
+      let y;
+      if (t < s) {
+        const k = s <= 0 ? 1 : Math.min(t / s, 1);
+        y = eY + (cY - eY) * k;
+      } else if (t > e) {
+        const k = 1 - e <= 0 ? 1 : Math.min((t - e) / (1 - e), 1);
+        y = cY + (xY - cY) * k;
+      } else {
+        y = cY;
+      }
+      y = Math.max(-50, Math.min(50, y));
+      if (y !== currentY) {
+        currentY = y;
+        const ease = window.__typoScrollEase || "none";
+        if (gs) {
+          gs.to(btn, {
+            y: `${y}vh`,
+            ease,
+            duration: ease === "none" ? 0 : 0.6,
+            overwrite: "auto",
+          });
+        } else {
+          btn.style.transform = `translateY(${y}vh)`;
+        }
+      }
+    };
+
+    if (gs && ST) {
+      ST.create({
+        trigger: selectedElement,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: updateYTransform,
+      });
+      ST.refresh(true);
+    } else {
+      window.addEventListener("scroll", updateYTransform, { passive: true });
+      window.addEventListener("resize", updateYTransform, { passive: true });
+    }
+
+    const observer = new MutationObserver(updateYTransform);
+    observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
+    setInterval(updateYTransform, 150);
+
+    function loopArrow() {
+      const t = getViewportProgress(selectedElement);
+      arrow.style.left = `${t * 100}%`;
+      arrow.style.transform = "translateX(-50%)";
+      const s = start();
+      const e = end();
+      const buffer = 0.001;
+      if (t < s - buffer) arrow.style.backgroundColor = "#EF7C2F";
+      else if (t > e + buffer) arrow.style.backgroundColor = "#F6B67B";
+      else arrow.style.backgroundColor = "#FFFFFF";
+      requestAnimationFrame(loopArrow);
+    }
+    loopArrow();
   }
-
-  const observer = new MutationObserver(updateYTransform);
-  observer.observe(btn, { attributes: true, attributeFilter: ["style"] });
-  btn.__sc_obs = observer;
-
-  btn.__sc_i = setInterval(updateYTransform, 150);
-
-  function loopArrow() {
-    if (!btn.__sc_alive) return;
-    const t = getViewportProgress(selectedElement);
-    arrow.style.left = `${t * 100}%`;
-    arrow.style.transform = "translateX(-50%)";
-    const s = start(),
-      e = end(),
-      buffer = 0.001;
-    arrow.style.backgroundColor =
-      t < s - buffer ? "#EF7C2F" : t > e + buffer ? "#F6B67B" : "#FFFFFF";
-    btn.__sc_raf = requestAnimationFrame(loopArrow);
-  }
-  loopArrow();
-}
-
 
   waitForElements((arrow) => {
     const btn =
