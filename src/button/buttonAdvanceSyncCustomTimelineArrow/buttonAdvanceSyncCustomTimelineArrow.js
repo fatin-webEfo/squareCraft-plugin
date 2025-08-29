@@ -1,5 +1,3 @@
-
-
 function getViewportProgress(el) {
     const vh = window.innerHeight || document.documentElement.clientHeight;
     if (vh <= 0) return 0.5;
@@ -15,6 +13,10 @@ function getViewportProgress(el) {
     if (Number.isNaN(t)) t = 0.5;
     return Math.max(0, Math.min(1, t));
   }
+const initAllClickToMove = (sel) =>
+  ["vertical", "horizontal", "opacity", "scale", "rotate", "blur"].forEach(
+    (k) => initClickToMove(`${k}-button-advance`, () => sel)
+  );
 
 export function initClickToMove(prefix, getTargetEl) {
     const ids = (s) => document.getElementById(`${prefix}-${s}`);
@@ -221,7 +223,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-      initClickToMove("vertical-button-advance", () => selectedElement);
+       initAllClickToMove(selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
@@ -998,20 +1000,3 @@ export function initButtonAdvanceScrollEffectReset(target) {
     vars.forEach((v) => node.style.removeProperty(v))
   );
 }
-
-
-
-
-  // export function logButtonAdvanceScrollEffectStyle(target) {
-  //   const el = typeof target === "function" ? target() : target;
-  //   const s = getButtonAdvanceScrollEffectStyle(el);
-  //   if (!s) {
-  //     console.log("button advance scroll effect style = null");
-  //     return;
-  //   }
-  //   console.log(
-  //     "button advance scroll effect style =\n" + JSON.stringify(s, null, 2)
-  //   );
-  // }
-
-  // logButtonAdvanceScrollEffectStyle(selectedElement);
