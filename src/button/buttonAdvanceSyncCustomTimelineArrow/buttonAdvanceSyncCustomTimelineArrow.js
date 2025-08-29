@@ -16,6 +16,73 @@ function getViewportProgress(el) {
     return Math.max(0, Math.min(1, t));
   }
 
+export function initClickToMove(prefix, getTargetEl) {
+    const ids = (s) => document.getElementById(`${prefix}-${s}`);
+    const keys = ["entry", "center", "exit"];
+    let active = null;
+
+    const clamp = (n) => Math.max(0, Math.min(100, n));
+    const pctFromEvt = (e, field) => {
+      const r = field.getBoundingClientRect();
+      const x = (e.touches?.[0]?.clientX ?? e.clientX) - r.left;
+      return clamp((x / r.width) * 100);
+    };
+
+    const target = () => {
+      const el = typeof getTargetEl === "function" ? getTargetEl() : null;
+      const sel = document.getElementById(window.selectedBlockId);
+      return el || sel || document.body;
+    };
+
+    const apply = (key, pct) => {
+      const bullet = ids(`${key}-bullet`);
+      const fill = ids(`${key}-fill`);
+      const input = ids(`${key}-count`);
+      if (bullet) bullet.style.left = `${pct}%`;
+      if (fill) fill.style.width = `${pct}%`;
+      if (input) input.value = Math.round(pct);
+      const el = target();
+      el.style.setProperty(
+        `--sc-${prefix.split("-")[0]}-scroll-${key}`,
+        `${pct}%`
+      );
+    };
+
+    keys.forEach((k) => {
+      const bullet = ids(`${k}-bullet`);
+      const field = ids(`${k}-field`);
+      const input = ids(`${k}-count`);
+      if (!field || !bullet) return;
+
+      const setActive = () => (active = k);
+      bullet.addEventListener("mousedown", setActive);
+      bullet.addEventListener("touchstart", setActive, { passive: true });
+      input?.addEventListener("focus", setActive);
+      input?.addEventListener("mousedown", setActive);
+
+      let drag = false;
+      const start = (e) => {
+        if (active !== k) return;
+        drag = true;
+        apply(k, pctFromEvt(e, field));
+        e.preventDefault?.();
+      };
+      const move = (e) => {
+        if (!drag || active !== k) return;
+        apply(k, pctFromEvt(e, field));
+      };
+      const end = () => (drag = false);
+
+      field.addEventListener("mousedown", start);
+      field.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", end);
+
+      field.addEventListener("touchstart", start, { passive: false });
+      field.addEventListener("touchmove", move, { passive: false });
+      document.addEventListener("touchend", end);
+    });
+  }
+
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
 
@@ -154,10 +221,10 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
+      initClickToMove("vertical-button-advance", () => selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
-
 
   export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
     selectedElement
@@ -280,6 +347,7 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
           "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
         ) || selectedElement;
       if (!btn) return;
+       initClickToMove("horizontal-button-advance", () => selectedElement);
       setupScrollAnimation(btn, arrow);
     });
   }
@@ -865,7 +933,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
-
 
 export function initButtonAdvanceScrollEffectReset(target) {
   const el = typeof target === "function" ? target() : target;
