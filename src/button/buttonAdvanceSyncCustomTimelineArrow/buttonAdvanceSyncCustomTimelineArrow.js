@@ -21,14 +21,15 @@ const initAllClickToMove = (sel) =>
 export function initClickToMove(prefix, getTargetEl) {
   const ids = (s) => document.getElementById(`${prefix}-${s}`);
   const keys = ["entry", "center", "exit"];
-  let active = null;
+  const clamp = (n, min, max) =>
+    Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : 0;
 
-  const clamp = (n) => (Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 0);
-  const pctFromEvt = (e, field) => {
+  const pctFromEvt200 = (e, field) => {
     const r = field.getBoundingClientRect();
     if (!r.width) return 0;
     const x = (e.touches?.[0]?.clientX ?? e.clientX) - r.left;
-    return clamp((x / r.width) * 100);
+    const pct = (x / r.width) * 200 - 100;
+    return clamp(pct, -100, 100);
   };
 
   const target = () => {
@@ -37,50 +38,51 @@ export function initClickToMove(prefix, getTargetEl) {
     return el || sel || document.body;
   };
 
-  const apply = (key, pct) => {
+  const apply = (key, val) => {
     const bullet = ids(`${key}-bullet`);
     const fill = ids(`${key}-fill`);
     const input = ids(`${key}-count`);
-    if (bullet) bullet.style.left = `${pct}%`;
-    if (fill) fill.style.width = `${pct}%`;
-    if (input) input.value = Math.round(pct);
+    const percent = (val + 100) / 2;
+    const fillLeft = val < 0 ? percent : 50;
+    const fillWidth = Math.abs(val / 2);
+    if (bullet) {
+      bullet.style.left = `${percent}%`;
+      bullet.style.transform = "translateX(-50%)";
+    }
+    if (fill) {
+      fill.style.left = `${fillLeft}%`;
+      fill.style.width = `${fillWidth}%`;
+    }
+    if (input) {
+      const v = Math.round(val) + "%";
+      if (input.tagName === "INPUT") input.value = v;
+      else input.textContent = v;
+    }
     target().style.setProperty(
       `--sc-${prefix.split("-")[0]}-scroll-${key}`,
-      `${pct}%`
+      `${val}%`
     );
   };
 
   keys.forEach((k) => {
-    const bullet = ids(`${k}-bullet`);
     const field = ids(`${k}-field`);
-    const input = ids(`${k}-count`);
-    if (!field || !bullet) return;
+    if (!field) return;
+    let dragging = false;
 
-    const setActive = () => (active = k);
-    bullet.addEventListener("mousedown", setActive);
-    bullet.addEventListener("touchstart", setActive, { passive: true });
-    input?.addEventListener("focus", setActive);
-    input?.addEventListener("mousedown", setActive);
-
-    let drag = false;
     const start = (e) => {
-      active = k;
-      drag = true;
-      apply(k, pctFromEvt(e, field));
+      dragging = true;
+      apply(k, pctFromEvt200(e, field));
       e.preventDefault?.();
     };
     const move = (e) => {
-      if (!drag || active !== k) return;
-      apply(k, pctFromEvt(e, field));
+      if (!dragging) return;
+      apply(k, pctFromEvt200(e, field));
     };
-    const end = () => (drag = false);
+    const end = () => (dragging = false);
 
     field.addEventListener("mousedown", start);
     field.addEventListener("mousemove", move);
-    field.addEventListener("click", (e) => {
-      active = k;
-      apply(k, pctFromEvt(e, field));
-    });
+    field.addEventListener("click", (e) => apply(k, pctFromEvt200(e, field)));
     document.addEventListener("mouseup", end);
 
     field.addEventListener("touchstart", start, { passive: false });
