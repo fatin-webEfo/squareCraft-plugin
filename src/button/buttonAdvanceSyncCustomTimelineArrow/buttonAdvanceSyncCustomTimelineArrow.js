@@ -24,7 +24,6 @@ export function initClickToMove(prefix, getTargetEl) {
   let active = null;
 
   const clamp = (n) => (Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 0);
-
   const pctFromEvt = (e, field) => {
     const r = field.getBoundingClientRect();
     if (!r.width) return 0;
@@ -45,8 +44,7 @@ export function initClickToMove(prefix, getTargetEl) {
     if (bullet) bullet.style.left = `${pct}%`;
     if (fill) fill.style.width = `${pct}%`;
     if (input) input.value = Math.round(pct);
-    const el = target();
-    el.style.setProperty(
+    target().style.setProperty(
       `--sc-${prefix.split("-")[0]}-scroll-${key}`,
       `${pct}%`
     );
@@ -66,7 +64,7 @@ export function initClickToMove(prefix, getTargetEl) {
 
     let drag = false;
     const start = (e) => {
-      if (active !== k) return;
+      active = k;
       drag = true;
       apply(k, pctFromEvt(e, field));
       e.preventDefault?.();
@@ -77,15 +75,20 @@ export function initClickToMove(prefix, getTargetEl) {
     };
     const end = () => (drag = false);
 
-    field.addEventListener("mousedown", () => (active = k));
+    field.addEventListener("mousedown", start);
     field.addEventListener("mousemove", move);
+    field.addEventListener("click", (e) => {
+      active = k;
+      apply(k, pctFromEvt(e, field));
+    });
     document.addEventListener("mouseup", end);
 
-    field.addEventListener("touchstart", () => (active = k), { passive: true });
+    field.addEventListener("touchstart", start, { passive: false });
     field.addEventListener("touchmove", move, { passive: false });
     document.addEventListener("touchend", end);
   });
 }
+
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
