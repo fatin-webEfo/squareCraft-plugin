@@ -551,7 +551,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-      initClickToMove("vertical-button-advance", () => selectedElement);
+      initClickToMove("opacity-button-advance", () => selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
@@ -684,7 +684,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-      initClickToMove("horizontal-button-advance", () => selectedElement);
+      initClickToMove("scale-button-advance", () => selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
