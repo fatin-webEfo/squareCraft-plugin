@@ -28,14 +28,27 @@ export function initClickToMove(prefix, getTargetEl) {
     const r = field.getBoundingClientRect();
     if (!r.width) return 0;
     const x = (e.touches?.[0]?.clientX ?? e.clientX) - r.left;
-    const pct = (x / r.width) * 200 - 100;
-    return clamp(pct, -100, 100);
+    return clamp((x / r.width) * 200 - 100, -100, 100);
   };
 
-  const target = () => {
-    const el = typeof getTargetEl === "function" ? getTargetEl() : null;
-    const sel = document.getElementById(window.selectedBlockId);
-    return el || sel || document.body;
+  const resolveScope = () => {
+    const root = typeof getTargetEl === "function" ? getTargetEl() : null;
+    const el =
+      root || document.getElementById(window.selectedBlockId) || document.body;
+    const btns = el.querySelectorAll(
+      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
+    );
+    return { el, btns: btns.length ? btns : [el] };
+  };
+
+  const setVarOnButtons = (cssVar, val) => {
+    const { btns } = resolveScope();
+    const pct = `${val}%`;
+    const twin = cssVar.replace("--sc-", "--sc-Typo-");
+    btns.forEach((b) => {
+      b.style.setProperty(cssVar, pct);
+      b.style.setProperty(twin, pct);
+    });
   };
 
   const apply = (key, val) => {
@@ -52,16 +65,16 @@ export function initClickToMove(prefix, getTargetEl) {
     if (fill) {
       fill.style.left = `${fillLeft}%`;
       fill.style.width = `${fillWidth}%`;
+      fill.style.backgroundColor =
+        val < 0 ? "#EF7C2F" : val > 0 ? "#F6B67B" : "var(--sc-theme-accent)";
     }
     if (input) {
       const v = Math.round(val) + "%";
       if (input.tagName === "INPUT") input.value = v;
       else input.textContent = v;
     }
-    target().style.setProperty(
-      `--sc-${prefix.split("-")[0]}-scroll-${key}`,
-      `${val}%`
-    );
+    const base = prefix.split("-")[0];
+    setVarOnButtons(`--sc-${base}-scroll-${key}`, val);
   };
 
   keys.forEach((k) => {
