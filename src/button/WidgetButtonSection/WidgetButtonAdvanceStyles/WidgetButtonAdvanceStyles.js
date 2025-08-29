@@ -1,195 +1,185 @@
+// Drop-in replacement (delegated, resilient to late mounts & inner markup clicks)
 export function attachAdvanceTimelineIncrementDecrement(
   updateEntry,
   updateCenter,
   updateExit,
   updateStart,
-  updateEnd
+  updateEnd,
+  {
+    prefix = "vertical-button-advance", // triplet (entry/center/exit) control prefix
+    timelinePrefix = "vertical-timeline", // start/end control prefix
+    container = document, // where the controls live (can pass a wrapper node)
+  } = {}
 ) {
-  let lastFocused = null;
-  let keyHoldInterval = null;
-  let keyHoldTimeout = null;
-  let lastPressedKey = null;
+  const id = (s) => `${prefix}-${s}`;
+  const tId = (s) => `${timelinePrefix}${s}`;
 
-  let entryVal = 0;
-  let centerVal = 0;
-  let exitVal = 0;
-  let startVal = 0;
-  let endVal = 0;
-
-  function setup(idIncrease, idDecrease, getCurrent, updateFn, bulletId) {
-    const btnInc = document.getElementById(idIncrease);
-    const btnDec = document.getElementById(idDecrease);
-
-    const clickHandler = (type) => {
-      let val = getCurrent();
-      val = type === "inc" ? val + 1 : val - 1;
-
-      const min =
-        bulletId.includes("entry") ||
-        bulletId.includes("center") ||
-        bulletId.includes("exit")
-          ? -100
-          : 0;
-
-      if (bulletId.includes("start")) {
-        val = Math.max(0, Math.min(val, endVal - 4));
-        startVal = val;
-      } else if (bulletId.includes("end")) {
-        val = Math.max(startVal + 4, Math.min(val, 100));
-        endVal = val;
-      } else {
-        val = Math.max(min, Math.min(100, val));
-      }
-
-      updateFn(val);
-      const countId = bulletId.replace(
-        "bullet",
-        bulletId.includes("start") || bulletId.includes("end")
-          ? "Value"
-          : "count"
-      );
-      const el = document.getElementById(countId);
-      if (!el) return;
-      if (el.tagName === "INPUT") el.value = val + "%";
-      else el.textContent = val + "%";
-    };
-
-    if (btnInc) btnInc.onclick = () => clickHandler("inc");
-    if (btnDec) btnDec.onclick = () => clickHandler("dec");
-
-    const bullet = document.getElementById(bulletId);
-    if (bullet) {
-      bullet.setAttribute("tabindex", "0");
-      bullet.addEventListener("click", () => (lastFocused = bulletId));
-      bullet.addEventListener("focus", () => {
-        lastFocused = bulletId;
-        const val = getCurrent();
-        if (bulletId.includes("entry")) entryVal = val;
-        if (bulletId.includes("center")) centerVal = val;
-        if (bulletId.includes("exit")) exitVal = val;
-        if (bulletId.includes("start")) startVal = val;
-        if (bulletId.includes("end")) endVal = val;
-      });
-    }
-  }
-
-  const getVal = (id) => {
-    const el = document.getElementById(id);
+  const parsePct = (raw) => {
+    const n = parseInt(
+      String(raw ?? "")
+        .replace("%", "")
+        .trim(),
+      10
+    );
+    return Number.isFinite(n) ? n : 0;
+  };
+  const getText = (elId) => {
+    const el = document.getElementById(elId);
     if (!el) return 0;
     const raw = el.tagName === "INPUT" ? el.value : el.textContent;
-    return parseInt(String(raw).replace("%", "")) || 0;
+    return parsePct(raw);
+  };
+  const setText = (elId, val) => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    if (el.tagName === "INPUT") el.value = `${val}%`;
+    else el.textContent = `${val}%`;
   };
 
-  setup(
-    "vertical-button-advance-entry-increase",
-    "vertical-button-advance-entry-decrease",
-    () => getVal("vertical-button-advance-entry-count"),
-    updateEntry,
-    "vertical-button-advance-entry-bullet"
-  );
-  setup(
-    "vertical-button-advance-center-increase",
-    "vertical-button-advance-center-decrease",
-    () => getVal("vertical-button-advance-center-count"),
-    updateCenter,
-    "vertical-button-advance-center-bullet"
-  );
-  setup(
-    "vertical-button-advance-exit-increase",
-    "vertical-button-advance-exit-decrease",
-    () => getVal("vertical-button-advance-exit-count"),
-    updateExit,
-    "vertical-button-advance-exit-bullet"
-  );
-
-  const startBullet = document.getElementById("vertical-timeline-start-bullet");
-  const endBullet = document.getElementById("vertical-timeline-end-bullet");
-  if (startBullet)
-    startBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "vertical-timeline-start-bullet")
-    );
-  if (endBullet)
-    endBullet.addEventListener(
-      "focus",
-      () => (lastFocused = "vertical-timeline-end-bullet")
-    );
-
-  document.addEventListener("keydown", (e) => {
-    if (!lastFocused || (e.key !== "ArrowRight" && e.key !== "ArrowLeft"))
-      return;
-    if (keyHoldInterval || keyHoldTimeout) return;
-
-    const direction = e.key === "ArrowRight" ? 1 : -1;
-    lastPressedKey = e.key;
-
-    const update = () => {
-      if (lastFocused.includes("entry")) {
-        entryVal = Math.max(-100, Math.min(100, entryVal + direction));
-        updateEntry(entryVal);
-        const el = document.getElementById(
-          "vertical-button-advance-entry-count"
-        );
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = entryVal + "%")
-            : (el.textContent = entryVal + "%");
-      }
-      if (lastFocused.includes("center")) {
-        centerVal = Math.max(-100, Math.min(100, centerVal + direction));
-        updateCenter(centerVal);
-        const el = document.getElementById(
-          "vertical-button-advance-center-count"
-        );
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = centerVal + "%")
-            : (el.textContent = centerVal + "%");
-      }
-      if (lastFocused.includes("exit")) {
-        exitVal = Math.max(-100, Math.min(100, exitVal + direction));
-        updateExit(exitVal);
-        const el = document.getElementById(
-          "vertical-button-advance-exit-count"
-        );
-        if (el)
-          el.tagName === "INPUT"
-            ? (el.value = exitVal + "%")
-            : (el.textContent = exitVal + "%");
-      }
-      if (lastFocused.includes("start")) {
-        startVal = getVal("vertical-timelineStartValue");
-        endVal = getVal("vertical-timelineEndValue");
-        startVal = Math.max(0, Math.min(startVal + direction, endVal - 4));
-        updateStart(startVal);
-        const el = document.getElementById("vertical-timelineStartValue");
-        if (el) el.textContent = startVal + "%";
-      }
-      if (lastFocused.includes("end")) {
-        startVal = getVal("vertical-timelineStartValue");
-        endVal = getVal("vertical-timelineEndValue");
-        endVal = Math.max(startVal + 4, Math.min(endVal + direction, 100));
-        updateEnd(endVal);
-        const el = document.getElementById("vertical-timelineEndValue");
-        if (el) el.textContent = endVal + "%";
-      }
+  // Centralized updater for triplet fields
+  const bumpTriplet = (which, delta) => {
+    const map = {
+      entry: [updateEntry, id("entry-count")],
+      center: [updateCenter, id("center-count")],
+      exit: [updateExit, id("exit-count")],
     };
+    const [fn, countId] = map[which] || [];
+    if (!fn) return;
+    let v = getText(countId) + delta;
+    v = Math.max(-100, Math.min(100, v));
+    fn(v);
+    setText(countId, v);
+  };
 
-    update();
-    keyHoldTimeout = setTimeout(() => {
-      keyHoldInterval = setInterval(update, 100);
-    }, 300);
-  });
-
-  document.addEventListener("keyup", (e) => {
-    if (e.key === lastPressedKey) {
-      clearInterval(keyHoldInterval);
-      clearTimeout(keyHoldTimeout);
-      keyHoldInterval = null;
-      keyHoldTimeout = null;
-      lastPressedKey = null;
+  // Start/End (0–100, with 4% gap rule)
+  const bumpStartEnd = (which, delta) => {
+    let start = getText(tId("StartValue"));
+    let end = getText(tId("EndValue"));
+    if (which === "start") {
+      start = Math.max(0, Math.min(start + delta, end - 4));
+      updateStart(start);
+      setText(tId("StartValue"), start);
+    } else {
+      end = Math.max(start + 4, Math.min(end + delta, 100));
+      updateEnd(end);
+      setText(tId("EndValue"), end);
     }
+  };
+
+  // Click delegation (tolerates icons/spans inside the buttons)
+  const onClick = (e) => {
+    const t = e.target;
+    const q = (s) => t.closest(`#${s}`);
+
+    // Entry / Center / Exit
+    if (q(id("entry-increase"))) {
+      e.preventDefault();
+      bumpTriplet("entry", +1);
+      return;
+    }
+    if (q(id("entry-decrease"))) {
+      e.preventDefault();
+      bumpTriplet("entry", -1);
+      return;
+    }
+    if (q(id("center-increase"))) {
+      e.preventDefault();
+      bumpTriplet("center", +1);
+      return;
+    }
+    if (q(id("center-decrease"))) {
+      e.preventDefault();
+      bumpTriplet("center", -1);
+      return;
+    }
+    if (q(id("exit-increase"))) {
+      e.preventDefault();
+      bumpTriplet("exit", +1);
+      return;
+    }
+    if (q(id("exit-decrease"))) {
+      e.preventDefault();
+      bumpTriplet("exit", -1);
+      return;
+    }
+
+    // Optional: if you have start/end inc/dec buttons with IDs:
+    //   `${timelinePrefix}-start-increase`, `${timelinePrefix}-start-decrease`,
+    //   `${timelinePrefix}-end-increase`,   `${timelinePrefix}-end-decrease`
+    if (q(`${timelinePrefix}-start-increase`)) {
+      e.preventDefault();
+      bumpStartEnd("start", +1);
+      return;
+    }
+    if (q(`${timelinePrefix}-start-decrease`)) {
+      e.preventDefault();
+      bumpStartEnd("start", -1);
+      return;
+    }
+    if (q(`${timelinePrefix}-end-increase`)) {
+      e.preventDefault();
+      bumpStartEnd("end", +1);
+      return;
+    }
+    if (q(`${timelinePrefix}-end-decrease`)) {
+      e.preventDefault();
+      bumpStartEnd("end", -1);
+      return;
+    }
+  };
+
+  // Arrow-key repeat (works for bullets *and* % inputs)
+  let keyTimer = null,
+    keyInterval = null,
+    lastKey = null,
+    focusedRole = null;
+  const roleFromEl = (el) => {
+    if (!el || !el.id) return null;
+    if (el.id.includes("entry")) return ["triplet", "entry"];
+    if (el.id.includes("center")) return ["triplet", "center"];
+    if (el.id.includes("exit")) return ["triplet", "exit"];
+    if (el.id.includes("Start")) return ["range", "start"];
+    if (el.id.includes("End")) return ["range", "end"];
+    return null;
+  };
+
+  container.addEventListener("focusin", (e) => {
+    focusedRole = roleFromEl(e.target);
   });
+
+  const step = (dir) => {
+    if (!focusedRole) return;
+    const [kind, which] = focusedRole;
+    if (kind === "triplet") bumpTriplet(which, dir);
+    else bumpStartEnd(which, dir);
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const dir = e.key === "ArrowRight" ? +1 : -1;
+    if (keyTimer || keyInterval) return;
+    lastKey = e.key;
+    step(dir);
+    keyTimer = setTimeout(() => {
+      keyInterval = setInterval(() => step(dir), 100);
+    }, 300);
+  };
+  const onKeyUp = (e) => {
+    if (e.key !== lastKey) return;
+    clearTimeout(keyTimer);
+    clearInterval(keyInterval);
+    keyTimer = keyInterval = null;
+    lastKey = null;
+  };
+
+  // Bind once per container
+  const FLAG = "__sc_adv_increase_decrease_bound__";
+  if (!container[FLAG]) {
+    container.addEventListener("click", onClick);
+    container.addEventListener("keydown", onKeyDown);
+    container.addEventListener("keyup", onKeyUp);
+    container[FLAG] = true;
+  }
 }
 
 function attachCustomTimelineReset(
@@ -1582,46 +1572,47 @@ export function opacityinitButtonAdvanceStyles(getSelectedElement) {
   bindTripletInput(centerCount, setCenter);
   bindTripletInput(exitCount, setExit);
 
- function makeDraggable(bullet, setter, type, min = 0, max = 100) {
-   if (!bullet) return;
+  function makeDraggable(bullet, setter, type, min = 0, max = 100) {
+    if (!bullet) return;
 
-   const startDrag = (startEvent) => {
-     startEvent.preventDefault();
-     const container = bullet.parentElement;
-     const rect = container.getBoundingClientRect();
+    const startDrag = (startEvent) => {
+      startEvent.preventDefault();
+      const container = bullet.parentElement;
+      const rect = container.getBoundingClientRect();
 
-     const move = (ev) => {
-       const isTouch = ev.touches && ev.touches.length;
-       const clientX = Math.max(
-         rect.left,
-         Math.min(rect.right, isTouch ? ev.touches[0].clientX : ev.clientX)
-       );
-       const percent = ((clientX - rect.left) / rect.width) * (max - min) + min;
-       let v = Math.round(percent);
-       if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
-       if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
-       if (type === "normal") v = Math.max(min, Math.min(v, max));
-       setter(v);
-     };
+      const move = (ev) => {
+        const isTouch = ev.touches && ev.touches.length;
+        const clientX = Math.max(
+          rect.left,
+          Math.min(rect.right, isTouch ? ev.touches[0].clientX : ev.clientX)
+        );
+        const percent =
+          ((clientX - rect.left) / rect.width) * (max - min) + min;
+        let v = Math.round(percent);
+        if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
+        if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
+        if (type === "normal") v = Math.max(min, Math.min(v, max));
+        setter(v);
+      };
 
-     const end = () => {
-       document.removeEventListener("mousemove", move);
-       document.removeEventListener("mouseup", end);
-       document.removeEventListener("touchmove", move);
-       document.removeEventListener("touchend", end);
-       document.removeEventListener("touchcancel", end);
-     };
+      const end = () => {
+        document.removeEventListener("mousemove", move);
+        document.removeEventListener("mouseup", end);
+        document.removeEventListener("touchmove", move);
+        document.removeEventListener("touchend", end);
+        document.removeEventListener("touchcancel", end);
+      };
 
-     document.addEventListener("mousemove", move);
-     document.addEventListener("mouseup", end, { once: true });
-     document.addEventListener("touchmove", move, { passive: false });
-     document.addEventListener("touchend", end, { once: true });
-     document.addEventListener("touchcancel", end, { once: true });
-   };
+      document.addEventListener("mousemove", move);
+      document.addEventListener("mouseup", end, { once: true });
+      document.addEventListener("touchmove", move, { passive: false });
+      document.addEventListener("touchend", end, { once: true });
+      document.addEventListener("touchcancel", end, { once: true });
+    };
 
-   bullet.addEventListener("mousedown", startDrag);
-   bullet.addEventListener("touchstart", startDrag, { passive: false });
- }
+    bullet.addEventListener("mousedown", startDrag);
+    bullet.addEventListener("touchstart", startDrag, { passive: false });
+  }
 
   makeDraggable(startBullet, setStart, "start", 0, 100);
   makeDraggable(endBullet, setEnd, "end", 0, 100);
@@ -2215,7 +2206,6 @@ export function scaleinitButtonAdvanceStyles(getSelectedElement) {
     buttonAdvanceSyncCustomTimelineArrow(el);
   }
 }
-
 
 // scale
 
@@ -3310,4 +3300,4 @@ export function blurinitButtonAdvanceStyles(getSelectedElement) {
   }
 }
 
-// blur 
+// blur
