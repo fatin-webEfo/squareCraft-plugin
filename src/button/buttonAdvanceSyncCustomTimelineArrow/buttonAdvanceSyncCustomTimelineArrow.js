@@ -77,12 +77,10 @@ export function initClickToMove(prefix, getTargetEl) {
       if (input.tagName === "INPUT") input.value = v;
       else input.textContent = v;
     }
-
-    const base = prefix.split("-")[0]; // vertical | horizontal | opacity | scale | rotate | blur
+    const base = prefix.split("-")[0];
     setVarOnButtons(`--sc-${base}-scroll-${key}`, val);
   };
 
-  // Drag fields
   keys.forEach((k) => {
     const field = ids(`${k}-field`);
     if (!field) return;
@@ -97,9 +95,7 @@ export function initClickToMove(prefix, getTargetEl) {
       if (!dragging) return;
       apply(k, pctFromEvt200(e, field));
     };
-    const end = () => {
-      dragging = false;
-    };
+    const end = () => (dragging = false);
 
     field.addEventListener("mousedown", start);
     field.addEventListener("mousemove", move);
@@ -111,21 +107,12 @@ export function initClickToMove(prefix, getTargetEl) {
     document.addEventListener("touchend", end);
   });
 
-  // Bind resets (works even if buttons mount later)
-  const onDocClick = (e) => {
-    const t = e.target;
-    if (!t || !t.id) return;
-    if (t.id === `${prefix}-entry-reset`) apply("entry", 0);
-    if (t.id === `${prefix}-center-reset`) apply("center", 0);
-    if (t.id === `${prefix}-exit-reset`) apply("exit", 0);
-  };
-  // Avoid double-binding if initClickToMove is called multiple times for same prefix
-  const flag = `__sc_reset_bound_${prefix}`;
-  if (!document[flag]) {
-    document.addEventListener("click", onDocClick);
-    document[flag] = true;
-  }
+  keys.forEach((k) => {
+    const btn = ids(`${k}-reset`);
+    if (btn) btn.onclick = () => apply(k, 0);
+  });
 }
+
 
 export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
   if (!selectedElement) return;
@@ -266,7 +253,6 @@ export function buttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     setupScrollAnimation(btn, arrow);
   });
 }
-
 
 export function horizontalbuttonAdvanceSyncCustomTimelineArrow(
   selectedElement
@@ -551,7 +537,7 @@ export function opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-      initClickToMove("opacity-button-advance", () => selectedElement);
+      initClickToMove("vertical-button-advance", () => selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
@@ -684,7 +670,7 @@ export function scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
       ) || selectedElement;
     if (!btn) return;
-      initClickToMove("scale-button-advance", () => selectedElement);
+      initClickToMove("horizontal-button-advance", () => selectedElement);
     setupScrollAnimation(btn, arrow);
   });
 }
