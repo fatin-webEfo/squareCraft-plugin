@@ -21,14 +21,15 @@ const initAllClickToMove = (sel) =>
 export function initClickToMove(prefix, getTargetEl) {
   const ids = (s) => document.getElementById(`${prefix}-${s}`);
   const keys = ["entry", "center", "exit"];
-  const clamp = (n, min, max) =>
-    Number.isFinite(n) ? Math.max(min, Math.min(max, n)) : 0;
+
+  const clampInt = (n, min, max) =>
+    Number.isFinite(n) ? Math.max(min, Math.min(max, Math.round(n))) : 0;
 
   const pctFromEvt200 = (e, field) => {
     const r = field.getBoundingClientRect();
     if (!r.width) return 0;
     const x = (e.touches?.[0]?.clientX ?? e.clientX) - r.left;
-    return clamp((x / r.width) * 200 - 100, -100, 100);
+    return clampInt((x / r.width) * 200 - 100, -100, 100);
   };
 
   const resolveScope = () => {
@@ -51,13 +52,16 @@ export function initClickToMove(prefix, getTargetEl) {
     });
   };
 
-  const apply = (key, val) => {
+  const apply = (key, rawVal) => {
+    const val = clampInt(rawVal, -100, 100);
+    const percent = clampInt((val + 100) / 2, 0, 100);
+    const fillLeft = val < 0 ? percent : 50;
+    const fillWidth = clampInt(Math.abs(val / 2), 0, 50);
+
     const bullet = ids(`${key}-bullet`);
     const fill = ids(`${key}-fill`);
     const input = ids(`${key}-count`);
-    const percent = (val + 100) / 2;
-    const fillLeft = val < 0 ? percent : 50;
-    const fillWidth = Math.abs(val / 2);
+
     if (bullet) {
       bullet.style.left = `${percent}%`;
       bullet.style.transform = "translateX(-50%)";
@@ -69,7 +73,7 @@ export function initClickToMove(prefix, getTargetEl) {
         val < 0 ? "#EF7C2F" : val > 0 ? "#F6B67B" : "var(--sc-theme-accent)";
     }
     if (input) {
-      const v = Math.round(val) + "%";
+      const v = `${val}%`;
       if (input.tagName === "INPUT") input.value = v;
       else input.textContent = v;
     }
