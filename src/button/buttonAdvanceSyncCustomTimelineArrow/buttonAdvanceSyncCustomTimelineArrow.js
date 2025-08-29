@@ -893,7 +893,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
     const ST = window.ScrollTrigger;
     if (gs && ST) gs.registerPlugin(ST);
 
-    // Setup button blur filter
     let computedFilter = getComputedStyle(btn).getPropertyValue("filter") || "";
     let baseFilter = computedFilter.replace(/blur\([^)]+\)/, "").trim();
     if (baseFilter === "none") baseFilter = "";
@@ -910,11 +909,9 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
       const s = start();
       const e = end();
 
-      // Move arrow
       arrow.style.left = `${t * 100}%`;
       arrow.style.transform = "translateX(-50%)";
 
-      // Determine zone
       let targetBlur, color;
       if (t <= s) {
         targetBlur = entryVal();
@@ -927,7 +924,6 @@ export function blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement) {
         color = "#FFFFFF";
       }
 
-      // Only update if changed
       if (targetBlur !== lastBlur) {
         lastBlur = targetBlur;
         const ease = easeName();
@@ -970,6 +966,20 @@ export function initButtonAdvanceScrollEffectReset(target) {
       "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
     ) || el;
 
+  btn.__sc_alive = false;
+  if (btn.__sc_i) {
+    clearInterval(btn.__sc_i);
+    btn.__sc_i = null;
+  }
+  if (btn.__sc_obs) {
+    btn.__sc_obs.disconnect();
+    btn.__sc_obs = null;
+  }
+  if (btn.__sc_raf) {
+    cancelAnimationFrame(btn.__sc_raf);
+    btn.__sc_raf = null;
+  }
+
   const ST = window.ScrollTrigger;
   if (ST) {
     ST.getAll()
@@ -984,9 +994,9 @@ export function initButtonAdvanceScrollEffectReset(target) {
     ST.refresh(true);
   }
 
-  ["transform", "opacity", "filter"].forEach((p) => {
-    btn.style.removeProperty(p);
-  });
+  ["transform", "opacity", "filter"].forEach((p) =>
+    btn.style.removeProperty(p)
+  );
   btn.style.removeProperty("--sc-blur-amt");
 
   const vars = [
@@ -1021,7 +1031,15 @@ export function initButtonAdvanceScrollEffectReset(target) {
     "--sc-blur-scroll-start",
     "--sc-blur-scroll-end",
   ];
+  const twins = vars.map((v) => v.replace("--sc-", "--sc-Typo-"));
   [el, btn].forEach((node) =>
-    vars.forEach((v) => node.style.removeProperty(v))
+    [...vars, ...twins].forEach((v) => node.style.removeProperty(v))
   );
+
+  if (el.id) {
+    const prefix = `sc-style-${el.id}-`;
+    document
+      .querySelectorAll(`style[id^="${prefix}"]`)
+      .forEach((s) => s.remove());
+  }
 }
