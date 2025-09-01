@@ -108,7 +108,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        <p class="sc-roboto  sc-universal sc-font-size-14">Outline</p>
        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
      </div>
-     <div id="typo-all-hover-border-section" class=" sc-mt-2">
+     <div id="typo-all-hover-border-section" class="sc-hidden sc-mt-2">
        <div class=" sc-flex sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border </p>
@@ -229,7 +229,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <p class="sc-roboto  sc-universal sc-font-size-14">Shadow</p>
      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
    </div>
-   <div id="typo-all-hover-shadow-section" class="">
+   <div id="typo-all-hover-shadow-section" class="sc-hidden">
      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
        <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow </p>
        <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
@@ -322,7 +322,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <p class="sc-roboto  sc-universal sc-font-size-14">Text Effect</p>
      <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
    </div>
-   <div id="typo-all-hover-effects-section" class="sc-mt-4 ">
+   <div id="typo-all-hover-effects-section" class="sc-mt-4 sc-hidden">
      <div class="sc-flex sc-items-center sc-gap-8px">
        <div>
          <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
