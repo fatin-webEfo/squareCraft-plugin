@@ -712,6 +712,7 @@
   });
 
   document.body.addEventListener("click", (event) => {
+    typo_hover_section_dropdown()
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
@@ -1038,7 +1039,6 @@
               selectedElement,
               setSelectedElement: (val) => {
                 selectedElement = val;
-
                 setTimeout(() => {
                   buttonAdvanceSyncCustomTimelineArrow(selectedElement);
                   horizontalbuttonAdvanceSyncCustomTimelineArrow(
@@ -1048,7 +1048,6 @@
                   scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
                   rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
                   blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-
                   TypoAdvanceSyncCustomTimelineArrow(selectedElement);
                   TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
                   TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
