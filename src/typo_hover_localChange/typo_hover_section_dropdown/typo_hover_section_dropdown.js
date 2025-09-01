@@ -1,43 +1,38 @@
 // typo_hover_section_dropdown.js
 
 export function typo_hover_section_dropdown() {
-  const pairs = [
-    {
-      buttonId: "typo-all-hover-font-button",
-      sectionId: "typo-all-hover-font-section",
-    },
-    {
-      buttonId: "typo-all-hover-border-button",
-      sectionId: "typo-all-hover-border-section",
-    },
-    {
-      buttonId: "typo-all-hover-shadow-button",
-      sectionId: "typo-all-hover-shadow-section",
-    },
-    {
-      buttonId: "typo-all-hover-effects-button",
-      sectionId: "typo-all-hover-effects-section",
-    },
+  const HoverTypoIds = [
+    "typo-all-hover-font",
+    "typo-all-hover-border",
+    "typo-all-hover-shadow",
+    "typo-all-hover-effects",
   ];
 
-  const byId = (id) => document.getElementById(id);
-  const sectionIds = pairs.map((p) => p.sectionId);
+  HoverTypoIds.forEach((btnId) => {
+    const btn = document.getElementById(`${btnId}-button`);
+    const sectionId = `${btnId}-section`;
 
-  function showSection(sectionId) {
-    sectionIds.forEach((id) => {
-      const sec = byId(id);
-      if (!sec) return;
-      if (id === sectionId) {
-        sec.classList.remove("sc-hidden");
-      } else {
-        sec.classList.add("sc-hidden");
-      }
-    });
-  }
+    if (btn && document.getElementById(sectionId)) {
+      const handleInteraction = () => {
+        HoverTypoIds.forEach((otherId) => {
+          const otherSection = document.getElementById(`${otherId}-section`);
+          if (!otherSection) return;
 
-  document.addEventListener("click", (e) => {
-    const clickedPair = pairs.find((p) => e.target.closest(`#${p.buttonId}`));
-    if (!clickedPair) return;
-    showSection(clickedPair.sectionId);
+          if (otherId === btnId) {
+            otherSection.classList.remove("sc-hidden");
+            otherSection.classList.add("sc-visible");
+            otherSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          } else {
+            otherSection.classList.remove("sc-visible");
+            otherSection.classList.add("sc-hidden");
+          }
+        });
+      };
+
+      btn.addEventListener("click", handleInteraction);
+    }
   });
 }
