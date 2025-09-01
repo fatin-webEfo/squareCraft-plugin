@@ -1338,7 +1338,6 @@
     });
   }
 
-  // (removed the second, duplicate body click closer here — attachGlobalClickListener handles it)
 
   function adjustWidgetPosition() {
     if (!widgetContainer) return;
@@ -1349,7 +1348,7 @@
     widgetContainer.style.removeProperty("transform");
   }
 
-  window.addEventListener("resize", adjustWidgetPosition);
+  window.addEventListener("resize", adjustWidgetPosition);  
   adjustWidgetPosition();
 
   function checkView() {
