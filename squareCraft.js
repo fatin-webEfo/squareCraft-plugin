@@ -171,36 +171,7 @@
       WidgetImageHoverToggleControls();
       typo_hover_section_dropdown();
 
-      initHoverTypoTabControls([
-        {
-          buttonId: "typo-all-hover-font-button",
-          sectionId: "typo-all-hover-font-section",
-        },
-        {
-          buttonId: "typo-all-hover-border-button",
-          sectionId: "typo-all-hover-border-section",
-        },
-        {
-          buttonId: "typo-all-hover-shadow-button",
-          sectionId: "typo-all-hover-shadow-section",
-        },
-        {
-          buttonId: "typo-all-hover-effects-button",
-          sectionId: "typo-all-hover-effects-section",
-        },
-        {
-          buttonId: "typo-bold-hover-font-button",
-          sectionId: "typo-bold-hover-font-section",
-        },
-        {
-          buttonId: "typo-italic-hover-font-button",
-          sectionId: "typo-italic-hover-font-section",
-        },
-        {
-          buttonId: "typo-link-hover-font-button",
-          sectionId: "typo-link-hover-font-section",
-        },
-      ]);
+
       initHoverButtonSectionToggleControls();
       if (typeof hoverTypoTabSelect === "function") {
         hoverTypoTabSelect({ target: widgetContainer });
@@ -858,9 +829,6 @@
 
   const { handleFontWeightDropdownClick } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleFontWeightDropdownClick.js"
-  );
-  const { initHoverTypoTabControls } = await import(
-    "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initHoverTypoTabControls.js"
   );
   const { handleBlockClick } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleBlockClick.js"
