@@ -6,45 +6,38 @@ export function typo_hover_section_dropdown() {
     ["typo-all-hover-effects-button", "typo-all-hover-effects-section"],
   ];
 
+  const secByBtn = Object.fromEntries(pairs);
+  const sel = "#" + pairs.map(([b]) => b).join(",#");
   const getArrow = (btn) =>
-    btn?.querySelector('img[src*="arrow"], .sc-arrow-placeholder, svg');
+    btn?.querySelector(
+      'img[id*="arrow"], img[src*="arrow"], .sc-arrow-placeholder, svg'
+    );
 
-  const showOnly = (targetId) => {
-    pairs.forEach(([btnId, secId]) => {
-      const btn = document.getElementById(btnId);
-      const sec = document.getElementById(secId);
+  const open = (btnId) => {
+    pairs.forEach(([b, s]) => {
+      const btn = document.getElementById(b);
+      const sec = document.getElementById(s);
+      const on = b === btnId;
       if (!sec) return;
-      const open = secId === targetId;
-      sec.classList.toggle("sc-hidden", !open);
-      sec.classList.toggle("sc-visible", open);
-      const arrow = getArrow(btn);
-      if (arrow) {
-        arrow.classList.toggle("sc-rotate-180", !open);
-        arrow.style.transition = "transform 0.3s ease";
-      }
+      sec.classList.toggle("sc-hidden", !on);
+      sec.classList.toggle("sc-visible", on);
+      const a = getArrow(btn);
+      if (a) a.classList.toggle("sc-rotate-180", !on);
     });
   };
 
-  const initial =
-    pairs.find(([, id]) => {
-      const el = document.getElementById(id);
-      return el && !el.classList.contains("sc-hidden");
-    })?.[1] || pairs[0]?.[1];
+  const initial = pairs.find(([, s]) => document.getElementById(s))?.[0];
+  if (initial) open(initial);
 
-  if (initial) showOnly(initial);
-
-  pairs.forEach(([btnId, secId]) => {
-    const btn = document.getElementById(btnId);
-    if (!btn || btn.dataset.bound === "1") return;
-    btn.dataset.bound = "1";
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation?.();
-      showOnly(secId);
-      const sec = document.getElementById(secId);
-      try {
-        sec?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch {}
-    });
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(sel);
+    if (!btn) return;
+    open(btn.id);
+    const secId = secByBtn[btn.id];
+    try {
+      document
+        .getElementById(secId)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch {}
   });
 }
