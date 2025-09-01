@@ -712,7 +712,6 @@
   });
 
   document.body.addEventListener("click", (event) => {
-    typo_hover_section_dropdown()
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
