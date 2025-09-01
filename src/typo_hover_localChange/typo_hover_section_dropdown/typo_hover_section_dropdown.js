@@ -44,7 +44,9 @@ export function typo_hover_section_dropdown() {
         const el = document.getElementById(panel);
         try {
           el && el.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch {}
+        } catch {
+            console.warn("scrollIntoView failed");
+        }
         break;
       }
     }
