@@ -3,232 +3,7 @@
   let lastToggleAt = 0;
   let justOpenedUntil = 0; 
   let __sc_creating = false;
-    async function loadWidgetFromString(htmlString, clickedBlock) {
-      if (widgetContainer) return;
-
-      widgetContainer = document.createElement("div");
-      widgetContainer.id = "sc-widget-container";
-      widgetContainer.classList.add(
-        "sc-fixed",
-        "sc-text-color-white",
-        "sc-universal",
-        "sc-z-999999"
-      );
-      Object.assign(widgetContainer.style, {
-        visibility: "hidden",
-        opacity: "0",
-        height: "0px",
-        overflow: "hidden",
-        willChange: "height, opacity, transform",
-      });
-
-      const cssHref =
-        "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
-      try {
-        await loadStylesheetOnce(cssHref);
-      } catch (e) {
-        console.warn("⚠️ parent.css failed to preload; continuing anyway.", e);
-      }
-
-      const contentWrapper = document.createElement("div");
-      contentWrapper.innerHTML = htmlString;
-      widgetContainer.appendChild(contentWrapper);
-
-      document.body.appendChild(widgetContainer);
-
-      try {
-        const { initImageMaskControls } = await import(
-          "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
-        );
-        initImageMaskControls(() => selectedElement);
-      } catch (e) {
-        console.warn("initImageMaskControls load failed:", e);
-      }
-
-      function makeWidgetDraggable() {
-        if (!widgetContainer) return;
-
-        // Default pin position every time this runs
-        widgetContainer.style.setProperty("position", "fixed", "important");
-        widgetContainer.style.setProperty("z-index", "999999", "important");
-        widgetContainer.style.setProperty("top", "100px", "important");
-        widgetContainer.style.setProperty("right", "100px", "important");
-        widgetContainer.style.removeProperty("left");
-        widgetContainer.style.removeProperty("transform"); // ensure no prior transforms fight us
-
-        let offsetX = 0,
-          offsetY = 0,
-          isDragging = false;
-
-        function startDrag(event) {
-          const draggableElement = event.target.closest("#sc-grabbing");
-          if (!draggableElement || event.target.closest(".sc-dropdown")) return;
-
-          event.preventDefault();
-          isDragging = true;
-
-          const rect = widgetContainer.getBoundingClientRect();
-          const clientX = event.touches
-            ? event.touches[0].clientX
-            : event.clientX;
-          const clientY = event.touches
-            ? event.touches[0].clientY
-            : event.clientY;
-
-          offsetX = clientX - rect.left;
-          offsetY = clientY - rect.top;
-
-          // When dragging starts, switch to left/top coords for smooth movement
-          widgetContainer.style.removeProperty("right");
-          widgetContainer.style.left = rect.left + "px";
-
-          document.addEventListener("mousemove", moveAt);
-          document.addEventListener("mouseup", stopDragging);
-          document.addEventListener("touchmove", moveAt, { passive: false });
-          document.addEventListener("touchend", stopDragging);
-        }
-
-        function moveAt(event) {
-          if (!isDragging) return;
-
-          const clientX = event.touches
-            ? event.touches[0].clientX
-            : event.clientX;
-          const clientY = event.touches
-            ? event.touches[0].clientY
-            : event.clientY;
-
-          const maxX = window.innerWidth - widgetContainer.offsetWidth;
-          const maxY = window.innerHeight - widgetContainer.offsetHeight;
-
-          const newX = Math.max(0, Math.min(maxX, clientX - offsetX));
-          const newY = Math.max(0, Math.min(maxY, clientY - offsetY));
-
-          widgetContainer.style.left = newX + "px";
-          widgetContainer.style.top = newY + "px";
-
-          if (event.cancelable) event.preventDefault();
-        }
-
-        function stopDragging() {
-          isDragging = false;
-          document.removeEventListener("mousemove", moveAt);
-          document.removeEventListener("mouseup", stopDragging);
-          document.removeEventListener("touchmove", moveAt);
-          document.removeEventListener("touchend", stopDragging);
-        }
-
-        // Clean old listeners before binding
-        widgetContainer.removeEventListener("mousedown", startDrag);
-        widgetContainer.removeEventListener("touchstart", startDrag);
-
-        widgetContainer.addEventListener("mousedown", startDrag);
-        widgetContainer.addEventListener("touchstart", startDrag, {
-          passive: false,
-        });
-      }
-
-      makeWidgetDraggable();
-      setTimeout(() => {
-        const placeholders = widgetContainer.querySelectorAll(
-          ".sc-arrow-placeholder"
-        );
-        placeholders.forEach((span) => {
-          const isRotate = span.classList.contains("sc-rotate-180");
-          const cloneClassList = Array.from(span.classList);
-          const originalId = span.getAttribute("id") || "";
-          const id =
-            originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
-          const svg = createHoverableArrowSVG(id, isRotate);
-          cloneClassList.forEach((cls) => svg.classList.add(cls));
-          span.replaceWith(svg);
-        });
-        ButtonAdvanceToggleControls();
-      }, 100);
-
-      widgetLoaded = true;
-
-      initImageSectionToggleControls();
-      tooltipControls();
-      ButtonAdvanceToggleControls();
-      initButtonSectionToggleControls();
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      button_initEffectAnimationDropdownToggle(() => selectedElement);
-      opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontal_button_initEffectAnimationDropdownToggle(
-        () => selectedElement
-      );
-      initEffectAnimationDropdownToggle(() => selectedElement);
-      horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
-      blurinitEffectAnimationDropdownToggle(() => selectedElement);
-      scaleinitEffectAnimationDropdownToggle(() => selectedElement);
-      rotateinitEffectAnimationDropdownToggle(() => selectedElement);
-      opacityinitEffectAnimationDropdownToggle(() => selectedElement);
-      WidgetTypoSectionStateControls();
-      initImageStateTabToggle();
-      initButtonStructureGapTypeToggle();
-      initTypoStructureGapTypeToggle();
-      WidgetImageHoverToggleControls();
-      typo_hover_section_dropdown();
-
-
-      initHoverButtonSectionToggleControls();
-      if (typeof hoverTypoTabSelect === "function") {
-        hoverTypoTabSelect({ target: widgetContainer });
-      }
-      initHoverButtonEffectDropdowns();
-      initImageUploadPreview(() => selectedElement);
-
-      if (clickedBlock) {
-        waitForElement("#typoSection, #imageSection, #buttonSection")
-          .then(() => {
-            handleBlockClick(
-              { target: clickedBlock },
-              {
-                getTextType,
-                getHoverTextType,
-                selectedElement,
-                setSelectedElement: (val) => {
-                  selectedElement = val;
-
-                  setTimeout(() => {
-                    buttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    horizontalbuttonAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    opacitybuttonAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-                    blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
-
-                    TypoAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoHorizontalAdvanceSyncCustomTimelineArrow(
-                      selectedElement
-                    );
-                    TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
-                    TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
-
-                    initButtonAdvanceScrollEffectReset(selectedElement);
-                  }, 300);
-                },
-                setLastClickedBlockId: (val) => (lastClickedBlockId = val),
-                setLastClickedElement: (val) => (lastClickedElement = val),
-                setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
-                setLastActiveAlignmentElement: (val) =>
-                  (lastActiveAlignmentElement = val),
-              }
-            );
-            detectBlockElementTypes(clickedBlock);
-          })
-          .catch((error) => {
-            console.error(error.message);
-          });
-      }
-    }
+  
   const HOST_DOC = (() => {
     try {
       if (parent && parent !== window) {
@@ -1083,7 +858,221 @@
     typoTabSelect(event);
     hoverTypoTabSelect(event);
   });
+  async function loadWidgetFromString(htmlString, clickedBlock) {
+    if (widgetContainer) return;
 
+    widgetContainer = document.createElement("div");
+    widgetContainer.id = "sc-widget-container";
+    widgetContainer.classList.add(
+      "sc-fixed",
+      "sc-text-color-white",
+      "sc-universal",
+      "sc-z-999999"
+    );
+    Object.assign(widgetContainer.style, {
+      visibility: "hidden",
+      opacity: "0",
+      height: "0px",
+      overflow: "hidden",
+      willChange: "height, opacity, transform",
+    });
+
+    const cssHref =
+      "https://fatin-webefo.github.io/squareCraft-plugin/src/styles/parent.css";
+    try {
+      await loadStylesheetOnce(cssHref);
+    } catch (e) {
+      console.warn("⚠️ parent.css failed to preload; continuing anyway.", e);
+    }
+
+    const contentWrapper = document.createElement("div");
+    contentWrapper.innerHTML = htmlString;
+    widgetContainer.appendChild(contentWrapper);
+
+    document.body.appendChild(widgetContainer);
+
+    try {
+      const { initImageMaskControls } = await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/initImageMaskControls.js"
+      );
+      initImageMaskControls(() => selectedElement);
+    } catch (e) {
+      console.warn("initImageMaskControls load failed:", e);
+    }
+
+    function makeWidgetDraggable() {
+      if (!widgetContainer) return;
+
+      // Default pin position every time this runs
+      widgetContainer.style.setProperty("position", "fixed", "important");
+      widgetContainer.style.setProperty("z-index", "999999", "important");
+      widgetContainer.style.setProperty("top", "100px", "important");
+      widgetContainer.style.setProperty("right", "100px", "important");
+      widgetContainer.style.removeProperty("left");
+      widgetContainer.style.removeProperty("transform"); // ensure no prior transforms fight us
+
+      let offsetX = 0,
+        offsetY = 0,
+        isDragging = false;
+
+      function startDrag(event) {
+        const draggableElement = event.target.closest("#sc-grabbing");
+        if (!draggableElement || event.target.closest(".sc-dropdown")) return;
+
+        event.preventDefault();
+        isDragging = true;
+
+        const rect = widgetContainer.getBoundingClientRect();
+        const clientX = event.touches
+          ? event.touches[0].clientX
+          : event.clientX;
+        const clientY = event.touches
+          ? event.touches[0].clientY
+          : event.clientY;
+
+        offsetX = clientX - rect.left;
+        offsetY = clientY - rect.top;
+
+        widgetContainer.style.removeProperty("right");
+        widgetContainer.style.left = rect.left + "px";
+
+        document.addEventListener("mousemove", moveAt);
+        document.addEventListener("mouseup", stopDragging);
+        document.addEventListener("touchmove", moveAt, { passive: false });
+        document.addEventListener("touchend", stopDragging);
+      }
+
+      function moveAt(event) {
+        if (!isDragging) return;
+
+        const clientX = event.touches
+          ? event.touches[0].clientX
+          : event.clientX;
+        const clientY = event.touches
+          ? event.touches[0].clientY
+          : event.clientY;
+
+        const maxX = window.innerWidth - widgetContainer.offsetWidth;
+        const maxY = window.innerHeight - widgetContainer.offsetHeight;
+
+        const newX = Math.max(0, Math.min(maxX, clientX - offsetX));
+        const newY = Math.max(0, Math.min(maxY, clientY - offsetY));
+
+        widgetContainer.style.left = newX + "px";
+        widgetContainer.style.top = newY + "px";
+
+        if (event.cancelable) event.preventDefault();
+      }
+
+      function stopDragging() {
+        isDragging = false;
+        document.removeEventListener("mousemove", moveAt);
+        document.removeEventListener("mouseup", stopDragging);
+        document.removeEventListener("touchmove", moveAt);
+        document.removeEventListener("touchend", stopDragging);
+      }
+
+      widgetContainer.removeEventListener("mousedown", startDrag);
+      widgetContainer.removeEventListener("touchstart", startDrag);
+      widgetContainer.addEventListener("mousedown", startDrag);
+      widgetContainer.addEventListener("touchstart", startDrag, {
+        passive: false,
+      });
+    }
+
+    makeWidgetDraggable();
+    setTimeout(() => {
+      const placeholders = widgetContainer.querySelectorAll(
+        ".sc-arrow-placeholder"
+      );
+      placeholders.forEach((span) => {
+        const isRotate = span.classList.contains("sc-rotate-180");
+        const cloneClassList = Array.from(span.classList);
+        const originalId = span.getAttribute("id") || "";
+        const id =
+          originalId || `sc-arrow-${Math.floor(Math.random() * 10000)}`;
+        const svg = createHoverableArrowSVG(id, isRotate);
+        cloneClassList.forEach((cls) => svg.classList.add(cls));
+        span.replaceWith(svg);
+      });
+      ButtonAdvanceToggleControls();
+    }, 100);
+
+    widgetLoaded = true;
+
+    initImageSectionToggleControls();
+    tooltipControls();
+    ButtonAdvanceToggleControls();
+    initButtonSectionToggleControls();
+    initEffectAnimationDropdownToggle(() => selectedElement);
+    button_initEffectAnimationDropdownToggle(() => selectedElement);
+    opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
+    horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
+    initEffectAnimationDropdownToggle(() => selectedElement);
+    horizontalinitEffectAnimationDropdownToggle(() => selectedElement);
+    blurinitEffectAnimationDropdownToggle(() => selectedElement);
+    scaleinitEffectAnimationDropdownToggle(() => selectedElement);
+    rotateinitEffectAnimationDropdownToggle(() => selectedElement);
+    opacityinitEffectAnimationDropdownToggle(() => selectedElement);
+    WidgetTypoSectionStateControls();
+    initImageStateTabToggle();
+    initButtonStructureGapTypeToggle();
+    initTypoStructureGapTypeToggle();
+    WidgetImageHoverToggleControls();
+    typo_hover_section_dropdown();
+    initHoverButtonSectionToggleControls();
+    if (typeof hoverTypoTabSelect === "function") {
+      hoverTypoTabSelect({ target: widgetContainer });
+    }
+    initHoverButtonEffectDropdowns();
+    initImageUploadPreview(() => selectedElement);
+
+    if (clickedBlock) {
+      waitForElement("#typoSection, #imageSection, #buttonSection")
+        .then(() => {
+          handleBlockClick(
+            { target: clickedBlock },
+            {
+              getTextType,
+              getHoverTextType,
+              selectedElement,
+              setSelectedElement: (val) => {
+                selectedElement = val;
+
+                setTimeout(() => {
+                  buttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                  horizontalbuttonAdvanceSyncCustomTimelineArrow(
+                    selectedElement
+                  );
+                  opacitybuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                  scalebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                  rotatebuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+                  blurbuttonAdvanceSyncCustomTimelineArrow(selectedElement);
+
+                  TypoAdvanceSyncCustomTimelineArrow(selectedElement);
+                  TypoHorizontalAdvanceSyncCustomTimelineArrow(selectedElement);
+                  TypoOpacityAdvanceSyncCustomTimelineArrow(selectedElement);
+                  TypoScaleAdvanceSyncCustomTimelineArrow(selectedElement);
+                  TypoRotateAdvanceSyncCustomTimelineArrow(selectedElement);
+                  TypoBlurAdvanceSyncCustomTimelineArrow(selectedElement);
+
+                  initButtonAdvanceScrollEffectReset(selectedElement);
+                }, 300);
+              },
+              setLastClickedBlockId: (val) => (lastClickedBlockId = val),
+              setLastClickedElement: (val) => (lastClickedElement = val),
+              setLastAppliedAlignment: (val) => (lastAppliedAlignment = val),
+              setLastActiveAlignmentElement: (val) =>
+                (lastActiveAlignmentElement = val),
+            }
+          );
+          detectBlockElementTypes(clickedBlock);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    }
+  }
   // dropdown toggler
   document.body.addEventListener("click", (event) => {
     const dropdownTrigger = event.target.closest("#font-weight-dropdown");
