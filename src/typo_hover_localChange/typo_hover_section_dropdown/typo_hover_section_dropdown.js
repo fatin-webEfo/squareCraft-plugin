@@ -1,5 +1,7 @@
 export function typo_hover_section_dropdown() {
-  const root = document.getElementById("sc-widget-container") || document;
+  // bind ONLY after the widget exists
+  const root = document.getElementById("sc-widget-container");
+  if (!root) return; // ← critical
   if (root.dataset.typoHoverBound === "1") return;
   root.dataset.typoHoverBound = "1";
 
@@ -15,13 +17,13 @@ export function typo_hover_section_dropdown() {
 
   const getArrow = (btn) =>
     btn?.querySelector(
-      'img[id*="arrow"], img[src*="arrow"], .sc-arrow-placeholder, svg'
+      '.sc-arrow-placeholder, img[id*="arrow"], img[src*="arrow"], svg'
     );
 
   function open(btnId) {
     pairs.forEach(([b, s]) => {
-      const btn = document.getElementById(b);
-      const sec = document.getElementById(s);
+      const btn = root.querySelector(`#${b}`);
+      const sec = root.querySelector(`#${s}`);
       if (!sec) return;
       const on = b === btnId;
       sec.classList.toggle("sc-hidden", !on);
@@ -31,20 +33,22 @@ export function typo_hover_section_dropdown() {
     });
   }
 
+  // Prefer opening the Font section first, else the first existing section
   const preferred = "typo-all-hover-font-section";
   const initial =
-    pairs.find(([, s]) => document.getElementById(s) && s === preferred)?.[0] ||
-    pairs.find(([, s]) => document.getElementById(s))?.[0];
-
+    pairs.find(
+      ([, s]) => root.querySelector(`#${s}`) && s === preferred
+    )?.[0] || pairs.find(([, s]) => root.querySelector(`#${s}`))?.[0];
   if (initial) open(initial);
 
+  // Delegate clicks inside the widget only
   root.addEventListener("click", (e) => {
     const btn = e.target.closest(sel);
-    if (!btn) return;
+    if (!btn || !root.contains(btn)) return;
     open(btn.id);
     const secId = secByBtn[btn.id];
-    document
-      .getElementById(secId)
+    root
+      .querySelector(`#${secId}`)
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
