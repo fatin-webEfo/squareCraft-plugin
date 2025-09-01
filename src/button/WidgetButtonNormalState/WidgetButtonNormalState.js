@@ -1,12 +1,12 @@
 export function WidgetButtonNormalState() {
-   const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) => i.toString());
-   const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
-   const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
-   const outlineIcons = Array.from({ length: 112 }, (_, i) => i + 1);
+  const ButtonLetterSpacing = Array.from({ length: 20 }, (_, i) =>
+    i.toString()
+  );
+  const fontSizes = Array.from({ length: 80 }, (_, i) => (i + 8).toString());
+  const solidIconList = Array.from({ length: 116 }, (_, i) => i + 1);
+  const outlineIcons = Array.from({ length: 112 }, (_, i) => i + 1);
 
-
-
-   return `
+  return `
   <div id="ButtonNormalState" class="sc-mt-4 sc-px-2">
             <div class="sc-flex ">
 
