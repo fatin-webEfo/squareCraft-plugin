@@ -13,12 +13,14 @@ export function typo_hover_section_dropdown() {
   const sel = pairs.map(([b]) => `#${b}`).join(",");
 
   const forceShow = (sec, on) => {
+    // flip utility classes
     sec.classList.toggle("sc-hidden", !on);
     sec.classList.toggle("sc-visible", on);
 
+    // force the correct display so CSS collisions can't break it
     if (on) {
       const desired = sec.dataset.scDisplay || "block";
-      sec.style.display = desired;
+      sec.style.display = desired; // grid for the font section, block for others
     } else {
       sec.style.display = "none";
     }
@@ -32,7 +34,8 @@ export function typo_hover_section_dropdown() {
     }
   };
 
-  setOpen(pairs[0][0]); 
+  // initial state
+  setOpen(pairs[0][0]); // open "Font" by default
 
   root.addEventListener(
     "click",
