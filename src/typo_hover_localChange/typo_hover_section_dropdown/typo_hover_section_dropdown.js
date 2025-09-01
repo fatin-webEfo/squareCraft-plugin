@@ -2,69 +2,48 @@ export function typo_hover_section_dropdown() {
   const root = document.getElementById("sc-widget-container");
   if (!root || root.dataset.typoHoverBound === "1") return;
   root.dataset.typoHoverBound = "1";
-  const log = (...a) => console.log("[hover_dropdown]", ...a);
 
-  const buttons = [
-    "typo-all-hover-font-button",
-    "typo-all-hover-border-button",
-    "typo-all-hover-shadow-button",
-    "typo-all-hover-effects-button",
+  const pairs = [
+    ["typo-all-hover-font-button", "typo-all-hover-font-section"],
+    ["typo-all-hover-border-button", "typo-all-hover-border-section"],
+    ["typo-all-hover-shadow-button", "typo-all-hover-shadow-section"],
+    ["typo-all-hover-effects-button", "typo-all-hover-effects-section"],
   ];
-  const sections = {
-    "typo-all-hover-font-button": "typo-all-hover-font-section",
-    "typo-all-hover-border-button": "typo-all-hover-border-section",
-    "typo-all-hover-shadow-button": "typo-all-hover-shadow-section",
-    "typo-all-hover-effects-button": "typo-all-hover-effects-section",
-  };
+  const secByBtn = Object.fromEntries(pairs);
+  const sel = pairs.map(([b]) => `#${b}`).join(",");
 
-  const open = (btnId) => {
-    buttons.forEach((b) => {
-      const sec = root.querySelector("#" + sections[b]);
-      const btn = root.querySelector("#" + b);
-      if (!sec) return;
-      const on = b === btnId;
-      const before = { hidden: sec.classList.contains("sc-hidden") };
-      if (on) {
-        sec.classList.remove("sc-hidden");
-        sec.classList.add("sc-visible");
-      } else {
-        sec.classList.add("sc-hidden");
-        sec.classList.remove("sc-visible");
-      }
-      btn
-        ?.querySelector(
-          '.sc-arrow-placeholder, img[id*="arrow"], img[src*="arrow"], svg'
-        )
-        ?.classList.toggle("sc-rotate-180", !on);
-      const after = { hidden: sec.classList.contains("sc-hidden") };
-      log("toggle", { b, on, before, after });
-    });
-  };
+  const forceShow = (sec, on) => {
+    sec.classList.toggle("sc-hidden", !on);
+    sec.classList.toggle("sc-visible", on);
 
-  buttons.forEach((b) => {
-    const btn = root.querySelector("#" + b);
-    if (!btn) {
-      log("missing-btn", b);
-      return;
+    if (on) {
+      const desired = sec.dataset.scDisplay || "block";
+      sec.style.display = desired;
+    } else {
+      sec.style.display = "none";
     }
-    if (btn.dataset.bound === "1") return;
-    btn.dataset.bound = "1";
-    btn.addEventListener(
-      "click",
-      () => {
-        log("click", b);
-        open(b);
-        const secId = sections[b];
-        root
-          .querySelector("#" + secId)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
-      },
-      { capture: true }
-    );
-  });
+  };
 
-  const first =
-    buttons.find((b) => root.querySelector("#" + sections[b])) || buttons[0];
-  log("initial-open", first);
-  open(first);
+  const setOpen = (btnId) => {
+    for (const [b, s] of pairs) {
+      const sec = root.querySelector(`#${s}`);
+      if (!sec) continue;
+      forceShow(sec, b === btnId);
+    }
+  };
+
+  setOpen(pairs[0][0]); 
+
+  root.addEventListener(
+    "click",
+    (e) => {
+      const btn = e.target.closest(sel);
+      if (!btn || !root.contains(btn)) return;
+      setOpen(btn.id);
+      root
+        .querySelector(`#${secByBtn[btn.id]}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    },
+    true
+  );
 }
