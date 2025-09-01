@@ -592,6 +592,9 @@
   const { WidgetImageHoverToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/components/WidgetImageSection/WidgetImageHoverToggleControls/WidgetImageHoverToggleControls.js"
   );
+  const { typo_hover_section_dropdown } = await import(
+    "https://fatin-webefo.github.io/squareCraft-plugin/src/typo_hover_localChange/typo_hover_section_dropdown/typo_hover_section_dropdown.js"
+  );
 
   const { handleAlignmentClick } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/clickEvents/handleAlignmentClick.js"
@@ -1187,6 +1190,7 @@
     initButtonStructureGapTypeToggle();
     initTypoStructureGapTypeToggle();
     WidgetImageHoverToggleControls();
+    typo_hover_section_dropdown();
 
     initHoverTypoTabControls([
       {
