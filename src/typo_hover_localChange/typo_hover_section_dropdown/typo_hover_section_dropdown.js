@@ -1,56 +1,35 @@
 export function typo_hover_section_dropdown() {
-  const pairs = [
-    { btn: "typo-all-hover-font-button", panel: "typo-all-hover-font-section" },
-    {
-      btn: "typo-all-hover-border-button",
-      panel: "typo-all-hover-border-section",
-    },
-    {
-      btn: "typo-all-hover-shadow-button",
-      panel: "typo-all-hover-shadow-section",
-    },
-    {
-      btn: "typo-all-hover-effects-button",
-      panel: "typo-all-hover-effects-section",
-    },
+  const map = [
+    ["typo-all-hover-font-button", "typo-all-hover-font-section"],
+    ["typo-all-hover-border-button", "typo-all-hover-border-section"],
+    ["typo-all-hover-shadow-button", "typo-all-hover-shadow-section"],
+    ["typo-all-hover-effects-button", "typo-all-hover-effects-section"],
   ];
-  const root = document.getElementById("sc-widget-container") || document;
-  if (root.dataset.typoHoverDropdownInit === "1") return;
-  root.dataset.typoHoverDropdownInit = "1";
 
-  const hideAll = () => {
-    pairs.forEach(({ panel }) => {
-      const el = document.getElementById(panel);
-      if (el) el.classList.add("sc-hidden");
+  const showOnly = (panelId) => {
+    map.forEach(([, sec]) => {
+      const el = document.getElementById(sec);
+      if (!el) return;
+      if (sec === panelId) el.classList.remove("sc-hidden");
+      else el.classList.add("sc-hidden");
     });
   };
 
-  const showOnly = (panelId) => {
-    hideAll();
-    const el = document.getElementById(panelId);
-    if (el) el.classList.remove("sc-hidden");
-  };
+  const first = map[0]?.[1];
+  if (first && document.getElementById(first)) showOnly(first);
 
-  const initial = document.getElementById("typo-all-hover-font-section");
-  if (initial) showOnly("typo-all-hover-font-section");
-
-  const onClick = (e) => {
-    for (const { btn, panel } of pairs) {
-      const hit = e.target.closest(`#${btn}`);
-      if (hit) {
-        e.preventDefault();
-        e.stopPropagation();
-        showOnly(panel);
-        const el = document.getElementById(panel);
-        try {
-          el && el.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch {
-            console.warn("scrollIntoView failed");
-        }
-        break;
-      }
-    }
-  };
-
-  root.addEventListener("click", onClick);
+  map.forEach(([btnId, secId]) => {
+    const btn = document.getElementById(btnId);
+    const sec = document.getElementById(secId);
+    if (!btn || !sec) return;
+    if (btn.dataset.thBound === "1") return;
+    btn.dataset.thBound = "1";
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showOnly(secId);
+      try {
+        sec.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch {}
+    });
+  });
 }
