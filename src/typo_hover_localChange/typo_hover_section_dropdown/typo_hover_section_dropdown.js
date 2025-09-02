@@ -14,19 +14,12 @@ export function typo_hover_section_dropdown() {
   ];
   const secByBtn = Object.fromEntries(pairs);
   const sel = pairs.map(([b]) => `#${b}`).join(",");
-  console.log(NS, "init", { pairs, sel });
-  console.log(
-    NS,
-    "sections-present",
-    pairs.map(([, s]) => ({ id: s, present: !!document.getElementById(s) }))
-  );
 
   const ensureDisplayToken = (sec) => {
     if (sec.dataset.scDisplay) return sec.dataset.scDisplay;
-    let d = "block";
     const cs = getComputedStyle(sec).display;
-    if (cs && cs !== "none") d = cs;
-    else if (sec.classList.contains("sc-grid")) d = "grid";
+    let d = cs && cs !== "none" ? cs : "block";
+    if (sec.classList.contains("sc-grid")) d = "grid";
     else if (sec.classList.contains("sc-flex")) d = "flex";
     sec.dataset.scDisplay = d;
     return d;
@@ -40,7 +33,7 @@ export function typo_hover_section_dropdown() {
     sec.classList.toggle("sc-hidden", !on);
     sec.classList.toggle("sc-visible", on);
     sec.style.setProperty(
-      on ? "display" : "display",
+      "display",
       on ? ensureDisplayToken(sec) : "none",
       "important"
     );
@@ -55,6 +48,55 @@ export function typo_hover_section_dropdown() {
     btn?.querySelector(
       '.sc-arrow-placeholder, img[id*="arrow"], img[src*="arrow"], svg'
     );
+
+  const chain = (el) => {
+    const out = [];
+    let n = el;
+    while (n && n.nodeType === 1) {
+      const cs = getComputedStyle(n);
+      out.push({
+        tag: n.tagName.toLowerCase(),
+        id: n.id || null,
+        className: n.className || "",
+        hasHidden: n.classList?.contains?.("sc-hidden") || false,
+        display: cs.display,
+        visibility: cs.visibility,
+        opacity: cs.opacity,
+        inlineDisplay: n.style?.display || "",
+      });
+      if (n.id === "sc-widget-container") break;
+      n = n.parentElement;
+    }
+    return out;
+  };
+
+  const fixAncestors = (el) => {
+    if (!window.__sc_fix_ancestors) return;
+    let n = el.parentElement;
+    while (n && n.nodeType === 1) {
+      const cs = getComputedStyle(n);
+      if (n.classList?.contains?.("sc-hidden")) n.classList.remove("sc-hidden");
+      if (cs.display === "none") {
+        let d = "block";
+        if (n.classList.contains("sc-grid")) d = "grid";
+        else if (n.classList.contains("sc-flex")) d = "flex";
+        n.style.setProperty("display", d, "important");
+      }
+      if (cs.visibility === "hidden")
+        n.style.setProperty("visibility", "visible", "important");
+      if (cs.opacity === "0") n.style.setProperty("opacity", "1", "important");
+      if (n.id === "sc-widget-container") break;
+      n = n.parentElement;
+    }
+  };
+
+  const verify = (sec) => {
+    const info = chain(sec);
+    console.log(NS, "visibility-chain", info);
+    fixAncestors(sec);
+    const post = chain(sec);
+    console.log(NS, "visibility-chain-post", post);
+  };
 
   const setOpen = (btnId) => {
     console.log(NS, "setOpen", btnId);
@@ -75,6 +117,7 @@ export function typo_hover_section_dropdown() {
         arrowFound: !!a,
         rotate180: a ? a.classList.contains("sc-rotate-180") : null,
       });
+      if (on) verify(sec);
     }
   };
 
@@ -107,4 +150,10 @@ export function typo_hover_section_dropdown() {
   document.addEventListener("click", handler, true);
   document.addEventListener("pointerup", handler, true);
   console.log(NS, "listeners-attached", { capture: true });
+
+  window.__sc_probe = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return console.log(NS, "probe-missing", id);
+    console.log(NS, "probe", id, chain(el));
+  };
 }
