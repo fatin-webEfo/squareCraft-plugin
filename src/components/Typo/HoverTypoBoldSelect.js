@@ -150,7 +150,7 @@ export function HoverTypoBoldSelect(LetterSpacing) {
             <div class="sc-items-center sc-gap-2 sc-mt-3 sc-flex">
               <div class=" ">
                 <p
-                  class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"
+                  class="sc-font-size-11 sc-font-thin sc-mt-2 sc-universal sc-text-gray-300 sc-roboto"
                 >
                   Background Color
                 </p>
