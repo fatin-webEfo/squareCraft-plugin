@@ -3,45 +3,56 @@ export function typo_hover_section_dropdown() {
   if (!root || root.dataset.typoHoverBound === "1") return;
   root.dataset.typoHoverBound = "1";
 
-  // ADDED the bold/italic hover IDs (left everything else intact)
   const BTN_SEL = [
-    // existing “all”
+    // all
     "#typo-all-hover-font-button",
     "#typo-all-hover-border-button",
     "#typo-all-hover-shadow-button",
     "#typo-all-hover-effects-button",
 
-    // NEW: bold
+    // bold
     "#typo-bold-hover-font-button",
     "#typo-bold-hover-border-button",
     "#typo-bold-hover-shadow-button",
     "#typo-bold-hover-effects-button",
 
-    // NEW: italic
+    // italic
     "#typo-italic-hover-font-button",
     "#typo-italic-hover-border-button",
     "#typo-italic-hover-shadow-button",
     "#typo-italic-hover-effects-button",
+
+    // link
+    "#typo-link-hover-font-button",
+    "#typo-link-hover-border-button",
+    "#typo-link-hover-shadow-button",
+    "#typo-link-hover-effects-button",
   ].join(",");
 
   const SEC_SEL = [
-    // existing “all”
+    // all
     "#typo-all-hover-font-section",
     "#typo-all-hover-border-section",
     "#typo-all-hover-shadow-section",
     "#typo-all-hover-effects-section",
 
-    // NEW: bold
+    // bold
     "#typo-bold-hover-font-section",
     "#typo-bold-hover-border-section",
     "#typo-bold-hover-shadow-section",
     "#typo-bold-hover-effects-section",
 
-    // NEW: italic
+    // italic
     "#typo-italic-hover-font-section",
     "#typo-italic-hover-border-section",
     "#typo-italic-hover-shadow-section",
     "#typo-italic-hover-effects-section",
+
+    // link
+    "#typo-link-hover-font-section",
+    "#typo-link-hover-border-section",
+    "#typo-link-hover-shadow-section",
+    "#typo-link-hover-effects-section",
   ].join(",");
 
   const wantDisplay = (sec) => {
