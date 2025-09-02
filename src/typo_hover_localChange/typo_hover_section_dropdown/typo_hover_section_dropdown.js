@@ -1,4 +1,4 @@
-export function typo_section_dropdown_unified() {
+export function typo_hover_section_dropdown() {
   const NS = "[typo_dropdown]";
   const root = document.getElementById("sc-widget-container") || document;
   if (!root || root.dataset.typoDropdownBound === "1") return;
