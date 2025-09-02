@@ -88,26 +88,17 @@ export function typo_hover_section_dropdown() {
     (e) => {
       const btn = e.target.closest(sel);
       if (!btn) return;
+      const id = btn.id;
       console.log("[typo_hover_dropdown] click", {
         target: e.target.tagName,
-        hit: btn.id,
+        hit: id,
       });
-      setOpen(btn.id);
-      const secId = secByBtn[btn.id];
-      const sec = root.querySelector(`#${secId}`);
-      if (sec) {
-        console.log("[typo_hover_dropdown] post-click-section-state", {
-          secId,
-          exists: !!sec,
-          className: sec.className,
-          inlineDisplay: sec.style.display,
-          hasHidden: sec.classList.contains("sc-hidden"),
-          rect:
-            sec.getBoundingClientRect().toJSON?.() ||
-            sec.getBoundingClientRect(),
-        });
-      }
+      setOpen(id);
+      queueMicrotask(() => setOpen(id));
+      requestAnimationFrame(() => setOpen(id));
+      setTimeout(() => setOpen(id), 0);
     },
     true
   );
+
 }
