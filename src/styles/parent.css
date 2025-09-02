@@ -264,7 +264,9 @@
   height: 200px !important;
   overflow-y: auto !important;
 }
-
+.sc-overflow-x-none{
+  overflow-x: hidden !important;
+}
 .sc-p-8px {
   padding: 8px !important;
 }

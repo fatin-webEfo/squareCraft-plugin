@@ -14,7 +14,7 @@ import { WidgetButtonAdvanceSection } from "https://fatin-webefo.github.io/squar
 export function html() {
 
    const htmlString = `
-     <div class="sc-p-2  z-index-high sc-text-color-white sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
+     <div class="sc-p-2  z-index-high sc-text-color-white sc-overflow-x-none sc-border sc-border-solid sc-border-3d3d3d sc-bg-color-2c2c2c sc-rounded-15px sc-w-300px">
   <div id="sc-grabbing" class="sc-cursor-grabbing sc-w-full">
     <div class="sc-flex sc-roboto sc-universal sc-items-center sc-justify-between">
       <img class="sc-cursor-grabbing sc-universal" src="https://fatin-webefo.github.io/squareCraft-plugin/public/squarecraft-text-logo-transparent.svg" width="140px" />
