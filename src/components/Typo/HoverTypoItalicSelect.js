@@ -146,8 +146,7 @@ export function HoverTypoItalicSelect(LetterSpacing) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="sc-items-center sc-gap-2 sc-mt-3 sc-flex">
+               <div class="sc-items-center col-span-7 sc-gap-2 sc-mt-3 sc-flex">
               <div class=" ">
                 <p
                   class="sc-font-size-11 sc-font-thin sc-mt-2 sc-universal sc-text-gray-300 sc-roboto"
@@ -270,6 +269,8 @@ export function HoverTypoItalicSelect(LetterSpacing) {
             </div>
 
 
+            </div>
+           
 
 
             <div>
