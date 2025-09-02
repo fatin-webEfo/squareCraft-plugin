@@ -3,17 +3,10 @@ export function typo_hover_section_dropdown() {
   if (!root || root.dataset.typoHoverBound === "1") return;
   root.dataset.typoHoverBound = "1";
 
-  const pairs = [
-    ["typo-all-hover-font-button", "typo-all-hover-font-section"],
-    ["typo-all-hover-border-button", "typo-all-hover-border-section"],
-    ["typo-all-hover-shadow-button", "typo-all-hover-shadow-section"],
-    ["typo-all-hover-effects-button", "typo-all-hover-effects-section"],
-  ].filter(
-    ([b, s]) => root.querySelector(`#${b}`) && root.querySelector(`#${s}`)
-  );
-
-  const sel = pairs.map(([b]) => `#${b}`).join(",");
-  const secByBtn = Object.fromEntries(pairs);
+  const BTN_SEL =
+    "#typo-all-hover-font-button,#typo-all-hover-border-button,#typo-all-hover-shadow-button,#typo-all-hover-effects-button";
+  const SEC_SEL =
+    "#typo-all-hover-font-section,#typo-all-hover-border-section,#typo-all-hover-shadow-section,#typo-all-hover-effects-section";
 
   const wantDisplay = (sec) => {
     if (sec.dataset.scDisplay) return sec.dataset.scDisplay;
@@ -26,20 +19,12 @@ export function typo_hover_section_dropdown() {
     return d;
   };
 
-  const syncArrow = (btnId, open) => {
-    const btn = root.querySelector(`#${btnId}`);
-    const arrow = btn?.querySelector(
-      '.sc-arrow-placeholder, img[src*="arrow"]'
-    );
-    if (!arrow) return;
-    arrow.classList.toggle("sc-rotate-180", !open);
-  };
-
   const forceShow = (sec, on) => {
+    if (!sec) return;
     const before = {
+      id: sec.id,
       className: sec.className,
-      inlineDisplay: sec.style.display,
-      hasHidden: sec.classList.contains("sc-hidden"),
+      display: sec.style.display,
     };
     sec.classList.toggle("sc-hidden", !on);
     sec.classList.toggle("sc-visible", on);
@@ -49,9 +34,9 @@ export function typo_hover_section_dropdown() {
       "important"
     );
     const after = {
+      id: sec.id,
       className: sec.className,
-      inlineDisplay: sec.style.display,
-      hasHidden: sec.classList.contains("sc-hidden"),
+      display: sec.style.display,
     };
     console.log("[typo_hover_dropdown] show", {
       id: sec.id,
@@ -61,44 +46,54 @@ export function typo_hover_section_dropdown() {
     });
   };
 
-  const setOpen = (btnId) => {
-    console.log("[typo_hover_dropdown] setOpen", btnId);
-    for (const [b, s] of pairs) {
-      const sec = root.querySelector(`#${s}`);
-      if (!sec) continue;
-      const on = b === btnId;
-      forceShow(sec, on);
-      syncArrow(b, on);
-    }
+  const arrowSync = (btn, open) => {
+    const arrow = btn.querySelector('.sc-arrow-placeholder, img[src*="arrow"]');
+    if (arrow) arrow.classList.toggle("sc-rotate-180", !open);
   };
 
-  console.log("[typo_hover_dropdown] init", { pairs, sel });
-  console.log(
-    "[typo_hover_dropdown] sections-present",
-    pairs.map(([, s]) => ({ id: s, el: !!root.querySelector(`#${s}`) }))
-  );
+  const findScope = (btn) =>
+    btn.closest("[data-hover-typo-all]") ||
+    btn.closest(".sc-mt-2.sc-text-color-white") ||
+    root;
 
-  if (pairs[0]) {
-    console.log("[typo_hover_dropdown] initial", pairs[0][0]);
-    setOpen(pairs[0][0]);
-  }
+  const openInScope = (scope, btn) => {
+    const guessed =
+      btn.nextElementSibling && btn.nextElementSibling.id?.endsWith("-section")
+        ? btn.nextElementSibling
+        : scope.querySelector(`#${btn.id.replace("-button", "-section")}`);
+
+    const sections = Array.from(scope.querySelectorAll(SEC_SEL));
+    sections.forEach((s) => forceShow(s, s === guessed));
+
+    const buttons = Array.from(scope.querySelectorAll(BTN_SEL));
+    buttons.forEach((b) => arrowSync(b, b === btn));
+
+    console.log("[typo_hover_dropdown] scope-click", {
+      scopeHint: scope.id || "(anon-scope)",
+      clicked: btn.id,
+      open: guessed?.id,
+      secCount: sections.length,
+    });
+
+    queueMicrotask(() => sections.forEach((s) => forceShow(s, s === guessed)));
+  };
 
   root.addEventListener(
     "click",
     (e) => {
-      const btn = e.target.closest(sel);
+      const btn = e.target.closest(BTN_SEL);
       if (!btn) return;
-      const id = btn.id;
-      console.log("[typo_hover_dropdown] click", {
-        target: e.target.tagName,
-        hit: id,
-      });
-      setOpen(id);
-      queueMicrotask(() => setOpen(id));
-      requestAnimationFrame(() => setOpen(id));
-      setTimeout(() => setOpen(id), 0);
+      const scope = findScope(btn);
+      openInScope(scope, btn);
     },
     true
   );
 
+  Array.from(root.querySelectorAll(BTN_SEL)).forEach((btn) => {
+    const scope = findScope(btn);
+    const firstBtn = scope.querySelector("#typo-all-hover-font-button") || btn;
+    if (btn === firstBtn) openInScope(scope, firstBtn);
+  });
+
+  console.log("[typo_hover_dropdown] listeners-attached");
 }
