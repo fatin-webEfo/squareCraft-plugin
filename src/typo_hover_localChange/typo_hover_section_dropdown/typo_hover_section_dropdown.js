@@ -1,21 +1,36 @@
-export function typo_hover_section_dropdown() {
-  const NS = "[typo_hover_dropdown]";
-  if (window.__sc_typoHoverBound) {
-    console.log(NS, "skip: already bound");
-    return;
-  }
-  window.__sc_typoHoverBound = 1;
+export function typo_section_dropdown_unified() {
+  const NS = "[typo_dropdown]";
+  const root = document.getElementById("sc-widget-container") || document;
+  if (!root || root.dataset.typoDropdownBound === "1") return;
+  root.dataset.typoDropdownBound = "1";
 
-  const pairs = [
+  const known = [
+    ["typo-all-font-button", "typo-all-font-section"],
+    ["typo-all-border-button", "typo-all-border-section"],
+    ["typo-all-shadow-button", "typo-all-shadow-section"],
+    ["typo-all-effects-button", "typo-all-effects-section"],
     ["typo-all-hover-font-button", "typo-all-hover-font-section"],
     ["typo-all-hover-border-button", "typo-all-hover-border-section"],
     ["typo-all-hover-shadow-button", "typo-all-hover-shadow-section"],
     ["typo-all-hover-effects-button", "typo-all-hover-effects-section"],
   ];
+
+  const attrPairs = Array.from(root.querySelectorAll("[data-sc-toggle]"))
+    .map((btn) => [btn.id, btn.getAttribute("data-sc-toggle")])
+    .filter(([b, s]) => b && s);
+
+  let pairs = [...attrPairs, ...known].filter(
+    ([b, s]) => root.querySelector(`#${b}`) && root.querySelector(`#${s}`)
+  );
+  if (!pairs.length) {
+    console.log(NS, "no-pairs-found");
+    return;
+  }
+
   const secByBtn = Object.fromEntries(pairs);
   const sel = pairs.map(([b]) => `#${b}`).join(",");
 
-  const ensureDisplayToken = (sec) => {
+  const wantDisplay = (sec) => {
     if (sec.dataset.scDisplay) return sec.dataset.scDisplay;
     const cs = getComputedStyle(sec).display;
     let d = cs && cs !== "none" ? cs : "block";
@@ -25,29 +40,21 @@ export function typo_hover_section_dropdown() {
     return d;
   };
 
-  const show = (sec, on) => {
-    const before = {
-      className: sec.className,
-      inlineDisplay: sec.style.display,
-    };
+  const flip = (sec, on) => {
+    const before = { className: sec.className, display: sec.style.display };
     sec.classList.toggle("sc-hidden", !on);
     sec.classList.toggle("sc-visible", on);
     sec.style.setProperty(
       "display",
-      on ? ensureDisplayToken(sec) : "none",
+      on ? wantDisplay(sec) : "none",
       "important"
     );
-    const after = {
-      className: sec.className,
-      inlineDisplay: sec.style.display,
-    };
-    console.log(NS, "show", { id: sec.id, on, before, after });
+    const after = { className: sec.className, display: sec.style.display };
+    console.log(NS, "flip", { id: sec.id, on, before, after });
   };
 
   const getArrow = (btn) =>
-    btn?.querySelector(
-      '.sc-arrow-placeholder, img[id*="arrow"], img[src*="arrow"], svg'
-    );
+    btn?.querySelector('.sc-arrow-placeholder, img[src*="arrow"], svg');
 
   const chain = (el) => {
     const out = [];
@@ -55,14 +62,11 @@ export function typo_hover_section_dropdown() {
     while (n && n.nodeType === 1) {
       const cs = getComputedStyle(n);
       out.push({
-        tag: n.tagName.toLowerCase(),
         id: n.id || null,
-        className: n.className || "",
-        hasHidden: n.classList?.contains?.("sc-hidden") || false,
+        cls: n.className || "",
         display: cs.display,
         visibility: cs.visibility,
         opacity: cs.opacity,
-        inlineDisplay: n.style?.display || "",
       });
       if (n.id === "sc-widget-container") break;
       n = n.parentElement;
@@ -70,90 +74,32 @@ export function typo_hover_section_dropdown() {
     return out;
   };
 
-  const fixAncestors = (el) => {
-    if (!window.__sc_fix_ancestors) return;
-    let n = el.parentElement;
-    while (n && n.nodeType === 1) {
-      const cs = getComputedStyle(n);
-      if (n.classList?.contains?.("sc-hidden")) n.classList.remove("sc-hidden");
-      if (cs.display === "none") {
-        let d = "block";
-        if (n.classList.contains("sc-grid")) d = "grid";
-        else if (n.classList.contains("sc-flex")) d = "flex";
-        n.style.setProperty("display", d, "important");
-      }
-      if (cs.visibility === "hidden")
-        n.style.setProperty("visibility", "visible", "important");
-      if (cs.opacity === "0") n.style.setProperty("opacity", "1", "important");
-      if (n.id === "sc-widget-container") break;
-      n = n.parentElement;
-    }
-  };
-
-  const verify = (sec) => {
-    const info = chain(sec);
-    console.log(NS, "visibility-chain", info);
-    fixAncestors(sec);
-    const post = chain(sec);
-    console.log(NS, "visibility-chain-post", post);
-  };
-
   const setOpen = (btnId) => {
-    console.log(NS, "setOpen", btnId);
+    console.log(NS, "open", btnId);
     for (const [b, s] of pairs) {
-      const btn = document.getElementById(b);
-      const sec = document.getElementById(s);
+      const btn = root.querySelector(`#${b}`);
+      const sec = root.querySelector(`#${s}`);
+      if (!sec) continue;
       const on = b === btnId;
-      if (!sec) {
-        console.log(NS, "missing-section", { button: b, section: s });
-        continue;
-      }
-      show(sec, on);
-      const a = getArrow(btn);
-      if (a) a.classList.toggle("sc-rotate-180", !on);
-      console.log(NS, "arrow-sync", {
-        button: b,
-        section: s,
-        arrowFound: !!a,
-        rotate180: a ? a.classList.contains("sc-rotate-180") : null,
-      });
-      if (on) verify(sec);
+      flip(sec, on);
+      const arrow = getArrow(btn);
+      if (arrow) arrow.classList.toggle("sc-rotate-180", !on);
+      btn?.setAttribute("aria-expanded", String(on));
+      if (on) console.log(NS, "chain", chain(sec));
     }
   };
 
-  const initial =
-    pairs.find(([, s]) => document.getElementById(s))?.[0] || pairs[0][0];
-  console.log(NS, "initial", initial);
+  const initial = pairs[0][0];
   setOpen(initial);
 
   const handler = (e) => {
     const btn = e.target.closest(sel);
-    if (!btn) return;
-    console.log(NS, "click", {
-      target: e.target.id || e.target.tagName,
-      hit: btn.id,
-    });
+    if (!btn || !root.contains(btn)) return;
+    console.log(NS, "click", { hit: btn.id });
     setOpen(btn.id);
-    const secId = secByBtn[btn.id];
-    const sec = document.getElementById(secId);
-    console.log(NS, "post-click-section-state", {
-      secId,
-      exists: !!sec,
-      className: sec?.className || null,
-      inlineDisplay: sec?.style.display || null,
-      hasHidden: sec ? sec.classList.contains("sc-hidden") : null,
-      hasVisible: sec ? sec.classList.contains("sc-visible") : null,
-    });
-    sec?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  document.addEventListener("click", handler, true);
-  document.addEventListener("pointerup", handler, true);
-  console.log(NS, "listeners-attached", { capture: true });
-
-  window.__sc_probe = (id) => {
-    const el = document.getElementById(id);
-    if (!el) return console.log(NS, "probe-missing", id);
-    console.log(NS, "probe", id, chain(el));
-  };
+  root.addEventListener("click", handler, true);
+  root.addEventListener("pointerup", handler, true);
+  console.log(NS, "bound", { pairs, sel });
 }
