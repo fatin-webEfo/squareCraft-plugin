@@ -8,24 +8,29 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       : () => getSelectedElement;
   const root = document.getElementById("sc-widget-container") || document;
 
-  const weightBtn = root.querySelector("#hover-typo-allSelect-font-weight");
-  const weightList = root.querySelector(
-    "#hover-typo-allSelect-font-weight-list"
-  );
+  const q = (s) => root.querySelector(s);
+  const weightBtn = q("#hover-typo-allSelect-font-weight");
+  const weightList = q("#hover-typo-allSelect-font-weight-list");
   const weightLabel = weightBtn?.querySelector("p");
+  const spacingBtn = q("#hover-typo-allSelect-letter-spacing");
+  const spacingInput = q("#typo-all-hover-font-section .sc-font-size-input");
 
-  const spacingBtn = root.querySelector("#hover-typo-allSelect-letter-spacing");
-  const spacingWrap = spacingBtn?.closest(
-    ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
-  );
-  const spacingList = spacingWrap?.querySelector(".sc-absolute");
-  const spacingInput = root.querySelector(
-    "#typo-all-hover-font-section .sc-font-size-input"
-  );
+  const findSpacingList = () => {
+    let n = spacingBtn;
+    while (n && n !== root) {
+      const abs =
+        n.querySelector?.(".sc-absolute") ||
+        n.parentElement?.querySelector?.(".sc-absolute");
+      if (abs) return abs;
+      n = n.parentElement;
+    }
+    return null;
+  };
 
   const show = (el) => el && el.classList.remove("sc-hidden");
   const hide = (el) => el && el.classList.add("sc-hidden");
   const toggle = (el) => el && el.classList.toggle("sc-hidden");
+  const spacingList = findSpacingList();
 
   const apply = (styles) => {
     const el = sel?.();
@@ -40,17 +45,14 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   const commitSpacing = (v) => {
     if (v == null) return;
-    const val = /^\-?\d+(\.\d+)?$/.test(String(v).trim())
-      ? `${String(v).trim()}px`
-      : String(v).trim();
-    apply({ "letter-spacing": val });
+    const s = String(v).trim();
+    apply({ "letter-spacing": /^\-?\d+(\.\d+)?$/.test(s) ? `${s}px` : s });
   };
 
   weightBtn?.addEventListener(
-    "mousedown",
+    "click",
     (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.stopImmediatePropagation();
       toggle(weightList);
       hide(spacingList);
     },
@@ -58,10 +60,9 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   );
 
   spacingBtn?.addEventListener(
-    "mousedown",
+    "click",
     (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      e.stopImmediatePropagation();
       toggle(spacingList);
       hide(weightList);
     },
@@ -69,7 +70,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   );
 
   root.addEventListener(
-    "mousedown",
+    "click",
     (e) => {
       if (
         weightList &&
@@ -88,7 +89,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   );
 
   weightList?.addEventListener(
-    "mousedown",
+    "click",
     (e) => {
       const item = e.target.closest(".sc-dropdown-item");
       if (!item) return;
@@ -96,13 +97,13 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       if (weightLabel) weightLabel.textContent = ` ${v} `;
       apply({ "font-weight": v });
       hide(weightList);
-      e.stopPropagation();
+      e.stopImmediatePropagation();
     },
     true
   );
 
   spacingList?.addEventListener(
-    "mousedown",
+    "click",
     (e) => {
       const item = e.target.closest(".sc-dropdown-item");
       if (!item) return;
@@ -110,7 +111,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       if (spacingInput) spacingInput.value = v;
       commitSpacing(v);
       hide(spacingList);
-      e.stopPropagation();
+      e.stopImmediatePropagation();
     },
     true
   );
