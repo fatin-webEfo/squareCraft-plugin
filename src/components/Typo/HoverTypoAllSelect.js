@@ -49,7 +49,8 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
              <div class="sc-flex sc-items-center sc-justify-center sc-ml-2">
                <p class="sc-font-light sc-text-center sc-font-size-12 sc-universal"> px </p>
              </div>
-             <div class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-cursor-pointer sc-px-1_5 sc-tooltip-target"
+             <div id="hover-typo-allSelect-letter-spacing" 
+             class="sc-bg-3f3f3f sc-flex sc-items-center sc-justify-center sc-cursor-pointer sc-px-1_5 sc-tooltip-target"
               style="height: 28px;
                      margin-left: 12px;
                       border-radius: 0px 5px 5px 0px;">
