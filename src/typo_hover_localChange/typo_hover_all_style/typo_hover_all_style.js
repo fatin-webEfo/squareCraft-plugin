@@ -8,56 +8,34 @@ export function initHoverTypoAllFontControls(selectedOrGetter) {
       ? selectedOrGetter()
       : selectedOrGetter;
 
-  const weightButton = section.querySelector(
-    "#hover-typo-allSelect-font-weight"
+  const weightButton = document.getElementById(
+    "hover-typo-allSelect-font-weight"
   );
-  const weightList = section.querySelector(
-    "#hover-typo-allSelect-font-weight-list"
+  const weightList = document.getElementById(
+    "hover-typo-allSelect-font-weight-list"
   );
   const weightLabel = weightButton?.querySelector("p");
 
-  const spacingToggle = section.querySelector(
-    "#hover-typo-allSelect-letter-spacing"
+  const spacingToggle = document.getElementById(
+    "hover-typo-allSelect-letter-spacing"
   );
-  const spacingGroup = spacingToggle?.closest(
-    ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
-  );
-  const spacingInput = spacingGroup?.querySelector(".sc-font-size-input");
-  const spacingDropdown = spacingGroup?.querySelector(".sc-absolute");
+  const spacingInput = section.querySelector(".sc-font-size-input");
+  const spacingDropdown =
+    spacingToggle?.parentElement?.parentElement?.querySelector(".sc-absolute");
 
   const open = (el) => el && el.classList.remove("sc-hidden");
   const close = (el) => el && el.classList.add("sc-hidden");
   const toggle = (el) => el && el.classList.toggle("sc-hidden");
-  const closeAll = () => {
-    close(weightList);
-    close(spacingDropdown);
-  };
 
   function applyToSelected(styleObj) {
     const el = getSelectedElement();
     if (!el) return;
-    Object.entries(styleObj).forEach(([k, v]) =>
-      el.style.setProperty(k, v, "important")
-    );
-    if (el.id) {
-      const id = el.id;
-      const styleId = `sc-hover-typo-scope-${id}`;
-      let tag = document.getElementById(styleId);
-      if (!tag) {
-        tag = document.createElement("style");
-        tag.id = styleId;
-        document.head.appendChild(tag);
-      }
-      const rules = Object.entries(styleObj)
-        .map(([k, v]) => `${k}: ${v} !important;`)
-        .join(" ");
-      const esc = CSS.escape(id);
-      tag.textContent = `
-        #${esc},
-        #${esc} h1, #${esc} h2, #${esc} h3, #${esc} h4, #${esc} h5, #${esc} h6,
-        #${esc} p, #${esc} span, #${esc} a { ${rules} }
-      `;
-    }
+    const setAll = (node) =>
+      Object.entries(styleObj).forEach(([k, v]) =>
+        node.style.setProperty(k, v, "important")
+      );
+    setAll(el);
+    el.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,a").forEach(setAll);
   }
 
   if (weightButton && weightList) {
@@ -86,10 +64,10 @@ export function initHoverTypoAllFontControls(selectedOrGetter) {
     spacingDropdown.addEventListener("click", (e) => {
       const item = e.target.closest(".sc-dropdown-item");
       if (!item) return;
-      const val = (item.dataset.value ?? item.textContent ?? "").trim();
-      if (!val) return;
-      const px = /^\-?\d+(\.\d+)?$/.test(val) ? `${val}px` : val;
-      if (spacingInput) spacingInput.value = val;
+      const raw = (item.dataset.value ?? item.textContent ?? "").trim();
+      if (!raw) return;
+      const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
+      if (spacingInput) spacingInput.value = raw;
       applyToSelected({ "letter-spacing": px });
       close(spacingDropdown);
     });
@@ -126,9 +104,15 @@ export function initHoverTypoAllFontControls(selectedOrGetter) {
   }
 
   document.addEventListener("click", (e) => {
-    if (!section.contains(e.target)) closeAll();
+    if (!section.contains(e.target)) {
+      close(weightList);
+      close(spacingDropdown);
+    }
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeAll();
+    if (e.key === "Escape") {
+      close(weightList);
+      close(spacingDropdown);
+    }
   });
 }
