@@ -1,152 +1,113 @@
-export function initHoverTypoAllFontControls(selectedOrGetter) {
-  const section = document.getElementById("typo-all-hover-font-section");
-  if (!section) return;
+export function initHoverTypoAllFontControls(getSelectedElement) {
+  if (document.body.dataset.scHoverTypoAllBound === "1") return;
+  document.body.dataset.scHoverTypoAllBound = "1";
 
-  const getSelectedElement =
-    typeof selectedOrGetter === "function"
-      ? selectedOrGetter
-      : () => selectedOrGetter;
+  const sel =
+    typeof getSelectedElement === "function"
+      ? getSelectedElement
+      : () => getSelectedElement;
 
-  const weightButton = document.getElementById(
-    "hover-typo-allSelect-font-weight"
-  );
-  const weightList = document.getElementById(
-    "hover-typo-allSelect-font-weight-list"
-  );
-  const weightLabel = weightButton?.querySelector("p");
-
-  const spacingToggle = document.getElementById(
-    "hover-typo-allSelect-letter-spacing"
-  );
-  const spacingInput = section.querySelector(".sc-font-size-input");
-  const spacingWrapper = spacingToggle?.closest(
-    ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
-  );
-  const spacingDropdown = spacingWrapper?.querySelector(
-    ":scope > .sc-absolute"
-  );
-
-  if (section.dataset.scBound === "1") return;
-  section.dataset.scBound = "1";
-
-  const applyToSelected = (styleObj) => {
-    const el = getSelectedElement?.();
-    if (!el) return;
-    const setAll = (node) => {
-      Object.entries(styleObj).forEach(([k, v]) =>
-        node.style.setProperty(k, v, "important")
-      );
-    };
-    setAll(el);
-    el.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,a").forEach(setAll);
+  const q = (s, r = document) => r.querySelector(s);
+  const weightBtn = () => q("#hover-typo-allSelect-font-weight");
+  const weightList = () => q("#hover-typo-allSelect-font-weight-list");
+  const weightLabel = () => weightBtn()?.querySelector("p");
+  const spacingBtn = () => q("#hover-typo-allSelect-letter-spacing");
+  const spacingInput = () =>
+    q("#typo-all-hover-font-section .sc-font-size-input");
+  const spacingList = () => {
+    const wrap = spacingBtn()?.closest(
+      ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
+    );
+    return wrap?.querySelector(".sc-absolute");
   };
 
+  const hide = (el) => el && el.classList.add("sc-hidden");
   const toggle = (el) => el && el.classList.toggle("sc-hidden");
-  const close = (el) => el && el.classList.add("sc-hidden");
-
-  if (weightButton && weightList) {
-    if (!weightButton.dataset.bound) {
-      weightButton.dataset.bound = "1";
-      weightButton.addEventListener(
-        "click",
-        (e) => {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          toggle(weightList);
-          close(spacingDropdown);
-        },
-        true
+  const apply = (styles) => {
+    const el = sel?.();
+    if (!el) return;
+    const put = (n) =>
+      Object.entries(styles).forEach(([k, v]) =>
+        n.style.setProperty(k, v, "important")
       );
-    }
+    put(el);
+    el.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,a").forEach(put);
+  };
 
-    if (!weightList.dataset.bound) {
-      weightList.dataset.bound = "1";
-      weightList.addEventListener(
-        "click",
-        (e) => {
-          const item = e.target.closest(".sc-dropdown-item");
-          if (!item) return;
-          const val = (item.textContent || "").trim();
-          if (!val) return;
-          if (weightLabel) weightLabel.textContent = ` ${val} `;
-          applyToSelected({ "font-weight": val });
-          close(weightList);
-        },
-        true
+  const commitSpacing = (raw) => {
+    if (!raw) return;
+    const val = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
+    apply({ "letter-spacing": val });
+  };
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      const t = e.target;
+
+      if (t.closest("#hover-typo-allSelect-font-weight")) {
+        toggle(weightList());
+        hide(spacingList());
+        return;
+      }
+
+      if (t.closest("#hover-typo-allSelect-letter-spacing")) {
+        toggle(spacingList());
+        hide(weightList());
+        return;
+      }
+
+      const wItem = t.closest(
+        "#hover-typo-allSelect-font-weight-list .sc-dropdown-item"
       );
-    }
-  }
+      if (wItem) {
+        const v = (wItem.textContent || "").trim();
+        if (weightLabel()) weightLabel().textContent = ` ${v} `;
+        apply({ "font-weight": v });
+        hide(weightList());
+        return;
+      }
 
-  if (spacingToggle && spacingDropdown) {
-    if (!spacingToggle.dataset.bound) {
-      spacingToggle.dataset.bound = "1";
-      spacingToggle.addEventListener(
-        "click",
-        (e) => {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          toggle(spacingDropdown);
-          close(weightList);
-        },
-        true
-      );
-    }
+      const sItem =
+        (spacingList() &&
+          t.closest(
+            `#${spacingList().id ? spacingList().id : ""} .sc-dropdown-item`
+          )) ||
+        (spacingList() &&
+          spacingList().contains(t) &&
+          t.closest(".sc-dropdown-item"));
+      if (sItem) {
+        const v = (sItem.dataset.value ?? sItem.textContent ?? "").trim();
+        if (spacingInput()) spacingInput().value = v;
+        commitSpacing(v);
+        hide(spacingList());
+        return;
+      }
 
-    if (!spacingDropdown.dataset.bound) {
-      spacingDropdown.dataset.bound = "1";
-      spacingDropdown.addEventListener(
-        "click",
-        (e) => {
-          const item = e.target.closest(".sc-dropdown-item");
-          if (!item) return;
-          const raw = (item.dataset.value ?? item.textContent ?? "").trim();
-          if (!raw) return;
-          const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
-          if (spacingInput) spacingInput.value = raw;
-          applyToSelected({ "letter-spacing": px });
-          close(spacingDropdown);
-        },
-        true
-      );
-    }
-  }
+      if (!t.closest("#typo-all-hover-font-section")) {
+        hide(weightList());
+        hide(spacingList());
+      }
+    },
+    true
+  );
 
-  if (spacingInput && !spacingInput.dataset.bound) {
-    spacingInput.dataset.bound = "1";
-    let t;
-    const commit = () => {
-      const raw = spacingInput.value.trim();
-      if (!raw) return;
-      const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
-      applyToSelected({ "letter-spacing": px });
-    };
-    spacingInput.addEventListener("input", () => {
-      clearTimeout(t);
-      t = setTimeout(commit, 120);
+  const inp = spacingInput();
+  if (inp && !inp.dataset.bound) {
+    inp.dataset.bound = "1";
+    let timer;
+    const go = () => commitSpacing(inp.value.trim());
+    inp.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(go, 120);
     });
-    spacingInput.addEventListener("change", commit);
-    spacingInput.addEventListener("blur", commit);
-    spacingInput.addEventListener("keydown", (e) => {
+    inp.addEventListener("change", go);
+    inp.addEventListener("blur", go);
+    inp.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        commit();
-        spacingInput.blur();
-      }
-    });
-  }
-
-  if (!section.dataset.closeBound) {
-    section.dataset.closeBound = "1";
-    document.addEventListener("click", (e) => {
-      if (!section.contains(e.target)) {
-        close(weightList);
-        close(spacingDropdown);
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        close(weightList);
-        close(spacingDropdown);
+        go();
+        inp.blur();
       }
     });
   }
