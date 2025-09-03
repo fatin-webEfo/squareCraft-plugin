@@ -38,7 +38,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
           detail: { target: el, style: styleObj },
         })
       );
-    } catch (_) {}
+    } catch (err) {console.error(err);}
   };
 
   const toggleHidden = (el, show) => {
@@ -71,9 +71,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       if (!val) return;
 
       weightLabel.textContent = ` ${val} `;
-
       applyToSelected({ "font-weight": val });
-
       toggleHidden(weightList, false);
     });
   }
