@@ -1,12 +1,11 @@
 export function initHoverTypoAllFontControls(selectedOrGetter) {
   const section = document.getElementById("typo-all-hover-font-section");
-  if (!section || section.dataset.hoverAllFontBound === "1") return;
-  section.dataset.hoverAllFontBound = "1";
+  if (!section) return;
 
-  const getSelectedElement = () =>
+  const getSelectedElement =
     typeof selectedOrGetter === "function"
-      ? selectedOrGetter()
-      : selectedOrGetter;
+      ? selectedOrGetter
+      : () => selectedOrGetter;
 
   const weightButton = document.getElementById(
     "hover-typo-allSelect-font-weight"
@@ -20,73 +19,106 @@ export function initHoverTypoAllFontControls(selectedOrGetter) {
     "hover-typo-allSelect-letter-spacing"
   );
   const spacingInput = section.querySelector(".sc-font-size-input");
-  const spacingDropdown =
-    spacingToggle?.parentElement?.parentElement?.querySelector(".sc-absolute");
+  const spacingWrapper = spacingToggle?.closest(
+    ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
+  );
+  const spacingDropdown = spacingWrapper?.querySelector(
+    ":scope > .sc-absolute"
+  );
 
-  const open = (el) => el && el.classList.remove("sc-hidden");
-  const close = (el) => el && el.classList.add("sc-hidden");
-  const toggle = (el) => el && el.classList.toggle("sc-hidden");
+  if (section.dataset.scBound === "1") return;
+  section.dataset.scBound = "1";
 
-  function applyToSelected(styleObj) {
-    const el = getSelectedElement();
+  const applyToSelected = (styleObj) => {
+    const el = getSelectedElement?.();
     if (!el) return;
-    const setAll = (node) =>
+    const setAll = (node) => {
       Object.entries(styleObj).forEach(([k, v]) =>
         node.style.setProperty(k, v, "important")
       );
+    };
     setAll(el);
     el.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,a").forEach(setAll);
-  }
+  };
+
+  const toggle = (el) => el && el.classList.toggle("sc-hidden");
+  const close = (el) => el && el.classList.add("sc-hidden");
 
   if (weightButton && weightList) {
-    weightButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggle(weightList);
-      if (!weightList.classList.contains("sc-hidden")) close(spacingDropdown);
-    });
-    weightList.addEventListener("click", (e) => {
-      const item = e.target.closest(".sc-dropdown-item");
-      if (!item) return;
-      const val = (item.textContent || "").trim();
-      if (!val) return;
-      if (weightLabel) weightLabel.textContent = ` ${val} `;
-      applyToSelected({ "font-weight": val });
-      close(weightList);
-    });
+    if (!weightButton.dataset.bound) {
+      weightButton.dataset.bound = "1";
+      weightButton.addEventListener(
+        "click",
+        (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          toggle(weightList);
+          close(spacingDropdown);
+        },
+        true
+      );
+    }
+
+    if (!weightList.dataset.bound) {
+      weightList.dataset.bound = "1";
+      weightList.addEventListener(
+        "click",
+        (e) => {
+          const item = e.target.closest(".sc-dropdown-item");
+          if (!item) return;
+          const val = (item.textContent || "").trim();
+          if (!val) return;
+          if (weightLabel) weightLabel.textContent = ` ${val} `;
+          applyToSelected({ "font-weight": val });
+          close(weightList);
+        },
+        true
+      );
+    }
   }
 
   if (spacingToggle && spacingDropdown) {
-    spacingToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggle(spacingDropdown);
-      if (!spacingDropdown.classList.contains("sc-hidden")) close(weightList);
-    });
-    spacingDropdown.addEventListener("click", (e) => {
-      const item = e.target.closest(".sc-dropdown-item");
-      if (!item) return;
-      const raw = (item.dataset.value ?? item.textContent ?? "").trim();
-      if (!raw) return;
-      const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
-      if (spacingInput) spacingInput.value = raw;
-      applyToSelected({ "letter-spacing": px });
-      close(spacingDropdown);
-    });
+    if (!spacingToggle.dataset.bound) {
+      spacingToggle.dataset.bound = "1";
+      spacingToggle.addEventListener(
+        "click",
+        (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          toggle(spacingDropdown);
+          close(weightList);
+        },
+        true
+      );
+    }
+
+    if (!spacingDropdown.dataset.bound) {
+      spacingDropdown.dataset.bound = "1";
+      spacingDropdown.addEventListener(
+        "click",
+        (e) => {
+          const item = e.target.closest(".sc-dropdown-item");
+          if (!item) return;
+          const raw = (item.dataset.value ?? item.textContent ?? "").trim();
+          if (!raw) return;
+          const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
+          if (spacingInput) spacingInput.value = raw;
+          applyToSelected({ "letter-spacing": px });
+          close(spacingDropdown);
+        },
+        true
+      );
+    }
   }
 
-  if (spacingInput) {
-    const toPx = (v) => {
-      const s = String(v ?? "").trim();
-      if (s === "") return "";
-      if (/^-?\d+(\.\d+)?(px)?$/i.test(s))
-        return s.endsWith("px") ? s : `${s}px`;
-      return s;
-    };
+  if (spacingInput && !spacingInput.dataset.bound) {
+    spacingInput.dataset.bound = "1";
     let t;
     const commit = () => {
       const raw = spacingInput.value.trim();
       if (!raw) return;
       const px = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
-      applyToSelected({ "letter-spacing": toPx(px) });
+      applyToSelected({ "letter-spacing": px });
     };
     spacingInput.addEventListener("input", () => {
       clearTimeout(t);
@@ -103,16 +135,19 @@ export function initHoverTypoAllFontControls(selectedOrGetter) {
     });
   }
 
-  document.addEventListener("click", (e) => {
-    if (!section.contains(e.target)) {
-      close(weightList);
-      close(spacingDropdown);
-    }
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      close(weightList);
-      close(spacingDropdown);
-    }
-  });
+  if (!section.dataset.closeBound) {
+    section.dataset.closeBound = "1";
+    document.addEventListener("click", (e) => {
+      if (!section.contains(e.target)) {
+        close(weightList);
+        close(spacingDropdown);
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        close(weightList);
+        close(spacingDropdown);
+      }
+    });
+  }
 }
