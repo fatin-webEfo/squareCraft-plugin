@@ -85,12 +85,7 @@ export function typo_hover_section_dropdown() {
       className: sec.className,
       display: sec.style.display,
     };
-    console.log("[typo_hover_dropdown] show", {
-      id: sec.id,
-      on,
-      before,
-      after,
-    });
+
   };
 
   const arrowSync = (btn, open) => {
@@ -115,12 +110,6 @@ export function typo_hover_section_dropdown() {
     const buttons = Array.from(scope.querySelectorAll(BTN_SEL));
     buttons.forEach((b) => arrowSync(b, b === btn));
 
-    console.log("[typo_hover_dropdown] scope-click", {
-      scopeHint: scope.id || "(anon-scope)",
-      clicked: btn.id,
-      open: guessed?.id,
-      secCount: sections.length,
-    });
 
     queueMicrotask(() => sections.forEach((s) => forceShow(s, s === guessed)));
   };
@@ -145,5 +134,4 @@ export function typo_hover_section_dropdown() {
     if (fontBtn) openInScope(scope, fontBtn);
   });
 
-  console.log("[typo_hover_dropdown] listeners-attached");
 }
