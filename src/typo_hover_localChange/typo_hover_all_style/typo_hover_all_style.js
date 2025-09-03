@@ -8,7 +8,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       ? getSelectedElement
       : () => getSelectedElement;
 
-      
   function ensureId(el) {
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
