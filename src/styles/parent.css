@@ -415,6 +415,9 @@
 .sc-border-3d3d3d {
   border-color: #3d3d3d !important;
 }
+.sc-items-end{
+  align-items: end !important;
+}
 
 .sc-cursor-pointer {
   cursor: pointer !important;
