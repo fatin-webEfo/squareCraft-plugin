@@ -1,13 +1,7 @@
 export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
   return `
     <div class="sc-mt-2 sc-text-color-white">
-         <div class="sc-flex sc-justify-end sc-items-end ">
-     <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
-        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
-        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
-    </div>
-   </div>
-   <div id="typo-all-hover-font-button" class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-mt-2 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
+   <div id="typo-all-hover-font-button" class="sc-bg-3f3f3f sc-relative sc-z-99999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1  sc-rounded-4px">
      <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="" alt="">
    </div>
@@ -15,6 +9,12 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
 
 
 <div id="typo-all-hover-font-section">
+   <div class="sc-flex sc-justify-end sc-items-end sc-mt-2">
+     <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
+    </div>
+   </div>
 
 
    <div  class="sc-mt-2 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
