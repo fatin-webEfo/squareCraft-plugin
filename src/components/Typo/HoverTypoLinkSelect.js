@@ -146,12 +146,10 @@ export function HoverTypoLinkSelect(LetterSpacing) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="sc-items-center sc-gap-2 sc-mt-3 sc-flex">
+               <div class="sc-items-center sc-col-span-7 sc-gap-2 sc-mt-3 sc-flex">
               <div class=" ">
                 <p
-                  class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"
-                >
+                  class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
                   Background Color
                 </p>
                 <div class="sc-col-span-5 sc-mt-2 sc-z-99999 sc-relative">
@@ -268,6 +266,8 @@ export function HoverTypoLinkSelect(LetterSpacing) {
                 </div>
               </div>
             </div>
+            </div>
+           
 
 
 
@@ -611,7 +611,7 @@ export function HoverTypoLinkSelect(LetterSpacing) {
 
           </div>
        </div>
-       <div  id="typo-link-hover-effects-button"
+       <div id="typo-link-hover-effects-button"
           class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-items-center sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
           <p class="sc-roboto  sc-universal sc-font-size-14">Text Effect</p>
          <span  class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
