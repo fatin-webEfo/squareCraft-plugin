@@ -125,6 +125,7 @@ export function typo_hover_section_dropdown() {
     queueMicrotask(() => sections.forEach((s) => forceShow(s, s === guessed)));
   };
 
+  // Click handling (capture so it wins over inner handlers)
   root.addEventListener(
     "click",
     (e) => {
@@ -136,10 +137,14 @@ export function typo_hover_section_dropdown() {
     true
   );
 
-  Array.from(root.querySelectorAll(BTN_SEL)).forEach((btn) => {
-    const scope = findScope(btn);
-    const firstBtn = scope.querySelector("#typo-all-hover-font-button") || btn;
-    if (btn === firstBtn) openInScope(scope, firstBtn);
+  // ✅ Open the "Font" section by default in EACH scope (All/Bold/Italic/Link)
+  const allButtons = Array.from(root.querySelectorAll(BTN_SEL));
+  const scopes = Array.from(new Set(allButtons.map((b) => findScope(b))));
+  scopes.forEach((scope) => {
+    const fontBtn =
+      scope.querySelector('[id$="-hover-font-button"]') ||
+      scope.querySelector(BTN_SEL); // fallback
+    if (fontBtn) openInScope(scope, fontBtn);
   });
 
   console.log("[typo_hover_dropdown] listeners-attached");
