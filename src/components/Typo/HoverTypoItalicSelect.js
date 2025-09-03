@@ -9,7 +9,7 @@ export function HoverTypoItalicSelect(LetterSpacing) {
                class="" alt="">  
          </div>
             <div id="typo-italic-hover-font-section"
-              class="sc-mt-3 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
+              class="sc-mt-2 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
               <div class="sc-col-span-7">
                 <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
                   Font weight
