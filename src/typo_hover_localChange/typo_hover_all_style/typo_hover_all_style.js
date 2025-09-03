@@ -1,53 +1,59 @@
-
 export function initHoverTypoAllFontControls(getSelectedElement) {
   const section = document.getElementById("typo-all-hover-font-section");
   if (!section || section.dataset.hoverAllFontBound === "1") return;
   section.dataset.hoverAllFontBound = "1";
 
+  // ---- selectors ----
   const weightButton = section.querySelector(
     "#hover-typo-allSelect-font-weight"
   );
   const weightList = section.querySelector(
     "#hover-typo-allSelect-font-weight-list"
   );
-  const weightLabel = weightButton?.querySelector("p"); 
+  const weightLabel = weightButton?.querySelector("p");
 
-  const spacingWrapper = section.querySelector(
+  // Outer container (has sc-relative); dropdown lives here
+  const spacingContainer = section.querySelector(
+    ".sc-flex.sc-text-color-white.sc-mt-2.sc-rounded-4px.sc-relative.sc-border.sc-border-solid.sc-border-585858.sc-items-center"
+  );
+  // Inner wrapper that holds input + icon
+  const spacingWrapper = spacingContainer?.querySelector(
     ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
   );
   const spacingInput = spacingWrapper?.querySelector(".sc-font-size-input");
   const spacingToggle = spacingWrapper?.querySelector(
     "#hover-typo-allSelect-letter-spacing"
   );
-  const spacingDropdown =
-    spacingWrapper?.querySelector(":scope > .sc-absolute") ||
-    spacingWrapper?.querySelector(".sc-absolute");
+  const spacingDropdown = spacingContainer?.querySelector(".sc-absolute"); // <- correct scope
+
+  // Accept a getter OR a raw element
+  const resolveSelected = () =>
+    typeof getSelectedElement === "function"
+      ? getSelectedElement()
+      : getSelectedElement;
 
   const applyToSelected = (styleObj) => {
-    const el = getSelectedElement?.();
+    const el = resolveSelected();
     if (!el) return;
-
     Object.entries(styleObj).forEach(([k, v]) => {
-      if (v === undefined || v === null || v === "") return;
-      el.style.setProperty(k, v, "important");
+      if (v !== undefined && v !== null && v !== "")
+        el.style.setProperty(k, v, "important");
     });
-
     try {
       document.dispatchEvent(
         new CustomEvent("typo:hover-all:update", {
           detail: { target: el, style: styleObj },
         })
       );
-    } catch (err) {console.error(err);}
+    } catch {}
   };
 
   const toggleHidden = (el, show) => {
     if (!el) return;
-    if (show === undefined) {
-      el.classList.toggle("sc-hidden");
-    } else {
-      el.classList.toggle("sc-hidden", !show);
-    }
+    el.classList.toggle(
+      "sc-hidden",
+      show === undefined ? !el.classList.contains("sc-hidden") : !show
+    );
   };
 
   const closeAllDropdowns = (exceptEl) => {
@@ -56,6 +62,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     });
   };
 
+  // --- Font weight ---
   if (weightButton && weightList && weightLabel) {
     weightButton.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -69,39 +76,34 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       if (!item) return;
       const val = (item.textContent || "").trim();
       if (!val) return;
-
       weightLabel.textContent = ` ${val} `;
       applyToSelected({ "font-weight": val });
       toggleHidden(weightList, false);
     });
   }
 
-
+  // --- Font spacing (input) ---
   if (spacingInput) {
     const toPx = (v) => {
-      if (v == null) return "";
-      const s = String(v).trim();
+      const s = String(v ?? "").trim();
       if (s === "") return "";
       if (/^-?\d+(\.\d+)?px$/i.test(s)) return s;
       if (/^-?\d+(\.\d+)?$/.test(s)) return `${s}px`;
-      return s;
+      return s; // let weird values pass through unchanged
     };
 
-    let typingTimer;
-    const COMMIT_DELAY = 120;
-
+    let t;
     const commit = () => {
-      const px = toPx(spacingInput.value);
-      if (/^-?\d+(\.\d+)?(px)?$/i.test(spacingInput.value.trim())) {
-        applyToSelected({ "letter-spacing": px });
-      }
+      const raw = spacingInput.value.trim();
+      if (!raw) return;
+      if (!/^-?\d+(\.\d+)?(px)?$/i.test(raw)) return;
+      applyToSelected({ "letter-spacing": toPx(raw) });
     };
 
     spacingInput.addEventListener("input", () => {
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(commit, COMMIT_DELAY);
+      clearTimeout(t);
+      t = setTimeout(commit, 120);
     });
-
     spacingInput.addEventListener("change", commit);
     spacingInput.addEventListener("blur", commit);
     spacingInput.addEventListener("keydown", (e) => {
@@ -113,6 +115,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     });
   }
 
+  // --- Font spacing (presets dropdown) ---
   if (spacingToggle && spacingDropdown) {
     spacingToggle.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -129,14 +132,12 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       if (spacingInput) spacingInput.value = val;
       const px = /^\-?\d+(\.\d+)?$/.test(val) ? `${val}px` : val;
       applyToSelected({ "letter-spacing": px });
-
       toggleHidden(spacingDropdown, false);
     });
   }
 
+  // Close when clicking outside this section
   document.addEventListener("click", (e) => {
-    if (!section.contains(e.target)) {
-      closeAllDropdowns(null);
-    }
+    if (!section.contains(e.target)) closeAllDropdowns(null);
   });
 }
