@@ -6,23 +6,27 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     typeof getSelectedElement === "function"
       ? getSelectedElement
       : () => getSelectedElement;
+  const root = document.getElementById("sc-widget-container") || document;
 
-  const q = (s, r = document) => r.querySelector(s);
-  const weightBtn = () => q("#hover-typo-allSelect-font-weight");
-  const weightList = () => q("#hover-typo-allSelect-font-weight-list");
-  const weightLabel = () => weightBtn()?.querySelector("p");
-  const spacingBtn = () => q("#hover-typo-allSelect-letter-spacing");
-  const spacingInput = () =>
-    q("#typo-all-hover-font-section .sc-font-size-input");
-  const spacingList = () => {
-    const wrap = spacingBtn()?.closest(
-      ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
-    );
-    return wrap?.querySelector(".sc-absolute");
-  };
+  const weightBtn = root.querySelector("#hover-typo-allSelect-font-weight");
+  const weightList = root.querySelector(
+    "#hover-typo-allSelect-font-weight-list"
+  );
+  const weightLabel = weightBtn?.querySelector("p");
 
+  const spacingBtn = root.querySelector("#hover-typo-allSelect-letter-spacing");
+  const spacingWrap = spacingBtn?.closest(
+    ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
+  );
+  const spacingList = spacingWrap?.querySelector(".sc-absolute");
+  const spacingInput = root.querySelector(
+    "#typo-all-hover-font-section .sc-font-size-input"
+  );
+
+  const show = (el) => el && el.classList.remove("sc-hidden");
   const hide = (el) => el && el.classList.add("sc-hidden");
   const toggle = (el) => el && el.classList.toggle("sc-hidden");
+
   const apply = (styles) => {
     const el = sel?.();
     if (!el) return;
@@ -34,81 +38,103 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     el.querySelectorAll("h1,h2,h3,h4,h5,h6,p,span,a").forEach(put);
   };
 
-  const commitSpacing = (raw) => {
-    if (!raw) return;
-    const val = /^\-?\d+(\.\d+)?$/.test(raw) ? `${raw}px` : raw;
+  const commitSpacing = (v) => {
+    if (v == null) return;
+    const val = /^\-?\d+(\.\d+)?$/.test(String(v).trim())
+      ? `${String(v).trim()}px`
+      : String(v).trim();
     apply({ "letter-spacing": val });
   };
 
-  document.addEventListener(
-    "click",
+  weightBtn?.addEventListener(
+    "mousedown",
     (e) => {
-      const t = e.target;
-
-      if (t.closest("#hover-typo-allSelect-font-weight")) {
-        toggle(weightList());
-        hide(spacingList());
-        return;
-      }
-
-      if (t.closest("#hover-typo-allSelect-letter-spacing")) {
-        toggle(spacingList());
-        hide(weightList());
-        return;
-      }
-
-      const wItem = t.closest(
-        "#hover-typo-allSelect-font-weight-list .sc-dropdown-item"
-      );
-      if (wItem) {
-        const v = (wItem.textContent || "").trim();
-        if (weightLabel()) weightLabel().textContent = ` ${v} `;
-        apply({ "font-weight": v });
-        hide(weightList());
-        return;
-      }
-
-      const sItem =
-        (spacingList() &&
-          t.closest(
-            `#${spacingList().id ? spacingList().id : ""} .sc-dropdown-item`
-          )) ||
-        (spacingList() &&
-          spacingList().contains(t) &&
-          t.closest(".sc-dropdown-item"));
-      if (sItem) {
-        const v = (sItem.dataset.value ?? sItem.textContent ?? "").trim();
-        if (spacingInput()) spacingInput().value = v;
-        commitSpacing(v);
-        hide(spacingList());
-        return;
-      }
-
-      if (!t.closest("#typo-all-hover-font-section")) {
-        hide(weightList());
-        hide(spacingList());
-      }
+      e.preventDefault();
+      e.stopPropagation();
+      toggle(weightList);
+      hide(spacingList);
     },
     true
   );
 
-  const inp = spacingInput();
-  if (inp && !inp.dataset.bound) {
-    inp.dataset.bound = "1";
-    let timer;
-    const go = () => commitSpacing(inp.value.trim());
-    inp.addEventListener("input", () => {
-      clearTimeout(timer);
-      timer = setTimeout(go, 120);
+  spacingBtn?.addEventListener(
+    "mousedown",
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggle(spacingList);
+      hide(weightList);
+    },
+    true
+  );
+
+  root.addEventListener(
+    "mousedown",
+    (e) => {
+      if (
+        weightList &&
+        !weightBtn.contains(e.target) &&
+        !weightList.contains(e.target)
+      )
+        hide(weightList);
+      if (
+        spacingList &&
+        !spacingBtn.contains(e.target) &&
+        !spacingList.contains(e.target)
+      )
+        hide(spacingList);
+    },
+    true
+  );
+
+  weightList?.addEventListener(
+    "mousedown",
+    (e) => {
+      const item = e.target.closest(".sc-dropdown-item");
+      if (!item) return;
+      const v = (item.textContent || "").trim();
+      if (weightLabel) weightLabel.textContent = ` ${v} `;
+      apply({ "font-weight": v });
+      hide(weightList);
+      e.stopPropagation();
+    },
+    true
+  );
+
+  spacingList?.addEventListener(
+    "mousedown",
+    (e) => {
+      const item = e.target.closest(".sc-dropdown-item");
+      if (!item) return;
+      const v = (item.dataset.value ?? item.textContent ?? "").trim();
+      if (spacingInput) spacingInput.value = v;
+      commitSpacing(v);
+      hide(spacingList);
+      e.stopPropagation();
+    },
+    true
+  );
+
+  if (spacingInput && !spacingInput.dataset.bound) {
+    spacingInput.dataset.bound = "1";
+    let t;
+    const go = () => commitSpacing(spacingInput.value);
+    spacingInput.addEventListener("input", () => {
+      clearTimeout(t);
+      t = setTimeout(go, 100);
     });
-    inp.addEventListener("change", go);
-    inp.addEventListener("blur", go);
-    inp.addEventListener("keydown", (e) => {
+    spacingInput.addEventListener("change", go);
+    spacingInput.addEventListener("blur", go);
+    spacingInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         go();
-        inp.blur();
+        spacingInput.blur();
       }
     });
   }
+
+  show(weightBtn);
+  hide(weightList);
+  hide(spacingList);
 }

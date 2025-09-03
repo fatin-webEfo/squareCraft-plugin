@@ -7,7 +7,6 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
    </div>
   
 
-
 <div id="typo-all-hover-font-section">
    <div class="sc-flex sc-justify-end sc-items-end sc-mt-2">
      <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
