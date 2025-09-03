@@ -146,8 +146,7 @@ export function HoverTypoBoldSelect(LetterSpacing) {
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="sc-items-center sc-gap-2 sc-mt-3 sc-flex">
+                <div class="sc-items-center sc-col-span-7 sc-gap-2 sc-mt-3 sc-flex">
               <div class=" ">
                 <p
                   class="sc-font-size-11 sc-font-thin sc-mt-2 sc-universal sc-text-gray-300 sc-roboto"
@@ -242,8 +241,7 @@ export function HoverTypoBoldSelect(LetterSpacing) {
                         Select
                       </p>
                       <p
-                        class="sc-font-size-12 sc-roboto sc-font-light sc-universal"
-                      >
+                        class="sc-font-size-12 sc-roboto sc-font-light sc-universal">
                         100%
                       </p>
                     </div>
@@ -252,8 +250,7 @@ export function HoverTypoBoldSelect(LetterSpacing) {
               </div>
               <div class=" ">
                 <p
-                  class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"
-                >
+                  class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto">
                   Text Color
                 </p>
                 <div
@@ -268,6 +265,10 @@ export function HoverTypoBoldSelect(LetterSpacing) {
                 </div>
               </div>
             </div>
+            </div>
+
+
+          
 
 
 
