@@ -5,11 +5,19 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <p class="sc-roboto sc-font-size-14 sc-universal ">Font</p>
      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="" alt="">
    </div>
-    <div class="sc-flex sc-cursor-pointer sc-items-end sc-justify-end sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+  
+
+
+<div id="typo-all-hover-font-section">
+   <div class="sc-flex sc-justify-end sc-items-end">
+     <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
         <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
     </div>
-   <div id="typo-all-hover-font-section" class="sc-mt-2 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
+   </div>
+
+
+   <div  class="sc-mt-2 sc-relative sc-grid sc-grid-cols-12 sc-gap-8px">
      <div class="sc-col-span-7">
        <p class="sc-font-size-11 sc-font-thin sc-mt-4 sc-universal sc-text-gray-300 sc-roboto"> Font weight </p>
        <div id="hover-typo-allSelect-font-weight" class="sc-flex sc-bg-494949 sc-pl-2 sc-col-span-7 sc-mt-2 sc-cursor-pointer sc-justify-between sc-border sc-border-solid sc-border-585858 sc-rounded-4px sc-items-center">
@@ -107,6 +115,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      </div>
    </div>
    </div>
+</div>
  
    <div>
      <div id="typo-all-hover-border-button" class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
