@@ -117,7 +117,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        <div class=" sc-flex sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border </p>
-           <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+           
              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
            </div>
          </div>
@@ -211,7 +211,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
          <div class="  sc-flex sc-items-center sc-justify-between">
            <div class="sc-flex sc-gap-2 sc-items-center">
              <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border radius </p>
-             <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+             
                <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
              </div>
            </div>
@@ -237,7 +237,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
    <div id="typo-all-hover-shadow-section" class="sc-hidden">
      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
        <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow </p>
-       <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+       
          <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
        </div>
      </div>
@@ -286,7 +286,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        <div class="  sc-flex sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Blur </p>
-           <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+           
              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
            </div>
          </div>
@@ -306,7 +306,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        <div class="  sc-flex sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Spread </p>
-           <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+           
              <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
            </div>
          </div>
@@ -421,7 +421,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <div class=" sc-mt-3 sc-flex sc-items-center sc-justify-between">
        <div class="sc-flex sc-gap-2 sc-items-center">
          <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Transform Position </p>
-         <div class="sc-flex sc-cursor-pointer sc-gradiant-border sc-items-center sc-rounded-15px sc-gap-1 sc-p-1_5  sc-bg sc-bg-454545">
+         
            <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/reset.svg" width="10" alt="reset">
          </div>
        </div>
