@@ -125,7 +125,6 @@ export function typo_hover_section_dropdown() {
     queueMicrotask(() => sections.forEach((s) => forceShow(s, s === guessed)));
   };
 
-  // Click handling (capture so it wins over inner handlers)
   root.addEventListener(
     "click",
     (e) => {
@@ -137,7 +136,6 @@ export function typo_hover_section_dropdown() {
     true
   );
 
-  // ✅ Open the "Font" section by default in EACH scope (All/Bold/Italic/Link)
   const allButtons = Array.from(root.querySelectorAll(BTN_SEL));
   const scopes = Array.from(new Set(allButtons.map((b) => findScope(b))));
   scopes.forEach((scope) => {
