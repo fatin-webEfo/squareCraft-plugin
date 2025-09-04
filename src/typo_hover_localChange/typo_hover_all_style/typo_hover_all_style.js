@@ -1,13 +1,11 @@
 export function initHoverTypoAllFontControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBound === "1") return;
   document.body.dataset.scHoverTypoAllBound = "1";
-
   const root = document.getElementById("sc-widget-container") || document;
   const sel =
     typeof getSelectedElement === "function"
       ? getSelectedElement
       : () => getSelectedElement;
-
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
     heading2: "h2",
@@ -56,12 +54,10 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     const val = /^\-?\d+(\.\d+)?$/.test(s) ? `${s}px` : s;
     writeExternal({ "letter-spacing": val });
   }
-
   const weightBtnSel = "#hover-typo-allSelect-font-weight";
   const weightListSel = "#hover-typo-allSelect-font-weight-list";
   const spacingBtnSel = "#hover-typo-allSelect-letter-spacing";
   const spacingInputSel = "#typo-all-hover-font-section .sc-font-size-input";
-
   function el(s) {
     return root.querySelector(s);
   }
@@ -77,29 +73,30 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     if (!elm) return;
     elm.classList.toggle("sc-hidden");
   }
-
-  function currentWeightList() {
-    return el(weightListSel);
+  function scopeOf(base) {
+    return base?.closest?.("[data-hover-typo-all]") || root;
   }
-  function currentWeightBtn() {
-    return el(weightBtnSel);
+  function currentWeightList(base) {
+    return scopeOf(base).querySelector(weightListSel);
   }
-  function currentSpacingBtn() {
-    return el(spacingBtnSel);
+  function currentWeightBtn(base) {
+    return scopeOf(base).querySelector(weightBtnSel);
   }
-  function currentSpacingWrap() {
-    const b = currentSpacingBtn();
+  function currentSpacingBtn(base) {
+    return scopeOf(base).querySelector(spacingBtnSel);
+  }
+  function currentSpacingWrap(base) {
+    const b = currentSpacingBtn(base);
     return b?.closest(
       ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
     );
   }
-  function currentSpacingList() {
-    return currentSpacingWrap()?.querySelector(".sc-absolute");
+  function currentSpacingList(base) {
+    return currentSpacingWrap(base)?.querySelector(".sc-absolute");
   }
-  function currentSpacingInput() {
-    return el(spacingInputSel);
+  function currentSpacingInput(base) {
+    return scopeOf(base).querySelector(spacingInputSel);
   }
-
   root.addEventListener(
     "pointerdown",
     (e) => {
@@ -108,14 +105,15 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        toggle(currentWeightList());
+        const list = currentWeightList(wb);
+        toggle(list);
         const arrow = wb.querySelector("img,svg");
         if (arrow)
           arrow.classList.toggle(
             "sc-rotate-180",
-            !currentWeightList()?.classList.contains("sc-hidden")
+            !list?.classList.contains("sc-hidden")
           );
-        hide(currentSpacingList());
+        hide(currentSpacingList(wb));
         return;
       }
       const wi = e.target.closest(`${weightListSel} .sc-dropdown-item`);
@@ -123,12 +121,13 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
+        const btn = currentWeightBtn(wi);
         const v = (wi.textContent || "").trim();
-        const lbl = currentWeightBtn()?.querySelector("p");
+        const lbl = btn?.querySelector("p");
         if (lbl) lbl.textContent = ` ${v} `;
         commitWeight(v);
-        hide(currentWeightList());
-        const arrow = currentWeightBtn()?.querySelector("img,svg");
+        hide(currentWeightList(wi));
+        const arrow = btn?.querySelector("img,svg");
         if (arrow) arrow.classList.add("sc-rotate-180");
         return;
       }
@@ -137,47 +136,37 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        toggle(currentSpacingList());
-        hide(currentWeightList());
+        toggle(currentSpacingList(sb));
+        hide(currentWeightList(sb));
         return;
       }
-      const sl = currentSpacingList();
-      const si =
-        (sl &&
-          e.target.closest(
-            `.${sl.classList[0]}.sc-dropdown-item, #${
-              sl.id || ""
-            } .sc-dropdown-item`
-          )) ||
-        e.target.closest(".sc-dropdown-item");
+      const sl = currentSpacingList(e.target);
+      const si = sl
+        ? e.target.closest(
+            `#${sl.id || ""} .sc-dropdown-item, .sc-dropdown-item`
+          )
+        : null;
       if (sl && si && sl.contains(si)) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         const v = (si.dataset.value ?? si.textContent ?? "").trim();
-        const inp = currentSpacingInput();
+        const inp = currentSpacingInput(si);
         if (inp) inp.value = v;
         commitLetterSpacing(v);
         hide(sl);
         return;
       }
-      if (
-        currentWeightList() &&
-        !currentWeightList().contains(e.target) &&
-        !currentWeightBtn()?.contains(e.target)
-      )
-        hide(currentWeightList());
-      if (
-        currentSpacingList() &&
-        !currentSpacingList().contains(e.target) &&
-        !currentSpacingBtn()?.contains(e.target)
-      )
-        hide(currentSpacingList());
+      const wl = currentWeightList(e.target);
+      const wb2 = currentWeightBtn(e.target);
+      if (wl && !wl.contains(e.target) && !wb2?.contains(e.target)) hide(wl);
+      const sl2 = currentSpacingList(e.target);
+      const sb2 = currentSpacingBtn(e.target);
+      if (sl2 && !sl2.contains(e.target) && !sb2?.contains(e.target)) hide(sl2);
     },
     true
   );
-
-  const inp = currentSpacingInput();
+  const inp = currentSpacingInput(root);
   if (inp && !inp.dataset.bound) {
     inp.dataset.bound = "1";
     let t;
@@ -196,7 +185,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       }
     });
   }
-
-  hide(currentWeightList());
-  hide(currentSpacingList());
+  hide(currentWeightList(root));
+  hide(currentSpacingList(root));
 }
