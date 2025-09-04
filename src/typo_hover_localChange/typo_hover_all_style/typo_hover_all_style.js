@@ -1,11 +1,24 @@
 export function initHoverTypoAllFontControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBound === "1") return;
+  if (document.body.dataset.scHoverTypoAllBound === "1") {
+    console.warn("[hover-typo-all] already bound, skipping");
+    return;
+  }
   document.body.dataset.scHoverTypoAllBound = "1";
+
+  const log = (...a) => console.log("[hover-typo-all]", ...a);
+
   const root = document.getElementById("sc-widget-container") || document;
   const sel =
     typeof getSelectedElement === "function"
       ? getSelectedElement
       : () => getSelectedElement;
+
+  log("init", {
+    hasRoot: !!root,
+    rootId: root.id,
+    selType: typeof getSelectedElement,
+  });
+
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
     heading2: "h2",
@@ -15,6 +28,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
     paragraph3: "p.sqsrte-small",
   };
+
   function ensureId(el) {
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
@@ -26,7 +40,10 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   }
   function writeExternal(styles) {
     const host = sel?.();
-    if (!host) return;
+    if (!host) {
+      log("writeExternal: no host element");
+      return;
+    }
     const id = ensureId(host);
     const tagId = `style-${id}`;
     let tag = document.getElementById(tagId);
@@ -34,6 +51,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       tag = document.createElement("style");
       tag.id = tagId;
       document.head.appendChild(tag);
+      log("created style tag", { tagId });
     }
     const bag = (window.__sc_extcss ||= {});
     bag[id] = Object.assign({}, bag[id] || {}, styles);
@@ -41,25 +59,41 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       .map(([k, v]) => `${k}: ${v} !important;`)
       .join(" ");
     tag.textContent = `${allTypeSelectors(id).join(", ")} { ${body} }`;
+    log("applied styles", { id, styles: bag[id] });
   }
   function commitWeight(v) {
     const val = String(v || "").trim();
-    if (!val) return;
+    if (!val) {
+      log("commitWeight: empty");
+      return;
+    }
+    log("commitWeight", val);
     writeExternal({ "font-weight": val });
   }
   function commitLetterSpacing(raw) {
-    if (raw == null) return;
+    if (raw == null) {
+      log("commitLetterSpacing: null");
+      return;
+    }
     const s = String(raw).trim();
-    if (!s) return;
+    if (!s) {
+      log("commitLetterSpacing: empty");
+      return;
+    }
     const val = /^\-?\d+(\.\d+)?$/.test(s) ? `${s}px` : s;
+    log("commitLetterSpacing", { raw, val });
     writeExternal({ "letter-spacing": val });
   }
+
   const weightBtnSel = "#hover-typo-allSelect-font-weight";
   const weightListSel = "#hover-typo-allSelect-font-weight-list";
   const spacingBtnSel = "#hover-typo-allSelect-letter-spacing";
   const spacingInputSel = "#typo-all-hover-font-section .sc-font-size-input";
-  function el(s) {
-    return root.querySelector(s);
+  const panelSel = "#typo-all-hover-font-section";
+
+  function el(s, scope = root) {
+    const n = scope.querySelector(s);
+    return n;
   }
   function show(elm) {
     if (elm && elm.classList.contains("sc-hidden"))
@@ -73,122 +107,180 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     if (!elm) return;
     elm.classList.toggle("sc-hidden");
   }
-  function currentWeightList() {
-    return el(weightListSel);
+
+  function listWithin(target) {
+    const panel = target.closest(panelSel) || root;
+    const n = el(weightListSel, panel);
+    log("listWithin", { found: !!n });
+    return n;
   }
-  function currentWeightBtn() {
-    return el(weightBtnSel);
+  function btnWithin(target) {
+    const panel = target.closest(panelSel) || root;
+    const n = el(weightBtnSel, panel);
+    log("btnWithin", { found: !!n });
+    return n;
   }
-  function currentSpacingBtn() {
-    return el(spacingBtnSel);
+  function spacingBtnWithin(target) {
+    const panel = target.closest(panelSel) || root;
+    const n = el(spacingBtnSel, panel);
+    log("spacingBtnWithin", { found: !!n });
+    return n;
   }
-  function currentSpacingWrap() {
-    const b = currentSpacingBtn();
-    return b?.closest(
-      ".sc-flex.sc-text-color-white.sc-justify-between.sc-col-span-4.sc-rounded-4px.sc-items-center"
+  function spacingListWithin(target) {
+    const panel = target.closest(panelSel) || root;
+    const wrap = spacingBtnWithin(target)?.closest(
+      ".sc-flex.sc-text-color-white.sc-mt-2.sc-rounded-4px.sc-relative.sc-border.sc-border-solid.sc-border-585858.sc-items-center"
     );
+    const n = wrap ? wrap.querySelector(".sc-absolute") : null;
+    log("spacingListWithin", { found: !!n });
+    return n;
   }
-  function currentSpacingList() {
-    return currentSpacingWrap()?.querySelector(".sc-absolute");
+  function spacingInputWithin(target) {
+    const panel = target.closest(panelSel) || root;
+    const n = el(spacingInputSel, panel);
+    log("spacingInputWithin", { found: !!n });
+    return n;
   }
-  function currentSpacingInput() {
-    return el(spacingInputSel);
+  function hideAllOpenLists(except) {
+    root.querySelectorAll(`${weightListSel}:not(.sc-hidden)`).forEach((n) => {
+      if (!except || !n.contains(except)) {
+        hide(n);
+        log("hide weight list");
+      }
+    });
+    root
+      .querySelectorAll(`${panelSel} .sc-absolute:not(.sc-hidden)`)
+      .forEach((n) => {
+        if (!except || !n.contains(except)) {
+          hide(n);
+          log("hide spacing list");
+        }
+      });
   }
+
   root.addEventListener(
     "pointerdown",
     (e) => {
+      log("pointerdown", { target: e.target });
+
       const wb = e.target.closest(weightBtnSel);
       if (wb) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        toggle(currentWeightList());
+        const list = listWithin(wb);
+        toggle(list);
+        log("toggle weight list", {
+          visible: list && !list.classList.contains("sc-hidden"),
+        });
         const arrow = wb.querySelector("img,svg");
         if (arrow)
           arrow.classList.toggle(
             "sc-rotate-180",
-            !currentWeightList()?.classList.contains("sc-hidden")
+            !list?.classList.contains("sc-hidden")
           );
-        hide(currentSpacingList());
+        const sl = spacingListWithin(wb);
+        hide(sl);
         return;
       }
+
       const wi = e.target.closest(`${weightListSel} .sc-dropdown-item`);
       if (wi) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
+        const panel = wi.closest(panelSel) || root;
         const v = (wi.textContent || "").trim();
-        const lbl = currentWeightBtn()?.querySelector("p");
+        const btn = el(weightBtnSel, panel);
+        const lbl = btn?.querySelector("p");
         if (lbl) lbl.textContent = ` ${v} `;
         commitWeight(v);
-        hide(currentWeightList());
-        const arrow = currentWeightBtn()?.querySelector("img,svg");
+        const list = el(weightListSel, panel);
+        hide(list);
+        const arrow = btn?.querySelector("img,svg");
         if (arrow) arrow.classList.add("sc-rotate-180");
+        log("selected weight", v);
         return;
       }
+
       const sb = e.target.closest(spacingBtnSel);
       if (sb) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        toggle(currentSpacingList());
-        hide(currentWeightList());
+        const sl = spacingListWithin(sb);
+        toggle(sl);
+        log("toggle spacing list", {
+          visible: sl && !sl.classList.contains("sc-hidden"),
+        });
+        const wl = listWithin(sb);
+        hide(wl);
         return;
       }
-      const sl = currentSpacingList();
-      const si =
-        (sl &&
-          e.target.closest(
-            `.${sl.classList[0]}.sc-dropdown-item, #${
-              sl.id || ""
-            } .sc-dropdown-item`
-          )) ||
-        e.target.closest(".sc-dropdown-item");
+
+      const sl = spacingListWithin(e.target);
+      const si = e.target.closest(".sc-dropdown-item");
       if (sl && si && sl.contains(si)) {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         const v = (si.dataset.value ?? si.textContent ?? "").trim();
-        const inp = currentSpacingInput();
+        const inp = spacingInputWithin(si);
         if (inp) inp.value = v;
         commitLetterSpacing(v);
         hide(sl);
+        log("selected letter-spacing", v);
         return;
       }
-      if (
-        currentWeightList() &&
-        !currentWeightList().contains(e.target) &&
-        !currentWeightBtn()?.contains(e.target)
-      )
-        hide(currentWeightList());
-      if (
-        currentSpacingList() &&
-        !currentSpacingList().contains(e.target) &&
-        !currentSpacingBtn()?.contains(e.target)
-      )
-        hide(currentSpacingList());
+
+      const insideWeight =
+        e.target.closest(weightListSel) || e.target.closest(weightBtnSel);
+      const insideSpacing =
+        e.target.closest(spacingBtnSel) || (sl && sl.contains(e.target));
+      if (!insideWeight && !insideSpacing) {
+        log("click outside, hide all lists");
+        hideAllOpenLists(null);
+      }
     },
     true
   );
-  const inp = currentSpacingInput();
-  if (inp && !inp.dataset.bound) {
-    inp.dataset.bound = "1";
-    let t;
-    const go = () => commitLetterSpacing(inp.value);
-    inp.addEventListener("input", () => {
-      clearTimeout(t);
-      t = setTimeout(go, 120);
+
+  const initPanels = root.querySelectorAll(panelSel);
+  log("panels found", initPanels.length);
+  initPanels.forEach((panel, i) => {
+    const inp = el(spacingInputSel, panel);
+    if (inp && !inp.dataset.bound) {
+      inp.dataset.bound = "1";
+      let t;
+      const go = () => {
+        log("input commit letter-spacing", inp.value);
+        commitLetterSpacing(inp.value);
+      };
+      inp.addEventListener("input", () => {
+        clearTimeout(t);
+        t = setTimeout(go, 120);
+      });
+      inp.addEventListener("change", go);
+      inp.addEventListener("blur", go);
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          go();
+          inp.blur();
+        }
+      });
+    } else {
+      log("no spacing input in panel", i);
+    }
+    const wList = el(weightListSel, panel);
+    hide(wList);
+    const sList = panel.querySelector(".sc-absolute");
+    hide(sList);
+    log("lists hidden initially", {
+      hasWeightList: !!wList,
+      hasSpacingList: !!sList,
     });
-    inp.addEventListener("change", go);
-    inp.addEventListener("blur", go);
-    inp.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        go();
-        inp.blur();
-      }
-    });
-  }
-  hide(currentWeightList());
-  hide(currentSpacingList());
+  });
+
+  log("ready");
 }
