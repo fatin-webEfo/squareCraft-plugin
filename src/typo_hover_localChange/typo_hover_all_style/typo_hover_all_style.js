@@ -66,7 +66,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       document.head.appendChild(tag);
       log("created style tag", { tagId });
     }
-    // avoid ||= for wider compatibility
     window.__sc_extcss_hover = window.__sc_extcss_hover || {};
     const bag = window.__sc_extcss_hover;
     bag[id] = Object.assign({}, bag[id] || {}, styles);
