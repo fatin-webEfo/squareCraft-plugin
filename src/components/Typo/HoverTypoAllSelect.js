@@ -342,7 +342,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <p class="sc-roboto  sc-universal sc-font-size-14">Text Effect</p>
      <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
    </div>
-   <div id="typo-all-hover-effects-section" class="sc-mt-4 sc-hidden">
+   <div id="typo-all-hover-effects-section" class="sc-mt-4 sc-pb-2   sc-hidden">
      <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
            <p class=" sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal  sc-roboto"> Text Effect  </p>
 
