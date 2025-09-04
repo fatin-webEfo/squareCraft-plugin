@@ -237,7 +237,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
              <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
                <span class="sc-arrow-placeholder"></span>
                <span class="sc-arrow-placeholder sc-rotate-180"></span>
-             </div>
+             </div>   
            </div>
          </div>
          <div class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
