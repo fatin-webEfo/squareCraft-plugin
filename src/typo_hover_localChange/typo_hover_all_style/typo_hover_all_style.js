@@ -33,11 +33,24 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
   }
-  function allTypeSelectors(scopeId) {
-    const base = Object.values(TYPE_TO_SELECTOR).map((s) => `#${scopeId} ${s}`);
-    const withDesc = base.flatMap((s) => [s, `${s} span`, `${s} a`]);
-    return [`#${scopeId}`, ...withDesc];
+
+  function allTypeHoverSelectors(scopeId) {
+    const hostHover = [`#${scopeId}:hover`];
+    const descOnHostHoverBase = Object.values(TYPE_TO_SELECTOR).map(
+      (s) => `#${scopeId}:hover ${s}`
+    );
+    const descOnHostHover = descOnHostHoverBase.flatMap((s) => [
+      s,
+      `${s} span`,
+      `${s} a`,
+    ]);
+    const selfHoverBase = Object.values(TYPE_TO_SELECTOR).map(
+      (s) => `#${scopeId} ${s}:hover`
+    );
+    const selfHover = selfHoverBase.flatMap((s) => [s, `${s} span`, `${s} a`]);
+    return [...hostHover, ...descOnHostHover, ...selfHover];
   }
+
   function writeExternal(styles) {
     const host = sel?.();
     if (!host) {
@@ -45,7 +58,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       return;
     }
     const id = ensureId(host);
-    const tagId = `style-${id}`;
+    const tagId = `style-${id}-hover`;
     let tag = document.getElementById(tagId);
     if (!tag) {
       tag = document.createElement("style");
@@ -53,14 +66,15 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       document.head.appendChild(tag);
       log("created style tag", { tagId });
     }
-    const bag = (window.__sc_extcss ||= {});
+    const bag = (window.__sc_extcss_hover ||= {});
     bag[id] = Object.assign({}, bag[id] || {}, styles);
     const body = Object.entries(bag[id])
       .map(([k, v]) => `${k}: ${v} !important;`)
       .join(" ");
-    tag.textContent = `${allTypeSelectors(id).join(", ")} { ${body} }`;
-    log("applied styles", { id, styles: bag[id] });
+    tag.textContent = `${allTypeHoverSelectors(id).join(", ")} { ${body} }`;
+    log("applied hover styles", { id, styles: bag[id] });
   }
+
   function commitWeight(v) {
     const val = String(v || "").trim();
     if (!val) {
@@ -70,6 +84,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     log("commitWeight", val);
     writeExternal({ "font-weight": val });
   }
+
   function commitLetterSpacing(raw) {
     if (raw == null) {
       log("commitLetterSpacing: null");
