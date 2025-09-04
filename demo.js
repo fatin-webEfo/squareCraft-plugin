@@ -1,294 +1,105 @@
-export function blurinitButtonAdvanceStyles(getSelectedElement) {
-  const startBullet = document.getElementById("blur-timeline-start-bullet");
-  const endBullet = document.getElementById("blur-timeline-end-bullet");
-  const startFill = document.getElementById("blur-timeline-start-fill");
-  const endFill = document.getElementById("blur-timeline-end-fill");
-  const startValue = document.getElementById("blur-timelineStartValue");
-  const endValue = document.getElementById("blur-timelineEndValue");
+<div id="typo-all-hover-border-section" class="sc-hidden sc-mt-2">
+  <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
+    <p class="sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal sc-roboto">Outline</p>
+    <div id="typo-all-outline-reset" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+      <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+      <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
+    </div>
+  </div>
 
-  const entryBullet = document.getElementById(
-    "blur-button-advance-entry-bullet"
-  );
-  const entryFill = document.getElementById("blur-button-advance-entry-fill");
-  const entryCount = document.getElementById("blur-button-advance-entry-count");
+  <div class="sc-flex sc-mt-2 sc-items-center sc-justify-between">
+    <div class="sc-flex sc-gap-2 sc-items-center">
+      <p class="sc-roboto sc-font-thin sc-universal sc-font-size-12 sc-text-gray-300">Border</p>
+    </div>
+    <div id="typo-all-hover-border-width-pill" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
+      <p id="typo-all-hover-border-width-value" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+      <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+        <span class="sc-arrow-placeholder"></span>
+        <span class="sc-arrow-placeholder sc-rotate-180"></span>
+      </div>
+    </div>
+  </div>
 
-  const centerBullet = document.getElementById(
-    "blur-button-advance-center-bullet"
-  );
-  const centerFill = document.getElementById("blur-button-advance-center-fill");
-  const centerCount = document.getElementById(
-    "blur-button-advance-center-count"
-  );
+  <div id="typo-all-hover-border-width-track" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
+    <div id="typo-all-hover-border-width-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+    <div id="typo-all-hover-border-width-knob" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+  </div>
 
-  const exitBullet = document.getElementById("blur-button-advance-exit-bullet");
-  const exitFill = document.getElementById("blur-button-advance-exit-fill");
-  const exitCount = document.getElementById("blur-button-advance-exit-count");
+  <div class="sc-grid sc-grid-cols-12 sc-mt-2">
+    <div></div>
+    <div id="typo-all-hover-border-sides" style="padding:2px 0" class="sc-bg-3f3f3f sc-flex sc-col-span-11 sc-font-size-12 sc-font-thin sc-border sc-border-solid sc-border-3f3f3f sc-justify-center sc-px-1 sc-rounded-4px">
+      <div id="typo-all-hover-border-side-all" class="sc-flex sc-px-1_5 sc-bg-454545 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/all.svg" loading="lazy" alt="all-border"><p class="sc-font-thin sc-roboto sc-universal">All</p>
+      </div>
+      <div id="typo-all-hover-border-side-top" class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/top.svg" loading="lazy" alt="top-border"><p class="sc-font-thin sc-roboto sc-universal">Top</p>
+      </div>
+      <div id="typo-all-hover-border-side-bottom" class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/bottom.svg" loading="lazy" alt="bottom-border"><p class="sc-font-thin sc-roboto sc-universal">Bottom</p>
+      </div>
+      <div id="typo-all-hover-border-side-left" class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/left.svg" loading="lazy" alt="left-border"><p class="sc-font-thin sc-roboto sc-universal">Left</p>
+      </div>
+      <div id="typo-all-hover-border-side-right" class="sc-flex sc-px-1_5 sc-justify-center sc-w-full sc-cursor-pointer sc-py-4px sc-rounded-4px sc-items-center sc-gap-1">
+        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/right.svg" loading="lazy" alt="right-border"><p class="sc-font-thin sc-roboto sc-universal">Right</p>
+      </div>
+    </div>
+  </div>
 
-  if (
-    !startBullet ||
-    !endBullet ||
-    !startFill ||
-    !endFill ||
-    !startValue ||
-    !endValue ||
-    !entryBullet ||
-    !entryFill ||
-    !entryCount ||
-    !centerBullet ||
-    !centerFill ||
-    !centerCount ||
-    !exitBullet ||
-    !exitFill ||
-    !exitCount
-  )
-    return;
+  <div class="sc-mt-4 sc-gap-2 sc-grid sc-grid-cols-12">
+    <div class="sc-col-span-5">
+      <p class="sc-roboto sc-font-thin sc-universal sc-font-size-12 sc-text-gray-300">Border Color</p>
+      <div class="sc-py-4px sc-relative sc-mt-2 sc-bg-3f3f3f sc-inActiveTab-border sc-flex sc-justify-between sc-items-center sc-px-1 sc-rounded-4px">
+        <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
+        <div id="typo-all-hover-border-color-chip" class="sc-square-6 sc-cursor-pointer"></div>
+        <div id="typo-all-hover-border-color-dropdown" class="sc-absolute sc-hidden sc-border sc-border-solid sc-border-EF7C2F sc-top-12 sc-bg-3f3f3f sc-left-0 sc-p-1 sc-rounded-4px">
+          <div class="sc-color-arrow"></div>
+          <div class="sc-flex sc-items-center sc-justify-between">
+            <div class="sc-flex sc-relative sc-items-center sc-gap-1"></div>
+            <div id="typo-all-hover-border-color-mode-btn" class="sc-rounded-15px sc-px-2 sc-cursor-pointer sc-py-4px sc-bg-454545 sc-flex sc-gap-1">
+              <p class="sc-universal sc-font-size-11 sc-roboto">RGB</p>
+              <span class="sc-arrow-placeholder sc-rotate-180"></span>
+            </div>
+          </div>
+          <div class="sc-h-1px sc-mt-2 sc-bg-color-gray"></div>
+          <div class="sc-flex color-h-selection sc-mt-2 sc-items-center sc-gap-2">
+            <div class="sc-relative"><div class="sc-w-2 sc-h-2 sc-absolute sc-cursor-pointer sc-rounded-full sc-border sc-border-solid sc-border-white"></div></div>
+            <div class="sc-h-full sc-w-3 sc-relative sc-rounded-15px"><div class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div></div>
+            <div class="sc-h-full sc-w-3 sc-relative sc-rounded-15px"><div class="sc-absolute sc-w-5 sc-left-half sc-shadow-sm sc-rounded-15px sc-cursor-grabbing sc-h-2 sc-bg-color-f2f2f2"></div></div>
+          </div>
+          <div class="sc-flex sc-justify-between sc-mt-2 sc-px-2 sc-py-0_5 sc-rounded-4px sc-bg-454545">
+            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">Select</p>
+            <p class="sc-font-size-12 sc-roboto sc-font-light sc-universal">100%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sc-col-span-7">
+      <p class="sc-roboto sc-font-thin sc-universal sc-font-size-12 sc-text-gray-300">Border Style</p>
+      <div id="typo-all-hover-border-style-wrap" style="padding:2px 0" class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-2 sc-rounded-4px sc-border sc-border-solid sc-border-3f3f3f sc-justify-between sc-px-1">
+        <div id="typo-all-hover-border-style-solid" class="sc-py-4px sc-bg-454545 sc-w-full sc-rounded-4px"><p class="sc-font-thin sc-roboto sc-text-center sc-universal sc-cursor-pointer">Solid</p></div>
+        <div id="typo-all-hover-border-style-dashed" class="sc-py-4px sc-w-full sc-rounded-4px"><p class="sc-font-thin sc-roboto sc-text-center sc-universal sc-cursor-pointer">Dashed</p></div>
+        <div id="typo-all-hover-border-style-dotted" class="sc-py-4px sc-w-full sc-rounded-4px"><p class="sc-font-thin sc-roboto sc-text-center sc-universal sc-cursor-pointer sc-rounded-4px">Dotted</p></div>
+      </div>
+    </div>
+  </div>
 
-  const el = getSelectedElement?.();
-  if (!el) return;
-
-  const btn =
-    el.querySelector(
-      "a.sqs-button-element--primary, a.sqs-button-element--secondary, a.sqs-button-element--tertiary, a.sqs-block-button-element, " +
-        "button.sqs-button-element--primary, button.sqs-button-element--secondary, button.sqs-button-element--tertiary"
-    ) || el;
-
-  const readPct = (v) => {
-    const n = parseFloat(String(v).replace("%", ""));
-    return Number.isFinite(n) ? n : 0;
-  };
-
-  let startPct =
-    readPct(getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-start")) ||
-    0;
-  let endPct =
-    readPct(getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-end")) ||
-    100;
-  if (endPct < startPct + 4) endPct = startPct + 4;
-
-  let entryPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-entry")
-  );
-  let centerPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-center")
-  );
-  let exitPct = readPct(
-    getComputedStyle(btn).getPropertyValue("--sc-blur-scroll-exit")
-  );
-
-  function writeVar(cssVar, val) {
-    const styleId = `sc-style-${el.id}-${cssVar.replace(/[^a-z0-9]/gi, "")}`;
-    let styleTag = document.getElementById(styleId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-    const twin = cssVar.replace("--sc-blur-", "--sc-Typo-blur-");
-    styleTag.textContent =
-      `#${el.id} a.sqs-button-element--primary,` +
-      `#${el.id} a.sqs-button-element--secondary,` +
-      `#${el.id} a.sqs-button-element--tertiary,` +
-      `#${el.id} a.sqs-block-button-element,` +
-      `#${el.id} button.sqs-button-element--primary,` +
-      `#${el.id} button.sqs-button-element--secondary,` +
-      `#${el.id} button.sqs-button-element--tertiary { ${cssVar}: ${val}%; ${twin}: ${val}%; }`;
-  }
-
-  const updateField =
-    (bullet, fill, countEl, cssVar, position = "left", min = 0, max = 100) =>
-    (val) => {
-      val = Math.max(min, Math.min(max, val));
-
-      if (countEl.tagName === "INPUT") countEl.value = `${val}%`;
-      else countEl.textContent = `${val}%`;
-
-      if (
-        cssVar === "--sc-blur-scroll-entry" ||
-        cssVar === "--sc-blur-scroll-center" ||
-        cssVar === "--sc-blur-scroll-exit"
-      ) {
-        const percent = val;
-        gsap.set(bullet, { left: `${percent}%`, xPercent: -50 });
-        gsap.set(fill, {
-          left: "0%",
-          width: `${percent}%`,
-          backgroundColor: "var(--sc-theme-accent)",
-        });
-
-        const a = document.getElementById("blur-custom-timeline-arrow");
-        if (cssVar === "--sc-blur-scroll-entry" && a)
-          a.style.left = `${percent}%`;
-      } else {
-        gsap.set(bullet, { left: `${val}%`, xPercent: -50 });
-        if (position === "left") {
-          gsap.set(fill, { width: `${val}%`, left: "0" });
-        } else {
-          gsap.set(endFill, {
-            left: "auto",
-            transform: `scaleX(${(100 - val) / 100})`,
-            transformOrigin: "right",
-            width: "100%",
-            backgroundColor: "#F6B67B",
-          });
-        }
-      }
-
-      writeVar(cssVar, val);
-    };
-
-  const setStart = (v) => {
-    startPct = Math.max(0, Math.min(v, endPct - 4));
-    updateField(
-      startBullet,
-      startFill,
-      startValue,
-      "--sc-blur-scroll-start",
-      "left",
-      0,
-      100
-    )(startPct);
-  };
-  const setEnd = (v) => {
-    endPct = Math.max(startPct + 4, Math.min(v, 100));
-    updateField(
-      endBullet,
-      endFill,
-      endValue,
-      "--sc-blur-scroll-end",
-      "right",
-      0,
-      100
-    )(endPct);
-  };
-  const setEntry = updateField(
-    entryBullet,
-    entryFill,
-    entryCount,
-    "--sc-blur-scroll-entry",
-    "left",
-    0,
-    100
-  );
-  const setCenter = updateField(
-    centerBullet,
-    centerFill,
-    centerCount,
-    "--sc-blur-scroll-center",
-    "left",
-    0,
-    100
-  );
-  const setExit = updateField(
-    exitBullet,
-    exitFill,
-    exitCount,
-    "--sc-blur-scroll-exit",
-    "left",
-    0,
-    100
-  );
-
-  setEntry(entryPct || 0);
-  setCenter(centerPct || 0);
-  setExit(exitPct || 0);
-  setStart(startPct);
-  gsap.set(startBullet, { left: `${startPct}%`, xPercent: -50 });
-  setEnd(endPct);
-
-  function bindTripletInput(input, fn) {
-    input.addEventListener("input", (e) => {
-      let v = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(v)) v = 0;
-      v = Math.max(0, Math.min(100, v));
-      e.target.value = v + "%";
-      fn(v);
-    });
-    input.addEventListener("blur", (e) => {
-      let v = parseInt(e.target.value.replace("%", "").trim());
-      if (isNaN(v)) v = 0;
-      v = Math.max(0, Math.min(100, v));
-      e.target.value = v + "%";
-      fn(v);
-    });
-    input.addEventListener("keydown", (e) => {
-      if (
-        !/[0-9]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(
-          e.key
-        )
-      )
-        e.preventDefault();
-    });
-    input.addEventListener("focus", (e) => {
-      const v = parseInt(e.target.value.replace("%", "").trim()) || 0;
-      e.target.value = v;
-    });
-  }
-  bindTripletInput(entryCount, setEntry);
-  bindTripletInput(centerCount, setCenter);
-  bindTripletInput(exitCount, setExit);
-
-  function makeDraggable(bullet, setter, type, min = 0, max = 100) {
-    if (!bullet) return;
-    bullet.onmousedown = (e) => {
-      e.preventDefault();
-      const container = bullet.parentElement;
-      const rect = container.getBoundingClientRect();
-      const onMove = (ev) => {
-        const clientX = Math.max(
-          rect.left,
-          Math.min(rect.right, ev.touches ? ev.touches[0].clientX : ev.clientX)
-        );
-        const percent =
-          ((clientX - rect.left) / rect.width) * (max - min) + min;
-        let v = Math.round(percent);
-        if (type === "start") v = Math.max(0, Math.min(v, endPct - 4));
-        if (type === "end") v = Math.max(startPct + 4, Math.min(v, 100));
-        if (type === "normal") v = Math.max(min, Math.min(v, max));
-        setter(v);
-      };
-      const onUp = () => {
-        document.removeEventListener("mousemove", onMove);
-        document.removeEventListener("mouseup", onUp);
-        document.removeEventListener("touchmove", onMove);
-        document.removeEventListener("touchend", onUp);
-      };
-      document.addEventListener("mousemove", onMove);
-      document.addEventListener("mouseup", onUp, { once: true });
-      document.addEventListener("touchmove", onMove, { passive: false });
-      document.addEventListener("touchend", onUp, { once: true });
-    };
-  }
-  makeDraggable(startBullet, setStart, "start", 0, 100);
-  makeDraggable(endBullet, setEnd, "end", 0, 100);
-  makeDraggable(entryBullet, setEntry, "normal", 0, 100);
-  makeDraggable(centerBullet, setCenter, "normal", 0, 100);
-  makeDraggable(exitBullet, setExit, "normal", 0, 100);
-
-  [
-    { id: "blur-button-advance-entry-reset", setter: () => setEntry(0) },
-    { id: "blur-button-advance-center-reset", setter: () => setCenter(0) },
-    { id: "blur-button-advance-exit-reset", setter: () => setExit(0) },
-  ].forEach(({ id, setter }) => {
-    const b = document.getElementById(id);
-    if (b) b.onclick = setter;
-  });
-
-  blurattachAdvanceTimelineIncrementDecrement(
-    setEntry,
-    setCenter,
-    setExit,
-    setStart,
-    setEnd
-  );
-  blurattachCustomTimelineReset(setStart, setEnd, setEntry, setCenter, setExit);
-  blurbutton_initEffectAnimationDropdownToggle();
-
-  if (
-    window.gsap &&
-    window.ScrollTrigger &&
-    typeof blurbuttonAdvanceSyncCustomTimelineArrow === "function"
-  ) {
-    blurbuttonAdvanceSyncCustomTimelineArrow(el);
-  }
-}
+  <div class="sc-mt-4">
+    <div class="sc-flex sc-items-center sc-justify-between">
+      <div class="sc-flex sc-gap-2 sc-items-center">
+        <p class="sc-roboto sc-font-thin sc-universal sc-font-size-12 sc-text-gray-300">Border radius</p>
+      </div>
+      <div id="typo-all-hover-border-radius-pill" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-2 sc-px-2 sc-py-0_5 sc-bg sc-bg-454545">
+        <p id="typo-all-hover-border-radius-value" class="sc-font-thin sc-roboto sc-universal sc-font-size-11">0px</p>
+        <div class="sc-flex sc-flex-col sc-items-center sc-gap-1">
+          <span class="sc-arrow-placeholder"></span>
+          <span class="sc-arrow-placeholder sc-rotate-180"></span>
+        </div>
+      </div>
+    </div>
+    <div id="typo-all-hover-border-radius-track" class="sc-rounded-15px sc-mt-2 sc-relative sc-w-full sc-h-2 sc-bg-F6F6F6">
+      <div id="typo-all-hover-border-radius-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
+      <div id="typo-all-hover-border-radius-knob" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+    </div>
+  </div>
+</div>

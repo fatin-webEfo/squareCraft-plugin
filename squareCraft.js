@@ -687,9 +687,10 @@
     } = await import(
       "https://fatin-webefo.github.io/squareCraft-plugin/src/button/initButtonStyles/initButtonStyles.js"
     );
-    const { initHoverTypoAllFontControls } = await import(
-      "https://fatin-webefo.github.io/squareCraft-plugin/src/typo_hover_localChange/typo_hover_all_style/typo_hover_all_style.js"
-    );
+    const { initHoverTypoAllFontControls, initHoverTypoAllBorderControls } =
+      await import(
+        "https://fatin-webefo.github.io/squareCraft-plugin/src/typo_hover_localChange/typo_hover_all_style/typo_hover_all_style.js"
+      );
     const {
       initHoverButtonShadowControls,
       initHoverButtonIconRotationControl,
@@ -723,6 +724,9 @@
       }
       if (selectedElement) {
         initHoverTypoAllFontControls(selectedElement);
+      }
+      if (selectedElement) {
+        initHoverTypoAllBorderControls(selectedElement);
       }
       if (selectedElement) {
         initButtonAdvanceStyles(() => selectedElement);
