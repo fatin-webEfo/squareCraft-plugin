@@ -291,17 +291,32 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverBorderAllBound === "1") return;
+  if (document.body.dataset.scHoverBorderAllBound === "1") {
+    console.warn("[hover-border] already bound, skipping");
+    return;
+  }
   document.body.dataset.scHoverBorderAllBound = "1";
+  const log = (...a) => console.log("[hover-border]", ...a);
+
+  function sel() {
+    try {
+      return typeof getSelectedElement === "function"
+        ? getSelectedElement()
+        : getSelectedElement;
+    } catch {
+      return null;
+    }
+  }
 
   const section = document.getElementById("typo-all-hover-border-section");
-  if (!section) return;
+  if (!section) {
+    console.error(
+      "[hover-border] section #typo-all-hover-border-section not found"
+    );
+    return;
+  }
 
-  const sel =
-    typeof getSelectedElement === "function"
-      ? getSelectedElement
-      : () => getSelectedElement;
-
+  // ---- utils (ID-only, ownerDocument-safe) ----
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
     heading2: "h2",
@@ -311,52 +326,58 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
     paragraph3: "p.sqsrte-small",
   };
-
   function ensureId(el) {
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
   }
   function hoverSelectors(scopeId) {
-    const host = ["#" + scopeId + ":hover"];
-    const base = Object.values(TYPE_TO_SELECTOR).map(
+    const a = ["#" + scopeId + ":hover"];
+    const b = Object.values(TYPE_TO_SELECTOR).map(
       (s) => `#${scopeId}:hover ${s}`
     );
-    const base2 = [];
-    for (let i = 0; i < base.length; i++) {
-      base2.push(base[i], `${base[i]} span`, `${base[i]} a`);
+    const b2 = [];
+    for (let i = 0; i < b.length; i++) {
+      b2.push(b[i], `${b[i]} span`, `${b[i]} a`);
     }
-    const selfBase = Object.values(TYPE_TO_SELECTOR).map(
+    const c = Object.values(TYPE_TO_SELECTOR).map(
       (s) => `#${scopeId} ${s}:hover`
     );
-    const self2 = [];
-    for (let i = 0; i < selfBase.length; i++) {
-      self2.push(selfBase[i], `${selfBase[i]} span`, `${selfBase[i]} a`);
+    const c2 = [];
+    for (let i = 0; i < c.length; i++) {
+      c2.push(c[i], `${c[i]} span`, `${c[i]} a`);
     }
-    return host.concat(base2, self2);
+    return a.concat(b2, c2);
   }
+  const BAG = {}; // per-element css bag keyed by element id
+
   function getCtx() {
-    const host = sel && sel();
+    const host = sel();
     if (!host) return {};
+    const doc = host.ownerDocument || document;
     const id = ensureId(host);
     const tagId = `style-${id}-hover-border`;
-    let tag = document.getElementById(tagId);
+    let tag = doc.getElementById(tagId);
     if (!tag) {
-      tag = document.createElement("style");
+      tag = doc.createElement("style");
       tag.id = tagId;
-      document.head.appendChild(tag);
+      (doc.head || doc.documentElement).appendChild(tag);
+      log(
+        "created <style> in",
+        doc === document ? "document" : "parent.document",
+        tagId
+      );
     }
-    window.__sc_extcss_hover = window.__sc_extcss_hover || {};
-    window.__sc_extcss_hover[id] = window.__sc_extcss_hover[id] || {};
-    return { id, tag, bag: window.__sc_extcss_hover[id] };
+    BAG[id] = BAG[id] || {};
+    return { id, tag, doc, bag: BAG[id] };
   }
   function flush() {
     const ctx = getCtx();
     if (!ctx.id || !ctx.tag || !ctx.bag) return;
-    const parts = [];
-    for (const k in ctx.bag) parts.push(`${k}: ${ctx.bag[k]} !important;`);
-    ctx.tag.textContent = `${hoverSelectors(ctx.id).join(", ")} { ${parts.join(
-      " "
-    )} }`;
+    const body = Object.keys(ctx.bag)
+      .map((k) => `${k}: ${ctx.bag[k]} !important;`)
+      .join(" ");
+    ctx.tag.textContent = `${hoverSelectors(ctx.id).join(", ")} { ${body} }`;
+    log("flushed css", ctx.bag);
   }
   function setProps(obj) {
     const ctx = getCtx();
@@ -370,12 +391,8 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     for (let i = 0; i < keys.length; i++) delete ctx.bag[keys[i]];
     flush();
   }
-  function parseColor(s) {
-    if (!s) return "";
-    const x = String(s).trim();
-    return x;
-  }
 
+  // ---- state ----
   let activeSide = "all";
   let borderStyle = "solid";
 
@@ -410,7 +427,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   }
   function commitBorderColor(color) {
-    const c = parseColor(color);
+    const c = (color || "").toString().trim();
     if (!c) return;
     if (activeSide === "all") {
       removeKeys([
@@ -430,47 +447,55 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     setProps({ "border-radius": v });
   }
 
-  function bindSlider(trackEl, fillEl, knobEl, maxPx, onChange) {
-    if (!trackEl || !fillEl || !knobEl) return;
+  // ---- bind helpers (sliders use IDs only) ----
+  function bindSlider(trackId, fillId, knobId, maxPx, onChange) {
+    const track = document.getElementById(trackId);
+    const fill = document.getElementById(fillId);
+    const knob = document.getElementById(knobId);
+    if (!track || !fill || !knob) {
+      log("slider missing ids", { trackId, fillId, knobId });
+      return;
+    }
     function setFromClientX(x) {
-      const r = trackEl.getBoundingClientRect();
+      const r = track.getBoundingClientRect();
       const t = Math.min(Math.max(0, x - r.left), r.width);
       const ratio = r.width ? t / r.width : 0;
       const px = Math.round(ratio * maxPx);
       const pct = (px / maxPx) * 100;
-      fillEl.style.width = pct + "%";
-      const half = (knobEl.offsetWidth || 6) / 2;
-      knobEl.style.left = `calc(${pct}% - ${half}px)`;
+      fill.style.width = pct + "%";
+      const half = (knob.offsetWidth || 6) / 2;
+      knob.style.left = `calc(${pct}% - ${half}px)`;
       onChange(px);
     }
     function setFromPx(px) {
       const pct = Math.max(0, Math.min(100, (px / maxPx) * 100));
-      fillEl.style.width = pct + "%";
-      const half = (knobEl.offsetWidth || 6) / 2;
-      knobEl.style.left = `calc(${pct}% - ${half}px)`;
+      fill.style.width = pct + "%";
+      const half = (knob.offsetWidth || 6) / 2;
+      knob.style.left = `calc(${pct}% - ${half}px)`;
       onChange(px);
     }
     let dragging = false;
-    trackEl.addEventListener("pointerdown", (e) => {
+    track.addEventListener("pointerdown", (e) => {
       dragging = true;
       try {
-        trackEl.setPointerCapture(e.pointerId);
+        track.setPointerCapture(e.pointerId);
       } catch {}
       setFromClientX(e.clientX);
     });
-    trackEl.addEventListener("pointermove", (e) => {
+    track.addEventListener("pointermove", (e) => {
       if (!dragging) return;
       setFromClientX(e.clientX);
     });
-    trackEl.addEventListener("pointerup", (e) => {
+    track.addEventListener("pointerup", (e) => {
       dragging = false;
       try {
-        trackEl.releasePointerCapture(e.pointerId);
+        track.releasePointerCapture(e.pointerId);
       } catch {}
     });
     setFromPx(0);
   }
 
+  // ---- side buttons ----
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -478,21 +503,27 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   );
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
-  const sidesArr = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
+  const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
-  function setActiveSide(side) {
-    activeSide = side;
-    for (let i = 0; i < sidesArr.length; i++)
-      sidesArr[i] && sidesArr[i].classList.remove("sc-bg-454545");
+  function paintActiveSide(side) {
+    for (let i = 0; i < sides.length; i++) {
+      const n = sides[i];
+      if (!n) continue;
+      n.classList.remove("sc-bg-454545");
+    }
     if (side === "all" && sideAll) sideAll.classList.add("sc-bg-454545");
     if (side === "top" && sideTop) sideTop.classList.add("sc-bg-454545");
     if (side === "bottom" && sideBottom)
       sideBottom.classList.add("sc-bg-454545");
     if (side === "left" && sideLeft) sideLeft.classList.add("sc-bg-454545");
     if (side === "right" && sideRight) sideRight.classList.add("sc-bg-454545");
-    commitBorderStyle(borderStyle);
   }
-
+  function setActiveSide(side) {
+    activeSide = side;
+    paintActiveSide(side);
+    commitBorderStyle(borderStyle); // reapply style to new side context
+    log("activeSide =>", side);
+  }
   sideAll && sideAll.addEventListener("click", () => setActiveSide("all"));
   sideTop && sideTop.addEventListener("click", () => setActiveSide("top"));
   sideBottom &&
@@ -501,6 +532,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   sideRight &&
     sideRight.addEventListener("click", () => setActiveSide("right"));
 
+  // ---- style pills ----
   const styleSolid = document.getElementById(
     "typo-all-hover-border-style-solid"
   );
@@ -510,21 +542,27 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const styleDotted = document.getElementById(
     "typo-all-hover-border-style-dotted"
   );
-  const stylesArr = [styleSolid, styleDashed, styleDotted];
+  const styleBtns = [styleSolid, styleDashed, styleDotted];
 
-  function setActiveStyle(style) {
-    borderStyle = style;
-    for (let i = 0; i < stylesArr.length; i++)
-      stylesArr[i] && stylesArr[i].classList.remove("sc-bg-454545");
+  function paintActiveStyle(style) {
+    for (let i = 0; i < styleBtns.length; i++) {
+      const n = styleBtns[i];
+      if (!n) continue;
+      n.classList.remove("sc-bg-454545");
+    }
     if (style === "solid" && styleSolid)
       styleSolid.classList.add("sc-bg-454545");
     if (style === "dashed" && styleDashed)
       styleDashed.classList.add("sc-bg-454545");
     if (style === "dotted" && styleDotted)
       styleDotted.classList.add("sc-bg-454545");
-    commitBorderStyle(style);
   }
-
+  function setActiveStyle(style) {
+    borderStyle = style;
+    paintActiveStyle(style);
+    commitBorderStyle(style);
+    log("borderStyle =>", style);
+  }
   styleSolid &&
     styleSolid.addEventListener("click", () => setActiveStyle("solid"));
   styleDashed &&
@@ -532,36 +570,35 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   styleDotted &&
     styleDotted.addEventListener("click", () => setActiveStyle("dotted"));
 
-  const widthVal = document.getElementById("typo-all-hover-border-width-value");
-  const widthTrack = document.getElementById(
-    "typo-all-hover-border-width-track"
-  );
-  const widthFill = document.getElementById("typo-all-hover-border-width-fill");
-  const widthKnob = document.getElementById("typo-all-hover-border-width-knob");
-
-  bindSlider(widthTrack, widthFill, widthKnob, 20, (px) => {
-    if (widthVal) widthVal.textContent = px + "px";
-    commitBorderWidth(px);
-  });
-
-  const radiusVal = document.getElementById(
-    "typo-all-hover-border-radius-value"
-  );
-  const radiusTrack = document.getElementById(
-    "typo-all-hover-border-radius-track"
-  );
-  const radiusFill = document.getElementById(
-    "typo-all-hover-border-radius-fill"
-  );
-  const radiusKnob = document.getElementById(
-    "typo-all-hover-border-radius-knob"
+  // ---- width slider ----
+  const widthValId = "typo-all-hover-border-width-value";
+  const widthVal = document.getElementById(widthValId);
+  bindSlider(
+    "typo-all-hover-border-width-track",
+    "typo-all-hover-border-width-fill",
+    "typo-all-hover-border-width-knob",
+    20,
+    (px) => {
+      if (widthVal) widthVal.textContent = px + "px";
+      commitBorderWidth(px);
+    }
   );
 
-  bindSlider(radiusTrack, radiusFill, radiusKnob, 40, (px) => {
-    if (radiusVal) radiusVal.textContent = px + "px";
-    commitBorderRadius(px);
-  });
+  // ---- radius slider ----
+  const radiusValId = "typo-all-hover-border-radius-value";
+  const radiusVal = document.getElementById(radiusValId);
+  bindSlider(
+    "typo-all-hover-border-radius-track",
+    "typo-all-hover-border-radius-fill",
+    "typo-all-hover-border-radius-knob",
+    40,
+    (px) => {
+      if (radiusVal) radiusVal.textContent = px + "px";
+      commitBorderRadius(px);
+    }
+  );
 
+  // ---- color ----
   const colorChip = document.getElementById("typo-all-hover-border-color-chip");
   const colorDropdown = document.getElementById(
     "typo-all-hover-border-color-dropdown"
@@ -571,6 +608,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     colorChip.addEventListener("click", () => {
       const c = getComputedStyle(colorChip).backgroundColor;
       commitBorderColor(c);
+      log("color from chip", c);
     });
 
   colorDropdown &&
@@ -580,16 +618,20 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (c) {
         commitBorderColor(c);
         if (colorChip) colorChip.style.background = c;
+        log("color from dropdown", c);
       }
     });
 
+  // external picker hook (if your palette dispatches this)
   document.addEventListener("sc-color-picked", (e) => {
     const c = e && e.detail ? e.detail.color : "";
     if (!c) return;
     commitBorderColor(c);
     if (colorChip) colorChip.style.background = c;
+    log("color from event", c);
   });
 
+  // ---- reset ----
   const resetBtn = document.getElementById("typo-all-outline-reset");
   resetBtn &&
     resetBtn.addEventListener("click", () => {
@@ -598,16 +640,27 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         for (const k in ctx.bag) if (k.startsWith("border-")) delete ctx.bag[k];
         flush();
       }
+      const wFill = document.getElementById("typo-all-hover-border-width-fill");
+      const wKnob = document.getElementById("typo-all-hover-border-width-knob");
+      const rFill = document.getElementById(
+        "typo-all-hover-border-radius-fill"
+      );
+      const rKnob = document.getElementById(
+        "typo-all-hover-border-radius-knob"
+      );
       if (widthVal) widthVal.textContent = "0px";
       if (radiusVal) radiusVal.textContent = "0px";
-      if (widthFill) widthFill.style.width = "0%";
-      if (radiusFill) radiusFill.style.width = "0%";
-      if (widthKnob) widthKnob.style.left = "calc(0% - 6px)";
-      if (radiusKnob) radiusKnob.style.left = "calc(0% - 6px)";
+      if (wFill) wFill.style.width = "0%";
+      if (rFill) rFill.style.width = "0%";
+      if (wKnob) wKnob.style.left = "calc(0% - 6px)";
+      if (rKnob) rKnob.style.left = "calc(0% - 6px)";
       setActiveSide("all");
       setActiveStyle("solid");
+      log("reset done");
     });
 
+  // init UI
   setActiveSide("all");
   setActiveStyle("solid");
+  log("ready");
 }
