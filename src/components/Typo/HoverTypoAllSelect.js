@@ -260,10 +260,6 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
     </div>
    </div>
-     <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
-       <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow </p>
-      
-     </div>
      <div class="mt-2 sc-flex sc-mt-4 sc-items-center sc-gap-3">
        <div class="sc-w-full">
          <div class="sc-flex sc-gap-2 sc-items-center sc-justify-between">
