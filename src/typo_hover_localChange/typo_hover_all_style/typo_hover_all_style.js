@@ -52,7 +52,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   }
 
   function writeExternal(styles) {
-    const host = sel?.();
+    const host = sel && sel();
     if (!host) {
       log("writeExternal: no host element");
       return;
@@ -66,7 +66,9 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       document.head.appendChild(tag);
       log("created style tag", { tagId });
     }
-    const bag = (window.__sc_extcss_hover ||= {});
+    // avoid ||= for wider compatibility
+    window.__sc_extcss_hover = window.__sc_extcss_hover || {};
+    const bag = window.__sc_extcss_hover;
     bag[id] = Object.assign({}, bag[id] || {}, styles);
     const body = Object.entries(bag[id])
       .map(([k, v]) => `${k}: ${v} !important;`)
@@ -107,32 +109,20 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   const panelSel = "#typo-all-hover-font-section";
 
   function el(s, scope = root) {
-    const n = scope.querySelector(s);
-    return n;
-  }
-  function show(elm) {
-    if (elm && elm.classList.contains("sc-hidden"))
-      elm.classList.remove("sc-hidden");
+    return scope.querySelector(s);
   }
   function hide(elm) {
     if (elm && !elm.classList.contains("sc-hidden"))
       elm.classList.add("sc-hidden");
   }
   function toggle(elm) {
-    if (!elm) return;
-    elm.classList.toggle("sc-hidden");
+    if (elm) elm.classList.toggle("sc-hidden");
   }
 
   function listWithin(target) {
     const panel = target.closest(panelSel) || root;
     const n = el(weightListSel, panel);
     log("listWithin", { found: !!n });
-    return n;
-  }
-  function btnWithin(target) {
-    const panel = target.closest(panelSel) || root;
-    const n = el(weightBtnSel, panel);
-    log("btnWithin", { found: !!n });
     return n;
   }
   function spacingBtnWithin(target) {
