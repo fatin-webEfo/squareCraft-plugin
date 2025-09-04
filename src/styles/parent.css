@@ -2977,7 +2977,9 @@
 .sc-text-EF7C2F {
   color: #ef7c2f !important;
 }
-
+.sc-top-55px{
+  top: 55px !important;
+}
 .sc-fixed {
   position: fixed !important;
 }

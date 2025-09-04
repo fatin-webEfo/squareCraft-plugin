@@ -29,7 +29,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        </div>
      </div>
      <div id="hover-typo-allSelect-font-weight-list" 
-     class="sc-absolute sc-w-100px sc-border sc-border-solid sc-border-EF7C2F sc-hidden sc-top-10 sc-z-99999 sc-scrollBar sc-max-h-140px sc-rounded-4px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
+     class="sc-absolute  sc-w-150 sc-border sc-border-solid sc-border-EF7C2F sc-top-10 sc-z-999999 sc-scrollBar sc-max-h-140px sc-rounded-4px sc-bg-494949 sc-flex sc-flex-col sc-overflow-hidden">
        <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer"> 300 </div>
        <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer"> 400 </div>
        <div class="sc-dropdown-item sc-py-1px sc-text-center sc-font-size-12 sc-cursor-pointer"> 500 </div>
