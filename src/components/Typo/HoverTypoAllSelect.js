@@ -118,7 +118,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
 </div>
  
    <div>
-     <div id="typo-all-hover-border-button" class="sc-bg-3f3f3f sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
+     <div id="typo-all-hover-border-button" class="sc-bg-3f3f3f sc-bg-454545 sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
        <p class="sc-roboto  sc-universal sc-font-size-14">Outline</p>
        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
      </div>
@@ -202,7 +202,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
          <div class="sc-col-span-7">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border Style </p>
            <div style="padding: 2px 0px;" class="sc-bg-3f3f3f sc-flex sc-font-size-11 sc-gap-1 sc-mt-2 sc-rounded-4px   sc-border sc-border-solid sc-border-3f3f3f   sc-justify-between  sc-px-1 ">
-             <div class="sc-py-4px  sc-w-full sc-rounded-4px ">
+             <div class="sc-py-4px sc-bg-454545  sc-w-full sc-rounded-4px ">
                <p class="sc-font-thin sc-roboto  sc-text-center sc-universal  sc-cursor-pointer   "> Solid </p>
              </div>
              <div class="sc-py-4px  sc-w-full sc-rounded-4px ">
