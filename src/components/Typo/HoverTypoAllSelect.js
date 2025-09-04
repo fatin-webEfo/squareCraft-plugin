@@ -8,7 +8,9 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
   
 
 <div id="typo-all-hover-font-section">
-   <div class="sc-flex sc-justify-end sc-items-end sc-mt-2">
+   <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
+           <p class=" sc-font-thin  sc-universal  sc-roboto"> Font  </p>
+
      <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
         <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
