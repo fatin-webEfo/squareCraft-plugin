@@ -116,9 +116,9 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
    </div>
    </div>
 </div>
- 
+
    <div>
-     <div id="typo-all-hover-border-button" class="  sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
+     <div id="typo-all-hover-border-button" class="sc-mt-2 sc-relative sc-z-9999 sc-flex sc-border-hover-3d3d3d sc-border sc-border-solid sc-border-3f3f3f sc-cursor-pointer sc-px-2 sc-justify-between sc-py-1 sc-rounded-4px">
        <p class="sc-roboto  sc-universal sc-font-size-14">Outline</p>
        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
      </div>
