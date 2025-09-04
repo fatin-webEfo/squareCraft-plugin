@@ -135,7 +135,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
     </div>
    </div>
-       <div class=" sc-flex sc-items-center sc-justify-between">
+       <div class=" sc-flex sc-mt-2 sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border </p>
           
@@ -355,7 +355,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
     </div>
    </div>
-     <div class="sc-flex sc-items-center sc-gap-8px">
+     <div class="sc-flex sc-mt-2 sc-items-center sc-gap-8px">
        <div>
          <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
          <div class="sc-flex sc-mt-2 sc-relative sc-items-center">
