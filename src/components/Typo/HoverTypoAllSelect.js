@@ -11,7 +11,7 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
    <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
            <p class=" sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal  sc-roboto"> Font  </p>
 
-     <div class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+     <div id="typo-all-font-reset" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
         <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
         <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
     </div>
@@ -124,7 +124,17 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
        <p class="sc-roboto  sc-universal sc-font-size-14">Outline</p>
        <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
      </div>
+
+
      <div id="typo-all-hover-border-section" class="sc-hidden sc-mt-2">
+       <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
+           <p class=" sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal  sc-roboto"> Outline  </p>
+
+     <div id="typo-all-outline-reset" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
+    </div>
+   </div>
        <div class=" sc-flex sc-items-center sc-justify-between">
          <div class="sc-flex sc-gap-2 sc-items-center">
            <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Border </p>
@@ -242,6 +252,14 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <img src="https://fatin-webefo.github.io/squareCraft-plugin/public/arrow.svg" class="sc-rotate-180" alt="">
    </div>
    <div id="typo-all-hover-shadow-section" class="sc-hidden">
+     <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
+           <p class=" sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal  sc-roboto"> Shadow  </p>
+
+     <div id="typo-all-shadow-reset" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
+    </div>
+   </div>
      <div class="sc-flex sc-gap-2 sc-items-center sc-mt-2">
        <p class="sc-roboto sc-font-thin sc-universal  sc-font-size-12 sc-font-thin sc-text-gray-300"> Shadow </p>
       
@@ -329,6 +347,14 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
      <span class="sc-arrow-placeholder sc-rotate-180 sc-w-10 sc-flex sc-items-center sc-justify-center"></span>
    </div>
    <div id="typo-all-hover-effects-section" class="sc-mt-4 sc-hidden">
+     <div class="sc-flex sc-justify-between sc-items-center sc-mt-2">
+           <p class=" sc-font-thin sc-font-size-14 sc-text-gray-300 sc-universal  sc-roboto"> Text Effect  </p>
+
+     <div id="typo-all-text_effect-reset" class="sc-flex sc-cursor-pointer sc-items-center sc-rounded-15px sc-gap-1 sc-gradiant-border sc-px-2 sc-py-4px sc-bg sc-bg-454545">
+        <p class="sc-font-light sc-universal sc-text-sm sc-text-xs">Reset</p>
+        <img src="https://goswami34.github.io/squareCraft-widget/public/reset.svg" alt="reset">
+    </div>
+   </div>
      <div class="sc-flex sc-items-center sc-gap-8px">
        <div>
          <p class="sc-universal sc-roboto sc-font-size-12">Transition Type</p>
