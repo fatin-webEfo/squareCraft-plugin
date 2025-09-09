@@ -18,8 +18,6 @@ export function handleAlignmentClick(event, context) {
   const textTags = lastClickedElement.querySelectorAll("h1, h2, h3, h4, p");
   textTags.forEach(el => {
     const tagName = el.tagName.toLowerCase();
-    const result = getTextType(tagName, el);
-    console.log("result", result);
 
   });
 
