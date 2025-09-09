@@ -304,7 +304,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   }
 
-  // ---- wait-until-present (ID-only) ----
   const REQUIRED_IDS = [
     "typo-all-hover-border-section",
     "typo-all-outline-reset",
