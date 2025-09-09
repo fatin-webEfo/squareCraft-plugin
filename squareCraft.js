@@ -562,6 +562,7 @@
   const { handleSectionFind } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/section/handleSectionFind.js"
   );
+  handleSectionFind();
   const { ButtonAdvanceToggleControls } = await import(
     "https://fatin-webefo.github.io/squareCraft-plugin/src/button/ButtonAdvanceToggleControls/ButtonAdvanceToggleControls.js"
   );
