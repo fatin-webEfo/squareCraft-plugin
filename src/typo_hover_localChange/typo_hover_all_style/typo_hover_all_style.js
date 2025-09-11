@@ -293,10 +293,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 export function initHoverTypoAllBorderControls() {
   const log = (...a) => console.log("[hover-border]", ...a);
 
-  function isElementVisible(el) {
-    return el && el.offsetParent !== null;
-  }
-
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -305,26 +301,24 @@ export function initHoverTypoAllBorderControls() {
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
 
-  if (
-    !isElementVisible(sideAll) ||
-    !isElementVisible(sideTop) ||
-    !isElementVisible(sideBottom) ||
-    !isElementVisible(sideLeft) ||
-    !isElementVisible(sideRight)
-  ) {
-    setTimeout(initHoverTypoAllBorderControls, 200);
-    return;
-  }
+  const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
   function paintActiveSide(side) {
-    [sideAll, sideTop, sideBottom, sideLeft, sideRight].forEach(
-      (sideElement) => {
-        if (sideElement) sideElement.classList.remove("sc-bg-454545");
+    sides.forEach((sideElement) => {
+      if (sideElement) {
+        sideElement.classList.remove("sc-bg-454545");
+        console.log(`${sideElement.id} removed sc-bg-454545`);
       }
+    });
+
+    const activeElement = document.getElementById(
+      `typo-all-hover-border-side-${side}`
     );
-    document
-      .getElementById(`typo-all-hover-border-side-${side}`)
-      ?.classList.add("sc-bg-454545");
+    if (activeElement) {
+      activeElement.classList.add("sc-bg-454545");
+      console.log(`${activeElement.id} added sc-bg-454545`);
+      console.log("Active element's classes: ", activeElement.classList);
+    }
   }
 
   sideAll?.addEventListener("click", () => paintActiveSide("all"));
@@ -335,6 +329,7 @@ export function initHoverTypoAllBorderControls() {
 
   log("[hover-border] initialized and ready");
 }
+
 
 
 
