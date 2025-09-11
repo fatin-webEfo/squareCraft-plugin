@@ -290,7 +290,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-function initHoverTypoAllBorderControls(getSelectedElement) {
+export function initHoverTypoAllBorderControls(getSelectedElement) {
   const sideElements = [
     document.getElementById("typo-all-hover-border-side-all"),
     document.getElementById("typo-all-hover-border-side-top"),
