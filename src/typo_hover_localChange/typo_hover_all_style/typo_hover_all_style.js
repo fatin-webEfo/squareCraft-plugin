@@ -310,8 +310,8 @@ export function initHoverTypoAllBorderControls() {
 
   const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
-  // Function to apply the active background color
   function paintActiveSide(side) {
+    // Remove the active background from all sides
     sides.forEach((sideElement) => {
       if (sideElement) {
         sideElement.classList.remove("sc-bg-454545");
@@ -319,6 +319,7 @@ export function initHoverTypoAllBorderControls() {
       }
     });
 
+    // Apply active background color to the clicked side
     const activeElement = document.getElementById(
       `typo-all-hover-border-side-${side}`
     );
@@ -326,14 +327,22 @@ export function initHoverTypoAllBorderControls() {
       activeElement.classList.add("sc-bg-454545");
       console.log(`${activeElement.id} added sc-bg-454545`);
       console.log("Active element's classes: ", activeElement.classList);
+
+      // Checking the background color of the active element
+      console.log(
+        "Computed styles: ",
+        window.getComputedStyle(activeElement).backgroundColor
+      );
+
+      // Force reflow to ensure the styles are updated
+      activeElement.offsetHeight;
     } else {
       console.log(`Active element not found for side: ${side}`);
     }
   }
 
-  // Ensure the event listeners are added to the correct elements
   sideAll?.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent the click from bubbling up
+    event.stopPropagation();
     console.log("Clicked on: All");
     paintActiveSide("all");
   });
