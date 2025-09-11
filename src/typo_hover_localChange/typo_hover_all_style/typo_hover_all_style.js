@@ -301,6 +301,13 @@ export function initHoverTypoAllBorderControls() {
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
 
+  if (!sideAll || !sideTop || !sideBottom || !sideLeft || !sideRight) {
+    log(
+      "Error: One or more elements are missing. Make sure all elements exist in the DOM."
+    );
+    return;
+  }
+
   const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
   function paintActiveSide(side) {
@@ -329,7 +336,3 @@ export function initHoverTypoAllBorderControls() {
 
   log("[hover-border] initialized and ready");
 }
-
-
-
-
