@@ -290,7 +290,9 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-export function initHoverTypoAllBorderControls(getSelectedElement) {
+export function initHoverTypoAllBorderControls() {
+  const log = (...a) => console.log("[hover-border]", ...a);
+
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -301,33 +303,21 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
-  let activeSide = "all"; // Default active side
-
   function paintActiveSide(side) {
-    sides.forEach((sideElement) =>
-      sideElement?.classList.remove("sc-bg-454545")
+    sides.forEach((sideElement) => {
+      if (sideElement) sideElement.classList.remove("sc-bg-454545");
+    });
+    const activeElement = document.getElementById(
+      `typo-all-hover-border-side-${side}`
     );
-    if (side === "all") sideAll?.classList.add("sc-bg-454545");
-    if (side === "top") sideTop?.classList.add("sc-bg-454545");
-    if (side === "bottom") sideBottom?.classList.add("sc-bg-454545");
-    if (side === "left") sideLeft?.classList.add("sc-bg-454545");
-    if (side === "right") sideRight?.classList.add("sc-bg-454545");
+    if (activeElement) activeElement.classList.add("sc-bg-454545");
   }
 
-  function setActiveSide(side) {
-    activeSide = side;
-    paintActiveSide(side);
-  }
+  sideAll?.addEventListener("click", () => paintActiveSide("all"));
+  sideTop?.addEventListener("click", () => paintActiveSide("top"));
+  sideBottom?.addEventListener("click", () => paintActiveSide("bottom"));
+  sideLeft?.addEventListener("click", () => paintActiveSide("left"));
+  sideRight?.addEventListener("click", () => paintActiveSide("right"));
 
-  sideAll?.addEventListener("click", () => setActiveSide("all"));
-  sideTop?.addEventListener("click", () => setActiveSide("top"));
-  sideBottom?.addEventListener("click", () => setActiveSide("bottom"));
-  sideLeft?.addEventListener("click", () => setActiveSide("left"));
-  sideRight?.addEventListener("click", () => setActiveSide("right"));
+  log("[hover-border] ready");
 }
-
-
-
-
-
-
