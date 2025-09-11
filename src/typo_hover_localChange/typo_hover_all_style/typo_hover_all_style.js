@@ -293,7 +293,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 export function initHoverTypoAllBorderControls() {
   const log = (...a) => console.log("[hover-border]", ...a);
 
-  // Get the elements (make sure they exist before proceeding)
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -302,7 +301,6 @@ export function initHoverTypoAllBorderControls() {
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
 
-  // If any of the elements are missing, log an error and stop
   if (!sideAll || !sideTop || !sideBottom || !sideLeft || !sideRight) {
     log(
       "Error: One or more elements are missing. Make sure all elements exist in the DOM."
@@ -310,16 +308,13 @@ export function initHoverTypoAllBorderControls() {
     return;
   }
 
-  // Function to handle the "active" class
   function paintActiveSide(side) {
-    // Clear all active backgrounds
     [sideAll, sideTop, sideBottom, sideLeft, sideRight].forEach(
       (sideElement) => {
         if (sideElement) sideElement.classList.remove("sc-bg-454545");
       }
     );
 
-    // Add active background to clicked side
     const activeElement = document.getElementById(
       `typo-all-hover-border-side-${side}`
     );
@@ -328,7 +323,6 @@ export function initHoverTypoAllBorderControls() {
     }
   }
 
-  // Attach event listeners to all sides (only if they exist)
   sideAll?.addEventListener("click", () => paintActiveSide("all"));
   sideTop?.addEventListener("click", () => paintActiveSide("top"));
   sideBottom?.addEventListener("click", () => paintActiveSide("bottom"));
