@@ -290,8 +290,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-export function initHoverTypoAllBorderControls() {
-
+export function initHoverTypoAllBorderControls(getSelectedElement) {
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -325,7 +324,6 @@ export function initHoverTypoAllBorderControls() {
   sideBottom?.addEventListener("click", () => setActiveSide("bottom"));
   sideLeft?.addEventListener("click", () => setActiveSide("left"));
   sideRight?.addEventListener("click", () => setActiveSide("right"));
-
 }
 
 
