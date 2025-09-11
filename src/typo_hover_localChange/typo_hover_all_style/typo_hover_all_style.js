@@ -310,6 +310,7 @@ export function initHoverTypoAllBorderControls() {
 
   const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
+  // Function to apply the active background color
   function paintActiveSide(side) {
     sides.forEach((sideElement) => {
       if (sideElement) {
@@ -330,23 +331,33 @@ export function initHoverTypoAllBorderControls() {
     }
   }
 
-  sideAll?.addEventListener("click", () => {
+  // Ensure the event listeners are added to the correct elements
+  sideAll?.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent the click from bubbling up
     console.log("Clicked on: All");
     paintActiveSide("all");
   });
-  sideTop?.addEventListener("click", () => {
+
+  sideTop?.addEventListener("click", (event) => {
+    event.stopPropagation();
     console.log("Clicked on: Top");
     paintActiveSide("top");
   });
-  sideBottom?.addEventListener("click", () => {
+
+  sideBottom?.addEventListener("click", (event) => {
+    event.stopPropagation();
     console.log("Clicked on: Bottom");
     paintActiveSide("bottom");
   });
-  sideLeft?.addEventListener("click", () => {
+
+  sideLeft?.addEventListener("click", (event) => {
+    event.stopPropagation();
     console.log("Clicked on: Left");
     paintActiveSide("left");
   });
-  sideRight?.addEventListener("click", () => {
+
+  sideRight?.addEventListener("click", (event) => {
+    event.stopPropagation();
     console.log("Clicked on: Right");
     paintActiveSide("right");
   });
