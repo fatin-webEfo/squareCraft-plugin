@@ -301,15 +301,19 @@ export function initHoverTypoAllBorderControls() {
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
 
+  // Store the sides in an array for easy manipulation
   const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
 
+  // Function to remove active background from all sides and apply to the clicked side
   function paintActiveSide(side) {
     sides.forEach((sideElement) => {
       if (sideElement) {
+        // Remove the active background color from all sides
         sideElement.classList.remove("sc-bg-454545");
       }
     });
 
+    // Add the active background color to the clicked side
     const activeElement = document.getElementById(
       `typo-all-hover-border-side-${side}`
     );
@@ -318,12 +322,17 @@ export function initHoverTypoAllBorderControls() {
     }
   }
 
-  sideAll?.addEventListener("click", () => paintActiveSide("all"));
-  sideTop?.addEventListener("click", () => paintActiveSide("top"));
-  sideBottom?.addEventListener("click", () => paintActiveSide("bottom"));
-  sideLeft?.addEventListener("click", () => paintActiveSide("left"));
-  sideRight?.addEventListener("click", () => paintActiveSide("right"));
+  // Ensure that the elements are available before attaching event listeners
+  if (sideAll) sideAll.addEventListener("click", () => paintActiveSide("all"));
+  if (sideTop) sideTop.addEventListener("click", () => paintActiveSide("top"));
+  if (sideBottom)
+    sideBottom.addEventListener("click", () => paintActiveSide("bottom"));
+  if (sideLeft)
+    sideLeft.addEventListener("click", () => paintActiveSide("left"));
+  if (sideRight)
+    sideRight.addEventListener("click", () => paintActiveSide("right"));
 
   log("[hover-border] ready");
 }
+
 

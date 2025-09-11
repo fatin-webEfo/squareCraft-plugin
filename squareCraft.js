@@ -697,7 +697,7 @@
   const themeColors = await getSquarespaceThemeStyles();
 
   let isTrackingArrow = false;
-
+initHoverTypoAllBorderControls()
   window.addEventListener("scroll", () => {
     const selected = document.querySelector('[id^="block-"].sc-font-modified');
     if (selected && !isTrackingArrow) {
