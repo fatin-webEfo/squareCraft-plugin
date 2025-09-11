@@ -305,12 +305,17 @@ export function initHoverTypoAllBorderControls() {
 
   function paintActiveSide(side) {
     sides.forEach((sideElement) => {
-      if (sideElement) sideElement.classList.remove("sc-bg-454545");
+      if (sideElement) {
+        sideElement.classList.remove("sc-bg-454545");
+      }
     });
+
     const activeElement = document.getElementById(
       `typo-all-hover-border-side-${side}`
     );
-    if (activeElement) activeElement.classList.add("sc-bg-454545");
+    if (activeElement) {
+      activeElement.classList.add("sc-bg-454545");
+    }
   }
 
   sideAll?.addEventListener("click", () => paintActiveSide("all"));
@@ -321,3 +326,4 @@ export function initHoverTypoAllBorderControls() {
 
   log("[hover-border] ready");
 }
+
