@@ -4,7 +4,6 @@ export function handleAlignmentClick(event, context) {
 
   const {
     lastClickedElement,
-    getTextType,
     applyStylesToElement,
     lastAppliedAlignment,
     setLastAppliedAlignment,
@@ -15,11 +14,6 @@ export function handleAlignmentClick(event, context) {
     widgetId
   } = context;
 
-  const textTags = lastClickedElement.querySelectorAll("h1, h2, h3, h4, p");
-  textTags.forEach(el => {
-    const tagName = el.tagName.toLowerCase();
-
-  });
 
   const textAlign = alignmentIcon.dataset.align;
 

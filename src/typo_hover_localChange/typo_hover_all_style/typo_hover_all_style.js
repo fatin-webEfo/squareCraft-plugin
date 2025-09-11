@@ -343,7 +343,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       }
     });
     mo.observe(document.body, { childList: true, subtree: true });
-    return; // don't mark bound yet
+    return;
   } else {
     bind();
   }
