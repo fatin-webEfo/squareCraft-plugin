@@ -290,8 +290,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const log = (...a) => console.log("[hover-border]", ...a);
+export function initHoverTypoAllBorderControls() {
 
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
@@ -321,16 +320,14 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     paintActiveSide(side);
   }
 
-  // Attach click event listeners to each border side element
   sideAll?.addEventListener("click", () => setActiveSide("all"));
   sideTop?.addEventListener("click", () => setActiveSide("top"));
   sideBottom?.addEventListener("click", () => setActiveSide("bottom"));
   sideLeft?.addEventListener("click", () => setActiveSide("left"));
   sideRight?.addEventListener("click", () => setActiveSide("right"));
 
-  // Log when the function is ready
-  log("[hover-border] ready");
 }
+
 
 
 
