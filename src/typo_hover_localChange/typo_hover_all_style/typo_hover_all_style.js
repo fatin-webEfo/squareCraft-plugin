@@ -302,7 +302,6 @@ function initHoverTypoAllBorderControls(getSelectedElement) {
   function removeActiveClass() {
     sideElements.forEach((el) => {
       el.classList.remove("sc-bg-454545");
-      el.classList.add("sc-bg-3f3f3f");
     });
   }
 
