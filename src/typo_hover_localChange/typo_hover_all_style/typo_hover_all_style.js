@@ -293,6 +293,10 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 export function initHoverTypoAllBorderControls() {
   const log = (...a) => console.log("[hover-border]", ...a);
 
+  function isElementVisible(el) {
+    return el && el.offsetParent !== null;
+  }
+
   const sideAll = document.getElementById("typo-all-hover-border-side-all");
   const sideTop = document.getElementById("typo-all-hover-border-side-top");
   const sideBottom = document.getElementById(
@@ -301,10 +305,14 @@ export function initHoverTypoAllBorderControls() {
   const sideLeft = document.getElementById("typo-all-hover-border-side-left");
   const sideRight = document.getElementById("typo-all-hover-border-side-right");
 
-  if (!sideAll || !sideTop || !sideBottom || !sideLeft || !sideRight) {
-    log(
-      "Error: One or more elements are missing. Make sure all elements exist in the DOM."
-    );
+  if (
+    !isElementVisible(sideAll) ||
+    !isElementVisible(sideTop) ||
+    !isElementVisible(sideBottom) ||
+    !isElementVisible(sideLeft) ||
+    !isElementVisible(sideRight)
+  ) {
+    setTimeout(initHoverTypoAllBorderControls, 200);
     return;
   }
 
@@ -314,13 +322,9 @@ export function initHoverTypoAllBorderControls() {
         if (sideElement) sideElement.classList.remove("sc-bg-454545");
       }
     );
-
-    const activeElement = document.getElementById(
-      `typo-all-hover-border-side-${side}`
-    );
-    if (activeElement) {
-      activeElement.classList.add("sc-bg-454545");
-    }
+    document
+      .getElementById(`typo-all-hover-border-side-${side}`)
+      ?.classList.add("sc-bg-454545");
   }
 
   sideAll?.addEventListener("click", () => paintActiveSide("all"));
