@@ -328,10 +328,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   ];
 
   function allPresent() {
-    for (let i = 0; i < REQUIRED_IDS.length; i++) {
-      if (!document.getElementById(REQUIRED_IDS[i])) return false;
-    }
-    return true;
+    return REQUIRED_IDS.every((id) => document.getElementById(id));
   }
 
   if (!allPresent()) {
@@ -364,10 +361,12 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
       paragraph3: "p.sqsrte-small",
     };
+
     function ensureId(el) {
       if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
       return el.id;
     }
+
     function hoverSelectors(scopeId) {
       const a = ["#" + scopeId + ":hover"];
       const b = Object.values(TYPE_TO_SELECTOR).map(
@@ -404,6 +403,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       BAG[id] = BAG[id] || {};
       return { id, tag, doc, bag: BAG[id] };
     }
+
     function flush() {
       const ctx = getCtx();
       if (!ctx.id || !ctx.tag || !ctx.bag) return;
@@ -413,12 +413,14 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       ctx.tag.textContent = `${hoverSelectors(ctx.id).join(", ")} { ${body} }`;
       log("flushed css", ctx.bag);
     }
+
     function setProps(obj) {
       const ctx = getCtx();
       if (!ctx.bag) return;
       for (const k in obj) ctx.bag[k] = obj[k];
       flush();
     }
+
     function removeKeys(keys) {
       const ctx = getCtx();
       if (!ctx.bag) return;
@@ -443,6 +445,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         setProps({ [`border-${activeSide}-width`]: v });
       }
     }
+
     function commitBorderStyle(style) {
       borderStyle = style;
       if (activeSide === "all") {
@@ -457,6 +460,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         setProps({ [`border-${activeSide}-style`]: style });
       }
     }
+
     function commitBorderColor(c) {
       const color = (c || "").toString().trim();
       if (!color) return;
@@ -472,6 +476,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         setProps({ [`border-${activeSide}-color`]: color });
       }
     }
+
     function commitBorderRadius(px) {
       const v = Math.max(0, Math.round(px)) + "px";
       setProps({ "border-radius": v });
@@ -543,6 +548,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (side === "left") sideLeft?.classList.add("sc-bg-454545");
       if (side === "right") sideRight?.classList.add("sc-bg-454545");
     }
+
     function setActiveSide(side) {
       activeSide = side;
       paintActiveSide(side);
@@ -573,6 +579,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (style === "dashed") styleDashed?.classList.add("sc-bg-454545");
       if (style === "dotted") styleDotted?.classList.add("sc-bg-454545");
     }
+
     function setActiveStyle(style) {
       paintActiveStyle(style);
       commitBorderStyle(style);
