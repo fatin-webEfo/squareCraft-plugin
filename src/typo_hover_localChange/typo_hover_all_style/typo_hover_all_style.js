@@ -325,14 +325,32 @@ export function initHoverTypoAllBorderControls() {
       activeElement.classList.add("sc-bg-454545");
       console.log(`${activeElement.id} added sc-bg-454545`);
       console.log("Active element's classes: ", activeElement.classList);
+    } else {
+      console.log(`Active element not found for side: ${side}`);
     }
   }
 
-  sideAll?.addEventListener("click", () => paintActiveSide("all"));
-  sideTop?.addEventListener("click", () => paintActiveSide("top"));
-  sideBottom?.addEventListener("click", () => paintActiveSide("bottom"));
-  sideLeft?.addEventListener("click", () => paintActiveSide("left"));
-  sideRight?.addEventListener("click", () => paintActiveSide("right"));
+  sideAll?.addEventListener("click", () => {
+    console.log("Clicked on: All");
+    paintActiveSide("all");
+  });
+  sideTop?.addEventListener("click", () => {
+    console.log("Clicked on: Top");
+    paintActiveSide("top");
+  });
+  sideBottom?.addEventListener("click", () => {
+    console.log("Clicked on: Bottom");
+    paintActiveSide("bottom");
+  });
+  sideLeft?.addEventListener("click", () => {
+    console.log("Clicked on: Left");
+    paintActiveSide("left");
+  });
+  sideRight?.addEventListener("click", () => {
+    console.log("Clicked on: Right");
+    paintActiveSide("right");
+  });
 
   log("[hover-border] initialized and ready");
 }
+
