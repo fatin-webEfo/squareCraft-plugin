@@ -714,7 +714,6 @@
     }
     if (selectedElement) {
       initHoverTypoAllFontControls(selectedElement);
-          initHoverTypoAllBorderControls(selectedElement);
     }
 
     if (selectedElement) {
@@ -1002,6 +1001,7 @@
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
 
+          initHoverTypoAllBorderControls(()=>selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
     opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
     horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
