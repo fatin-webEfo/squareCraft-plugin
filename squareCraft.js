@@ -1002,7 +1002,7 @@
     ButtonAdvanceToggleControls();
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
-    initHoverTypoAllBorderControls(() => selectedElement);
+    initHoverTypoAllBorderControls()(() => selectedElement);
     initHoverTypoAllBorderControls(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
     opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
@@ -1073,6 +1073,7 @@
   }
 
   document.body.addEventListener("click", (event) => {
+    initHoverTypoAllBorderControls(() => selectedElement);
     const dropdownTrigger = event.target.closest("#font-weight-dropdown");
     const dropdownList = document.getElementById("font-weight-dropdown-list");
     if (dropdownTrigger) {
