@@ -302,24 +302,21 @@ export function initHoverTypoAllBorderControls() {
     "typo-all-hover-border-side-right",
   ];
   const selector = ids.map((id) => `#${id}`).join(", ");
-  const buttons = ids.map((id) => document.getElementById(id)).filter(Boolean);
 
   const setActive = (el) => {
-    buttons.forEach((b) => b && b.classList.remove("sc-bg-454545"));
-    el.classList.add("sc-bg-454545");
+    const currentNodes = Array.from(wrap.querySelectorAll(selector));
+    currentNodes.forEach((n) => n.classList.toggle("sc-bg-454545", n === el));
   };
 
-  wrap.addEventListener(
-    "pointerdown",
-    (e) => {
-      const btn = e.target.closest(selector);
-      if (btn && wrap.contains(btn)) setActive(btn);
-    },
-    true
-  );
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(selector);
+    if (!btn || !wrap.contains(btn)) return;
+    setActive(btn);
+  });
 
   const def = document.getElementById("typo-all-hover-border-side-all");
   if (def) setActive(def);
 }
+
 
 
