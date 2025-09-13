@@ -290,9 +290,14 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-export function initHoverTypoAllBorderControls() {
-  const wrap = document.getElementById("typo-all-hover-border-sides");
+export function initHoverTypoAllBorderControls(getSelectedElement) {
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  document.body.dataset.scHoverTypoAllBorderBound = "1";
+
+  const root = document.getElementById("sc-widget-container") || document;
+  const wrap = root.querySelector("#typo-all-hover-border-sides");
   if (!wrap) return;
+
   const ids = [
     "typo-all-hover-border-side-all",
     "typo-all-hover-border-side-top",
@@ -300,17 +305,17 @@ export function initHoverTypoAllBorderControls() {
     "typo-all-hover-border-side-left",
     "typo-all-hover-border-side-right",
   ];
-  const items = ids.map((id) => document.getElementById(id)).filter(Boolean);
-  const activate = (el) => {
-    items.forEach((n) => n.classList.remove("sc-bg-454545"));
-    el.classList.add("sc-bg-454545");
-    wrap.dataset.selected = el.id;
-  };
-  items.forEach((el) => {
-    el.addEventListener("click", () => activate(el), { passive: true });
-  });
-  const preset = document.getElementById(wrap.dataset.selected || "");
-  activate(preset && items.includes(preset) ? preset : items[0]);
-}
+  const nodes = ids.map((id) => root.querySelector(`#${id}`)).filter(Boolean);
 
+  nodes.forEach((n) => {
+    n.addEventListener(
+      "click",
+      () => {
+        nodes.forEach((x) => x.classList.remove("sc-bg-454545"));
+        n.classList.add("sc-bg-454545");
+      },
+      { passive: true }
+    );
+  });
+}
 
