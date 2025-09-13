@@ -1002,7 +1002,6 @@
     ButtonAdvanceToggleControls();
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
-    initHoverTypoAllBorderControls()(() => selectedElement);
     initHoverTypoAllBorderControls(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
     opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
