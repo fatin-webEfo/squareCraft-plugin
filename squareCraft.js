@@ -709,6 +709,7 @@
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
+      initHoverTypoAllBorderControls(() => selectedElement);
     if (selectedElement) {
       initButtonStyles(selectedElement);
     }
@@ -1073,7 +1074,7 @@
   }
 
   document.body.addEventListener("click", (event) => {
-    initHoverTypoAllBorderControls(() => selectedElement);
+  
     const dropdownTrigger = event.target.closest("#font-weight-dropdown");
     const dropdownList = document.getElementById("font-weight-dropdown-list");
     if (dropdownTrigger) {
