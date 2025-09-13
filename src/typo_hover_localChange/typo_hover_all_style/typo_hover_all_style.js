@@ -296,7 +296,6 @@ export function initHoverTypoAllBorderControls(/* optional arg, ignored */) {
 
   if (group.dataset.scHoverBorderBound === "1") return;
   group.dataset.scHoverBorderBound = "1";
-
   const ACTIVE = "sc-bg-454545";
   const items = [
     "#typo-all-hover-border-side-all",
