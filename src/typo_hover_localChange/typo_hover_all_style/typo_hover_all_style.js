@@ -290,7 +290,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const sel = asGetter(getSelectedElement);
   const ids = [
     "typo-all-hover-border-side-all",
     "typo-all-hover-border-side-top",
@@ -301,59 +300,23 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const activeClass = "sc-bg-454545";
   const inactiveClass = "sc-bg-3f3f3f";
 
-  const nodes = ids.map((id) => document.getElementById(id)).filter(Boolean);
-  const setActive = (el) =>
-    nodes.forEach((n) => n.classList.toggle(activeClass, n === el));
-
-  // default “All”
-  const def = document.getElementById("typo-all-hover-border-side-all");
-  if (def) {
-    setActive(def);
-    nodes.forEach((n) => n.classList.toggle(inactiveClass, n !== def));
-  }
-
-  nodes.forEach((el) => {
-    el.addEventListener("click", () => {
-      nodes.forEach((n) => {
-        n.classList.remove(activeClass);
-        if (!n.classList.contains(inactiveClass))
-          n.classList.add(inactiveClass);
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", () => {
+        ids.forEach((otherId) => {
+          const otherEl = document.getElementById(otherId);
+          if (otherEl) {
+            otherEl.classList.remove(activeClass);
+            if (!otherEl.classList.contains(inactiveClass)) {
+              otherEl.classList.add(inactiveClass);
+            }
+          }
+        });
+        el.classList.add(activeClass);
+        el.classList.remove(inactiveClass);
       });
-      el.classList.add(activeClass);
-      el.classList.remove(inactiveClass);
-
-      // apply preview to the current selection if you want:
-      const host = sel();
-      if (!host) return;
-      const id =
-        host.id ||
-        (host.id = "sc-el-" + Math.random().toString(36).slice(2, 9));
-      const map = {
-        "typo-all-hover-border-side-all": ["top", "right", "bottom", "left"],
-        "typo-all-hover-border-side-top": ["top"],
-        "typo-all-hover-border-side-right": ["right"],
-        "typo-all-hover-border-side-bottom": ["bottom"],
-        "typo-all-hover-border-side-left": ["left"],
-      }[el.id] || ["top", "right", "bottom", "left"];
-
-      const tagId = `style-${id}-hover-borders`;
-      let tag =
-        document.getElementById(tagId) ||
-        Object.assign(document.createElement("style"), { id: tagId });
-      if (!tag.parentNode) document.head.appendChild(tag);
-
-      const sides = ["top", "right", "bottom", "left"];
-      const css = sides
-        .map(
-          (s) =>
-            `#${id}:hover { border-${s}-width: ${
-              map.includes(s) ? "1px" : "0"
-            } !important; }`
-        )
-        .join("\n");
-      tag.textContent = css;
-    });
+    }
   });
 }
-
 
