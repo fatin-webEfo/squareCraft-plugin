@@ -715,9 +715,7 @@
     if (selectedElement) {
       initHoverTypoAllFontControls(selectedElement);
     }
-    if (selectedElement) {
-      initHoverTypoAllBorderControls(selectedElement);
-    }
+
     if (selectedElement) {
       initButtonAdvanceStyles(() => selectedElement);
       horizontalinitButtonAdvanceStyles(() => selectedElement);
