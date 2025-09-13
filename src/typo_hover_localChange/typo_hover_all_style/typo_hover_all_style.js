@@ -289,44 +289,42 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 
-export function initHoverTypoAllBorderControls(/* optional arg, ignored */) {
+export function initHoverTypoAllBorderControls(getSelectedElement) {
   const root = document.getElementById("sc-widget-container") || document;
-  const group = root.querySelector("#typo-all-hover-border-sides");
-  if (!group) return;
+  const wrap = root.querySelector("#typo-all-hover-border-sides");
+  if (!wrap || wrap.dataset.scBound === "1") return;
+  wrap.dataset.scBound = "1";
 
-  if (group.dataset.scHoverBorderBound === "1") return;
-  group.dataset.scHoverBorderBound = "1";
-  const ACTIVE = "sc-bg-454545";
-  const items = [
-    "#typo-all-hover-border-side-all",
-    "#typo-all-hover-border-side-top",
-    "#typo-all-hover-border-side-bottom",
-    "#typo-all-hover-border-side-left",
-    "#typo-all-hover-border-side-right",
-  ]
-    .map((sel) => group.querySelector(sel))
-    .filter(Boolean);
+  const BTN_IDS = [
+    "typo-all-hover-border-side-all",
+    "typo-all-hover-border-side-top",
+    "typo-all-hover-border-side-bottom",
+    "typo-all-hover-border-side-left",
+    "typo-all-hover-border-side-right",
+  ];
 
-  function setActive(next) {
-    items.forEach((n) => n.classList.remove(ACTIVE));
-    next.classList.add(ACTIVE);
+  const buttons = BTN_IDS.map((id) => wrap.querySelector(`#${id}`)).filter(
+    Boolean
+  );
+
+  function setActive(el) {
+    buttons.forEach((b) => b.classList.remove("sc-bg-454545"));
+    el.classList.add("sc-bg-454545");
   }
 
-  if (!items.some((n) => n.classList.contains(ACTIVE)) && items[0]) {
-    items[0].classList.add(ACTIVE);
+  if (!buttons.some((b) => b.classList.contains("sc-bg-454545"))) {
+    const def = wrap.querySelector("#typo-all-hover-border-side-all");
+    if (def) setActive(def);
   }
 
-  group.addEventListener(
+  wrap.addEventListener(
     "click",
     (e) => {
-      const target = e.target.closest(
-        "#typo-all-hover-border-side-all, " +
-          "#typo-all-hover-border-side-top, " +
-          "#typo-all-hover-border-side-bottom, " +
-          "#typo-all-hover-border-side-left, " +
-          "#typo-all-hover-border-side-right"
+      const target = BTN_IDS.map((id) => e.target.closest(`#${id}`)).find(
+        Boolean
       );
-      if (!target || !group.contains(target)) return;
+      if (!target) return;
+      e.stopPropagation();
       setActive(target);
     },
     true
