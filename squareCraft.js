@@ -709,7 +709,6 @@
     ButtonAdvanceToggleControls();
     TypoAdvanceToggleControls();
     WidgetButtonPresetTabControls();
-      initHoverTypoAllBorderControls(() => selectedElement);
     if (selectedElement) {
       initButtonStyles(selectedElement);
     }
