@@ -289,7 +289,8 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 
-export function initHoverTypoAllBorderControls() {
+export function initHoverTypoAllBorderControls(getSelectedElement) {
+  console.log("getselectedelement") , getSelectedElement
   const ids = [
     "typo-all-hover-border-side-all",
     "typo-all-hover-border-side-top",
