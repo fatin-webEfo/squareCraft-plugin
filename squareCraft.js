@@ -774,7 +774,6 @@
 
     setTimeout(() => {
       ButtonAdvanceToggleControls();
-      initHoverTypoAllBorderControls();
       handleBlockClick(event, {
         getTextType,
         getHoverTextType,
@@ -993,7 +992,7 @@
         span.replaceWith(svg);
       });
       ButtonAdvanceToggleControls();
-      initHoverTypoAllBorderControls()
+      
     }, 100);
 
     widgetLoaded = true;
@@ -1001,9 +1000,9 @@
     initImageSectionToggleControls();
     tooltipControls();
     ButtonAdvanceToggleControls();
-    initHoverTypoAllBorderControls()
     initButtonSectionToggleControls();
     initEffectAnimationDropdownToggle(() => selectedElement);
+    initHoverTypoAllBorderControls(() => selectedElement);
     initHoverTypoAllBorderControls(() => selectedElement);
     button_initEffectAnimationDropdownToggle(() => selectedElement);
     opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);

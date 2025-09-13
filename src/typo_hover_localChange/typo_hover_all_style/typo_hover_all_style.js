@@ -290,10 +290,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls() {
-  const wrap = document.getElementById("typo-all-hover-border-sides");
-  if (!wrap || wrap.dataset.scBound === "1") return;
-  wrap.dataset.scBound = "1";
-
   const ids = [
     "typo-all-hover-border-side-all",
     "typo-all-hover-border-side-top",
@@ -301,22 +297,27 @@ export function initHoverTypoAllBorderControls() {
     "typo-all-hover-border-side-left",
     "typo-all-hover-border-side-right",
   ];
-  const selector = ids.map((id) => `#${id}`).join(", ");
+  const activeClass = "sc-bg-454545";
+  const inactiveClass = "sc-bg-3f3f3f";
 
-  const setActive = (el) => {
-    const currentNodes = Array.from(wrap.querySelectorAll(selector));
-    currentNodes.forEach((n) => n.classList.toggle("sc-bg-454545", n === el));
-  };
-
-  wrap.addEventListener("click", (e) => {
-    const btn = e.target.closest(selector);
-    if (!btn || !wrap.contains(btn)) return;
-    setActive(btn);
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", () => {
+        ids.forEach((otherId) => {
+          const otherEl = document.getElementById(otherId);
+          if (otherEl) {
+            otherEl.classList.remove(activeClass);
+            if (!otherEl.classList.contains(inactiveClass)) {
+              otherEl.classList.add(inactiveClass);
+            }
+          }
+        });
+        el.classList.add(activeClass);
+        el.classList.remove(inactiveClass);
+      });
+    }
   });
-
-  const def = document.getElementById("typo-all-hover-border-side-all");
-  if (def) setActive(def);
 }
-
 
 
