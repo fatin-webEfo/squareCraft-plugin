@@ -289,46 +289,31 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 
-export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const root = document.getElementById("sc-widget-container") || document;
-  const wrap = root.querySelector("#typo-all-hover-border-sides");
+export function initHoverTypoAllBorderControls() {
+  const wrap = document.getElementById("typo-all-hover-border-sides");
   if (!wrap || wrap.dataset.scBound === "1") return;
   wrap.dataset.scBound = "1";
 
-  const BTN_IDS = [
+  const ids = [
     "typo-all-hover-border-side-all",
     "typo-all-hover-border-side-top",
     "typo-all-hover-border-side-bottom",
     "typo-all-hover-border-side-left",
     "typo-all-hover-border-side-right",
   ];
+  const selector = ids.map((id) => `#${id}`).join(", ");
+  const nodes = ids.map((id) => document.getElementById(id)).filter(Boolean);
 
-  const buttons = BTN_IDS.map((id) => wrap.querySelector(`#${id}`)).filter(
-    Boolean
-  );
+  const setActive = (el) =>
+    nodes.forEach((n) => n.classList.toggle("sc-bg-454545", n === el));
 
-  function setActive(el) {
-    buttons.forEach((b) => b.classList.remove("sc-bg-454545"));
-    el.classList.add("sc-bg-454545");
-  }
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(selector);
+    if (btn) setActive(btn);
+  });
 
-  if (!buttons.some((b) => b.classList.contains("sc-bg-454545"))) {
-    const def = wrap.querySelector("#typo-all-hover-border-side-all");
-    if (def) setActive(def);
-  }
-
-  wrap.addEventListener(
-    "click",
-    (e) => {
-      const target = BTN_IDS.map((id) => e.target.closest(`#${id}`)).find(
-        Boolean
-      );
-      if (!target) return;
-      e.stopPropagation();
-      setActive(target);
-    },
-    true
-  );
+  const def = document.getElementById("typo-all-hover-border-side-all");
+  if (def) setActive(def);
 }
 
 
