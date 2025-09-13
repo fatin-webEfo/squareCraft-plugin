@@ -289,33 +289,49 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 
-
-export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
-  document.body.dataset.scHoverTypoAllBorderBound = "1";
-
+export function initHoverTypoAllBorderControls(/* optional arg, ignored */) {
   const root = document.getElementById("sc-widget-container") || document;
-  const wrap = root.querySelector("#typo-all-hover-border-sides");
-  if (!wrap) return;
+  const group = root.querySelector("#typo-all-hover-border-sides");
+  if (!group) return;
 
-  const ids = [
-    "typo-all-hover-border-side-all",
-    "typo-all-hover-border-side-top",
-    "typo-all-hover-border-side-bottom",
-    "typo-all-hover-border-side-left",
-    "typo-all-hover-border-side-right",
-  ];
-  const nodes = ids.map((id) => root.querySelector(`#${id}`)).filter(Boolean);
+  if (group.dataset.scHoverBorderBound === "1") return;
+  group.dataset.scHoverBorderBound = "1";
 
-  nodes.forEach((n) => {
-    n.addEventListener(
-      "click",
-      () => {
-        nodes.forEach((x) => x.classList.remove("sc-bg-454545"));
-        n.classList.add("sc-bg-454545");
-      },
-      { passive: true }
-    );
-  });
+  const ACTIVE = "sc-bg-454545";
+  const items = [
+    "#typo-all-hover-border-side-all",
+    "#typo-all-hover-border-side-top",
+    "#typo-all-hover-border-side-bottom",
+    "#typo-all-hover-border-side-left",
+    "#typo-all-hover-border-side-right",
+  ]
+    .map((sel) => group.querySelector(sel))
+    .filter(Boolean);
+
+  function setActive(next) {
+    items.forEach((n) => n.classList.remove(ACTIVE));
+    next.classList.add(ACTIVE);
+  }
+
+  if (!items.some((n) => n.classList.contains(ACTIVE)) && items[0]) {
+    items[0].classList.add(ACTIVE);
+  }
+
+  group.addEventListener(
+    "click",
+    (e) => {
+      const target = e.target.closest(
+        "#typo-all-hover-border-side-all, " +
+          "#typo-all-hover-border-side-top, " +
+          "#typo-all-hover-border-side-bottom, " +
+          "#typo-all-hover-border-side-left, " +
+          "#typo-all-hover-border-side-right"
+      );
+      if (!target || !group.contains(target)) return;
+      setActive(target);
+    },
+    true
+  );
 }
+
 
