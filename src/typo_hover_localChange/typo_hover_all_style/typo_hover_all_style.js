@@ -291,86 +291,26 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 
 export function initHoverTypoAllBorderControls() {
-  const log = (...a) => console.log("[hover-border]", ...a);
-
-  const sideAll = document.getElementById("typo-all-hover-border-side-all");
-  const sideTop = document.getElementById("typo-all-hover-border-side-top");
-  const sideBottom = document.getElementById(
-    "typo-all-hover-border-side-bottom"
-  );
-  const sideLeft = document.getElementById("typo-all-hover-border-side-left");
-  const sideRight = document.getElementById("typo-all-hover-border-side-right");
-
-  if (!sideAll || !sideTop || !sideBottom || !sideLeft || !sideRight) {
-    log(
-      "Error: One or more elements are missing. Make sure all elements exist in the DOM."
-    );
-    return;
-  }
-
-  const sides = [sideAll, sideTop, sideBottom, sideLeft, sideRight];
-
-  function paintActiveSide(side) {
-    // Remove the active background from all sides
-    sides.forEach((sideElement) => {
-      if (sideElement) {
-        sideElement.classList.remove("sc-bg-454545");
-        console.log(`${sideElement.id} removed sc-bg-454545`);
-      }
-    });
-
-    // Apply active background color to the clicked side
-    const activeElement = document.getElementById(
-      `typo-all-hover-border-side-${side}`
-    );
-    if (activeElement) {
-      activeElement.classList.add("sc-bg-454545");
-      console.log(`${activeElement.id} added sc-bg-454545`);
-      console.log("Active element's classes: ", activeElement.classList);
-
-      // Checking the background color of the active element
-      console.log(
-        "Computed styles: ",
-        window.getComputedStyle(activeElement).backgroundColor
-      );
-
-      // Force reflow to ensure the styles are updated
-      activeElement.offsetHeight;
-    } else {
-      console.log(`Active element not found for side: ${side}`);
-    }
-  }
-
-  sideAll?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    console.log("Clicked on: All");
-    paintActiveSide("all");
+  const wrap = document.getElementById("typo-all-hover-border-sides");
+  if (!wrap) return;
+  const ids = [
+    "typo-all-hover-border-side-all",
+    "typo-all-hover-border-side-top",
+    "typo-all-hover-border-side-bottom",
+    "typo-all-hover-border-side-left",
+    "typo-all-hover-border-side-right",
+  ];
+  const items = ids.map((id) => document.getElementById(id)).filter(Boolean);
+  const activate = (el) => {
+    items.forEach((n) => n.classList.remove("sc-bg-454545"));
+    el.classList.add("sc-bg-454545");
+    wrap.dataset.selected = el.id;
+  };
+  items.forEach((el) => {
+    el.addEventListener("click", () => activate(el), { passive: true });
   });
-
-  sideTop?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    console.log("Clicked on: Top");
-    paintActiveSide("top");
-  });
-
-  sideBottom?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    console.log("Clicked on: Bottom");
-    paintActiveSide("bottom");
-  });
-
-  sideLeft?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    console.log("Clicked on: Left");
-    paintActiveSide("left");
-  });
-
-  sideRight?.addEventListener("click", (event) => {
-    event.stopPropagation();
-    console.log("Clicked on: Right");
-    paintActiveSide("right");
-  });
-
-  log("[hover-border] initialized and ready");
+  const preset = document.getElementById(wrap.dataset.selected || "");
+  activate(preset && items.includes(preset) ? preset : items[0]);
 }
+
 
