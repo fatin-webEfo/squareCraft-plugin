@@ -293,6 +293,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const log = (...a) => console.log("[hover-typo-all:border]", ...a);
   const root = document.getElementById("sc-widget-container") || document;
 
+  // ---------- Side & Style buttons (unchanged) ----------
   const panelSel = "#typo-all-hover-border-sides";
   const itemSel = [
     "#typo-all-hover-border-side-all",
@@ -380,6 +381,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
+  // ---------- Slider wiring ----------
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
@@ -390,6 +392,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return;
   }
 
+  // ensure proper layering & interaction
   track.style.position = track.style.position || "relative";
   track.style.userSelect = "none";
   track.style.touchAction = "none";
@@ -402,6 +405,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   knob.setAttribute("role", "slider");
   knob.tabIndex = knob.tabIndex || 0;
 
+  // hover scoping for CSS injection
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
     heading2: "h2",
@@ -455,6 +459,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       .join(" ")} }`;
   }
 
+  // range helpers
   const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
   function getRange() {
     return {
@@ -499,6 +504,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(v);
   }
 
+  // initial
   const initVal = num(track.dataset.value, getRange().min);
   setByValue(initVal);
   writeBorder(initVal);
@@ -637,3 +643,4 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   log("ready");
 }
+
