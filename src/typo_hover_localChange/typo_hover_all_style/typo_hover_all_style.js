@@ -293,76 +293,54 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const root = document.getElementById("sc-widget-container") || document;
-  const active = "sc-bg-454545";
-  const inactive = "sc-bg-3f3f3f";
-
   const groups = [
-    {
-      wrap: "#typo-all-hover-border-sides",
-      items: [
-        "#typo-all-hover-border-side-all",
-        "#typo-all-hover-border-side-top",
-        "#typo-all-hover-border-side-bottom",
-        "#typo-all-hover-border-side-left",
-        "#typo-all-hover-border-side-right",
-      ],
-    },
-    {
-      wrap: "#typo-all-hover-border-style-wrap",
-      items: [
-        "#typo-all-hover-border-style-solid",
-        "#typo-all-hover-border-style-dashed",
-        "#typo-all-hover-border-style-dotted",
-      ],
-    },
+    [
+      "typo-all-hover-border-side-all",
+      "typo-all-hover-border-side-top",
+      "typo-all-hover-border-side-bottom",
+      "typo-all-hover-border-side-left",
+      "typo-all-hover-border-side-right",
+    ],
+    [
+      "typo-all-hover-border-style-solid",
+      "typo-all-hover-border-style-dashed",
+      "typo-all-hover-border-style-dotted",
+    ],
   ];
 
-  function setActive(panel, items, el) {
-    items.forEach((sel) => {
-      const n = panel.querySelector(sel);
+  const active = "sc-bg-454545";
+
+  function activate(clickedId, group) {
+    group.forEach((id) => {
+      const n = document.getElementById(id);
       if (!n) return;
-      n.classList.remove(active);
-      if (!n.classList.contains(inactive)) n.classList.add(inactive);
+      n.classList.remove(active, "sc-bg-3f3f3f");
     });
-    if (el) {
-      el.classList.add(active);
-      el.classList.remove(inactive);
-      panel.dataset.choice = el.id;
-    }
+    const el = document.getElementById(clickedId);
+    if (el) el.classList.add(active);
   }
 
-  function initGroup(panel, items) {
-    const els = items.map((s) => panel.querySelector(s)).filter(Boolean);
-    if (!els.length) return;
-    const current = els.find((n) => n.classList.contains(active)) || els[0];
-    setActive(panel, items, current);
-  }
-
-  groups.forEach(({ wrap, items }) => {
-    const panel = root.querySelector(wrap);
-    if (!panel) return;
-    initGroup(panel, items);
-  });
-
-  root.addEventListener(
-    "pointerdown",
-    (e) => {
-      const group = groups.find(({ items }) =>
-        e.target.closest(items.join(","))
+  groups.forEach((group) => {
+    group.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener(
+        "click",
+        (e) => {
+          e.preventDefault();
+          activate(id, group);
+        },
+        true
       );
-      if (!group) return;
-      const panel = root.querySelector(group.wrap);
-      if (!panel) return;
-      const btn = e.target.closest(group.items.join(","));
-      if (!btn) return;
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      setActive(panel, group.items, btn);
-    },
-    true
-  );
+    });
+
+    const preset =
+      group
+        .map((id) => document.getElementById(id))
+        .find((n) => n && n.classList.contains(active)) ||
+      document.getElementById(group[0]);
+    if (preset) activate(preset.id, group);
+  });
 }
 
 
