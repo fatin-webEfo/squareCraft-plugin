@@ -353,11 +353,8 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const current = Array.from(items).find((n) =>
       n.classList.contains(activeClass)
     );
-    if (current) {
-      setActive(panel, current);
-    } else if (items[0]) {
-      setActive(panel, items[0]);
-    }
+    if (current) setActive(panel, current);
+    else if (items[0]) setActive(panel, items[0]);
   });
 
   root.querySelectorAll(stylePanelSel).forEach((panel) => {
@@ -365,11 +362,8 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const current = Array.from(items).find((n) =>
       n.classList.contains(activeClass)
     );
-    if (current) {
-      setActiveStyle(panel, current);
-    } else if (items[0]) {
-      setActiveStyle(panel, items[0]);
-    }
+    if (current) setActiveStyle(panel, current);
+    else if (items[0]) setActiveStyle(panel, items[0]);
   });
 
   root.addEventListener(
@@ -399,6 +393,61 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     },
     true
   );
+
+  const track = document.getElementById("typo-all-hover-border-width-track");
+  const fill = document.getElementById("typo-all-hover-border-width-fill");
+  const knob = document.getElementById("typo-all-hover-border-width-knob");
+
+  if (track && fill && knob && !track.dataset.bound) {
+    track.dataset.bound = "1";
+    knob.style.transform = "translate(-50%, -50%)";
+    let dragging = false;
+
+    function pctFromEvent(ev) {
+      const r = track.getBoundingClientRect();
+      const x = Math.min(Math.max(ev.clientX - r.left, 0), r.width || 1);
+      return r.width ? x / r.width : 0;
+    }
+
+    function renderPct(p) {
+      const clamped = Math.min(Math.max(p, 0), 1);
+      fill.style.width = `${clamped * 100}%`;
+      knob.style.left = `${clamped * 100}%`;
+      track.dataset.value = String(clamped);
+      track.dispatchEvent(
+        new CustomEvent("sc:hover-typo-all:border-width", {
+          bubbles: true,
+          detail: { percent: clamped },
+        })
+      );
+    }
+
+    function start(ev) {
+      ev.preventDefault();
+      dragging = true;
+      track.setPointerCapture?.(ev.pointerId || 1);
+      renderPct(pctFromEvent(ev));
+      document.addEventListener("pointermove", move, true);
+      document.addEventListener("pointerup", end, true);
+      document.addEventListener("pointercancel", end, true);
+    }
+
+    function move(ev) {
+      if (!dragging) return;
+      renderPct(pctFromEvent(ev));
+    }
+
+    function end(ev) {
+      dragging = false;
+      document.removeEventListener("pointermove", move, true);
+      document.removeEventListener("pointerup", end, true);
+      document.removeEventListener("pointercancel", end, true);
+    }
+
+    track.addEventListener("pointerdown", start, true);
+    knob.addEventListener("pointerdown", start, true);
+    renderPct(Number(track.dataset.value || 0));
+  }
 
   log("ready");
 }

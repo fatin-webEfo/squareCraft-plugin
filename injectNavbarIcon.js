@@ -4,16 +4,10 @@ export function injectNavbarIcon() {
   function insertAdminIcon() {
     if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
 const navContainer =
-  parent.document
-    .querySelector('button[data-test="frameToolbarSiteStyles"]')
-    ?.closest("ul") ||
-  parent.document
-    .querySelector('button[aria-label="Preview"]')
-    ?.closest("ul") ||
-  parent.document.querySelector('[role="tablist"]')?.closest("ul") ||
-  parent.document
-    .querySelector('[data-guidance-engine*="device-view-button-container"]')
-    ?.closest("ul");
+  parent.document.querySelector('button[data-test="frameToolbarSiteStyles"]')?.closest('ul') ||
+  parent.document.querySelector('button[aria-label="Preview"]')?.closest('ul') ||
+  parent.document.querySelector('[role="tablist"]')?.closest('ul') ||
+  parent.document.querySelector('[data-guidance-engine*="device-view-button-container"]')?.closest('ul');
       if (!navContainer) return;
 
       const iconSrc =
