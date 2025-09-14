@@ -291,6 +291,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return;
   }
   document.body.dataset.scHoverTypoAllBorderBound = "1";
+
+  const log = (...a) => console.log("[hover-typo-all:border]", ...a);
+
   const root = document.getElementById("sc-widget-container") || document;
 
   const panelSel = "#typo-all-hover-border-sides";
@@ -342,6 +345,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     log("active style set", panel.dataset.style);
   }
 
+  // Initialize which side/style is active
   root.querySelectorAll(panelSel).forEach((panel) => {
     const items = panel.querySelectorAll(itemSel);
     const current = Array.from(items).find((n) =>
@@ -360,6 +364,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     else if (items[0]) setActiveStyle(panel, items[0]);
   });
 
+  // Click handling for the side/style buttons
   root.addEventListener(
     "pointerdown",
     (e) => {
@@ -388,6 +393,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
+  // ===== Slider (track/fill/knob) =====
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
@@ -434,12 +440,14 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       root.querySelector(stylePanelSel)?.dataset.style || "solid"
     ).toLowerCase();
     const prop = side === "all" ? "border-width" : `border-${side}-width`;
+
     window.__sc_extcss_hover_border = window.__sc_extcss_hover_border || {};
     const bag = window.__sc_extcss_hover_border;
     bag[id] = Object.assign({}, bag[id] || {}, {
       [prop]: `${widthPx}px`,
       "border-style": style,
     });
+
     const body = Object.entries(bag[id])
       .map(([k, v]) => `${k}: ${v} !important;`)
       .join(" ");
@@ -453,8 +461,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   function getBounds() {
     const rect = track.getBoundingClientRect();
-    const k = knob.getBoundingClientRect();
-    return { rect, knobW: k.width || 12 };
+    return { rect };
   }
 
   function getRange() {
@@ -476,7 +483,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   }
 
   function setByPct(p) {
-    const { rect, knobW } = getBounds();
+    const { rect } = getBounds();
     const x = clamp(p * rect.width, 0, rect.width);
     fill.style.width = `${x}px`;
     knob.style.left = `${x}px`;
@@ -499,6 +506,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function commitFromPct(p) {
     const v = valueFromPct(p);
     track.dataset.value = String(v);
+    knob.setAttribute("aria-valuenow", String(v));
     setByValue(v);
     writeBorder(v);
   }
@@ -508,6 +516,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function startDrag(clientX) {
     if (!track || !fill || !knob) return;
     dragging = true;
+    // Active state: color whole track while interacting
     track.classList.remove("sc-bg-F6F6F6");
     track.classList.add("sc-bg-color-EF7C2F");
     commitFromPct(pctFromClientX(clientX));
@@ -526,19 +535,41 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   }
 
   if (track && fill && knob) {
+    // Improve touch dragging
+    track.style.touchAction = "none";
+    fill.style.touchAction = "none";
+    knob.style.touchAction = "none";
+
+    // ARIA (nice to have)
+    knob.setAttribute("role", "slider");
+    knob.setAttribute("aria-valuemin", String(track.dataset.min ?? 0));
+    knob.setAttribute("aria-valuemax", String(track.dataset.max ?? 20));
+
     const initVal = Number(track.dataset.value ?? 1);
     setByValue(initVal);
     writeBorder(initVal);
+    knob.setAttribute("aria-valuenow", String(initVal));
 
     const onPointerDown = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      track.setPointerCapture?.(e.pointerId);
+      // capture on the element that actually received the event
+      const captor = e.currentTarget;
+      try {
+        captor.setPointerCapture && captor.setPointerCapture(e.pointerId);
+      } catch {}
       startDrag(e.clientX);
-      const move = (ev) => moveDrag(ev.clientX);
+
+      const move = (ev) => {
+        ev.preventDefault();
+        moveDrag(ev.clientX);
+      };
       const up = (ev) => {
         endDrag();
-        track.releasePointerCapture?.(ev.pointerId);
+        try {
+          captor.releasePointerCapture &&
+            captor.releasePointerCapture(ev.pointerId);
+        } catch {}
         window.removeEventListener("pointermove", move, true);
         window.removeEventListener("pointerup", up, true);
         window.removeEventListener("pointercancel", up, true);
@@ -548,14 +579,41 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       window.addEventListener("pointercancel", up, true);
     };
 
+    // You can start drag from any of them
     track.addEventListener("pointerdown", onPointerDown, true);
     fill.addEventListener("pointerdown", onPointerDown, true);
     knob.addEventListener("pointerdown", onPointerDown, true);
 
-    track.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      commitFromPct(pctFromClientX(e.clientX));
+    // Click to jump
+    track.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        commitFromPct(pctFromClientX(e.clientX));
+      },
+      true
+    );
+
+    // Keyboard nudge (left/right arrows)
+    knob.addEventListener("keydown", (e) => {
+      const { min, max, step } = getRange();
+      const cur = Number(track.dataset.value ?? min);
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+        e.preventDefault();
+        const v = clamp(cur - step, min, max);
+        track.dataset.value = String(v);
+        setByValue(v);
+        writeBorder(v);
+        knob.setAttribute("aria-valuenow", String(v));
+      } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const v = clamp(cur + step, min, max);
+        track.dataset.value = String(v);
+        setByValue(v);
+        writeBorder(v);
+        knob.setAttribute("aria-valuenow", String(v));
+      }
     });
   } else {
     log("width track elements missing");
