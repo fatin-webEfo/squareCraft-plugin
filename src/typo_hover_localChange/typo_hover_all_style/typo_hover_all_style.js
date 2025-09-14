@@ -1,11 +1,8 @@
 export function initHoverTypoAllFontControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBound === "1") {
-    console.warn("[hover-typo-all] already bound, skipping");
     return;
   }
   document.body.dataset.scHoverTypoAllBound = "1";
-
-  const log = (...a) => console.log("[hover-typo-all]", ...a);
 
   const root = document.getElementById("sc-widget-container") || document;
   const sel =
@@ -291,12 +288,9 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") {
-    console.warn("[hover-typo-all:border] already bound, skipping");
     return;
   }
   document.body.dataset.scHoverTypoAllBorderBound = "1";
-
-  const log = (...a) => console.log("[hover-typo-all:border]", ...a);
   const root = document.getElementById("sc-widget-container") || document;
 
   const panelSel = "#typo-all-hover-border-sides";
