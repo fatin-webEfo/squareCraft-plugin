@@ -294,6 +294,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
   const root = document.getElementById("sc-widget-container") || document;
+  const active = "sc-bg-454545";
+  const inactive = "sc-bg-3f3f3f";
+
   const groups = [
     {
       wrap: "#typo-all-hover-border-sides",
@@ -315,39 +318,51 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     },
   ];
 
-  const active = "sc-bg-454545";
-  const inactive = "sc-bg-3f3f3f";
-
   function setActive(panel, items, el) {
-    items.forEach((s) => {
-      const n = panel.querySelector(s);
+    items.forEach((sel) => {
+      const n = panel.querySelector(sel);
       if (!n) return;
       n.classList.remove(active);
       if (!n.classList.contains(inactive)) n.classList.add(inactive);
     });
-    el.classList.add(active);
-    el.classList.remove(inactive);
-    panel.dataset.choice = el.id;
+    if (el) {
+      el.classList.add(active);
+      el.classList.remove(inactive);
+      panel.dataset.choice = el.id;
+    }
+  }
+
+  function initGroup(panel, items) {
+    const els = items.map((s) => panel.querySelector(s)).filter(Boolean);
+    if (!els.length) return;
+    const current = els.find((n) => n.classList.contains(active)) || els[0];
+    setActive(panel, items, current);
   }
 
   groups.forEach(({ wrap, items }) => {
     const panel = root.querySelector(wrap);
     if (!panel) return;
-    const els = items.map((s) => panel.querySelector(s)).filter(Boolean);
-    const current = els.find((n) => n.classList.contains(active));
-    setActive(panel, items, current || els[0]);
-    panel.addEventListener(
-      "pointerdown",
-      (e) => {
-        const btn = e.target.closest(items.join(","));
-        if (!btn) return;
-        e.preventDefault();
-        e.stopPropagation();
-        setActive(panel, items, btn);
-      },
-      true
-    );
+    initGroup(panel, items);
   });
+
+  root.addEventListener(
+    "pointerdown",
+    (e) => {
+      const group = groups.find(({ items }) =>
+        e.target.closest(items.join(","))
+      );
+      if (!group) return;
+      const panel = root.querySelector(group.wrap);
+      if (!panel) return;
+      const btn = e.target.closest(group.items.join(","));
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      setActive(panel, group.items, btn);
+    },
+    true
+  );
 }
 
 
