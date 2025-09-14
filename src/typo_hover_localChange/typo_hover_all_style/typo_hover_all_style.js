@@ -290,75 +290,64 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBorderBound === "1") {
-    console.warn("[hover-typo-all:border] already bound, skipping");
-    return;
-  }
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const log = (...a) => console.log("[hover-typo-all:border]", ...a);
   const root = document.getElementById("sc-widget-container") || document;
+  const groups = [
+    {
+      wrap: "#typo-all-hover-border-sides",
+      items: [
+        "#typo-all-hover-border-side-all",
+        "#typo-all-hover-border-side-top",
+        "#typo-all-hover-border-side-bottom",
+        "#typo-all-hover-border-side-left",
+        "#typo-all-hover-border-side-right",
+      ],
+    },
+    {
+      wrap: "#typo-all-hover-border-style-wrap",
+      items: [
+        "#typo-all-hover-border-style-solid",
+        "#typo-all-hover-border-style-dashed",
+        "#typo-all-hover-border-style-dotted",
+      ],
+    },
+  ];
 
-  const panelSel = "#typo-all-hover-border-sides";
-  const itemSel = [
-    "#typo-all-hover-border-side-all",
-    "#typo-all-hover-border-side-top",
-    "#typo-all-hover-border-side-bottom",
-    "#typo-all-hover-border-side-left",
-    "#typo-all-hover-border-side-right",
-  ].join(",");
+  const active = "sc-bg-454545";
+  const inactive = "sc-bg-3f3f3f";
 
-  const activeClass = "sc-bg-454545";
-  const inactiveClass = "sc-bg-3f3f3f";
-
-  function setActive(panel, el) {
-    const items = panel.querySelectorAll(itemSel);
-    items.forEach((n) => {
-      n.classList.remove(activeClass);
-      if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
+  function setActive(panel, items, el) {
+    items.forEach((s) => {
+      const n = panel.querySelector(s);
+      if (!n) return;
+      n.classList.remove(active);
+      if (!n.classList.contains(inactive)) n.classList.add(inactive);
     });
-    el.classList.add(activeClass);
-    el.classList.remove(inactiveClass);
-    // stash chosen side (optional future use)
-    panel.dataset.side = (el.id || "").replace(
-      "typo-all-hover-border-side-",
-      ""
-    );
-    log("active set", panel.dataset.side);
+    el.classList.add(active);
+    el.classList.remove(inactive);
+    panel.dataset.choice = el.id;
   }
 
-  // Initial normalize: ensure exactly one active (default to "All")
-  root.querySelectorAll(panelSel).forEach((panel) => {
-    const items = panel.querySelectorAll(itemSel);
-    const current = Array.from(items).find((n) =>
-      n.classList.contains(activeClass)
+  groups.forEach(({ wrap, items }) => {
+    const panel = root.querySelector(wrap);
+    if (!panel) return;
+    const els = items.map((s) => panel.querySelector(s)).filter(Boolean);
+    const current = els.find((n) => n.classList.contains(active));
+    setActive(panel, items, current || els[0]);
+    panel.addEventListener(
+      "pointerdown",
+      (e) => {
+        const btn = e.target.closest(items.join(","));
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        setActive(panel, items, btn);
+      },
+      true
     );
-    if (current) {
-      setActive(panel, current);
-    } else if (items[0]) {
-      setActive(panel, items[0]);
-    }
   });
-
-  // Delegated handler (capture to win over other listeners)
-  root.addEventListener(
-    "pointerdown",
-    (e) => {
-      const btn = e.target.closest(itemSel);
-      if (!btn) return;
-      const panel = btn.closest(panelSel);
-      if (!panel) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-
-      setActive(panel, btn);
-    },
-    true
-  );
-
-  log("ready");
 }
 
 
