@@ -287,13 +287,10 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBorderBound === "1") {
-    return;
-  }
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
   const log = (...a) => console.log("[hover-typo-all:border]", ...a);
-
   const root = document.getElementById("sc-widget-container") || document;
 
   const panelSel = "#typo-all-hover-border-sides";
@@ -316,8 +313,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const inactiveClass = "sc-bg-3f3f3f";
 
   function setActive(panel, el) {
-    const items = panel.querySelectorAll(itemSel);
-    items.forEach((n) => {
+    panel.querySelectorAll(itemSel).forEach((n) => {
       n.classList.remove(activeClass);
       if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
     });
@@ -327,12 +323,11 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       "typo-all-hover-border-side-",
       ""
     );
-    log("active side set", panel.dataset.side);
+    log("side:", panel.dataset.side);
   }
 
   function setActiveStyle(panel, el) {
-    const items = panel.querySelectorAll(styleItemSel);
-    items.forEach((n) => {
+    panel.querySelectorAll(styleItemSel).forEach((n) => {
       n.classList.remove(activeClass);
       if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
     });
@@ -342,29 +337,26 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       "typo-all-hover-border-style-",
       ""
     );
-    log("active style set", panel.dataset.style);
+    log("style:", panel.dataset.style);
   }
 
-  // Initialize which side/style is active
   root.querySelectorAll(panelSel).forEach((panel) => {
     const items = panel.querySelectorAll(itemSel);
-    const current = Array.from(items).find((n) =>
-      n.classList.contains(activeClass)
+    setActive(
+      panel,
+      Array.from(items).find((n) => n.classList.contains(activeClass)) ||
+        items[0]
     );
-    if (current) setActive(panel, current);
-    else if (items[0]) setActive(panel, items[0]);
   });
-
   root.querySelectorAll(stylePanelSel).forEach((panel) => {
     const items = panel.querySelectorAll(styleItemSel);
-    const current = Array.from(items).find((n) =>
-      n.classList.contains(activeClass)
+    setActiveStyle(
+      panel,
+      Array.from(items).find((n) => n.classList.contains(activeClass)) ||
+        items[0]
     );
-    if (current) setActiveStyle(panel, current);
-    else if (items[0]) setActiveStyle(panel, items[0]);
   });
 
-  // Click handling for the side/style buttons
   root.addEventListener(
     "pointerdown",
     (e) => {
@@ -378,7 +370,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         setActive(panel, btn);
         return;
       }
-
       const styleBtn = e.target.closest(styleItemSel);
       if (styleBtn) {
         const panel = styleBtn.closest(stylePanelSel);
@@ -393,10 +384,22 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
-  // ===== Slider (track/fill/knob) =====
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
+
+  if (!track || !fill || !knob) {
+    log("slider elements missing");
+    return;
+  }
+
+  track.style.touchAction = "none";
+  fill.style.touchAction = "none";
+  knob.style.touchAction = "none";
+  track.style.userSelect = "none";
+
+  knob.setAttribute("role", "slider");
+  knob.tabIndex = knob.tabIndex || 0;
 
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
@@ -407,12 +410,10 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
     paragraph3: "p.sqsrte-small",
   };
-
   function ensureId(el) {
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
   }
-
   function hoverSelectors(scopeId) {
     const base = Object.values(TYPE_TO_SELECTOR).map(
       (s) => `#${scopeId}:hover ${s}`
@@ -420,7 +421,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const exp = base.flatMap((s) => [s, `${s} span`, `${s} a`]);
     return [`#${scopeId}:hover`, ...exp];
   }
-
   function writeBorder(widthPx) {
     const host =
       typeof getSelectedElement === "function" ? getSelectedElement() : null;
@@ -448,178 +448,203 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       "border-style": style,
     });
 
-    const body = Object.entries(bag[id])
+    tag.textContent = `${hoverSelectors(id).join(", ")} { ${Object.entries(
+      bag[id]
+    )
       .map(([k, v]) => `${k}: ${v} !important;`)
-      .join(" ");
-    tag.textContent = `${hoverSelectors(id).join(", ")} { ${body} }`;
-    log("applied border", { id, side, style, widthPx });
+      .join(" ")} }`;
   }
 
-  function clamp(n, a, b) {
-    return Math.min(b, Math.max(a, n));
-  }
-
-  function getBounds() {
-    const rect = track.getBoundingClientRect();
-    return { rect };
-  }
-
+  const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
   function getRange() {
-    const min = Number(track?.dataset.min ?? 0);
-    const max = Number(track?.dataset.max ?? 20);
-    const step = Number(track?.dataset.step ?? 1);
-    return { min, max, step };
+    return {
+      min: num(track.dataset.min, 0),
+      max: num(track.dataset.max, 20),
+      step: Math.max(1, num(track.dataset.step, 1)),
+    };
   }
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+  const quant = (v, step) => Math.round(v / step) * step;
 
-  function quantize(v, step) {
-    if (step <= 0) return v;
-    return Math.round(v / step) * step;
+  function pctFromX(clientX) {
+    const r = track.getBoundingClientRect();
+    const x = clamp(clientX - r.left, 0, r.width);
+    return r.width ? x / r.width : 0;
   }
-
-  function pctFromClientX(clientX) {
-    const { rect } = getBounds();
-    const x = clamp(clientX - rect.left, 0, rect.width);
-    return rect.width ? x / rect.width : 0;
-  }
-
   function setByPct(p) {
-    const { rect } = getBounds();
-    const x = clamp(p * rect.width, 0, rect.width);
+    const r = track.getBoundingClientRect();
+    const x = clamp(p * r.width, 0, r.width);
     fill.style.width = `${x}px`;
     knob.style.left = `${x}px`;
     knob.style.top = "50%";
     knob.style.transform = "translate(-50%, -50%)";
   }
-
   function setByValue(px) {
     const { min, max } = getRange();
     const p = clamp((px - min) / (max - min || 1), 0, 1);
     setByPct(p);
   }
-
   function valueFromPct(p) {
     const { min, max, step } = getRange();
-    const raw = min + p * (max - min);
-    return quantize(raw, step);
+    return quant(min + p * (max - min), step);
   }
-
   function commitFromPct(p) {
     const v = valueFromPct(p);
     track.dataset.value = String(v);
     knob.setAttribute("aria-valuenow", String(v));
+    knob.setAttribute("aria-valuemin", String(getRange().min));
+    knob.setAttribute("aria-valuemax", String(getRange().max));
     setByValue(v);
     writeBorder(v);
   }
 
+  // initial state
+  const initVal = num(track.dataset.value, getRange().min);
+  setByValue(initVal);
+  writeBorder(initVal);
+  knob.setAttribute("aria-valuenow", String(initVal));
+
+  // drag state
   let dragging = false;
 
-  function startDrag(clientX) {
-    if (!track || !fill || !knob) return;
-    dragging = true;
-    // Active state: color whole track while interacting
+  const activate = () => {
     track.classList.remove("sc-bg-F6F6F6");
-    track.classList.add("sc-bg-color-EF7C2F");
-    commitFromPct(pctFromClientX(clientX));
-  }
-
-  function moveDrag(clientX) {
-    if (!dragging) return;
-    commitFromPct(pctFromClientX(clientX));
-  }
-
-  function endDrag() {
-    if (!dragging) return;
-    dragging = false;
+    track.classList.add("sc-bg-color-EF7C2F"); // your active color
+  };
+  const deactivate = () => {
     track.classList.remove("sc-bg-color-EF7C2F");
     track.classList.add("sc-bg-F6F6F6");
+  };
+
+  // unified clientX from pointer/mouse/touch
+  const getX = (e) =>
+    e?.clientX ??
+    (e?.touches && e.touches[0]?.clientX) ??
+    (e?.changedTouches && e.changedTouches[0]?.clientX);
+
+  function start(clientX, captor, pid) {
+    dragging = true;
+    activate();
+    commitFromPct(pctFromX(clientX));
+    try {
+      captor.setPointerCapture && pid != null && captor.setPointerCapture(pid);
+    } catch {}
+  }
+  function move(clientX) {
+    if (!dragging) return;
+    commitFromPct(pctFromX(clientX));
+  }
+  function end(captor, pid) {
+    if (!dragging) return;
+    dragging = false;
+    deactivate();
+    try {
+      captor.releasePointerCapture &&
+        pid != null &&
+        captor.releasePointerCapture(pid);
+    } catch {}
   }
 
-  if (track && fill && knob) {
-    // Improve touch dragging
-    track.style.touchAction = "none";
-    fill.style.touchAction = "none";
-    knob.style.touchAction = "none";
+  // PointerEvents if available, else mouse/touch fallbacks
+  const onPointerDown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const captor = e.currentTarget;
+    start(e.clientX, captor, e.pointerId);
 
-    // ARIA (nice to have)
-    knob.setAttribute("role", "slider");
-    knob.setAttribute("aria-valuemin", String(track.dataset.min ?? 0));
-    knob.setAttribute("aria-valuemax", String(track.dataset.max ?? 20));
+    const onMove = (ev) => {
+      ev.preventDefault();
+      move(ev.clientX);
+    };
+    const onUp = (ev) => {
+      end(captor, ev.pointerId);
+      window.removeEventListener("pointermove", onMove, true);
+      window.removeEventListener("pointerup", onUp, true);
+      window.removeEventListener("pointercancel", onUp, true);
+    };
+    window.addEventListener("pointermove", onMove, true);
+    window.addEventListener("pointerup", onUp, true);
+    window.addEventListener("pointercancel", onUp, true);
+  };
 
-    const initVal = Number(track.dataset.value ?? 1);
-    setByValue(initVal);
-    writeBorder(initVal);
-    knob.setAttribute("aria-valuenow", String(initVal));
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const captor = e.currentTarget;
+    start(e.clientX, captor, null);
+    const mm = (ev) => move(ev.clientX);
+    const mu = () => {
+      end(captor, null);
+      window.removeEventListener("mousemove", mm, true);
+      window.removeEventListener("mouseup", mu, true);
+    };
+    window.addEventListener("mousemove", mm, true);
+    window.addEventListener("mouseup", mu, true);
+  };
 
-    const onPointerDown = (e) => {
+  const onTouchStart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const captor = e.currentTarget;
+    start(getX(e), captor, null);
+    const tm = (ev) => move(getX(ev));
+    const tu = (ev) => {
+      end(captor, null);
+      window.removeEventListener("touchmove", tm, true);
+      window.removeEventListener("touchend", tu, true);
+      window.removeEventListener("touchcancel", tu, true);
+    };
+    window.addEventListener("touchmove", tm, true);
+    window.addEventListener("touchend", tu, true);
+    window.addEventListener("touchcancel", tu, true);
+  };
+
+  const bindAll = (el) => {
+    if ("onpointerdown" in window)
+      el.addEventListener("pointerdown", onPointerDown, true);
+    el.addEventListener("mousedown", onMouseDown, true);
+    el.addEventListener("touchstart", onTouchStart, {
+      capture: true,
+      passive: false,
+    });
+  };
+
+  // start drag from any of them
+  [track, fill, knob].forEach(bindAll);
+
+  // click-to-jump
+  track.addEventListener(
+    "click",
+    (e) => {
+      if (dragging) return; // ignore click that ends a drag
       e.preventDefault();
       e.stopPropagation();
-      // capture on the element that actually received the event
-      const captor = e.currentTarget;
-      try {
-        captor.setPointerCapture && captor.setPointerCapture(e.pointerId);
-      } catch {}
-      startDrag(e.clientX);
+      commitFromPct(pctFromX(e.clientX));
+    },
+    true
+  );
 
-      const move = (ev) => {
-        ev.preventDefault();
-        moveDrag(ev.clientX);
-      };
-      const up = (ev) => {
-        endDrag();
-        try {
-          captor.releasePointerCapture &&
-            captor.releasePointerCapture(ev.pointerId);
-        } catch {}
-        window.removeEventListener("pointermove", move, true);
-        window.removeEventListener("pointerup", up, true);
-        window.removeEventListener("pointercancel", up, true);
-      };
-      window.addEventListener("pointermove", move, true);
-      window.addEventListener("pointerup", up, true);
-      window.addEventListener("pointercancel", up, true);
-    };
-
-    // You can start drag from any of them
-    track.addEventListener("pointerdown", onPointerDown, true);
-    fill.addEventListener("pointerdown", onPointerDown, true);
-    knob.addEventListener("pointerdown", onPointerDown, true);
-
-    // Click to jump
-    track.addEventListener(
-      "click",
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        commitFromPct(pctFromClientX(e.clientX));
-      },
-      true
-    );
-
-    // Keyboard nudge (left/right arrows)
-    knob.addEventListener("keydown", (e) => {
-      const { min, max, step } = getRange();
-      const cur = Number(track.dataset.value ?? min);
-      if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
-        e.preventDefault();
-        const v = clamp(cur - step, min, max);
-        track.dataset.value = String(v);
-        setByValue(v);
-        writeBorder(v);
-        knob.setAttribute("aria-valuenow", String(v));
-      } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
-        e.preventDefault();
-        const v = clamp(cur + step, min, max);
-        track.dataset.value = String(v);
-        setByValue(v);
-        writeBorder(v);
-        knob.setAttribute("aria-valuenow", String(v));
-      }
-    });
-  } else {
-    log("width track elements missing");
-  }
+  // keyboard nudge
+  knob.addEventListener("keydown", (e) => {
+    const { min, max, step } = getRange();
+    const cur = num(track.dataset.value, min);
+    if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      const v = clamp(cur - step, min, max);
+      track.dataset.value = v;
+      setByValue(v);
+      writeBorder(v);
+      knob.setAttribute("aria-valuenow", String(v));
+    } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const v = clamp(cur + step, min, max);
+      track.dataset.value = v;
+      setByValue(v);
+      writeBorder(v);
+      knob.setAttribute("aria-valuenow", String(v));
+    }
+  });
 
   log("ready");
 }
-
 
