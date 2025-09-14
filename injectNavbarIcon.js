@@ -5,7 +5,22 @@
 
     function insertAdminIcon() {
       if (!parent.document.querySelector(".sc-admin-icon-wrapper")) {
-        const navContainer = parent.document.querySelector("ul.css-1tn5iw9");
+        let navContainer = parent.document.querySelector(
+          'nav[role="navigation"] ul, header nav ul, [data-test*="nav"] ul, [data-testid*="nav"] ul, [aria-label*="Navigation" i] ul'
+        );
+
+        if (!navContainer) {
+          const cands = Array.from(
+            parent.document.querySelectorAll("nav ul, header ul")
+          );
+          navContainer =
+            cands.find((ul) =>
+              ul.querySelector(
+                'a, [role="menuitem"], button[aria-haspopup], li'
+              )
+            ) || null;
+        }
+        if (!navContainer) return;
         if (!navContainer) return;
 
         const iconSrc =
@@ -34,6 +49,30 @@
 
         wrapper.appendChild(icon);
         navContainer.parentNode.insertBefore(wrapper, navContainer);
+        // after: navContainer.parentNode.insertBefore(wrapper, navContainer);
+        const mo = new MutationObserver(() => {
+          if (!parent.document.contains(wrapper)) {
+            // try to find nav again, same inline logic as above
+            let navAgain = parent.document.querySelector(
+              'nav[role="navigation"] ul, header nav ul, [data-test*="nav"] ul, [data-testid*="nav"] ul, [aria-label*="Navigation" i] ul'
+            );
+            if (!navAgain) {
+              const cands = Array.from(
+                parent.document.querySelectorAll("nav ul, header ul")
+              );
+              navAgain =
+                cands.find((ul) =>
+                  ul.querySelector(
+                    'a, [role="menuitem"], button[aria-haspopup], li'
+                  )
+                ) || null;
+            }
+            if (navAgain) {
+              navAgain.parentNode.insertBefore(wrapper, navAgain);
+            }
+          }
+        });
+        mo.observe(parent.document.body, { childList: true, subtree: true });
 
         let panel = null;
 
@@ -51,7 +90,7 @@
           if (mainWidget && mainWidget.style.display !== "none") {
             mainWidget.style.display = "none";
           }
-          
+
           panel = parent.document.createElement("div");
           panel.id = "sc-admin-panel";
           Object.assign(panel.style, {
@@ -70,13 +109,15 @@
           panel.innerHTML = NavbarIconHtml();
           wrapper.appendChild(panel);
           setTimeout(() => {
-            import("https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js")
+            import(
+              "https://fatin-webefo.github.io/squareCraft-plugin/src/viewport/viewportToggle.js"
+            )
               .then(({ viewportToggle }) => {
                 viewportToggle();
-          
+
                 const viewportSection =
                   parent.document.getElementById("viewport-sections");
-          
+
                 if (viewportSection) {
                   viewportSection.querySelectorAll("img").forEach((img) => {
                     img.addEventListener("mousedown", (e) => {
@@ -93,7 +134,7 @@
               .catch((err) => {
                 console.error("❌ Failed to load viewportToggle.js", err);
               });
-          }, 0);          
+          }, 0);
           const dragTarget = panel.querySelector("#icon-options");
           let isDragging = false;
           let offsetX = 0,
@@ -103,7 +144,9 @@
 
           const startDrag = (event) => {
             if (
-              panel.querySelector("#viewport-sections")?.contains(event.target) ||
+              panel
+                .querySelector("#viewport-sections")
+                ?.contains(event.target) ||
               event.target.closest(".sc-dropdown")
             )
               return;
@@ -137,7 +180,6 @@
             document.addEventListener("touchmove", dragMove);
             document.addEventListener("touchend", stopDrag);
           };
-          
 
           const dragMove = (event) => {
             if (!isDragging) return;
@@ -175,7 +217,6 @@
           dragTarget.removeEventListener("touchstart", startDrag);
           dragTarget.addEventListener("mousedown", startDrag);
           dragTarget.addEventListener("touchstart", startDrag);
-          
 
           const handleOutsideClick = (e) => {
             if (!panel.contains(e.target) && !wrapper.contains(e.target)) {
