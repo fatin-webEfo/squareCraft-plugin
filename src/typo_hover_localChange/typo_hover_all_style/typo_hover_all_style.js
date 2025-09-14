@@ -290,57 +290,72 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") {
+    console.warn("[hover-typo-all:border] already bound, skipping");
+    return;
+  }
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const groups = [
-    [
-      "typo-all-hover-border-side-all",
-      "typo-all-hover-border-side-top",
-      "typo-all-hover-border-side-bottom",
-      "typo-all-hover-border-side-left",
-      "typo-all-hover-border-side-right",
-    ],
-    [
-      "typo-all-hover-border-style-solid",
-      "typo-all-hover-border-style-dashed",
-      "typo-all-hover-border-style-dotted",
-    ],
-  ];
+  const log = (...a) => console.log("[hover-typo-all:border]", ...a);
+  const root = document.getElementById("sc-widget-container") || document;
 
-  const active = "sc-bg-454545";
+  const panelSel = "#typo-all-hover-border-sides";
+  const itemSel = [
+    "#typo-all-hover-border-side-all",
+    "#typo-all-hover-border-side-top",
+    "#typo-all-hover-border-side-bottom",
+    "#typo-all-hover-border-side-left",
+    "#typo-all-hover-border-side-right",
+  ].join(",");
 
-  function activate(clickedId, group) {
-    group.forEach((id) => {
-      const n = document.getElementById(id);
-      if (!n) return;
-      n.classList.remove(active, "sc-bg-3f3f3f");
+  const activeClass = "sc-bg-454545";
+  const inactiveClass = "sc-bg-3f3f3f";
+
+  function setActive(panel, el) {
+    const items = panel.querySelectorAll(itemSel);
+    items.forEach((n) => {
+      n.classList.remove(activeClass);
+      if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
     });
-    const el = document.getElementById(clickedId);
-    if (el) el.classList.add(active);
+    el.classList.add(activeClass);
+    el.classList.remove(inactiveClass);
+    panel.dataset.side = (el.id || "").replace(
+      "typo-all-hover-border-side-",
+      ""
+    );
+    log("active set", panel.dataset.side);
   }
 
-  groups.forEach((group) => {
-    group.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener(
-        "click",
-        (e) => {
-          e.preventDefault();
-          activate(id, group);
-        },
-        true
-      );
-    });
-
-    const preset =
-      group
-        .map((id) => document.getElementById(id))
-        .find((n) => n && n.classList.contains(active)) ||
-      document.getElementById(group[0]);
-    if (preset) activate(preset.id, group);
+  root.querySelectorAll(panelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(itemSel);
+    const current = Array.from(items).find((n) =>
+      n.classList.contains(activeClass)
+    );
+    if (current) {
+      setActive(panel, current);
+    } else if (items[0]) {
+      setActive(panel, items[0]);
+    }
   });
+
+  root.addEventListener(
+    "pointerdown",
+    (e) => {
+      const btn = e.target.closest(itemSel);
+      if (!btn) return;
+      const panel = btn.closest(panelSel);
+      if (!panel) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      setActive(panel, btn);
+    },
+    true
+  );
+
+  log("ready");
 }
 
 
