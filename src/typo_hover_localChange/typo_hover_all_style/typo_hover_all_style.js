@@ -398,107 +398,176 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
 
+  const TYPE_TO_SELECTOR = {
+    heading1: "h1",
+    heading2: "h2",
+    heading3: "h3",
+    heading4: "h4",
+    paragraph1: "p.sqsrte-large",
+    paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
+    paragraph3: "p.sqsrte-small",
+  };
+
+  function ensureId(el) {
+    if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
+    return el.id;
+  }
+
+  function hoverSelectors(scopeId) {
+    const base = Object.values(TYPE_TO_SELECTOR).map(
+      (s) => `#${scopeId}:hover ${s}`
+    );
+    const exp = base.flatMap((s) => [s, `${s} span`, `${s} a`]);
+    return [`#${scopeId}:hover`, ...exp];
+  }
+
+  function writeBorder(widthPx) {
+    const host =
+      typeof getSelectedElement === "function" ? getSelectedElement() : null;
+    if (!host) return;
+    const id = ensureId(host);
+    const tagId = `style-${id}-hover-border`;
+    let tag = document.getElementById(tagId);
+    if (!tag) {
+      tag = document.createElement("style");
+      tag.id = tagId;
+      document.head.appendChild(tag);
+    }
+    const side = (
+      root.querySelector(panelSel)?.dataset.side || "all"
+    ).toLowerCase();
+    const style = (
+      root.querySelector(stylePanelSel)?.dataset.style || "solid"
+    ).toLowerCase();
+    const prop = side === "all" ? "border-width" : `border-${side}-width`;
+    window.__sc_extcss_hover_border = window.__sc_extcss_hover_border || {};
+    const bag = window.__sc_extcss_hover_border;
+    bag[id] = Object.assign({}, bag[id] || {}, {
+      [prop]: `${widthPx}px`,
+      "border-style": style,
+    });
+    const body = Object.entries(bag[id])
+      .map(([k, v]) => `${k}: ${v} !important;`)
+      .join(" ");
+    tag.textContent = `${hoverSelectors(id).join(", ")} { ${body} }`;
+    log("applied border", { id, side, style, widthPx });
+  }
+
+  function clamp(n, a, b) {
+    return Math.min(b, Math.max(a, n));
+  }
+
+  function getBounds() {
+    const rect = track.getBoundingClientRect();
+    const k = knob.getBoundingClientRect();
+    return { rect, knobW: k.width || 12 };
+  }
+
+  function getRange() {
+    const min = Number(track?.dataset.min ?? 0);
+    const max = Number(track?.dataset.max ?? 20);
+    const step = Number(track?.dataset.step ?? 1);
+    return { min, max, step };
+  }
+
+  function quantize(v, step) {
+    if (step <= 0) return v;
+    return Math.round(v / step) * step;
+  }
+
+  function pctFromClientX(clientX) {
+    const { rect } = getBounds();
+    const x = clamp(clientX - rect.left, 0, rect.width);
+    return rect.width ? x / rect.width : 0;
+  }
+
+  function setByPct(p) {
+    const { rect, knobW } = getBounds();
+    const x = clamp(p * rect.width, 0, rect.width);
+    fill.style.width = `${x}px`;
+    knob.style.left = `${x}px`;
+    knob.style.top = "50%";
+    knob.style.transform = "translate(-50%, -50%)";
+  }
+
+  function setByValue(px) {
+    const { min, max } = getRange();
+    const p = clamp((px - min) / (max - min || 1), 0, 1);
+    setByPct(p);
+  }
+
+  function valueFromPct(p) {
+    const { min, max, step } = getRange();
+    const raw = min + p * (max - min);
+    return quantize(raw, step);
+  }
+
+  function commitFromPct(p) {
+    const v = valueFromPct(p);
+    track.dataset.value = String(v);
+    setByValue(v);
+    writeBorder(v);
+  }
+
+  let dragging = false;
+
+  function startDrag(clientX) {
+    if (!track || !fill || !knob) return;
+    dragging = true;
+    track.classList.remove("sc-bg-F6F6F6");
+    track.classList.add("sc-bg-color-EF7C2F");
+    commitFromPct(pctFromClientX(clientX));
+  }
+
+  function moveDrag(clientX) {
+    if (!dragging) return;
+    commitFromPct(pctFromClientX(clientX));
+  }
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove("sc-bg-color-EF7C2F");
+    track.classList.add("sc-bg-F6F6F6");
+  }
+
   if (track && fill && knob) {
-    let percent = 0;
-    let dragging = false;
+    const initVal = Number(track.dataset.value ?? 1);
+    setByValue(initVal);
+    writeBorder(initVal);
 
-    fill.style.pointerEvents = "none";
-    knob.style.pointerEvents = "auto";
-    knob.style.position = "absolute";
-    fill.style.position = "absolute";
-    track.style.position = "relative";
+    const onPointerDown = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      track.setPointerCapture?.(e.pointerId);
+      startDrag(e.clientX);
+      const move = (ev) => moveDrag(ev.clientX);
+      const up = (ev) => {
+        endDrag();
+        track.releasePointerCapture?.(ev.pointerId);
+        window.removeEventListener("pointermove", move, true);
+        window.removeEventListener("pointerup", up, true);
+        window.removeEventListener("pointercancel", up, true);
+      };
+      window.addEventListener("pointermove", move, true);
+      window.addEventListener("pointerup", up, true);
+      window.addEventListener("pointercancel", up, true);
+    };
 
-    function clamp(v, min, max) {
-      return Math.max(min, Math.min(max, v));
-    }
-    function rect() {
-      return track.getBoundingClientRect();
-    }
-    function knobSize() {
-      return knob.getBoundingClientRect().width || knob.offsetWidth || 12;
-    }
-    function setVisual(p) {
-      const r = track.clientWidth || rect().width;
-      const k = knobSize();
-      const px = (p / 100) * r;
-      fill.style.width = `${px}px`;
-      knob.style.left = `${clamp(px - k / 2, 0, r - k)}px`;
-    }
-    function setPercentFromClientX(clientX) {
-      const r = rect();
-      const raw = ((clientX - r.left) / r.width) * 100;
-      percent = clamp(raw, 0, 100);
-      setVisual(percent);
-      track.dispatchEvent(
-        new CustomEvent("sc:hover-typo-all:border-width-change", {
-          bubbles: true,
-          detail: { percent },
-        })
-      );
-    }
+    track.addEventListener("pointerdown", onPointerDown, true);
+    fill.addEventListener("pointerdown", onPointerDown, true);
+    knob.addEventListener("pointerdown", onPointerDown, true);
 
-    function startDrag(ev) {
-      dragging = true;
-      track.setAttribute("data-dragging", "1");
-      track.style.backgroundColor = "#ef7c2f";
-      track.setPointerCapture?.(ev.pointerId ?? 0);
-      setPercentFromClientX(
-        ev.clientX ?? (ev.touches && ev.touches[0]?.clientX) ?? 0
-      );
-      ev.preventDefault();
-      ev.stopPropagation();
-      ev.stopImmediatePropagation();
-    }
-    function moveDrag(ev) {
-      if (!dragging) return;
-      const x = ev.clientX ?? (ev.touches && ev.touches[0]?.clientX) ?? 0;
-      setPercentFromClientX(x);
-      ev.preventDefault();
-      ev.stopPropagation();
-    }
-    function endDrag(ev) {
-      if (!dragging) return;
-      dragging = false;
-      track.removeAttribute("data-dragging");
-      track.style.backgroundColor = "";
-      ev.preventDefault();
-      ev.stopPropagation();
-    }
-
-    track.addEventListener("pointerdown", startDrag, true);
-    knob.addEventListener("pointerdown", startDrag, true);
-    window.addEventListener("pointermove", moveDrag, true);
-    window.addEventListener("pointerup", endDrag, true);
-    window.addEventListener("pointercancel", endDrag, true);
-
-    track.addEventListener("touchstart", (e) => startDrag(e.touches[0]), {
-      passive: false,
-      capture: true,
+    track.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      commitFromPct(pctFromClientX(e.clientX));
     });
-    window.addEventListener("touchmove", (e) => moveDrag(e.touches[0]), {
-      passive: false,
-      capture: true,
-    });
-    window.addEventListener("touchend", endDrag, {
-      passive: false,
-      capture: true,
-    });
-
-    const ro = new ResizeObserver(() => setVisual(percent));
-    ro.observe(track);
-
-    setVisual(percent);
-    log("slider ready");
   } else {
-    log("slider elements missing", {
-      hasTrack: !!track,
-      hasFill: !!fill,
-      hasKnob: !!knob,
-    });
+    log("width track elements missing");
   }
 
   log("ready");
 }
-
 
 
