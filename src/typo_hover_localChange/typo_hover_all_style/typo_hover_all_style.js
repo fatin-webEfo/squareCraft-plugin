@@ -308,6 +308,13 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     "#typo-all-hover-border-side-right",
   ].join(",");
 
+  const stylePanelSel = "#typo-all-hover-border-style-wrap";
+  const styleItemSel = [
+    "#typo-all-hover-border-style-solid",
+    "#typo-all-hover-border-style-dashed",
+    "#typo-all-hover-border-style-dotted",
+  ].join(",");
+
   const activeClass = "sc-bg-454545";
   const inactiveClass = "sc-bg-3f3f3f";
 
@@ -323,7 +330,22 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       "typo-all-hover-border-side-",
       ""
     );
-    log("active set", panel.dataset.side);
+    log("active side set", panel.dataset.side);
+  }
+
+  function setActiveStyle(panel, el) {
+    const items = panel.querySelectorAll(styleItemSel);
+    items.forEach((n) => {
+      n.classList.remove(activeClass);
+      if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
+    });
+    el.classList.add(activeClass);
+    el.classList.remove(inactiveClass);
+    panel.dataset.style = (el.id || "").replace(
+      "typo-all-hover-border-style-",
+      ""
+    );
+    log("active style set", panel.dataset.style);
   }
 
   root.querySelectorAll(panelSel).forEach((panel) => {
@@ -338,24 +360,48 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   });
 
+  root.querySelectorAll(stylePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(styleItemSel);
+    const current = Array.from(items).find((n) =>
+      n.classList.contains(activeClass)
+    );
+    if (current) {
+      setActiveStyle(panel, current);
+    } else if (items[0]) {
+      setActiveStyle(panel, items[0]);
+    }
+  });
+
   root.addEventListener(
     "pointerdown",
     (e) => {
       const btn = e.target.closest(itemSel);
-      if (!btn) return;
-      const panel = btn.closest(panelSel);
-      if (!panel) return;
+      if (btn) {
+        const panel = btn.closest(panelSel);
+        if (!panel) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setActive(panel, btn);
+        return;
+      }
 
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-
-      setActive(panel, btn);
+      const styleBtn = e.target.closest(styleItemSel);
+      if (styleBtn) {
+        const panel = styleBtn.closest(stylePanelSel);
+        if (!panel) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        setActiveStyle(panel, styleBtn);
+        return;
+      }
     },
     true
   );
 
   log("ready");
 }
+
 
 
