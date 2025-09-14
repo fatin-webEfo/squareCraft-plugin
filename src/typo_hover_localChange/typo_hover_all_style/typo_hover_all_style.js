@@ -394,59 +394,107 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
-  const track = document.getElementById("typo-all-hover-border-width-track");
-  const fill = document.getElementById("typo-all-hover-border-width-fill");
-  const knob = document.getElementById("typo-all-hover-border-width-knob");
+  const track = root.querySelector("#typo-all-hover-border-width-track");
+  const fill = root.querySelector("#typo-all-hover-border-width-fill");
+  const knob = root.querySelector("#typo-all-hover-border-width-knob");
 
-  if (track && fill && knob && !track.dataset.bound) {
-    track.dataset.bound = "1";
-    knob.style.transform = "translate(-50%, -50%)";
+  if (track && fill && knob) {
+    let percent = 0;
     let dragging = false;
 
-    function pctFromEvent(ev) {
-      const r = track.getBoundingClientRect();
-      const x = Math.min(Math.max(ev.clientX - r.left, 0), r.width || 1);
-      return r.width ? x / r.width : 0;
-    }
+    fill.style.pointerEvents = "none";
+    knob.style.pointerEvents = "auto";
+    knob.style.position = "absolute";
+    fill.style.position = "absolute";
+    track.style.position = "relative";
 
-    function renderPct(p) {
-      const clamped = Math.min(Math.max(p, 0), 1);
-      fill.style.width = `${clamped * 100}%`;
-      knob.style.left = `${clamped * 100}%`;
-      track.dataset.value = String(clamped);
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+    function rect() {
+      return track.getBoundingClientRect();
+    }
+    function knobSize() {
+      return knob.getBoundingClientRect().width || knob.offsetWidth || 12;
+    }
+    function setVisual(p) {
+      const r = track.clientWidth || rect().width;
+      const k = knobSize();
+      const px = (p / 100) * r;
+      fill.style.width = `${px}px`;
+      knob.style.left = `${clamp(px - k / 2, 0, r - k)}px`;
+    }
+    function setPercentFromClientX(clientX) {
+      const r = rect();
+      const raw = ((clientX - r.left) / r.width) * 100;
+      percent = clamp(raw, 0, 100);
+      setVisual(percent);
       track.dispatchEvent(
-        new CustomEvent("sc:hover-typo-all:border-width", {
+        new CustomEvent("sc:hover-typo-all:border-width-change", {
           bubbles: true,
-          detail: { percent: clamped },
+          detail: { percent },
         })
       );
     }
 
-    function start(ev) {
-      ev.preventDefault();
+    function startDrag(ev) {
       dragging = true;
-      track.setPointerCapture?.(ev.pointerId || 1);
-      renderPct(pctFromEvent(ev));
-      document.addEventListener("pointermove", move, true);
-      document.addEventListener("pointerup", end, true);
-      document.addEventListener("pointercancel", end, true);
+      track.setAttribute("data-dragging", "1");
+      track.style.backgroundColor = "#ef7c2f";
+      track.setPointerCapture?.(ev.pointerId ?? 0);
+      setPercentFromClientX(
+        ev.clientX ?? (ev.touches && ev.touches[0]?.clientX) ?? 0
+      );
+      ev.preventDefault();
+      ev.stopPropagation();
+      ev.stopImmediatePropagation();
     }
-
-    function move(ev) {
+    function moveDrag(ev) {
       if (!dragging) return;
-      renderPct(pctFromEvent(ev));
+      const x = ev.clientX ?? (ev.touches && ev.touches[0]?.clientX) ?? 0;
+      setPercentFromClientX(x);
+      ev.preventDefault();
+      ev.stopPropagation();
     }
-
-    function end(ev) {
+    function endDrag(ev) {
+      if (!dragging) return;
       dragging = false;
-      document.removeEventListener("pointermove", move, true);
-      document.removeEventListener("pointerup", end, true);
-      document.removeEventListener("pointercancel", end, true);
+      track.removeAttribute("data-dragging");
+      track.style.backgroundColor = "";
+      ev.preventDefault();
+      ev.stopPropagation();
     }
 
-    track.addEventListener("pointerdown", start, true);
-    knob.addEventListener("pointerdown", start, true);
-    renderPct(Number(track.dataset.value || 0));
+    track.addEventListener("pointerdown", startDrag, true);
+    knob.addEventListener("pointerdown", startDrag, true);
+    window.addEventListener("pointermove", moveDrag, true);
+    window.addEventListener("pointerup", endDrag, true);
+    window.addEventListener("pointercancel", endDrag, true);
+
+    track.addEventListener("touchstart", (e) => startDrag(e.touches[0]), {
+      passive: false,
+      capture: true,
+    });
+    window.addEventListener("touchmove", (e) => moveDrag(e.touches[0]), {
+      passive: false,
+      capture: true,
+    });
+    window.addEventListener("touchend", endDrag, {
+      passive: false,
+      capture: true,
+    });
+
+    const ro = new ResizeObserver(() => setVisual(percent));
+    ro.observe(track);
+
+    setVisual(percent);
+    log("slider ready");
+  } else {
+    log("slider elements missing", {
+      hasTrack: !!track,
+      hasFill: !!fill,
+      hasKnob: !!knob,
+    });
   }
 
   log("ready");
