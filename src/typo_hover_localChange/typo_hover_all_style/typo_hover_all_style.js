@@ -3,6 +3,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     return;
   }
   document.body.dataset.scHoverTypoAllBound = "1";
+  const log = (...a) => console.log("[hover-typo-all:font]", ...a);
 
   const root = document.getElementById("sc-widget-container") || document;
   const sel =
