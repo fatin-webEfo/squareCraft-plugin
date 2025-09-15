@@ -293,7 +293,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const log = (...a) => console.log("[hover-typo-all:border]", ...a);
   const root = document.getElementById("sc-widget-container") || document;
 
-  // ---------- side/style toggles ----------
   const panelSel = "#typo-all-hover-border-sides";
   const itemSel = [
     "#typo-all-hover-border-side-all",
@@ -376,10 +375,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         return;
       }
     },
-    false // bubble (not capture) so we don't swallow slider events
+    false 
   );
 
-  // ---------- slider ----------
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
@@ -390,7 +388,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return;
   }
 
-  // force layout so theme classes can’t fight us
   track.style.setProperty("position", "relative", "important");
   track.style.setProperty("user-select", "none", "important");
   track.style.setProperty("touch-action", "none", "important");
@@ -409,7 +406,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   knob.tabIndex = knob.tabIndex || 0;
   knob.setAttribute("draggable", "false");
 
-  // CSS injection scope
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
     heading2: "h2",
@@ -460,7 +456,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     tag.textContent = `${hoverSelectors(id).join(", ")} { ${css} }`;
   }
 
-  // range helpers
   const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
   function getRange() {
     return {
@@ -505,7 +500,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(v);
   }
 
-  // initial (defer if hidden width==0)
   function initPosition() {
     const initVal = num(track.dataset.value, getRange().min);
     setByValue(initVal);
@@ -519,14 +513,12 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     initPosition();
   }
 
-  // keep in sync when panel opens/resizes
   const ro = new ResizeObserver(() => {
     const v = num(track.dataset.value, getRange().min);
     setByValue(v);
   });
   ro.observe(track);
 
-  // drag state
   let dragging = false;
   const activate = () => {
     track.classList.remove("sc-bg-F6F6F6");
@@ -544,7 +536,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     dragging = true;
     activate();
     commitFromPct(pctFromX(getX(e)));
-    // capture pointer on the element that got the event
     if (e.pointerId != null && e.currentTarget?.setPointerCapture) {
       try {
         e.currentTarget.setPointerCapture(e.pointerId);
@@ -567,7 +558,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   }
 
-  // pointer first (bind in bubble phase)
   const onPointerDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -584,7 +574,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     window.addEventListener("pointercancel", onUp, { capture: true });
   };
 
-  // mouse/touch fallbacks
   const onMouseDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -621,7 +610,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     window.addEventListener("touchcancel", tu, { capture: true });
   };
 
-  // bind to BOTH track & knob (fill is non-interactive)
   const bind = (el) => {
     if ("onpointerdown" in window)
       el.addEventListener("pointerdown", onPointerDown, false);
@@ -634,7 +622,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   bind(track);
   bind(knob);
 
-  // click-to-jump (ignore clicks that finish a drag)
   track.addEventListener(
     "click",
     (e) => {
@@ -646,7 +633,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     false
   );
 
-  // keyboard
   knob.addEventListener("keydown", (e) => {
     const { min, max, step } = getRange();
     const cur = num(track.dataset.value, min);
@@ -664,7 +650,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     knob.setAttribute("aria-valuenow", String(v));
   });
 
-  // prevent image/ghost drag
   track.addEventListener("dragstart", (e) => e.preventDefault());
   knob.addEventListener("dragstart", (e) => e.preventDefault());
 
