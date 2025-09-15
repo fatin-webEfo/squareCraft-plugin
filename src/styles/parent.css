@@ -317,6 +317,21 @@
   background: #f6f6f6 !important;
 }
 
+#typo-all-hover-border-width-track,
+#typo-all-hover-border-width-knob {
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  position: relative;
+  z-index: 10; 
+}
+
+#typo-all-hover-border-width-fill {
+  pointer-events: none; /* don’t steal drags */
+}
+
+
 .sc-w-190px {
   width: 190px !important;
 }
