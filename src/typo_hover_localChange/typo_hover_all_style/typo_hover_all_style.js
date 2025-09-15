@@ -362,6 +362,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         if (!panel) return;
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         setActive(panel, btn);
         return;
       }
@@ -371,11 +372,12 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         if (!panel) return;
         e.preventDefault();
         e.stopPropagation();
+        e.stopImmediatePropagation();
         setActiveStyle(panel, styleBtn);
         return;
       }
     },
-    false 
+    true
   );
 
   const track = root.querySelector("#typo-all-hover-border-width-track");
@@ -388,23 +390,8 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return;
   }
 
-  track.style.setProperty("position", "relative", "important");
-  track.style.setProperty("user-select", "none", "important");
-  track.style.setProperty("touch-action", "none", "important");
-  track.style.setProperty("overflow", "visible", "important");
-  fill.style.setProperty("position", "absolute", "important");
-  fill.style.setProperty("left", "0px", "important");
-  fill.style.setProperty("top", "0px", "important");
-  fill.style.setProperty("height", "100%", "important");
-  fill.style.setProperty("pointer-events", "none", "important");
-  knob.style.setProperty("position", "absolute", "important");
-  knob.style.setProperty("top", "50%", "important");
-  knob.style.setProperty("transform", "translate(-50%, -50%)", "important");
-  knob.style.setProperty("touch-action", "none", "important");
-  knob.style.setProperty("z-index", "2", "important");
   knob.setAttribute("role", "slider");
   knob.tabIndex = knob.tabIndex || 0;
-  knob.setAttribute("draggable", "false");
 
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
@@ -468,17 +455,19 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const quant = (v, s) => Math.round(v / s) * s;
 
   const rect = () => track.getBoundingClientRect();
+  const getX = (e) =>
+    e?.clientX ?? e?.touches?.[0]?.clientX ?? e?.changedTouches?.[0]?.clientX;
   function pctFromX(clientX) {
     const r = rect();
-    const x = clamp(clientX - r.left, 0, r.width);
-    return r.width ? x / r.width : 0;
+    const x = clamp(clientX - r.left, 0, r.width || 1);
+    return r.width || 1 ? x / (r.width || 1) : 0;
   }
 
   function setByPct(p) {
     const r = rect();
-    const x = clamp(p * r.width, 0, r.width);
-    fill.style.setProperty("width", `${x}px`, "important");
-    knob.style.setProperty("left", `${x}px`, "important");
+    const x = clamp(p * (r.width || 1), 0, r.width || 1);
+    fill.style.width = `${x}px`;
+    knob.style.left = `${x}px`;
   }
   function setByValue(px) {
     const { min, max } = getRange();
@@ -492,7 +481,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function commitFromPct(p) {
     const v = valueFromPct(p);
     track.dataset.value = String(v);
-    valuePill && (valuePill.textContent = `${v}px`);
+    if (valuePill) valuePill.textContent = `${v}px`;
     knob.setAttribute("aria-valuemin", String(getRange().min));
     knob.setAttribute("aria-valuemax", String(getRange().max));
     knob.setAttribute("aria-valuenow", String(v));
@@ -504,11 +493,17 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const initVal = num(track.dataset.value, getRange().min);
     setByValue(initVal);
     writeBorder(initVal);
-    valuePill && (valuePill.textContent = `${initVal}px`);
+    if (valuePill) valuePill.textContent = `${initVal}px`;
     knob.setAttribute("aria-valuenow", String(initVal));
   }
   if (rect().width === 0) {
-    requestAnimationFrame(() => requestAnimationFrame(initPosition));
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        initPosition();
+        io.disconnect();
+      }
+    });
+    io.observe(track);
   } else {
     initPosition();
   }
@@ -520,102 +515,42 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   ro.observe(track);
 
   let dragging = false;
-  const activate = () => {
-    track.classList.remove("sc-bg-F6F6F6");
-    track.classList.add("sc-bg-color-EF7C2F");
-  };
-  const deactivate = () => {
-    track.classList.remove("sc-bg-color-EF7C2F");
-    track.classList.add("sc-bg-F6F6F6");
-  };
 
-  const getX = (e) =>
-    e?.clientX ?? e?.touches?.[0]?.clientX ?? e?.changedTouches?.[0]?.clientX;
-
-  function start(e) {
-    dragging = true;
-    activate();
-    commitFromPct(pctFromX(getX(e)));
-    if (e.pointerId != null && e.currentTarget?.setPointerCapture) {
-      try {
-        e.currentTarget.setPointerCapture(e.pointerId);
-      } catch {}
-    }
-  }
-  function move(e) {
+  function onMove(ev) {
     if (!dragging) return;
-    e.preventDefault();
-    commitFromPct(pctFromX(getX(e)));
+    ev.preventDefault();
+    commitFromPct(pctFromX(getX(ev)));
   }
-  function end(e) {
+  function onUp() {
     if (!dragging) return;
     dragging = false;
-    deactivate();
-    if (e?.pointerId != null && e.currentTarget?.releasePointerCapture) {
-      try {
-        e.currentTarget.releasePointerCapture(e.pointerId);
-      } catch {}
-    }
+    document.removeEventListener("pointermove", onMove, { capture: true });
+    document.removeEventListener("pointerup", onUp, { capture: true });
+    document.removeEventListener("touchmove", onMove, { capture: true });
+    document.removeEventListener("touchend", onUp, { capture: true });
   }
 
-  const onPointerDown = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    start(e);
-    const onMove = (ev) => move(ev);
-    const onUp = (ev) => {
-      end(ev);
-      window.removeEventListener("pointermove", onMove, true);
-      window.removeEventListener("pointerup", onUp, true);
-      window.removeEventListener("pointercancel", onUp, true);
-    };
-    window.addEventListener("pointermove", onMove, { capture: true });
-    window.addEventListener("pointerup", onUp, { capture: true });
-    window.addEventListener("pointercancel", onUp, { capture: true });
-  };
-
-  const onMouseDown = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  function beginDrag(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    ev.stopImmediatePropagation();
     dragging = true;
-    activate();
-    commitFromPct(pctFromX(getX(e)));
-    const mm = (ev) => move(ev);
-    const mu = (ev) => {
-      dragging = false;
-      deactivate();
-      window.removeEventListener("mousemove", mm, true);
-      window.removeEventListener("mouseup", mu, true);
-    };
-    window.addEventListener("mousemove", mm, { capture: true });
-    window.addEventListener("mouseup", mu, { capture: true });
-  };
-
-  const onTouchStart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dragging = true;
-    activate();
-    commitFromPct(pctFromX(getX(e)));
-    const tm = (ev) => move(ev);
-    const tu = () => {
-      dragging = false;
-      deactivate();
-      window.removeEventListener("touchmove", tm, true);
-      window.removeEventListener("touchend", tu, true);
-      window.removeEventListener("touchcancel", tu, true);
-    };
-    window.addEventListener("touchmove", tm, { capture: true, passive: false });
-    window.addEventListener("touchend", tu, { capture: true });
-    window.addEventListener("touchcancel", tu, { capture: true });
-  };
+    commitFromPct(pctFromX(getX(ev)));
+    document.addEventListener("pointermove", onMove, { capture: true });
+    document.addEventListener("pointerup", onUp, { capture: true });
+    document.addEventListener("touchmove", onMove, {
+      capture: true,
+      passive: false,
+    });
+    document.addEventListener("touchend", onUp, { capture: true });
+  }
 
   const bind = (el) => {
-    if ("onpointerdown" in window)
-      el.addEventListener("pointerdown", onPointerDown, false);
-    el.addEventListener("mousedown", onMouseDown, false);
-    el.addEventListener("touchstart", onTouchStart, {
-      capture: false,
+    el.style.touchAction = "none";
+    el.addEventListener("pointerdown", beginDrag, true);
+    el.addEventListener("mousedown", beginDrag, true);
+    el.addEventListener("touchstart", (e) => beginDrag(e), {
+      capture: true,
       passive: false,
     });
   };
@@ -628,9 +563,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (dragging) return;
       e.preventDefault();
       e.stopPropagation();
-      commitFromPct(pctFromX(getX(e)));
+      commitFromPct(pctFromX(e.clientX));
     },
-    false
+    true
   );
 
   knob.addEventListener("keydown", (e) => {
@@ -644,14 +579,11 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     else return;
     e.preventDefault();
     track.dataset.value = String(v);
-    valuePill && (valuePill.textContent = `${v}px`);
+    if (valuePill) valuePill.textContent = `${v}px`;
     setByValue(v);
     writeBorder(v);
     knob.setAttribute("aria-valuenow", String(v));
   });
-
-  track.addEventListener("dragstart", (e) => e.preventDefault());
-  knob.addEventListener("dragstart", (e) => e.preventDefault());
 
   log("ready");
 }
