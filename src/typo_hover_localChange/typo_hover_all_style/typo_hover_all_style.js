@@ -363,7 +363,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         if (!panel) return;
         e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
         setActive(panel, btn);
         return;
       }
@@ -373,12 +372,11 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         if (!panel) return;
         e.preventDefault();
         e.stopPropagation();
-        e.stopImmediatePropagation();
         setActiveStyle(panel, styleBtn);
         return;
       }
     },
-    true
+    false // bubble (not capture) so we don't swallow slider events
   );
 
   // ---------- slider ----------
@@ -407,9 +405,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   knob.style.setProperty("transform", "translate(-50%, -50%)", "important");
   knob.style.setProperty("touch-action", "none", "important");
   knob.style.setProperty("z-index", "2", "important");
-
   knob.setAttribute("role", "slider");
   knob.tabIndex = knob.tabIndex || 0;
+  knob.setAttribute("draggable", "false");
 
   // CSS injection scope
   const TYPE_TO_SELECTOR = {
@@ -542,94 +540,94 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const getX = (e) =>
     e?.clientX ?? e?.touches?.[0]?.clientX ?? e?.changedTouches?.[0]?.clientX;
 
-  function start(e, targetForCapture, pid) {
+  function start(e) {
     dragging = true;
     activate();
     commitFromPct(pctFromX(getX(e)));
-    try {
-      targetForCapture.setPointerCapture &&
-        pid != null &&
-        targetForCapture.setPointerCapture(pid);
-    } catch {}
+    // capture pointer on the element that got the event
+    if (e.pointerId != null && e.currentTarget?.setPointerCapture) {
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {}
+    }
   }
   function move(e) {
-    if (dragging) commitFromPct(pctFromX(getX(e)));
+    if (!dragging) return;
+    e.preventDefault();
+    commitFromPct(pctFromX(getX(e)));
   }
-  function end(targetForCapture, pid) {
+  function end(e) {
     if (!dragging) return;
     dragging = false;
     deactivate();
-    try {
-      targetForCapture.releasePointerCapture &&
-        pid != null &&
-        targetForCapture.releasePointerCapture(pid);
-    } catch {}
+    if (e?.pointerId != null && e.currentTarget?.releasePointerCapture) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {}
+    }
   }
 
-  // pointer first
+  // pointer first (bind in bubble phase)
   const onPointerDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.stopImmediatePropagation();
-    const captor = track; // always capture on track for stability
-    start(e, captor, e.pointerId);
-    const onMove = (ev) => {
-      ev.preventDefault();
-      move(ev);
-    };
+    start(e);
+    const onMove = (ev) => move(ev);
     const onUp = (ev) => {
-      end(captor, ev.pointerId);
+      end(ev);
       window.removeEventListener("pointermove", onMove, true);
       window.removeEventListener("pointerup", onUp, true);
       window.removeEventListener("pointercancel", onUp, true);
     };
-    window.addEventListener("pointermove", onMove, true);
-    window.addEventListener("pointerup", onUp, true);
-    window.addEventListener("pointercancel", onUp, true);
+    window.addEventListener("pointermove", onMove, { capture: true });
+    window.addEventListener("pointerup", onUp, { capture: true });
+    window.addEventListener("pointercancel", onUp, { capture: true });
   };
 
   // mouse/touch fallbacks
   const onMouseDown = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.stopImmediatePropagation();
-    const captor = track;
-    start(e, captor, null);
+    dragging = true;
+    activate();
+    commitFromPct(pctFromX(getX(e)));
     const mm = (ev) => move(ev);
-    const mu = () => {
-      end(captor, null);
+    const mu = (ev) => {
+      dragging = false;
+      deactivate();
       window.removeEventListener("mousemove", mm, true);
       window.removeEventListener("mouseup", mu, true);
     };
-    window.addEventListener("mousemove", mm, true);
-    window.addEventListener("mouseup", mu, true);
+    window.addEventListener("mousemove", mm, { capture: true });
+    window.addEventListener("mouseup", mu, { capture: true });
   };
 
   const onTouchStart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    e.stopImmediatePropagation();
-    const captor = track;
-    start(e, captor, null);
+    dragging = true;
+    activate();
+    commitFromPct(pctFromX(getX(e)));
     const tm = (ev) => move(ev);
     const tu = () => {
-      end(captor, null);
+      dragging = false;
+      deactivate();
       window.removeEventListener("touchmove", tm, true);
       window.removeEventListener("touchend", tu, true);
       window.removeEventListener("touchcancel", tu, true);
     };
-    window.addEventListener("touchmove", tm, true);
-    window.addEventListener("touchend", tu, true);
-    window.addEventListener("touchcancel", tu, true);
+    window.addEventListener("touchmove", tm, { capture: true, passive: false });
+    window.addEventListener("touchend", tu, { capture: true });
+    window.addEventListener("touchcancel", tu, { capture: true });
   };
 
   // bind to BOTH track & knob (fill is non-interactive)
   const bind = (el) => {
     if ("onpointerdown" in window)
-      el.addEventListener("pointerdown", onPointerDown, true);
-    el.addEventListener("mousedown", onMouseDown, true);
+      el.addEventListener("pointerdown", onPointerDown, false);
+    el.addEventListener("mousedown", onMouseDown, false);
     el.addEventListener("touchstart", onTouchStart, {
-      capture: true,
+      capture: false,
       passive: false,
     });
   };
@@ -643,9 +641,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (dragging) return;
       e.preventDefault();
       e.stopPropagation();
-      commitFromPct(pctFromX(e.clientX));
+      commitFromPct(pctFromX(getX(e)));
     },
-    true
+    false
   );
 
   // keyboard
