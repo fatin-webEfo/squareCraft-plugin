@@ -6,6 +6,7 @@ export function getTextType(tagName, element) {
     if (tagName === "h3") return { type: "heading3", borderColor: "#EF7C2F" };
     if (tagName === "h4") return { type: "heading4", borderColor: "#EF7C2F" };
   
+    
     if (tagName === "p") {
       if (classList.contains("sqsrte-large")) {
         return { type: "paragraph1", borderColor: "#EF7C2F" };
