@@ -287,375 +287,86 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
-  document.body.dataset.scHoverTypoAllBorderBound = "1";
+  const track = document.getElementById("typo-all-hover-border-width-track");
+  const knob = document.getElementById("typo-all-hover-border-width-knob");
+  const fill = document.getElementById("typo-all-hover-border-width-fill");
+  if (!track || !knob || !fill) return;
 
-  const root = document.getElementById("sc-widget-container") || document;
+  const max = 10;
+  if (!window.__scHoverTypoBorderStateMap)
+    window.__scHoverTypoBorderStateMap = new Map();
+  if (!window.__scHoverTypoBorderStyle)
+    window.__scHoverTypoBorderStyle = "solid";
+  if (!window.__scHoverTypoBorderColor)
+    window.__scHoverTypoBorderColor = "black";
 
-  const panelSel = "#typo-all-hover-border-sides";
-  const itemSel = [
-    "#typo-all-hover-border-side-all",
-    "#typo-all-hover-border-side-top",
-    "#typo-all-hover-border-side-bottom",
-    "#typo-all-hover-border-side-left",
-    "#typo-all-hover-border-side-right",
-  ].join(",");
-  const stylePanelSel = "#typo-all-hover-border-style-wrap";
-  const styleItemSel = [
-    "#typo-all-hover-border-style-solid",
-    "#typo-all-hover-border-style-dashed",
-    "#typo-all-hover-border-style-dotted",
-  ].join(",");
-
-  const activeClass = "sc-bg-454545";
-  const inactiveClass = "sc-bg-3f3f3f";
-
-  function setActive(panel, el) {
-    panel.querySelectorAll(itemSel).forEach((n) => {
-      n.classList.remove(activeClass);
-      if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
-    });
-    el.classList.add(activeClass);
-    el.classList.remove(inactiveClass);
-    panel.dataset.side = (el.id || "").replace(
-      "typo-all-hover-border-side-",
-      ""
-    );
+  function keyFor(el) {
+    const id = el?.id || "sc-typo";
+    return `${id}--typo-all`;
   }
 
-  function setActiveStyle(panel, el) {
-    panel.querySelectorAll(styleItemSel).forEach((n) => {
-      n.classList.remove(activeClass);
-      if (!n.classList.contains(inactiveClass)) n.classList.add(inactiveClass);
-    });
-    el.classList.add(activeClass);
-    el.classList.remove(inactiveClass);
-    panel.dataset.style = (el.id || "").replace(
-      "typo-all-hover-border-style-",
-      ""
-    );
-  }
-
-  root.querySelectorAll(panelSel).forEach((panel) => {
-    const items = panel.querySelectorAll(itemSel);
-    setActive(
-      panel,
-      Array.from(items).find((n) => n.classList.contains(activeClass)) ||
-        items[0]
-    );
-  });
-
-  root.querySelectorAll(stylePanelSel).forEach((panel) => {
-    const items = panel.querySelectorAll(styleItemSel);
-    setActiveStyle(
-      panel,
-      Array.from(items).find((n) => n.classList.contains(activeClass)) ||
-        items[0]
-    );
-  });
-
-  root.addEventListener(
-    "pointerdown",
-    (e) => {
-      const btn = e.target.closest(itemSel);
-      if (btn) {
-        const panel = btn.closest(panelSel);
-        if (!panel) return;
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        setActive(panel, btn);
-        return;
-      }
-      const styleBtn = e.target.closest(styleItemSel);
-      if (styleBtn) {
-        const panel = styleBtn.closest(stylePanelSel);
-        if (!panel) return;
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        setActiveStyle(panel, styleBtn);
-        return;
-      }
-    },
-    true
-  );
-
-  const track = root.querySelector("#typo-all-hover-border-width-track");
-  const fill = root.querySelector("#typo-all-hover-border-width-fill");
-  const knob = root.querySelector("#typo-all-hover-border-width-knob");
-  const valuePill = root.querySelector("#typo-all-hover-border-width-value");
-  if (!track || !fill || !knob) return;
-
-  knob.setAttribute("role", "slider");
-  knob.tabIndex = knob.tabIndex || 0;
-
-  const TYPE_TO_SELECTOR = {
-    heading1: "h1",
-    heading2: "h2",
-    heading3: "h3",
-    heading4: "h4",
-    paragraph1: "p.sqsrte-large",
-    paragraph2: "p:not(.sqsrte-large):not(.sqsrte-small)",
-    paragraph3: "p.sqsrte-small",
-  };
-
-  function ensureId(el) {
-    if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
-    return el.id;
-  }
-
-  function hoverSelectors(scopeId) {
-    const base = Object.values(TYPE_TO_SELECTOR).map(
-      (s) => `#${scopeId}:hover ${s}`
-    );
-    const exp = base.flatMap((s) => [s, `${s} span`, `${s} a`]);
-    return [`#${scopeId}:hover`, ...exp];
-  }
-
-  function writeBorder(widthPx) {
-    const host =
-      typeof getSelectedElement === "function" ? getSelectedElement() : null;
-    if (!host) return;
-    const id = ensureId(host);
-    const tagId = `style-${id}-hover-border`;
-    let tag = document.getElementById(tagId);
+  function apply(value) {
+    const el = getSelectedElement?.();
+    if (!el) return;
+    const k = keyFor(el);
+    const st = window.__scHoverTypoBorderStateMap.get(k) || { width: 0 };
+    st.width = value;
+    window.__scHoverTypoBorderStateMap.set(k, st);
+    const styleId = `sc-typo-hover-border-${k}`;
+    let tag = document.getElementById(styleId);
     if (!tag) {
       tag = document.createElement("style");
-      tag.id = tagId;
+      tag.id = styleId;
       document.head.appendChild(tag);
     }
-    const side = (
-      root.querySelector(panelSel)?.dataset.side || "all"
-    ).toLowerCase();
-    const style = (
-      root.querySelector(stylePanelSel)?.dataset.style || "solid"
-    ).toLowerCase();
-    const prop = side === "all" ? "border-width" : `border-${side}-width`;
-    window.__sc_extcss_hover_border ||= {};
-    const bag = window.__sc_extcss_hover_border;
-    bag[id] = {
-      ...(bag[id] || {}),
-      [prop]: `${widthPx}px`,
-      "border-style": style,
-    };
-    const css = Object.entries(bag[id])
-      .map(([k, v]) => `${k}: ${v} !important;`)
-      .join(" ");
-    tag.textContent = `${hoverSelectors(id).join(", ")} { ${css} }`;
-  }
-
-  function num(v, d) {
-    return v == null || v === "" || isNaN(+v) ? d : +v;
-  }
-
-  function getRange() {
-    return {
-      min: num(track.dataset.min, 0),
-      max: num(track.dataset.max, 20),
-      step: Math.max(1, num(track.dataset.step, 1)),
-    };
-  }
-
-  function rect() {
-    return track.getBoundingClientRect();
-  }
-
-  function clamp(n, a, b) {
-    return Math.min(b, Math.max(a, n));
-  }
-
-  function quant(v, s) {
-    return Math.round(v / s) * s;
-  }
-
-  function pctFromX(clientX) {
-    const r = rect();
-    const x = clamp(clientX - r.left, 0, r.width);
-    return r.width ? x / r.width : 0;
-  }
-
-  function setByPct(p) {
-    const r = rect();
-    const x = clamp(p * r.width, 0, r.width);
-    fill.style.width = `${x}px`;
-    knob.style.left = `${x}px`;
-  }
-
-  function valueFromPct(p) {
-    const { min, max, step } = getRange();
-    return quant(min + p * (max - min), step);
-  }
-
-  function setByValue(px) {
-    const { min, max } = getRange();
-    const p = (px - min) / (max - min || 1);
-    setByPct(clamp(p, 0, 1));
-  }
-
-  function commitFromPct(p) {
-    const v = valueFromPct(p);
-    track.dataset.value = String(v);
-    if (valuePill) valuePill.textContent = `${v}px`;
-    knob.setAttribute("aria-valuemin", String(getRange().min));
-    knob.setAttribute("aria-valuemax", String(getRange().max));
-    knob.setAttribute("aria-valuenow", String(v));
-    setByValue(v);
-    writeBorder(v);
-  }
-
-  function initPosition() {
-    const initVal = num(track.dataset.value, getRange().min);
-    setByValue(initVal);
-    if (valuePill) valuePill.textContent = `${initVal}px`;
-    knob.setAttribute("aria-valuenow", String(initVal));
-    writeBorder(initVal);
-  }
-
-  if (rect().width === 0) {
-    requestAnimationFrame(() => requestAnimationFrame(initPosition));
-  } else {
-    initPosition();
-  }
-
-  const ro = new ResizeObserver(() => {
-    const v = num(track.dataset.value, getRange().min);
-    setByValue(v);
-  });
-  ro.observe(track);
-
-  let dragging = false;
-  let moved = false;
-
-  function clientXFromEvent(e) {
-    return (
-      e?.clientX ??
-      (e?.touches && e.touches[0]?.clientX) ??
-      (e?.changedTouches && e.changedTouches[0]?.clientX) ??
-      0
-    );
-  }
-
-  function bindMoves(on) {
-    const opts = { capture: true, passive: false };
-    if (on) {
-      if ("PointerEvent" in window) {
-        window.addEventListener("pointermove", onPMove, opts);
-        window.addEventListener("pointerup", onPUp, opts);
-        window.addEventListener("pointercancel", onPUp, opts);
-      }
-      window.addEventListener("mousemove", onMMove, true);
-      window.addEventListener("mouseup", onMUp, true);
-      window.addEventListener("touchmove", onTMove, opts);
-      window.addEventListener("touchend", onTEnd, opts);
-      window.addEventListener("touchcancel", onTEnd, opts);
-    } else {
-      if ("PointerEvent" in window) {
-        window.removeEventListener("pointermove", onPMove, true);
-        window.removeEventListener("pointerup", onPUp, true);
-        window.removeEventListener("pointercancel", onPUp, true);
-      }
-      window.removeEventListener("mousemove", onMMove, true);
-      window.removeEventListener("mouseup", onMUp, true);
-      window.removeEventListener("touchmove", onTMove, true);
-      window.removeEventListener("touchend", onTEnd, true);
-      window.removeEventListener("touchcancel", onTEnd, true);
-    }
-  }
-
-  function start(e) {
-    dragging = true;
-    moved = false;
-    commitFromPct(pctFromX(clientXFromEvent(e)));
-    bindMoves(true);
-  }
-
-  function move(e) {
-    if (!dragging) return;
-    e.preventDefault();
-    moved = true;
-    commitFromPct(pctFromX(clientXFromEvent(e)));
-  }
-
-  function end() {
-    if (!dragging) return;
-    dragging = false;
-    bindMoves(false);
-  }
-
-  function bindPress(el) {
-    const opts = { capture: true, passive: false };
-    if ("PointerEvent" in window)
-      el.addEventListener(
-        "pointerdown",
-        (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          start(e);
-        },
-        opts
-      );
-    el.addEventListener(
-      "mousedown",
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        start(e);
-      },
-      true
-    );
-    el.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        start(e);
-      },
-      opts
-    );
-  }
-
-  const onPMove = (e) => move(e);
-  const onPUp = () => end();
-  const onMMove = (e) => move(e);
-  const onMUp = () => end();
-  const onTMove = (e) => move(e);
-  const onTEnd = () => end();
-
-  bindPress(track);
-  bindPress(knob);
-
-  track.addEventListener(
-    "click",
-    (e) => {
-      if (dragging || moved) return;
-      e.preventDefault();
-      e.stopPropagation();
-      commitFromPct(pctFromX(e.clientX));
-    },
-    true
-  );
-
-  knob.addEventListener("keydown", (e) => {
-    const { min, max, step } = getRange();
-    const cur = num(track.dataset.value, min);
-    let v = cur;
-    if (e.key === "ArrowLeft" || e.key === "ArrowDown")
-      v = clamp(cur - step, min, max);
-    else if (e.key === "ArrowRight" || e.key === "ArrowUp")
-      v = clamp(cur + step, min, max);
-    else return;
-    e.preventDefault();
-    track.dataset.value = String(v);
-    if (valuePill) valuePill.textContent = `${v}px`;
-    setByValue(v);
-    writeBorder(v);
-    knob.setAttribute("aria-valuenow", String(v));
-  });
-
-  track.addEventListener("dragstart", (e) => e.preventDefault());
-  knob.addEventListener("dragstart", (e) => e.preventDefault());
+    const w = `${st.width || 0}px`;
+    const color = window.__scHoverTypoBorderColor || "black";
+    const style = window.__scHoverTypoBorderStyle || "solid";
+    tag.textContent = `
+#${el.id}:hover{
+  box-sizing:border-box!important;
+  border-top:${w} ${style} ${color}!important;
+  border-right:${w} ${style} ${color}!important;
+  border-bottom:${w} ${style} ${color}!important;
+  border-left:${w} ${style} ${color}!important;
 }
+`;
+  }
+
+  function setUI(value) {
+    const v = Math.max(0, Math.min(max, value));
+    const rect = track.getBoundingClientRect();
+    const pct = (v / max) * 100;
+    knob.style.left = `${pct}%`;
+    fill.style.width = `${pct}%`;
+    apply(v);
+  }
+
+  function valueFromX(clientX) {
+    const rect = track.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    return Math.round((x / rect.width) * max);
+  }
+
+  knob.onmousedown = (e) => {
+    e.preventDefault();
+    const move = (ev) => setUI(valueFromX(ev.clientX));
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  };
+
+  track.onclick = (e) => setUI(valueFromX(e.clientX));
+
+  setTimeout(() => {
+    const el = getSelectedElement?.();
+    if (!el) return;
+    const k = keyFor(el);
+    const st = window.__scHoverTypoBorderStateMap.get(k);
+    setUI(st?.width || 0);
+  }, 50);
+}
+
