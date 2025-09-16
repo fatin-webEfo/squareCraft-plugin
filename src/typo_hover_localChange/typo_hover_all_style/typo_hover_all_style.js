@@ -288,195 +288,78 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-function initHoverTypoAllBorderControls(opts = {}) {
-  const {
-    trackId = "typo-all-hover-border-width-track",
-    knobId = "typo-all-hover-border-width-knob",
-    fillId = "typo-all-hover-border-width-fill",
-    inputId = "typo-all-hover-border-width-input", // optional numeric <input>, if you have one
-    min = 0,
-    max = 20,
-    step = 1,
-    onChange = (v) => {}, // callback when value changes
-  } = opts;
+export function initHoverTypoAllBorderControls() {
+  const track = document.getElementById("typo-all-hover-border-width-track");
+  const knob = document.getElementById("typo-all-hover-border-width-knob");
+  const fill = document.getElementById("typo-all-hover-border-width-fill");
+  if (!track || !knob || !fill) return;
 
-  const track = document.getElementById(trackId);
-  const knob = document.getElementById(knobId);
-  const fill = document.getElementById(fillId);
-  const input = document.getElementById(inputId) || null;
-
-  if (!track || !knob || !fill) {
-    console.warn("initHoverTypoAllBorderControls: missing required elements");
-    return;
-  }
-
-  // Internal state
-  let value =
-    input && !isNaN(parseFloat(input.value)) ? parseFloat(input.value) : min;
-  value = Math.min(max, Math.max(min, value));
-  let dragging = false;
-
-  function pctFromValue(v) {
-    return ((v - min) / (max - min)) * 100;
-  }
-  function valueFromPct(pct) {
-    const raw = min + ((max - min) * pct) / 100;
-    // snap to step
-    const snapped = Math.round(raw / step) * step;
-    return Math.min(max, Math.max(min, snapped));
-  }
-  function layout() {
-    // guard against hidden elements returning 0 width
-    const rect = track.getBoundingClientRect();
-    const trackW = rect.width || track.offsetWidth || 1;
-    const pct = pctFromValue(value);
-    const px = (pct / 100) * trackW;
-
-    fill.style.width = `${pct}%`;
-    knob.style.left = `${px}px`;
-    knob.style.transform = "translate(-50%, -50%)"; // center it if knob is absolutely centered by top/left
-    if (input) input.value = value;
-    onChange(value, pct);
-  }
-
-  function setFromClientX(clientX) {
-    const rect = track.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const pct = Math.min(100, Math.max(0, (x / rect.width) * 100));
-    value = valueFromPct(pct);
-    layout();
-  }
-
-  // Mouse
-  function onDown(e) {
-    e.preventDefault();
-    dragging = true;
-    track.classList.add("sc-cursor-grabbing");
-    setFromClientX(e.clientX);
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp, { once: true });
-  }
-  function onMove(e) {
-    if (!dragging) return;
-    setFromClientX(e.clientX);
-  }
-  function onUp() {
+  let pct = 0,
     dragging = false;
-    track.classList.remove("sc-cursor-grabbing");
-    window.removeEventListener("mousemove", onMove);
+
+  function setPercent(p) {
+    pct = Math.max(0, Math.min(100, p));
+    knob.style.position = "absolute";
+    knob.style.left = pct + "%";
+    fill.style.left = "0%";
+    fill.style.width = pct + "%";
+    knob.dataset.value = String(Math.round(pct));
+    track.dispatchEvent(
+      new CustomEvent("sc:hoverBorderWidthChange", { detail: { percent: pct } })
+    );
   }
 
-  // Touch
-  function onTouchStart(e) {
-    const t = e.touches[0];
-    if (!t) return;
+  function percentFromClientX(clientX) {
+    const r = track.getBoundingClientRect();
+    const x = Math.min(Math.max(clientX - r.left, 0), r.width);
+    return (x / r.width) * 100;
+  }
+
+  function start(e) {
     dragging = true;
-    setFromClientX(t.clientX);
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd, { once: true });
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    setPercent(percentFromClientX(x));
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", end, { once: true });
+    window.addEventListener("touchmove", move, { passive: false });
+    window.addEventListener("touchend", end, { once: true });
   }
-  function onTouchMove(e) {
+
+  function move(e) {
     if (!dragging) return;
-    const t = e.touches[0];
-    if (!t) return;
-    e.preventDefault();
-    setFromClientX(t.clientX);
+    if (e.cancelable) e.preventDefault();
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    setPercent(percentFromClientX(x));
   }
-  function onTouchEnd() {
+
+  function end() {
     dragging = false;
-    window.removeEventListener("touchmove", onTouchMove);
+    window.removeEventListener("pointermove", move);
+    window.removeEventListener("touchmove", move);
   }
 
-  // Click on track jumps knob
-  function onTrackClick(e) {
-    // Ignore if the click originated from the knob itself while dragging
-    if (e.target === knob && dragging) return;
-    setFromClientX(e.clientX);
+  function nudge(delta) {
+    setPercent(pct + delta);
   }
 
-  // Keyboard (when knob is focused)
-  function onKeyDown(e) {
-    const k = e.key;
-    if (k === "ArrowLeft" || k === "ArrowDown") {
-      e.preventDefault();
-      value = Math.max(min, value - step);
-      layout();
-    } else if (k === "ArrowRight" || k === "ArrowUp") {
-      e.preventDefault();
-      value = Math.min(max, value + step);
-      layout();
-    } else if (k === "Home") {
-      e.preventDefault();
-      value = min;
-      layout();
-    } else if (k === "End") {
-      e.preventDefault();
-      value = max;
-      layout();
-    }
-  }
+  track.addEventListener("pointerdown", start);
+  knob.addEventListener("pointerdown", start);
+  track.addEventListener("touchstart", start, { passive: false });
+  knob.addEventListener("touchstart", start, { passive: false });
 
-  // Input field (if present)
-  function onInputChange(e) {
-    const v = parseFloat(e.target.value);
-    if (isNaN(v)) return;
-    value = Math.min(max, Math.max(min, Math.round(v / step) * step));
-    layout();
-  }
+  track.addEventListener("click", (e) =>
+    setPercent(percentFromClientX(e.clientX))
+  );
 
-  // Make sure elements are focusable for a11y
-  knob.setAttribute("tabindex", "0");
-  knob.setAttribute("role", "slider");
-  knob.setAttribute("aria-valuemin", String(min));
-  knob.setAttribute("aria-valuemax", String(max));
-  const updateAria = () => knob.setAttribute("aria-valuenow", String(value));
+  track.setAttribute("tabindex", "0");
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") nudge(1);
+    else if (e.key === "ArrowLeft") nudge(-1);
+    else if (e.key === "Home") setPercent(0);
+    else if (e.key === "End") setPercent(100);
+  });
 
-  // Pointer-event setup (track & knob must receive events; fill should not)
-  // Your CSS already matches this, which is good. :contentReference[oaicite:0]{index=0}
-
-  // Bind
-  track.addEventListener("mousedown", onDown);
-  knob.addEventListener("mousedown", onDown);
-  track.addEventListener("click", onTrackClick);
-
-  track.addEventListener("touchstart", onTouchStart, { passive: true });
-  knob.addEventListener("touchstart", onTouchStart, { passive: true });
-
-  knob.addEventListener("keydown", onKeyDown);
-  if (input) input.addEventListener("change", onInputChange);
-
-  // Keep aria live
-  const ro = new MutationObserver(updateAria);
-  ro.observe(knob, { attributes: true, attributeFilter: ["style"] });
-
-  // Initial paint
-  layout();
-  updateAria();
-
-  // Public API (optional)
-  return {
-    get value() {
-      return value;
-    },
-    set value(v) {
-      value = Math.min(max, Math.max(min, v));
-      layout();
-    },
-    destroy() {
-      track.removeEventListener("mousedown", onDown);
-      knob.removeEventListener("mousedown", onDown);
-      track.removeEventListener("click", onTrackClick);
-      track.removeEventListener("touchstart", onTouchStart);
-      knob.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onTouchEnd);
-      knob.removeEventListener("keydown", onKeyDown);
-      if (input) input.removeEventListener("change", onInputChange);
-      ro.disconnect();
-    },
-  };
+  setPercent(0);
 }
 
 
