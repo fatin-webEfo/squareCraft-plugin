@@ -288,6 +288,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
+
 export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
