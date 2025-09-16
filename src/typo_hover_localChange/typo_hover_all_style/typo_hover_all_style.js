@@ -286,108 +286,148 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   log("ready");
 }
+// Call this once after your widget renders
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const track = document.getElementById("typo-all-hover-border-width-track");
-  const knob = document.getElementById("typo-all-hover-border-width-knob");
-  const fill = document.getElementById("typo-all-hover-border-width-fill");
-  const count = document.getElementById("typo-all-hover-border-width-count");
-  const inc = document.getElementById("typo-all-hover-border-width-inc");
-  const dec = document.getElementById("typo-all-hover-border-width-dec");
-  const reset = document.getElementById("typo-all-hover-border-reset");
+  // ----- Grab UI parts (present in your CSS/markup) -----
+  const track = document.getElementById('typo-all-hover-border-width-track');
+  const knob  = document.getElementById('typo-all-hover-border-width-knob');
+  const fill  = document.getElementById('typo-all-hover-border-width-fill');
+
+  // Optional helpers (if you have them in DOM):
+  const incBtn   = document.getElementById('typo-all-hover-border-width-inc');
+  const decBtn   = document.getElementById('typo-all-hover-border-width-dec');
+  const resetBtn = document.getElementById('typo-all-hover-border-width-reset');
+  const readout  = document.getElementById('typo-all-hover-border-width-count'); // e.g. “3px”
+
   if (!track || !knob || !fill) return;
 
-  const max = 10;
-  let value = 0;
+  // ----- Config -----
+  const MIN = 0;
+  const MAX = 10;           // you have sc-border-*-0..10
+  const STEP = 1;
+  let current = 0;
   let dragging = false;
 
-  if (!window.__typoHoverBorderStateMap)
-    window.__typoHoverBorderStateMap = new Map();
-  if (!window.__typoHoverBorderStyle) window.__typoHoverBorderStyle = "solid";
-  if (!window.__typoHoverBorderColor) window.__typoHoverBorderColor = "black";
+  // ----- Helpers -----
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const pct   = (v) => ((v - MIN) / (MAX - MIN)) * 100;
 
-  function getTarget() {
-    const root = getSelectedElement?.();
-    if (!root) return null;
-    const el =
-      root.querySelector(".sqs-block-content") ||
-      root.querySelector(".sqs-block-html") ||
-      root;
-    if (!el.id) el.id = "sc-typo-" + Math.random().toString(36).slice(2, 9);
-    return el;
-  }
-
-  function getKey() {
+  function getBlockAndType() {
     const sel = getSelectedElement?.();
-    const id = sel?.id || "block-id";
-    return `${id}--typo-all-hover-border`;
+    const block = sel?.isConnected ? sel : null;
+    return { block };
   }
 
-  function apply() {
-    const el = getTarget();
-    if (!el) return;
-    const k = getKey();
-    const state = window.__typoHoverBorderStateMap.get(k) || {
-      width: 0,
-      style: window.__typoHoverBorderStyle,
-      color: window.__typoHoverBorderColor,
-    };
-    state.width = value;
-    window.__typoHoverBorderStateMap.set(k, state);
-    const styleId = "sc-typo-hover-all-border-" + k;
+  function getStyleId(blockId) {
+    return `sc-typo-hover-border-all-${blockId}`;
+  }
+
+  function applyHoverBorderAllSides(valuePx) {
+    const { block } = getBlockAndType();
+    if (!block) return;
+
+    // Scope by block id to avoid leaking to other sections
+    if (!block.id) block.id = `sc-typo-${Math.random().toString(36).slice(2,9)}`;
+
+    const styleId = getStyleId(block.id);
     let style = document.getElementById(styleId);
     if (!style) {
-      style = document.createElement("style");
+      style = document.createElement('style');
       style.id = styleId;
       document.head.appendChild(style);
     }
+
+    // Target common text nodes inside the selected block.
+    // On hover, show border (all sides) with chosen width.
+    // Color/style can be refined elsewhere; we default to current color or a neutral.
     style.textContent = `
-#${el.id}:hover{
-  box-sizing:border-box!important;
-  border-style:${state.style}!important;
-  border-color:${state.color}!important;
-  border-width:${state.width}px!important;
-}`;
+      #${CSS.escape(block.id)} :is(h1,h2,h3,h4,h5,h6,p,span,a,li,blockquote,small,em,strong,.sqs-html):hover {
+        box-sizing: border-box !important;
+        border-style: solid !important;
+        border-color: currentColor !important;
+        border-width: ${valuePx}px !important;
+      }
+    `;
   }
 
-  function setUI(v) {
-    value = Math.max(0, Math.min(max, v));
-    const pct = (value / max) * 100;
-    knob.style.left = pct + "%";
-    fill.style.width = pct + "%";
-    if (count) count.textContent = value + "px";
-    apply();
+  function updateUIFromValue(v) {
+    current = clamp(Math.round(v), MIN, MAX);
+    const p = pct(current);
+    knob.style.left = `${p}%`;
+    fill.style.width = `${p}%`;
+    if (readout) readout.textContent = `${current}px`;
+    applyHoverBorderAllSides(current);
   }
 
-  function posToVal(clientX) {
+  function valueFromClientX(clientX) {
     const rect = track.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
-    return Math.round((x / rect.width) * max);
+    const x = clamp(clientX - rect.left, 0, rect.width);
+    const ratio = x / rect.width;
+    return Math.round(ratio * (MAX - MIN) + MIN);
   }
 
-  function move(e) {
-    if (!dragging) return;
-    setUI(posToVal(e.clientX));
-  }
-  function up() {
-    dragging = false;
-    document.removeEventListener("mousemove", move);
-    document.removeEventListener("mouseup", up);
-  }
-
-  knob.addEventListener("mousedown", () => {
+  // ----- Events -----
+  knob.addEventListener('mousedown', (e) => {
+    e.preventDefault();
     dragging = true;
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', onUp);
   });
 
-  track.addEventListener("click", (e) => setUI(posToVal(e.clientX)));
-  inc?.addEventListener("click", () => setUI(value + 1));
-  dec?.addEventListener("click", () => setUI(value - 1));
-  reset?.addEventListener("click", () => setUI(0));
+  function onDrag(e) {
+    if (!dragging) return;
+    updateUIFromValue(valueFromClientX(e.clientX));
+  }
+  function onUp() {
+    dragging = false;
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', onUp);
+  }
 
+  track.addEventListener('click', (e) => {
+    // click-to-seek
+    updateUIFromValue(valueFromClientX(e.clientX));
+  });
+
+  incBtn?.addEventListener('click', () => updateUIFromValue(current + STEP));
+  decBtn?.addEventListener('click', () => updateUIFromValue(current - STEP));
+  resetBtn?.addEventListener('click', () => updateUIFromValue(0));
+
+  // Touch support (optional but nice)
+  knob.addEventListener('touchstart', (e) => {
+    dragging = true;
+    const move = (ev) => {
+      const t = ev.touches[0];
+      updateUIFromValue(valueFromClientX(t.clientX));
+    };
+    const end = () => {
+      dragging = false;
+      document.removeEventListener('touchmove', move);
+      document.removeEventListener('touchend', end);
+      document.removeEventListener('touchcancel', end);
+    };
+    document.addEventListener('touchmove', move, { passive: false });
+    document.addEventListener('touchend', end, { passive: true });
+    document.addEventListener('touchcancel', end, { passive: true });
+  }, { passive: true });
+
+  // ----- Initial sync from existing computed border (if any) -----
   setTimeout(() => {
-    const saved = window.__typoHoverBorderStateMap.get(getKey());
-    setUI(saved?.width ?? 0);
+    const { block } = getBlockAndType();
+    if (!block) return;
+
+    // Try to infer a starting value from the first text node’s border
+    const firstText = block.querySelector('h1,h2,h3,h4,h5,h6,p,span,a,li,blockquote,small,em,strong,.sqs-html');
+    if (firstText) {
+      const cs = window.getComputedStyle(firstText);
+      // any side is fine; widths should match because we set all sides equally
+      const w = parseInt(cs.borderTopWidth || '0', 10);
+      if (!Number.isNaN(w)) {
+        updateUIFromValue(clamp(w, MIN, MAX));
+        return;
+      }
+    }
+    updateUIFromValue(0);
   }, 50);
 }
 
