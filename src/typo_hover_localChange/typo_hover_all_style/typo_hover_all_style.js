@@ -292,224 +292,205 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const root = document.getElementById("sc-widget-container") || document;
-  const sel =
-    typeof getSelectedElement === "function"
-      ? getSelectedElement
-      : () => getSelectedElement;
+  const track = document.getElementById("typo-all-hover-border-width-track");
+  const knob = document.getElementById("typo-all-hover-border-width-knob");
+  const fill = document.getElementById("typo-all-hover-border-width-fill");
+  const valueEl = document.getElementById("typo-all-hover-border-width-value");
+  const sideAll = document.getElementById("typo-all-hover-border-side-all");
+  const sideTop = document.getElementById("typo-all-hover-border-side-top");
+  const sideBottom = document.getElementById(
+    "typo-all-hover-border-side-bottom"
+  );
+  const sideLeft = document.getElementById("typo-all-hover-border-side-left");
+  const sideRight = document.getElementById("typo-all-hover-border-side-right");
+  const styleWrap = document.getElementById("typo-all-hover-border-style-wrap");
+  const styleSolid = document.getElementById(
+    "typo-all-hover-border-style-solid"
+  );
+  const styleDashed = document.getElementById(
+    "typo-all-hover-border-style-dashed"
+  );
+  const styleDotted = document.getElementById(
+    "typo-all-hover-border-style-dotted"
+  );
+  if (
+    !track ||
+    !knob ||
+    !fill ||
+    !sideAll ||
+    !sideTop ||
+    !sideBottom ||
+    !sideLeft ||
+    !sideRight ||
+    !styleWrap ||
+    !styleSolid ||
+    !styleDashed ||
+    !styleDotted
+  )
+    return;
 
-  const ids = {
-    sidesWrap: "#typo-all-hover-border-sides",
-    sideAll: "#typo-all-hover-border-side-all",
-    sideTop: "#typo-all-hover-border-side-top",
-    sideBottom: "#typo-all-hover-border-side-bottom",
-    sideLeft: "#typo-all-hover-border-side-left",
-    sideRight: "#typo-all-hover-border-side-right",
-    styleWrap: "#typo-all-hover-border-style-wrap",
-    styleSolid: "#typo-all-hover-border-style-solid",
-    styleDashed: "#typo-all-hover-border-style-dashed",
-    styleDotted: "#typo-all-hover-border-style-dotted",
-    track: "#typo-all-hover-border-width-track",
-    fill: "#typo-all-hover-border-width-fill",
-    knob: "#typo-all-hover-border-width-knob",
-  };
-
-  function q(s, scope = root) {
-    return scope.querySelector(s);
-  }
-  function qa(s, scope = root) {
-    return Array.from(scope.querySelectorAll(s));
-  }
-
-  let side = "all";
-  let bstyle = "solid";
   let pct = 0;
   let dragging = false;
+  let styleKind = "solid";
+  let sideMode = "all";
 
-  function setActive(el, yes) {
-    if (!el) return;
-    el.classList.toggle("sc-activeTab-border", !!yes);
-    el.classList.toggle("sc-inActiveTab-border", !yes);
+  function sel() {
+    return typeof getSelectedElement === "function"
+      ? getSelectedElement()
+      : getSelectedElement;
   }
 
-  function setSide(next) {
-    side = next;
-    const map = {
-      all: q(ids.sideAll),
-      top: q(ids.sideTop),
-      bottom: q(ids.sideBottom),
-      left: q(ids.sideLeft),
-      right: q(ids.sideRight),
-    };
-    Object.entries(map).forEach(([k, node]) => setActive(node, k === next));
-    const track = q(ids.track);
-    if (track)
-      track.dispatchEvent(
-        new CustomEvent("sc:hoverBorderSideChange", { detail: { side: next } })
-      );
+  function ensureId(el) {
+    if (!el) return null;
+    if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
+    return el.id;
   }
 
-  function setStyle(next) {
-    bstyle = next;
+  function writeHoverBorderCss() {
+    const host = sel();
+    if (!host) return;
+    const id = ensureId(host);
+    const tagId = `style-${id}-hover-border`;
+    let tag = document.getElementById(tagId);
+    if (!tag) {
+      tag = document.createElement("style");
+      tag.id = tagId;
+      document.head.appendChild(tag);
+    }
+    const w = Math.round(pct);
     const map = {
-      solid: q(ids.styleSolid),
-      dashed: q(ids.styleDashed),
-      dotted: q(ids.styleDotted),
-    };
-    Object.entries(map).forEach(([k, node]) => setActive(node, k === next));
-    const track = q(ids.track);
-    if (track)
-      track.dispatchEvent(
-        new CustomEvent("sc:hoverBorderStyleChange", {
-          detail: { style: next },
-        })
-      );
+      all: { top: w, right: w, bottom: w, left: w },
+      top: { top: w, right: 0, bottom: 0, left: 0 },
+      bottom: { top: 0, right: 0, bottom: w, left: 0 },
+      left: { top: 0, right: 0, bottom: 0, left: w },
+      right: { top: 0, right: w, bottom: 0, left: 0 },
+    }[sideMode] || { top: 0, right: 0, bottom: 0, left: 0 };
+
+    const rule = `
+#${id}:hover,
+#${id}:hover h1,#${id}:hover h2,#${id}:hover h3,#${id}:hover h4,
+#${id}:hover p,#${id}:hover a,#${id}:hover span{
+  border-style:${styleKind} !important;
+  border-top-width:${map.top}px !important;
+  border-right-width:${map.right}px !important;
+  border-bottom-width:${map.bottom}px !important;
+  border-left-width:${map.left}px !important;
+}`;
+    tag.textContent = rule;
+    track.dispatchEvent(
+      new CustomEvent("sc:hoverBorderApply", {
+        detail: { percent: pct, style: styleKind, side: sideMode },
+      })
+    );
   }
 
   function setPercent(p) {
     pct = Math.max(0, Math.min(100, p));
-    const track = q(ids.track);
-    const fill = q(ids.fill);
-    const knob = q(ids.knob);
-    if (!track || !fill || !knob) return;
-
-    track.style.position = "relative";
-    fill.style.position = "absolute";
-    fill.style.left = "0%";
-    fill.style.top = "0";
-    fill.style.height = "100%";
-    fill.style.width = pct + "%";
-
     knob.style.position = "absolute";
-    knob.style.top = "50%";
     knob.style.left = pct + "%";
-    knob.style.transform = "translate(-50%, -50%)";
-
+    fill.style.left = "0%";
+    fill.style.width = pct + "%";
     knob.dataset.value = String(Math.round(pct));
-
+    if (valueEl) valueEl.textContent = String(Math.round(pct));
     track.dispatchEvent(
       new CustomEvent("sc:hoverBorderWidthChange", { detail: { percent: pct } })
     );
+    writeHoverBorderCss();
   }
 
   function percentFromClientX(clientX) {
-    const track = q(ids.track);
-    if (!track) return 0;
     const r = track.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - r.left, 0), r.width);
     return (x / r.width) * 100;
   }
 
-  function startDrag(e) {
-    const knob = q(ids.knob);
-    if (!knob) return;
+  function start(e) {
     dragging = true;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     setPercent(percentFromClientX(x));
-    window.addEventListener("pointermove", moveDrag);
-    window.addEventListener("pointerup", endDrag, { once: true });
-    window.addEventListener("touchmove", moveDrag, { passive: false });
-    window.addEventListener("touchend", endDrag, { once: true });
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", end, { once: true });
+    window.addEventListener("touchmove", move, { passive: false });
+    window.addEventListener("touchend", end, { once: true });
   }
 
-  function moveDrag(e) {
+  function move(e) {
     if (!dragging) return;
     if (e.cancelable) e.preventDefault();
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     setPercent(percentFromClientX(x));
   }
 
-  function endDrag() {
+  function end() {
     dragging = false;
-    window.removeEventListener("pointermove", moveDrag);
-    window.removeEventListener("touchmove", moveDrag);
+    window.removeEventListener("pointermove", move);
+    window.removeEventListener("touchmove", move);
   }
 
   function nudge(delta) {
     setPercent(pct + delta);
   }
 
-  const track = q(ids.track);
-  const knob = q(ids.knob);
-  const fill = q(ids.fill);
-
-  if (track && knob && fill) {
-    track.addEventListener("pointerdown", (e) => {
-      startDrag(e);
-    });
-    knob.addEventListener("pointerdown", (e) => {
-      e.stopPropagation();
-      startDrag(e);
-    });
-    track.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        startDrag(e);
-      },
-      { passive: false }
-    );
-    knob.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        startDrag(e);
-      },
-      { passive: false }
-    );
-
-    track.addEventListener("click", (e) =>
-      setPercent(percentFromClientX(e.clientX))
-    );
-
-    track.setAttribute("tabindex", "0");
-    track.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowRight") nudge(1);
-      else if (e.key === "ArrowLeft") nudge(-1);
-      else if (e.key === "Home") setPercent(0);
-      else if (e.key === "End") setPercent(100);
-    });
+  function setActive(el, on) {
+    if (!el) return;
+    el.classList.toggle("sc-bg-454545", !!on);
   }
 
-  const sideEls = [
-    [ids.sideAll, "all"],
-    [ids.sideTop, "top"],
-    [ids.sideBottom, "bottom"],
-    [ids.sideLeft, "left"],
-    [ids.sideRight, "right"],
-  ];
-  sideEls.forEach(([selId, key]) => {
-    const n = q(selId);
-    if (!n) return;
-    n.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setSide(key);
-    });
+  function chooseSide(mode) {
+    sideMode = mode;
+    setActive(sideAll, mode === "all");
+    setActive(sideTop, mode === "top");
+    setActive(sideBottom, mode === "bottom");
+    setActive(sideLeft, mode === "left");
+    setActive(sideRight, mode === "right");
+    track.dispatchEvent(
+      new CustomEvent("sc:hoverBorderSideChange", {
+        detail: { side: sideMode },
+      })
+    );
+    writeHoverBorderCss();
+  }
+
+  function chooseStyle(kind) {
+    styleKind = kind;
+    setActive(styleSolid, kind === "solid");
+    setActive(styleDashed, kind === "dashed");
+    setActive(styleDotted, kind === "dotted");
+    track.dispatchEvent(
+      new CustomEvent("sc:hoverBorderStyleChange", {
+        detail: { style: styleKind },
+      })
+    );
+    writeHoverBorderCss();
+  }
+
+  track.addEventListener("pointerdown", start);
+  knob.addEventListener("pointerdown", start);
+  track.addEventListener("touchstart", start, { passive: false });
+  knob.addEventListener("touchstart", start, { passive: false });
+  track.addEventListener("click", (e) =>
+    setPercent(percentFromClientX(e.clientX))
+  );
+  track.setAttribute("tabindex", "0");
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") nudge(1);
+    else if (e.key === "ArrowLeft") nudge(-1);
+    else if (e.key === "Home") setPercent(0);
+    else if (e.key === "End") setPercent(100);
   });
 
-  const styleEls = [
-    [ids.styleSolid, "solid"],
-    [ids.styleDashed, "dashed"],
-    [ids.styleDotted, "dotted"],
-  ];
-  styleEls.forEach(([selId, key]) => {
-    const n = q(selId);
-    if (!n) return;
-    n.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setStyle(key);
-    });
-  });
+  sideAll.addEventListener("click", () => chooseSide("all"));
+  sideTop.addEventListener("click", () => chooseSide("top"));
+  sideBottom.addEventListener("click", () => chooseSide("bottom"));
+  sideLeft.addEventListener("click", () => chooseSide("left"));
+  sideRight.addEventListener("click", () => chooseSide("right"));
 
-  setSide("all");
-  setStyle("solid");
+  styleSolid.addEventListener("click", () => chooseStyle("solid"));
+  styleDashed.addEventListener("click", () => chooseStyle("dashed"));
+  styleDotted.addEventListener("click", () => chooseStyle("dotted"));
+
+  chooseSide("all");
+  chooseStyle("solid");
   setPercent(0);
-
-  const target = sel && sel();
-  if (target && !target.dataset.scHoverTypoAllBorderApplied) {
-    target.dataset.scHoverTypoAllBorderApplied = "1";
-  }
 }
+
