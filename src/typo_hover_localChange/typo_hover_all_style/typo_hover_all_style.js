@@ -494,4 +494,3 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   chooseStyle("solid");
   setPercent(0);
 }
-
