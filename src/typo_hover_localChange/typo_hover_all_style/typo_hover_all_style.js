@@ -286,149 +286,197 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   log("ready");
 }
-// Call this once after your widget renders
-export function initHoverTypoAllBorderControls(getSelectedElement) {
-  // ----- Grab UI parts (present in your CSS/markup) -----
-  const track = document.getElementById('typo-all-hover-border-width-track');
-  const knob  = document.getElementById('typo-all-hover-border-width-knob');
-  const fill  = document.getElementById('typo-all-hover-border-width-fill');
 
-  // Optional helpers (if you have them in DOM):
-  const incBtn   = document.getElementById('typo-all-hover-border-width-inc');
-  const decBtn   = document.getElementById('typo-all-hover-border-width-dec');
-  const resetBtn = document.getElementById('typo-all-hover-border-width-reset');
-  const readout  = document.getElementById('typo-all-hover-border-width-count'); // e.g. “3px”
 
-  if (!track || !knob || !fill) return;
+function initHoverTypoAllBorderControls(opts = {}) {
+  const {
+    trackId = "typo-all-hover-border-width-track",
+    knobId = "typo-all-hover-border-width-knob",
+    fillId = "typo-all-hover-border-width-fill",
+    inputId = "typo-all-hover-border-width-input", // optional numeric <input>, if you have one
+    min = 0,
+    max = 20,
+    step = 1,
+    onChange = (v) => {}, // callback when value changes
+  } = opts;
 
-  // ----- Config -----
-  const MIN = 0;
-  const MAX = 10;           // you have sc-border-*-0..10
-  const STEP = 1;
-  let current = 0;
+  const track = document.getElementById(trackId);
+  const knob = document.getElementById(knobId);
+  const fill = document.getElementById(fillId);
+  const input = document.getElementById(inputId) || null;
+
+  if (!track || !knob || !fill) {
+    console.warn("initHoverTypoAllBorderControls: missing required elements");
+    return;
+  }
+
+  // Internal state
+  let value =
+    input && !isNaN(parseFloat(input.value)) ? parseFloat(input.value) : min;
+  value = Math.min(max, Math.max(min, value));
   let dragging = false;
 
-  // ----- Helpers -----
-  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-  const pct   = (v) => ((v - MIN) / (MAX - MIN)) * 100;
-
-  function getBlockAndType() {
-    const sel = getSelectedElement?.();
-    const block = sel?.isConnected ? sel : null;
-    return { block };
+  function pctFromValue(v) {
+    return ((v - min) / (max - min)) * 100;
   }
-
-  function getStyleId(blockId) {
-    return `sc-typo-hover-border-all-${blockId}`;
+  function valueFromPct(pct) {
+    const raw = min + ((max - min) * pct) / 100;
+    // snap to step
+    const snapped = Math.round(raw / step) * step;
+    return Math.min(max, Math.max(min, snapped));
   }
-
-  function applyHoverBorderAllSides(valuePx) {
-    const { block } = getBlockAndType();
-    if (!block) return;
-
-    // Scope by block id to avoid leaking to other sections
-    if (!block.id) block.id = `sc-typo-${Math.random().toString(36).slice(2,9)}`;
-
-    const styleId = getStyleId(block.id);
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement('style');
-      style.id = styleId;
-      document.head.appendChild(style);
-    }
-
-    // Target common text nodes inside the selected block.
-    // On hover, show border (all sides) with chosen width.
-    // Color/style can be refined elsewhere; we default to current color or a neutral.
-    style.textContent = `
-      #${CSS.escape(block.id)} :is(h1,h2,h3,h4,h5,h6,p,span,a,li,blockquote,small,em,strong,.sqs-html):hover {
-        box-sizing: border-box !important;
-        border-style: solid !important;
-        border-color: currentColor !important;
-        border-width: ${valuePx}px !important;
-      }
-    `;
-  }
-
-  function updateUIFromValue(v) {
-    current = clamp(Math.round(v), MIN, MAX);
-    const p = pct(current);
-    knob.style.left = `${p}%`;
-    fill.style.width = `${p}%`;
-    if (readout) readout.textContent = `${current}px`;
-    applyHoverBorderAllSides(current);
-  }
-
-  function valueFromClientX(clientX) {
+  function layout() {
+    // guard against hidden elements returning 0 width
     const rect = track.getBoundingClientRect();
-    const x = clamp(clientX - rect.left, 0, rect.width);
-    const ratio = x / rect.width;
-    return Math.round(ratio * (MAX - MIN) + MIN);
+    const trackW = rect.width || track.offsetWidth || 1;
+    const pct = pctFromValue(value);
+    const px = (pct / 100) * trackW;
+
+    fill.style.width = `${pct}%`;
+    knob.style.left = `${px}px`;
+    knob.style.transform = "translate(-50%, -50%)"; // center it if knob is absolutely centered by top/left
+    if (input) input.value = value;
+    onChange(value, pct);
   }
 
-  // ----- Events -----
-  knob.addEventListener('mousedown', (e) => {
+  function setFromClientX(clientX) {
+    const rect = track.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pct = Math.min(100, Math.max(0, (x / rect.width) * 100));
+    value = valueFromPct(pct);
+    layout();
+  }
+
+  // Mouse
+  function onDown(e) {
     e.preventDefault();
     dragging = true;
-    document.addEventListener('mousemove', onDrag);
-    document.addEventListener('mouseup', onUp);
-  });
-
-  function onDrag(e) {
+    track.classList.add("sc-cursor-grabbing");
+    setFromClientX(e.clientX);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp, { once: true });
+  }
+  function onMove(e) {
     if (!dragging) return;
-    updateUIFromValue(valueFromClientX(e.clientX));
+    setFromClientX(e.clientX);
   }
   function onUp() {
     dragging = false;
-    document.removeEventListener('mousemove', onDrag);
-    document.removeEventListener('mouseup', onUp);
+    track.classList.remove("sc-cursor-grabbing");
+    window.removeEventListener("mousemove", onMove);
   }
 
-  track.addEventListener('click', (e) => {
-    // click-to-seek
-    updateUIFromValue(valueFromClientX(e.clientX));
-  });
-
-  incBtn?.addEventListener('click', () => updateUIFromValue(current + STEP));
-  decBtn?.addEventListener('click', () => updateUIFromValue(current - STEP));
-  resetBtn?.addEventListener('click', () => updateUIFromValue(0));
-
-  // Touch support (optional but nice)
-  knob.addEventListener('touchstart', (e) => {
+  // Touch
+  function onTouchStart(e) {
+    const t = e.touches[0];
+    if (!t) return;
     dragging = true;
-    const move = (ev) => {
-      const t = ev.touches[0];
-      updateUIFromValue(valueFromClientX(t.clientX));
-    };
-    const end = () => {
-      dragging = false;
-      document.removeEventListener('touchmove', move);
-      document.removeEventListener('touchend', end);
-      document.removeEventListener('touchcancel', end);
-    };
-    document.addEventListener('touchmove', move, { passive: false });
-    document.addEventListener('touchend', end, { passive: true });
-    document.addEventListener('touchcancel', end, { passive: true });
-  }, { passive: true });
+    setFromClientX(t.clientX);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { once: true });
+  }
+  function onTouchMove(e) {
+    if (!dragging) return;
+    const t = e.touches[0];
+    if (!t) return;
+    e.preventDefault();
+    setFromClientX(t.clientX);
+  }
+  function onTouchEnd() {
+    dragging = false;
+    window.removeEventListener("touchmove", onTouchMove);
+  }
 
-  // ----- Initial sync from existing computed border (if any) -----
-  setTimeout(() => {
-    const { block } = getBlockAndType();
-    if (!block) return;
+  // Click on track jumps knob
+  function onTrackClick(e) {
+    // Ignore if the click originated from the knob itself while dragging
+    if (e.target === knob && dragging) return;
+    setFromClientX(e.clientX);
+  }
 
-    // Try to infer a starting value from the first text node’s border
-    const firstText = block.querySelector('h1,h2,h3,h4,h5,h6,p,span,a,li,blockquote,small,em,strong,.sqs-html');
-    if (firstText) {
-      const cs = window.getComputedStyle(firstText);
-      // any side is fine; widths should match because we set all sides equally
-      const w = parseInt(cs.borderTopWidth || '0', 10);
-      if (!Number.isNaN(w)) {
-        updateUIFromValue(clamp(w, MIN, MAX));
-        return;
-      }
+  // Keyboard (when knob is focused)
+  function onKeyDown(e) {
+    const k = e.key;
+    if (k === "ArrowLeft" || k === "ArrowDown") {
+      e.preventDefault();
+      value = Math.max(min, value - step);
+      layout();
+    } else if (k === "ArrowRight" || k === "ArrowUp") {
+      e.preventDefault();
+      value = Math.min(max, value + step);
+      layout();
+    } else if (k === "Home") {
+      e.preventDefault();
+      value = min;
+      layout();
+    } else if (k === "End") {
+      e.preventDefault();
+      value = max;
+      layout();
     }
-    updateUIFromValue(0);
-  }, 50);
+  }
+
+  // Input field (if present)
+  function onInputChange(e) {
+    const v = parseFloat(e.target.value);
+    if (isNaN(v)) return;
+    value = Math.min(max, Math.max(min, Math.round(v / step) * step));
+    layout();
+  }
+
+  // Make sure elements are focusable for a11y
+  knob.setAttribute("tabindex", "0");
+  knob.setAttribute("role", "slider");
+  knob.setAttribute("aria-valuemin", String(min));
+  knob.setAttribute("aria-valuemax", String(max));
+  const updateAria = () => knob.setAttribute("aria-valuenow", String(value));
+
+  // Pointer-event setup (track & knob must receive events; fill should not)
+  // Your CSS already matches this, which is good. :contentReference[oaicite:0]{index=0}
+
+  // Bind
+  track.addEventListener("mousedown", onDown);
+  knob.addEventListener("mousedown", onDown);
+  track.addEventListener("click", onTrackClick);
+
+  track.addEventListener("touchstart", onTouchStart, { passive: true });
+  knob.addEventListener("touchstart", onTouchStart, { passive: true });
+
+  knob.addEventListener("keydown", onKeyDown);
+  if (input) input.addEventListener("change", onInputChange);
+
+  // Keep aria live
+  const ro = new MutationObserver(updateAria);
+  ro.observe(knob, { attributes: true, attributeFilter: ["style"] });
+
+  // Initial paint
+  layout();
+  updateAria();
+
+  // Public API (optional)
+  return {
+    get value() {
+      return value;
+    },
+    set value(v) {
+      value = Math.min(max, Math.max(min, v));
+      layout();
+    },
+    destroy() {
+      track.removeEventListener("mousedown", onDown);
+      knob.removeEventListener("mousedown", onDown);
+      track.removeEventListener("click", onTrackClick);
+      track.removeEventListener("touchstart", onTouchStart);
+      knob.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      knob.removeEventListener("keydown", onKeyDown);
+      if (input) input.removeEventListener("change", onInputChange);
+      ro.disconnect();
+    },
+  };
 }
 
 
