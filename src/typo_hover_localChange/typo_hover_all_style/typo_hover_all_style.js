@@ -288,7 +288,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-export function initHoverTypoAllBorderControls() {
+export function initHoverTypoAllBorderControls(getSelectedElement) {
   const track = document.getElementById("typo-all-hover-border-width-track");
   const knob = document.getElementById("typo-all-hover-border-width-knob");
   const fill = document.getElementById("typo-all-hover-border-width-fill");
