@@ -290,83 +290,105 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const track = document.getElementById("typo-all-hover-border-width-track");
   const knob = document.getElementById("typo-all-hover-border-width-knob");
   const fill = document.getElementById("typo-all-hover-border-width-fill");
+  const count = document.getElementById("typo-all-hover-border-width-count");
+  const inc = document.getElementById("typo-all-hover-border-width-inc");
+  const dec = document.getElementById("typo-all-hover-border-width-dec");
+  const reset = document.getElementById("typo-all-hover-border-reset");
   if (!track || !knob || !fill) return;
 
   const max = 10;
-  if (!window.__scHoverTypoBorderStateMap)
-    window.__scHoverTypoBorderStateMap = new Map();
-  if (!window.__scHoverTypoBorderStyle)
-    window.__scHoverTypoBorderStyle = "solid";
-  if (!window.__scHoverTypoBorderColor)
-    window.__scHoverTypoBorderColor = "black";
+  let value = 0;
+  let dragging = false;
 
-  function keyFor(el) {
-    const id = el?.id || "sc-typo";
-    return `${id}--typo-all`;
+  if (!window.__typoHoverBorderStateMap)
+    window.__typoHoverBorderStateMap = new Map();
+  if (!window.__typoHoverBorderStyle) window.__typoHoverBorderStyle = "solid";
+  if (!window.__typoHoverBorderColor) window.__typoHoverBorderColor = "black";
+
+  function getTarget() {
+    const root = getSelectedElement?.();
+    if (!root) return null;
+    const el =
+      root.querySelector(".sqs-block-content") ||
+      root.querySelector(".sqs-block-html") ||
+      root;
+    if (!el.id) el.id = "sc-typo-" + Math.random().toString(36).slice(2, 9);
+    return el;
   }
 
-  function apply(value) {
-    const el = getSelectedElement?.();
+  function getKey() {
+    const sel = getSelectedElement?.();
+    const id = sel?.id || "block-id";
+    return `${id}--typo-all-hover-border`;
+  }
+
+  function apply() {
+    const el = getTarget();
     if (!el) return;
-    const k = keyFor(el);
-    const st = window.__scHoverTypoBorderStateMap.get(k) || { width: 0 };
-    st.width = value;
-    window.__scHoverTypoBorderStateMap.set(k, st);
-    const styleId = `sc-typo-hover-border-${k}`;
-    let tag = document.getElementById(styleId);
-    if (!tag) {
-      tag = document.createElement("style");
-      tag.id = styleId;
-      document.head.appendChild(tag);
+    const k = getKey();
+    const state = window.__typoHoverBorderStateMap.get(k) || {
+      width: 0,
+      style: window.__typoHoverBorderStyle,
+      color: window.__typoHoverBorderColor,
+    };
+    state.width = value;
+    window.__typoHoverBorderStateMap.set(k, state);
+    const styleId = "sc-typo-hover-all-border-" + k;
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      document.head.appendChild(style);
     }
-    const w = `${st.width || 0}px`;
-    const color = window.__scHoverTypoBorderColor || "black";
-    const style = window.__scHoverTypoBorderStyle || "solid";
-    tag.textContent = `
+    style.textContent = `
 #${el.id}:hover{
   box-sizing:border-box!important;
-  border-top:${w} ${style} ${color}!important;
-  border-right:${w} ${style} ${color}!important;
-  border-bottom:${w} ${style} ${color}!important;
-  border-left:${w} ${style} ${color}!important;
-}
-`;
+  border-style:${state.style}!important;
+  border-color:${state.color}!important;
+  border-width:${state.width}px!important;
+}`;
   }
 
-  function setUI(value) {
-    const v = Math.max(0, Math.min(max, value));
-    const rect = track.getBoundingClientRect();
-    const pct = (v / max) * 100;
-    knob.style.left = `${pct}%`;
-    fill.style.width = `${pct}%`;
-    apply(v);
+  function setUI(v) {
+    value = Math.max(0, Math.min(max, v));
+    const pct = (value / max) * 100;
+    knob.style.left = pct + "%";
+    fill.style.width = pct + "%";
+    if (count) count.textContent = value + "px";
+    apply();
   }
 
-  function valueFromX(clientX) {
+  function posToVal(clientX) {
     const rect = track.getBoundingClientRect();
     const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
     return Math.round((x / rect.width) * max);
   }
 
-  knob.onmousedown = (e) => {
-    e.preventDefault();
-    const move = (ev) => setUI(valueFromX(ev.clientX));
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
+  function move(e) {
+    if (!dragging) return;
+    setUI(posToVal(e.clientX));
+  }
+  function up() {
+    dragging = false;
+    document.removeEventListener("mousemove", move);
+    document.removeEventListener("mouseup", up);
+  }
+
+  knob.addEventListener("mousedown", () => {
+    dragging = true;
     document.addEventListener("mousemove", move);
     document.addEventListener("mouseup", up);
-  };
+  });
 
-  track.onclick = (e) => setUI(valueFromX(e.clientX));
+  track.addEventListener("click", (e) => setUI(posToVal(e.clientX)));
+  inc?.addEventListener("click", () => setUI(value + 1));
+  dec?.addEventListener("click", () => setUI(value - 1));
+  reset?.addEventListener("click", () => setUI(0));
 
   setTimeout(() => {
-    const el = getSelectedElement?.();
-    if (!el) return;
-    const k = keyFor(el);
-    const st = window.__scHoverTypoBorderStateMap.get(k);
-    setUI(st?.width || 0);
+    const saved = window.__typoHoverBorderStateMap.get(getKey());
+    setUI(saved?.width ?? 0);
   }, 50);
 }
+
 
