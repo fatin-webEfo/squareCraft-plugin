@@ -289,77 +289,105 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  document.body.dataset.scHoverTypoAllBorderBound = "1";
+
   const track = document.getElementById("typo-all-hover-border-width-track");
   const knob = document.getElementById("typo-all-hover-border-width-knob");
   const fill = document.getElementById("typo-all-hover-border-width-fill");
   if (!track || !knob || !fill) return;
 
-  let pct = 0,
-    dragging = false;
+  let pct = 0;
+  let dragging = false;
+
+  function clamp(n, a, b) {
+    return Math.max(a, Math.min(b, n));
+  }
+
+  function percentFromClientX(clientX) {
+    const r = track.getBoundingClientRect();
+    const x = clamp(clientX - r.left, 0, r.width);
+    return (x / r.width) * 100;
+  }
 
   function setPercent(p) {
-    pct = Math.max(0, Math.min(100, p));
+    pct = clamp(p, 0, 100);
     knob.style.position = "absolute";
+    knob.style.top = "50%";
     knob.style.left = pct + "%";
+    knob.style.transform = "translate(-50%, -50%)";
+    fill.style.position = "absolute";
     fill.style.left = "0%";
+    fill.style.top = "0";
     fill.style.width = pct + "%";
+    fill.style.height = "100%";
     knob.dataset.value = String(Math.round(pct));
     track.dispatchEvent(
       new CustomEvent("sc:hoverBorderWidthChange", { detail: { percent: pct } })
     );
   }
 
-  function percentFromClientX(clientX) {
-    const r = track.getBoundingClientRect();
-    const x = Math.min(Math.max(clientX - r.left, 0), r.width);
-    return (x / r.width) * 100;
-  }
-
-  function start(e) {
+  function startDrag(e) {
     dragging = true;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const x =
+      e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
     setPercent(percentFromClientX(x));
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", end, { once: true });
-    window.addEventListener("touchmove", move, { passive: false });
-    window.addEventListener("touchend", end, { once: true });
+    const target = e.currentTarget === knob ? knob : track;
+    if (target.setPointerCapture && e.pointerId != null)
+      target.setPointerCapture(e.pointerId);
   }
 
-  function move(e) {
+  function onMove(e) {
     if (!dragging) return;
     if (e.cancelable) e.preventDefault();
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const x =
+      e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
     setPercent(percentFromClientX(x));
   }
 
-  function end() {
+  function endDrag(e) {
     dragging = false;
-    window.removeEventListener("pointermove", move);
-    window.removeEventListener("touchmove", move);
+    const target = e.currentTarget === knob ? knob : track;
+    if (target.releasePointerCapture && e.pointerId != null)
+      target.releasePointerCapture(e.pointerId);
   }
 
   function nudge(delta) {
     setPercent(pct + delta);
   }
 
-  track.addEventListener("pointerdown", start);
-  knob.addEventListener("pointerdown", start);
-  track.addEventListener("touchstart", start, { passive: false });
-  knob.addEventListener("touchstart", start, { passive: false });
+  track.style.position ||= "relative";
+  knob.style.position = "absolute";
+  knob.style.top = "50%";
+  knob.style.transform = "translate(-50%, -50%)";
+
+  track.addEventListener("pointerdown", startDrag);
+  knob.addEventListener("pointerdown", startDrag);
+  window.addEventListener("pointermove", onMove);
+  window.addEventListener("pointerup", endDrag);
+  window.addEventListener("pointercancel", endDrag);
 
   track.addEventListener("click", (e) =>
     setPercent(percentFromClientX(e.clientX))
   );
 
   track.setAttribute("tabindex", "0");
-  track.addEventListener("keydown", (e) => {
+  knob.setAttribute("tabindex", "0");
+
+  function onKey(e) {
     if (e.key === "ArrowRight") nudge(1);
     else if (e.key === "ArrowLeft") nudge(-1);
+    else if (e.key === "PageUp") nudge(10);
+    else if (e.key === "PageDown") nudge(-10);
     else if (e.key === "Home") setPercent(0);
     else if (e.key === "End") setPercent(100);
-  });
+  }
 
-  setPercent(0);
+  track.addEventListener("keydown", onKey);
+  knob.addEventListener("keydown", onKey);
+
+  const initial = Number(knob.dataset.value);
+  setPercent(Number.isFinite(initial) ? initial : 0);
 }
 
 
