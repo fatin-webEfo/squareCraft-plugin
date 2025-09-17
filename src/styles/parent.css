@@ -332,9 +332,6 @@
 #typo-all-hover-border-width-knob{
   position:absolute;left:0;top:50%;
   transform:translate(-50%,-50%);
-  width:14px;height:14px;border-radius:50%;
-  background:#EF7C2F; 
-  box-shadow:0 0 0 2px #2c2c2c;
   cursor:grab;user-select:none;touch-action:none;z-index:1;
 }
 
