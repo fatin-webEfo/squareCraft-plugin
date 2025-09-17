@@ -286,13 +286,15 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   log("ready");
 }
+
+
 export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
 
   const root = document.getElementById("sc-widget-container") || document;
 
-  // --- selectors / active classes
+  // ---------- Tabs (side + style)
   const sidePanelSel = "#typo-all-hover-border-sides";
   const sideItemSel = [
     "#typo-all-hover-border-side-all",
@@ -312,43 +314,45 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const ACTIVE = "sc-bg-454545";
   const INACTIVE = "sc-bg-3f3f3f";
 
-  function markActive(panel, selector, btn, dataKey, stripPrefix) {
-    panel.querySelectorAll(selector).forEach((n) => {
+  function markActive(panel, groupSel, btn, dataKey, stripPrefix) {
+    panel.querySelectorAll(groupSel).forEach((n) => {
       n.classList.remove(ACTIVE);
       if (!n.classList.contains(INACTIVE)) n.classList.add(INACTIVE);
     });
     btn.classList.add(ACTIVE);
     btn.classList.remove(INACTIVE);
-    if (dataKey && stripPrefix) {
+    if (dataKey) {
       panel.dataset[dataKey] = (btn.id || "")
         .replace(stripPrefix, "")
         .toLowerCase();
     }
   }
 
-  // seed default actives
+  // seed defaults
   root.querySelectorAll(sidePanelSel).forEach((panel) => {
     const items = panel.querySelectorAll(sideItemSel);
-    markActive(
-      panel,
-      sideItemSel,
-      items[0],
-      "side",
-      "typo-all-hover-border-side-"
-    );
+    if (items.length)
+      markActive(
+        panel,
+        sideItemSel,
+        items[0],
+        "side",
+        "typo-all-hover-border-side-"
+      );
   });
   root.querySelectorAll(stylePanelSel).forEach((panel) => {
     const items = panel.querySelectorAll(styleItemSel);
-    markActive(
-      panel,
-      styleItemSel,
-      items[0],
-      "style",
-      "typo-all-hover-border-style-"
-    );
+    if (items.length)
+      markActive(
+        panel,
+        styleItemSel,
+        items[0],
+        "style",
+        "typo-all-hover-border-style-"
+      );
   });
 
-  // delegate clicks for side/style tabs
+  // delegate for side/style clicks
   root.addEventListener(
     "pointerdown",
     (e) => {
@@ -356,7 +360,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       if (sideBtn) {
         const panel = sideBtn.closest(sidePanelSel);
         if (!panel) return;
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         markActive(
@@ -366,16 +370,15 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
           "side",
           "typo-all-hover-border-side-"
         );
-        // reapply css at current width
-        const val = +((track && track.dataset.value) || 0);
-        writeBorder(val);
+        const v = +((track && track.dataset.value) || 0);
+        writeBorder(v);
         return;
       }
       const styleBtn = e.target.closest(styleItemSel);
       if (styleBtn) {
         const panel = styleBtn.closest(stylePanelSel);
         if (!panel) return;
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
         markActive(
@@ -385,30 +388,35 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
           "style",
           "typo-all-hover-border-style-"
         );
-        const val = +((track && track.dataset.value) || 0);
-        writeBorder(val);
+        const v = +((track && track.dataset.value) || 0);
+        writeBorder(v);
         return;
       }
     },
     true
   );
 
-  // --- slider bits
+  // ---------- Slider bits
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
   const pill = root.querySelector("#typo-all-hover-border-width-value");
-
-  if (!track || !fill || !knob) return; // missing pieces
+  if (!track || !fill || !knob) return;
 
   // a11y
   knob.setAttribute("role", "slider");
-  knob.tabIndex = knob.tabIndex || 0;
+  if (!knob.hasAttribute("tabindex")) knob.tabIndex = 0;
 
   // helpers
   const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
   const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
   const quant = (v, s) => Math.round(v / s) * s;
+  const rect = () => track.getBoundingClientRect();
+  const getX = (e) =>
+    e?.clientX ??
+    e?.touches?.[0]?.clientX ??
+    e?.changedTouches?.[0]?.clientX ??
+    0;
 
   function getRange() {
     return {
@@ -453,7 +461,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       root.querySelector(stylePanelSel)?.dataset.style || "solid"
     ).toLowerCase();
 
-    // build side-specific widths
     const w = Math.max(0, Math.round(widthPx));
     const map =
       side === "all"
@@ -476,8 +483,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
-  // geometry
-  const rect = () => track.getBoundingClientRect();
+  // geometry → percent/value conversions
   function pctFromX(clientX) {
     const r = rect();
     const x = clamp(clientX - r.left, 0, r.width);
@@ -509,7 +515,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(v);
   }
 
-  // init position (after layout)
+  // init after layout
   function initPosition() {
     const initVal = num(track.dataset.value, getRange().min);
     setByValue(initVal);
@@ -530,15 +536,27 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   });
   ro.observe(track);
 
-  // dragging
+  // drag lifecycle
   let dragging = false;
   let moved = false;
 
-  const getX = (e) =>
-    e?.clientX ??
-    (e?.touches && e.touches[0] && e.touches[0].clientX) ??
-    (e?.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX) ??
-    0;
+  function startDrag(e) {
+    dragging = true;
+    moved = false;
+    commitFromPct(pctFromX(getX(e)));
+    bindMoves(true);
+  }
+  function move(e) {
+    if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
+    moved = true;
+    commitFromPct(pctFromX(getX(e)));
+  }
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    bindMoves(false);
+  }
 
   const onPMove = (e) => move(e);
   const onPUp = () => end();
@@ -547,8 +565,8 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const onTMove = (e) => move(e);
   const onTEnd = () => end();
 
-  function bindMoves(bind) {
-    if (bind) {
+  function bindMoves(on) {
+    if (on) {
       if ("PointerEvent" in window) {
         window.addEventListener("pointermove", onPMove, {
           capture: true,
@@ -591,45 +609,30 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   }
 
-  function startDrag(e) {
-    dragging = true;
-    moved = false;
-    commitFromPct(pctFromX(getX(e)));
-    bindMoves(true);
-  }
-  function move(e) {
-    if (!dragging) return;
-    moved = true;
-    if (e.cancelable) e.preventDefault();
-    commitFromPct(pctFromX(getX(e)));
-  }
-  function end() {
-    if (!dragging) return;
-    dragging = false;
-    bindMoves(false);
-  }
-
   function bindPress(el) {
-    const h = (e) => {
-      e.preventDefault();
+    const start = (e) => {
+      if (e.cancelable) e.preventDefault();
       e.stopPropagation();
       e.stopImmediatePropagation();
       startDrag(e);
     };
     if ("PointerEvent" in window)
-      el.addEventListener("pointerdown", h, { capture: true, passive: false });
-    el.addEventListener("mousedown", h, true);
-    el.addEventListener("touchstart", h, { capture: true, passive: false });
+      el.addEventListener("pointerdown", start, {
+        capture: true,
+        passive: false,
+      });
+    el.addEventListener("mousedown", start, true);
+    el.addEventListener("touchstart", start, { capture: true, passive: false });
   }
   bindPress(track);
   bindPress(knob);
 
-  // click to jump when not dragging
+  // click to jump (when not dragging)
   track.addEventListener(
     "click",
     (e) => {
       if (dragging || moved) return;
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
       e.stopPropagation();
       commitFromPct(pctFromX(e.clientX));
     },
@@ -649,7 +652,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     else if (e.key === "End") v = max;
     else return;
 
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault();
     track.dataset.value = String(v);
     if (pill) pill.textContent = `${v}px`;
     setByValue(v);
@@ -657,8 +660,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     knob.setAttribute("aria-valuenow", String(v));
   });
 
-  // no native drag ghost
+  // kill native drag ghost
   track.addEventListener("dragstart", (e) => e.preventDefault());
   knob.addEventListener("dragstart", (e) => e.preventDefault());
 }
+
 
