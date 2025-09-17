@@ -295,7 +295,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const valueText = document.getElementById(
     "typo-all-hover-border-width-value"
   );
-
   const incBtn = document.getElementById(
     "typo-all-hover-border-width-increase"
   );
