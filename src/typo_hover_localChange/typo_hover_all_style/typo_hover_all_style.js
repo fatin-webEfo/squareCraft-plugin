@@ -294,7 +294,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   const root = document.getElementById("sc-widget-container") || document;
 
-  // ---------- Tabs (side + style)
+  // ---------- Tabs (unchanged)
   const sidePanelSel = "#typo-all-hover-border-sides";
   const sideItemSel = [
     "#typo-all-hover-border-side-all",
@@ -390,7 +390,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         );
         const v = +((track && track.dataset.value) || 0);
         writeBorder(v);
-        return;
       }
     },
     true
@@ -403,7 +402,11 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const pill = root.querySelector("#typo-all-hover-border-width-value");
   if (!track || !fill || !knob) return;
 
-  // a11y
+  // ensure anchors in case CSS utilities got overridden
+  fill.style.left = fill.style.left || "0px";
+  fill.style.top = fill.style.top || "0px";
+  knob.style.transform = knob.style.transform || "translate(-50%,-50%)";
+
   knob.setAttribute("role", "slider");
   if (!knob.hasAttribute("tabindex")) knob.tabIndex = 0;
 
@@ -433,7 +436,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   }
 
   function hoverSelectors(scopeId) {
-    // host + common text descendants on :hover
     const parts = ["", " h1", " h2", " h3", " h4", " p", " a", " span"];
     return parts.map((s) => `#${scopeId}:hover${s}`);
   }
@@ -515,7 +517,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(v);
   }
 
-  // init after layout
+  // init when visible
   function initPosition() {
     const initVal = num(track.dataset.value, getRange().min);
     setByValue(initVal);
@@ -523,10 +525,29 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     knob.setAttribute("aria-valuenow", String(initVal));
     writeBorder(initVal);
   }
-  if (rect().width === 0) {
-    requestAnimationFrame(() => requestAnimationFrame(initPosition));
-  } else {
-    initPosition();
+
+  // If the track is hidden (width 0), wait until its section opens
+  function ensureInitialized() {
+    if (track.getBoundingClientRect().width > 0) {
+      initPosition();
+      return true;
+    }
+    return false;
+  }
+
+  if (!ensureInitialized()) {
+    // watch the border section for becoming visible
+    const sec = root.querySelector("#typo-all-hover-border-section");
+    const mo = new MutationObserver(() => {
+      if (ensureInitialized()) mo.disconnect();
+    });
+    if (sec)
+      mo.observe(sec, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+      });
+    // also try next frames just in case
+    requestAnimationFrame(() => requestAnimationFrame(ensureInitialized));
   }
 
   // keep visuals aligned on resize
@@ -664,5 +685,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   track.addEventListener("dragstart", (e) => e.preventDefault());
   knob.addEventListener("dragstart", (e) => e.preventDefault());
 }
+
 
 

@@ -11,7 +11,9 @@
         void parent.document.body;
         return parent.document;
       }
-    } catch (_) {}
+    } catch (err) {
+      return document;
+    }
     return document;
   })();
 
