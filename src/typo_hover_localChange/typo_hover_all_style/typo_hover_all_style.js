@@ -398,6 +398,10 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   const pill = root.querySelector("#typo-all-hover-border-width-value");
   if (!track || !fill || !knob) return;
 
+  if (!fill.style.left) fill.style.left = "0px";
+  if (!fill.style.top) fill.style.top = "0px";
+  if (!knob.style.transform) knob.style.transform = "translate(-50%,-50%)";
+
   knob.setAttribute("role", "slider");
   if (!knob.hasAttribute("tabindex")) knob.tabIndex = 0;
 
@@ -436,6 +440,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         ? getSelectedElement()
         : getSelectedElement;
     if (!host) return;
+
     const id = ensureId(host);
     const tagId = `style-${id}-hover-border`;
     let tag = document.getElementById(tagId);
@@ -444,12 +449,14 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       tag.id = tagId;
       document.head.appendChild(tag);
     }
+
     const side = (
       root.querySelector(sidePanelSel)?.dataset.side || "all"
     ).toLowerCase();
     const style = (
       root.querySelector(stylePanelSel)?.dataset.style || "solid"
     ).toLowerCase();
+
     const w = Math.max(0, Math.round(widthPx));
     const map =
       side === "all"
@@ -460,6 +467,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
             bottom: { t: 0, r: 0, b: w, l: 0 },
             left: { t: 0, r: 0, b: 0, l: w },
           }[side] || { t: 0, r: 0, b: 0, l: 0 };
+
     const css = [
       `border-style:${style} !important`,
       `border-top-width:${map.t}px !important`,
@@ -467,6 +475,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       `border-bottom-width:${map.b}px !important`,
       `border-left-width:${map.l}px !important`,
     ].join(";");
+
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
@@ -538,12 +547,16 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   let dragging = false;
   let moved = false;
+  let activePointerId = null;
 
   function startDrag(e) {
     dragging = true;
     moved = false;
+    activePointerId = e.pointerId ?? null;
+    try {
+      (e.target || knob).setPointerCapture?.(activePointerId);
+    } catch {}
     commitFromPct(pctFromX(getX(e)));
-    bindMoves(true);
   }
   function move(e) {
     if (!dragging) return;
@@ -554,58 +567,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function end() {
     if (!dragging) return;
     dragging = false;
-    bindMoves(false);
-  }
-
-  const onPMove = (e) => move(e);
-  const onPUp = () => end();
-  const onMMove = (e) => move(e);
-  const onMUp = () => end();
-  const onTMove = (e) => move(e);
-  const onTEnd = () => end();
-
-  function bindMoves(on) {
-    if (on) {
-      if ("PointerEvent" in window) {
-        window.addEventListener("pointermove", onPMove, {
-          capture: true,
-          passive: false,
-        });
-        window.addEventListener("pointerup", onPUp, {
-          capture: true,
-          passive: false,
-        });
-        window.addEventListener("pointercancel", onPUp, {
-          capture: true,
-          passive: false,
-        });
-      }
-      window.addEventListener("mousemove", onMMove, true);
-      window.addEventListener("mouseup", onMUp, true);
-      window.addEventListener("touchmove", onTMove, {
-        capture: true,
-        passive: false,
-      });
-      window.addEventListener("touchend", onTEnd, {
-        capture: true,
-        passive: false,
-      });
-      window.addEventListener("touchcancel", onTEnd, {
-        capture: true,
-        passive: false,
-      });
-    } else {
-      if ("PointerEvent" in window) {
-        window.removeEventListener("pointermove", onPMove, true);
-        window.removeEventListener("pointerup", onPUp, true);
-        window.removeEventListener("pointercancel", onPUp, true);
-      }
-      window.removeEventListener("mousemove", onMMove, true);
-      window.removeEventListener("mouseup", onMUp, true);
-      window.removeEventListener("touchmove", onTMove, true);
-      window.removeEventListener("touchend", onTEnd, true);
-      window.removeEventListener("touchcancel", onTEnd, true);
-    }
+    activePointerId = null;
   }
 
   function bindPress(el) {
@@ -615,16 +577,26 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       e.stopImmediatePropagation();
       startDrag(e);
     };
-    if ("PointerEvent" in window)
-      el.addEventListener("pointerdown", start, {
-        capture: true,
-        passive: false,
-      });
-    el.addEventListener("mousedown", start, true);
-    el.addEventListener("touchstart", start, { capture: true, passive: false });
+    el.addEventListener("pointerdown", start, {
+      capture: true,
+      passive: false,
+    });
   }
   bindPress(track);
   bindPress(knob);
+
+  window.addEventListener("pointermove", (e) => move(e), {
+    capture: true,
+    passive: false,
+  });
+  window.addEventListener("pointerup", () => end(), {
+    capture: true,
+    passive: false,
+  });
+  window.addEventListener("pointercancel", () => end(), {
+    capture: true,
+    passive: false,
+  });
 
   track.addEventListener(
     "click",
