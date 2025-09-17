@@ -294,7 +294,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
 
   const root = document.getElementById("sc-widget-container") || document;
 
-  // ---------- Tabs (unchanged)
   const sidePanelSel = "#typo-all-hover-border-sides";
   const sideItemSel = [
     "#typo-all-hover-border-side-all",
@@ -328,7 +327,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     }
   }
 
-  // seed defaults
   root.querySelectorAll(sidePanelSel).forEach((panel) => {
     const items = panel.querySelectorAll(sideItemSel);
     if (items.length)
@@ -352,7 +350,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       );
   });
 
-  // delegate for side/style clicks
   root.addEventListener(
     "pointerdown",
     (e) => {
@@ -395,22 +392,15 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
-  // ---------- Slider bits
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
   const pill = root.querySelector("#typo-all-hover-border-width-value");
   if (!track || !fill || !knob) return;
 
-  // ensure anchors in case CSS utilities got overridden
-  fill.style.left = fill.style.left || "0px";
-  fill.style.top = fill.style.top || "0px";
-  knob.style.transform = knob.style.transform || "translate(-50%,-50%)";
-
   knob.setAttribute("role", "slider");
   if (!knob.hasAttribute("tabindex")) knob.tabIndex = 0;
 
-  // helpers
   const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
   const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
   const quant = (v, s) => Math.round(v / s) * s;
@@ -446,7 +436,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         ? getSelectedElement()
         : getSelectedElement;
     if (!host) return;
-
     const id = ensureId(host);
     const tagId = `style-${id}-hover-border`;
     let tag = document.getElementById(tagId);
@@ -455,14 +444,12 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       tag.id = tagId;
       document.head.appendChild(tag);
     }
-
     const side = (
       root.querySelector(sidePanelSel)?.dataset.side || "all"
     ).toLowerCase();
     const style = (
       root.querySelector(stylePanelSel)?.dataset.style || "solid"
     ).toLowerCase();
-
     const w = Math.max(0, Math.round(widthPx));
     const map =
       side === "all"
@@ -473,7 +460,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
             bottom: { t: 0, r: 0, b: w, l: 0 },
             left: { t: 0, r: 0, b: 0, l: w },
           }[side] || { t: 0, r: 0, b: 0, l: 0 };
-
     const css = [
       `border-style:${style} !important`,
       `border-top-width:${map.t}px !important`,
@@ -481,11 +467,9 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       `border-bottom-width:${map.b}px !important`,
       `border-left-width:${map.l}px !important`,
     ].join(";");
-
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
-  // geometry → percent/value conversions
   function pctFromX(clientX) {
     const r = rect();
     const x = clamp(clientX - r.left, 0, r.width);
@@ -517,7 +501,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(v);
   }
 
-  // init when visible
   function initPosition() {
     const initVal = num(track.dataset.value, getRange().min);
     setByValue(initVal);
@@ -526,7 +509,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(initVal);
   }
 
-  // If the track is hidden (width 0), wait until its section opens
   function ensureInitialized() {
     if (track.getBoundingClientRect().width > 0) {
       initPosition();
@@ -536,7 +518,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   }
 
   if (!ensureInitialized()) {
-    // watch the border section for becoming visible
     const sec = root.querySelector("#typo-all-hover-border-section");
     const mo = new MutationObserver(() => {
       if (ensureInitialized()) mo.disconnect();
@@ -546,18 +527,15 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         attributes: true,
         attributeFilter: ["class", "style"],
       });
-    // also try next frames just in case
     requestAnimationFrame(() => requestAnimationFrame(ensureInitialized));
   }
 
-  // keep visuals aligned on resize
   const ro = new ResizeObserver(() => {
     const v = num(track.dataset.value, getRange().min);
     setByValue(v);
   });
   ro.observe(track);
 
-  // drag lifecycle
   let dragging = false;
   let moved = false;
 
@@ -648,7 +626,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   bindPress(track);
   bindPress(knob);
 
-  // click to jump (when not dragging)
   track.addEventListener(
     "click",
     (e) => {
@@ -660,7 +637,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     true
   );
 
-  // keyboard nudging
   knob.addEventListener("keydown", (e) => {
     const { min, max, step } = getRange();
     const cur = num(track.dataset.value, min);
@@ -672,7 +648,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     else if (e.key === "Home") v = min;
     else if (e.key === "End") v = max;
     else return;
-
     if (e.cancelable) e.preventDefault();
     track.dataset.value = String(v);
     if (pill) pill.textContent = `${v}px`;
@@ -681,7 +656,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     knob.setAttribute("aria-valuenow", String(v));
   });
 
-  // kill native drag ghost
   track.addEventListener("dragstart", (e) => e.preventDefault());
   knob.addEventListener("dragstart", (e) => e.preventDefault());
 }
