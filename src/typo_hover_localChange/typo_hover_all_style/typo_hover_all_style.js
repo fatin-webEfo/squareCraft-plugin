@@ -288,58 +288,84 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
-// Hover Typo — Border Width (custom progressbar like button slider)
 export function initHoverTypoAllBorderControls(getSelectedElement) {
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  document.body.dataset.scHoverTypoAllBorderBound = "1";
+
   const root = document.getElementById("sc-widget-container") || document;
+  const ACTIVE = "sc-bg-454545";
+  const INACTIVE = "sc-bg-3f3f3f";
 
-  // UI bits for the width slider
-  const field = root.querySelector("#typo-all-hover-border-width-track");
-  const fill  = root.querySelector("#typo-all-hover-border-width-fill");
-  const bullet = root.querySelector("#typo-all-hover-border-width-knob");
-  const valueText = root.querySelector("#typo-all-hover-border-width-value");
+  const sidePanelSel = "#typo-all-hover-border-sides";
+  const sideItemSel = [
+    "#typo-all-hover-border-side-all",
+    "#typo-all-hover-border-side-top",
+    "#typo-all-hover-border-side-bottom",
+    "#typo-all-hover-border-side-left",
+    "#typo-all-hover-border-side-right",
+  ].join(",");
 
-  // Side/style groups (for All/Top/Right/Bottom/Left + Solid/Dashed/Dotted)
-  const sidePanel = root.querySelector("#typo-all-hover-border-sides");
-  const stylePanel = root.querySelector("#typo-all-hover-border-style-wrap");
+  const stylePanelSel = "#typo-all-hover-border-style-wrap";
+  const styleItemSel = [
+    "#typo-all-hover-border-style-solid",
+    "#typo-all-hover-border-style-dashed",
+    "#typo-all-hover-border-style-dotted",
+  ].join(",");
 
-  // If the slider isn’t on the page, bail gracefully
-  if (!field || !fill || !bullet || !valueText) return;
+  function markActive(panel, groupSel, btn, dataKey, stripPrefix) {
+    panel.querySelectorAll(groupSel).forEach((n) => {
+      n.classList.remove(ACTIVE);
+      if (!n.classList.contains(INACTIVE)) n.classList.add(INACTIVE);
+    });
+    btn.classList.add(ACTIVE);
+    btn.classList.remove(INACTIVE);
+    if (dataKey) {
+      panel.dataset[dataKey] = (btn.id || "")
+        .replace(stripPrefix, "")
+        .toLowerCase();
+    }
+  }
 
-  // Range config (same style as your button slider)
-  const max = Number(field.dataset.max ?? 20);
-  const min = Number(field.dataset.min ?? 0);
-  const step = Math.max(1, Number(field.dataset.step ?? 1));
+  // default selections
+  root.querySelectorAll(sidePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(sideItemSel);
+    if (items.length)
+      markActive(
+        panel,
+        sideItemSel,
+        items[0],
+        "side",
+        "typo-all-hover-border-side-"
+      );
+  });
+  root.querySelectorAll(stylePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(styleItemSel);
+    if (items.length)
+      markActive(
+        panel,
+        styleItemSel,
+        items[0],
+        "style",
+        "typo-all-hover-border-style-"
+      );
+  });
 
-  let widthVal = clamp(quant(Number(field.dataset.value ?? min), step), min, max);
-
-  // --- utils
-  function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
-  function quant(v, s)    { return Math.round(v / s) * s; }
-  function toPercent(v)   { return ((v - min) / (max - min)) * 100; }
-
+  // -------- hover rule writer
   function ensureId(el) {
     if (!el) return null;
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
   }
-
   function hoverSelectors(scopeId) {
     const parts = ["", " h1", " h2", " h3", " h4", " p", " a", " span"];
     return parts.map((s) => `#${scopeId}:hover${s}`);
   }
-
-  function getSide() {
-    return (sidePanel?.dataset.side || "all").toLowerCase();
-  }
-
-  function getStyle() {
-    return (stylePanel?.dataset.style || "solid").toLowerCase();
-  }
-
-  function applyBorder() {
-    const host = typeof getSelectedElement === "function" ? getSelectedElement() : getSelectedElement;
+  function writeBorder(px) {
+    const host =
+      typeof getSelectedElement === "function"
+        ? getSelectedElement()
+        : getSelectedElement;
     if (!host) return;
-
     const id = ensureId(host);
     const tagId = `style-${id}-hover-border`;
     let tag = document.getElementById(tagId);
@@ -348,19 +374,21 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       tag.id = tagId;
       document.head.appendChild(tag);
     }
-
-    const side = getSide();
-    const style = getStyle();
-    const w = Math.max(0, Math.round(widthVal));
-
+    const side = (
+      root.querySelector(sidePanelSel)?.dataset.side || "all"
+    ).toLowerCase();
+    const style = (
+      root.querySelector(stylePanelSel)?.dataset.style || "solid"
+    ).toLowerCase();
+    const w = Math.max(0, Math.round(px));
     const map =
       side === "all"
         ? { t: w, r: w, b: w, l: w }
         : {
-            top:    { t: w, r: 0, b: 0, l: 0 },
-            right:  { t: 0, r: w, b: 0, l: 0 },
+            top: { t: w, r: 0, b: 0, l: 0 },
+            right: { t: 0, r: w, b: 0, l: 0 },
             bottom: { t: 0, r: 0, b: w, l: 0 },
-            left:   { t: 0, r: 0, b: 0, l: w },
+            left: { t: 0, r: 0, b: 0, l: w },
           }[side] || { t: 0, r: 0, b: 0, l: 0 };
 
     const css = [
@@ -374,91 +402,121 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
-  function paint(val) {
-    const pct = clamp(toPercent(val), 0, 100);
-    fill.style.width = pct + "%";
-    bullet.style.left = pct + "%";
-    valueText.textContent = `${val}px`;
-  }
-
-  function updateUI(val) {
-    widthVal = clamp(quant(val, step), min, max);
-    // keep the latest in dataset (mirrors your pattern)
-    field.dataset.value = String(widthVal);
-    paint(widthVal);
-    applyBorder();
-  }
-
-  // --- drag like button slider
-  bullet.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    const move = (eMove) => {
-      const rect = field.getBoundingClientRect();
-      const x = Math.min(Math.max(eMove.clientX - rect.left, 0), rect.width || 0);
-      const v = min + (x / (rect.width || 1)) * (max - min);
-      updateUI(v);
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
-
-  // click on track (ignore when clicking the knob itself)
-  field.addEventListener("click", (e) => {
-    if (e.target === bullet) return;
-    const rect = field.getBoundingClientRect();
-    const x = Math.min(Math.max(e.clientX - rect.left, 0), rect.width || 0);
-    const v = min + (x / (rect.width || 1)) * (max - min);
-    updateUI(v);
-  });
-
-  // re-apply when side/style choice changes
+  // -------- side/style click handling (capture so UI feels snappy)
   root.addEventListener(
     "pointerdown",
     (e) => {
-      const sideBtn = e.target.closest?.(
-        "#typo-all-hover-border-side-all, #typo-all-hover-border-side-top, #typo-all-hover-border-side-right, #typo-all-hover-border-side-bottom, #typo-all-hover-border-side-left"
-      );
+      const sideBtn = e.target.closest?.(sideItemSel);
       if (sideBtn) {
-        const panel = sideBtn.closest("#typo-all-hover-border-sides");
-        if (panel) panel.dataset.side = (sideBtn.id || "").replace("typo-all-hover-border-side-", "").toLowerCase();
-        // mimic active class flipping (keeps your UI in sync)
-        panel?.querySelectorAll("div[id^='typo-all-hover-border-side-']").forEach((n) => {
-          n.classList.remove("sc-bg-454545");
-          if (!n.classList.contains("sc-bg-3f3f3f")) n.classList.add("sc-bg-3f3f3f");
-        });
-        sideBtn.classList.add("sc-bg-454545");
-        sideBtn.classList.remove("sc-bg-3f3f3f");
-        applyBorder();
+        const panel = sideBtn.closest(sidePanelSel);
+        if (!panel) return;
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        markActive(
+          panel,
+          sideItemSel,
+          sideBtn,
+          "side",
+          "typo-all-hover-border-side-"
+        );
+        // reapply border with current slider value
+        setValue(currentValue());
         return;
       }
-
-      const styleBtn = e.target.closest?.(
-        "#typo-all-hover-border-style-solid, #typo-all-hover-border-style-dashed, #typo-all-hover-border-style-dotted"
-      );
+      const styleBtn = e.target.closest?.(styleItemSel);
       if (styleBtn) {
-        const panel = styleBtn.closest("#typo-all-hover-border-style-wrap");
-        if (panel) panel.dataset.style = (styleBtn.id || "").replace("typo-all-hover-border-style-", "").toLowerCase();
-        panel?.querySelectorAll("div[id^='typo-all-hover-border-style-']").forEach((n) => {
-          n.classList.remove("sc-bg-454545");
-          if (!n.classList.contains("sc-bg-3f3f3f")) n.classList.add("sc-bg-3f3f3f");
-        });
-        styleBtn.classList.add("sc-bg-454545");
-        styleBtn.classList.remove("sc-bg-3f3f3f");
-        applyBorder();
+        const panel = styleBtn.closest(stylePanelSel);
+        if (!panel) return;
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        markActive(
+          panel,
+          styleItemSel,
+          styleBtn,
+          "style",
+          "typo-all-hover-border-style-"
+        );
+        setValue(currentValue());
       }
     },
     true
   );
 
-  // initial paint
-  setTimeout(() => {
-    // if dataset.value is missing, keep min (like your button init)
-    updateUI(Number.isFinite(Number(field.dataset.value)) ? Number(field.dataset.value) : min);
-  }, 50);
+  // =======================
+  // Custom progressbar wiring (border width) — same pattern as your button icon spacing
+  // =======================
+  const track = root.querySelector("#typo-all-hover-border-width-track");
+  const fill = root.querySelector("#typo-all-hover-border-width-fill");
+  const knob = root.querySelector("#typo-all-hover-border-width-knob");
+  const count = root.querySelector("#typo-all-hover-border-width-value");
+
+  // if slider markup isn't present, keep the rest functional
+  if (!track || !fill || !knob || !count) return;
+
+  const min = Number(track.dataset.min ?? 0);
+  const max = Number(track.dataset.max ?? 20);
+  const step = Math.max(1, Number(track.dataset.step ?? 1));
+
+  function clamp(n, a, b) {
+    return Math.min(b, Math.max(a, n));
+  }
+  function quant(v, s) {
+    return Math.round(v / s) * s;
+  }
+  function toPercent(v) {
+    return ((v - min) / (max - min)) * 100;
+  }
+
+  function fromClientX(clientX) {
+    const r = track.getBoundingClientRect();
+    const x = clamp(clientX - r.left, 0, r.width || 0);
+    const p = r.width ? x / r.width : 0;
+    return quant(min + p * (max - min), step);
+  }
+
+  function currentValue() {
+    const raw = Number(track.dataset.value);
+    if (Number.isFinite(raw)) return clamp(quant(raw, step), min, max);
+    return min;
+  }
+
+  function paint(v) {
+    const pct = clamp(toPercent(v), 0, 100);
+    fill.style.width = pct + "%";
+    knob.style.left = pct + "%";
+    count.textContent = `${v}px`;
+  }
+
+  function setValue(v) {
+    const val = clamp(quant(v, step), min, max);
+    track.dataset.value = String(val);
+    paint(val);
+    writeBorder(val);
+  }
+
+  // drag — use pointer events and stop propagation so other listeners don’t swallow mousemove
+  knob.addEventListener("pointerdown", (e) => {
+    if (e.cancelable) e.preventDefault();
+    e.stopPropagation();
+    knob.setPointerCapture?.(e.pointerId);
+    const move = (ev) => setValue(fromClientX(ev.clientX));
+    const up = (ev) => {
+      knob.releasePointerCapture?.(ev.pointerId);
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+    };
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
+  });
+
+  // click on track (ignore the click that originates from the knob)
+  track.addEventListener("pointerdown", (e) => {
+    if (e.target === knob) return;
+    setValue(fromClientX(e.clientX));
+  });
+
+  // init
+  setTimeout(() => setValue(currentValue()), 0);
 }
 
 
