@@ -291,6 +291,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   document.body.dataset.scHoverTypoAllBorderBound = "1";
+
   const root = document.getElementById("sc-widget-container") || document;
   const sidePanelSel = "#typo-all-hover-border-sides";
   const sideItemSel = [
@@ -306,8 +307,10 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     "#typo-all-hover-border-style-dashed",
     "#typo-all-hover-border-style-dotted",
   ].join(",");
+
   const ACTIVE = "sc-bg-454545";
   const INACTIVE = "sc-bg-3f3f3f";
+
   function markActive(panel, groupSel, btn, dataKey, stripPrefix) {
     panel.querySelectorAll(groupSel).forEach((n) => {
       n.classList.remove(ACTIVE);
@@ -321,6 +324,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         .toLowerCase();
     }
   }
+
   root.querySelectorAll(sidePanelSel).forEach((panel) => {
     const items = panel.querySelectorAll(sideItemSel);
     if (items.length)
@@ -343,80 +347,18 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
         "typo-all-hover-border-style-"
       );
   });
-  root.addEventListener(
-    "pointerdown",
-    (e) => {
-      const sideBtn = e.target.closest(sideItemSel);
-      if (sideBtn) {
-        const panel = sideBtn.closest(sidePanelSel);
-        if (!panel) return;
-        if (e.cancelable) e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        markActive(
-          panel,
-          sideItemSel,
-          sideBtn,
-          "side",
-          "typo-all-hover-border-side-"
-        );
-        applyFromValue(currentValue());
-        return;
-      }
-      const styleBtn = e.target.closest(styleItemSel);
-      if (styleBtn) {
-        const panel = styleBtn.closest(stylePanelSel);
-        if (!panel) return;
-        if (e.cancelable) e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        markActive(
-          panel,
-          styleItemSel,
-          styleBtn,
-          "style",
-          "typo-all-hover-border-style-"
-        );
-        applyFromValue(currentValue());
-      }
-    },
-    true
-  );
-  const field = root.getElementById
-    ? root.getElementById("typoHoverBorderField")
-    : root.querySelector("#typoHoverBorderField");
-  const fill = root.getElementById
-    ? root.getElementById("typoHoverBorderFill")
-    : root.querySelector("#typoHoverBorderFill");
-  const bullet = root.getElementById
-    ? root.getElementById("typoHoverBorderBullet")
-    : root.querySelector("#typoHoverBorderBullet");
-  const count = root.getElementById
-    ? root.getElementById("typoHoverBorderCount")
-    : root.querySelector("#typoHoverBorderCount");
-  const inc = root.getElementById
-    ? root.getElementById("typoHoverBorderIncrease")
-    : root.querySelector("#typoHoverBorderIncrease");
-  const dec = root.getElementById
-    ? root.getElementById("typoHoverBorderDecrease")
-    : root.querySelector("#typoHoverBorderDecrease");
-  const reset =
-    (root.getElementById
-      ? root.getElementById("typoHoverBorderReset")
-      : root.querySelector("#typoHoverBorderReset")) || null;
-  if (!field || !fill || !bullet || !count) return;
-  const max = Number(field.dataset.max || 20);
-  const min = Number(field.dataset.min || 0);
-  const step = Math.max(1, Number(field.dataset.step || 1));
+
   function ensureId(el) {
     if (!el) return null;
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
     return el.id;
   }
+
   function hoverSelectors(scopeId) {
     const parts = ["", " h1", " h2", " h3", " h4", " p", " a", " span"];
     return parts.map((s) => `#${scopeId}:hover${s}`);
   }
+
   function writeBorder(v) {
     const host =
       typeof getSelectedElement === "function"
@@ -456,6 +398,58 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     ].join(";");
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
+
+  root.addEventListener(
+    "pointerdown",
+    (e) => {
+      const sideBtn = e.target.closest(sideItemSel);
+      if (sideBtn) {
+        const panel = sideBtn.closest(sidePanelSel);
+        if (!panel) return;
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        markActive(
+          panel,
+          sideItemSel,
+          sideBtn,
+          "side",
+          "typo-all-hover-border-side-"
+        );
+        if (track) setValue(currentValue());
+        return;
+      }
+      const styleBtn = e.target.closest(styleItemSel);
+      if (styleBtn) {
+        const panel = styleBtn.closest(stylePanelSel);
+        if (!panel) return;
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        markActive(
+          panel,
+          styleItemSel,
+          styleBtn,
+          "style",
+          "typo-all-hover-border-style-"
+        );
+        if (track) setValue(currentValue());
+      }
+    },
+    true
+  );
+
+  const track = root.querySelector("#typo-all-hover-border-width-track");
+  const fill = root.querySelector("#typo-all-hover-border-width-fill");
+  const knob = root.querySelector("#typo-all-hover-border-width-knob");
+  const count = root.querySelector("#typo-all-hover-border-width-value");
+
+  if (!track || !fill || !knob || !count) return;
+
+  const min = Number(track.dataset.min ?? 0);
+  const max = Number(track.dataset.max ?? 20);
+  const step = Math.max(1, Number(track.dataset.step ?? 1));
+
   function clamp(n, a, b) {
     return Math.min(b, Math.max(a, n));
   }
@@ -465,32 +459,35 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function toPercent(v) {
     return ((v - min) / (max - min)) * 100;
   }
+
   function fromClientX(clientX) {
-    const r = field.getBoundingClientRect();
-    const x = clamp(clientX - r.left, 0, r.width);
+    const r = track.getBoundingClientRect();
+    const x = clamp(clientX - r.left, 0, r.width || 0);
     const p = r.width ? x / r.width : 0;
     return quant(min + p * (max - min), step);
   }
+
+  function currentValue() {
+    const raw = Number(track.dataset.value);
+    if (Number.isFinite(raw)) return clamp(quant(raw, step), min, max);
+    return min;
+  }
+
   function paint(v) {
     const pct = clamp(toPercent(v), 0, 100);
     fill.style.width = pct + "%";
-    bullet.style.left = pct + "%";
+    knob.style.left = pct + "%";
     count.textContent = `${v}px`;
   }
-  function applyFromValue(v) {
-    paint(v);
-    writeBorder(v);
-  }
-  function currentValue() {
-    const t = parseInt(field.dataset.value ?? "", 10);
-    return isNaN(t) ? min : clamp(quant(t, step), min, max);
-  }
+
   function setValue(v) {
     const val = clamp(quant(v, step), min, max);
-    field.dataset.value = String(val);
-    applyFromValue(val);
+    track.dataset.value = String(val);
+    paint(val);
+    writeBorder(val);
   }
-  bullet.addEventListener("mousedown", (e) => {
+
+  knob.addEventListener("mousedown", (e) => {
     e.preventDefault();
     const move = (ev) => setValue(fromClientX(ev.clientX));
     const up = () => {
@@ -500,18 +497,13 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     document.addEventListener("mousemove", move);
     document.addEventListener("mouseup", up);
   });
-  field.addEventListener("click", (e) => {
+
+  track.addEventListener("click", (e) => {
+    if (e.target === knob) return;
     setValue(fromClientX(e.clientX));
   });
-  inc?.addEventListener("click", () => setValue(currentValue() + step));
-  dec?.addEventListener("click", () => setValue(currentValue() - step));
-  reset?.addEventListener("click", () => setValue(min));
-  setTimeout(() => {
-    const init = isNaN(parseInt(field.dataset.value || "", 10))
-      ? min
-      : currentValue();
-    setValue(init);
-  }, 50);
+
+  setTimeout(() => setValue(currentValue()), 0);
 }
 
 
