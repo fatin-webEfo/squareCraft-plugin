@@ -286,159 +286,379 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   log("ready");
 }
-
-
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const root = document;
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const sideAll = root.querySelector("#typo-all-hover-border-side-all");
-  const sideTop = root.querySelector("#typo-all-hover-border-side-top");
-  const sideBottom = root.querySelector("#typo-all-hover-border-side-bottom");
-  const sideLeft = root.querySelector("#typo-all-hover-border-side-left");
-  const sideRight = root.querySelector("#typo-all-hover-border-side-right");
+  const root = document.getElementById("sc-widget-container") || document;
 
+  // --- selectors / active classes
+  const sidePanelSel = "#typo-all-hover-border-sides";
+  const sideItemSel = [
+    "#typo-all-hover-border-side-all",
+    "#typo-all-hover-border-side-top",
+    "#typo-all-hover-border-side-bottom",
+    "#typo-all-hover-border-side-left",
+    "#typo-all-hover-border-side-right",
+  ].join(",");
+
+  const stylePanelSel = "#typo-all-hover-border-style-wrap";
+  const styleItemSel = [
+    "#typo-all-hover-border-style-solid",
+    "#typo-all-hover-border-style-dashed",
+    "#typo-all-hover-border-style-dotted",
+  ].join(",");
+
+  const ACTIVE = "sc-bg-454545";
+  const INACTIVE = "sc-bg-3f3f3f";
+
+  function markActive(panel, selector, btn, dataKey, stripPrefix) {
+    panel.querySelectorAll(selector).forEach((n) => {
+      n.classList.remove(ACTIVE);
+      if (!n.classList.contains(INACTIVE)) n.classList.add(INACTIVE);
+    });
+    btn.classList.add(ACTIVE);
+    btn.classList.remove(INACTIVE);
+    if (dataKey && stripPrefix) {
+      panel.dataset[dataKey] = (btn.id || "")
+        .replace(stripPrefix, "")
+        .toLowerCase();
+    }
+  }
+
+  // seed default actives
+  root.querySelectorAll(sidePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(sideItemSel);
+    markActive(
+      panel,
+      sideItemSel,
+      items[0],
+      "side",
+      "typo-all-hover-border-side-"
+    );
+  });
+  root.querySelectorAll(stylePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(styleItemSel);
+    markActive(
+      panel,
+      styleItemSel,
+      items[0],
+      "style",
+      "typo-all-hover-border-style-"
+    );
+  });
+
+  // delegate clicks for side/style tabs
+  root.addEventListener(
+    "pointerdown",
+    (e) => {
+      const sideBtn = e.target.closest(sideItemSel);
+      if (sideBtn) {
+        const panel = sideBtn.closest(sidePanelSel);
+        if (!panel) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        markActive(
+          panel,
+          sideItemSel,
+          sideBtn,
+          "side",
+          "typo-all-hover-border-side-"
+        );
+        // reapply css at current width
+        const val = +((track && track.dataset.value) || 0);
+        writeBorder(val);
+        return;
+      }
+      const styleBtn = e.target.closest(styleItemSel);
+      if (styleBtn) {
+        const panel = styleBtn.closest(stylePanelSel);
+        if (!panel) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        markActive(
+          panel,
+          styleItemSel,
+          styleBtn,
+          "style",
+          "typo-all-hover-border-style-"
+        );
+        const val = +((track && track.dataset.value) || 0);
+        writeBorder(val);
+        return;
+      }
+    },
+    true
+  );
+
+  // --- slider bits
   const track = root.querySelector("#typo-all-hover-border-width-track");
   const fill = root.querySelector("#typo-all-hover-border-width-fill");
   const knob = root.querySelector("#typo-all-hover-border-width-knob");
-  const count = root.querySelector("#typo-all-hover-border-width-value");
+  const pill = root.querySelector("#typo-all-hover-border-width-value");
 
-  if (!track || !fill || !knob || !count) return;
+  if (!track || !fill || !knob) return; // missing pieces
 
-  const min = Number(track.dataset.min ?? 0);
-  const max = Number(track.dataset.max ?? 20);
-  const step = Math.max(1, Number(track.dataset.step ?? 1));
+  // a11y
+  knob.setAttribute("role", "slider");
+  knob.tabIndex = knob.tabIndex || 0;
 
-  function clamp(n, a, b) {
-    return Math.min(b, Math.max(a, n));
-  }
-  function quant(v, s) {
-    return Math.round(v / s) * s;
-  }
-  function toPercent(v) {
-    return ((v - min) / (max - min)) * 100;
-  }
+  // helpers
+  const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
+  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+  const quant = (v, s) => Math.round(v / s) * s;
 
-  function currentSide() {
-    const m = [
-      ["all", sideAll],
-      ["top", sideTop],
-      ["bottom", sideBottom],
-      ["left", sideLeft],
-      ["right", sideRight],
-    ];
-    for (const [name, el] of m) {
-      if (el && el.classList.contains("sc-activeTab-border")) return name;
-    }
-    return "all";
+  function getRange() {
+    return {
+      min: num(track.dataset.min, 0),
+      max: num(track.dataset.max, 20),
+      step: Math.max(1, num(track.dataset.step, 1)),
+    };
   }
 
-  function cssForSide(side, px) {
-    if (side === "all") return `border-width:${px}px !important;`;
-    if (side === "top") return `border-top-width:${px}px !important;`;
-    if (side === "bottom") return `border-bottom-width:${px}px !important;`;
-    if (side === "left") return `border-left-width:${px}px !important;`;
-    if (side === "right") return `border-right-width:${px}px !important;`;
-    return `border-width:${px}px !important;`;
+  function ensureId(el) {
+    if (!el) return null;
+    if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
+    return el.id;
   }
 
-  function writeBorder(px) {
-    const selected = getSelectedElement?.();
-    if (!selected || !selected.id) return;
-    const id = selected.id;
-    const styleId = `sc-hover-typo-border-${id}`;
-    let tag = document.getElementById(styleId);
+  function hoverSelectors(scopeId) {
+    // host + common text descendants on :hover
+    const parts = ["", " h1", " h2", " h3", " h4", " p", " a", " span"];
+    return parts.map((s) => `#${scopeId}:hover${s}`);
+  }
+
+  function writeBorder(widthPx) {
+    const host =
+      typeof getSelectedElement === "function"
+        ? getSelectedElement()
+        : getSelectedElement;
+    if (!host) return;
+
+    const id = ensureId(host);
+    const tagId = `style-${id}-hover-border`;
+    let tag = document.getElementById(tagId);
     if (!tag) {
       tag = document.createElement("style");
-      tag.id = styleId;
+      tag.id = tagId;
       document.head.appendChild(tag);
     }
-    const side = currentSide();
-    const css = cssForSide(side, px);
-    tag.textContent = `#${id}:hover, #${id}:hover h1, #${id}:hover h2, #${id}:hover h3, #${id}:hover h4, #${id}:hover p { ${css} }`;
-    selected.dispatchEvent?.(new Event("reapplyBorder"));
+
+    const side = (
+      root.querySelector(sidePanelSel)?.dataset.side || "all"
+    ).toLowerCase();
+    const style = (
+      root.querySelector(stylePanelSel)?.dataset.style || "solid"
+    ).toLowerCase();
+
+    // build side-specific widths
+    const w = Math.max(0, Math.round(widthPx));
+    const map =
+      side === "all"
+        ? { t: w, r: w, b: w, l: w }
+        : {
+            top: { t: w, r: 0, b: 0, l: 0 },
+            right: { t: 0, r: w, b: 0, l: 0 },
+            bottom: { t: 0, r: 0, b: w, l: 0 },
+            left: { t: 0, r: 0, b: 0, l: w },
+          }[side] || { t: 0, r: 0, b: 0, l: 0 };
+
+    const css = [
+      `border-style:${style} !important`,
+      `border-top-width:${map.t}px !important`,
+      `border-right-width:${map.r}px !important`,
+      `border-bottom-width:${map.b}px !important`,
+      `border-left-width:${map.l}px !important`,
+    ].join(";");
+
+    tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
-  function fromClientX(clientX) {
-    const r = track.getBoundingClientRect();
-    const x = clamp(clientX - r.left, 0, r.width || 0);
-    const p = r.width ? x / r.width : 0;
+  // geometry
+  const rect = () => track.getBoundingClientRect();
+  function pctFromX(clientX) {
+    const r = rect();
+    const x = clamp(clientX - r.left, 0, r.width);
+    return r.width ? x / r.width : 0;
+  }
+  function setByPct(p) {
+    const r = rect();
+    const x = clamp(p * r.width, 0, r.width);
+    fill.style.width = x + "px";
+    knob.style.left = x + "px";
+  }
+  function valueFromPct(p) {
+    const { min, max, step } = getRange();
     return quant(min + p * (max - min), step);
   }
-
-  function currentValue() {
-    const raw = Number(track.dataset.value);
-    if (Number.isFinite(raw)) return clamp(quant(raw, step), min, max);
-    const selected = getSelectedElement?.();
-    if (!selected) return min;
-    const side = currentSide();
-    const cs = window.getComputedStyle(selected);
-    const read =
-      {
-        all: Math.max(
-          parseFloat(cs.borderTopWidth) || 0,
-          parseFloat(cs.borderRightWidth) || 0,
-          parseFloat(cs.borderBottomWidth) || 0,
-          parseFloat(cs.borderLeftWidth) || 0
-        ),
-        top: parseFloat(cs.borderTopWidth) || 0,
-        right: parseFloat(cs.borderRightWidth) || 0,
-        bottom: parseFloat(cs.borderBottomWidth) || 0,
-        left: parseFloat(cs.borderLeftWidth) || 0,
-      }[side] ?? 0;
-    return clamp(quant(read, step), min, max);
+  function setByValue(v) {
+    const { min, max } = getRange();
+    const p = clamp((v - min) / (max - min || 1), 0, 1);
+    setByPct(p);
+  }
+  function commitFromPct(p) {
+    const v = valueFromPct(p);
+    track.dataset.value = String(v);
+    if (pill) pill.textContent = `${v}px`;
+    knob.setAttribute("aria-valuemin", String(getRange().min));
+    knob.setAttribute("aria-valuemax", String(getRange().max));
+    knob.setAttribute("aria-valuenow", String(v));
+    setByValue(v);
+    writeBorder(v);
   }
 
-  function paint(v) {
-    const pct = clamp(toPercent(v), 0, 100);
-    fill.style.width = pct + "%";
-    knob.style.left = pct + "%";
-    count.textContent = `${v}px`;
+  // init position (after layout)
+  function initPosition() {
+    const initVal = num(track.dataset.value, getRange().min);
+    setByValue(initVal);
+    if (pill) pill.textContent = `${initVal}px`;
+    knob.setAttribute("aria-valuenow", String(initVal));
+    writeBorder(initVal);
+  }
+  if (rect().width === 0) {
+    requestAnimationFrame(() => requestAnimationFrame(initPosition));
+  } else {
+    initPosition();
   }
 
-  function setValue(v) {
-    const val = clamp(quant(v, step), min, max);
-    track.dataset.value = String(val);
-    paint(val);
-    writeBorder(val);
+  // keep visuals aligned on resize
+  const ro = new ResizeObserver(() => {
+    const v = num(track.dataset.value, getRange().min);
+    setByValue(v);
+  });
+  ro.observe(track);
+
+  // dragging
+  let dragging = false;
+  let moved = false;
+
+  const getX = (e) =>
+    e?.clientX ??
+    (e?.touches && e.touches[0] && e.touches[0].clientX) ??
+    (e?.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX) ??
+    0;
+
+  const onPMove = (e) => move(e);
+  const onPUp = () => end();
+  const onMMove = (e) => move(e);
+  const onMUp = () => end();
+  const onTMove = (e) => move(e);
+  const onTEnd = () => end();
+
+  function bindMoves(bind) {
+    if (bind) {
+      if ("PointerEvent" in window) {
+        window.addEventListener("pointermove", onPMove, {
+          capture: true,
+          passive: false,
+        });
+        window.addEventListener("pointerup", onPUp, {
+          capture: true,
+          passive: false,
+        });
+        window.addEventListener("pointercancel", onPUp, {
+          capture: true,
+          passive: false,
+        });
+      }
+      window.addEventListener("mousemove", onMMove, true);
+      window.addEventListener("mouseup", onMUp, true);
+      window.addEventListener("touchmove", onTMove, {
+        capture: true,
+        passive: false,
+      });
+      window.addEventListener("touchend", onTEnd, {
+        capture: true,
+        passive: false,
+      });
+      window.addEventListener("touchcancel", onTEnd, {
+        capture: true,
+        passive: false,
+      });
+    } else {
+      if ("PointerEvent" in window) {
+        window.removeEventListener("pointermove", onPMove, true);
+        window.removeEventListener("pointerup", onPUp, true);
+        window.removeEventListener("pointercancel", onPUp, true);
+      }
+      window.removeEventListener("mousemove", onMMove, true);
+      window.removeEventListener("mouseup", onMUp, true);
+      window.removeEventListener("touchmove", onTMove, true);
+      window.removeEventListener("touchend", onTEnd, true);
+      window.removeEventListener("touchcancel", onTEnd, true);
+    }
   }
 
-  function onSideClick() {
-    setValue(currentValue());
+  function startDrag(e) {
+    dragging = true;
+    moved = false;
+    commitFromPct(pctFromX(getX(e)));
+    bindMoves(true);
+  }
+  function move(e) {
+    if (!dragging) return;
+    moved = true;
+    if (e.cancelable) e.preventDefault();
+    commitFromPct(pctFromX(getX(e)));
+  }
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    bindMoves(false);
   }
 
-  sideAll?.addEventListener("click", onSideClick);
-  sideTop?.addEventListener("click", onSideClick);
-  sideBottom?.addEventListener("click", onSideClick);
-  sideLeft?.addEventListener("click", onSideClick);
-  sideRight?.addEventListener("click", onSideClick);
-
-  knob.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    knob.setPointerCapture(e.pointerId);
-    const move = (ev) => setValue(fromClientX(ev.clientX));
-    const up = (ev) => {
-      knob.releasePointerCapture?.(ev.pointerId);
-      document.removeEventListener("pointermove", move);
-      document.removeEventListener("pointerup", up);
+  function bindPress(el) {
+    const h = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      startDrag(e);
     };
-    document.addEventListener("pointermove", move);
-    document.addEventListener("pointerup", up);
-  });
+    if ("PointerEvent" in window)
+      el.addEventListener("pointerdown", h, { capture: true, passive: false });
+    el.addEventListener("mousedown", h, true);
+    el.addEventListener("touchstart", h, { capture: true, passive: false });
+  }
+  bindPress(track);
+  bindPress(knob);
 
-  track.addEventListener("pointerdown", (e) => {
-    if (e.target === knob) return;
+  // click to jump when not dragging
+  track.addEventListener(
+    "click",
+    (e) => {
+      if (dragging || moved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      commitFromPct(pctFromX(e.clientX));
+    },
+    true
+  );
+
+  // keyboard nudging
+  knob.addEventListener("keydown", (e) => {
+    const { min, max, step } = getRange();
+    const cur = num(track.dataset.value, min);
+    let v = cur;
+    if (e.key === "ArrowLeft" || e.key === "ArrowDown")
+      v = clamp(cur - step, min, max);
+    else if (e.key === "ArrowRight" || e.key === "ArrowUp")
+      v = clamp(cur + step, min, max);
+    else if (e.key === "Home") v = min;
+    else if (e.key === "End") v = max;
+    else return;
+
     e.preventDefault();
-    e.stopPropagation();
-    setValue(fromClientX(e.clientX));
+    track.dataset.value = String(v);
+    if (pill) pill.textContent = `${v}px`;
+    setByValue(v);
+    writeBorder(v);
+    knob.setAttribute("aria-valuenow", String(v));
   });
 
-  setTimeout(() => setValue(currentValue()), 0);
+  // no native drag ghost
+  track.addEventListener("dragstart", (e) => e.preventDefault());
+  knob.addEventListener("dragstart", (e) => e.preventDefault());
 }
-
-
-
-
-
-
 
