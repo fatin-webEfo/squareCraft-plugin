@@ -289,34 +289,20 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  if (document.body.dataset.scInitHoverTypoAllBorderControls === "1") return;
-  document.body.dataset.scInitHoverTypoAllBorderControls = "1";
+  const root = document;
 
-  const track = document.getElementById("typo-all-hover-border-width-track");
-  const fill = document.getElementById("typo-all-hover-border-width-fill");
-  const knob = document.getElementById("typo-all-hover-border-width-knob");
-  const count = document.getElementById("typo-all-hover-border-width-value");
+  const sideAll = root.querySelector("#typo-all-hover-border-side-all");
+  const sideTop = root.querySelector("#typo-all-hover-border-side-top");
+  const sideBottom = root.querySelector("#typo-all-hover-border-side-bottom");
+  const sideLeft = root.querySelector("#typo-all-hover-border-side-left");
+  const sideRight = root.querySelector("#typo-all-hover-border-side-right");
 
-  const sideAll = document.getElementById("typo-all-hover-border-side-all");
-  const sideTop = document.getElementById("typo-all-hover-border-side-top");
-  const sideBottom = document.getElementById(
-    "typo-all-hover-border-side-bottom"
-  );
-  const sideLeft = document.getElementById("typo-all-hover-border-side-left");
-  const sideRight = document.getElementById("typo-all-hover-border-side-right");
+  const track = root.querySelector("#typo-all-hover-border-width-track");
+  const fill = root.querySelector("#typo-all-hover-border-width-fill");
+  const knob = root.querySelector("#typo-all-hover-border-width-knob");
+  const count = root.querySelector("#typo-all-hover-border-width-value");
 
-  if (
-    !track ||
-    !fill ||
-    !knob ||
-    !count ||
-    !sideAll ||
-    !sideTop ||
-    !sideBottom ||
-    !sideLeft ||
-    !sideRight
-  )
-    return;
+  if (!track || !fill || !knob || !count) return;
 
   const min = Number(track.dataset.min ?? 0);
   const max = Number(track.dataset.max ?? 20);
@@ -332,6 +318,46 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return ((v - min) / (max - min)) * 100;
   }
 
+  function currentSide() {
+    const m = [
+      ["all", sideAll],
+      ["top", sideTop],
+      ["bottom", sideBottom],
+      ["left", sideLeft],
+      ["right", sideRight],
+    ];
+    for (const [name, el] of m) {
+      if (el && el.classList.contains("sc-activeTab-border")) return name;
+    }
+    return "all";
+  }
+
+  function cssForSide(side, px) {
+    if (side === "all") return `border-width:${px}px !important;`;
+    if (side === "top") return `border-top-width:${px}px !important;`;
+    if (side === "bottom") return `border-bottom-width:${px}px !important;`;
+    if (side === "left") return `border-left-width:${px}px !important;`;
+    if (side === "right") return `border-right-width:${px}px !important;`;
+    return `border-width:${px}px !important;`;
+  }
+
+  function writeBorder(px) {
+    const selected = getSelectedElement?.();
+    if (!selected || !selected.id) return;
+    const id = selected.id;
+    const styleId = `sc-hover-typo-border-${id}`;
+    let tag = document.getElementById(styleId);
+    if (!tag) {
+      tag = document.createElement("style");
+      tag.id = styleId;
+      document.head.appendChild(tag);
+    }
+    const side = currentSide();
+    const css = cssForSide(side, px);
+    tag.textContent = `#${id}:hover, #${id}:hover h1, #${id}:hover h2, #${id}:hover h3, #${id}:hover h4, #${id}:hover p { ${css} }`;
+    selected.dispatchEvent?.(new Event("reapplyBorder"));
+  }
+
   function fromClientX(clientX) {
     const r = track.getBoundingClientRect();
     const x = clamp(clientX - r.left, 0, r.width || 0);
@@ -342,7 +368,24 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
   function currentValue() {
     const raw = Number(track.dataset.value);
     if (Number.isFinite(raw)) return clamp(quant(raw, step), min, max);
-    return min;
+    const selected = getSelectedElement?.();
+    if (!selected) return min;
+    const side = currentSide();
+    const cs = window.getComputedStyle(selected);
+    const read =
+      {
+        all: Math.max(
+          parseFloat(cs.borderTopWidth) || 0,
+          parseFloat(cs.borderRightWidth) || 0,
+          parseFloat(cs.borderBottomWidth) || 0,
+          parseFloat(cs.borderLeftWidth) || 0
+        ),
+        top: parseFloat(cs.borderTopWidth) || 0,
+        right: parseFloat(cs.borderRightWidth) || 0,
+        bottom: parseFloat(cs.borderBottomWidth) || 0,
+        left: parseFloat(cs.borderLeftWidth) || 0,
+      }[side] ?? 0;
+    return clamp(quant(read, step), min, max);
   }
 
   function paint(v) {
@@ -352,47 +395,6 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     count.textContent = `${v}px`;
   }
 
-  function getActiveSides() {
-    const isOn = (el) =>
-      el.classList.contains("sc-activeTab-border") &&
-      !el.classList.contains("sc-inActiveTab-border");
-    if (isOn(sideAll))
-      return { top: true, right: true, bottom: true, left: true };
-    return {
-      top: isOn(sideTop),
-      right: isOn(sideRight),
-      bottom: isOn(sideBottom),
-      left: isOn(sideLeft),
-    };
-  }
-
-  function ensureId(el) {
-    if (!el.id) el.id = `sc-typo-${Math.random().toString(36).slice(2, 9)}`;
-    return el.id;
-  }
-
-  function writeBorder(v) {
-    const selected =
-      typeof getSelectedElement === "function" ? getSelectedElement() : null;
-    if (!selected) return;
-    const sides = getActiveSides();
-    const id = ensureId(selected);
-    const t = sides.top ? v : 0;
-    const r = sides.right ? v : 0;
-    const b = sides.bottom ? v : 0;
-    const l = sides.left ? v : 0;
-    let tag = document.getElementById(`sc-hover-border-${id}`);
-    if (!tag) {
-      tag = document.createElement("style");
-      tag.id = `sc-hover-border-${id}`;
-      document.head.appendChild(tag);
-    }
-    tag.textContent = `#${CSS.escape(
-      id
-    )}:hover{border-style:solid;border-color:currentColor;border-width:${t}px ${r}px ${b}px ${l}px !important}`;
-    selected.dataset.scHoverBorderWidth = String(v);
-  }
-
   function setValue(v) {
     const val = clamp(quant(v, step), min, max);
     track.dataset.value = String(val);
@@ -400,32 +402,35 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     writeBorder(val);
   }
 
-  let dragging = false;
+  function onSideClick() {
+    setValue(currentValue());
+  }
 
-  knob.addEventListener("mousedown", (e) => {
+  sideAll?.addEventListener("click", onSideClick);
+  sideTop?.addEventListener("click", onSideClick);
+  sideBottom?.addEventListener("click", onSideClick);
+  sideLeft?.addEventListener("click", onSideClick);
+  sideRight?.addEventListener("click", onSideClick);
+
+  knob.addEventListener("pointerdown", (e) => {
     e.preventDefault();
-    dragging = true;
+    e.stopPropagation();
+    knob.setPointerCapture(e.pointerId);
+    const move = (ev) => setValue(fromClientX(ev.clientX));
+    const up = (ev) => {
+      knob.releasePointerCapture?.(ev.pointerId);
+      document.removeEventListener("pointermove", move);
+      document.removeEventListener("pointerup", up);
+    };
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", up);
   });
 
-  document.addEventListener("mousemove", (e) => {
-    if (!dragging) return;
-    setValue(fromClientX(e.clientX));
-  });
-
-  document.addEventListener("mouseup", () => {
-    dragging = false;
-  });
-
-  track.addEventListener("click", (e) => {
+  track.addEventListener("pointerdown", (e) => {
     if (e.target === knob) return;
+    e.preventDefault();
+    e.stopPropagation();
     setValue(fromClientX(e.clientX));
-  });
-
-  [sideAll, sideTop, sideRight, sideBottom, sideLeft].forEach((el) => {
-    el.addEventListener("click", () => {
-      const v = currentValue();
-      writeBorder(v);
-    });
   });
 
   setTimeout(() => setValue(currentValue()), 0);
