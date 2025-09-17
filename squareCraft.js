@@ -723,6 +723,7 @@
 
       if (selectedElement) {
         initButtonAdvanceStyles(() => selectedElement);
+        initHoverTypoAllBorderControls(() => selectedElement);
         horizontalinitButtonAdvanceStyles(() => selectedElement);
         initTypoAdvanceStyles(() => selectedElement);
         horizontalinitTypoAdvanceStyles(() => selectedElement);
