@@ -360,7 +360,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
           "side",
           "typo-all-hover-border-side-"
         );
-        commitFromValue(num(track.dataset.value, getRange().min));
+        applyFromValue(currentValue());
         return;
       }
       const styleBtn = e.target.closest(styleItemSel);
@@ -377,34 +377,37 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
           "style",
           "typo-all-hover-border-style-"
         );
-        commitFromValue(num(track.dataset.value, getRange().min));
+        applyFromValue(currentValue());
       }
     },
-    { capture: true }
+    true
   );
-  const track = root.querySelector("#typo-all-hover-border-width-track");
-  const fill = root.querySelector("#typo-all-hover-border-width-fill");
-  const knob = root.querySelector("#typo-all-hover-border-width-knob");
-  const pill = root.querySelector("#typo-all-hover-border-width-value");
-  if (!track || !fill || !knob) return;
-  knob.setAttribute("role", "slider");
-  if (!knob.hasAttribute("tabindex")) knob.tabIndex = 0;
-  const num = (v, d) => (v == null || v === "" || isNaN(+v) ? d : +v);
-  const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
-  const quant = (v, s) => Math.round(v / s) * s;
-  const rect = () => track.getBoundingClientRect();
-  const getX = (e) =>
-    e?.clientX ??
-    e?.touches?.[0]?.clientX ??
-    e?.changedTouches?.[0]?.clientX ??
-    0;
-  function getRange() {
-    return {
-      min: num(track.dataset.min, 0),
-      max: num(track.dataset.max, 20),
-      step: Math.max(1, num(track.dataset.step, 1)),
-    };
-  }
+  const field = root.getElementById
+    ? root.getElementById("typoHoverBorderField")
+    : root.querySelector("#typoHoverBorderField");
+  const fill = root.getElementById
+    ? root.getElementById("typoHoverBorderFill")
+    : root.querySelector("#typoHoverBorderFill");
+  const bullet = root.getElementById
+    ? root.getElementById("typoHoverBorderBullet")
+    : root.querySelector("#typoHoverBorderBullet");
+  const count = root.getElementById
+    ? root.getElementById("typoHoverBorderCount")
+    : root.querySelector("#typoHoverBorderCount");
+  const inc = root.getElementById
+    ? root.getElementById("typoHoverBorderIncrease")
+    : root.querySelector("#typoHoverBorderIncrease");
+  const dec = root.getElementById
+    ? root.getElementById("typoHoverBorderDecrease")
+    : root.querySelector("#typoHoverBorderDecrease");
+  const reset =
+    (root.getElementById
+      ? root.getElementById("typoHoverBorderReset")
+      : root.querySelector("#typoHoverBorderReset")) || null;
+  if (!field || !fill || !bullet || !count) return;
+  const max = Number(field.dataset.max || 20);
+  const min = Number(field.dataset.min || 0);
+  const step = Math.max(1, Number(field.dataset.step || 1));
   function ensureId(el) {
     if (!el) return null;
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
@@ -414,7 +417,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const parts = ["", " h1", " h2", " h3", " h4", " p", " a", " span"];
     return parts.map((s) => `#${scopeId}:hover${s}`);
   }
-  function writeBorder(widthPx) {
+  function writeBorder(v) {
     const host =
       typeof getSelectedElement === "function"
         ? getSelectedElement()
@@ -434,7 +437,7 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     const style = (
       root.querySelector(stylePanelSel)?.dataset.style || "solid"
     ).toLowerCase();
-    const w = Math.max(0, Math.round(widthPx));
+    const w = Math.max(0, Math.round(v));
     const map =
       side === "all"
         ? { t: w, r: w, b: w, l: w }
@@ -453,182 +456,64 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     ].join(";");
     tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
-  function pctFromX(clientX) {
-    const r = rect();
+  function clamp(n, a, b) {
+    return Math.min(b, Math.max(a, n));
+  }
+  function quant(v, s) {
+    return Math.round(v / s) * s;
+  }
+  function toPercent(v) {
+    return ((v - min) / (max - min)) * 100;
+  }
+  function fromClientX(clientX) {
+    const r = field.getBoundingClientRect();
     const x = clamp(clientX - r.left, 0, r.width);
-    return r.width ? x / r.width : 0;
-  }
-  function setByPct(p) {
-    const r = rect();
-    const x = clamp(p * r.width, 0, r.width);
-    fill.style.width = x + "px";
-    knob.style.left = x + "px";
-  }
-  function valueFromPct(p) {
-    const { min, max, step } = getRange();
+    const p = r.width ? x / r.width : 0;
     return quant(min + p * (max - min), step);
   }
-  function setByValue(v) {
-    const { min, max } = getRange();
-    const p = clamp((v - min) / (max - min || 1), 0, 1);
-    setByPct(p);
+  function paint(v) {
+    const pct = clamp(toPercent(v), 0, 100);
+    fill.style.width = pct + "%";
+    bullet.style.left = pct + "%";
+    count.textContent = `${v}px`;
   }
-  function commitFromPct(p) {
-    const v = valueFromPct(p);
-    commitFromValue(v);
-  }
-  function commitFromValue(v) {
-    track.dataset.value = String(v);
-    if (pill) pill.textContent = `${v}px`;
-    knob.setAttribute("aria-valuemin", String(getRange().min));
-    knob.setAttribute("aria-valuemax", String(getRange().max));
-    knob.setAttribute("aria-valuenow", String(v));
-    setByValue(v);
+  function applyFromValue(v) {
+    paint(v);
     writeBorder(v);
   }
-  function initPosition() {
-    const initVal = num(track.dataset.value, getRange().min);
-    setByValue(initVal);
-    if (pill) pill.textContent = `${initVal}px`;
-    knob.setAttribute("aria-valuenow", String(initVal));
-    writeBorder(initVal);
+  function currentValue() {
+    const t = parseInt(field.dataset.value ?? "", 10);
+    return isNaN(t) ? min : clamp(quant(t, step), min, max);
   }
-  function ensureInitialized() {
-    if (track.getBoundingClientRect().width > 0) {
-      initPosition();
-      return true;
-    }
-    return false;
+  function setValue(v) {
+    const val = clamp(quant(v, step), min, max);
+    field.dataset.value = String(val);
+    applyFromValue(val);
   }
-  if (!ensureInitialized()) {
-    const sec = root.querySelector("#typo-all-hover-border-section");
-    const mo = new MutationObserver(() => {
-      if (ensureInitialized()) mo.disconnect();
-    });
-    if (sec)
-      mo.observe(sec, {
-        attributes: true,
-        attributeFilter: ["class", "style"],
-      });
-    requestAnimationFrame(() => requestAnimationFrame(ensureInitialized));
-  }
-  const ro = new ResizeObserver(() => {
-    const v = num(track.dataset.value, getRange().min);
-    setByValue(v);
-  });
-  ro.observe(track);
-  let dragging = false;
-  let moved = false;
-  function startDrag(e) {
-    dragging = true;
-    moved = false;
-    commitFromPct(pctFromX(getX(e)));
-    bindMoves(true);
-  }
-  function move(e) {
-    if (!dragging) return;
-    if (e.cancelable) e.preventDefault();
-    moved = true;
-    commitFromPct(pctFromX(getX(e)));
-  }
-  function end() {
-    if (!dragging) return;
-    dragging = false;
-    bindMoves(false);
-  }
-  const onPMove = (e) => move(e);
-  const onPUp = () => end();
-  const onMMove = (e) => move(e);
-  const onMUp = () => end();
-  const onTMove = (e) => move(e);
-  const onTEnd = () => end();
-  function bindMoves(on) {
-    if (on) {
-      if ("PointerEvent" in window) {
-        window.addEventListener("pointermove", onPMove, {
-          capture: true,
-          passive: false,
-        });
-        window.addEventListener("pointerup", onPUp, {
-          capture: true,
-          passive: false,
-        });
-        window.addEventListener("pointercancel", onPUp, {
-          capture: true,
-          passive: false,
-        });
-      }
-      window.addEventListener("mousemove", onMMove, true);
-      window.addEventListener("mouseup", onMUp, true);
-      window.addEventListener("touchmove", onTMove, {
-        capture: true,
-        passive: false,
-      });
-      window.addEventListener("touchend", onTEnd, {
-        capture: true,
-        passive: false,
-      });
-      window.addEventListener("touchcancel", onTEnd, {
-        capture: true,
-        passive: false,
-      });
-    } else {
-      if ("PointerEvent" in window) {
-        window.removeEventListener("pointermove", onPMove, true);
-        window.removeEventListener("pointerup", onPUp, true);
-        window.removeEventListener("pointercancel", onPUp, true);
-      }
-      window.removeEventListener("mousemove", onMMove, true);
-      window.removeEventListener("mouseup", onMUp, true);
-      window.removeEventListener("touchmove", onTMove, true);
-      window.removeEventListener("touchend", onTEnd, true);
-      window.removeEventListener("touchcancel", onTEnd, true);
-    }
-  }
-  function bindPress(el) {
-    const start = (e) => {
-      if (e.cancelable) e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      startDrag(e);
+  bullet.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    const move = (ev) => setValue(fromClientX(ev.clientX));
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
     };
-    if ("PointerEvent" in window)
-      el.addEventListener("pointerdown", start, {
-        capture: true,
-        passive: false,
-      });
-    el.addEventListener("mousedown", start, true);
-    el.addEventListener("touchstart", start, { capture: true, passive: false });
-  }
-  bindPress(track);
-  bindPress(knob);
-  track.addEventListener(
-    "click",
-    (e) => {
-      if (dragging || moved) return;
-      if (e.cancelable) e.preventDefault();
-      e.stopPropagation();
-      commitFromPct(pctFromX(e.clientX));
-    },
-    { capture: true }
-  );
-  knob.addEventListener("keydown", (e) => {
-    const { min, max, step } = getRange();
-    const cur = num(track.dataset.value, min);
-    let v = cur;
-    if (e.key === "ArrowLeft" || e.key === "ArrowDown")
-      v = clamp(cur - step, min, max);
-    else if (e.key === "ArrowRight" || e.key === "ArrowUp")
-      v = clamp(cur + step, min, max);
-    else if (e.key === "Home") v = min;
-    else if (e.key === "End") v = max;
-    else return;
-    if (e.cancelable) e.preventDefault();
-    commitFromValue(v);
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
   });
-  track.addEventListener("dragstart", (e) => e.preventDefault());
-  knob.addEventListener("dragstart", (e) => e.preventDefault());
+  field.addEventListener("click", (e) => {
+    setValue(fromClientX(e.clientX));
+  });
+  inc?.addEventListener("click", () => setValue(currentValue() + step));
+  dec?.addEventListener("click", () => setValue(currentValue() - step));
+  reset?.addEventListener("click", () => setValue(min));
+  setTimeout(() => {
+    const init = isNaN(parseInt(field.dataset.value || "", 10))
+      ? min
+      : currentValue();
+    setValue(init);
+  }, 50);
 }
+
 
 
 
