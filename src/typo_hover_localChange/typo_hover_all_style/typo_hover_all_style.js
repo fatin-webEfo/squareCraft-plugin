@@ -288,42 +288,102 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 
+// keep the exact name
 export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const field = document.getElementById("typo-all-hover-border-width-track");
-  const fill = document.getElementById("typo-all-hover-border-width-fill");
-  const bullet = document.getElementById("typo-all-hover-border-width-knob");
-  const valueText = document.getElementById(
-    "typo-all-hover-border-width-value"
-  );
-  const incBtn = document.getElementById(
-    "typo-all-hover-border-width-increase"
-  );
-  const decBtn = document.getElementById(
-    "typo-all-hover-border-width-decrease"
-  );
-  const resetWrap = document.getElementById("typo-all-outline-reset");
-  const resetBtn = resetWrap?.querySelector('img[alt="reset"]') || resetWrap;
+  // bind once
+  if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
+  document.body.dataset.scHoverTypoAllBorderBound = "1";
 
-  const sidePanel = document.querySelector("#typo-all-hover-border-sides");
-  const stylePanel = document.querySelector(
-    "#typo-all-hover-border-style-wrap"
-  );
+  // root = widget container if present, else document
+  const root = document.getElementById("sc-widget-container") || document;
 
-  if (!fill || !bullet || !field || !valueText) return;
+  // --- side/style toggle helpers (unchanged behavior) ---
+  const sidePanelSel  = "#typo-all-hover-border-sides";
+  const sideItemSel   = [
+    "#typo-all-hover-border-side-all",
+    "#typo-all-hover-border-side-top",
+    "#typo-all-hover-border-side-bottom",
+    "#typo-all-hover-border-side-left",
+    "#typo-all-hover-border-side-right",
+  ].join(",");
+  const stylePanelSel = "#typo-all-hover-border-style-wrap";
+  const styleItemSel  = [
+    "#typo-all-hover-border-style-solid",
+    "#typo-all-hover-border-style-dashed",
+    "#typo-all-hover-border-style-dotted",
+  ].join(",");
 
-  const maxW = Number(field.dataset.max ?? 20);
-  const minW = Number(field.dataset.min ?? 0);
-  const step = Math.max(1, Number(field.dataset.step ?? 1));
+  const ACTIVE   = "sc-bg-454545";
+  const INACTIVE = "sc-bg-3f3f3f";
 
-  let widthValue = minW;
-
-  function clamp(n, a, b) {
-    return Math.min(b, Math.max(a, n));
+  function markActive(panel, groupSel, btn, dataKey, stripPrefix) {
+    panel.querySelectorAll(groupSel).forEach((n) => {
+      n.classList.remove(ACTIVE);
+      if (!n.classList.contains(INACTIVE)) n.classList.add(INACTIVE);
+    });
+    btn.classList.add(ACTIVE);
+    btn.classList.remove(INACTIVE);
+    if (dataKey) {
+      panel.dataset[dataKey] = (btn.id || "")
+        .replace(stripPrefix, "")
+        .toLowerCase();
+    }
   }
-  function quant(v, s) {
-    return Math.round(v / s) * s;
-  }
 
+  // set default active for side/style groups
+  root.querySelectorAll(sidePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(sideItemSel);
+    if (items.length) {
+      markActive(panel, sideItemSel, items[0], "side", "typo-all-hover-border-side-");
+    }
+  });
+  root.querySelectorAll(stylePanelSel).forEach((panel) => {
+    const items = panel.querySelectorAll(styleItemSel);
+    if (items.length) {
+      markActive(panel, styleItemSel, items[0], "style", "typo-all-hover-border-style-");
+    }
+  });
+
+  // capture side/style clicks
+  root.addEventListener("pointerdown", (e) => {
+    const sideBtn = e.target.closest(sideItemSel);
+    if (sideBtn) {
+      const panel = sideBtn.closest(sidePanelSel);
+      if (!panel) return;
+      if (e.cancelable) e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      markActive(panel, sideItemSel, sideBtn, "side", "typo-all-hover-border-side-");
+      applyFromValue(currentValue());
+      return;
+    }
+    const styleBtn = e.target.closest(styleItemSel);
+    if (styleBtn) {
+      const panel = styleBtn.closest(stylePanelSel);
+      if (!panel) return;
+      if (e.cancelable) e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      markActive(panel, styleItemSel, styleBtn, "style", "typo-all-hover-border-style-");
+      applyFromValue(currentValue());
+    }
+  }, true);
+
+  // --- slider DOM (your custom progress bar) ---
+  const track = root.querySelector("#typo-all-hover-border-width-track");
+  const fill  = root.querySelector("#typo-all-hover-border-width-fill");
+  const knob  = root.querySelector("#typo-all-hover-border-width-knob");
+  const count = root.querySelector("#typo-all-hover-border-width-value");
+
+  // If slider bits are missing, keep the side/style buttons working and exit
+  if (!track || !fill || !knob || !count) return;
+
+  // read range from data-* on the track
+  const min  = Number(track.dataset.min ?? 0);
+  const max  = Number(track.dataset.max ?? 20);
+  const step = Math.max(1, Number(track.dataset.step ?? 1));
+
+  // --- helpers ---
   function ensureId(el) {
     if (!el) return null;
     if (!el.id) el.id = "sc-el-" + Math.random().toString(36).slice(2, 9);
@@ -334,15 +394,39 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
     return parts.map((s) => `#${scopeId}:hover${s}`);
   }
 
-  function applyHoverBorder() {
-    const selected =
-      typeof getSelectedElement === "function"
-        ? getSelectedElement()
-        : getSelectedElement;
-    if (!selected) return;
+  function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+  function quant(v, s)     { return Math.round(v / s) * s; }
+  function toPercent(v)    { return ((v - min) / (max - min)) * 100; }
 
-    const elId = ensureId(selected);
-    const tagId = `style-${elId}-hover-border`;
+  function fromClientX(clientX) {
+    const r = track.getBoundingClientRect();
+    const x = clamp(clientX - r.left, 0, r.width || 0);
+    const p = r.width ? x / r.width : 0;
+    return quant(min + p * (max - min), step);
+  }
+
+  function currentValue() {
+    const raw = Number(track.dataset.value);
+    if (Number.isFinite(raw)) return clamp(quant(raw, step), min, max);
+    return min;
+  }
+
+  function paint(v) {
+    const pct = clamp(toPercent(v), 0, 100);
+    fill.style.width = pct + "%";
+    knob.style.left  = pct + "%";
+    count.textContent = `${v}px`;
+  }
+
+  // write CSS for :hover border using the selected side/style
+  function writeBorder(v) {
+    const host = typeof getSelectedElement === "function"
+      ? getSelectedElement()
+      : getSelectedElement;
+    if (!host) return;
+
+    const id = ensureId(host);
+    const tagId = `style-${id}-hover-border`;
     let tag = document.getElementById(tagId);
     if (!tag) {
       tag = document.createElement("style");
@@ -350,19 +434,18 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       document.head.appendChild(tag);
     }
 
-    const side = (sidePanel?.dataset.side || "all").toLowerCase();
-    const style = (stylePanel?.dataset.style || "solid").toLowerCase();
-    const w = clamp(quant(widthValue, step), minW, maxW);
+    const side  = (root.querySelector(sidePanelSel )?.dataset.side  || "all").toLowerCase();
+    const style = (root.querySelector(stylePanelSel)?.dataset.style || "solid").toLowerCase();
 
-    const map =
-      side === "all"
-        ? { t: w, r: w, b: w, l: w }
-        : {
-            top: { t: w, r: 0, b: 0, l: 0 },
-            right: { t: 0, r: w, b: 0, l: 0 },
-            bottom: { t: 0, r: 0, b: w, l: 0 },
-            left: { t: 0, r: 0, b: 0, l: w },
-          }[side] || { t: 0, r: 0, b: 0, l: 0 };
+    const w = Math.max(0, Math.round(v));
+    const map = side === "all"
+      ? { t: w, r: w, b: w, l: w }
+      : ({
+          top:    { t: w, r: 0, b: 0, l: 0 },
+          right:  { t: 0, r: w, b: 0, l: 0 },
+          bottom: { t: 0, r: 0, b: w, l: 0 },
+          left:   { t: 0, r: 0, b: 0, l: w },
+        }[side] || { t: 0, r: 0, b: 0, l: 0 });
 
     const css = [
       `border-style:${style} !important`,
@@ -372,69 +455,72 @@ export function initHoverTypoAllBorderControls(getSelectedElement) {
       `border-left-width:${map.l}px !important`,
     ].join(";");
 
-    tag.textContent = `${hoverSelectors(elId).join(",")} { ${css}; }`;
+    tag.textContent = `${hoverSelectors(id).join(",")} { ${css}; }`;
   }
 
-  function updateUI(val) {
-    widthValue = clamp(quant(val, step), minW, maxW);
-    const percent = ((widthValue - minW) / (maxW - minW || 1)) * 100;
-    fill.style.width = `${percent}%`;
-    bullet.style.left = `${percent}%`;
-    valueText.textContent = `${widthValue}px`;
-    applyHoverBorder();
+  function applyFromValue(v) {
+    paint(v);
+    writeBorder(v);
   }
 
-  bullet.addEventListener("mousedown", (e) => {
+  function setValue(v) {
+    const val = clamp(quant(v, step), min, max);
+    track.dataset.value = String(val);
+    applyFromValue(val);
+  }
+
+  // --- drag wiring (stop propagation to avoid global "outside click" killers) ---
+  let dragging = false;
+
+  function startDrag(e) {
     if (e.cancelable) e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
+    dragging = true;
 
-    const move = (eMove) => {
-      const rect = field.getBoundingClientRect();
-      const x = clamp(eMove.clientX - rect.left, 0, rect.width || 0);
-      const val = minW + (x / (rect.width || 1)) * (maxW - minW);
-      updateUI(val);
-    };
-    const up = () => {
-      document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseup", up);
-    };
-    document.addEventListener("mousemove", move);
-    document.addEventListener("mouseup", up);
-  });
+    // pointer events simplify mouse/touch
+    try { knob.setPointerCapture?.(e.pointerId); } catch {}
 
-  field.addEventListener("click", (e) => {
-    if (e.target === bullet) return;
+    const move = (ev) => {
+      const x = (ev.clientX ?? (ev.touches && ev.touches[0]?.clientX) ?? 0);
+      if (x) setValue(fromClientX(x));
+    };
+    const up = (ev) => {
+      dragging = false;
+      document.removeEventListener("pointermove", move, true);
+      document.removeEventListener("pointerup", up, true);
+      document.removeEventListener("pointercancel", up, true);
+    };
+
+    document.addEventListener("pointermove", move, true);
+    document.addEventListener("pointerup", up, true);
+    document.addEventListener("pointercancel", up, true);
+  }
+
+  knob.addEventListener("pointerdown", startDrag, { passive: false });
+
+  // click on track jumps (ignore clicks that originate on the knob)
+  track.addEventListener("pointerdown", (e) => {
+    // if you pressed directly on the knob, let startDrag handle it
+    if (e.target === knob) return;
     if (e.cancelable) e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
+    setValue(fromClientX(e.clientX));
+  }, { passive: false });
 
-    const rect = field.getBoundingClientRect();
-    const x = clamp(e.clientX - rect.left, 0, rect.width || 0);
-    const val = minW + (x / (rect.width || 1)) * (maxW - minW);
-    updateUI(val);
-  });
-
-  incBtn?.addEventListener("click", (e) => {
+  // (optional) wheel to nudge
+  track.addEventListener("wheel", (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    updateUI(widthValue + step);
-  });
-  decBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    updateUI(widthValue - step);
-  });
+    const dir = e.deltaY > 0 ? -1 : 1;
+    setValue(currentValue() + dir * step);
+  }, { passive: false });
 
-  resetBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    updateUI(minW);
-  });
-
-  setTimeout(() => {
-    const preset = Number(field.dataset.value);
-    if (Number.isFinite(preset)) updateUI(preset);
-    else updateUI(minW);
-  }, 50);
+  // initialize (respect any preset data-value; otherwise min)
+  setTimeout(() => setValue(currentValue()), 0);
 }
+
 
 
 
