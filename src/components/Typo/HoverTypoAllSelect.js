@@ -149,8 +149,11 @@ export function HoverTypoAllSelect(fontSizes, LetterSpacing) {
   </div>
 
   <div id="typo-all-hover-border-width-track" class="sc-rounded-15px sc-relative sc-mt-2 sc-w-full sc-h-2 sc-bg-F6F6F6 sc-cursor-pointer">
-    <div id="typo-all-hover-border-width-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full"></div>
-    <div id="typo-all-hover-border-width-knob" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+    <div id="typo-all-hover-border-width-fill" class="sc-absolute sc-bg-color-EF7C2F sc-h-2 sc-rounded-l-full">
+          <div id="typo-all-hover-border-width-knob" class="sc-absolute sc-bg-color-EF7C2F sc-w-3 sc-h-3 sc-rounded-full sc-cursor-pointer sc-top-half"></div>
+
+    </div>
+    </div>
   </div>
 
   <div class="sc-grid sc-grid-cols-12 sc-mt-2">
