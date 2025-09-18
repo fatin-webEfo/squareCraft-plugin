@@ -246,61 +246,44 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   });
 }
 
-export function initHoverTypoAllBorderControls() {
-  const hoverWidthFill = document.getElementById(
-    "typo-all-hover-border-width-fill"
-  );
-  const hoverWidthKnob = document.getElementById(
-    "typo-all-hover-border-width-knob"
-  );
-  const track = document.getElementById("typo-all-hover-border-width-track");
+export function initHoverTypoAllBorderControlsLocal() {
+  const track  = document.getElementById('typo-all-hover-border-width-track');
+  const fill   = document.getElementById('typo-all-hover-border-width-fill');
+  const knob   = document.getElementById('typo-all-hover-border-width-knob');
 
-  if (!hoverWidthFill || !hoverWidthKnob || !track) {
-    console.error(
-      "Error: Elements not found for hoverWidthFill, hoverWidthKnob, or track"
-    );
-    return;
-  }
+  if (!track || !fill || !knob) return;
 
-  let startX = 0;
-  let currentX = 0;
-
-  // Update the progress (fill width and knob position)
   const updateProgress = (e) => {
-    currentX = e.clientX || e.touches[0].clientX;
-    const trackRect = track.getBoundingClientRect();
-    const progress = Math.min(
-      Math.max((currentX - trackRect.left) / trackRect.width, 0),
-      1
-    );
-    hoverWidthFill.style.width = `${progress * 100}%`;
-    hoverWidthKnob.style.left = `${progress * 100}%`;
+    const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    const rect = track.getBoundingClientRect();
+    let pct = (x - rect.left) / rect.width;
+    pct = Math.max(0, Math.min(1, pct));
+    fill.style.width = `${pct * 100}%`;
+    knob.style.left  = `${pct * 100}%`;
   };
 
-  // Start dragging
+  const stopDrag = () => {
+    document.removeEventListener('mousemove', updateProgress);
+    document.removeEventListener('mouseup', stopDrag);
+    document.removeEventListener('touchmove', updateProgress);
+    document.removeEventListener('touchend', stopDrag);
+  };
+
   const startDrag = (e) => {
     e.preventDefault();
-    startX = e.clientX || e.touches[0].clientX;
-
-    // Bind events to track the drag
-    document.addEventListener("mousemove", updateProgress);
-    document.addEventListener("mouseup", stopDrag);
-    document.addEventListener("touchmove", updateProgress, { passive: false });
-    document.addEventListener("touchend", stopDrag);
+    document.addEventListener('mousemove', updateProgress);
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchmove', updateProgress, { passive: false });
+    document.addEventListener('touchend', stopDrag);
+    updateProgress(e);
   };
 
-  // Stop dragging
-  const stopDrag = () => {
-    // Remove the events once the drag is finished
-    document.removeEventListener("mousemove", updateProgress);
-    document.removeEventListener("mouseup", stopDrag);
-    document.removeEventListener("touchmove", updateProgress);
-    document.removeEventListener("touchend", stopDrag);
-  };
-
-  // Bind the startDrag function to the knob's mousedown and touchstart events
-  hoverWidthKnob.addEventListener("mousedown", startDrag);
-  hoverWidthKnob.addEventListener("touchstart", startDrag, { passive: false });
+  knob.addEventListener('mousedown', startDrag);
+  knob.addEventListener('touchstart', startDrag, { passive: false });
 }
 
+setTimeout(() => {
+  module.initToggleSwitch?.();
+  initHoverTypoAllBorderControlsLocal();
+}, 200);
 
