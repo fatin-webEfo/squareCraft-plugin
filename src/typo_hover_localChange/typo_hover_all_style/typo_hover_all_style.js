@@ -238,7 +238,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         }
       });
     } else {
-      // log("no spacing input in panel", i);
     }
     const wList = el(weightListSel, panel);
     hide(wList);
@@ -249,7 +248,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
 export function initHoverTypoAllBorderControls() {
   console.log("initHoverTypoAllBorderControls called");
-  // Continue with the function as normal
   const hoverWidthFill = document.getElementById(
     "typo-all-hover-border-width-fill"
   );
