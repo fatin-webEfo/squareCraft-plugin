@@ -286,6 +286,7 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 
   log("ready");
 }
+
 export function initHoverTypoAllBorderControls(getSelectedElement) {
   if (document.body.dataset.scHoverTypoAllBorderBound === "1") return;
   const root = document.getElementById("sc-widget-container") || document;
