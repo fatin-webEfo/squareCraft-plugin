@@ -320,20 +320,6 @@
 
 
 
-#typo-all-hover-border-width-fill{
-  position:absolute;left:0;top:0;height:100%;
-  width:0;
-  background:#EF7C2F;        
-  border-radius:inherit;
-  pointer-events:none;
-}
-
-
-#typo-all-hover-border-width-knob{
-  position:absolute;left:0;top:50%;
-  transform:translate(-50%,-50%);
-  cursor:grab;user-select:none;touch-action:none;z-index:1;
-}
 
 
 
