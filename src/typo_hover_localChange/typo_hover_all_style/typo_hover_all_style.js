@@ -287,72 +287,56 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   log("ready");
 }
 
-export function initHoverTypoAllBorderControls(getSelectedElement) {
-  const progressTrack = document.getElementById(
-    "typo-all-hover-border-width-track"
-  );
-  const progressFill = document.getElementById(
+export function initHoverTypoAllBorderControls() {
+  console.log("initHoverTypoAllBorderControls called");
+  // Continue with the function as normal
+  const hoverWidthFill = document.getElementById(
     "typo-all-hover-border-width-fill"
   );
-  const progressKnob = document.getElementById(
+  const hoverWidthKnob = document.getElementById(
     "typo-all-hover-border-width-knob"
   );
-
-  let isDragging = false;
-
-  progressKnob.addEventListener("mousedown", (event) => {
-    isDragging = true;
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  });
-
-  function onMouseMove(event) {
-    if (!isDragging) return;
-
-    let newLeft = event.clientX - progressTrack.getBoundingClientRect().left;
-    newLeft = Math.max(
-      0,
-      Math.min(newLeft, progressTrack.offsetWidth - progressKnob.offsetWidth)
+  if (!hoverWidthFill || !hoverWidthKnob) {
+    console.error(
+      "Error: Elements not found for hoverWidthFill or hoverWidthKnob"
     );
-
-    progressKnob.style.left = `${newLeft}px`;
-    const progressPercentage = (newLeft / progressTrack.offsetWidth) * 100;
-    progressFill.style.width = `${progressPercentage}%`;
+    return;
   }
+  let startX = 0;
+  let currentX = 0;
 
-  function onMouseUp() {
-    isDragging = false;
-    document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("mouseup", onMouseUp);
-  }
-
-  progressKnob.addEventListener("touchstart", (event) => {
-    isDragging = true;
-    document.addEventListener("touchmove", onTouchMove);
-    document.addEventListener("touchend", onTouchEnd);
-  });
-
-  function onTouchMove(event) {
-    if (!isDragging) return;
-
-    const touch = event.touches[0];
-    let newLeft = touch.clientX - progressTrack.getBoundingClientRect().left;
-    newLeft = Math.max(
-      0,
-      Math.min(newLeft, progressTrack.offsetWidth - progressKnob.offsetWidth)
+  const updateProgress = (e) => {
+    currentX = e.clientX || e.touches[0].clientX;
+    const progress = Math.min(
+      Math.max((currentX - startX) / hoverWidthKnob.parentNode.offsetWidth, 0),
+      1
     );
+    hoverWidthFill.style.width = `${progress * 100}%`;
+    hoverWidthKnob.style.left = `${progress * 100}%`;
+    console.log("Progress: ", progress);
+  };
 
-    progressKnob.style.left = `${newLeft}px`;
-    const progressPercentage = (newLeft / progressTrack.offsetWidth) * 100;
-    progressFill.style.width = `${progressPercentage}%`;
-  }
+  const startDrag = (e) => {
+    e.preventDefault();
+    startX = e.clientX || e.touches[0].clientX;
+    document.addEventListener("mousemove", updateProgress);
+    document.addEventListener("mouseup", stopDrag);
+    document.addEventListener("touchmove", updateProgress, { passive: false });
+    document.addEventListener("touchend", stopDrag);
+  };
 
-  function onTouchEnd() {
-    isDragging = false;
-    document.removeEventListener("touchmove", onTouchMove);
-    document.removeEventListener("touchend", onTouchEnd);
-  }
+  const stopDrag = () => {
+    document.removeEventListener("mousemove", updateProgress);
+    document.removeEventListener("mouseup", stopDrag);
+    document.removeEventListener("touchmove", updateProgress);
+    document.removeEventListener("touchend", stopDrag);
+    console.log("Drag stopped");
+  };
+
+  hoverWidthKnob.addEventListener("mousedown", startDrag);
+  hoverWidthKnob.addEventListener("touchstart", startDrag, { passive: false });
 }
+
 
 
 
