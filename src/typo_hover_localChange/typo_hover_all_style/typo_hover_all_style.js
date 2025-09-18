@@ -253,12 +253,8 @@ export function initHoverTypoAllBorderControls() {
   const hoverWidthKnob = document.getElementById(
     "typo-all-hover-border-width-knob"
   );
-  const track = document.getElementById("typo-all-hover-border-width-track");
 
-  if (!hoverWidthFill || !hoverWidthKnob || !track) {
-    console.error(
-      "Error: Elements not found for hoverWidthFill, hoverWidthKnob, or track"
-    );
+  if (!hoverWidthFill || !hoverWidthKnob) {
     return;
   }
 
@@ -267,9 +263,8 @@ export function initHoverTypoAllBorderControls() {
 
   const updateProgress = (e) => {
     currentX = e.clientX || e.touches[0].clientX;
-    const trackRect = track.getBoundingClientRect();
     const progress = Math.min(
-      Math.max((currentX - trackRect.left) / trackRect.width, 0),
+      Math.max((currentX - startX) / hoverWidthKnob.parentNode.offsetWidth, 0),
       1
     );
     hoverWidthFill.style.width = `${progress * 100}%`;
@@ -279,7 +274,6 @@ export function initHoverTypoAllBorderControls() {
   const startDrag = (e) => {
     e.preventDefault();
     startX = e.clientX || e.touches[0].clientX;
-
     document.addEventListener("mousemove", updateProgress);
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchmove", updateProgress, { passive: false });
