@@ -1004,6 +1004,7 @@
       initImageSectionToggleControls();
       tooltipControls();
       ButtonAdvanceToggleControls();
+      initHoverTypoAllBorderControls()
       initButtonSectionToggleControls();
       initEffectAnimationDropdownToggle(() => selectedElement);
 
