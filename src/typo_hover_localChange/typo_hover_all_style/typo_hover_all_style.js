@@ -3,19 +3,12 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
     return;
   }
   document.body.dataset.scHoverTypoAllBound = "1";
-  const log = (...a) => console.log("[hover-typo-all:font]", ...a);
 
   const root = document.getElementById("sc-widget-container") || document;
   const sel =
     typeof getSelectedElement === "function"
       ? getSelectedElement
       : () => getSelectedElement;
-
-  log("init", {
-    hasRoot: !!root,
-    rootId: root.id,
-    selType: typeof getSelectedElement,
-  });
 
   const TYPE_TO_SELECTOR = {
     heading1: "h1",
@@ -52,7 +45,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   function writeExternal(styles) {
     const host = sel && sel();
     if (!host) {
-      log("writeExternal: no host element");
       return;
     }
     const id = ensureId(host);
@@ -62,7 +54,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       tag = document.createElement("style");
       tag.id = tagId;
       document.head.appendChild(tag);
-      log("created style tag", { tagId });
     }
     window.__sc_extcss_hover = window.__sc_extcss_hover || {};
     const bag = window.__sc_extcss_hover;
@@ -71,31 +62,25 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       .map(([k, v]) => `${k}: ${v} !important;`)
       .join(" ");
     tag.textContent = `${allTypeHoverSelectors(id).join(", ")} { ${body} }`;
-    log("applied hover styles", { id, styles: bag[id] });
   }
 
   function commitWeight(v) {
     const val = String(v || "").trim();
     if (!val) {
-      log("commitWeight: empty");
       return;
     }
-    log("commitWeight", val);
     writeExternal({ "font-weight": val });
   }
 
   function commitLetterSpacing(raw) {
     if (raw == null) {
-      log("commitLetterSpacing: null");
       return;
     }
     const s = String(raw).trim();
     if (!s) {
-      log("commitLetterSpacing: empty");
       return;
     }
     const val = /^\-?\d+(\.\d+)?$/.test(s) ? `${s}px` : s;
-    log("commitLetterSpacing", { raw, val });
     writeExternal({ "letter-spacing": val });
   }
 
@@ -119,13 +104,11 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   function listWithin(target) {
     const panel = target.closest(panelSel) || root;
     const n = el(weightListSel, panel);
-    log("listWithin", { found: !!n });
     return n;
   }
   function spacingBtnWithin(target) {
     const panel = target.closest(panelSel) || root;
     const n = el(spacingBtnSel, panel);
-    log("spacingBtnWithin", { found: !!n });
     return n;
   }
   function spacingListWithin(target) {
@@ -134,20 +117,17 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       ".sc-flex.sc-text-color-white.sc-mt-2.sc-rounded-4px.sc-relative.sc-border.sc-border-solid.sc-border-585858.sc-items-center"
     );
     const n = wrap ? wrap.querySelector(".sc-absolute") : null;
-    log("spacingListWithin", { found: !!n });
     return n;
   }
   function spacingInputWithin(target) {
     const panel = target.closest(panelSel) || root;
     const n = el(spacingInputSel, panel);
-    log("spacingInputWithin", { found: !!n });
     return n;
   }
   function hideAllOpenLists(except) {
     root.querySelectorAll(`${weightListSel}:not(.sc-hidden)`).forEach((n) => {
       if (!except || !n.contains(except)) {
         hide(n);
-        log("hide weight list");
       }
     });
     root
@@ -155,7 +135,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       .forEach((n) => {
         if (!except || !n.contains(except)) {
           hide(n);
-          log("hide spacing list");
         }
       });
   }
@@ -163,8 +142,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   root.addEventListener(
     "pointerdown",
     (e) => {
-      log("pointerdown", { target: e.target });
-
       const wb = e.target.closest(weightBtnSel);
       if (wb) {
         e.preventDefault();
@@ -172,9 +149,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         e.stopImmediatePropagation();
         const list = listWithin(wb);
         toggle(list);
-        log("toggle weight list", {
-          visible: list && !list.classList.contains("sc-hidden"),
-        });
         const arrow = wb.querySelector("img,svg");
         if (arrow)
           arrow.classList.toggle(
@@ -201,7 +175,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         hide(list);
         const arrow = btn?.querySelector("img,svg");
         if (arrow) arrow.classList.add("sc-rotate-180");
-        log("selected weight", v);
         return;
       }
 
@@ -212,9 +185,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         e.stopImmediatePropagation();
         const sl = spacingListWithin(sb);
         toggle(sl);
-        log("toggle spacing list", {
-          visible: sl && !sl.classList.contains("sc-hidden"),
-        });
         const wl = listWithin(sb);
         hide(wl);
         return;
@@ -231,7 +201,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         if (inp) inp.value = v;
         commitLetterSpacing(v);
         hide(sl);
-        log("selected letter-spacing", v);
         return;
       }
 
@@ -240,7 +209,6 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
       const insideSpacing =
         e.target.closest(spacingBtnSel) || (sl && sl.contains(e.target));
       if (!insideWeight && !insideSpacing) {
-        log("click outside, hide all lists");
         hideAllOpenLists(null);
       }
     },
@@ -248,14 +216,12 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
   );
 
   const initPanels = root.querySelectorAll(panelSel);
-  log("panels found", initPanels.length);
   initPanels.forEach((panel, i) => {
     const inp = el(spacingInputSel, panel);
     if (inp && !inp.dataset.bound) {
       inp.dataset.bound = "1";
       let t;
       const go = () => {
-        log("input commit letter-spacing", inp.value);
         commitLetterSpacing(inp.value);
       };
       inp.addEventListener("input", () => {
@@ -272,19 +238,13 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
         }
       });
     } else {
-      log("no spacing input in panel", i);
+      // log("no spacing input in panel", i);
     }
     const wList = el(weightListSel, panel);
     hide(wList);
     const sList = panel.querySelector(".sc-absolute");
     hide(sList);
-    log("lists hidden initially", {
-      hasWeightList: !!wList,
-      hasSpacingList: !!sList,
-    });
   });
-
-  log("ready");
 }
 
 export function initHoverTypoAllBorderControls() {
@@ -336,7 +296,3 @@ export function initHoverTypoAllBorderControls() {
   hoverWidthKnob.addEventListener("mousedown", startDrag);
   hoverWidthKnob.addEventListener("touchstart", startDrag, { passive: false });
 }
-
-
-
-
