@@ -265,6 +265,7 @@ export function initHoverTypoAllBorderControls() {
   let startX = 0;
   let currentX = 0;
 
+  // Update the progress (fill width and knob position)
   const updateProgress = (e) => {
     currentX = e.clientX || e.touches[0].clientX;
     const trackRect = track.getBoundingClientRect();
@@ -276,24 +277,30 @@ export function initHoverTypoAllBorderControls() {
     hoverWidthKnob.style.left = `${progress * 100}%`;
   };
 
+  // Start dragging
   const startDrag = (e) => {
     e.preventDefault();
     startX = e.clientX || e.touches[0].clientX;
 
+    // Bind events to track the drag
     document.addEventListener("mousemove", updateProgress);
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchmove", updateProgress, { passive: false });
     document.addEventListener("touchend", stopDrag);
   };
 
+  // Stop dragging
   const stopDrag = () => {
+    // Remove the events once the drag is finished
     document.removeEventListener("mousemove", updateProgress);
     document.removeEventListener("mouseup", stopDrag);
     document.removeEventListener("touchmove", updateProgress);
     document.removeEventListener("touchend", stopDrag);
   };
 
+  // Bind the startDrag function to the knob's mousedown and touchstart events
   hoverWidthKnob.addEventListener("mousedown", startDrag);
   hoverWidthKnob.addEventListener("touchstart", startDrag, { passive: false });
 }
+
 
