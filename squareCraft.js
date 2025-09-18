@@ -33,6 +33,7 @@
           setTimeout(() => {
             if (typeof module.initToggleSwitch === "function") {
               module.initToggleSwitch();
+              initHoverTypoAllBorderControls();
             }
           }, 200);
         } else {
@@ -723,7 +724,6 @@
 
       if (selectedElement) {
         initButtonAdvanceStyles(() => selectedElement);
-        initHoverTypoAllBorderControls(() => selectedElement);
         horizontalinitButtonAdvanceStyles(() => selectedElement);
         initTypoAdvanceStyles(() => selectedElement);
         horizontalinitTypoAdvanceStyles(() => selectedElement);
@@ -1004,11 +1004,9 @@
       initImageSectionToggleControls();
       tooltipControls();
       ButtonAdvanceToggleControls();
-      initHoverTypoAllBorderControls()
       initButtonSectionToggleControls();
       initEffectAnimationDropdownToggle(() => selectedElement);
 
-            initHoverTypoAllBorderControls(()=>selectedElement);
       button_initEffectAnimationDropdownToggle(() => selectedElement);
       opacitybutton_initEffectAnimationDropdownToggle(() => selectedElement);
       horizontal_button_initEffectAnimationDropdownToggle(() => selectedElement);
