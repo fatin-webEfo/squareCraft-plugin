@@ -247,19 +247,17 @@ export function initHoverTypoAllFontControls(getSelectedElement) {
 }
 
 export function initHoverTypoAllBorderControls() {
-  console.log("initHoverTypoAllBorderControls called");
   const hoverWidthFill = document.getElementById(
     "typo-all-hover-border-width-fill"
   );
   const hoverWidthKnob = document.getElementById(
     "typo-all-hover-border-width-knob"
   );
+
   if (!hoverWidthFill || !hoverWidthKnob) {
-    console.error(
-      "Error: Elements not found for hoverWidthFill or hoverWidthKnob"
-    );
     return;
   }
+
   let startX = 0;
   let currentX = 0;
 
@@ -271,7 +269,6 @@ export function initHoverTypoAllBorderControls() {
     );
     hoverWidthFill.style.width = `${progress * 100}%`;
     hoverWidthKnob.style.left = `${progress * 100}%`;
-    console.log("Progress: ", progress);
   };
 
   const startDrag = (e) => {
@@ -288,7 +285,6 @@ export function initHoverTypoAllBorderControls() {
     document.removeEventListener("mouseup", stopDrag);
     document.removeEventListener("touchmove", updateProgress);
     document.removeEventListener("touchend", stopDrag);
-    console.log("Drag stopped");
   };
 
   hoverWidthKnob.addEventListener("mousedown", startDrag);
